@@ -2,54 +2,51 @@
 
 namespace Jigoshop\Core;
 
+use Mockery as m;
+
 /**
  * Assets tests.
  *
  * @package Jigoshop\Core
  * @author Amadeusz Starzykiewicz
  */
-class AssetsTest extends \PHPUnit_Framework_TestCase
+class AssetsTest extends \TestCase
 {
-	/** @var \PHPUnit_Framework_MockObject_MockObject */
+	/** @var m\MockInterface */
 	private $wp;
-	/** @var \PHPUnit_Framework_MockObject_MockObject */
+	/** @var m\MockInterface */
 	private $pages;
-	/** @var \PHPUnit_Framework_MockObject_MockObject */
+	/** @var m\MockInterface */
 	private $styles;
-	/** @var \PHPUnit_Framework_MockObject_MockObject */
+	/** @var m\MockInterface */
 	private $scripts;
-	/** @var \PHPUnit_Framework_MockObject_MockObject */
+	/** @var m\MockInterface */
 	private $options;
 
-	public function setUp()
+	/** @before */
+	public function prepare()
 	{
-		$this->wp = $this->getMock('\\WPAL\\Wordpress');
-		$this->options = $this->getMockBuilder('\\Jigoshop\\Core\\Options')->disableOriginalConstructor()->getMock();
-		$this->pages = $this->getMockBuilder('\\Jigoshop\\Core\\Pages')->disableOriginalConstructor()->getMock();
-		$this->styles = $this->getMockBuilder('\\Jigoshop\\Helper\\Styles')->disableOriginalConstructor()->getMock();
-		$this->scripts = $this->getMockBuilder('\\Jigoshop\\Helper\\Scripts')->disableOriginalConstructor()->getMock();
+		$this->wp = m::mock('\WPAL\Wordpress');
+		$this->options = m::mock('Jigoshop\Core\Options');
+		$this->pages = m::mock('Jigoshop\Core\Pages');
+		$this->styles = m::mock('Jigoshop\Helper\Styles');
+		$this->scripts = m::mock('Jigoshop\Helper\Scripts');
 
-		$this->wp->expects($this->any())
-			->method('addAction')
-			->with($this->logicalOr($this->equalTo('admin_enqueue_scripts'), $this->equalTo('wp_enqueue_scripts')), $this->anything());
+		$this->wp->shouldReceive('addAction')->matchArgs(array('admin_enqueue_scripts'));
+		$this->wp->shouldReceive('addAction')->matchArgs(array('wp_enqueue_scripts'));
 	}
 
-	public function testLoadAdminAssetsOutsideOfAdmin()
+	/** @test */
+	public function loadAdminAssetsOutsideOfAdmin()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
 		$assets = new Assets($this->wp, $this->pages, $this->options, $this->styles, $this->scripts);
 
-		$this->pages->expects($this->any())
-			->method('isAdminPage')
-			->will($this->returnValue(false));
-		$this->wp->expects($this->never())
-			->method('addFilter');
-		$this->styles->expects($this->once())
-			->method('add')
-			->with($this->anything(), $this->anything());
-		$this->scripts->expects($this->never())
-			->method('add');
+		$this->pages->shouldReceive('isAdminPage')->andReturn(false);
+		$this->wp->shouldReceive('addFilter')->never();
+		$this->styles->shouldReceive('add')->once();
+		$this->scripts->shouldReceive('add')->never();
 
 		// When
 		$assets->loadAdminAssets();
@@ -57,46 +54,26 @@ class AssetsTest extends \PHPUnit_Framework_TestCase
 		// Then no errors should arise
 	}
 
-	public function testLoadAdminAssets()
+	/** @test */
+	public function loadAdminAssets()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
 		$assets = new Assets($this->wp, $this->pages, $this->options, $this->styles, $this->scripts);
 
-		$this->pages->expects($this->any())
-			->method('isAdminPage')
-			->will($this->returnValue(true));
-		$this->wp->expects($this->never())
-			->method('addFilter');
+		$this->pages->shouldReceive('isAdminPage')->andReturn(true);
+		$this->wp->shouldReceive('addFilter')->never();
 
-		$this->styles->expects($this->at(0))
-			->method('add')
-			->with('jigoshop_admin_icons_style', $this->anything());
-		$this->styles->expects($this->at(1))
-			->method('add')
-			->with('jigoshop_admin_styles', $this->anything());
-		$this->styles->expects($this->at(2))
-			->method('add')
-			->with('jquery-ui-jigoshop-styles', $this->anything());
-		$this->styles->expects($this->at(3))
-			->method('add')
-			->with('jigoshop-required', $this->anything());
+		$this->styles->shouldReceive('add')->withArgs(array('jigoshop_admin_icons_style', m::any()))->once();
+		$this->styles->shouldReceive('add')->withArgs(array('jigoshop_admin_styles', m::any()))->once();
+		$this->styles->shouldReceive('add')->withArgs(array('jquery-ui-jigoshop-styles', m::any()))->once();
+		$this->styles->shouldReceive('add')->withArgs(array('jigoshop-required', m::any()))->once();
 
-		$this->scripts->expects($this->at(0))
-			->method('add')
-			->with('jigoshop-select2', $this->anything());
-		$this->scripts->expects($this->at(1))
-			->method('add')
-			->with('jigoshop_blockui', $this->anything());
-		$this->scripts->expects($this->at(2))
-			->method('add')
-			->with('jigoshop_backend', $this->anything());
-		$this->scripts->expects($this->at(3))
-			->method('add')
-			->with('jquery_flot', $this->anything());
-		$this->scripts->expects($this->at(4))
-			->method('add')
-			->with('jquery_flot_pie', $this->anything());
+		$this->scripts->shouldReceive('add')->withArgs(array('jigoshop-select2', m::any(), m::any()))->once();
+		$this->scripts->shouldReceive('add')->withArgs(array('jigoshop_blockui', m::any(), m::any(), m::any()))->once();
+		$this->scripts->shouldReceive('add')->withArgs(array('jigoshop_backend', m::any(), m::any(), m::any()))->once();
+		$this->scripts->shouldReceive('add')->withArgs(array('jquery_flot', m::any(), m::any(), m::any()))->once();
+		$this->scripts->shouldReceive('add')->withArgs(array('jquery_flot_pie', m::any(), m::any(), m::any()))->once();
 
 		// When
 		$assets->loadAdminAssets();
@@ -104,47 +81,26 @@ class AssetsTest extends \PHPUnit_Framework_TestCase
 		// Then no errors should arise
 	}
 
-	public function testLoadAdminAssetsAutosave()
+	/** @test */
+	public function loadAdminAssetsAutosave()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
 		$assets = new Assets($this->wp, $this->pages, $this->options, $this->styles, $this->scripts);
 
-		$this->pages->expects($this->once())
-			->method('isAdminPage')
-			->will($this->returnValue(Types::ORDER));
-		$this->wp->expects($this->once())
-			->method('addFilter')
-			->with($this->equalTo('script_loader_src'), $this->anything(), $this->anything(), $this->anything());
+		$this->pages->shouldReceive('isAdminPage')->andReturn('order'); // TODO: Insert proper constant containing order post type
+//		$this->wp->shouldReceive('addFilter')->once()->withArgs(array('script_loader_src')); // TODO: Re-enable this line when orders autosave is up and running
 
-		$this->styles->expects($this->at(0))
-			->method('add')
-			->with('jigoshop_admin_icons_style', $this->anything());
-		$this->styles->expects($this->at(1))
-			->method('add')
-			->with('jigoshop_admin_styles', $this->anything());
-		$this->styles->expects($this->at(2))
-			->method('add')
-			->with('jquery-ui-jigoshop-styles', $this->anything());
-		$this->styles->expects($this->at(3))
-			->method('add')
-			->with('jigoshop-required', $this->anything());
+		$this->styles->shouldReceive('add')->withArgs(array('jigoshop_admin_icons_style', m::any()))->once();
+		$this->styles->shouldReceive('add')->withArgs(array('jigoshop_admin_styles', m::any()))->once();
+		$this->styles->shouldReceive('add')->withArgs(array('jquery-ui-jigoshop-styles', m::any()))->once();
+		$this->styles->shouldReceive('add')->withArgs(array('jigoshop-required', m::any()))->once();
 
-		$this->scripts->expects($this->at(0))
-			->method('add')
-			->with('jigoshop-select2', $this->anything());
-		$this->scripts->expects($this->at(1))
-			->method('add')
-			->with('jigoshop_blockui', $this->anything());
-		$this->scripts->expects($this->at(2))
-			->method('add')
-			->with('jigoshop_backend', $this->anything());
-		$this->scripts->expects($this->at(3))
-			->method('add')
-			->with('jquery_flot', $this->anything());
-		$this->scripts->expects($this->at(4))
-			->method('add')
-			->with('jquery_flot_pie', $this->anything());
+		$this->scripts->shouldReceive('add')->withArgs(array('jigoshop-select2', m::any(), m::any()))->once();
+		$this->scripts->shouldReceive('add')->withArgs(array('jigoshop_blockui', m::any(), m::any(), m::any()))->once();
+		$this->scripts->shouldReceive('add')->withArgs(array('jigoshop_backend', m::any(), m::any(), m::any()))->once();
+		$this->scripts->shouldReceive('add')->withArgs(array('jquery_flot', m::any(), m::any(), m::any()))->once();
+		$this->scripts->shouldReceive('add')->withArgs(array('jquery_flot_pie', m::any(), m::any(), m::any()))->once();
 
 		// When
 		$assets->loadAdminAssets();
@@ -152,7 +108,8 @@ class AssetsTest extends \PHPUnit_Framework_TestCase
 		// Then no errors should arise
 	}
 
-	public function testDisableAutosave()
+	/** @test */
+	public function disableAutosave()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
@@ -167,49 +124,24 @@ class AssetsTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals('test', $normal);
 	}
 
-	public function testLoadFrontendAssetsNoCSS()
+	/** @test */
+	public function loadFrontendAssetsNoCSS()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
 		$assets = new Assets($this->wp, $this->pages, $this->options, $this->styles, $this->scripts);
 
-		$this->wp->expects($this->once())
-			->method('getStylesheetDirectory')
-			->will($this->returnValue(JIGOSHOP_DIR));
-		$this->options->expects($this->any())
-			->method('get')
-			->with($this->logicalOr($this->equalTo('disable_css'), $this->equalTo('disable_prettyphoto')))
-			->will($this->returnCallback(function($option){
-				switch($option){
-					case 'disable_css':
-						return 'yes';
-					case 'disable_prettyphoto':
-						return 'yes';
-					default:
-						return 'no';
-				}
-			}));
+		$this->wp->shouldReceive('getStylesheetDirectory')->once()->andReturn(JIGOSHOP_DIR);
+		$this->options->shouldReceive('get')->withArgs(array('disable_css'))->andReturn('yes');
+		$this->options->shouldReceive('get')->withArgs(array('disable_prettyphoto'))->andReturn('yes');
 
-		$this->styles->expects($this->never())
-			->method('add');
-		$this->scripts->expects($this->at(0))
-			->method('add')
-			->with('jigoshop_global', $this->anything());
-		$this->scripts->expects($this->at(1))
-			->method('add')
-			->with('jigoshop_blockui', $this->anything());
-		$this->scripts->expects($this->at(2))
-			->method('add')
-			->with('jigoshop-cart', $this->anything());
-		$this->scripts->expects($this->at(3))
-			->method('add')
-			->with('jigoshop-checkout', $this->anything());
-		$this->scripts->expects($this->at(4))
-			->method('add')
-			->with('jigoshop-single-product', $this->anything());
-		$this->scripts->expects($this->at(5))
-			->method('add')
-			->with('jigoshop-countries', $this->anything());
+		$this->styles->shouldReceive('add')->never();
+		$this->scripts->shouldReceive('add')->withArgs(array('jigoshop_global', m::any(), m::any(), m::any()))->once();
+		$this->scripts->shouldReceive('add')->withArgs(array('jigoshop_blockui', m::any(), m::any(), m::any()))->once();
+		$this->scripts->shouldReceive('add')->withArgs(array('jigoshop-cart', m::any(), m::any(), m::any()))->once();
+		$this->scripts->shouldReceive('add')->withArgs(array('jigoshop-checkout', m::any(), m::any(), m::any()))->once();
+		$this->scripts->shouldReceive('add')->withArgs(array('jigoshop-single-product', m::any(), m::any(), m::any()))->once();
+		$this->scripts->shouldReceive('add')->withArgs(array('jigoshop-countries', m::any(), m::any(), m::any()))->once();
 
 		// When
 		$assets->loadFrontendAssets();
@@ -217,58 +149,27 @@ class AssetsTest extends \PHPUnit_Framework_TestCase
 		// Then no errors should arise
 	}
 
-	public function testLoadFrontendAssets()
+	/** @test */
+	public function loadFrontendAssets()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
 		$assets = new Assets($this->wp, $this->pages, $this->options, $this->styles, $this->scripts);
-		$this->wp->expects($this->once())
-			->method('getStylesheetDirectory')
-			->will($this->returnValue(JIGOSHOP_DIR));
-		$this->options->expects($this->any())
-			->method('get')
-			->with($this->logicalOr($this->equalTo('disable_css'), $this->equalTo('load_frontend_css'), $this->equalTo('disable_prettyphoto')))
-			->will($this->returnCallback(function($option){
-				switch($option){
-					case 'disable_css':
-						return 'no';
-					case 'load_frontend_css':
-						return 'yes';
-					case 'disable_prettyphoto':
-						return 'no';
-					default:
-						return 'no';
-				}
-			}));
+		$this->wp->shouldReceive('getStylesheetDirectory')->once()->andReturn(JIGOSHOP_DIR);
+		$this->options->shouldReceive('get')->withArgs(array('disable_css'))->andReturn('no');
+		$this->options->shouldReceive('get')->withArgs(array('load_frontend_css'))->andReturn('yes');
+		$this->options->shouldReceive('get')->withArgs(array('disable_prettyphoto'))->andReturn('no');
 
-		$this->styles->expects($this->at(0))
-			->method('add')
-			->with($this->equalTo('jigoshop_theme_styles'), $this->anything());
-		$this->styles->expects($this->at(1))
-			->method('add')
-			->with($this->equalTo('jigoshop_styles'), $this->anything());
+		$this->styles->shouldReceive('add')->withArgs(array('jigoshop_theme_styles', m::any()))->once();
+		$this->styles->shouldReceive('add')->withArgs(array('jigoshop_styles', m::any()))->once();
 
-		$this->scripts->expects($this->at(0))
-			->method('add')
-			->with('jigoshop_global', $this->anything());
-		$this->scripts->expects($this->at(1))
-			->method('add')
-			->with('prettyphoto', $this->anything());
-		$this->scripts->expects($this->at(2))
-			->method('add')
-			->with('jigoshop_blockui', $this->anything());
-		$this->scripts->expects($this->at(3))
-			->method('add')
-			->with('jigoshop-cart', $this->anything());
-		$this->scripts->expects($this->at(4))
-			->method('add')
-			->with('jigoshop-checkout', $this->anything());
-		$this->scripts->expects($this->at(5))
-			->method('add')
-			->with('jigoshop-single-product', $this->anything());
-		$this->scripts->expects($this->at(6))
-			->method('add')
-			->with('jigoshop-countries', $this->anything());
+		$this->scripts->shouldReceive('add')->withArgs(array('jigoshop_global', m::any(), m::any(), m::any()))->once();
+		$this->scripts->shouldReceive('add')->withArgs(array('prettyphoto', m::any(), m::any(), m::any()))->once();
+		$this->scripts->shouldReceive('add')->withArgs(array('jigoshop_blockui', m::any(), m::any(), m::any()))->once();
+		$this->scripts->shouldReceive('add')->withArgs(array('jigoshop-cart', m::any(), m::any(), m::any()))->once();
+		$this->scripts->shouldReceive('add')->withArgs(array('jigoshop-checkout', m::any(), m::any(), m::any()))->once();
+		$this->scripts->shouldReceive('add')->withArgs(array('jigoshop-single-product', m::any(), m::any(), m::any()))->once();
+		$this->scripts->shouldReceive('add')->withArgs(array('jigoshop-countries', m::any(), m::any(), m::any()))->once();
 
 		// When
 		$assets->loadFrontendAssets();
@@ -276,55 +177,27 @@ class AssetsTest extends \PHPUnit_Framework_TestCase
 		// Then no errors should arise
 	}
 
-	public function testLoadFrontendAssetsNoFrontend()
+	/** @test */
+	public function loadFrontendAssetsNoFrontend()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
 		$assets = new Assets($this->wp, $this->pages, $this->options, $this->styles, $this->scripts);
-		$this->wp->expects($this->once())
-			->method('getStylesheetDirectory')
-			->will($this->returnValue(JIGOSHOP_DIR));
-		$this->options->expects($this->any())
-			->method('get')
-			->with($this->logicalOr($this->equalTo('disable_css'), $this->equalTo('load_frontend_css'), $this->equalTo('disable_prettyphoto')))
-			->will($this->returnCallback(function($option){
-				switch($option){
-					case 'disable_css':
-						return 'no';
-					case 'load_frontend_css':
-						return 'no';
-					case 'disable_prettyphoto':
-						return 'no';
-					default:
-						return 'no';
-				}
-			}));
+		$this->wp->shouldReceive('getStylesheetDirectory')->once()->andReturn(JIGOSHOP_DIR);
+		$this->options->shouldReceive('get')->withArgs(array('disable_css'))->andReturn('no');
+		$this->options->shouldReceive('get')->withArgs(array('load_frontend_css'))->andReturn('no');
+		$this->options->shouldReceive('get')->withArgs(array('disable_prettyphoto'))->andReturn('no');
 
-		$this->styles->expects($this->at(0))
-			->method('add')
-			->with($this->equalTo('jigoshop_styles'), $this->anything());
+		$this->styles->shouldReceive('add')->withArgs(array('jigoshop_theme_styles', m::any(), m::any(), m::any()))->never();
+		$this->styles->shouldReceive('add')->withArgs(array('jigoshop_styles', m::any()))->once();
 
-		$this->scripts->expects($this->at(0))
-			->method('add')
-			->with('jigoshop_global', $this->anything());
-		$this->scripts->expects($this->at(1))
-			->method('add')
-			->with('prettyphoto', $this->anything());
-		$this->scripts->expects($this->at(2))
-			->method('add')
-			->with('jigoshop_blockui', $this->anything());
-		$this->scripts->expects($this->at(3))
-			->method('add')
-			->with('jigoshop-cart', $this->anything());
-		$this->scripts->expects($this->at(4))
-			->method('add')
-			->with('jigoshop-checkout', $this->anything());
-		$this->scripts->expects($this->at(5))
-			->method('add')
-			->with('jigoshop-single-product', $this->anything());
-		$this->scripts->expects($this->at(6))
-			->method('add')
-			->with('jigoshop-countries', $this->anything());
+		$this->scripts->shouldReceive('add')->withArgs(array('jigoshop_global', m::any(), m::any(), m::any()))->once();
+		$this->scripts->shouldReceive('add')->withArgs(array('prettyphoto', m::any(), m::any(), m::any()))->once();
+		$this->scripts->shouldReceive('add')->withArgs(array('jigoshop_blockui', m::any(), m::any(), m::any()))->once();
+		$this->scripts->shouldReceive('add')->withArgs(array('jigoshop-cart', m::any(), m::any(), m::any()))->once();
+		$this->scripts->shouldReceive('add')->withArgs(array('jigoshop-checkout', m::any(), m::any(), m::any()))->once();
+		$this->scripts->shouldReceive('add')->withArgs(array('jigoshop-single-product', m::any(), m::any(), m::any()))->once();
+		$this->scripts->shouldReceive('add')->withArgs(array('jigoshop-countries', m::any(), m::any(), m::any()))->once();
 
 		// When
 		$assets->loadFrontendAssets();

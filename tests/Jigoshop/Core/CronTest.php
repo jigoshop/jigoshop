@@ -2,54 +2,42 @@
 
 namespace Jigoshop\Core;
 
+use Mockery as m;
+
 /**
  * Cron test.
  *
  * @package Jigoshop\Core
  * @author Amadeusz Starzykiewicz
  */
-class CronTest extends \PHPUnit_Framework_TestCase
+class CronTest extends \TestCase
 {
-	/** @var \PHPUnit_Framework_MockObject_MockObject */
+	/** @var m\MockInterface */
 	private $wp;
-	/** @var \PHPUnit_Framework_MockObject_MockObject */
+	/** @var m\MockInterface */
 	private $options;
-	/** @var \PHPUnit_Framework_MockObject_MockObject */
+	/** @var m\MockInterface */
 	private $orderService;
 
-	public function setUp()
+	/** @before */
+	public function prepare()
 	{
-		$this->wp = $this->getMock('\\WPAL\\Wordpress');
-		$this->options = $this->getMockBuilder('\\Jigoshop\\Core\\Options')->disableOriginalConstructor()->getMock();
-		$this->orderService = $this->getMock('\\Jigoshop\\Service\\OrderServiceInterface');
+		$this->wp = m::mock('WPAL\Wordpress');
+		$this->options = m::mock('Jigoshop\Core\Options');
+		$this->orderService = m::mock('Jigoshop\Service\OrderServiceInterface');
 	}
 
-	public function testConstructing()
+	/** @test */
+	public function constructing()
 	{
 		// Given
 		$time = time();
-		$this->wp->expects($this->at(0))
-			->method('nextScheduled')
-			->with($this->equalTo('jigoshop\\cron\\pending_orders'))
-			->will($this->returnValue(false));
-		$this->wp->expects($this->at(1))
-			->method('scheduleEvent')
-			->with($this->equalTo($time), $this->equalTo('daily'), $this->equalTo('jigoshop\\cron\\pending_orders'));
-		$this->wp->expects($this->at(2))
-			->method('nextScheduled')
-			->with($this->equalTo('jigoshop\\cron\\processing_orders'))
-			->will($this->returnValue(false));
-		$this->wp->expects($this->at(3))
-			->method('scheduleEvent')
-			->with($this->equalTo($time), $this->equalTo('daily'), $this->equalTo('jigoshop\\cron\\processing_orders'));
-
-		$this->wp->expects($this->at(4))
-			->method('addAction')
-			->with($this->equalTo('jigoshop\\cron\\pending_orders'), $this->anything());
-		$this->wp->expects($this->at(5))
-			->method('addAction')
-			->with($this->equalTo('jigoshop\\cron\\processing_orders'), $this->anything());
-
+		$this->wp->shouldReceive('nextScheduled')->withArgs(array('jigoshop\\cron\\pending_orders'))->once()->andReturn(false);
+		$this->wp->shouldReceive('scheduleEvent')->withArgs(array($time, 'daily', 'jigoshop\\cron\\pending_orders'))->once();
+		$this->wp->shouldReceive('nextScheduled')->withArgs(array('jigoshop\\cron\\processing_orders'))->once()->andReturn(false);
+		$this->wp->shouldReceive('scheduleEvent')->withArgs(array($time, 'daily', 'jigoshop\\cron\\processing_orders'))->once();
+		$this->wp->shouldReceive('addAction')->withArgs(array('jigoshop\\cron\\pending_orders', m::any()))->once();
+		$this->wp->shouldReceive('addAction')->withArgs(array('jigoshop\\cron\\processing_orders', m::any()))->once();
 
 		// When
 		/** @noinspection PhpParamsInspection */
@@ -58,23 +46,14 @@ class CronTest extends \PHPUnit_Framework_TestCase
 		// Then no errors should arise
 	}
 
-	public function testConstructingScheduled()
+	/** @test */
+	public function constructingScheduled()
 	{
 		// Given
-		$this->wp->expects($this->any())
-			->method('nextScheduled')
-			->with($this->anything())
-			->will($this->returnValue(true));
-		$this->wp->expects($this->never())
-			->method('scheduleEvent');
-
-		$this->wp->expects($this->at(2))
-			->method('addAction')
-			->with($this->equalTo('jigoshop\\cron\\pending_orders'), $this->anything());
-		$this->wp->expects($this->at(3))
-			->method('addAction')
-			->with($this->equalTo('jigoshop\\cron\\processing_orders'), $this->anything());
-
+		$this->wp->shouldReceive('nextScheduled')->withArgs(array(m::any()))->andReturn(true);
+		$this->wp->shouldReceive('scheduleEvent')->never();
+		$this->wp->shouldReceive('addAction')->withArgs(array('jigoshop\\cron\\pending_orders', m::any()))->once();
+		$this->wp->shouldReceive('addAction')->withArgs(array('jigoshop\\cron\\processing_orders', m::any()))->once();
 
 		// When
 		/** @noinspection PhpParamsInspection */
@@ -83,43 +62,25 @@ class CronTest extends \PHPUnit_Framework_TestCase
 		// Then no errors should arise
 	}
 
-	public function testUpdatePendingOrders()
+	/** @test */
+	public function updatePendingOrders()
 	{
 		// Given
-		$this->wp->expects($this->any())
-			->method('nextScheduled')
-			->with($this->anything())
-			->will($this->returnValue(true));
-		$this->wp->expects($this->never())
-			->method('scheduleEvent');
+		$this->wp->shouldReceive('nextScheduled')->withArgs(array(m::any()))->andReturn(true);
+		$this->wp->shouldReceive('scheduleEvent')->never();
+		$this->wp->shouldReceive('addAction')->withArgs(array('jigoshop\\cron\\pending_orders', m::any()))->once();
+		$this->wp->shouldReceive('addAction')->withArgs(array('jigoshop\\cron\\processing_orders', m::any()))->once();
 
-		$this->wp->expects($this->at(2))
-			->method('addAction')
-			->with($this->equalTo('jigoshop\\cron\\pending_orders'), $this->anything());
-		$this->wp->expects($this->at(3))
-			->method('addAction')
-			->with($this->equalTo('jigoshop\\cron\\processing_orders'), $this->anything());
+		$this->options->shouldReceive('get')->withArgs(array('reset_pending_orders'))->andReturn('yes');
 
-		$this->options->expects($this->once())
-			->method('get')
-			->with($this->equalTo('reset_pending_orders'))
-			->will($this->returnValue('yes'));
-
-		$order1 = $this->getMock('\\Jigoshop\\Entity\\Order');
-		$order2 = $this->getMock('\\Jigoshop\\Entity\\Order');
-		$this->orderService->expects($this->once())
-			->method('findOldPending')
-			->will($this->returnValue(array($order1, $order2)));
-		$order1->expects($this->once())
-			->method('updateStatus')
-			->with($this->equalTo('on-hold'), $this->anything());
-		$order2->expects($this->once())
-			->method('updateStatus')
-			->with($this->equalTo('on-hold'), $this->anything());
+		$order1 = m::mock('Jigoshop\Entity\Order');
+		$order2 = m::mock('Jigoshop\Entity\Order');
+		$this->orderService->shouldReceive('findOldPending')->once()->andReturn(array($order1, $order2));
+		$order1->shouldReceive('updateStatus')->withArgs(array('on-hold', m::any()))->once();
+		$order2->shouldReceive('updateStatus')->withArgs(array('on-hold', m::any()))->once();
 
 		/** @noinspection PhpParamsInspection */
 		$cron = new Cron($this->wp, $this->options, $this->orderService);
-
 
 		// When
 		$cron->updatePendingOrders();
@@ -127,34 +88,21 @@ class CronTest extends \PHPUnit_Framework_TestCase
 		// Then no errors should arise
 	}
 
-	public function testUpdatePendingOrdersWhileDisabled()
+	/** @test */
+	public function updatePendingOrdersWhileDisabled()
 	{
 		// Given
-		$this->wp->expects($this->any())
-			->method('nextScheduled')
-			->with($this->anything())
-			->will($this->returnValue(true));
-		$this->wp->expects($this->never())
-			->method('scheduleEvent');
+		$this->wp->shouldReceive('nextScheduled')->withArgs(array(m::any()))->andReturn(true);
+		$this->wp->shouldReceive('scheduleEvent')->never();
+		$this->wp->shouldReceive('addAction')->withArgs(array('jigoshop\\cron\\pending_orders', m::any()))->once();
+		$this->wp->shouldReceive('addAction')->withArgs(array('jigoshop\\cron\\processing_orders', m::any()))->once();
 
-		$this->wp->expects($this->at(2))
-			->method('addAction')
-			->with($this->equalTo('jigoshop\\cron\\pending_orders'), $this->anything());
-		$this->wp->expects($this->at(3))
-			->method('addAction')
-			->with($this->equalTo('jigoshop\\cron\\processing_orders'), $this->anything());
+		$this->options->shouldReceive('get')->withArgs(array('reset_pending_orders'))->andReturn('no');
 
-		$this->options->expects($this->once())
-			->method('get')
-			->with($this->equalTo('reset_pending_orders'))
-			->will($this->returnValue('no'));
-
-		$this->orderService->expects($this->never())
-			->method('findOldPending');
+		$this->orderService->shouldReceive('findOldPending')->never();
 
 		/** @noinspection PhpParamsInspection */
 		$cron = new Cron($this->wp, $this->options, $this->orderService);
-
 
 		// When
 		$cron->updatePendingOrders();
@@ -162,43 +110,25 @@ class CronTest extends \PHPUnit_Framework_TestCase
 		// Then no errors should arise
 	}
 
-	public function testCompleteProcessingOrders()
+	/** @test */
+	public function completeProcessingOrders()
 	{
 		// Given
-		$this->wp->expects($this->any())
-			->method('nextScheduled')
-			->with($this->anything())
-			->will($this->returnValue(true));
-		$this->wp->expects($this->never())
-			->method('scheduleEvent');
+		$this->wp->shouldReceive('nextScheduled')->withArgs(array(m::any()))->andReturn(true);
+		$this->wp->shouldReceive('scheduleEvent')->never();
+		$this->wp->shouldReceive('addAction')->withArgs(array('jigoshop\\cron\\pending_orders', m::any()))->once();
+		$this->wp->shouldReceive('addAction')->withArgs(array('jigoshop\\cron\\processing_orders', m::any()))->once();
 
-		$this->wp->expects($this->at(2))
-			->method('addAction')
-			->with($this->equalTo('jigoshop\\cron\\pending_orders'), $this->anything());
-		$this->wp->expects($this->at(3))
-			->method('addAction')
-			->with($this->equalTo('jigoshop\\cron\\processing_orders'), $this->anything());
+		$this->options->shouldReceive('get')->withArgs(array('complete_processing_orders'))->andReturn('yes');
 
-		$this->options->expects($this->once())
-			->method('get')
-			->with($this->equalTo('complete_processing_orders'))
-			->will($this->returnValue('yes'));
-
-		$order1 = $this->getMock('\\Jigoshop\\Entity\\Order');
-		$order2 = $this->getMock('\\Jigoshop\\Entity\\Order');
-		$this->orderService->expects($this->once())
-			->method('findOldProcessing')
-			->will($this->returnValue(array($order1, $order2)));
-		$order1->expects($this->once())
-			->method('updateStatus')
-			->with($this->equalTo('completed'), $this->anything());
-		$order2->expects($this->once())
-			->method('updateStatus')
-			->with($this->equalTo('completed'), $this->anything());
+		$order1 = m::mock('Jigoshop\Entity\Order');
+		$order2 = m::mock('Jigoshop\Entity\Order');
+		$this->orderService->shouldReceive('findOldProcessing')->once()->andReturn(array($order1, $order2));
+		$order1->shouldReceive('updateStatus')->withArgs(array('completed', m::any()))->once();
+		$order2->shouldReceive('updateStatus')->withArgs(array('completed', m::any()))->once();
 
 		/** @noinspection PhpParamsInspection */
 		$cron = new Cron($this->wp, $this->options, $this->orderService);
-
 
 		// When
 		$cron->completeProcessingOrders();
@@ -206,34 +136,21 @@ class CronTest extends \PHPUnit_Framework_TestCase
 		// Then no errors should arise
 	}
 
-	public function testCompleteProcessingOrdersWhileDisabled()
+	/** @test */
+	public function completeProcessingOrdersWhileDisabled()
 	{
 		// Given
-		$this->wp->expects($this->any())
-			->method('nextScheduled')
-			->with($this->anything())
-			->will($this->returnValue(true));
-		$this->wp->expects($this->never())
-			->method('scheduleEvent');
+		$this->wp->shouldReceive('nextScheduled')->withArgs(array(m::any()))->andReturn(true);
+		$this->wp->shouldReceive('scheduleEvent')->never();
+		$this->wp->shouldReceive('addAction')->withArgs(array('jigoshop\\cron\\pending_orders', m::any()))->once();
+		$this->wp->shouldReceive('addAction')->withArgs(array('jigoshop\\cron\\processing_orders', m::any()))->once();
 
-		$this->wp->expects($this->at(2))
-			->method('addAction')
-			->with($this->equalTo('jigoshop\\cron\\pending_orders'), $this->anything());
-		$this->wp->expects($this->at(3))
-			->method('addAction')
-			->with($this->equalTo('jigoshop\\cron\\processing_orders'), $this->anything());
+		$this->options->shouldReceive('get')->withArgs(array('complete_processing_orders'))->andReturn('no');
 
-		$this->options->expects($this->once())
-			->method('get')
-			->with($this->equalTo('complete_processing_orders'))
-			->will($this->returnValue('no'));
-
-		$this->orderService->expects($this->never())
-			->method('findOldProcessing');
+		$this->orderService->shouldReceive('findOldProcessing')->never();
 
 		/** @noinspection PhpParamsInspection */
 		$cron = new Cron($this->wp, $this->options, $this->orderService);
-
 
 		// When
 		$cron->completeProcessingOrders();

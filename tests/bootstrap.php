@@ -11,3 +11,4 @@ $loader = new \Symfony\Component\ClassLoader\ClassLoader();
 $loader->addPrefix('WPAL', JIGOSHOP_DIR.'/vendor/megawebmaster/wpal');
 $loader->addPrefix('Jigoshop', JIGOSHOP_DIR.'/src');
 $loader->register();
+require_once('TestCase.php');

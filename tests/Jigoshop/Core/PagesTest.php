@@ -2,6 +2,8 @@
 
 namespace Jigoshop\Core;
 
+use Mockery as m;
+
 /**
  * Pages test.
  *
@@ -10,18 +12,20 @@ namespace Jigoshop\Core;
  */
 class PagesTest extends \PHPUnit_Framework_TestCase
 {
-	/** @var \PHPUnit_Framework_MockObject_MockObject */
+	/** @var m\MockInterface */
 	private $wp;
-	/** @var \PHPUnit_Framework_MockObject_MockObject */
+	/** @var m\MockInterface */
 	private $options;
 
-	public function setUp()
+	/** @before */
+	public function prepare()
 	{
-		$this->wp = $this->getMock('\\WPAL\\Wordpress');
-		$this->options = $this->getMockBuilder('\\Jigoshop\\Core\\Options')->disableOriginalConstructor()->getMock();
+		$this->wp = m::mock('WPAL\Wordpress');
+		$this->options = m::mock('Jigoshop\Core\Options');
 	}
 
-	public function testGetAvailable()
+	/** @test */
+	public function getAvailable()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
@@ -43,43 +47,47 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals($expected, $available);
 	}
 
-	public function testIsAccount()
+	/** @test */
+	public function isAccount()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
 		$pages = new Pages($this->wp, $this->options);
-		$this->options->expects($this->any())
-			->method('getPageId')
-			->with($this->equalTo(Pages::ACCOUNT))
-			->will($this->returnValue('1'));
-		$this->wp->expects($this->at(0))
-			->method('isPage')
-			->with($this->equalTo('1'))
-			->will($this->returnValue(true));
-		$this->wp->expects($this->at(1))
-			->method('isPage')
-			->with($this->equalTo('1'))
-			->will($this->returnValue(false));
+		$this->options->shouldReceive('getPageId')->withArgs(array(Pages::ACCOUNT))->andReturn('1');
+		$this->wp->shouldReceive('isPage')->withArgs(array('1'))->andReturn(true);
 
 		// When
 		$positive = $pages->isAccount();
-		$negative = $pages->isAccount();
 
 		// Then
 		$this->assertEquals(true, $positive);
+	}
+
+	/** @test */
+	public function isAccountNegative()
+	{
+		// Given
+		/** @noinspection PhpParamsInspection */
+		$pages = new Pages($this->wp, $this->options);
+		$this->options->shouldReceive('getPageId')->withArgs(array(Pages::ACCOUNT))->andReturn('1');
+		$this->wp->shouldReceive('isPage')->withArgs(array('1'))->andReturn(false);
+
+		// When
+		$negative = $pages->isAccount();
+
+		// Then
 		$this->assertEquals(false, $negative);
 	}
 
-	public function testIsAdminPageProduct()
+	/** @test */
+	public function isAdminPageProduct()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
 		$pages = new Pages($this->wp, $this->options);
 		$currentScreen = new \stdClass();
 		$currentScreen->post_type = Types::PRODUCT;
-		$this->wp->expects($this->once())
-			->method('getCurrentScreen')
-			->will($this->returnValue($currentScreen));
+		$this->wp->shouldReceive('getCurrentScreen')->andReturn($currentScreen);
 
 		// When
 		$result = $pages->isAdminPage();
@@ -88,7 +96,8 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(Types::PRODUCT, $result);
 	}
 
-	public function testIsAdminPageJigoshop()
+	/** @test */
+	public function isAdminPageJigoshop()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
@@ -96,9 +105,7 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$currentScreen = new \stdClass();
 		$currentScreen->post_type = 'test';
 		$currentScreen->id = 'jigoshop';
-		$this->wp->expects($this->once())
-			->method('getCurrentScreen')
-			->will($this->returnValue($currentScreen));
+		$this->wp->shouldReceive('getCurrentScreen')->andReturn($currentScreen);
 
 		// When
 		$result = $pages->isAdminPage();
@@ -107,14 +114,13 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals('jigoshop', $result);
 	}
 
-	public function testIsNotAdminPage()
+	/** @test */
+	public function isNotAdminPage()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
 		$pages = new Pages($this->wp, $this->options);
-		$this->wp->expects($this->once())
-			->method('getCurrentScreen')
-			->will($this->returnValue(null));
+		$this->wp->shouldReceive('getCurrentScreen')->andReturn(null);
 
 		// When
 		$result = $pages->isAdminPage();
@@ -123,7 +129,8 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(false, $result);
 	}
 
-	public function testIsAdminPageNotJigoshop()
+	/** @test */
+	public function isAdminPageNotJigoshop()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
@@ -131,12 +138,7 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$currentScreen = new \stdClass();
 		$currentScreen->post_type = 'test';
 		$currentScreen->id = 'test';
-		$this->wp->expects($this->once())
-			->method('getCurrentScreen')
-			->will($this->returnValue($currentScreen));
-		$this->wp->expects($this->once())
-			->method('getCurrentScreen')
-			->will($this->returnValue($currentScreen));
+		$this->wp->shouldReceive('getCurrentScreen')->once()->andReturn($currentScreen);
 
 		// When
 		$result = $pages->isAdminPage();
@@ -146,7 +148,8 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 	}
 
 	// This is important to have IsNotAjax test BEFORE IsAjax as latter one defines constants
-	public function testIsNotAjax()
+	/** @test */
+	public function isNotAjax()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
@@ -159,7 +162,8 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(false, $result);
 	}
 
-	public function testIsAjaxXmlHttpRequest()
+	/** @test */
+	public function isAjaxXmlHttpRequest()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
@@ -174,7 +178,8 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		unset($_SERVER['HTTP_X_REQUESTED_WITH']);
 	}
 
-	public function testIsAjax()
+	/** @test */
+	public function isAjax()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
@@ -188,69 +193,77 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(true, $result);
 	}
 
-	public function testIsCart()
+	/** @test */
+	public function isCart()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
 		$pages = new Pages($this->wp, $this->options);
-		$this->options->expects($this->any())
-			->method('getPageId')
-			->with($this->equalTo(Pages::CART))
-			->will($this->returnValue('1'));
-		$this->wp->expects($this->at(0))
-			->method('isPage')
-			->with($this->equalTo('1'))
-			->will($this->returnValue(true));
-		$this->wp->expects($this->at(1))
-			->method('isPage')
-			->with($this->equalTo('1'))
-			->will($this->returnValue(false));
+		$this->options->shouldReceive('getPageId')->withArgs(array(Pages::CART))->andReturn('1');
+		$this->wp->shouldReceive('isPage')->withArgs(array('1'))->andReturn(true);
 
 		// When
 		$positive = $pages->isCart();
+
+		// Then
+		$this->assertEquals(true, $positive);
+	}
+
+	/** @test */
+	public function isCartNegative()
+	{
+		// Given
+		/** @noinspection PhpParamsInspection */
+		$pages = new Pages($this->wp, $this->options);
+		$this->options->shouldReceive('getPageId')->withArgs(array(Pages::CART))->andReturn('1');
+		$this->wp->shouldReceive('isPage')->withArgs(array('1'))->andReturn(false);
+
+		// When
 		$negative = $pages->isCart();
 
 		// Then
-		$this->assertEquals(true, $positive);
 		$this->assertEquals(false, $negative);
 	}
 
-	public function testIsCheckout()
+	/** @test */
+	public function isCheckout()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
 		$pages = new Pages($this->wp, $this->options);
-		$this->options->expects($this->any())
-			->method('getPageId')
-			->with($this->equalTo(Pages::CHECKOUT))
-			->will($this->returnValue('1'));
-		$this->wp->expects($this->at(0))
-			->method('isPage')
-			->with($this->equalTo('1'))
-			->will($this->returnValue(true));
-		$this->wp->expects($this->at(1))
-			->method('isPage')
-			->with($this->equalTo('1'))
-			->will($this->returnValue(false));
+		$this->options->shouldReceive('getPageId')->withArgs(array(Pages::CHECKOUT))->andReturn('1');
+		$this->wp->shouldReceive('isPage')->withArgs(array('1'))->andReturn(true);
 
 		// When
 		$positive = $pages->isCheckout();
+
+		// Then
+		$this->assertEquals(true, $positive);
+	}
+
+	/** @test */
+	public function isCheckoutNegative()
+	{
+		// Given
+		/** @noinspection PhpParamsInspection */
+		$pages = new Pages($this->wp, $this->options);
+		$this->options->shouldReceive('getPageId')->withArgs(array(Pages::CHECKOUT))->andReturn('1');
+		$this->wp->shouldReceive('isPage')->withArgs(array('1'))->andReturn(false);
+
+		// When
 		$negative = $pages->isCheckout();
 
 		// Then
-		$this->assertEquals(true, $positive);
 		$this->assertEquals(false, $negative);
 	}
 
-	public function testIsJigoshopShop()
+	/** @test */
+	public function isJigoshopShop()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
 		$pages = new Pages($this->wp, $this->options);
-		$this->wp->expects($this->once())
-			->method('isPostTypeArchive')
-			->with($this->equalTo(Types::PRODUCT))
-			->will($this->returnValue(true));
+		$this->wp->shouldReceive('isPostTypeArchive')->withArgs(array(Types::PRODUCT))->andReturn(true);
 
 		// When
 		$positive = $pages->isJigoshop();
@@ -259,30 +272,19 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(true, $positive);
 	}
 
-	public function testIsJigoshopAccount()
+	/** @test */
+	public function isJigoshopAccount()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
 		$pages = new Pages($this->wp, $this->options);
-		$this->options->expects($this->any())
-			->method('getPageId')
-			->with($this->anything())
-			->will($this->returnCallback(function($page){
-				if($page === Pages::ACCOUNT){
-					return '1';
-				}
-				return '2';
-			}));
-
-		$this->wp->expects($this->any())
-			->method('isPage')
-			->with($this->anything())
-			->will($this->returnCallback(function($page){
-				if($page == '1'){
-					return true;
-				}
-				return false;
-			}));
+		$this->wp->shouldReceive('isPostTypeArchive')->withArgs(array(Types::PRODUCT))->andReturn(false);
+		$this->wp->shouldReceive('isTax')->andReturn(false);
+		$this->wp->shouldReceive('isSingular')->andReturn(false);
+		$this->options->shouldReceive('getPageId')->withArgs(array(Pages::ACCOUNT))->once()->andReturn('1');
+		$this->options->shouldReceive('getPageId')->withArgs(array(m::any()))->andReturn('2');
+		$this->wp->shouldReceive('isPage')->withArgs(array('1'))->once()->andReturn(true);
+		$this->wp->shouldReceive('isPage')->withArgs(array(m::any()))->andReturn(false);
 
 		// When
 		$positive = $pages->isJigoshop();
@@ -291,30 +293,19 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(true, $positive);
 	}
 
-	public function testIsJigoshopCart()
+	/** @test */
+	public function isJigoshopCart()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
 		$pages = new Pages($this->wp, $this->options);
-		$this->options->expects($this->any())
-			->method('getPageId')
-			->with($this->anything())
-			->will($this->returnCallback(function($page){
-				if($page === Pages::CART){
-					return '1';
-				}
-				return '2';
-			}));
-
-		$this->wp->expects($this->any())
-			->method('isPage')
-			->with($this->anything())
-			->will($this->returnCallback(function($page){
-				if($page == '1'){
-					return true;
-				}
-				return false;
-			}));
+		$this->wp->shouldReceive('isPostTypeArchive')->withArgs(array(Types::PRODUCT))->andReturn(false);
+		$this->wp->shouldReceive('isTax')->andReturn(false);
+		$this->wp->shouldReceive('isSingular')->andReturn(false);
+		$this->options->shouldReceive('getPageId')->withArgs(array(Pages::CART))->once()->andReturn('1');
+		$this->options->shouldReceive('getPageId')->withArgs(array(m::any()))->andReturn('2');
+		$this->wp->shouldReceive('isPage')->withArgs(array('1'))->once()->andReturn(true);
+		$this->wp->shouldReceive('isPage')->withArgs(array(m::any()))->andReturn(false);
 
 		// When
 		$positive = $pages->isJigoshop();
@@ -323,30 +314,19 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(true, $positive);
 	}
 
-	public function testIsJigoshopCheckout()
+	/** @test */
+	public function isJigoshopCheckout()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
 		$pages = new Pages($this->wp, $this->options);
-		$this->options->expects($this->any())
-			->method('getPageId')
-			->with($this->anything())
-			->will($this->returnCallback(function($page){
-				if($page === Pages::CHECKOUT){
-					return '1';
-				}
-				return '2';
-			}));
-
-		$this->wp->expects($this->any())
-			->method('isPage')
-			->with($this->anything())
-			->will($this->returnCallback(function($page){
-				if($page == '1'){
-					return true;
-				}
-				return false;
-			}));
+		$this->wp->shouldReceive('isPostTypeArchive')->withArgs(array(Types::PRODUCT))->andReturn(false);
+		$this->wp->shouldReceive('isTax')->andReturn(false);
+		$this->wp->shouldReceive('isSingular')->andReturn(false);
+		$this->options->shouldReceive('getPageId')->withArgs(array(Pages::CHECKOUT))->once()->andReturn('1');
+		$this->options->shouldReceive('getPageId')->withArgs(array(m::any()))->andReturn('2');
+		$this->wp->shouldReceive('isPage')->withArgs(array('1'))->once()->andReturn(true);
+		$this->wp->shouldReceive('isPage')->withArgs(array(m::any()))->andReturn(false);
 
 		// When
 		$positive = $pages->isJigoshop();
@@ -355,30 +335,19 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(true, $positive);
 	}
 
-	public function testIsJigoshopOrderTracking()
+	/** @test */
+	public function isJigoshopOrderTracking()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
 		$pages = new Pages($this->wp, $this->options);
-		$this->options->expects($this->any())
-			->method('getPageId')
-			->with($this->anything())
-			->will($this->returnCallback(function($page){
-				if($page === Pages::ORDER_TRACKING){
-					return '1';
-				}
-				return '2';
-			}));
-
-		$this->wp->expects($this->any())
-			->method('isPage')
-			->with($this->anything())
-			->will($this->returnCallback(function($page){
-				if($page == '1'){
-					return true;
-				}
-				return false;
-			}));
+		$this->wp->shouldReceive('isPostTypeArchive')->withArgs(array(Types::PRODUCT))->andReturn(false);
+		$this->wp->shouldReceive('isTax')->andReturn(false);
+		$this->wp->shouldReceive('isSingular')->andReturn(false);
+		$this->options->shouldReceive('getPageId')->withArgs(array(Pages::ORDER_TRACKING))->once()->andReturn('1');
+		$this->options->shouldReceive('getPageId')->withArgs(array(m::any()))->andReturn('2');
+		$this->wp->shouldReceive('isPage')->withArgs(array('1'))->once()->andReturn(true);
+		$this->wp->shouldReceive('isPage')->withArgs(array(m::any()))->andReturn(false);
 
 		// When
 		$positive = $pages->isJigoshop();
@@ -387,31 +356,17 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(true, $positive);
 	}
 
-	public function testIsNotJigoshop()
+	/** @test */
+	public function isNotJigoshop()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
 		$pages = new Pages($this->wp, $this->options);
-		$this->wp->expects($this->once())
-			->method('isPostTypeArchive')
-			->with($this->equalTo(Types::PRODUCT))
-			->will($this->returnValue(false));
-		$this->wp->expects($this->once())
-			->method('isSingular')
-			->with($this->anything())
-			->will($this->returnValue(false));
-		$this->wp->expects($this->any())
-			->method('isTax')
-			->with($this->anything())
-			->will($this->returnValue(false));
-		$this->options->expects($this->any())
-			->method('getPageId')
-			->with($this->anything())
-			->will($this->returnValue('1'));
-		$this->wp->expects($this->any())
-			->method('isPage')
-			->with($this->anything())
-			->will($this->returnValue(false));
+		$this->wp->shouldReceive('isPostTypeArchive')->withArgs(array(Types::PRODUCT))->andReturn(false);
+		$this->wp->shouldReceive('isTax')->andReturn(false);
+		$this->wp->shouldReceive('isSingular')->andReturn(false);
+		$this->options->shouldReceive('getPageId')->withArgs(array(m::any()))->andReturn('1');
+		$this->wp->shouldReceive('isPage')->withArgs(array(m::any()))->andReturn(false);
 
 		// When
 		$result = $pages->isJigoshop();
@@ -420,61 +375,75 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(false, $result);
 	}
 
-	public function testIsProduct()
+	/** @test */
+	public function isProduct()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
 		$pages = new Pages($this->wp, $this->options);
-		$this->wp->expects($this->at(0))
-			->method('isSingular')
-			->with($this->equalTo(array(Types::PRODUCT)))
-			->will($this->returnValue(true));
-		$this->wp->expects($this->at(1))
-			->method('isSingular')
-			->with($this->equalTo(array(Types::PRODUCT)))
-			->will($this->returnValue(false));
+		$this->wp->shouldReceive('isPostTypeArchive')->withArgs(array(Types::PRODUCT))->andReturn(false);
+		$this->wp->shouldReceive('isSingular')->withArgs(array(array(Types::PRODUCT)))->andReturn(true);
 
 		// When
 		$positive = $pages->isProduct();
+
+		// Then
+		$this->assertEquals(true, $positive);
+	}
+
+	/** @test */
+	public function isProductNegative()
+	{
+		// Given
+		/** @noinspection PhpParamsInspection */
+		$pages = new Pages($this->wp, $this->options);
+		$this->wp->shouldReceive('isPostTypeArchive')->withArgs(array(Types::PRODUCT))->andReturn(false);
+		$this->wp->shouldReceive('isSingular')->withArgs(array(array(Types::PRODUCT)))->andReturn(false);
+
+		// When
 		$negative = $pages->isProduct();
 
 		// Then
-		$this->assertEquals(true, $positive);
 		$this->assertEquals(false, $negative);
 	}
 
-	public function testIsProductCategory()
+	/** @test */
+	public function isProductCategory()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
 		$pages = new Pages($this->wp, $this->options);
-		$this->wp->expects($this->at(0))
-			->method('isTax')
-			->with($this->equalTo(Types::PRODUCT_CATEGORY))
-			->will($this->returnValue(true));
-		$this->wp->expects($this->at(1))
-			->method('isTax')
-			->with($this->equalTo(Types::PRODUCT_CATEGORY))
-			->will($this->returnValue(false));
+		$this->wp->shouldReceive('isTax')->withArgs(array(Types::PRODUCT_CATEGORY))->andReturn(true);
 
 		// When
 		$positive = $pages->isProductCategory();
+
+		// Then
+		$this->assertEquals(true, $positive);
+	}
+
+	/** @test */
+	public function isProductCategoryNegative()
+	{
+		// Given
+		/** @noinspection PhpParamsInspection */
+		$pages = new Pages($this->wp, $this->options);
+		$this->wp->shouldReceive('isTax')->withArgs(array(Types::PRODUCT_CATEGORY))->andReturn(false);
+
+		// When
 		$negative = $pages->isProductCategory();
 
 		// Then
-		$this->assertEquals(true, $positive);
 		$this->assertEquals(false, $negative);
 	}
 
-	public function testIsProductListPostType()
+	/** @test */
+	public function isProductListPostType()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
 		$pages = new Pages($this->wp, $this->options);
-		$this->wp->expects($this->once())
-			->method('isPostTypeArchive')
-			->with($this->equalTo(Types::PRODUCT))
-			->will($this->returnValue(true));
+		$this->wp->shouldReceive('isPostTypeArchive')->withArgs(array(Types::PRODUCT))->andReturn(true);
 
 		// When
 		$positive = $pages->isProductList();
@@ -483,23 +452,15 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(true, $positive);
 	}
 
-	public function testIsProductListShopPage()
+	/** @test */
+	public function isProductListShopPage()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
 		$pages = new Pages($this->wp, $this->options);
-		$this->wp->expects($this->once())
-			->method('isPostTypeArchive')
-			->with($this->equalTo(Types::PRODUCT))
-			->will($this->returnValue(false));
-		$this->options->expects($this->any())
-			->method('getPageId')
-			->with($this->equalTo(Pages::SHOP))
-			->will($this->returnValue('1'));
-		$this->wp->expects($this->once())
-			->method('isPage')
-			->with($this->equalTo('1'))
-			->will($this->returnValue(true));
+		$this->wp->shouldReceive('isPostTypeArchive')->withArgs(array(Types::PRODUCT))->andReturn(false);
+		$this->options->shouldReceive('getPageId')->withArgs(array(Pages::SHOP))->once()->andReturn('1');
+		$this->wp->shouldReceive('isPage')->withArgs(array('1'))->once()->andReturn(true);
 
 		// When
 		$positive = $pages->isProductList();
@@ -508,27 +469,16 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(true, $positive);
 	}
 
-	public function testIsProductListProductCategory()
+	/** @test */
+	public function isProductListProductCategory()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
 		$pages = new Pages($this->wp, $this->options);
-		$this->wp->expects($this->once())
-			->method('isPostTypeArchive')
-			->with($this->equalTo(Types::PRODUCT))
-			->will($this->returnValue(false));
-		$this->options->expects($this->any())
-			->method('getPageId')
-			->with($this->equalTo(Pages::SHOP))
-			->will($this->returnValue('1'));
-		$this->wp->expects($this->once())
-			->method('isPage')
-			->with($this->equalTo('1'))
-			->will($this->returnValue(false));
-		$this->wp->expects($this->once())
-			->method('isTax')
-			->with($this->equalTo(Types::PRODUCT_CATEGORY), $this->anything())
-			->will($this->returnValue(true));
+		$this->wp->shouldReceive('isPostTypeArchive')->withArgs(array(Types::PRODUCT))->andReturn(false);
+		$this->options->shouldReceive('getPageId')->withArgs(array(Pages::SHOP))->once()->andReturn('1');
+		$this->wp->shouldReceive('isPage')->withArgs(array('1'))->once()->andReturn(false);
+		$this->wp->shouldReceive('isTax')->withArgs(array(Types::PRODUCT_CATEGORY))->andReturn(true);
 
 		// When
 		$positive = $pages->isProductList();
@@ -537,32 +487,17 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(true, $positive);
 	}
 
-	public function testIsProductListProductTag()
+	/** @test */
+	public function isProductListProductTag()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
 		$pages = new Pages($this->wp, $this->options);
-		$this->wp->expects($this->once())
-			->method('isPostTypeArchive')
-			->with($this->equalTo(Types::PRODUCT))
-			->will($this->returnValue(false));
-		$this->options->expects($this->any())
-			->method('getPageId')
-			->with($this->equalTo(Pages::SHOP))
-			->will($this->returnValue('1'));
-		$this->wp->expects($this->once())
-			->method('isPage')
-			->with($this->equalTo('1'))
-			->will($this->returnValue(false));
-		$this->wp->expects($this->any())
-			->method('isTax')
-			->with($this->anything(), $this->anything())
-			->will($this->returnCallback(function($tax){
-				if($tax == Types::PRODUCT_TAG){
-					return true;
-				}
-				return false;
-			}));
+		$this->wp->shouldReceive('isPostTypeArchive')->withArgs(array(Types::PRODUCT))->andReturn(false);
+		$this->options->shouldReceive('getPageId')->withArgs(array(Pages::SHOP))->once()->andReturn('1');
+		$this->wp->shouldReceive('isPage')->withArgs(array('1'))->once()->andReturn(false);
+		$this->wp->shouldReceive('isTax')->withArgs(array(Types::PRODUCT_TAG))->andReturn(true);
+		$this->wp->shouldReceive('isTax')->withArgs(array(Types::PRODUCT_CATEGORY))->andReturn(false);
 
 		// When
 		$positive = $pages->isProductList();
@@ -571,38 +506,43 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(true, $positive);
 	}
 
-	public function testIsProductTag()
+	/** @test */
+	public function isProductTag()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
 		$pages = new Pages($this->wp, $this->options);
-		$this->wp->expects($this->at(0))
-			->method('isTax')
-			->with($this->equalTo(Types::PRODUCT_TAG))
-			->will($this->returnValue(true));
-		$this->wp->expects($this->at(1))
-			->method('isTax')
-			->with($this->equalTo(Types::PRODUCT_TAG))
-			->will($this->returnValue(false));
+		$this->wp->shouldReceive('isTax')->withArgs(array(Types::PRODUCT_TAG))->andReturn(true);
 
 		// When
 		$positive = $pages->isProductTag();
+
+		// Then
+		$this->assertEquals(true, $positive);
+	}
+
+	/** @test */
+	public function isProductTagNegative()
+	{
+		// Given
+		/** @noinspection PhpParamsInspection */
+		$pages = new Pages($this->wp, $this->options);
+		$this->wp->shouldReceive('isTax')->withArgs(array(Types::PRODUCT_TAG))->andReturn(false);
+
+		// When
 		$negative = $pages->isProductTag();
 
 		// Then
-		$this->assertEquals(true, $positive);
 		$this->assertEquals(false, $negative);
 	}
 
-	public function testIsShopProductList()
+	/** @test */
+	public function isShopProductList()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
 		$pages = new Pages($this->wp, $this->options);
-		$this->wp->expects($this->once())
-			->method('isPostTypeArchive')
-			->with($this->equalTo(Types::PRODUCT))
-			->will($this->returnValue(true));
+		$this->wp->shouldReceive('isPostTypeArchive')->withArgs(array(Types::PRODUCT))->andReturn(true);
 
 		// When
 		$positive = $pages->isShop();
@@ -611,31 +551,17 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(true, $positive);
 	}
 
-	public function testIsShopProduct()
+	/** @test */
+	public function isShopProduct()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
 		$pages = new Pages($this->wp, $this->options);
-		$this->wp->expects($this->once())
-			->method('isPostTypeArchive')
-			->with($this->equalTo(Types::PRODUCT))
-			->will($this->returnValue(false));
-		$this->options->expects($this->any())
-			->method('getPageId')
-			->with($this->equalTo(Pages::SHOP))
-			->will($this->returnValue('1'));
-		$this->wp->expects($this->once())
-			->method('isPage')
-			->with($this->equalTo('1'))
-			->will($this->returnValue(false));
-		$this->wp->expects($this->any())
-			->method('isTax')
-			->with($this->anything(), $this->anything())
-			->will($this->returnValue(false));
-		$this->wp->expects($this->once())
-			->method('isSingular')
-			->with($this->equalTo(array(Types::PRODUCT)))
-			->will($this->returnValue(true));
+		$this->wp->shouldReceive('isPostTypeArchive')->withArgs(array(Types::PRODUCT))->andReturn(false);
+		$this->options->shouldReceive('getPageId')->withArgs(array(Pages::SHOP))->once()->andReturn('1');
+		$this->wp->shouldReceive('isPage')->withArgs(array('1'))->once()->andReturn(false);
+		$this->wp->shouldReceive('isTax')->andReturn(false);
+		$this->wp->shouldReceive('isSingular')->withArgs(array(array(Types::PRODUCT)))->andReturn(true);
 
 		// When
 		$positive = $pages->isShop();
@@ -644,31 +570,17 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(true, $positive);
 	}
 
-	public function testIsNotShop()
+	/** @test */
+	public function isNotShop()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
 		$pages = new Pages($this->wp, $this->options);
-		$this->wp->expects($this->once())
-			->method('isPostTypeArchive')
-			->with($this->equalTo(Types::PRODUCT))
-			->will($this->returnValue(false));
-		$this->options->expects($this->any())
-			->method('getPageId')
-			->with($this->equalTo(Pages::SHOP))
-			->will($this->returnValue('1'));
-		$this->wp->expects($this->once())
-			->method('isPage')
-			->with($this->equalTo('1'))
-			->will($this->returnValue(false));
-		$this->wp->expects($this->any())
-			->method('isTax')
-			->with($this->anything(), $this->anything())
-			->will($this->returnValue(false));
-		$this->wp->expects($this->once())
-			->method('isSingular')
-			->with($this->equalTo(array(Types::PRODUCT)))
-			->will($this->returnValue(false));
+		$this->wp->shouldReceive('isPostTypeArchive')->withArgs(array(Types::PRODUCT))->andReturn(false);
+		$this->options->shouldReceive('getPageId')->withArgs(array(Pages::SHOP))->once()->andReturn('1');
+		$this->wp->shouldReceive('isPage')->withArgs(array('1'))->once()->andReturn(false);
+		$this->wp->shouldReceive('isTax')->andReturn(false);
+		$this->wp->shouldReceive('isSingular')->withArgs(array(array(Types::PRODUCT)))->andReturn(false);
 
 		// When
 		$result = $pages->isShop();
@@ -677,7 +589,8 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(false, $result);
 	}
 
-	public function testIsAll()
+	/** @test */
+	public function isAll()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
@@ -690,7 +603,8 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(true, $result);
 	}
 
-	public function testIsOneOf()
+	/** @test */
+	public function isOneOf()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */

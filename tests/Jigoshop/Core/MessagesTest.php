@@ -2,30 +2,32 @@
 
 namespace Jigoshop\Core;
 
+use Mockery as m;
+
 /**
  * Messages test.
  *
  * @package Jigoshop\Core
  * @author Amadeusz Starzykiewicz
  */
-class MessagesTest extends \PHPUnit_Framework_TestCase
+class MessagesTest extends \TestCase
 {
-	/** @var \PHPUnit_Framework_MockObject_MockObject */
-	private $wordpress;
+	/** @var m\MockInterface */
+	private $wp;
 
-	public function setUp()
+	/** @before */
+	public function prepare()
 	{
-		$this->wordpress = $this->getMock('\\WPAL\\Wordpress');
-		$this->wordpress->expects($this->any())
-			->method('addAction')
-			->with($this->anything());
+		$this->wp = m::mock('WPAL\Wordpress');
+		$this->wp->shouldReceive('addAction');
 	}
 
-	public function testAddNotice()
+	/** @test */
+	public function addNotice()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
-		$messages = new Messages($this->wordpress);
+		$messages = new Messages($this->wp);
 
 		// When
 		$messages->addNotice('test', false);
@@ -36,11 +38,12 @@ class MessagesTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals('test', $notices[0]);
 	}
 
-	public function testAddWarning()
+	/** @test */
+	public function addWarning()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
-		$messages = new Messages($this->wordpress);
+		$messages = new Messages($this->wp);
 
 		// When
 		$messages->addWarning('test', false);
@@ -51,11 +54,12 @@ class MessagesTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals('test', $warnings[0]);
 	}
 
-	public function testAddError()
+	/** @test */
+	public function addError()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
-		$messages = new Messages($this->wordpress);
+		$messages = new Messages($this->wp);
 
 		// When
 		$messages->addError('test', false);
@@ -66,11 +70,12 @@ class MessagesTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals('test', $errors[0]);
 	}
 
-	public function testPreservingMessages()
+	/** @test */
+	public function preservingMessages()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
-		$messages = new Messages($this->wordpress);
+		$messages = new Messages($this->wp);
 		$messages->addError('test', false);
 		$messages->addError('preserved', true);
 
