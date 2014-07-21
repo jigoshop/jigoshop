@@ -1,5 +1,8 @@
 ## Changelog
 
+* 1.10.2 - 2014-07-21:
+    * Fix: Memory check is not a fatal error anymore - plugin will continue to work.
+    * Fix: As memory is not a fatal error - required memory is downgraded to 64 MB. 
 * 1.10.1 - 2014-07-21:
     * Fix: Memory checking for some users. Thanks to freyaluna for finding it.
 * 1.10 - 2014-07-21:

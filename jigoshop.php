@@ -20,7 +20,7 @@
  * Description:         Jigoshop, a WordPress eCommerce plugin that works.
  * Author:              Jigoshop
  * Author URI:          http://www.jigoshop.com
- * Version:             1.10.1
+ * Version:             1.10.2
  * Requires at least:   3.8
  * Tested up to:        3.9.1
  * Text Domain:         jigoshop
@@ -55,7 +55,7 @@ if (!defined('JIGOSHOP_DIR')) {
 if (!defined('JIGOSHOP_URL')) {
 	define('JIGOSHOP_URL', plugins_url('', __FILE__));
 }
-define('JIGOSHOP_REQUIRED_MEMORY', 128);
+define('JIGOSHOP_REQUIRED_MEMORY', 64);
 define('JIGOSHOP_PHP_VERSION', '5.3');
 define('JIGOSHOP_WORDPRESS_VERSION', '3.8');
 
@@ -99,7 +99,6 @@ if($memory_limit < JIGOSHOP_REQUIRED_MEMORY*1024*1024){
 			sprintf(__('<strong>Error!</strong> Jigoshop requires at least %sM of memory! Your system currently has: %s.', 'jigoshop'), JIGOSHOP_REQUIRED_MEMORY, $ini_memory_limit).
 			'</p></div>';
 	});
-	return;
 }
 
 /**
