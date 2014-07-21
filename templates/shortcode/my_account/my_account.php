@@ -1,4 +1,4 @@
-<?php
+p<?php
 /**
  * @var $options Jigoshop_Options Options container.
  * @var $recent_orders int Number of recent orders to show.
@@ -70,8 +70,6 @@
 	endforeach;
 	?></tbody>
 </table>
-
-<?php echo ob_get_clean(); ?>
 
 <h2><?php _e('My Addresses', 'jigoshop'); ?></h2>
 <p><?php _e('The following addresses will be used on the checkout page by default.', 'jigoshop'); ?></p>
