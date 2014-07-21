@@ -445,7 +445,7 @@ class jigoshop_product extends Jigoshop_Base {
 	 * @return  bool
 	 */
 	public function has_enough_stock( $quantity ) {
-		return $this->backorders_allowed() || ($this->managing_stock() && $this->get_stock() >= $quantity) || $this->stock_status == 'instock';
+		return $this->backorders_allowed() || !$this->managing_stock() || $this->stock_status == 'instock' || $this->get_stock() >= $quantity;
 	}
 
 	/**

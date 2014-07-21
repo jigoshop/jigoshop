@@ -55,7 +55,7 @@ if (!defined('JIGOSHOP_DIR')) {
 if (!defined('JIGOSHOP_URL')) {
 	define('JIGOSHOP_URL', plugins_url('', __FILE__));
 }
-define('JIGOSHOP_REQUIRED_MEMORY', 256);
+define('JIGOSHOP_REQUIRED_MEMORY', 64);
 define('JIGOSHOP_PHP_VERSION', '5.3');
 define('JIGOSHOP_WORDPRESS_VERSION', '3.8');
 
