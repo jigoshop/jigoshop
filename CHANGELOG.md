@@ -1,5 +1,7 @@
 ## Changelog
 
+* 1.10.1 - 2014-07-21:
+    * Fix: Memory checking for some users. Thanks to freyaluna for finding it.
 * 1.10 - 2014-07-21:
     * New: `jigoshop_countries::get_countries()` function - returns alphabetically sorted list of translated country names.
     * New: `jigoshop_countries::has_country()` and `jigoshop_countries::has_state()` methods introduced.
