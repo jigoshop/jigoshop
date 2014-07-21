@@ -55,7 +55,7 @@ if (!defined('JIGOSHOP_DIR')) {
 if (!defined('JIGOSHOP_URL')) {
 	define('JIGOSHOP_URL', plugins_url('', __FILE__));
 }
-define('JIGOSHOP_REQUIRED_MEMORY', 64);
+define('JIGOSHOP_REQUIRED_MEMORY', 256);
 define('JIGOSHOP_PHP_VERSION', '5.3');
 define('JIGOSHOP_WORDPRESS_VERSION', '3.8');
 
@@ -83,7 +83,7 @@ if(!version_compare($wp_version, JIGOSHOP_WORDPRESS_VERSION, '>=')){
 }
 
 $ini_memory_limit = ini_get('memory_limit');
-preg_match('/^(\d+)(\s)*?$/', $ini_memory_limit, $memory);
+preg_match('/^(\d+)(\w*)?$/', $ini_memory_limit, $memory);
 $memory_limit = $memory[1];
 if (isset($memory[2])) {
 	switch ($memory[2]) {
@@ -96,7 +96,7 @@ if (isset($memory[2])) {
 if($memory_limit < JIGOSHOP_REQUIRED_MEMORY*1024*1024){
 	add_action('admin_notices', function() use ($ini_memory_limit){
 		echo '<div class="error"><p>'.
-			sprintf(__('<strong>Error!</strong> Jigoshop requires at least %sM of memory! Your system currently has: %s.', 'jigoshop'), JIGOSHOP_REQUIRED_MEMORY, $ini_memory_limit).
+			sprintf(__('<strong>Warning!</strong> Jigoshop requires at least %sM of memory! Your system currently has: %s.', 'jigoshop'), JIGOSHOP_REQUIRED_MEMORY, $ini_memory_limit).
 			'</p></div>';
 	});
 }
