@@ -4,6 +4,7 @@
     * Fix: Memory checking typo.
     * Fix: Stock status checking for products.
     * Fix: PHP pre-5.3 main file compatible (for proper PHP version checking).
+    * Fix: Invalid shortcode attribute managing in add to cart shortcode (thanks to Josh Virkler).
     * Improved: Memory checking error message is just a warning.
 * 1.10.2 - 2014-07-21:
     * Fix: Memory check is not a fatal error anymore - plugin will continue to work.
