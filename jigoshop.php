@@ -20,7 +20,7 @@
  * Description:         Jigoshop, a WordPress eCommerce plugin that works.
  * Author:              Jigoshop
  * Author URI:          http://www.jigoshop.com
- * Version:             1.10
+ * Version:             1.10.3
  * Requires at least:   3.8
  * Tested up to:        3.9.1
  * Text Domain:         jigoshop
@@ -38,7 +38,7 @@
  */
 
 if (!defined('JIGOSHOP_VERSION')) {
-	define('JIGOSHOP_VERSION', '1.10');
+	define('JIGOSHOP_VERSION', '1.10.3');
 }
 if (!defined('JIGOSHOP_DB_VERSION')) {
 	define('JIGOSHOP_DB_VERSION', 1407060);
@@ -55,7 +55,7 @@ if (!defined('JIGOSHOP_DIR')) {
 if (!defined('JIGOSHOP_URL')) {
 	define('JIGOSHOP_URL', plugins_url('', __FILE__));
 }
-define('JIGOSHOP_REQUIRED_MEMORY', 128);
+define('JIGOSHOP_REQUIRED_MEMORY', 64);
 define('JIGOSHOP_PHP_VERSION', '5.3');
 define('JIGOSHOP_WORDPRESS_VERSION', '3.8');
 
@@ -72,32 +72,38 @@ if(!version_compare(PHP_VERSION, JIGOSHOP_PHP_VERSION, '>=')){
 include ABSPATH.WPINC.'/version.php';
 /** @noinspection PhpUndefinedVariableInspection */
 if(!version_compare($wp_version, JIGOSHOP_WORDPRESS_VERSION, '>=')){
-	add_action('admin_notices', function(){
+	function jigoshop_required_wordpress_version()
+	{
 		include ABSPATH.WPINC.'/version.php';
 		/** @noinspection PhpUndefinedVariableInspection */
 		echo '<div class="error"><p>'.
 			sprintf(__('<strong>Error!</strong> Jigoshop requires at least WordPress %s! Your version is: %s. Please upgrade.', 'jigoshop'), JIGOSHOP_WORDPRESS_VERSION, $wp_version).
 			'</p></div>';
-	});
+	}
+	add_action('admin_notices', 'jigoshop_required_wordpress_version');
 	return;
 }
 
 $ini_memory_limit = ini_get('memory_limit');
-preg_match('/^(\d+)(.)$/', $ini_memory_limit, $memory);
+preg_match('/^(\d+)(\w*)?$/', $ini_memory_limit, $memory);
 $memory_limit = $memory[1];
-switch($memory[2]){
-	case 'M':
-		$memory_limit *= 1024;
-	case 'K':
-		$memory_limit *= 1024;
+if (isset($memory[2])) {
+	switch ($memory[2]) {
+		case 'M':
+			$memory_limit *= 1024;
+		case 'K':
+			$memory_limit *= 1024;
+	}
 }
 if($memory_limit < JIGOSHOP_REQUIRED_MEMORY*1024*1024){
-	add_action('admin_notices', function() use ($ini_memory_limit){
+	function jigoshop_required_memory_warning()
+	{
+		$ini_memory_limit = ini_get('memory_limit');
 		echo '<div class="error"><p>'.
-			sprintf(__('<strong>Error!</strong> Jigoshop requires at least %sM of memory! Your system currently has: %s.', 'jigoshop'), JIGOSHOP_REQUIRED_MEMORY, $ini_memory_limit).
+			sprintf(__('<strong>Warning!</strong> Jigoshop requires at least %sM of memory! Your system currently has: %s.', 'jigoshop'), JIGOSHOP_REQUIRED_MEMORY, $ini_memory_limit).
 			'</p></div>';
-	});
-	return;
+	}
+	add_action('admin_notices', 'jigoshop_required_memory_warning');
 }
 
 /**
@@ -223,6 +229,16 @@ function jigoshop_admin_toolbar() {
 
 add_action('admin_bar_menu', 'jigoshop_admin_toolbar', 35);
 
+function jigoshop_admin_bar_links($links)
+{
+	unset($links[0]);
+	return array_merge(array(
+		'<a href="'.admin_url('admin.php?page=jigoshop_settings').'">'.__('Settings', 'jigoshop').'</a>',
+		'<a href="https://www.jigoshop.com/documentation/">'.__('Docs', 'jigoshop').'</a>',
+		'<a href="https://www.jigoshop.com/support/">'.__('Support', 'jigoshop').'</a>',
+	), $links);
+}
+
 /**
  * Jigoshop Init
  */
@@ -238,14 +254,7 @@ function jigoshop_init()
 	// Override default translations with custom .mo's found in wp-content/languages/jigoshop first.
 	load_textdomain('jigoshop', WP_LANG_DIR.'/jigoshop/jigoshop-'.get_locale().'.mo');
 	load_plugin_textdomain('jigoshop', false, dirname(plugin_basename(__FILE__)).'/languages/');
-	add_filter('plugin_action_links_'.plugin_basename(__FILE__), function($links){
-		unset($links[0]);
-		return array_merge(array(
-			'<a href="'.admin_url('admin.php?page=jigoshop_settings').'">'.__('Settings', 'jigoshop').'</a>',
-			'<a href="https://www.jigoshop.com/documentation/">'.__('Docs', 'jigoshop').'</a>',
-			'<a href="https://www.jigoshop.com/support/">'.__('Support', 'jigoshop').'</a>',
-		), $links);
-	});
+	add_filter('plugin_action_links_'.plugin_basename(__FILE__), 'jigoshop_admin_bar_links');
 
 	// instantiate options -after- loading text domains
 	$options = Jigoshop_Base::get_options();

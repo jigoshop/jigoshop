@@ -71,8 +71,6 @@
 	?></tbody>
 </table>
 
-<?php echo ob_get_clean(); ?>
-
 <h2><?php _e('My Addresses', 'jigoshop'); ?></h2>
 <p><?php _e('The following addresses will be used on the checkout page by default.', 'jigoshop'); ?></p>
 <div class="col2-set addresses">

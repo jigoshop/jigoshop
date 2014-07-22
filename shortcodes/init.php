@@ -306,9 +306,14 @@ function jigoshop_product_add_to_cart( $atts ) {
 
 	if (empty($atts)) return;
 
-	global $wpdb;
+	$atts = shortcode_atts(array(
+		'class' => 'product',
+		'id' => false,
+		'sku' => false,
+		'price' => 'yes',
+	), $atts);
 
-	if (!$atts['class']) $atts['class'] = 'product';
+	global $wpdb;
 
 	if ($atts['id']) :
 		$product_meta = get_post( $atts['id'] );

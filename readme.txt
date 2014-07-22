@@ -3,7 +3,7 @@ Contributors: Jigoshop
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal, jigoshop, shipping, inventory, stock, online, sell, sales, weights, dimensions, configurable, variable, downloadable, external, affiliate, download, virtual, physical
 Requires at least: 3.8
 Tested up to: 3.9.1
-Stable tag: 1.10
+Stable tag: 1.10.3
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -112,6 +112,20 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 4. Standard customer checkout screen
 
 == Changelog ==
+
+= 1.10.3 - 2014-07-21 =
+* Fix: Memory checking typo.
+* Fix: Stock status checking for products.
+* Fix: PHP pre-5.3 main file compatible (for proper PHP version checking).
+* Fix: Invalid shortcode attribute managing in add to cart shortcode (thanks to Josh Virkler).
+* Improved: Memory checking error message is just a warning.
+
+= 1.10.2 - 2014-07-21 =
+* Fix: Memory check is not a fatal error anymore - plugin will continue to work.
+* Fix: As memory is not a fatal error - required memory is downgraded to 64 MB.
+
+= 1.10.1 - 2014-07-21 =
+* Fix: Memory checking for some users. Thanks to freyaluna for finding it.
 
 = 1.10 - 2014-07-21 =
 * New: `jigoshop_countries::get_countries()` function - returns alphabetically sorted list of translated country names.

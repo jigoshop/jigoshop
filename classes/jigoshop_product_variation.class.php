@@ -147,17 +147,6 @@ class jigoshop_product_variation extends jigoshop_product {
 		return (int)$stock;
 	}
 
-
-	/**
-	 * Check the stock levels to unsure we have enough to match request
-	 *
-	 * @param   int $quantity   Amount to verify that we have
-	 * @return  bool
-	 */
-	public function has_enough_stock( $quantity ) {
-		return parent::has_enough_stock($quantity) || $this->get_stock() >= $quantity;
-	}
-
 	/**
 	 * Reduce stock level of the product
 	 * Acts as an alias for modify_stock()
