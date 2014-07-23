@@ -1039,19 +1039,24 @@ add_action( 'wp_ajax_jigoshop_json_search_products', 'jigoshop_json_search_produ
 /**
  * AJAX validate postcode
  */
-function jigoshop_validate_postcode() {
+function jigoshop_validate_postcode()
+{
+	check_ajax_referer('update-order-review', 'security');
 
-	check_ajax_referer( 'update-order-review', 'security' );
+	$postcode = (string)urldecode(stripslashes(strip_tags($_GET['postcode'])));
+	if (empty($postcode)) {
+		echo '0';
+		exit;
+	}
 
-	$postcode = (string) urldecode( stripslashes( strip_tags( $_GET['postcode'] )));
-	if ( empty( $postcode )) die();
+	$country = (string)urldecode(stripslashes(strip_tags($_GET['country'])));
+	if (empty($country)) {
+		echo '0';
+		exit;
+	}
 
-	$country = (string) urldecode( stripslashes( strip_tags( $_GET['country'] )));
-	if ( empty( $country )) die();
-
-	echo jigoshop_validation::is_postcode( $postcode, $country );
-
-	die();
+	echo jigoshop_validation::is_postcode($postcode, $country) ? '1' : '0';
+	exit;
 }
 add_action( 'wp_ajax_jigoshop_validate_postcode', 'jigoshop_validate_postcode' );
 add_action( 'wp_ajax_nopriv_jigoshop_validate_postcode', 'jigoshop_validate_postcode');

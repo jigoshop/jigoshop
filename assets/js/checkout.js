@@ -70,56 +70,57 @@
 			$('body').trigger('jigoshop.update_checkout');
 		}
 
+		function validate_postcode($field){
+			var country = $('#'+$field.attr('rel')).val();
+			var pattern = jigoshop_validation.postcodes[country];
+			if(pattern === undefined){
+				return true;
+			}
+			return pattern.test($field.val());
+		}
+
+		function validate_email($field){
+			var pattern = jigoshop_validation.email;
+			return pattern.test($field.val());
+		}
+
 		function validate_field($field){
 			// ensure fields aren't empty
 			if($field.val() == '' || $field.val() == 'undefined'){
 				return false;
 			}
 
-			// check postcodes and zips for valid format for country (uses jigoshop_validation class)
 			if($field.attr('id').indexOf('postcode') !== -1){
-				$.ajax({
-					type: 'GET',
-					url: jigoshop_params.ajax_url,
-					data: {
-						action: 'jigoshop_validate_postcode',
-						security: jigoshop_params.update_order_review_nonce,
-						postcode: $field.val(),
-						country: $('#'+$field.attr('rel')).val()
-					},
-					async: false,
-					success: function(result){
-						return result;
-					},
-					error: function(){
-						return false;
-					}
-				});
+				return validate_postcode($field);
+			}
 
-				// ensure valid email addresses
-				if($field.attr('id').indexOf('email') > -1 && $field.val()){
-					/* http://stackoverflow.com/questions/2855865/jquery-validate-e-mail-address-regex */
-					var pattern = new RegExp(/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i);
-					if(!pattern.test($field.val())){
-						$parent.removeClass('jigoshop-validated').addClass('jigoshop-invalid');
-						return false;
-					}
-				}
+			if($field.attr('id').indexOf('email') !== -1){
+				return validate_email($field);
 			}
 
 			return true;
 		}
 
+		function set_field_validity(is_valid, $parent){
+			if(!is_valid){
+				$parent.removeClass('jigoshop-validated').addClass('jigoshop-invalid');
+			} else {
+				$parent.removeClass('jigoshop-invalid').addClass('jigoshop-validated');
+			}
+		}
+
+		// handle inline validation of all required checkout fields
+		$('form.checkout').on('blur change', '.input-required', function(){
+			var $this = $(this);
+			var $parent = $this.closest('.form-row');
+			set_field_validity(validate_field($this), $parent);
+		});
+
 		function validate_required(){
 			$('.input-required', $('#customer_details div:not(.hidden)')).each(function(){
 				var $this = $(this);
 				var $parent = $this.closest('.form-row');
-
-				if(validate_field($this)){
-					$parent.removeClass('jigoshop-invalid').addClass('jigoshop-validated');
-				} else {
-					$parent.removeClass('jigoshop-validated').addClass('jigoshop-invalid');
-				}
+				set_field_validity(validate_field($this), $parent);
 			});
 			if($('.jigoshop-invalid').size() == 0){
 				$valid_checkout = true;
@@ -274,18 +275,6 @@
 			}
 
 			$(this).trigger('jigoshop.checkout.state_box_changed');
-		});
-
-		// handle inline validation of all required checkout fields
-		$('form.checkout').on('blur change', '.input-required', function(){
-			var $this = $(this);
-			var $parent = $this.closest('.form-row');
-
-			if(!validate_field($this)){
-				$parent.removeClass('jigoshop-validated').addClass('jigoshop-invalid');
-			} else {
-				$parent.removeClass('jigoshop-invalid').addClass('jigoshop-validated');
-			}
 		});
 
 		// AJAX Form Submission from 'Place Order' button
