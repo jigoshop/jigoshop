@@ -119,6 +119,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 				'format' => 'postcode',
 				'label' => __('Postcode', 'jigoshop'),
 				'placeholder' => __('Postcode', 'jigoshop'),
+				'rel' => 'billing_country',
 				'required' => true,
 				'class' => array('form-row-first')
 			),
@@ -213,6 +214,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 				'label' => __('Postcode', 'jigoshop'),
 				'placeholder' => __('Postcode', 'jigoshop'),
 				'required' => true,
+				'rel' => 'shipping_country',
 			),
 		);
 
@@ -448,24 +450,21 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 				break;
 			case 'postcode':
 				$current_pc = $this->get_value($args['name']);
-				$is_shipping_pc = strpos($args['name'], 'shipping');
 				if (!$current_pc) {
-					if ($is_shipping_pc === false) {
-						$current_pc = jigoshop_customer::get_postcode();
-					} else {
-						$current_pc = jigoshop_customer::get_shipping_postcode();
-					}
+					$current_pc = $args['rel'] == 'shipping_country' ? jigoshop_customer::get_shipping_postcode() : jigoshop_customer::get_postcode();
 				}
 
 				$field = '<p class="form-row '.implode(' ', $args['class']).'">
 					<label for="'.esc_attr($args['name']).'" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>
-					<input type="text" class="input-text'.esc_attr($input_required).'" name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" placeholder="'.$args['placeholder'].'" value="'.esc_attr($current_pc).'" />
+					<input type="text" class="input-text'.esc_attr($input_required).'" name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'"
+						placeholder="'.$args['placeholder'].'" value="'.esc_attr($current_pc).'" rel="'.esc_attr($args['rel']).'" />
 				</p>'.$after;
 				break;
 			case 'textarea':
 				$field = '<p class="form-row '.implode(' ', $args['class']).'">
 					<label for="'.esc_attr($args['name']).'" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>
-					<textarea name="'.esc_attr($args['name']).'" class="input-text'.esc_attr($input_required).'" id="'.esc_attr($args['name']).'" placeholder="'.$args['placeholder'].'" cols="5" rows="2">'.esc_textarea($this->get_value($args['name'])).'</textarea>
+					<textarea name="'.esc_attr($args['name']).'" class="input-text'.esc_attr($input_required).'" id="'.esc_attr($args['name']).'" placeholder="'.$args['placeholder'].'"
+						cols="5" rows="2" rel="'.esc_attr($args['rel']).'">'.esc_textarea($this->get_value($args['name'])).'</textarea>
 				</p>'.$after;
 				break;
 			case 'select':
@@ -487,7 +486,8 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 			case 'password':
 				$field = '<p class="form-row '.implode(' ', $args['class']).'">
 					<label for="'.esc_attr($args['name']).'" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>
-					<input type="'.$args['type'].'" class="input-text'.esc_attr($input_required).'" name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" placeholder="'.$args['placeholder'].'" value="'.$this->get_value($args['name']).'" />
+					<input type="'.$args['type'].'" class="input-text'.esc_attr($input_required).'" name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'"
+						placeholder="'.$args['placeholder'].'" value="'.$this->get_value($args['name']).'" rel="'.esc_attr($args['rel']).'" />
 				</p>'.$after;
 				break;
 			default :
