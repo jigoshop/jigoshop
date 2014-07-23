@@ -1,9 +1,7 @@
 <?php
 /**
  * My Account shortcode
- *
  * DISCLAIMER
- *
  * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
@@ -15,11 +13,13 @@
  * @license             GNU General Public License v3
  */
 
-function get_jigoshop_my_account($attributes) {
+function get_jigoshop_my_account($attributes)
+{
 	return jigoshop_shortcode_wrapper('jigoshop_my_account', $attributes);
 }
 
-function jigoshop_my_account($attributes) {
+function jigoshop_my_account($attributes)
+{
 	global $current_user;
 	$options = Jigoshop_Base::get_options();
 
@@ -37,22 +37,23 @@ function jigoshop_my_account($attributes) {
 	));
 }
 
-function get_jigoshop_edit_address() {
-  return jigoshop_shortcode_wrapper('jigoshop_edit_address');
+function get_jigoshop_edit_address()
+{
+	return jigoshop_shortcode_wrapper('jigoshop_edit_address');
 }
 
-function jigoshop_edit_address() {
-	if (!is_user_logged_in()) {
-		wp_safe_redirect( apply_filters( 'jigoshop_get_myaccount_page_id', get_permalink( jigoshop_get_page_id( 'myaccount' )) ));
-		exit;
-	}
-
-	$load_address = 'billing';
+function jigoshop_get_address_to_edit()
+{
+	$address = 'billing';
 	if (isset($_GET['address']) && in_array($_GET['address'], array('billing', 'shipping'))) {
-		$load_address = $_GET['address'];
+		$address = $_GET['address'];
 	}
 
-	$user_id = get_current_user_id();
+	return $address;
+}
+
+function jigoshop_get_address_fields($load_address, $user_id)
+{
 	$address = array(
 		array(
 			'name' => $load_address.'_first_name',
@@ -149,36 +150,54 @@ function jigoshop_edit_address() {
 			'value' => get_user_meta($user_id, $load_address.'_phone', true)
 		)
 	);
-	$address = apply_filters('jigoshop_customer_account_address_fields', $address);
 
-	if ($_POST) {
-		if ($user_id > 0 && jigoshop::verify_nonce('edit_address')) {
-			foreach ($address as $field) {
-				if ($_POST[$field['name']]) {
-					update_user_meta($user_id, $field['name'], jigowatt_clean($_POST[$field['name']]));
+	return apply_filters('jigoshop_customer_account_address_fields', $address);
+}
+
+function jigoshop_edit_address()
+{
+	$account_url = get_permalink(jigoshop_get_page_id(JIGOSHOP_MY_ACCOUNT));
+
+	if (!is_user_logged_in()) {
+		wp_safe_redirect(apply_filters('jigoshop_get_myaccount_page_id', $account_url));
+		exit;
+	}
+
+	$user_id = get_current_user_id();
+	$load_address = jigoshop_get_address_to_edit();
+	$address = jigoshop_get_address_fields($load_address, $user_id);
+
+	if (isset($_POST['save_address']) && jigoshop::verify_nonce('edit_address')) {
+		if ($user_id > 0) {
+			foreach ($address as &$field) {
+				if (isset($_POST[$field['name']])) {
+					$field['value'] = jigowatt_clean($_POST[$field['name']]);
+					update_user_meta($user_id, $field['name'], $field['value']);
 				}
 			}
 
 			do_action('jigoshop_user_edit_address', $user_id, $address);
 		}
-
-		wp_safe_redirect(apply_filters('jigoshop_get_myaccount_page_id', get_permalink(jigoshop_get_page_id('myaccount'))));
-		exit;
 	}
 
 	jigoshop_render('shortcode/my_account/edit_address', array(
+		'url' => add_query_arg('address', $load_address,
+			apply_filters('jigoshop_get_edit_address_page_id', get_permalink(jigoshop_get_page_id('edit_address')))),
+		'account_url' => $account_url,
 		'load_address' => $load_address,
 		'address' => $address,
 	));
 }
 
-function get_jigoshop_change_password() {
-  return jigoshop_shortcode_wrapper('jigoshop_change_password');
+function get_jigoshop_change_password()
+{
+	return jigoshop_shortcode_wrapper('jigoshop_change_password');
 }
 
-function jigoshop_change_password() {
-	if(!is_user_logged_in()){
-		wp_safe_redirect( apply_filters('jigoshop_get_myaccount_page_id', get_permalink(jigoshop_get_page_id('myaccount')) ));
+function jigoshop_change_password()
+{
+	if (!is_user_logged_in()) {
+		wp_safe_redirect(apply_filters('jigoshop_get_myaccount_page_id', get_permalink(jigoshop_get_page_id('myaccount'))));
 		exit;
 	}
 
@@ -201,11 +220,13 @@ function jigoshop_change_password() {
 	jigoshop_render('shortcode/my_account/change_password', array());
 }
 
-function get_jigoshop_view_order() {
-  return jigoshop_shortcode_wrapper('jigoshop_view_order');
+function get_jigoshop_view_order()
+{
+	return jigoshop_shortcode_wrapper('jigoshop_view_order');
 }
 
-function jigoshop_view_order() {
+function jigoshop_view_order()
+{
 	if (!is_user_logged_in()) {
 		wp_safe_redirect(apply_filters('jigoshop_get_myaccount_page_id', get_permalink(jigoshop_get_page_id('myaccount'))));
 		exit;

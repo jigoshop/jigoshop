@@ -208,12 +208,12 @@ class jigoshop extends Jigoshop_Singleton
 		unset(jigoshop_session::instance()->errors);
 	}
 
-	public static function nonce_field($action, $referer = true, $echo = true)
+	public static function nonce_field($action, $referrer = true, $echo = true)
 	{
 		$name = '_n';
 		$action = 'jigoshop-'.$action;
 
-		return wp_nonce_field($action, $name, $referer, $echo);
+		return wp_nonce_field($action, $name, $referrer, $echo);
 	}
 
 	public static function nonce_url($action, $url = '')

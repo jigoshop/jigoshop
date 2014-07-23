@@ -120,6 +120,11 @@ function jigoshop_add_order_item() {
 	die();
 }
 
+/**
+ * Save address and redirect to proper page.
+ */
+add_action('init', function(){
+});
 
 /**
  * When default permalinks are enabled, redirect shop page to post type archive url

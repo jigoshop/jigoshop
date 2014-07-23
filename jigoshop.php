@@ -530,6 +530,7 @@ define('JIGOSHOP_CART', 'cart');
 define('JIGOSHOP_CHECKOUT', 'checkout');
 define('JIGOSHOP_PAY', 'pay');
 define('JIGOSHOP_THANK_YOU', 'thanks');
+define('JIGOSHOP_MY_ACCOUNT', 'myaccount');
 define('JIGOSHOP_PRODUCT', 'product');
 define('JIGOSHOP_PRODUCT_CATEGORY', 'product_category');
 define('JIGOSHOP_PRODUCT_LIST', 'product_list');
@@ -548,6 +549,7 @@ function jigoshop_get_available_pages()
 		JIGOSHOP_CHECKOUT,
 		JIGOSHOP_PAY,
 		JIGOSHOP_THANK_YOU,
+		JIGOSHOP_MY_ACCOUNT,
 		JIGOSHOP_PRODUCT,
 		JIGOSHOP_PRODUCT_CATEGORY,
 		JIGOSHOP_PRODUCT_LIST,
@@ -573,6 +575,8 @@ function is_jigoshop_single_page($page)
 			return is_page(jigoshop_get_page_id(JIGOSHOP_PAY));
 		case JIGOSHOP_THANK_YOU:
 			return is_page(jigoshop_get_page_id(JIGOSHOP_THANK_YOU));
+		case JIGOSHOP_MY_ACCOUNT:
+			return is_page(jigoshop_get_page_id(JIGOSHOP_MY_ACCOUNT));
 		case JIGOSHOP_PRODUCT:
 			return is_product();
 		case JIGOSHOP_PRODUCT_CATEGORY:
