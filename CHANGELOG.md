@@ -2,6 +2,7 @@
 
 * 1.10.4 - 2014-07-23:
     * Improved: Reformat and fix states changing script.
+    * Improved: Ability to check if current page is payment confirmation or "Thank you" page.
 * 1.10.3 - 2014-07-21:
     * Fix: Memory checking typo.
     * Fix: Stock status checking for products.
