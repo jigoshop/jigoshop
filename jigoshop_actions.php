@@ -868,7 +868,7 @@ function jigoshop_product_dropdown_categories( $show_counts = true, $hierarchal 
 	$r['pad_counts'] = 1;
 	$r['hierarchal'] = $hierarchal;
 	$r['hide_empty'] = 1;
-	$r['show_count'] = 1;
+	$r['show_count'] = $show_counts;
 	$r['selected']   = isset( $wp_query->query['product_cat'] ) ? $wp_query->query['product_cat'] : '';
 
 	$terms = get_terms( 'product_cat', $r );
