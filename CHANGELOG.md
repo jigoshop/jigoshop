@@ -1,12 +1,13 @@
 ## Changelog
 
-* 1.10.4 - 2014-07-23:
+* 1.10.4 - 2014-07-24:
     * Improved: Reformat and fix states changing script.
     * Improved: Ability to check if current page is payment confirmation, "Thank you" and "My account" page.
     * Improved: Edit address shortcode now has back button.
     * Improved: Shortened and simplified JavaScript for checkout.
     * Fix: Postcode validation.
     * Fix: After address save page renders properly. Thanks to Jeff Grossman
+    * Fix: Product Categories widget properly handles showing counts option.
 * 1.10.3 - 2014-07-21:
     * Fix: Memory checking typo.
     * Fix: Stock status checking for products.
