@@ -79,11 +79,12 @@ class Product implements ProductServiceInterface
 		// Fetch only IDs
 		$query->query_vars['fields'] = 'ids';
 		$results = $query->get_posts();
-		$that = $this;
+		$products = array();
+
 		// TODO: Maybe it is good to optimize this to fetch all found products data at once?
-		$products = array_map(function ($product) use ($that){
-			return $that->find($product->ID);
-		}, $results);
+		foreach ($results as $product) {
+			$products[] = $this->findForPost($product);
+		}
 
 		return $products;
 	}
