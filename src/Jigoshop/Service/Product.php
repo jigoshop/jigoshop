@@ -192,12 +192,6 @@ class Product implements ProductServiceInterface
 		// TODO: Real save of the attribute
 	}
 
-	private function getProductAttributes($id)
-	{
-		// TODO: Real fetch of product attributes and restoring state
-		return array();
-	}
-
 	/**
 	 * Save the product data upon post saving.
 	 *
