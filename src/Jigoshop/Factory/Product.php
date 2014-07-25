@@ -87,7 +87,7 @@ class Product
 				return $item[0];
 			}, $this->wp->getPostMeta($post->ID));
 
-			$state['attributes'] = $this->getProductAttributes($post->ID);
+			$state['attributes'] = $this->getAttributes($post->ID);
 			$state['id'] = $post->ID;
 			$state['name'] = $post->post_title;
 
@@ -95,5 +95,11 @@ class Product
 		}
 
 		return $this->wp->applyFilters('jigoshop\\find\\product', $product, $state);
+	}
+
+	private function getAttributes($id)
+	{
+		// TODO: Real fetch of product attributes and restoring state
+		return array();
 	}
 }

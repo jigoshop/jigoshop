@@ -234,15 +234,17 @@ class Product implements Post
 		}
 		$menu = $this->wp->applyFilters('jigoshop\\admin\\product\\menu', array(
 			'general' => __('General', 'jigoshop'),
-			'advanced' => __('Advanced', 'jigoshop'),
-			'inventory' => __('Inventory', 'jigoshop'),
-			'attributes' => __('Attributes', 'jigoshop'),
+//			'advanced' => __('Advanced', 'jigoshop'),
+//			'inventory' => __('Inventory', 'jigoshop'),
+//			'attributes' => __('Attributes', 'jigoshop'),
 		));
 		$tabs = $this->wp->applyFilters('jigoshop\\admin\\product\\tabs', array(
-			'general' => array(),
-			'advanced' => array(),
-			'inventory' => array(),
-			'attributes' => array(),
+			'general' => array(
+				'product' => $product,
+			),
+//			'advanced' => array(),
+//			'inventory' => array(),
+//			'attributes' => array(),
 		));
 
 //		add_action('admin_footer', 'jigoshop_meta_scripts');

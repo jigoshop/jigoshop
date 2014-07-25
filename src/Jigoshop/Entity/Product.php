@@ -16,6 +16,7 @@ abstract class Product implements EntityInterface
 	const VISIBILITY_CATALOG = 1;
 	const VISIBILITY_SEARCH = 2;
 	const VISIBILITY_PUBLIC = 3; // CATALOG | SEARCH
+	const VISIBILITY_NONE = 0;
 
 	private $id;
 	private $name;
