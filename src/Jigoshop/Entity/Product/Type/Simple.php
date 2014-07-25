@@ -132,9 +132,6 @@ class Simple extends Product
 
 		foreach ($this->dirtyFields as $field) {
 			switch ($field) {
-				case 'price':
-					$toSave['price'] = $this->price;
-					break;
 				case 'regular_price':
 					$toSave['regular_price'] = $this->regularPrice;
 					break;
@@ -151,6 +148,8 @@ class Simple extends Product
 					break;
 			}
 		}
+
+		$toSave['price'] = $this->calculatePrice();
 
 		return $toSave;
 	}
@@ -171,10 +170,14 @@ class Simple extends Product
 
 		$this->sales = new Sales();
 		if (isset($state['sales_from'])) {
-			$this->sales->setFrom(new \DateTime($state['sales_from']));
+			$time = new \DateTime();
+			$time->setTimestamp($state['sales_from']);
+			$this->sales->setFrom($time);
 		}
 		if (isset($state['sales_to'])) {
-			$this->sales->setTo(new \DateTime($state['sales_to']));
+			$time = new \DateTime();
+			$time->setTimestamp($state['sales_to']);
+			$this->sales->setTo($time);
 		}
 		if (isset($state['sales_price'])) {
 			$this->sales->setPrice(floatval($state['sales_price']));
@@ -193,5 +196,47 @@ class Simple extends Product
 		if (isset($state['stock_stock'])) {
 			$this->stock->setStock(intval($state['stock_stock']));
 		}
+	}
+
+	/**
+	 * Marks values provided in the state as dirty.
+	 *
+	 * @param array $state Product state.
+	 */
+	public function markAsDirty(array $state)
+	{
+		if (isset($state['sales_from']) || isset($state['sales_to']) || isset($state['sales_price'])) {
+			$this->dirtyFields[] = 'sales';
+			unset($state['sales_from'], $state['sales_to'], $state['sales_price']);
+		}
+
+		if (isset($state['stock_manage']) || isset($state['stock_allowed_backorders']) || isset($state['stock_status']) || isset($state['stock_stock'])) {
+			$this->dirtyFields[] = 'size';
+			unset($state['stock_manage'], $state['stock_allowed_backorders'], $state['stock_status'], $state['stock_stock']);
+		}
+
+		parent::markAsDirty($state);
+	}
+
+	private function calculatePrice()
+	{
+		$price = $this->regularPrice;
+
+		if(strpos($this->sales->getPrice(), '%') !== false)
+		{
+			$discount = trim('%', $this->sales->getPrice());
+			$sale = $this->regularPrice * (1 - $discount/100);
+		}
+		else
+		{
+			$sale = $this->regularPrice - $this->sales->getPrice();
+		}
+
+		if($sale < $price)
+		{
+			$price = $sale;
+		}
+
+		return $price;
 	}
 }

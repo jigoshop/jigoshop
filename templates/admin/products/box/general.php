@@ -46,7 +46,7 @@ use Jigoshop\Helper\Forms;
 		'value' => $product->getRegularPrice(),
 	));
 	Forms::text(array(
-		'name' => 'sale_price',
+		'name' => 'sales_price',
 		'label' => __('Sale price', 'jigoshop'),
 		'value' => $product->getSales()->getPrice(),
 		'description' => '<a href="#" class="schedule">'.__('Schedule', 'jigoshop').'</a>',

@@ -62,8 +62,9 @@ class Product
 		$product = $this->get($type);
 		$product->setId($id);
 		$product->setName($this->wp->sanitizeTitle($_POST['post_title']));
+		$product->restoreState($_POST['product']);
+		$product->markAsDirty($_POST['product']);
 
-		// TODO: Implement
 		return $product;
 	}
 

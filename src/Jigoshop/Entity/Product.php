@@ -114,17 +114,23 @@ abstract class Product implements EntityInterface
 
 	/**
 	 * Sets product visibility.
+	 *
 	 * Please, use provided constants to set value properly:
 	 *   * Product::VISIBILITY_CATALOG - visible only in catalog
 	 *   * Product::VISIBILITY_SEARCH - visible only in search
 	 *   * Product::VISIBILITY_PUBLIC - visible in search and catalog
+	 *   * Product::VISIBILITY_NONE - hidden
 	 *
 	 * @param int $visibility Product visibility.
 	 */
 	public function setVisibility($visibility)
 	{
-		$this->visibility = $visibility;
-		$this->dirtyFields[] = 'visibility';
+		$visibility = intval($visibility);
+
+		if (in_array($visibility, array(self::VISIBILITY_PUBLIC, self::VISIBILITY_SEARCH, self::VISIBILITY_CATALOG, self::VISIBILITY_NONE))) {
+			$this->visibility = $visibility;
+			$this->dirtyFields[] = 'visibility';
+		}
 	}
 
 	/**
@@ -318,8 +324,6 @@ abstract class Product implements EntityInterface
 					break;
 				// TODO: Save tax properly
 			}
-
-			unset($this->dirtyFields[$key]);
 		}
 
 		$toSave['attributes'] = $this->dirtyAttributes;
@@ -367,5 +371,27 @@ abstract class Product implements EntityInterface
 		if (isset($state['attributes'])) {
 			$this->attributes = $state['attributes'];
 		}
+	}
+
+	/**
+	 * Marks values provided in the state as dirty.
+	 *
+	 * @param array $state Product state.
+	 */
+	public function markAsDirty(array $state)
+	{
+		if (isset($state['attributes'])) {
+			$this->dirtyAttributes = array(
+				'new' => array_keys($state['attributes']),
+			);
+			unset($state['attributes']);
+		}
+
+		if (isset($state['size_weight']) || isset($state['size_width']) || isset($state['size_height']) || isset($state['size_length'])) {
+			$this->dirtyFields[] = 'size';
+			unset($state['size_weight'], $state['size_width'], $state['size_height'], $state['size_length']);
+		}
+
+		$this->dirtyFields = array_merge($this->dirtyFields, array_keys($state));
 	}
 }

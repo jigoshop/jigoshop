@@ -15,7 +15,7 @@ class Sales implements \Serializable
 	/** @var \DateTime */
 	private $to;
 	/** @var float */
-	private $price = 0.0;
+	private $price = '';
 
 	public function __construct()
 	{
