@@ -67,43 +67,48 @@ function jigoshop_update() {
  * @since 		1.0
  */
 add_action('admin_menu', 'jigoshop_before_admin_menu', 9);
-function jigoshop_before_admin_menu() {
-
+function jigoshop_before_admin_menu()
+{
 	global $menu;
 
-	if ( current_user_can( 'manage_jigoshop' ) )
-		$menu[54] = array( '', 'read', 'separator-jigoshop', '', 'wp-menu-separator jigoshop' );
+	if (current_user_can('manage_jigoshop')) {
+		$menu[54] = array('', 'read', 'separator-jigoshop', '', 'wp-menu-separator jigoshop');
+	}
 
-	add_menu_page( __('Jigoshop'), __('Jigoshop'), 'manage_jigoshop', 'jigoshop', 'jigoshop_dashboard', null, 55);
+	add_menu_page(__('Jigoshop'), __('Jigoshop'), 'manage_jigoshop', 'jigoshop', 'jigoshop_dashboard', null, 55);
 	add_submenu_page('jigoshop', __('Dashboard', 'jigoshop'), __('Dashboard', 'jigoshop'), 'manage_jigoshop', 'jigoshop', 'jigoshop_dashboard');
-	add_submenu_page('jigoshop', __('Reports','jigoshop'), __('Reports','jigoshop'), 'view_jigoshop_reports', 'jigoshop_reports', 'jigoshop_reports');
-	add_submenu_page('edit.php?post_type=product', __('Attributes','jigoshop'), __('Attributes','jigoshop'), 'manage_product_terms', 'jigoshop_attributes', 'jigoshop_attributes');
+	add_submenu_page('jigoshop', __('Reports', 'jigoshop'), __('Reports', 'jigoshop'), 'view_jigoshop_reports', 'jigoshop_reports', 'jigoshop_reports');
+	add_submenu_page('edit.php?post_type=product', __('Attributes', 'jigoshop'), __('Attributes', 'jigoshop'), 'manage_product_terms', 'jigoshop_attributes', 'jigoshop_attributes');
 
 	do_action('jigoshop_before_admin_menu');
-
 }
 
 add_action('admin_menu', 'jigoshop_after_admin_menu', 50);
-function jigoshop_after_admin_menu() {
+function jigoshop_after_admin_menu()
+{
+	$admin_page = add_submenu_page('jigoshop', __('Settings'), __('Settings'), 'manage_jigoshop', 'jigoshop_settings', array(Jigoshop_Admin_Settings::instance(), 'output_markup'));
 
-	$admin_page = add_submenu_page( 'jigoshop', __( 'Settings' ), __( 'Settings' ), 'manage_jigoshop', 'jigoshop_settings', array( Jigoshop_Admin_Settings::instance(), 'output_markup' ) );
-	add_action( 'admin_print_scripts-' . $admin_page, array( Jigoshop_Admin_Settings::instance(), 'settings_scripts' ) );
-	add_action( 'admin_print_styles-' . $admin_page, array( Jigoshop_Admin_Settings::instance(), 'settings_styles' ) );
+	add_action('admin_print_styles-'.$admin_page, array(Jigoshop_Admin_Settings::instance(), 'settings_styles'));
+	add_action('jigoshop_admin_enqueue_scripts', array(Jigoshop_Admin_Settings::instance(), 'settings_scripts'));
+	add_action('admin_print_scripts-'.$admin_page, function (){
+		do_action('jigoshop_admin_enqueue_scripts');
+	});
 
-	add_submenu_page( 'jigoshop', __('System Information','jigoshop'), __('System Info','jigoshop'), 'manage_jigoshop', 'jigoshop_system_info', 'jigoshop_system_info');
+	add_submenu_page('jigoshop', __('System Information', 'jigoshop'), __('System Info', 'jigoshop'), 'manage_jigoshop', 'jigoshop_system_info', 'jigoshop_system_info');
 
 	do_action('jigoshop_after_admin_menu');
-
 }
 
-function jigoshop_reports() {
-	require_once( 'jigoshop-admin-reports.php' );
-	$jigoshop_dashboard = new Jigoshop_reports();
+function jigoshop_reports()
+{
+	require_once('jigoshop-admin-reports.php');
+	new Jigoshop_reports();
 }
 
-function jigoshop_dashboard() {
-	require_once( 'jigoshop-admin-dashboard.php' );
-	$jigoshop_dashboard = new jigoshop_dashboard();
+function jigoshop_dashboard()
+{
+	require_once('jigoshop-admin-dashboard.php');
+	new jigoshop_dashboard();
 }
 
 /**
