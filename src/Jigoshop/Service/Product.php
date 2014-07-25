@@ -5,6 +5,7 @@ namespace Jigoshop\Service;
 use Jigoshop\Entity\EntityInterface;
 use Jigoshop\Entity\Product\Type\Simple;
 use Jigoshop\Exception;
+use Jigoshop\Factory\Product as ProductFactory;
 use WPAL\Wordpress;
 
 /**
@@ -17,11 +18,14 @@ class Product implements ProductServiceInterface
 {
 	/** @var \WPAL\Wordpress */
 	private $wp;
-	private $types = array();
+	/** @var \Jigoshop\Factory\Product */
+	private $factory;
 
-	public function __construct(Wordpress $wp)
+	public function __construct(Wordpress $wp, ProductFactory $factory)
 	{
 		$this->wp = $wp;
+		$this->factory = $factory;
+		$wp->addAction('save_post_'.\Jigoshop\Core\Types\Product::NAME, array($this, 'savePost'), 10);
 	}
 
 	/**
@@ -33,11 +37,7 @@ class Product implements ProductServiceInterface
 	 */
 	public function addType($type, $class)
 	{
-		if (isset($this->types[$type])) {
-			throw new Exception(sprintf('Product of type %s already exists.'), $type);
-		}
-
-		$this->types[$type] = $class;
+		$this->factory->addType($type, $class);
 	}
 
 	/**
@@ -70,7 +70,7 @@ class Product implements ProductServiceInterface
 			$type = Simple::TYPE;
 		}
 
-		$product = $this->getProductForType($type);
+		$product = $this->factory->get($type);
 		$meta = array();
 
 		if($post){
@@ -205,21 +205,6 @@ class Product implements ProductServiceInterface
 		return $this->findByQuery($query);
 	}
 
-	/**
-	 * @param $type string Type name of product.
-	 * @throws \Jigoshop\Exception When product type does not exists.
-	 * @return \Jigoshop\Entity\Product
-	 */
-	private function getProductForType($type)
-	{
-		if (!isset($this->types[$type])) {
-			throw new Exception(sprintf('Product type %s does not exists.', $type));
-		}
-
-		$class = $this->types[$type];
-		return new $class($this->wp);
-	}
-
 	private function removeProductAttribute($object, $key)
 	{
 		// TODO: Real remove of the attribute
@@ -234,5 +219,16 @@ class Product implements ProductServiceInterface
 	{
 		// TODO: Real fetch of product attributes and restoring state
 		return array();
+	}
+
+	/**
+	 * Save the product data upon post saving.
+	 *
+	 * @param $id int Post ID.
+	 */
+	public function savePost($id)
+	{
+		$product = $this->factory->create($id);
+		$this->save($product);
 	}
 }

@@ -87,6 +87,10 @@ services:
     arguments:
       - '@wpal'
       - '@jigoshop.options'
+      - '@jigoshop.factory.product'
+  jigoshop.factory.product:
+    class: Jigoshop\Factory\Product
+    arguments: ~
   jigoshop.service.order:
     class: Jigoshop\Service\Order
     factory_service: jigoshop.factory.order_service

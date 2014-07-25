@@ -3,6 +3,7 @@
 namespace Jigoshop\Factory;
 
 use Jigoshop\Core\Options;
+use Jigoshop\Factory\Product as ProductFactory;
 use Jigoshop\Service\Cache\Product\Simple as SimpleCache;
 use Jigoshop\Service\Product as Service;
 use Jigoshop\Service\ProductServiceInterface;
@@ -14,11 +15,14 @@ class ProductService
 	private $wp;
 	/** @var \Jigoshop\Core\Options */
 	private $options;
+	/** @var \Jigoshop\Factory\Product */
+	private $factory;
 
-	public function __construct(Wordpress $wp, Options $options)
+	public function __construct(Wordpress $wp, Options $options, ProductFactory $factory)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
+		$this->factory = $factory;
 	}
 
 	/**
@@ -27,7 +31,7 @@ class ProductService
 	 */
 	public function getService()
 	{
-		$service = new Service($this->wp);
+		$service = new Service($this->wp, $this->factory);
 
 		switch ($this->options->get('cache_mechanism')) {
 			case 'simple':
