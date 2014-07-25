@@ -331,6 +331,12 @@ abstract class Product implements EntityInterface
 	 */
 	public function restoreState(array $state)
 	{
+		if (isset($state['id'])) {
+			$this->id = $state['id'];
+		}
+		if (isset($state['name'])) {
+			$this->name = $state['name'];
+		}
 		if (isset($state['sku'])) {
 			$this->sku = $state['sku'];
 		}

@@ -3,7 +3,6 @@
 namespace Jigoshop\Service;
 
 use Jigoshop\Entity\EntityInterface;
-use Jigoshop\Entity\Product\Type\Simple;
 use Jigoshop\Exception;
 use Jigoshop\Factory\Product as ProductFactory;
 use WPAL\Wordpress;
@@ -54,7 +53,7 @@ class Product implements ProductServiceInterface
 			$post = $this->wp->getPost($id);
 		}
 
-		return $this->findForPost($post);
+		return $this->factory->fetch($post);
 	}
 
 	/**
@@ -65,27 +64,7 @@ class Product implements ProductServiceInterface
 	 */
 	public function findForPost($post)
 	{
-		$type = $this->wp->getPostMeta($post->ID, 'type', true);
-		if(empty($type)){
-			$type = Simple::TYPE;
-		}
-
-		$product = $this->factory->get($type);
-		$meta = array();
-
-		if($post){
-			$meta = array_map(function ($item){
-				return $item[0];
-			}, $this->wp->getPostMeta($post->ID));
-
-			$meta['attributes'] = $this->getProductAttributes($post->ID);
-
-			$product->setId($post->ID);
-			$product->setName($post->post_title);
-			$product->restoreState($meta);
-		}
-
-		return $this->wp->applyFilters('jigoshop\\find\\product', $product, $meta);
+		return $this->factory->fetch($post);
 	}
 
 	/**
@@ -124,10 +103,7 @@ class Product implements ProductServiceInterface
 		$fields = $object->getStateToSave();
 
 		if (isset($fields['id']) || isset($fields['name'])) {
-			$this->wp->wpUpdatePost(array(
-				'ID' => $object->getId(),
-				'post_title' => $object->getName(),
-			));
+			// We do not need to save ID or name as they are saved by WordPress itself.
 			unset($fields['id'], $fields['name']);
 		}
 

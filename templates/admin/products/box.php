@@ -9,7 +9,7 @@
 <div class="panels">
 	<div class="jigoshop_product_data_type">
 		<label for="product-type" class="product-type-label"><?= __('Product Type', 'jigoshop'); ?></label>
-		<select id="product-type" name="product-type">
+		<select id="product-type" name="product[type]">
 		<?php foreach ($types as $value => $label): ?>
 			<option value="<?= $value; ?>" <?php selected($product->getType(), $value); ?>><?= $label; ?></option>
 		<?php endforeach; ?>

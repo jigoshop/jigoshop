@@ -4,10 +4,18 @@ namespace Jigoshop\Factory;
 
 use Jigoshop\Entity\Product\Type\Simple;
 use Jigoshop\Exception;
+use WPAL\Wordpress;
 
 class Product
 {
+	/** @var \WPAL\Wordpress */
+	private $wp;
 	private $types = array();
+
+	public function __construct(Wordpress $wp)
+	{
+		$this->wp = $wp;
+	}
 
 	/**
 	 * Adds new type to managed types.
@@ -53,7 +61,39 @@ class Product
 		$type = isset($_POST['product']['type']) ? $_POST['product']['type'] : Simple::TYPE;
 		$product = $this->get($type);
 		$product->setId($id);
+		$product->setName($this->wp->sanitizeTitle($_POST['post_title']));
+
 		// TODO: Implement
 		return $product;
+	}
+
+	/**
+	 * Fetches product from database.
+	 *
+	 * @param $post \WP_Post Post to fetch product for.
+	 * @return \Jigoshop\Entity\Product
+	 */
+	public function fetch($post)
+	{
+		$type = $this->wp->getPostMeta($post->ID, 'type', true);
+		if(empty($type)){
+			$type = Simple::TYPE;
+		}
+
+		$product = $this->get($type);
+
+		if($post){
+			$state = array_map(function ($item){
+				return $item[0];
+			}, $this->wp->getPostMeta($post->ID));
+
+			$state['attributes'] = $this->getProductAttributes($post->ID);
+			$state['id'] = $post->ID;
+			$state['name'] = $post->post_title;
+
+			$product->restoreState($state);
+		}
+
+		return $this->wp->applyFilters('jigoshop\\find\\product', $product, $state);
 	}
 }
