@@ -1075,6 +1075,8 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 					if ($result['result'] == 'success') {
 						return $result;
 					}
+					
+					return false;
 				} else {
 					// No payment was required for order
 					$order->payment_complete();
