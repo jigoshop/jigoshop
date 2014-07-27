@@ -1,4 +1,4 @@
-p<?php
+<?php
 /**
  * @var $options Jigoshop_Options Options container.
  * @var $recent_orders int Number of recent orders to show.

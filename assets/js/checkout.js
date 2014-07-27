@@ -229,54 +229,6 @@
 			}).change();
 		}
 
-		// handle changes to Countries that don't require states and back again
-		$('select.country_to_state').on('change init', function(){
-			var country = $(this).val();
-			var $state = $('#' + $(this).attr('rel'));
-			var input_name = $state.attr('name');
-			var input_id = $state.attr('id');
-
-			if(jigoshop_countries[country]){
-				if($state.is('input')){
-					// Change for select
-					var required = $state.prev().find('span.required');
-
-					if(required.val() == undefined){
-						$state.prev().append(' <span class="required">*</span>');
-					}
-
-					$state.replaceWith($(document.createElement('select')).attr('name', input_name).attr('id', input_id));
-					$state = $('#'+input_id);
-				}
-
-				// Add new states
-				$('option', $state).remove();
-				$(document.createElement('option')).val('').html(jigoshop_params.select_state_text).appendTo($state);
-				for(var state in jigoshop_countries[country]){
-					$(document.createElement('option')).val(state).html(jigoshop_countries[country][state]).appendTo($state);
-				}
-
-				var selected = jigoshop_params.shipping_state;
-				if(input_name == 'calc_shipping_state'){
-					selected = $('#calc_shipping_state').val();
-				} else if(input_name == 'billing_state'){
-					selected = jigoshop_params.billing_state;
-				}
-
-				$('option[value='+selected+']', $state).attr('selected', 'selected');
-			} else if($state.is('select')){
-				var $parent = $state.closest('.form-row');
-				$parent.removeClass('jigoshop-validated jigoshop-invalid');
-				$state.prev().find('span.required').remove();
-				$state.replaceWith(
-					$(document.createElement('input')).addClass('input-text').attr('placeholder', jigoshop_params.state_text)
-						.attr('name', input_name).attr('id', input_id).attr('type', 'text')
-				);
-			}
-
-			$(this).trigger('jigoshop.checkout.state_box_changed');
-		});
-
 		// AJAX Form Submission from 'Place Order' button
 		$('form.checkout').submit(function(){
 			validate_required();

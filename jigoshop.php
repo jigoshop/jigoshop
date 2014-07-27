@@ -20,7 +20,7 @@
  * Description:         Jigoshop, a WordPress eCommerce plugin that works.
  * Author:              Jigoshop
  * Author URI:          http://www.jigoshop.com
- * Version:             1.10.4
+ * Version:             1.10.5
  * Requires at least:   3.8
  * Tested up to:        3.9.1
  * Text Domain:         jigoshop
@@ -38,7 +38,7 @@
  */
 
 if (!defined('JIGOSHOP_VERSION')) {
-	define('JIGOSHOP_VERSION', '1.10.4');
+	define('JIGOSHOP_VERSION', '1.10.5');
 }
 if (!defined('JIGOSHOP_DB_VERSION')) {
 	define('JIGOSHOP_DB_VERSION', 1407060);
@@ -531,6 +531,7 @@ define('JIGOSHOP_CHECKOUT', 'checkout');
 define('JIGOSHOP_PAY', 'pay');
 define('JIGOSHOP_THANK_YOU', 'thanks');
 define('JIGOSHOP_MY_ACCOUNT', 'myaccount');
+define('JIGOSHOP_EDIT_ADDRESS', 'edit_address');
 define('JIGOSHOP_PRODUCT', 'product');
 define('JIGOSHOP_PRODUCT_CATEGORY', 'product_category');
 define('JIGOSHOP_PRODUCT_LIST', 'product_list');
@@ -550,6 +551,7 @@ function jigoshop_get_available_pages()
 		JIGOSHOP_PAY,
 		JIGOSHOP_THANK_YOU,
 		JIGOSHOP_MY_ACCOUNT,
+		JIGOSHOP_EDIT_ADDRESS,
 		JIGOSHOP_PRODUCT,
 		JIGOSHOP_PRODUCT_CATEGORY,
 		JIGOSHOP_PRODUCT_LIST,
@@ -577,6 +579,8 @@ function is_jigoshop_single_page($page)
 			return is_page(jigoshop_get_page_id(JIGOSHOP_THANK_YOU));
 		case JIGOSHOP_MY_ACCOUNT:
 			return is_page(jigoshop_get_page_id(JIGOSHOP_MY_ACCOUNT));
+		case JIGOSHOP_EDIT_ADDRESS:
+			return is_page(jigoshop_get_page_id(JIGOSHOP_EDIT_ADDRESS));
 		case JIGOSHOP_PRODUCT:
 			return is_product();
 		case JIGOSHOP_PRODUCT_CATEGORY:
@@ -629,7 +633,7 @@ function jigoshop_frontend_scripts()
 	jigoshop_add_script('jigoshop-single-product', JIGOSHOP_URL.'/assets/js/single-product.js', array('jquery'), array('in_footer' => true, 'page' => JIGOSHOP_PRODUCT));
 	jigoshop_add_script('jigoshop-countries', JIGOSHOP_URL.'/assets/js/countries.js', array(), array(
 		'in_footer' => true,
-		'page' => array(JIGOSHOP_CHECKOUT, JIGOSHOP_CART)
+		'page' => array(JIGOSHOP_CHECKOUT, JIGOSHOP_CART, JIGOSHOP_EDIT_ADDRESS)
 	));
 
 	/* Script.js variables */
