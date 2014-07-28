@@ -28,6 +28,23 @@ class Jigoshop_Widget_Product_Search extends WP_Widget
 
 		// Create the widget
 		parent::__construct('jigoshop_product_search', __('Jigoshop: Product Search', 'jigoshop'), $options);
+
+		// Add own hidden fields to filter
+		add_filter('jigoshop_get_hidden_fields', array($this, 'jigoshop_price_filter_hidden_fields'));
+
+	}
+
+	public function jigoshop_price_filter_hidden_fields($fields)
+	{
+		if (isset($_GET['s'])) {
+			$fields['s'] = $_GET['s'];
+		}
+
+		if (isset($_GET['post_type'])) {
+			$fields['post_type'] = $_GET['post_type'];
+		}
+
+		return $fields;
 	}
 
 	/**
@@ -56,8 +73,17 @@ class Jigoshop_Widget_Product_Search extends WP_Widget
 			echo $before_title.$title.$after_title;
 		}
 
+		$fields = array();
+		// Support for other plugins which uses GET parameters
+		$fields = apply_filters('jigoshop_get_hidden_fields', $fields);
+
 		// Construct the form
 		$form = '<form role="search" method="get" id="searchform" action="'.home_url().'">';
+		foreach ($fields as $key => $value) {
+			if (!in_array($key, array('s', 'post_type'))) {
+				$form .= '<input type="hidden" name="'.$key.'" value="'.$value.'" />';
+			}
+		}
 		$form .= '<div>';
 		$form .= '<label class="assistive-text" for="s">'.__('Search for:', 'jigoshop').'</label>';
 		$form .= '<input type="text" value="'.get_search_query().'" name="s" id="s" placeholder="'.__('Search for products', 'jigoshop').'" />';

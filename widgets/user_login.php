@@ -72,8 +72,14 @@ class Jigoshop_Widget_User_Login extends WP_Widget
 
 			// Get redirect URI
 			$redirect_to = apply_filters('jigoshop_widget_login_redirect', get_permalink(jigoshop_get_page_id('myaccount')));
+			$fields = array();
+			// Support for other plugins which uses GET parameters
+			$fields = apply_filters('jigoshop_get_hidden_fields', $fields);
 
 			echo "<form action='".esc_url(wp_login_url($redirect_to))."' method='post' class='jigoshop_login_widget'>";
+			foreach ($fields as $key => $value) {
+				echo '<input type="hidden" name="'.$key.'" value="'.$value.'" />';
+			}
 
 			// Username
 			echo "

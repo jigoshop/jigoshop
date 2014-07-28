@@ -4,6 +4,7 @@
     * Fix: States changing in Edit Address and Cart pages.
     * Fix: Small typo in `my_account` shortcode template when user is not logged in.
     * Improved: Jigoshop widgets reformatting.
+    * Improved: Add ability to Jigoshop widgets to work together (i.e. Price Filter and Search).
 * 1.10.4 - 2014-07-24:
     * Improved: Reformat and fix states changing script.
     * Improved: Ability to check if current page is payment confirmation, "Thank you" and "My account" page.
