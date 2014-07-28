@@ -641,6 +641,7 @@ function jigoshop_frontend_scripts()
 	$jigoshop_params = array(
 		'ajax_url' => admin_url('admin-ajax.php', 'jigoshop'),
 		'assets_url' => JIGOSHOP_URL,
+		'validate_postcode' => $options->get_option('jigoshop_enable_postcode_validating', 'no'),
 		'checkout_url' => admin_url('admin-ajax.php?action=jigoshop-checkout', 'jigoshop'),
 		'currency_symbol' => get_jigoshop_currency_symbol(),
 		'get_variation_nonce' => wp_create_nonce("get-variation"),

@@ -71,6 +71,9 @@
 		}
 
 		function validate_postcode($field){
+			if(jigoshop_params.validate_postcode == 'no'){
+				return true;
+			}
 			var country = $('#'+$field.attr('rel')).val();
 			var pattern = jigoshop_validation.postcodes[country];
 			if(pattern === undefined){
