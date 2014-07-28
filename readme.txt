@@ -117,6 +117,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 * Fix: Security issue on comments feed.
 * Fix: Add obeying validate postcode setting in JavaScript validation.
 * Fix: Validating of GB postcodes.
+* Fix: Properly check EU VAT for billing country.
 
 = 1.10.5 - 2014-07-28 =
 * Fix: States changing in Edit Address and Cart pages.
