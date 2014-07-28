@@ -79,7 +79,12 @@
 			if(pattern === undefined){
 				return true;
 			}
-			return pattern.test($field.val());
+			var value = $field.val();
+			// Special case for GB
+			if(country === 'GB'){
+				value = value.replace(' ', '').toLowerCase();
+			}
+			return pattern.test(value);
 		}
 
 		function validate_email($field){

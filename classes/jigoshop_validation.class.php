@@ -267,13 +267,14 @@ class jigoshop_validation
 		}
 
 		if (Jigoshop_Base::get_options()->get_option('jigoshop_enable_postcode_validating') == 'yes') {
-			$regex = '/'.self::$postcodes[$country].'/';
-			jigoshop_log("VALIDATE POSTCODE: country = ".$country." & regex = ".$regex);
 
 			switch ($country) {
 				case 'GB':
+					jigoshop_log("VALIDATE POSTCODE: country = GB");
 					return self::is_GB_postcode($postcode);
 				default:
+					$regex = '/'.self::$postcodes[$country].'/';
+					jigoshop_log("VALIDATE POSTCODE: country = ".$country." & regex = ".$regex);
 					$match = preg_match($regex, $postcode);
 					if ($match !== 1) {
 						return false;
@@ -315,11 +316,9 @@ class jigoshop_validation
 		$postcode = strtolower($toCheck);
 		$postcode = str_replace(' ', '', $postcode);
 
-		var_dump($postcode, $pcexp); exit;
-
 		// Check the string against the six types of postcodes
 		foreach ($pcexp as $regexp) {
-			if (preg_match($regexp, $postcode, $matches)) {
+			if (preg_match('@'.$regexp.'@', $postcode, $matches)) {
 				return true;
 			}
 		}
