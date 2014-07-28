@@ -1,5 +1,7 @@
 ## Changelog
 
+* 1.10.6:
+    * Fix: Security issue on comments feed.
 * 1.10.5 - 2014-07-28:
     * Fix: States changing in Edit Address and Cart pages.
     * Fix: Small typo in `my_account` shortcode template when user is not logged in.

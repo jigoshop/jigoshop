@@ -1060,3 +1060,10 @@ function jigoshop_validate_postcode()
 }
 add_action( 'wp_ajax_jigoshop_validate_postcode', 'jigoshop_validate_postcode' );
 add_action( 'wp_ajax_nopriv_jigoshop_validate_postcode', 'jigoshop_validate_postcode');
+
+/**
+ * Action for limiting WordPress feed from using order notes.
+ */
+add_action('comment_feed_where', function($where){
+	return $where." AND comment_type <> 'order_note'";
+});
