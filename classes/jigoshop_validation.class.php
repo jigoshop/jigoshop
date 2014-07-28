@@ -262,7 +262,7 @@ class jigoshop_validation
 		$country = strtoupper(trim($country));
 		$postcode = strtoupper(trim($postcode));
 
-		if (!isset(self::$postcodes[$country])) {
+		if (!isset(self::$postcodes[$country]) && $country !== 'GB') { // Special case for GB
 			return false;
 		}
 
@@ -314,6 +314,8 @@ class jigoshop_validation
 		// Load up the string to check, converting into lowercase and removing spaces
 		$postcode = strtolower($toCheck);
 		$postcode = str_replace(' ', '', $postcode);
+
+		var_dump($postcode, $pcexp); exit;
 
 		// Check the string against the six types of postcodes
 		foreach ($pcexp as $regexp) {
