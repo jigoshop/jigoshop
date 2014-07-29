@@ -545,7 +545,6 @@ class jigoshop_licence_validator
 ?>
 <div class="wrap">
 
-	<?php screen_icon( 'plugins' ); ?>
 	<h2><?php _e( 'Manage Jigoshop Digital Plugin Licences', 'jigoshop' ); ?></h2>
 	<?php foreach( $messages as $message ) : ?>
 		<div class="<?php echo ( $message['success'] ? 'updated below-h2' : 'error' ); ?>">
