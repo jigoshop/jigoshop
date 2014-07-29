@@ -63,10 +63,8 @@ class Forms
 		}
 
 		if (empty($field['id'])) {
-			$field['id'] = $field['name'];
+			$field['id'] = self::prepareIdFromName($field['name']);
 		}
-
-		$field['name'] = 'product['.$field['name'].']';
 
 		Render::output('forms/checkbox', $field);
 	}
@@ -99,7 +97,7 @@ class Forms
 		}
 
 		if (empty($field['id'])) {
-			$field['id'] = $field['name'];
+			$field['id'] = self::prepareIdFromName($field['name']);
 		}
 
 		if($field['multiple']){
@@ -107,7 +105,6 @@ class Forms
 		}
 
 		$field['description'] = esc_html($field['description']);
-		$field['name'] = 'product['.$field['name'].']';
 
 		Render::output('forms/select', $field);
 	}
@@ -139,11 +136,14 @@ class Forms
 		}
 
 		if (empty($field['id'])) {
-			$field['id'] = $field['name'];
+			$field['id'] = self::prepareIdFromName($field['name']);
 		}
 
-		$field['name'] = 'product['.$field['name'].']';
-
 		Render::output('forms/text', $field);
+	}
+
+	private static function prepareIdFromName($name)
+	{
+		return str_replace(array('[', ']'), array('_', ''), $name);
 	}
 }
