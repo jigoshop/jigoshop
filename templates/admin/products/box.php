@@ -24,7 +24,7 @@
 		</ul>
 		<div class="tab-content">
 			<?php foreach($tabs as $id => $environment): ?>
-			<div class="tab-pane<?php $id == $current_tab and print ' active'; ?>" id="<?= $id; ?>">
+			<div class="tab-pane fade<?php $id == $current_tab and print ' in active'; ?>" id="<?= $id; ?>">
 				<?php \Jigoshop\Helper\Render::output('admin/products/box/'.$id, $environment); ?>
 			</div>
 			<?php endforeach; ?>

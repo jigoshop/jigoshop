@@ -10,14 +10,16 @@
  * @var $description string Field description.
  */
 ?>
-<p class="form-field <?php echo $id; ?>_field">
-	<label for="<?php echo $id; ?>"><?php echo $label; ?></label>
-	<input type="text" id="<?php echo $id; ?>" name="<?php echo $name; ?>" class="<?php echo join(' ', $classes); ?>"
-	        placeholder="<?php echo $placeholder; ?>" value="<?php echo $value; ?>" />
-	<?php if(!empty($tip)): ?>
-		<a href="#" tip="<?php echo $tip; ?>" class="tips" tabindex="99"></a>
-	<?php endif; ?>
-	<?php if(!empty($description)): ?>
-		<span class="description"><?php echo $description; ?></span>
-	<?php endif; ?>
-</p>
+<div class="form-group <?php echo $id; ?>_field">
+	<label for="<?php echo $id; ?>" class="col-sm-2 control-label"><?php echo $label; ?></label>
+	<div class="col-sm-9">
+		<input type="text" id="<?php echo $id; ?>" name="<?php echo $name; ?>" class="form-control <?php echo join(' ', $classes); ?>"
+		       placeholder="<?php echo $placeholder; ?>" value="<?php echo $value; ?>" />
+		<?php if(!empty($description)): ?>
+			<span class="help-block"><?php echo $description; ?></span>
+		<?php endif; ?>
+		<?php if(!empty($tip)): ?>
+			<a href="#" tip="<?php echo $tip; ?>" class="tips" tabindex="99"></a>
+		<?php endif; ?>
+	</div>
+</div>

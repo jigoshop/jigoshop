@@ -16,7 +16,7 @@ use Jigoshop\Helper\Render;
 <div class="form-group <?php echo $id; ?>_field">
 	<label for="<?php echo $id; ?>" class="col-sm-2 control-label"><?php echo $label; ?></label>
 	<div class="col-sm-9">
-		<select id="<?php echo $id; ?>" name="<?php echo $name; ?>" class="<?php echo join(' ', $classes); ?>"
+		<select id="<?php echo $id; ?>" name="<?php echo $name; ?>" class="form-control <?php echo join(' ', $classes); ?>"
 		        placeholder="<?php echo $placeholder; ?>"<?php $multiple and print ' multiple="multiple"'; ?>>
 			<?php foreach($options as $option => $item): ?>
 				<?php if(is_array($item)): ?>
@@ -42,7 +42,7 @@ use Jigoshop\Helper\Render;
 <script type="text/javascript">
 	/*<![CDATA[*/
 	jQuery(function($){
-		$("#<?php echo $id; ?>").select2();
+		$("select#<?php echo $id; ?>").select2();
 	});
 	/*]]>*/
 </script>

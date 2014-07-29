@@ -10,7 +10,7 @@ uglify = require('gulp-uglify')
 rimraf = require('gulp-rimraf')
 
 gulp.task 'styles-vendors', ->
-  gulp.src ['assets/bower/select2/select2.css', 'assets/bower/select2/select2-bootstrap.css']
+  gulp.src ['assets/bower/select2/{select2,select2-bootstrap}.css']
     .pipe cssmin()
     .pipe concat('vendors.min.css')
     .pipe gulp.dest('assets/css')
@@ -22,7 +22,7 @@ gulp.task 'styles', ['styles-vendors'], ->
     .pipe gulp.dest('assets/css')
 
 gulp.task 'scripts-vendors', ->
-  gulp.src ['assets/bower/select2/select2.js', 'assets/bower/bootstrap/js/tab.js']
+  gulp.src ['assets/bower/select2/select2.js', 'assets/bower/bootstrap/js/{tab,transition}.js']
     .pipe uglify()
     .pipe concat('vendors.min.js')
     .pipe gulp.dest('assets/js')
@@ -47,7 +47,7 @@ gulp.task 'clean', ->
   gulp.src ['assets/css/*', 'assets/js/*', 'assets/fonts'], {read: false}
     .pipe rimraf()
 
-gulp.task 'watch', ->
+gulp.task 'watch', ['styles', 'scripts'], ->
   gulp.watch ['assets/coffee/**/*.coffee'], ['scripts']
   gulp.watch ['assets/less/**/*.less'], ['styles']
 

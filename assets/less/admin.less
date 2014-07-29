@@ -2,11 +2,27 @@
 @import '../bower/bootstrap/less/mixins.less';
 
 .jigoshop {
+  @import '../bower/bootstrap/less/component-animations.less';
   @import '../bower/bootstrap/less/grid.less';
   @import '../bower/bootstrap/less/forms.less';
   @import '../bower/bootstrap/less/navs.less';
 
   .form-group, .nav-tabs {
     .clearfix();
+  }
+  .form-group {
+    div.checkbox-inline {
+      input[type=checkbox] {
+        position: static;
+        margin: 0;
+      }
+    }
+    .help {
+      color: @gray-light;
+      font-style: italic;
+    }
+  }
+  .tab-pane {
+    padding-top: @padding-base-horizontal;
   }
 }
