@@ -236,7 +236,7 @@ class Product implements Post
 
 		$menu = $this->wp->applyFilters('jigoshop\\admin\\product\\menu', array(
 			'general' => __('General', 'jigoshop'),
-			'advanced' => __('Advanced', 'jigoshop'),
+//			'advanced' => __('Advanced', 'jigoshop'),
 //			'inventory' => __('Inventory', 'jigoshop'),
 //			'attributes' => __('Attributes', 'jigoshop'),
 		));
@@ -244,7 +244,7 @@ class Product implements Post
 			'general' => array(
 				'product' => $product,
 			),
-			'advanced' => array(),
+//			'advanced' => array(),
 //			'inventory' => array(),
 //			'attributes' => array(),
 		));

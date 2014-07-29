@@ -49,6 +49,7 @@ class Assets
 
 		$this->styles->add('jigoshop-admin', JIGOSHOP_URL.'/assets/css/admin.css');
 		$this->styles->add('jigoshop-vendors', JIGOSHOP_URL.'/assets/css/vendors.min.css');
+		$this->scripts->add('jigoshop-admin', JIGOSHOP_URL.'/assets/js/admin.js');
 		$this->scripts->add('jigoshop-admin-product', JIGOSHOP_URL.'/assets/js/admin/product.js');
 		$this->scripts->add('jigoshop-vendors', JIGOSHOP_URL.'/assets/js/vendors.min.js');
 //		$this->scripts->add('bootstrap', JIGOSHOP_URL.'/assets/js/bootstrap.min.js', array('jquery'));

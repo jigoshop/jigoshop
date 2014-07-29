@@ -11,15 +11,18 @@
  */
 ?>
 <div class="form-group <?php echo $id; ?>_field">
-	<label for="<?php echo $id; ?>" class="col-sm-2 control-label"><?php echo $label; ?></label>
+	<label for="<?php echo $id; ?>" class="col-sm-2 control-label">
+		<?php echo $label; ?>
+		<?php if(!empty($tip)): ?>
+			<a href="#" data-toggle="tooltip" class="badge" data-placement="left" title="<?php echo $tip; ?>">?</a>
+		<?php endif; ?>
+	</label>
 	<div class="col-sm-9">
-		<input type="text" id="<?php echo $id; ?>" name="<?php echo $name; ?>" class="form-control <?php echo join(' ', $classes); ?>"
+		<input type="text" id="<?php echo $id; ?>" name="<?php echo $name; ?>"
+		       class="form-control <?php echo join(' ', $classes); ?>"
 		       placeholder="<?php echo $placeholder; ?>" value="<?php echo $value; ?>" />
 		<?php if(!empty($description)): ?>
 			<span class="help-block"><?php echo $description; ?></span>
-		<?php endif; ?>
-		<?php if(!empty($tip)): ?>
-			<a href="#" tip="<?php echo $tip; ?>" class="tips" tabindex="99"></a>
 		<?php endif; ?>
 	</div>
 </div>

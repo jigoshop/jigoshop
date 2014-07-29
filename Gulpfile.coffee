@@ -22,7 +22,7 @@ gulp.task 'styles', ['styles-vendors'], ->
     .pipe gulp.dest('assets/css')
 
 gulp.task 'scripts-vendors', ->
-  gulp.src ['assets/bower/select2/select2.js', 'assets/bower/bootstrap/js/{tab,transition}.js']
+  gulp.src ['assets/bower/select2/select2.js', 'assets/bower/bootstrap/js/{tab,transition,tooltip}.js']
     .pipe uglify()
     .pipe concat('vendors.min.js')
     .pipe gulp.dest('assets/js')
