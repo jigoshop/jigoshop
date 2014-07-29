@@ -7,6 +7,21 @@ use Jigoshop\Entity\Product\Type\Simple;
 
 class Product
 {
+	public static function currencySymbol()
+	{
+		return '$'; // TODO: Properly implement after setting up the settings page.
+	}
+
+	public static function dimensionsUnit()
+	{
+		return 'cm'; // TODO: Properly implement after setting up the settings page.
+	}
+
+	public static function weightUnit()
+	{
+		return 'kg'; // TODO: Properly implement after setting up the settings page.
+	}
+
 	/**
 	 * Formats price appropriately to the product type and returns a string.
 	 *
@@ -18,7 +33,7 @@ class Product
 		switch($product->getType()){
 			case Simple::TYPE:
 				/** @var $product Simple */
-				return $product->getPrice();
+				return sprintf('%1$01.2f %2$s', $product->getPrice(), self::currencySymbol()); // TODO: Properly implement fetching price position and format
 			default:
 				return apply_filters('jigoshop\\helper\\product\\get_price', '', $product);
 		}

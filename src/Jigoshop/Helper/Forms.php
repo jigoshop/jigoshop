@@ -87,7 +87,7 @@ class Forms
 			'value' => false,
 			'multiple' => false,
 			'placeholder' => '',
-			'classes' => array('select', 'short'),
+			'classes' => array('form-control'),
 			'description' => false,
 			'tip' => false,
 			'options' => array(),

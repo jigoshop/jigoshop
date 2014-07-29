@@ -32,6 +32,17 @@ class Simple extends Product
 	}
 
 	/**
+	 * Returns real product price.
+	 * Applies `jigoshop\product\get_price` filter to allow plugins to modify the price.
+	 *
+	 * @return float Current product price.
+	 */
+	public function getPrice()
+	{
+		return $this->wp->applyFilters('jigoshop\\product\\get_price', $this->price, $this);
+	}
+
+	/**
 	 * Sets new product price.
 	 * Applies `jigoshop\product\set_price` filter to allow plugins to modify the price. When filter returns false price is not modified at all.
 	 *
@@ -48,14 +59,11 @@ class Simple extends Product
 	}
 
 	/**
-	 * Returns real product price.
-	 * Applies `jigoshop\product\get_price` filter to allow plugins to modify the price.
-	 *
-	 * @return float Current product price.
+	 * @return float Regular product price.
 	 */
-	public function getPrice()
+	public function getRegularPrice()
 	{
-		return $this->wp->applyFilters('jigoshop\\product\\get_price', $this->price, $this);
+		return $this->regularPrice;
 	}
 
 	/**
@@ -68,11 +76,11 @@ class Simple extends Product
 	}
 
 	/**
-	 * @return float Regular product price.
+	 * @return Sales Current product sales data.
 	 */
-	public function getRegularPrice()
+	public function getSales()
 	{
-		return $this->regularPrice;
+		return $this->sales;
 	}
 
 	/**
@@ -92,11 +100,11 @@ class Simple extends Product
 	}
 
 	/**
-	 * @return Sales Current product sales data.
+	 * @return StockStatus Current stock status.
 	 */
-	public function getSales()
+	public function getStock()
 	{
-		return $this->sales;
+		return $this->stock;
 	}
 
 	/**
@@ -113,14 +121,6 @@ class Simple extends Product
 			$this->stock = $stock;
 			$this->dirtyFields[] = 'stock';
 		}
-	}
-
-	/**
-	 * @return StockStatus Current stock status.
-	 */
-	public function getStock()
-	{
-		return $this->stock;
 	}
 
 	/**
@@ -152,6 +152,26 @@ class Simple extends Product
 		$toSave['price'] = $this->calculatePrice();
 
 		return $toSave;
+	}
+
+	private function calculatePrice()
+	{
+		$price = $this->regularPrice;
+
+		if ($this->sales !== null) {
+			if (strpos($this->sales->getPrice(), '%') !== false) {
+				$discount = trim('%', $this->sales->getPrice());
+				$sale = $this->regularPrice * (1 - $discount / 100);
+			} else {
+				$sale = $this->regularPrice - $this->sales->getPrice();
+			}
+
+			if ($sale < $price) {
+				$price = $sale;
+			}
+		}
+
+		return $price;
 	}
 
 	/**
@@ -216,27 +236,5 @@ class Simple extends Product
 		}
 
 		parent::markAsDirty($state);
-	}
-
-	private function calculatePrice()
-	{
-		$price = $this->regularPrice;
-
-		if(strpos($this->sales->getPrice(), '%') !== false)
-		{
-			$discount = trim('%', $this->sales->getPrice());
-			$sale = $this->regularPrice * (1 - $discount/100);
-		}
-		else
-		{
-			$sale = $this->regularPrice - $this->sales->getPrice();
-		}
-
-		if($sale < $price)
-		{
-			$price = $sale;
-		}
-
-		return $price;
 	}
 }

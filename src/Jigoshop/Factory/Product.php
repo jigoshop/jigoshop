@@ -61,9 +61,12 @@ class Product
 		$type = isset($_POST['product']['type']) ? $_POST['product']['type'] : Simple::TYPE;
 		$product = $this->get($type);
 		$product->setId($id);
-		$product->setName($this->wp->sanitizeTitle($_POST['post_title']));
-		$product->restoreState($_POST['product']);
-		$product->markAsDirty($_POST['product']);
+
+		if (!empty($_POST)) {
+			$product->setName($this->wp->sanitizeTitle($_POST['post_title']));
+			$product->restoreState($_POST['product']);
+			$product->markAsDirty($_POST['product']);
+		}
 
 		return $product;
 	}

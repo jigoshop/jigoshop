@@ -13,29 +13,31 @@ use Jigoshop\Helper\Render;
  * @var $description string Field description.
  */
 ?>
-<p class="form-field <?php echo $id; ?>_field">
-	<label for="<?php echo $id; ?>"><?php echo $label; ?></label>
-	<select id="<?php echo $id; ?>" name="<?php echo $name; ?>" class="<?php echo join(' ', $classes); ?>"
-	        placeholder="<?php echo $placeholder; ?>"<?php $multiple and print ' multiple="multiple"'; ?>>
-		<?php foreach($options as $option => $item): ?>
-			<?php if(is_array($item)): ?>
-				<optgroup label="<?php echo $option; ?>">
-					<?php foreach($item as $subvalue => $sublabel): ?>
-					<?php Render::output('forms/select/option', array('label' => $sublabel, 'value' => $subvalue, 'current' => $value)); ?>
-					<?php endforeach; ?>
-				</optgroup>
-			<?php else: ?>
-				<?php Render::output('forms/select/option', array('label' => $item, 'value' => $option, 'current' => $value)); ?>
-			<?php endif; ?>
-		<?php endforeach; ?>
-	</select>
-	<?php if(!empty($tip)): ?>
-	<a href="#" tip="<?php echo $tip; ?>" class="tips" tabindex="99"></a>
-	<?php endif; ?>
-	<?php if(!empty($description)): ?>
-	<span class="description"><?php echo $description; ?></span>
-	<?php endif; ?>
-</p>
+<div class="form-group <?php echo $id; ?>_field">
+	<label for="<?php echo $id; ?>" class="col-sm-2 control-label"><?php echo $label; ?></label>
+	<div class="col-sm-9">
+		<select id="<?php echo $id; ?>" name="<?php echo $name; ?>" class="<?php echo join(' ', $classes); ?>"
+		        placeholder="<?php echo $placeholder; ?>"<?php $multiple and print ' multiple="multiple"'; ?>>
+			<?php foreach($options as $option => $item): ?>
+				<?php if(is_array($item)): ?>
+					<optgroup label="<?php echo $option; ?>">
+						<?php foreach($item as $subvalue => $sublabel): ?>
+							<?php Render::output('forms/select/option', array('label' => $sublabel, 'value' => $subvalue, 'current' => $value)); ?>
+						<?php endforeach; ?>
+					</optgroup>
+				<?php else: ?>
+					<?php Render::output('forms/select/option', array('label' => $item, 'value' => $option, 'current' => $value)); ?>
+				<?php endif; ?>
+			<?php endforeach; ?>
+		</select>
+		<?php if(!empty($description)): ?>
+			<span class="help-block"><?php echo $description; ?></span>
+		<?php endif; ?>
+		<?php if(!empty($tip)): ?>
+			<a href="#" tip="<?php echo $tip; ?>" class="tips" tabindex="99"></a>
+		<?php endif; ?>
+	</div>
+</div>
 <!-- TODO: Get rid of this and use better asset script. -->
 <script type="text/javascript">
 	/*<![CDATA[*/

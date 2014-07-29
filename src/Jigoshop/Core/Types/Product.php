@@ -39,7 +39,7 @@ class Product implements Post
 		$wp->addAction('restrict_manage_posts', array($this, 'typeFilter'));
 		$that = $this;
 		$wp->addAction('add_meta_boxes', function() use ($wp, $that){
-			$wp->addMetaBox('jigoshop-product-data', __('Product Data', 'jigoshop'), array($that, 'dataBox'), $that::NAME, 'normal', 'high');
+			$wp->addMetaBox('jigoshop-product-data', __('Product Data', 'jigoshop'), array($that, 'box'), $that::NAME, 'normal', 'high');
 		});
 	}
 
@@ -224,17 +224,19 @@ class Product implements Post
 	 *
 	 * @since 		1.0
 	 */
-	public function dataBox()
+	public function box()
 	{
 		$post = $this->wp->getGlobalPost();
 		$product = $this->productService->findForPost($post);
 		$types = array();
+
 		foreach ($this->enabledTypes as $type) {
 			$types[$type] = $this->getTypeName($type);
 		}
+
 		$menu = $this->wp->applyFilters('jigoshop\\admin\\product\\menu', array(
 			'general' => __('General', 'jigoshop'),
-//			'advanced' => __('Advanced', 'jigoshop'),
+			'advanced' => __('Advanced', 'jigoshop'),
 //			'inventory' => __('Inventory', 'jigoshop'),
 //			'attributes' => __('Attributes', 'jigoshop'),
 		));
@@ -242,7 +244,7 @@ class Product implements Post
 			'general' => array(
 				'product' => $product,
 			),
-//			'advanced' => array(),
+			'advanced' => array(),
 //			'inventory' => array(),
 //			'attributes' => array(),
 		));
@@ -255,6 +257,7 @@ class Product implements Post
 			'types' => $types,
 			'menu' => $menu,
 			'tabs' => $tabs,
+			'current_tab' => 'general',
 		));
 	}
 

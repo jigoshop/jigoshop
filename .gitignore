@@ -3,3 +3,8 @@ compatibility/*
 vendor/
 composer.lock
 deploy.sh
+node_modules
+assets/bower
+assets/css
+assets/js
+assets/fonts

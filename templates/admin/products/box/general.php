@@ -1,11 +1,51 @@
 <?php
 use Jigoshop\Entity\Product;
 use Jigoshop\Helper\Forms;
+use Jigoshop\Helper\Product as ProductHelper;
 
 /**
  * @var $product Product The product.
  */
 ?>
+<fieldset>
+	<?php
+	Forms::text(array(
+		'name' => 'regular_price',
+		'label' => __('Price', 'jigoshop').' ('.ProductHelper::currencySymbol().')',
+		'value' => $product->getRegularPrice(),
+	));
+	Forms::text(array(
+		'name' => 'sku',
+		'label' => __('SKU', 'jigoshop'),
+		'value' => $product->getSku(),
+		'placeholder' => $product->getId(),
+	));
+	?>
+</fieldset>
+<fieldset>
+	<?php
+	Forms::text(array(
+		'name' => 'size_weight',
+		'label' => __('Weight', 'jigoshop').' ('.ProductHelper::weightUnit().')',
+		'value' => $product->getSize()->getWeight(),
+	));
+	Forms::text(array(
+		'name' => 'size_length',
+		'label' => __('Length', 'jigoshop').' ('.ProductHelper::dimensionsUnit().')',
+		'value' => $product->getSize()->getLength(),
+	));
+	Forms::text(array(
+		'name' => 'size_width',
+		'label' => __('Width', 'jigoshop').' ('.ProductHelper::dimensionsUnit().')',
+		'value' => $product->getSize()->getWidth(),
+	));
+	Forms::text(array(
+		'name' => 'size_height',
+		'label' => __('Height', 'jigoshop').' ('.ProductHelper::dimensionsUnit().')',
+		'value' => $product->getSize()->getHeight(),
+	));
+	?>
+</fieldset>
 <fieldset>
 	<?php
 	Forms::select(array(
@@ -27,33 +67,4 @@ use Jigoshop\Helper\Forms;
 	));
 	?>
 </fieldset>
-<fieldset>
-	<?php
-	Forms::text(array(
-		'name' => 'sku',
-		'label' => __('SKU', 'jigoshop'),
-		'value' => $product->getSku(),
-		'placeholder' => $product->getId(),
-	));
-	do_action('jigoshop\product\tabs\general\main');
-	?>
-</fieldset>
-<fieldset id="price_fieldset">
-	<?php
-	Forms::text(array(
-		'name' => 'regular_price',
-		'label' => __('Price', 'jigoshop'),
-		'value' => $product->getRegularPrice(),
-	));
-	Forms::text(array(
-		'name' => 'sales_price',
-		'label' => __('Sale price', 'jigoshop'),
-		'value' => $product->getSales()->getPrice(),
-		'description' => '<a href="#" class="schedule">'.__('Schedule', 'jigoshop').'</a>',
-		'placeholder' => __('15% or 19.99', 'jigoshop'),
-	));
-	// TODO: Add hidden fields with sales schedule
-	do_action('jigoshop\product\tabs\general\pricing');
-	?>
-</fieldset>
-<?php do_action('jigoshop\product\tabs\general\additional'); ?>
+<?php do_action('jigoshop\product\tabs\general'); ?>
