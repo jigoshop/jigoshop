@@ -1,12 +1,10 @@
 <?php
+
 /**
  * Jigoshop Licence Validation Class used by downloadable digital products
- *
  * Used for validation actions of product licencing from a selling shop
  * Used for WordPress auto update notices of updates available from a selling shop
- *
  * DISCLAIMER
- *
  * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
@@ -16,84 +14,70 @@
  * @author              Jigoshop
  * @copyright           Copyright © 2011-2014 Jigoshop.
  * @license             GNU General Public License v3
- *
  * @version 1.3 - 2014-06-22
  */
-
-
 class jigoshop_licence_validator
 {
-
-	private $identifier;        /* Product ID from the selling shop */
-	private $path;              /* full server path to this plugin folder */
-	private $file;              /* full server path to this plugin main file */
-	private $plugin_slug;       /* this plugin slug (plugin_directory/plugin_file.php) */
-	private $file_slug;         /* this plugin file slug (plugin_filename without .php) */
-	private $title;             /* actual name of this plugin */
-	private $version;           /* currently installed version */
-	private $home_shop_url;     /* the selling shop URL of this product */
-
-	private $validator_token	= 'jigoshop-licence-validator';
-	private $validator_prefix	= 'jigoshop_licence_validator_';
-
-	private static $instance    = false;
-	private static $plugins     = array();
-
+	private static $instance = false; /* Product ID from the selling shop */
+	private static $plugins = array(); /* full server path to this plugin folder */
+	private $identifier; /* full server path to this plugin main file */
+	private $path; /* this plugin slug (plugin_directory/plugin_file.php) */
+	private $file; /* this plugin file slug (plugin_filename without .php) */
+	private $plugin_slug; /* actual name of this plugin */
+	private $file_slug; /* currently installed version */
+	private $title; /* the selling shop URL of this product */
+	private $version;
+	private $home_shop_url;
+	private $validator_token = 'jigoshop-licence-validator';
+	private $validator_prefix = 'jigoshop_licence_validator_';
 
 	/**
 	 * Constructor for Licence Validator in each plugin
 	 *
-	 * @param string $file              - full server path to the main plugin file
-	 * @param string $identifier        - selling Shop Product ID
-	 * @param string $home_shop_url     - selling Shop URL of this plugin (product)
+	 * @param string $file - full server path to the main plugin file
+	 * @param string $identifier - selling Shop Product ID
+	 * @param string $home_shop_url - selling Shop URL of this plugin (product)
 	 */
-	public function __construct( $file, $identifier, $home_shop_url )
+	public function __construct($file, $identifier, $home_shop_url)
 	{
 
-		$info = get_file_data( $file, array( 'Title' => 'Plugin Name', 'Version' => 'Version' ), 'plugin' );
+		$info = get_file_data($file, array('Title' => 'Plugin Name', 'Version' => 'Version'), 'plugin');
 
-		$this->identifier	    = $identifier;
-		$this->file			    = $file;
-		$this->path			    = plugin_dir_path( $this->file );
-		$this->plugin_slug	    = plugin_basename( $this->file );
-        list ($a, $b)           = explode( '/', $this->plugin_slug );
-        $this->file_slug        = str_replace( '.php', '', $b );
-		$this->title		    = $info['Title'];
-		$this->version	        = $info['Version'];
-		$this->home_shop_url    = $home_shop_url;
+		$this->identifier = $identifier;
+		$this->file = $file;
+		$this->path = plugin_dir_path($this->file);
+		$this->plugin_slug = plugin_basename($this->file);
+		list ($a, $b) = explode('/', $this->plugin_slug);
+		$this->file_slug = str_replace('.php', '', $b);
+		$this->title = $info['Title'];
+		$this->version = $info['Version'];
+		$this->home_shop_url = $home_shop_url;
 
 		if (is_ssl()) {
 			$this->home_shop_url = str_replace('http://', 'https://', $this->home_shop_url);
 		}
 
 		self::$plugins[$this->identifier] = array(
-			'version'       => $this->version,
-			'plugin_slug'   => $this->plugin_slug,
-			'file_slug'     => $this->file_slug,
-			'path'          => $this->path,
-			'title'         => $this->title,
+			'version' => $this->version,
+			'plugin_slug' => $this->plugin_slug,
+			'file_slug' => $this->file_slug,
+			'path' => $this->path,
+			'title' => $this->title,
 		);
 
-		if ( ! self::$instance ) {
-
+		if (!self::$instance) {
 			self::$instance = true;
 
-			add_action( 'admin_menu', array( $this, 'register_nav_menu_link' ) );
-
+			add_action('admin_menu', array($this, 'register_nav_menu_link'));
 			// define the alternative API for updating checking
-			add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'check_for_update' ));
-
+			add_filter('pre_set_site_transient_update_plugins', array($this, 'check_for_update'));
 			// Define the alternative response for information checking
-			add_filter( 'plugins_api', array( $this, 'get_update_info'), 20, 3 );
-
+			add_filter('plugins_api', array($this, 'get_update_info'), 20, 3);
 		}
-
 	}
-
 
 	/**
 	 * Is Licence Active for this plugin
-	 *
 	 * All plugins should call this early in their existance to check if their licence is valid
 	 * Allow plugin to function normally if it is and limit or disable functionality otherwise
 	 *
@@ -102,15 +86,24 @@ class jigoshop_licence_validator
 	public function is_licence_active()
 	{
 		$keys = $this->get_keys();
-		$active = ( isset( $keys[$this->identifier]['status'] ) && $keys[$this->identifier]['status'] );
+		$active = (isset($keys[$this->identifier]['status']) && $keys[$this->identifier]['status']);
 
-		if ( ! $active ) {
-			add_action( 'admin_notices', array( $this,'display_inactive_plugin_warning' ) );
+		if (!$active) {
+			add_action('admin_notices', array($this, 'display_inactive_plugin_warning'));
 		}
 
 		return $active;
 	}
 
+	/**
+	 * Returns a set of licence keys for this site from the options table
+	 *
+	 * @return array
+	 */
+	private function get_keys()
+	{
+		return get_option($this->validator_prefix.'licence_keys');
+	}
 
 	/**
 	 * Displaying the error message in admin panel when plugin is activated without a valid licence key
@@ -118,28 +111,13 @@ class jigoshop_licence_validator
 	public function display_inactive_plugin_warning()
 	{
 		?>
-			<div class="error">
-				<p>
-					<?php echo sprintf(	__( 'The License key for <i><b>%s</b></i> is not valid . Please enter your <b>Licence Key</b> on the Jigoshop->Manage Licences Menu with your <b>Order email address</b>.  Until then, the plugin will not be enabled for use.', 'jigoshop' ), $this->title ); ?>
-				</p>
-			</div>
+		<div class="error">
+			<p>
+				<?php echo sprintf(__('The License key for <i><b>%s</b></i> is not valid . Please enter your <b>Licence Key</b> on the Jigoshop->Manage Licences Menu with your <b>Order email address</b>.  Until then, the plugin will not be enabled for use.', 'jigoshop'), $this->title); ?>
+			</p>
+		</div>
 		<?php
 	}
-
-    /**
-     * Displaying the error message in admin panel when plugin license is outdated
-     */
-    private function display_incorrect_update_warning()
-    {
-        ?>
-        <div class="error">
-            <p>
-                <?php echo sprintf(	__( 'The License key for <i><b>%s</b></i> is outdated. Please renew your license. Until then, the update for this plugin will not be accessible.', 'jigoshop' ), $this->title ); ?>
-            </p>
-        </div>
-    <?php
-    }
-
 
 	/**
 	 * Adding the Manage Licences menu to Jigoshop Menu
@@ -149,19 +127,18 @@ class jigoshop_licence_validator
 	public function register_nav_menu_link()
 	{
 		// Don't register the Jigoshop Manage Licences submenu if it's already available.
-		if ( $this->submenu_exists() ) {
+		if ($this->submenu_exists()) {
 			return false;
 		}
 
 		add_submenu_page(
 			'jigoshop',
-			__( 'Manage Licences', 'jigoshop' ),
-			__( 'Manage Licences', 'jigoshop' ),
+			__('Manage Licences', 'jigoshop'),
+			__('Manage Licences', 'jigoshop'),
 			'manage_jigoshop',
 			$this->validator_token,
-			array( $this, 'admin_manage_licences' )
+			array($this, 'admin_manage_licences')
 		);
-
 	}
 
 
@@ -177,9 +154,9 @@ class jigoshop_licence_validator
 		$exists = false;
 
 		// Check if the menu item already exists.
-		if ( isset( $submenu['jigoshop'] ) && is_array( $submenu['jigoshop'] ) ) {
-			foreach ( $submenu['jigoshop'] as $key => $value ) {
-				if ( isset( $value[2] ) && ( $value[2] == $this->validator_token ) ) {
+		if (isset($submenu['jigoshop']) && is_array($submenu['jigoshop'])) {
+			foreach ($submenu['jigoshop'] as $key => $value) {
+				if (isset($value[2]) && ($value[2] == $this->validator_token)) {
 					$exists = true;
 					break;
 				}
@@ -189,134 +166,31 @@ class jigoshop_licence_validator
 		return $exists;
 	}
 
-
-	/**
-	 * Returns a set of licence keys for this site from the options table
-	 *
-	 * @return array
-	 */
-	private function get_keys()
-	{
-		return get_option( $this->validator_prefix . 'licence_keys' );
-	}
-
-
-	/**
-	 * Saves a new set of licence keys in database options table
-	 *
-	 * @param array $keys
-	 * @return boolean
-	 */
-	private function set_keys( $keys )
-	{
-		return update_option( $this->validator_prefix . 'licence_keys', $keys );
-	}
-
-
-	/**
-	 * Storing licence keys in database
-	 *
-	 * @return array
-	 */
-	private function save_licence_keys()
-	{
-		$messages	= array();
-		$keys		= $this->get_keys();
-
-		if ( ! isset( $_POST['licence_keys'] ) ) {
-			return $messages;
-		}
-
-		foreach ( $_POST['licence_keys'] as $product_id => $licence_key ) {
-
-			$licence_key		= trim( $licence_key );
-			$activation_email	= ( isset( $_POST['licence_emails'][$product_id] ) && is_email( $_POST['licence_emails'][$product_id] ) ) ?
-									$_POST['licence_emails'][$product_id] : $this->get_current_user_email();
-			$licence_active		= ( isset( $keys[$product_id]['status'] ) && $keys[$product_id]['status'] );
-
-			// Deactivate this key as it was removed
-			if ( empty( $licence_key ) && isset( $keys[$product_id]['status'] ) && $keys[$product_id]['status'] && $licence_active ) {
-				$response = $this->deactivate( $product_id, $keys[$product_id]['licence_key'], $activation_email );
-				if ( isset( $response->success ) && $response->success ) {
-					$messages[] = array(
-						'success'	=> true,
-						'message'	=> sprintf( __( '<b>Key deactivated.</b> License key for <i>%s</i> has been <b>deactivated</b>.', 'jigoshop' ), self::$plugins[$product_id]['title'] )
-					);
-					// set status as inactive and remove licence from database
-					$keys[$product_id] = array(
-						'licence_key'	=> '',
-						'status'		=> false,
-						'email'			=> ''
-					);
-				}
-				else {
-					$messages[] = array(
-						'success'	=> false,
-						'message'	=> sprintf( __( '%s deactivation: ', 'jigoshop' ), self::$plugins[$product_id]['title'] ) . $response->error
-					);
-				}
-			}
-			// Activate this key
-			elseif ( ! $licence_active ) {
-				$response = $this->activate( $product_id, $licence_key, $activation_email );
-				if ( isset( $response->success ) && $response->success ) {
-					$messages[] = array(
-						'success'	=> true,
-						'message'	=> sprintf( __( '<b>Key activated.</b> License key for <i>%s</i> has been <b>activated</b>.', 'jigoshop' ), self::$plugins[$product_id]['title'] )
-					);
-
-					$keys[$product_id] = array(
-						'licence_key'	=> $licence_key,
-						'status'		=> true,
-						'email'			=> ( isset( $_POST['licence_emails'][$product_id] ) && is_email( $_POST['licence_emails'][$product_id] ) ) ?
-										   $_POST['licence_emails'][$product_id] : ''
-					);
-				}
-				else {
-					$messages[] = array(
-						'success'	=> false,
-						'message'	=> sprintf( __( '%s activation: ', 'jigoshop' ), self::$plugins[$product_id]['title'] ) . $response->error
-					);
-				}
-			}
-		}
-
-		$this->set_keys( $keys );
-		return $messages;
-	}
-
-
 	/**
 	 * Add our self-hosted autoupdate plugin to the filter transient
 	 *
 	 * @param object $transient
 	 * @return object $transient
 	 */
-	public function check_for_update( $transient )
+	public function check_for_update($transient)
 	{
 		$keys = $this->get_keys();
-		$licence_key = isset( $keys[$this->identifier]['licence_key'] )
-			? $keys[$this->identifier]['licence_key']
-			: '';
-		$licence_email = isset( $keys[$this->identifier]['email'] )
-			? $keys[$this->identifier]['email']
-			: '';
+		$licence_key = isset($keys[$this->identifier]['licence_key'])	? $keys[$this->identifier]['licence_key']	: '';
+		$licence_email = isset($keys[$this->identifier]['email'])	? $keys[$this->identifier]['email']	: '';
 
 		// Get the remote version
-		$response = $this->get_update_version( $this->identifier, $licence_key, $licence_email );
+		$response = $this->get_update_version($this->identifier, $licence_key, $licence_email);
 
-		if ( isset( $response->version )) {
-
-            if ( strlen( $response->update_url ) === 0 && isset( $response->outdated_license ) && $response->outdated_license == 1 ) {
-
-                $this->display_incorrect_update_warning();
-            }
+		if (isset($response->version)) {
+			if (strlen($response->update_url) === 0 && isset($response->outdated_license) && $response->outdated_license == 1) {
+				$this->display_incorrect_update_warning();
+			}
 
 			// If a newer version is available, add the update
-			if ( version_compare( $this->version, $response->version, '<' )) {
+			if (version_compare($this->version, $response->version, '<')) {
 				$obj = new stdClass();
 				$obj->plugin_name = $this->title;
-				$obj->slug = $this->plugin_slug;
+				$obj->slug = $this->file_slug;
 				$obj->new_version = $response->version;
 				$obj->download_link = $response->update_url;
 				$obj->package = $response->update_url;
@@ -328,6 +202,84 @@ class jigoshop_licence_validator
 		return $transient;
 	}
 
+	/**
+	 * Plugin Version and update Information for a Jigoshop Licence API request
+	 *
+	 * @param string $product_id
+	 * @param string $licence_key
+	 * @param string $email
+	 * @return boolean
+	 */
+	private function get_update_version($product_id, $licence_key, $email)
+	{
+		// POST data to send to the Jigoshop Licencing API
+		$args = array(
+			'email' => $email,
+			'licence_key' => $licence_key,
+			'product_id' => $product_id,
+			'instance' => $this->generate_plugin_instance()
+		);
+
+		// Send request for detailed information
+		return $this->prepare_request('update_version', $args);
+	}
+
+	/**
+	 * Instance key for current WP installation
+	 *
+	 * @return string
+	 */
+	private function generate_plugin_instance()
+	{
+		return $_SERVER['SERVER_ADDR'].'@'.$_SERVER['HTTP_HOST'];
+	}
+
+	/**
+	 * Prepare a request and send it to the Jigoshop Licence API on the selling shop
+	 *
+	 * @param string $action
+	 * @param array $args
+	 * @return boolean
+	 */
+	private function prepare_request($action, $args)
+	{
+		$request = wp_remote_post(
+			$this->home_shop_url.'?licence-api='.$action, array(
+				'method' => 'POST',
+				'timeout' => 45,
+				'redirection' => 5,
+				'httpversion' => '1.0',
+				'blocking' => true,
+				'headers' => array(),
+				'body' => $args,
+				'cookies' => array(),
+				'sslverify' => false,
+			)
+		);
+
+		// Make sure the request was successful
+		if (is_wp_error($request) || wp_remote_retrieve_response_code($request) != 200) {
+			// Request failed
+			return false;
+		}
+
+		// Read server response and return it
+		return json_decode(wp_remote_retrieve_body($request));
+	}
+
+	/**
+	 * Displaying the error message in admin panel when plugin license is outdated
+	 */
+	private function display_incorrect_update_warning()
+	{
+		?>
+		<div class="error">
+			<p>
+				<?php echo sprintf(__('The License key for <i><b>%s</b></i> is outdated. Please renew your license. Until then, the update for this plugin will not be accessible.', 'jigoshop'), $this->title); ?>
+			</p>
+		</div>
+	<?php
+	}
 
 	/**
 	 * Get our self-hosted update description from the 'plugins_api' filter
@@ -337,34 +289,30 @@ class jigoshop_licence_validator
 	 * @param object $arg
 	 * @return bool|object
 	 */
-	public function get_update_info( $false, $action, $arg )
+	public function get_update_info($false, $action, $arg)
 	{
-		if ( $action == 'plugin_information' ) {
-			if ( $arg->slug === $this->plugin_slug ) {
-
+		if ($action == 'plugin_information') {
+			if ($arg->slug === $this->plugin_slug) {
 				$keys = $this->get_keys();
-				$licence_key = isset( $keys[$this->identifier]['licence_key'] )
-					? $keys[$this->identifier]['licence_key']
-					: '';
-				$licence_email = isset( $keys[$this->identifier]['email'] )
-					? $keys[$this->identifier]['email']
-					: '';
+				$licence_key = isset($keys[$this->identifier]['licence_key'])	? $keys[$this->identifier]['licence_key']	: '';
+				$licence_email = isset($keys[$this->identifier]['email'])	? $keys[$this->identifier]['email']	: '';
 
 				// Get the remote information
-				$response = $this->get_update_version( $this->identifier, $licence_key, $licence_email );
+				$response = $this->get_update_version($this->identifier, $licence_key, $licence_email);
 
 				$obj = new stdClass();
 				$obj->plugin_name = $this->title;
-				$obj->slug = $this->plugin_slug;
-				if ( isset( $response->sections )) {
-					$converted = get_object_vars( $response->sections );
-					foreach ( $converted as $index => $value ) {
-						$converted[$index] = html_entity_decode( $value, ENT_COMPAT );
+				$obj->slug = $this->file_slug;
+				if (isset($response->sections)) {
+					$converted = get_object_vars($response->sections);
+					foreach ($converted as $index => $value) {
+						$converted[$index] = html_entity_decode($value, ENT_COMPAT);
 					}
 					$obj->sections = $converted;
 				} else {
-					$obj->sections = array( 'changelog' => __('No update information available.', 'jigoshop') );
+					$obj->sections = array('changelog' => __('No update information available.', 'jigoshop'));
 				}
+
 				return $obj;
 			}
 		}
@@ -372,143 +320,88 @@ class jigoshop_licence_validator
 		return false;
 	}
 
-
 	/**
-	 * Plugin Version and update Information for a Jigoshop Licence API request
+	 * Display Jigoshop Manage Licences page.
 	 *
-	 * @param string $product_id
-	 * @param string $licence_key
-	 * @param string $email
-	 * @return boolean
+	 * @return void
 	 */
-	private function get_update_version( $product_id, $licence_key, $email )
+	public function admin_manage_licences()
 	{
-		// POST data to send to the Jigoshop Licencing API
-		$args = array(
-			'email'			=> $email,
-			'licence_key'	=> $licence_key,
-			'product_id'	=> $this->identifier,
-			'instance'		=> $this->generate_plugin_instance()
-		);
+		$user_email = $this->get_current_user_email();
+		$messages = array();
 
-		// Send request for detailed information
-		return $this->prepare_request( 'update_version', $args );
-	}
-
-
-	/**
-	 * Check for a valid licence Jigoshop Licence API request
-	 *
-	 * @param string $product_id
-	 * @param string $licence_key
-	 * @param string $email
-	 * @return boolean
-	 */
-	private function check_licence( $product_id, $licence_key, $email )
-	{
-		// POST data to send to the Jigoshop Licencing API
-		$args = array(
-			'email'			=> $email,
-			'licence_key'	=> $licence_key,
-			'product_id'	=> $product_id,
-			'instance'		=> $this->generate_plugin_instance()
-		);
-
-		// Send request for detailed information
-		return $this->prepare_request( 'check', $args );
-	}
-
-
-	/**
-	 * Activate Jigoshop Licence API request
-	 *
-	 * @param string $product_id
-	 * @param string $licence_key
-	 * @param string $email
-	 * @return boolean
-	 */
-	private function activate( $product_id, $licence_key, $email )
-	{
-		// POST data to send to the Jigoshop Licencing API
-		$args = array(
-			'email'			=> $email,
-			'licence_key'	=> $licence_key,
-			'product_id'	=> $product_id,
-			'instance'		=> $this->generate_plugin_instance()
-		);
-
-		// Send request for detailed information
-		return $this->prepare_request( 'activation', $args );
-	}
-
-
-	/**
-	 * Deactivate Jigoshop Licence API request
-	 *
-	 * @param string $product_id
-	 * @param string $licence_key
-	 * @param string $email
-	 * @return boolean
-	 */
-	private function deactivate( $product_id, $licence_key, $email )
-	{
-		// POST data to send to the Jigoshop Licencing API
-		$args = array(
-			'email'			=> $email,
-			'licence_key'	=> $licence_key,
-			'product_id'	=> $product_id,
-			'instance'		=> $this->generate_plugin_instance()
-		);
-
-		// Send request for detailed information
-		return $this->prepare_request( 'deactivation', $args );
-	}
-
-
-	/**
-	 * Prepare a request and send it to the Jigoshop Licence API on the selling shop
-	 *
-	 * @param string $action
-	 * @param array $args
-	 * @return boolean
-	 */
-	private function prepare_request( $action, $args )
-	{
-		$request = wp_remote_post(
-			$this->home_shop_url . '?licence-api=' . $action, array(
-				'method'      => 'POST',
-				'timeout'     => 45,
-				'redirection' => 5,
-				'httpversion' => '1.0',
-				'blocking'    => true,
-				'headers'     => array(),
-				'body'        => $args,
-				'cookies'     => array(),
-				'sslverify'   => false,
-			)
-		);
-
-		// Make sure the request was successful
-		if ( is_wp_error( $request ) || wp_remote_retrieve_response_code( $request ) != 200 ) {
-			// Request failed
-			return false;
+		if (!empty($_POST[$this->validator_prefix.'nonce']) &&
+			wp_verify_nonce($_POST[$this->validator_prefix.'nonce'], $this->validator_token.'-nonce')
+		) {
+			if (isset($_POST[$this->validator_token.'-login'])) {
+				$messages = $this->save_licence_keys();
+			}
 		}
 
-		// Read server response and return it
-		return json_decode( wp_remote_retrieve_body( $request ) );
+		// getting new keys after they were updated
+		$keys = $this->get_keys();
+
+		?>
+		<div class="wrap">
+			<h2><?php _e('Manage Jigoshop Digital Plugin Licences', 'jigoshop'); ?></h2>
+			<?php foreach ($messages as $message) : ?>
+				<div class="<?php echo($message['success'] ? 'updated below-h2' : 'error'); ?>">
+					<p><?php echo $message['message']; ?></p>
+				</div>
+			<?php endforeach; ?>
+			<p>
+				<?php _e('To <em>activate</em> the licence, enter your licence keys and email addresses you used when you ordered the plugins.', 'jigoshop'); ?>
+				<?php _e('<br />To <em>de-activate</em> the licence, remove the licence key, but leave the email address.', 'jigoshop'); ?>
+			</p>
+
+			<form name="<?php echo $this->validator_token; ?>-login" id="<?php echo $this->validator_token; ?>-login"
+			      action="<?php echo admin_url('admin.php?page='.$this->validator_token); ?>" method="post">
+				<?php wp_nonce_field($this->validator_token.'-nonce', $this->validator_prefix.'nonce'); ?>
+				<fieldset>
+					<table class="form-table">
+						<tbody>
+						<?php foreach (self::$plugins as $plugin_identifier => $info) :
+							$value = !empty($keys[$plugin_identifier]['licence_key']) ? $keys[$plugin_identifier]['licence_key'] : '';
+							$email = !empty($keys[$plugin_identifier]['email']) ? $keys[$plugin_identifier]['email'] : '';
+							if (!empty($_POST['licence_keys'][$plugin_identifier])) {
+								$value = $_POST['licence_keys'][$plugin_identifier];
+								$email = $_POST['licence_emails'][$plugin_identifier];
+							} ?>
+							<tr>
+								<th scope="row"><label for="licence_key-<?php echo $plugin_identifier; ?>"><?php echo $info['title'] ?></label></th>
+								<td>
+									<input type="text" class="input-text input-licence regular-text" name="licence_keys[<?php echo $plugin_identifier; ?>]"
+									       id="licence_key-<?php echo $plugin_identifier; ?>" value="<?php echo $value; ?>" />
+								</td>
+								<th scope="row" style="vertical-align: middle;">
+									<label for="licence_key_email-<?php echo $plugin_identifier; ?>"><?php _e('Activation email', 'jigoshop') ?></label>
+								</th>
+								<td>
+									<input type="email" class="input-text input-licence regular-text" placeholder="<?php echo $user_email; ?>" value="<?php echo $email; ?>"
+									       name="licence_emails[<?php echo $plugin_identifier; ?>]" id="licence_key_email-<?php echo $plugin_identifier; ?>" />
+								</td>
+								<th>
+									<?php if (!isset($keys[$plugin_identifier]['status']) || !$keys[$plugin_identifier]['status']) : ?>
+										<b class="inactive-licence" style="color: #CC0000;"><?php _e('Licence is inactive!', 'jigoshop'); ?></b>
+									<?php endif; ?>
+								</th>
+							</tr>
+						<?php endforeach; ?>
+						</tbody>
+					</table>
+				</fieldset>
+
+				<fieldset>
+					<p class="submit">
+						<button type="submit" name="<?php echo $this->validator_token; ?>-login" id="<?php echo $this->validator_token; ?>-login" class="button-primary">
+							<?php _e('Save', 'jigoshop'); ?>
+						</button>
+					</p>
+				</fieldset>
+			</form>
+		</div>
+	<?php
 	}
-
-
-	/**
-	 * Instance key for current WP installation
-	 *
-	 * @return string
-	 */
-	private function generate_plugin_instance()
-	{
-		return $_SERVER['SERVER_ADDR'] . '@' . $_SERVER['HTTP_HOST'];
-	}
-
 
 	/**
 	 * Gets the email address of the currently logged in user
@@ -518,93 +411,153 @@ class jigoshop_licence_validator
 	private function get_current_user_email()
 	{
 		$current_user = wp_get_current_user();
+
 		return $current_user->user_email;
 	}
 
-
 	/**
-	 * Display Jigoshop Manage Licences page.
+	 * Storing licence keys in database
 	 *
-	 * @return void
+	 * @return array
 	 */
-	public function admin_manage_licences()
+	private function save_licence_keys()
 	{
-		$user_email	= $this->get_current_user_email();
-		$messages	= array();
+		$messages = array();
+		$keys = $this->get_keys();
 
-		if ( !empty( $_POST[$this->validator_prefix . 'nonce'] ) &&
-			 wp_verify_nonce( $_POST[$this->validator_prefix . 'nonce'], $this->validator_token . '-nonce' ) ) {
-			if ( isset( $_POST[ $this->validator_token . '-login'] ) ) {
-				$messages = $this->save_licence_keys();
+		if (!isset($_POST['licence_keys'])) {
+			return $messages;
+		}
+
+		foreach ($_POST['licence_keys'] as $product_id => $licence_key) {
+			$licence_key = trim($licence_key);
+			$activation_email = (isset($_POST['licence_emails'][$product_id]) && is_email($_POST['licence_emails'][$product_id])) ?
+				$_POST['licence_emails'][$product_id] : $this->get_current_user_email();
+			$licence_active = (isset($keys[$product_id]['status']) && $keys[$product_id]['status']);
+
+			// Deactivate this key as it was removed
+			if (empty($licence_key) && isset($keys[$product_id]['status']) && $keys[$product_id]['status'] && $licence_active) {
+				$response = $this->deactivate($product_id, $keys[$product_id]['licence_key'], $activation_email);
+				if (isset($response->success) && $response->success) {
+					$messages[] = array(
+						'success' => true,
+						'message' => sprintf(__('<b>Key deactivated.</b> License key for <i>%s</i> has been <b>deactivated</b>.', 'jigoshop'), self::$plugins[$product_id]['title'])
+					);
+					// set status as inactive and remove licence from database
+					$keys[$product_id] = array(
+						'licence_key' => '',
+						'status' => false,
+						'email' => ''
+					);
+				} else {
+					$messages[] = array(
+						'success' => false,
+						'message' => sprintf(__('%s deactivation: ', 'jigoshop'), self::$plugins[$product_id]['title']).$response->error
+					);
+				}
+			} // Activate this key
+			elseif (!$licence_active) {
+				$response = $this->activate($product_id, $licence_key, $activation_email);
+				if (isset($response->success) && $response->success) {
+					$messages[] = array(
+						'success' => true,
+						'message' => sprintf(__('<b>Key activated.</b> License key for <i>%s</i> has been <b>activated</b>.', 'jigoshop'), self::$plugins[$product_id]['title'])
+					);
+
+					$keys[$product_id] = array(
+						'licence_key' => $licence_key,
+						'status' => true,
+						'email' => (isset($_POST['licence_emails'][$product_id]) && is_email($_POST['licence_emails'][$product_id])) ?
+							$_POST['licence_emails'][$product_id] : ''
+					);
+				} else {
+					$messages[] = array(
+						'success' => false,
+						'message' => sprintf(__('%s activation: ', 'jigoshop'), self::$plugins[$product_id]['title']).$response->error
+					);
+				}
 			}
 		}
 
-		// getting new keys after they were updated
-		$keys = $this->get_keys();
+		$this->set_keys($keys);
 
-?>
-<div class="wrap">
-
-	<?php screen_icon( 'plugins' ); ?>
-	<h2><?php _e( 'Manage Jigoshop Digital Plugin Licences', 'jigoshop' ); ?></h2>
-	<?php foreach( $messages as $message ) : ?>
-		<div class="<?php echo ( $message['success'] ? 'updated below-h2' : 'error' ); ?>">
-			<p><?php echo $message['message']; ?></p>
-		</div>
-	<?php endforeach; ?>
-	<p>
-		<?php _e( 'To <em>activate</em> the licence, enter your licence keys and email addresses you used when you ordered the plugins.', 'jigoshop' ); ?>
-		<?php _e( '<br />To <em>de-activate</em> the licence, remove the licence key, but leave the email address.', 'jigoshop' ); ?>
-	</p>
-
-	<form name="<?php echo $this->validator_token; ?>-login" id="<?php echo $this->validator_token; ?>-login"
-		  action="<?php echo admin_url( 'admin.php?page=' . $this->validator_token ); ?>" method="post">
-		<?php wp_nonce_field( $this->validator_token . '-nonce', $this->validator_prefix . 'nonce' ); ?>
-		<fieldset>
-			<table class="form-table">
-				<tbody>
-					<?php foreach ( self::$plugins as $plugin_identifier => $info ) :
-
-						$value = !empty( $keys[$plugin_identifier]['licence_key'] ) ? $keys[$plugin_identifier]['licence_key'] : '';
-						$email = !empty( $keys[$plugin_identifier]['email'] ) ? $keys[$plugin_identifier]['email'] : '';
-						if ( !empty( $_POST['licence_keys'][$plugin_identifier] ) ) {
-							$value = $_POST['licence_keys'][$plugin_identifier];
-							$email = $_POST['licence_emails'][$plugin_identifier];
-						} ?>
-						<tr>
-							<th scope="row"><label for="licence_key-<?php echo $plugin_identifier;?>"><?php echo $info['title'] ?></label></th>
-							<td>
-								<input type="text" class="input-text input-licence regular-text" name="licence_keys[<?php echo $plugin_identifier;?>]"
-									   id="licence_key-<?php echo $plugin_identifier;?>" value="<?php echo $value; ?>" />
-							</td>
-							<th scope="row" style="vertical-align: middle;">
-								<label for="licence_key_email-<?php echo $plugin_identifier;?>"><?php _e( 'Activation email', 'jigoshop' ) ?></label>
-							</th>
-							<td>
-								<input type="email" class="input-text input-licence regular-text" placeholder="<?php echo $user_email; ?>" value="<?php echo $email; ?>"
-									   name="licence_emails[<?php echo $plugin_identifier;?>]" id="licence_key_email-<?php echo $plugin_identifier;?>"/>
-							</td>
-							<th>
-								<?php if ( !isset( $keys[$plugin_identifier]['status'] ) || !$keys[$plugin_identifier]['status'] ) : ?>
-									<b class="inactive-licence" style="color: #CC0000;"><?php _e( 'Licence is inactive!', 'jigoshop' ); ?></b>
-								<?php endif; ?>
-							</th>
-						</tr>
-					<?php endforeach; ?>
-				</tbody>
-			</table>
-		</fieldset>
-
-		<fieldset>
-			<p class="submit">
-				<button type="submit" name="<?php echo $this->validator_token; ?>-login" id="<?php echo $this->validator_token; ?>-login" class="button-primary">
-					<?php _e( 'Save', 'jigoshop' ); ?>
-				</button>
-			</p>
-		</fieldset>
-	</form>
-</div>
-<?php
+		return $messages;
 	}
 
+	/**
+	 * Deactivate Jigoshop Licence API request
+	 *
+	 * @param string $product_id
+	 * @param string $licence_key
+	 * @param string $email
+	 * @return boolean
+	 */
+	private function deactivate($product_id, $licence_key, $email)
+	{
+		// POST data to send to the Jigoshop Licencing API
+		$args = array(
+			'email' => $email,
+			'licence_key' => $licence_key,
+			'product_id' => $product_id,
+			'instance' => $this->generate_plugin_instance()
+		);
+
+		// Send request for detailed information
+		return $this->prepare_request('deactivation', $args);
+	}
+
+	/**
+	 * Activate Jigoshop Licence API request
+	 *
+	 * @param string $product_id
+	 * @param string $licence_key
+	 * @param string $email
+	 * @return boolean
+	 */
+	private function activate($product_id, $licence_key, $email)
+	{
+		// POST data to send to the Jigoshop Licencing API
+		$args = array(
+			'email' => $email,
+			'licence_key' => $licence_key,
+			'product_id' => $product_id,
+			'instance' => $this->generate_plugin_instance()
+		);
+
+		// Send request for detailed information
+		return $this->prepare_request('activation', $args);
+	}
+
+	/**
+	 * Saves a new set of licence keys in database options table
+	 *
+	 * @param array $keys
+	 * @return boolean
+	 */
+	private function set_keys($keys)
+	{
+		return update_option($this->validator_prefix.'licence_keys', $keys);
+	}
+
+	/**
+	 * Check for a valid licence Jigoshop Licence API request
+	 *
+	 * @param string $product_id
+	 * @param string $licence_key
+	 * @param string $email
+	 * @return boolean
+	 */
+	private function check_licence($product_id, $licence_key, $email)
+	{
+		// POST data to send to the Jigoshop Licencing API
+		$args = array(
+			'email' => $email,
+			'licence_key' => $licence_key,
+			'product_id' => $product_id,
+			'instance' => $this->generate_plugin_instance()
+		);
+
+		// Send request for detailed information
+		return $this->prepare_request('check', $args);
+	}
 }
