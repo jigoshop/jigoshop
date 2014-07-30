@@ -2409,3 +2409,7 @@ div.pages ul.pages li a:hover {
 		margin-top: -16px;
 	}
 }
+
+canvas.overlay {
+	z-index: 999;
+}
