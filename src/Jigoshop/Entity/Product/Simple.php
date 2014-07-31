@@ -131,7 +131,7 @@ class Simple extends Product
 			}
 		}
 
-		$toSave['sales'] = serialize($this->sales);
+		$toSave['sales'] = $this->sales;
 		$toSave['price'] = $this->calculatePrice();
 
 		return $toSave;

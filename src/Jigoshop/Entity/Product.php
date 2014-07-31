@@ -349,8 +349,8 @@ abstract class Product implements EntityInterface
 			}
 		}
 
-		$toSave['size'] = serialize($this->size);
-		$toSave['stock'] = serialize($this->stock);
+		$toSave['size'] = $this->size;
+		$toSave['stock'] = $this->stock;
 		$toSave['attributes'] = $this->dirtyAttributes;
 
 		return $toSave;
