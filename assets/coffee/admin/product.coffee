@@ -14,3 +14,9 @@ jQuery ($) ->
       $('.schedule').slideDown()
     else
       $('.schedule').slideUp()
+  $('#sales-from').datepicker
+    todayBtn: 'linked'
+    autoclose: true
+  $('#sales-to').datepicker
+    todayBtn: 'linked'
+    autoclose: true

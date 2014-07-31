@@ -14,8 +14,8 @@ if($product->isType(Product\Simple::TYPE)){
 	/** @var Product\Simple $product */
 	$enabled = $product->getSales()->isEnabled();
 	$price = $product->getSales()->getPrice();
-	$from = $product->getSales()->getFrom()->getTimestamp();
-	$to = $product->getSales()->getTo()->getTimestamp();
+	$from = $product->getSales()->getFrom()->format('m/d/Y');
+	$to = $product->getSales()->getTo()->format('m/d/Y');
 }
 ?>
 <fieldset>
@@ -39,11 +39,13 @@ if($product->isType(Product\Simple::TYPE)){
 	));
 	Forms::text(array(
 		'name' => 'product[sales][from]',
+		'id' => 'sales-from',
 		'label' => __('From', 'jigoshop'),
 		'value' => $from,
 	));
 	Forms::text(array(
 		'name' => 'product[sales][to]',
+		'id' => 'sales-to',
 		'label' => __('To', 'jigoshop'),
 		'value' => $to,
 	));

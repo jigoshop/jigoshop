@@ -21,7 +21,8 @@ class Sales implements \Serializable
 
 	public function __construct()
 	{
-		$this->from = $this->to = new \DateTime();
+		$this->from = new \DateTime();
+		$this->to = new \DateTime();
 	}
 
 	/**
@@ -45,6 +46,9 @@ class Sales implements \Serializable
 	 */
 	public function setFromTime($from)
 	{
+		if(!is_numeric($from)){
+			$from = strtotime($from);
+		}
 		$this->from->setTimestamp($from);
 	}
 
@@ -73,6 +77,9 @@ class Sales implements \Serializable
 	 */
 	public function setToTime($to)
 	{
+		if(!is_numeric($to)){
+			$to = strtotime($to);
+		}
 		$this->to->setTimestamp($to);
 	}
 
