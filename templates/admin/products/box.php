@@ -5,6 +5,16 @@
  * @var $menu array Menu items to display.
  * @var $tabs array List of tabs to display.
  */
+
+/**
+ * Checks if selected tab is to be hidden or not.
+ *
+ * @param $options mixed List of options.
+ * @return bool
+ */
+$isHidden = function($options) use ($product) {
+	return $options['visible'] !== true && !in_array($product->getType(), $options['visible']);
+};
 ?>
 <div class="jigoshop">
 	<div class="form-horizontal">
@@ -16,9 +26,9 @@
 			'value' => $product->getType(),
 		)); ?>
 		<ul class="jigoshop_product_data nav nav-tabs" role="tablist">
-			<?php foreach ($menu as $id => $label): ?>
-			<li class="<?= $id; ?><?php $id == $current_tab and print ' active'; ?>">
-				<a href="#<?= $id; ?>" data-toggle="tab"><?= $label; ?></a>
+			<?php foreach ($menu as $id => $options): ?>
+			<li class="<?= $id; ?><?php $id == $current_tab and print ' active'; ?><?php $isHidden($options) and print ' hide' ?>">
+				<a href="#<?= $id; ?>" data-toggle="tab"><?= $options['label']; ?></a>
 			</li>
 			<?php endforeach; ?>
 		</ul>

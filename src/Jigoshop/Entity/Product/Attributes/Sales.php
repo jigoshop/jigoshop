@@ -10,6 +10,8 @@ namespace Jigoshop\Entity\Product\Attributes;
  */
 class Sales implements \Serializable
 {
+	/** @var boolean */
+	private $enabled = false;
 	/** @var \DateTime */
 	private $from;
 	/** @var \DateTime */
@@ -20,6 +22,14 @@ class Sales implements \Serializable
 	public function __construct()
 	{
 		$this->from = $this->to = new \DateTime();
+	}
+
+	/**
+	 * @param boolean $enabled Enable sales?
+	 */
+	public function setEnabled($enabled)
+	{
+		$this->enabled = $enabled;
 	}
 
 	/**
@@ -67,6 +77,14 @@ class Sales implements \Serializable
 	}
 
 	/**
+	 * @return boolean Whether the sales are enabled.
+	 */
+	public function isEnabled()
+	{
+		return $this->enabled;
+	}
+
+	/**
 	 * @return \DateTime
 	 */
 	public function getFrom()
@@ -99,6 +117,7 @@ class Sales implements \Serializable
 	public function serialize()
 	{
 		return serialize(array(
+			'enabled' => $this->enabled && !empty($this->price),
 			'from' => $this->from->getTimestamp(),
 			'to' => $this->to->getTimestamp(),
 			'price' => $this->price,
@@ -114,6 +133,7 @@ class Sales implements \Serializable
 	public function unserialize($serialized)
 	{
 		$data = unserialize($serialized);
+		$this->enabled = (bool)$data['enabled'];
 		$this->from = new \DateTime();
 		$this->from->setTimestamp((int)$data['from']);
 		$this->to = new \DateTime();

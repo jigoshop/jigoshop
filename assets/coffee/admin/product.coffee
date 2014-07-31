@@ -9,4 +9,8 @@ jQuery ($) ->
     else
       $('.stock-status_field').slideDown()
       $('.stock-status').slideUp()
-
+  $('#sales-enabled').on 'change', ->
+    if $(this).is(':checked')
+      $('.schedule').slideDown()
+    else
+      $('.schedule').slideUp()

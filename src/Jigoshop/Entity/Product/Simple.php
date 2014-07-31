@@ -18,6 +18,7 @@ class Simple extends Product
 	public function __construct(Wordpress $wp)
 	{
 		parent::__construct($wp);
+		$this->sales = new Sales();
 	}
 
 	/**
@@ -151,11 +152,14 @@ class Simple extends Product
 			$this->regularPrice = (float)$state['regular_price'];
 		}
 
-		if (isset($state['sales'])) {
+		if (isset($state['sales']) && !empty($state['sales'])) {
 			if (is_array($state['sales'])) {
-				$this->sales->setFromTime($state['sales']['from']);
-				$this->sales->setToTime($state['sales']['to']);
-				$this->sales->setPrice($state['sales']['price']);
+				$this->sales->setEnabled($state['sales']['enabled'] == 'on');
+				if ($this->sales->isEnabled()) {
+					$this->sales->setFromTime($state['sales']['from']);
+					$this->sales->setToTime($state['sales']['to']);
+					$this->sales->setPrice($state['sales']['price']);
+				}
 			} else {
 				$this->sales = unserialize($state['sales']);
 			}

@@ -376,7 +376,7 @@ abstract class Product implements EntityInterface
 		if (isset($state['visibility'])) {
 			$this->visibility = (int)$state['visibility'];
 		}
-		if (isset($state['size'])) {
+		if (isset($state['size']) && !empty($state['size'])) {
 			if( is_array($state['size'])) {
 				$this->size->setWidth($state['size']['width']);
 				$this->size->setHeight($state['size']['height']);
@@ -386,7 +386,7 @@ abstract class Product implements EntityInterface
 				$this->size = unserialize($state['size']);
 			}
 		}
-		if (isset($state['stock'])) {
+		if (isset($state['stock']) && !empty($state['stock'])) {
 			if (is_array($state['stock'])) {
 				$this->stock->setManage($state['stock']['manage'] == 'on');
 				$this->stock->setAllowBackorders($state['stock']['allow_backorders'] == 'on');

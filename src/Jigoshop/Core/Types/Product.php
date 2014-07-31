@@ -234,18 +234,22 @@ class Product implements Post
 			$types[$type] = $this->getTypeName($type);
 		}
 
-		$menu = $this->wp->applyFilters('jigoshop\\admin\\product\\menu', array(
-			'general' => __('General', 'jigoshop'),
-			'stock' => __('Stock', 'jigoshop'),
+		$menu = $this->wp->applyFilters('jigoshop\admin\product\menu', array(
+			'general' => array('label' => __('General', 'jigoshop'), 'visible' => true),
+			'stock' => array('label' => __('Stock', 'jigoshop'), 'visible' => true),
+			'sales' => array('label' => __('Sales', 'jigoshop'), 'visible' => array('simple')),
 //			'advanced' => __('Advanced', 'jigoshop'),
 //			'inventory' => __('Inventory', 'jigoshop'),
 //			'attributes' => __('Attributes', 'jigoshop'),
 		));
-		$tabs = $this->wp->applyFilters('jigoshop\\admin\\product\\tabs', array(
+		$tabs = $this->wp->applyFilters('jigoshop\admin\product\tabs', array(
 			'general' => array(
 				'product' => $product,
 			),
 			'stock' => array(
+				'product' => $product,
+			),
+			'sales' => array(
 				'product' => $product,
 			),
 //			'advanced' => array(),
