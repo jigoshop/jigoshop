@@ -1,5 +1,7 @@
 ## Changelog
 
+* 1.10.7:
+    * Fix: Invalid formatting of shipping dropdown.
 * 1.10.6 - 2014-07-30:
     * Fix: Security issue on comments feed.
     * Fix: Add obeying validate postcode setting in JavaScript validation.

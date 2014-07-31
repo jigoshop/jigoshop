@@ -19,9 +19,9 @@
 					$price = $method->get_selected_price($i);
 					$is_taxed = jigoshop_cart::$shipping_tax_total > 0;
 					?>
-					<option value="<?php echo esc_attr($method->id.':'.$service.':'.$i); ?>"
-						<?php selected($method->is_rate_selected($i)); ?>><?php echo $service; ?> &ndash;
-						<?php echo $price > 0 ? jigoshop_price($price, array('ex_tax_label' => (int)$is_taxed)) : __('Free', 'jigoshop'); ?></option>
+					<option value="<?php echo esc_attr($method->id.':'.$service.':'.$i); ?>" <?php selected($method->is_rate_selected($i)); ?>>
+						<?php echo $service; ?> &ndash; <?php echo $price > 0 ? jigoshop_price($price, array('ex_tax_label' => (int)$is_taxed)) : __('Free', 'jigoshop'); ?>
+					</option>
 				<?php endfor; ?>
 			<?php endforeach; ?>
 		</select>
