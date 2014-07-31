@@ -4,7 +4,7 @@ namespace Jigoshop\Core\Types;
 
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
-use Jigoshop\Entity\Product\Type\Simple;
+use Jigoshop\Entity\Product\Simple;
 use Jigoshop\Helper\Render;
 use Jigoshop\Service\ProductServiceInterface;
 use WPAL\Wordpress;
@@ -236,12 +236,16 @@ class Product implements Post
 
 		$menu = $this->wp->applyFilters('jigoshop\\admin\\product\\menu', array(
 			'general' => __('General', 'jigoshop'),
+			'stock' => __('Stock', 'jigoshop'),
 //			'advanced' => __('Advanced', 'jigoshop'),
 //			'inventory' => __('Inventory', 'jigoshop'),
 //			'attributes' => __('Attributes', 'jigoshop'),
 		));
 		$tabs = $this->wp->applyFilters('jigoshop\\admin\\product\\tabs', array(
 			'general' => array(
+				'product' => $product,
+			),
+			'stock' => array(
 				'product' => $product,
 			),
 //			'advanced' => array(),
@@ -271,9 +275,9 @@ class Product implements Post
 	{
 		switch($type){
 			case Simple::TYPE:
-				return 'Jigoshop\\Entity\\Product\\Type\\Simple';
+				return 'Jigoshop\Entity\Product\Simple';
 			default:
-				return $this->wp->applyFilters('jigoshop\\product\\type\\class', $type);
+				return $this->wp->applyFilters('jigoshop\product\type\class', $type);
 		}
 	}
 

@@ -19,8 +19,9 @@ use Jigoshop\Helper\Forms;
 		<?php endif; ?>
 	</label>
 	<div class="col-sm-9 checkbox-inline">
+		<input type="hidden" name="<?php echo $name; ?>" value="off" />
 		<input type="checkbox" id="<?php echo $id; ?>" name="<?php echo $name; ?>" class="<?php echo join(' ', $classes); ?>"
-			<?php Forms::checked($value, true); ?> value="on" />
+			<?php echo Forms::checked($value, true); ?> value="on" />
 		<?php if(!empty($description)): ?>
 			<span class="help"><?php echo $description; ?></span>
 		<?php endif; ?>

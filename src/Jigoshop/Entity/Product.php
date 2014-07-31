@@ -2,7 +2,8 @@
 
 namespace Jigoshop\Entity;
 
-use Jigoshop\Entity\Product\Size;
+use Jigoshop\Entity\Product\Attributes\Size;
+use Jigoshop\Entity\Product\Attributes\StockStatus;
 use WPAL\Wordpress;
 
 /**
@@ -23,6 +24,8 @@ abstract class Product implements EntityInterface
 	private $sku;
 	/** @var Size */
 	private $size;
+	/** @var StockStatus */
+	private $stock;
 
 	private $tax;
 
@@ -42,6 +45,8 @@ abstract class Product implements EntityInterface
 	public function __construct(Wordpress $wp)
 	{
 		$this->wp = $wp;
+		$this->size = new Size();
+		$this->stock = new StockStatus();
 	}
 
 	/**
@@ -193,6 +198,30 @@ abstract class Product implements EntityInterface
 	}
 
 	/**
+	 * Sets product stock.
+	 * Applies `jigoshop\product\set_stock` filter to allow plugins to modify stock data. When filter returns false stock is not modified at all.
+	 *
+	 * @param StockStatus $stock New product stock status.
+	 */
+	public function setStock(StockStatus $stock)
+	{
+		$stock = $this->wp->applyFilters('jigoshop\\product\\set_stock', $stock, $this);
+
+		if ($stock !== false) {
+			$this->stock = $stock;
+			$this->dirtyFields[] = 'stock';
+		}
+	}
+
+	/**
+	 * @return StockStatus Current stock status.
+	 */
+	public function getStock()
+	{
+		return $this->stock;
+	}
+
+	/**
 	 * Adds new attribute to the product.
 	 * If attribute already exists - it is replaced.
 	 * Calls `jigoshop\product\add_attribute` filter before adding. If filter returns false - attribute is not added.
@@ -316,16 +345,12 @@ abstract class Product implements EntityInterface
 				case 'type':
 					$toSave['type'] = $this->getType();
 					break;
-				case 'size':
-					$toSave['size_weight'] = $this->size->getWeight();
-					$toSave['size_width'] = $this->size->getWidth();
-					$toSave['size_height'] = $this->size->getHeight();
-					$toSave['size_length'] = $this->size->getLength();
-					break;
 				// TODO: Save tax properly
 			}
 		}
 
+		$toSave['size'] = serialize($this->size);
+		$toSave['stock'] = serialize($this->stock);
 		$toSave['attributes'] = $this->dirtyAttributes;
 
 		return $toSave;
@@ -346,24 +371,33 @@ abstract class Product implements EntityInterface
 			$this->sku = $state['sku'];
 		}
 		if (isset($state['featured'])) {
-			$this->visibility = boolval($state['featured']);
+			$this->visibility = (bool)$state['featured'];
 		}
 		if (isset($state['visibility'])) {
-			$this->visibility = intval($state['visibility']);
+			$this->visibility = (int)$state['visibility'];
 		}
-
-		$this->size = new Size();
-		if (isset($state['size_weight'])) {
-			$this->size->setWeight(floatval($state['size_weight']));
+		if (isset($state['size'])) {
+			if( is_array($state['size'])) {
+				$this->size->setWidth($state['size']['width']);
+				$this->size->setHeight($state['size']['height']);
+				$this->size->setLength($state['size']['length']);
+				$this->size->setWeight($state['size']['weight']);
+			} else {
+				$this->size = unserialize($state['size']);
+			}
 		}
-		if (isset($state['size_width'])) {
-			$this->size->setWidth(floatval($state['size_width']));
-		}
-		if (isset($state['size_height'])) {
-			$this->size->setHeight(floatval($state['size_height']));
-		}
-		if (isset($state['size_length'])) {
-			$this->size->setLength(floatval($state['size_length']));
+		if (isset($state['stock'])) {
+			if (is_array($state['stock'])) {
+				$this->stock->setManage($state['stock']['manage'] == 'on');
+				$this->stock->setAllowBackorders($state['stock']['allow_backorders'] == 'on');
+				if ($this->stock->getManage()) {
+					$this->stock->setStock($state['stock']['stock']);
+				} else {
+					$this->stock->setStatus($state['stock']['status']);
+				}
+			} else {
+				$this->stock = unserialize($state['stock']);
+			}
 		}
 
 		// TODO: Restore tax (after thinking it over and implementing).
@@ -387,11 +421,8 @@ abstract class Product implements EntityInterface
 			unset($state['attributes']);
 		}
 
-		if (isset($state['size_weight']) || isset($state['size_width']) || isset($state['size_height']) || isset($state['size_length'])) {
-			$this->dirtyFields[] = 'size';
-			unset($state['size_weight'], $state['size_width'], $state['size_height'], $state['size_length']);
-		}
-
+		$this->dirtyFields[] = 'size';
+		$this->dirtyFields[] = 'stock';
 		$this->dirtyFields = array_merge($this->dirtyFields, array_keys($state));
 	}
 }

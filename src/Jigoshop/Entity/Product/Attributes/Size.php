@@ -1,11 +1,11 @@
 <?php
 
-namespace Jigoshop\Entity\Product;
+namespace Jigoshop\Entity\Product\Attributes;
 
 /**
  * Product size.
  *
- * @package Jigoshop\Entity\Product
+ * @package Jigoshop\Entity\Product\Attributes
  * @author Amadeusz Starzykiewicz
  */
 class Size implements \Serializable
@@ -108,9 +108,9 @@ class Size implements \Serializable
 	public function unserialize($serialized)
 	{
 		$data = unserialize($serialized);
-		$this->weight = floatval($data['weight']);
-		$this->width = floatval($data['width']);
-		$this->height = floatval($data['height']);
-		$this->length = floatval($data['length']);
+		$this->weight = (float)$data['weight'];
+		$this->width = (float)$data['width'];
+		$this->height = (float)$data['height'];
+		$this->length = (float)$data['length'];
 	}
 }

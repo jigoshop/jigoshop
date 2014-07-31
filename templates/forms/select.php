@@ -13,7 +13,7 @@ use Jigoshop\Helper\Render;
  * @var $description string Field description.
  */
 ?>
-<div class="form-group <?php echo $id; ?>_field">
+<div class="form-group <?php echo $id; ?>_field <?php echo join(' ', $classes); ?>">
 	<label for="<?php echo $id; ?>" class="col-sm-2 control-label">
 		<?php echo $label; ?>
 		<?php if(!empty($tip)): ?>
@@ -21,7 +21,7 @@ use Jigoshop\Helper\Render;
 		<?php endif; ?>
 	</label>
 	<div class="col-sm-9">
-		<select id="<?php echo $id; ?>" name="<?php echo $name; ?>" class="form-control <?php echo join(' ', $classes); ?>"
+		<select id="<?php echo $id; ?>" name="<?php echo $name; ?>" class="form-control"
 		        placeholder="<?php echo $placeholder; ?>"<?php $multiple and print ' multiple="multiple"'; ?>>
 			<?php foreach($options as $option => $item): ?>
 				<?php if(is_array($item)): ?>

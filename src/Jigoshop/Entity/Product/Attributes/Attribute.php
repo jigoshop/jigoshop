@@ -1,12 +1,12 @@
 <?php
 
-namespace Jigoshop\Entity\Product;
+namespace Jigoshop\Entity\Product\Attributes;
 
 /**
  * Product's attribute.
  * TODO: Implement
  *
- * @package Jigoshop\Entity\Product
+ * @package Jigoshop\Entity\Product\Attributes
  * @author Amadeusz Starzykiewicz
  */
 class Attribute implements \Serializable

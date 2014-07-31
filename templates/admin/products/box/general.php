@@ -25,22 +25,22 @@ use Jigoshop\Helper\Product as ProductHelper;
 <fieldset>
 	<?php
 	Forms::text(array(
-		'name' => 'product[size_weight]',
+		'name' => 'product[size][weight]',
 		'label' => __('Weight', 'jigoshop').' ('.ProductHelper::weightUnit().')',
 		'value' => $product->getSize()->getWeight(),
 	));
 	Forms::text(array(
-		'name' => 'product[size_length]',
+		'name' => 'product[size][length]',
 		'label' => __('Length', 'jigoshop').' ('.ProductHelper::dimensionsUnit().')',
 		'value' => $product->getSize()->getLength(),
 	));
 	Forms::text(array(
-		'name' => 'product[size_width]',
+		'name' => 'product[size][width]',
 		'label' => __('Width', 'jigoshop').' ('.ProductHelper::dimensionsUnit().')',
 		'value' => $product->getSize()->getWidth(),
 	));
 	Forms::text(array(
-		'name' => 'product[size_height]',
+		'name' => 'product[size][height]',
 		'label' => __('Height', 'jigoshop').' ('.ProductHelper::dimensionsUnit().')',
 		'value' => $product->getSize()->getHeight(),
 	));

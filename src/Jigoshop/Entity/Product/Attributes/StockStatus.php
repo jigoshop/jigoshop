@@ -1,14 +1,14 @@
 <?php
 
-namespace Jigoshop\Entity\Product;
+namespace Jigoshop\Entity\Product\Attributes;
 
 /**
  * Product's stock status.
  *
- * @package Jigoshop\Entity\Product
+ * @package Jigoshop\Entity\Product\Attributes
  * @author Amadeusz Starzykiewicz
  */
-class StockStatus
+class StockStatus implements \Serializable
 {
 	const OUT_STOCK = 0;
 	const IN_STOCK = 1;
@@ -98,6 +98,14 @@ class StockStatus
 	 */
 	public function getStatus()
 	{
+		if($this->manage){
+			if($this->stock > 0){
+				return self::IN_STOCK;
+			}
+
+			return self::OUT_STOCK;
+		}
+
 		return $this->status;
 	}
 
@@ -107,5 +115,41 @@ class StockStatus
 	public function getStock()
 	{
 		return $this->stock;
+	}
+
+	/**
+	 * (PHP 5 >= 5.1.0)<br/>
+	 * String representation of object
+	 *
+	 * @link http://php.net/manual/en/serializable.serialize.php
+	 * @return string the string representation of the object or null
+	 */
+	public function serialize()
+	{
+		return serialize(array(
+			'manage' => $this->manage,
+			'status' => $this->status,
+			'allow_backorders' => $this->allowBackorders,
+			'stock' => $this->stock,
+		));
+	}
+
+	/**
+	 * (PHP 5 >= 5.1.0)<br/>
+	 * Constructs the object
+	 *
+	 * @link http://php.net/manual/en/serializable.unserialize.php
+	 * @param string $serialized <p>
+	 * The string representation of the object.
+	 * </p>
+	 * @return void
+	 */
+	public function unserialize($serialized)
+	{
+		$data = unserialize($serialized);
+		$this->manage = (bool)$data['manage'];
+		$this->status = (int)$data['status'];
+		$this->allowBackorders = (bool)$data['allow_backorders'];
+		$this->stock = (int)$data['stock'];
 	}
 }

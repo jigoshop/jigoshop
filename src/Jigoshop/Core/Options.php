@@ -2,7 +2,7 @@
 
 namespace Jigoshop\Core;
 
-use Jigoshop\Entity\Product\Type\Simple;
+use Jigoshop\Entity\Product\Simple;
 use WPAL\Wordpress;
 
 /**

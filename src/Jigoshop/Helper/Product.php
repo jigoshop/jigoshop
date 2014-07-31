@@ -2,8 +2,8 @@
 
 namespace Jigoshop\Helper;
 
-use Jigoshop\Entity\Product\StockStatus;
-use Jigoshop\Entity\Product\Type\Simple;
+use Jigoshop\Entity\Product\Attributes\StockStatus;
+use Jigoshop\Entity\Product\Simple;
 
 class Product
 {
