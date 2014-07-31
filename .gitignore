@@ -1,6 +1,7 @@
 cache
 compatibility/*
 vendor/
+dist/
 composer.lock
 deploy.sh
 node_modules

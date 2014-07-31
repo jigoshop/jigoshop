@@ -51,4 +51,14 @@ gulp.task 'watch', ['styles', 'scripts'], ->
   gulp.watch ['assets/coffee/**/*.coffee'], ['scripts']
   gulp.watch ['assets/less/**/*.less'], ['styles']
 
+gulp.task 'clean-deploy', ->
+  gulp.src ['dist/*'], {read: false}
+  .pipe rimraf()
+
+gulp.task 'dist', ['clean-deploy', 'default'], ->
+  gulp.src ['./assets/**/*', '!assets/{bower,coffee,less}', '!assets/{bower,coffee,less}/**', './cache',
+            './config/**/*', './languages/**/*', './src/**/*', './templates/**/*', './CHANGELOG.md',
+            './CONTRIBUTING.md', 'LICENCE.md', 'README.md', 'jigoshop.php'], {base: './'}
+    .pipe gulp.dest('dist/')
+
 gulp.task 'default', ['styles', 'scripts', 'fonts']
