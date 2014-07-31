@@ -53,8 +53,9 @@ add_action('wp_head', 'jigoshop_front_page_archive', 0);
  * Content Wrappers
  **/
 if (!function_exists('jigoshop_output_content_wrapper')) {
-	function jigoshop_output_content_wrapper() {
-		if ( get_option('template') === 'twentyfourteen' ) echo '<div id="primary" class="content-area"><div id="content" class="site-content" role="main">';
+	function jigoshop_output_content_wrapper(){
+		if ( wp_get_theme()->get('Author') === 'WooThemes' ) echo '<div id="content" class="col-full"><div id="main" class="col-left"><div class="post">';
+		elseif ( get_option('template') === 'twentyfourteen' ) echo '<div id="primary" class="content-area"><div id="content" class="site-content" role="main">';
 		elseif ( get_option('template') === 'twentythirteen' ) echo '<div id="primary" class="content-area"><div id="content" class="site-content" role="main">';
 		elseif ( get_option('template') === 'twentytwelve' ) echo '<div id="primary" class="site-content"><div id="content" role="main">';
 		elseif ( get_option('template') === 'twentyeleven' ) echo '<section id="primary"><div id="content" role="main">';
@@ -63,7 +64,8 @@ if (!function_exists('jigoshop_output_content_wrapper')) {
 }
 if (!function_exists('jigoshop_output_content_wrapper_end')) {
 	function jigoshop_output_content_wrapper_end() {
-		if ( get_option('template') === 'twentyfourteen' ) echo '</div></div>';
+		if ( wp_get_theme()->get('Author') === 'WooThemes' ) echo '</div></div>';
+		elseif ( get_option('template') === 'twentyfourteen' ) echo '</div></div>';
 		elseif ( get_option('template') === 'twentythirteen' ) echo '</div></div>';
 		elseif ( get_option('template') === 'twentytwelve' ) echo '</div></div>';
 		elseif ( get_option('template') === 'twentyeleven' ) echo  '</div></section>';
@@ -86,6 +88,11 @@ if (!function_exists('jigoshop_show_product_sale_flash')) {
 if (!function_exists('jigoshop_get_sidebar')) {
 	function jigoshop_get_sidebar() {
 		get_sidebar('shop');
+	}
+}
+if (!function_exists('jigoshop_get_sidebar_end')) {
+	function jigoshop_get_sidebar_end(){
+		if(wp_get_theme()->get('Author') == 'WooThemes') echo '</div>';
 	}
 }
 

@@ -177,7 +177,9 @@ div.product div.images div.thumbnails a.first {
 
 div.product div.summary {
 	float: right;
-	width: 300px
+}
+.post{
+	padding: 15px !important;
 }
 
 div.product div.social {

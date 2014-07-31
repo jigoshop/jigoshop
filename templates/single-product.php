@@ -45,5 +45,6 @@
 <?php do_action('jigoshop_after_main_content'); // </div></div> ?>
 
 <?php do_action('jigoshop_sidebar'); ?>
+<?php do_action('jigoshop_after_sidebar'); ?>
 
 <?php get_footer('shop'); ?>

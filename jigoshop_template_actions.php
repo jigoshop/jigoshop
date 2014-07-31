@@ -30,6 +30,7 @@ add_action('jigoshop_before_main_content', 'jigoshop_breadcrumb', 20, 0);
 
 /* Sidebar */
 add_action('jigoshop_sidebar', 'jigoshop_get_sidebar', 10);
+add_action('jigoshop_after_sidebar', 'jigoshop_get_sidebar_end', 10);
 
 /* Products Loop */
 add_action('jigoshop_after_shop_loop_item', 'jigoshop_template_loop_add_to_cart', 10, 2);
