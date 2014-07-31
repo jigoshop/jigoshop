@@ -37,10 +37,15 @@ use Jigoshop\Helper\Forms;
 	));
 	?>
 	<?php
-	Forms::checkbox(array(
+	Forms::select(array(
 		'name' => 'product[stock][allow_backorders]',
 		'label' => __('Allow backorders?', 'jigoshop'),
 		'value' => $product->getStock()->getAllowBackorders(),
+		'options' => array(
+			'no' => __('Do not allow', 'jigoshop'),
+			'notify' => __('Allow, but notify customer', 'jigoshop'),
+			'yes' => __('Allow', 'jigoshop')
+		),
 	));
 	?>
 </fieldset>

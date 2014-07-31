@@ -17,19 +17,19 @@ class StockStatus implements \Serializable
 	private $manage = false;
 	/** @var int */
 	private $status = self::IN_STOCK;
-	/** @var boolean */
-	private $allowBackorders = false;
+	/** @var string */
+	private $allowBackorders = 'no';
 	/** @var int */
 	private $stock = 0;
 	/** @var int */
 	private $soldQuantity = 0;
 
 	/**
-	 * @param boolean $allowBackorders Allow backorders?
+	 * @param string $allowBackorders Allow backorders?
 	 */
 	public function setAllowBackorders($allowBackorders)
 	{
-		$this->allowBackorders = (boolean)$allowBackorders;
+		$this->allowBackorders = $allowBackorders;
 	}
 
 	/**
@@ -149,7 +149,7 @@ class StockStatus implements \Serializable
 		$data = unserialize($serialized);
 		$this->manage = (bool)$data['manage'];
 		$this->status = (int)$data['status'];
-		$this->allowBackorders = (bool)$data['allow_backorders'];
+		$this->allowBackorders = $data['allow_backorders'];
 		$this->stock = (int)$data['stock'];
 	}
 }
