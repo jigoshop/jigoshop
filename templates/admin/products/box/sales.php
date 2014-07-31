@@ -6,7 +6,7 @@ use Jigoshop\Helper\Forms;
  * @var $product Product The product.
  */
 $enabled = false;
-$price = '0';
+$price = '';
 $from = time();
 $to = time();
 

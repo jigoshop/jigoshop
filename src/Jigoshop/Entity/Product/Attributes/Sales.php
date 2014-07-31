@@ -145,6 +145,6 @@ class Sales implements \Serializable
 		$this->from->setTimestamp((int)$data['from']);
 		$this->to = new \DateTime();
 		$this->to->setTimestamp((int)$data['to']);
-		$this->price = (float)$data['price'];
+		$this->price = $data['price'];
 	}
 }
