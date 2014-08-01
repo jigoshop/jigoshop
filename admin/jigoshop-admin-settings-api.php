@@ -973,7 +973,7 @@ class Jigoshop_Options_Parser {
 						}
 						$display .= '</optgroup>';
 					} else {
-						$display .= '<option value="'.esc_attr($value).'" '.(in_array(esc_attr($subValue), $selections) ? 'selected="selected"' : '').' />'.$label.'</option>';
+						$display .= '<option value="'.esc_attr($value).'" '.(in_array(esc_attr($value), $selections) ? 'selected="selected"' : '').' />'.$label.'</option>';
 					}
 				}
 				$display .= '</select>';
