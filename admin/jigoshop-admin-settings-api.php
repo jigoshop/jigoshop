@@ -958,6 +958,7 @@ class Jigoshop_Options_Parser {
 					: "";
 				$brckt = "";
 				$width = 250;
+				$selections = (array)$options->get_option($item['id']);
 				if($item['multiple']){
 					$brckt = "[]";
 					$width = 500;
@@ -968,11 +969,11 @@ class Jigoshop_Options_Parser {
 					if(is_array($label)){
 						$display .= '<optgroup label="'.$value.'">';
 						foreach($label as $subValue => $subLabel){
-							$display .= '<option value="'.esc_attr($subValue).'" '.selected($options->get_option($item['id']), $subValue, false).' />'.$subLabel.'</option>';
+							$display .= '<option value="'.esc_attr($subValue).'" '.(in_array(esc_attr($subValue), $selections) ? 'selected="selected"' : '').' />'.$subLabel.'</option>';
 						}
 						$display .= '</optgroup>';
 					} else {
-						$display .= '<option value="'.esc_attr($value).'" '.selected($options->get_option($item['id']), $value, false).' />'.$label.'</option>';
+						$display .= '<option value="'.esc_attr($value).'" '.(in_array(esc_attr($subValue), $selections) ? 'selected="selected"' : '').' />'.$label.'</option>';
 					}
 				}
 				$display .= '</select>';
