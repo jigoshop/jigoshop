@@ -161,6 +161,10 @@ function jigoshop_system_info() {
 	MySQL Version:            <?php global $wpdb; echo $wpdb->db_version() . "\n"; ?>
 	Web Server Info:          <?php echo $_SERVER['SERVER_SOFTWARE'] . "\n"; ?>
 
+	eAccelerator:             <?php echo (ini_get('eaccelerator.enable') == '1' ? 'Enabled' : 'Disabled'); echo PHP_EOL; ?>
+	APC:                      <?php echo (ini_get('apc.enable') == '1' ? 'Enabled' : 'Disabled'); echo PHP_EOL; ?>
+	OpCache:                  <?php echo (ini_get('opcache.enable') == '1' ? 'Enabled' : 'Disabled'); echo PHP_EOL; ?>
+
 	PHP Memory Limit:         <?php echo ini_get('memory_limit') . "\n"; ?>
 	PHP Post Max Size:        <?php if(function_exists('phpversion')) echo (jigoshop_let_to_num(ini_get('post_max_size'))/(1024*1024))."MB"; ?><?php echo "\n"; ?>
 	PHP Upload Max File Size: <?php if(function_exists('phpversion')) echo (jigoshop_let_to_num(ini_get('upload_max_filesize'))/(1024*1024))."MB"; ?><?php echo "\n"; ?>
