@@ -931,7 +931,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 				$data['order_total'] = jigoshop_cart::get_total(false);
 				$data['order_total_prices_per_tax_class_ex_tax'] = jigoshop_cart::get_price_per_tax_class_ex_tax();
 
-				if ($this->valid_euvatno || $this->posted['billing_euvatno'] == 'test') { // TODO: Remove TEST code
+				if ($this->valid_euvatno) {
 					$data['order_tax'] = '';
 					$temp = jigoshop_cart::get_total_cart_tax_without_shipping_tax();
 					$data['order_total'] -= $data['order_shipping_tax'] + $temp;
@@ -1076,7 +1076,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 					if ($result['result'] == 'success') {
 						return $result;
 					}
-					
+
 					return false;
 				} else {
 					// No payment was required for order
