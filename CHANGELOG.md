@@ -1,6 +1,8 @@
 ## Changelog
 
-* 1.10.7:
+* 1.11:
+    * New: Compatibility with WooThemes themes.
+    * New: Check for PHP accelerators as they might cause problems.
     * Fix: Invalid formatting of shipping dropdown.
 * 1.10.6 - 2014-07-30:
     * Fix: Security issue on comments feed.
