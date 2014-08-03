@@ -122,6 +122,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 
 		// Get the attributes to be used later
 		$attributes = (array)maybe_unserialize(get_post_meta($parent_id, 'product_attributes', true));
+		$minimal_price = PHP_INT_MAX;
 
 		foreach ($_POST['variations'] as $ID => $meta) {
 			/**
@@ -210,6 +211,9 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 
 			update_post_meta($ID, 'sku', $meta['sku']);
 			update_post_meta($ID, 'regular_price', $meta['regular_price']);
+			if ($meta['regular_price'] < $minimal_price) {
+				$minimal_price = $meta['regular_price'];
+			}
 
 			$sale_price = !empty($meta['sale_price'])
 				? (!strstr($meta['sale_price'], '%') ? jigoshop_sanitize_num($meta['sale_price']) : $meta['sale_price'])
@@ -276,6 +280,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 		}
 
 		update_post_meta($parent_id, '_default_attributes', $default_attributes);
+		update_post_meta($parent_id, 'regular_price', $minimal_price);
 	}
 
 	public function display() {

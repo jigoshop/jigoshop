@@ -241,7 +241,8 @@ function jigoshop_price_filter($filtered_posts)
 {
 	if (isset($_GET['max_price']) && isset($_GET['min_price'])) {
 		$matched_products = array(0);
-		$matched_products_query = get_posts(array(
+		$query = new WP_Query(array(
+			'fields' => 'ids',
 			'post_type' => 'product',
 			'post_status' => 'publish',
 			'posts_per_page' => -1,
@@ -257,39 +258,53 @@ function jigoshop_price_filter($filtered_posts)
 				array(
 					'taxonomy' => 'product_type',
 					'field' => 'slug',
-					'terms' => 'grouped',
+					'terms' => array('grouped', 'variable'),
 					'operator' => 'NOT IN'
 				)
 			)
 		));
+		$products = $query->get_posts();
 
-		if (!empty($matched_products_query)) {
-			foreach ($matched_products_query as $product) {
-				$matched_products[] = $product->ID;
+		$query = new WP_Query(array(
+			'fields' => 'ids',
+			'post_type' => 'product',
+			'post_status' => 'publish',
+			'posts_per_page' => -1,
+			'tax_query' => array(
+				array(
+					'taxonomy' => 'product_type',
+					'field' => 'slug',
+					'terms' => array('variable', 'grouped'),
+					'relation' => 'OR',
+				)
+			)
+		));
+		$parents = $query->get_posts();
+
+		$query = new WP_Query(array(
+			'post_type' => array('product', 'product_variation'),
+			'post_status' => 'publish',
+			'posts_per_page' => -1,
+			'post_parent__in' => $parents,
+			'meta_query' => array(
+				array(
+					'key' => 'regular_price',
+					'value' => array($_GET['min_price'], $_GET['max_price']),
+					'type' => 'NUMERIC',
+					'compare' => 'BETWEEN'
+				)
+			),
+		));
+		$children = $query->get_posts();
+
+		$products[] = 0;
+		foreach($children as $child){
+			if(!in_array($child->post_parent, $products)){
+				$products[] = $child->post_parent;
 			}
 		}
 
-		// Get grouped product ids
-		$grouped_products = (array)get_objects_in_term(get_term_by('slug', 'grouped', 'product_type')->term_id, 'product_type');
-
-		if (!empty($grouped_products)) {
-			foreach ($grouped_products as $grouped_product) {
-				$children = get_children('post_parent='.$grouped_product.'&post_type=product');
-
-				if (!empty($children)) {
-					foreach ($children as $product) {
-						$price = get_post_meta($product->ID, 'price', true);
-
-						if ($price <= $_GET['max_price'] && $price >= $_GET['min_price']) {
-							$matched_products[] = $grouped_product;
-							break;
-						}
-					}
-				}
-			}
-		}
-
-		$filtered_posts = array_intersect($matched_products, $filtered_posts);
+		$filtered_posts = array_intersect($filtered_posts, $products);
 	}
 
 	return $filtered_posts;
