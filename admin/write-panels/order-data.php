@@ -39,7 +39,7 @@ function jigoshop_order_data_meta_box($post) {
 		$order_status = current($order_status);
 		$data['order_status'] = $order_status->slug;
 	else :
-		$data['order_status'] = 'pending';
+		$data['order_status'] = 'new';
 	endif;
 
 	if (!isset($post->post_title) || empty($post->post_title)) :
