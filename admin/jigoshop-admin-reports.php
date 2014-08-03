@@ -164,6 +164,8 @@ h6{font-size:11px;color:#999999;text-transform:uppercase;}
 					<h3><?php _e('Total Sales','jigoshop'); ?></h3>
 				</div>
 
+				<?php do_action('jigoshop_report_widgets', $this->orders); ?>
+
 			</div>
 		</div>
 
