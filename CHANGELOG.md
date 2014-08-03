@@ -5,6 +5,7 @@
     * New: Check for PHP accelerators as they might cause problems.
     * New: Support for variable products in Price Filter widget.
     * New: `jigoshop_report_widgets` action to add custom report boxes.
+    * New: `jQuery.payment()` function to ease payment redirection.
     * Fix: Invalid formatting of shipping dropdown.
     * Fix: Displaying multiple select fields.
 * 1.10.6 - 2014-07-30:
@@ -34,7 +35,7 @@
     * Improved: Memory checking error message is just a warning.
 * 1.10.2 - 2014-07-21:
     * Fix: Memory check is not a fatal error anymore - plugin will continue to work.
-    * Fix: As memory is not a fatal error - required memory is downgraded to 64 MB. 
+    * Fix: As memory is not a fatal error - required memory is downgraded to 64 MB.
 * 1.10.1 - 2014-07-21:
     * Fix: Memory checking for some users. Thanks to freyaluna for finding it.
 * 1.10 - 2014-07-21:

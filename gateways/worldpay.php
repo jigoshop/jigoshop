@@ -318,34 +318,10 @@ class jigoshop_worldpay extends jigoshop_payment_gateway
 			$worldpay_form_array[] = '<input type="hidden" name="'.$key.'" value="'.$value.'" />';
 		}
 
-		return '<form action="'.$worldpay_url.'" method="post" id="worldpay_payment_form">
-				'.implode('', $worldpay_form_array).'
-				<input type="submit" class="button-alt" id="submit_worldpay_payment_form" value="'.__('Pay via WorldPay', 'jigoshop').'" />
-				<script type="text/javascript">
-				/*<![CDATA[*/
-					jQuery(document).ready( function($) {
-						$("body").block(
-							{
-								message: "<img src=\"'.jigoshop::assets_url().'/assets/images/ajax-loader.gif\" alt=\"Redirecting...\" />'.__('Thank you for your order. We are now redirecting you to WorldPay to make a payment.', 'jigoshop').'",
-								overlayCSS:
-								{
-									background: "#fff",
-									opacity: 0.6
-								},
-								css: {
-							        padding:        20,
-							        textAlign:      "center",
-							        color:          "#555",
-							        border:         "3px solid #aaa",
-							        backgroundColor:"#fff",
-							        cursor:         "wait"
-							    }
-							});
-						$("#submit_worldpay_payment_form").click();
-					});
-				/*]]>*/
-				</script>
-			</form>';
+		return jigoshop_render_result('gateways/paypal', array(
+			'url' => $worldpay_url,
+			'fields' => $worldpay_args,
+		));
 	}
 
 	/**
