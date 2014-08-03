@@ -3,7 +3,10 @@
 * 1.11:
     * New: Compatibility with WooThemes themes.
     * New: Check for PHP accelerators as they might cause problems.
+    * New: Support for variable products in Price Filter widget.
+    * New: `jigoshop_report_widgets` action to add custom report boxes.
     * Fix: Invalid formatting of shipping dropdown.
+    * Fix: Displaying multiple select fields.
 * 1.10.6 - 2014-07-30:
     * Fix: Security issue on comments feed.
     * Fix: Add obeying validate postcode setting in JavaScript validation.
