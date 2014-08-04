@@ -14,6 +14,8 @@ use WPAL\Wordpress;
  */
 class Options
 {
+	const NAME = 'jigoshop';
+
 	/** @var Wordpress */
 	private $wp;
 
@@ -121,7 +123,7 @@ class Options
 	public function saveOptions()
 	{
 		if ($this->dirty) {
-			$this->wp->updateOption('jigoshop', $this->options);
+			$this->wp->updateOption(self::NAME, $this->options);
 		}
 	}
 
@@ -130,7 +132,7 @@ class Options
 	 */
 	private function _loadOptions()
 	{
-		$options = (array)$this->wp->getOption('jigoshop');
+		$options = (array)$this->wp->getOption(self::NAME);
 		$this->options = array_merge($this->defaults, $options);
 	}
 

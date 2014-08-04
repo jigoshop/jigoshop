@@ -72,6 +72,7 @@ class Jigoshop_Init
 		if (!$config_cache->isFresh()) {
 			$builder = new ContainerBuilder();
 			$builder->addCompilerPass(new Jigoshop\Core\Types\CompilerPass());
+			$builder->addCompilerPass(new Jigoshop\Admin\Settings\CompilerPass());
 			$loader = new YamlFileLoader($builder, new FileLocator(JIGOSHOP_DIR.'/config'));
 			$loader->load('services.yml');
 			// Load extension configuration

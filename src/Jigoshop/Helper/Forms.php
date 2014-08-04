@@ -72,7 +72,7 @@ class Forms
 			$field['id'] = self::prepareIdFromName($field['name']);
 		}
 
-		Render::output(self::$checkboxTemplate, $field);
+		Render::output(static::$checkboxTemplate, $field);
 	}
 
 	/**
@@ -113,7 +113,7 @@ class Forms
 
 		$field['description'] = esc_html($field['description']);
 
-		Render::output(self::$selectTemplate, $field);
+		Render::output(static::$selectTemplate, $field);
 	}
 
 	/**
@@ -140,14 +140,14 @@ class Forms
 		$field = wp_parse_args($field, $defaults);
 
 		if (empty($field['name'])) {
-			throw new Exception('Field "%s" must have a name!', serialize($field));
+			throw new Exception(sprintf('Field "%s" must have a name!', serialize($field)));
 		}
 
 		if (empty($field['id'])) {
 			$field['id'] = self::prepareIdFromName($field['name']);
 		}
 
-		Render::output(self::$textTemplate, $field);
+		Render::output(static::$textTemplate, $field);
 	}
 
 	private static function prepareIdFromName($name)

@@ -18,7 +18,7 @@ gulp.task 'styles-vendors', ->
 gulp.task 'styles', ['styles-vendors'], ->
   gulp.src 'assets/less/**/*.less'
     .pipe less()
-    .pipe cssmin()
+    .pipe check(argv.production, cssmin())
     .pipe gulp.dest('assets/css')
 
 gulp.task 'scripts-vendors', ->

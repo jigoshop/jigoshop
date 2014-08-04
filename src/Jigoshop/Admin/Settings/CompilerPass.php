@@ -1,6 +1,6 @@
 <?php
 
-namespace Jigoshop\Core\Types;
+namespace Jigoshop\Admin\Settings;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -22,20 +22,15 @@ class CompilerPass implements CompilerPassInterface
 	 */
 	public function process(ContainerBuilder $container)
 	{
-		if(!$container->hasDefinition('jigoshop.types')){
+		if(!$container->hasDefinition('jigoshop.admin.settings')){
 			return;
 		}
 
-		$definition = $container->getDefinition('jigoshop.types');
+		$definition = $container->getDefinition('jigoshop.admin.settings');
 
-		$types = $container->findTaggedServiceIds('jigoshop.type.post');
-		foreach($types as $id => $attributes){
-			$definition->addMethodCall('addPostType', array(new Reference($id)));
-		}
-
-		$taxonomies = $container->findTaggedServiceIds('jigoshop.type.taxonomy');
-		foreach($taxonomies as $id => $attributes){
-			$definition->addMethodCall('addTaxonomy', array(new Reference($id)));
+		$tabs = $container->findTaggedServiceIds('jigoshop.admin.settings.tab');
+		foreach($tabs as $id => $attributes){
+			$definition->addMethodCall('addTab', array(new Reference($id)));
 		}
 	}
 }

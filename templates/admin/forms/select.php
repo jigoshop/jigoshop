@@ -14,13 +14,10 @@ use Jigoshop\Helper\Render;
  */
 ?>
 <div class="form-group <?php echo $id; ?>_field <?php echo join(' ', $classes); ?>">
-	<label for="<?php echo $id; ?>" class="col-sm-2 control-label">
-		<?php echo $label; ?>
+	<div>
 		<?php if(!empty($tip)): ?>
 			<a href="#" data-toggle="tooltip" class="badge" data-placement="left" title="<?php echo $tip; ?>">?</a>
 		<?php endif; ?>
-	</label>
-	<div class="col-sm-9">
 		<select id="<?php echo $id; ?>" name="<?php echo $name; ?>" class="form-control"
 		        placeholder="<?php echo $placeholder; ?>"<?php $multiple and print ' multiple="multiple"'; ?>>
 			<?php foreach($options as $option => $item): ?>

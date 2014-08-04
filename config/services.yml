@@ -120,6 +120,12 @@ services:
       - '@jigoshop.service.product'
   jigoshop.admin.settings:
     class: Jigoshop\Admin\Settings
+    arguments:
+      - '@wpal'
+  jigoshop.admin.settings.owner:
+    class: Jigoshop\Admin\Settings\OwnerTab
+    tags:
+      - { name: jigoshop.admin.settings.tab }
   jigoshop.admin.system_info:
     class: Jigoshop\Admin\SystemInfo
     arguments:
