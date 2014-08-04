@@ -93,13 +93,15 @@ class Settings implements PageInterface
 		// Workaround for PHP pre-5.4
 		$that = $this;
 		/** @var TabInterface $tab */
-		$this->wp->addSettingsSection($tab->getSlug(), '', function() use ($tab, $that){
-			$that->displayTab($tab);
-		}, self::NAME);
+		foreach ($tab->getSections() as $section) {
+			$this->wp->addSettingsSection($tab->getSlug(), $section['title'], function() use ($tab, $that){
+				$that->displayTab($tab);
+			}, self::NAME);
 
-		foreach ($tab->getFields() as $field) {
-			$field = $this->validateField($field);
-			$this->wp->addSettingsField($field['id'], $field['title'], array($this, 'displayField'), self::NAME, $tab->getSlug(), $field);
+			foreach($section['fields'] as $field){
+				$field = $this->validateField($field);
+				$this->wp->addSettingsField($field['id'], $field['title'], array($this, 'displayField'), self::NAME, $tab->getSlug(), $field);
+			}
 		}
 	}
 
@@ -157,6 +159,11 @@ class Settings implements PageInterface
 		);
 
 		$field = $this->wp->wpParseArgs($field, $defaults);
+
+		if($field['id'] === null){
+			$field['id'] = Forms::prepareIdFromName($field['name']);
+		}
+		$field['label_for'] = $field['id'];
 		// TODO: Think on how to improve this name hacking
 		$field['name'] = Options::NAME.$field['name'];
 		// TODO: Properly check if fields are valid.
@@ -186,6 +193,9 @@ class Settings implements PageInterface
 				break;
 			case 'checkbox':
 				Forms::checkbox($field);
+				break;
+			case 'constant':
+				Forms::constant($field);
 				break;
 			default:
 				// TODO: Filter for custom admin field types.

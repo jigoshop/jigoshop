@@ -5,13 +5,13 @@ namespace Jigoshop\Admin\Settings;
 use Jigoshop\Core\Options;
 
 /**
- * Owner tab definition.
+ * Shopping tab definition.
  *
  * @package Jigoshop\Admin\Settings
  */
-class OwnerTab implements TabInterface
+class ShoppingTab implements TabInterface
 {
-	const SLUG = 'owner';
+	const SLUG = 'shopping';
 
 	/** @var array */
 	private $options;
@@ -26,7 +26,7 @@ class OwnerTab implements TabInterface
 	 */
 	public function getTitle()
 	{
-		return __('Owner', 'jigoshop');
+		return __('Shopping', 'jigoshop');
 	}
 
 	/**
@@ -40,16 +40,13 @@ class OwnerTab implements TabInterface
 	/**
 	 * @return array List of items to display.
 	 */
-	public function getFields()
+	public function getSections()
 	{
 		return array(
 			array(
-				'id' => 'name',
-				'name' => '[name]',
-				'title' => 'Owner name',
-				'type' => 'text',
-				'description' => 'Owner name',
-				'value' => $this->options['name'],
+				'title' => __('Main', 'jigoshop'),
+				'fields' => array(
+				),
 			)
 		);
 	}

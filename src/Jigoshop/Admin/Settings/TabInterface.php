@@ -22,7 +22,7 @@ interface TabInterface
 	/**
 	 * @return array List of items to display.
 	 */
-	public function getFields();
+	public function getSections();
 
 	/**
 	 * Validate and sanitize input values.

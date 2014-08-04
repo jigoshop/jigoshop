@@ -21,18 +21,24 @@ class Options
 
 	// TODO: Fill default options
 	private $defaults = array(
-		'cache_mechanism' => 'simple',
-		'catalog_per_page' => 9,
-		'catalog_sort' => array(
-			'order_by' => 'post_date',
-			'order' => 'DESC',
-			'columns' => 3,
+//		'cache_mechanism' => 'simple',
+//		'catalog_per_page' => 9,
+//		'catalog_sort' => array(
+//			'order_by' => 'post_date',
+//			'order' => 'DESC',
+//			'columns' => 3,
+//		),
+//		'disable_css' => 'no',
+//		'disable_prettyphoto' => 'no',
+//		'load_frontend_css' => 'yes',
+//		'complete_processing_orders' => 'no',
+//		'reset_pending_orders' => 'no',
+		'general' => array(
+			'name' => '',
+			'email' => '',
+			'show_message' => false,
+			'message' => 'Demo store',
 		),
-		'disable_css' => 'no',
-		'disable_prettyphoto' => 'no',
-		'load_frontend_css' => 'yes',
-		'complete_processing_orders' => 'no',
-		'reset_pending_orders' => 'no',
 	);
 	private $options = array();
 	private $dirty = false;
@@ -141,6 +147,9 @@ class Options
 	private function _loadOptions()
 	{
 		$options = (array)$this->wp->getOption(self::NAME);
+		foreach($this->defaults as $key => $value){
+			$options[$key] = array_merge($value, $options[$key]);
+		}
 		$this->options = array_merge($this->defaults, $options);
 	}
 

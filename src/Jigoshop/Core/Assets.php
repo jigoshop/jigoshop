@@ -2,6 +2,7 @@
 
 namespace Jigoshop\Core;
 
+use Jigoshop\Admin\Settings;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
 use WPAL\Wordpress;
@@ -50,10 +51,16 @@ class Assets
 		$this->styles->add('jigoshop-admin', JIGOSHOP_URL.'/assets/css/admin.css');
 		$this->styles->add('jigoshop-vendors', JIGOSHOP_URL.'/assets/css/vendors.min.css');
 		$this->scripts->add('jigoshop-admin', JIGOSHOP_URL.'/assets/js/admin.js');
+		$this->scripts->add('jigoshop-helpers', JIGOSHOP_URL.'/assets/js/helpers.js');
 		$this->scripts->add('jigoshop-vendors', JIGOSHOP_URL.'/assets/js/vendors.min.js');
 
-		if ($adminPage === 'product') {
-			$this->scripts->add('jigoshop-admin-product', JIGOSHOP_URL.'/assets/js/admin/product.js');
+		switch($adminPage){
+			case 'product':
+				$this->scripts->add('jigoshop-admin-product', JIGOSHOP_URL.'/assets/js/admin/product.js');
+				break;
+			case 'jigoshop_page_'.Settings::NAME:
+				$this->scripts->add('jigoshop-admin-settings', JIGOSHOP_URL.'/assets/js/admin/settings.js');
+				break;
 		}
 //		$this->scripts->add('bootstrap', JIGOSHOP_URL.'/assets/js/bootstrap.min.js', array('jquery'));
 

@@ -129,8 +129,8 @@ services:
       - '@jigoshop.options'
     tags:
       - { name: jigoshop.admin.settings.tab }
-  jigoshop.admin.settings.owner:
-    class: Jigoshop\Admin\Settings\OwnerTab
+  jigoshop.admin.settings.shopping:
+    class: Jigoshop\Admin\Settings\ShoppingTab
     arguments:
       - '@jigoshop.options'
     tags:

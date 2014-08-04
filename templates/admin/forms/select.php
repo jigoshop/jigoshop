@@ -15,9 +15,6 @@ use Jigoshop\Helper\Render;
 ?>
 <div class="form-group <?php echo $id; ?>_field <?php echo join(' ', $classes); ?>">
 	<div>
-		<?php if(!empty($tip)): ?>
-			<a href="#" data-toggle="tooltip" class="badge" data-placement="left" title="<?php echo $tip; ?>">?</a>
-		<?php endif; ?>
 		<select id="<?php echo $id; ?>" name="<?php echo $name; ?>" class="form-control"
 		        placeholder="<?php echo $placeholder; ?>"<?php $multiple and print ' multiple="multiple"'; ?>>
 			<?php foreach($options as $option => $item): ?>
@@ -34,6 +31,9 @@ use Jigoshop\Helper\Render;
 		</select>
 		<?php if(!empty($description)): ?>
 			<span class="help-block"><?php echo $description; ?></span>
+		<?php endif; ?>
+		<?php if(!empty($tip)): ?>
+			<a href="#" data-toggle="tooltip" class="badge" data-placement="left" title="<?php echo $tip; ?>">?</a>
 		<?php endif; ?>
 	</div>
 </div>

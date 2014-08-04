@@ -12,9 +12,7 @@
 ?>
 <div class="form-group <?php echo $id; ?>_field">
 	<div>
-		<input type="text" id="<?php echo $id; ?>" name="<?php echo $name; ?>"
-		       class="form-control <?php echo join(' ', $classes); ?>"
-		       placeholder="<?php echo $placeholder; ?>" value="<?php echo $value; ?>" />
+		<p class="form-control-static <?php echo join(' ', $classes); ?>" id="<?php echo $id; ?>"><?php echo $value; ?></p>
 		<?php if(!empty($description)): ?>
 			<span class="help-block"><?php echo $description; ?></span>
 		<?php endif; ?>

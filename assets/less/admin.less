@@ -17,11 +17,19 @@
     li.hide {
       display: none;
     }
+    li > a {
+      text-decoration: none;
+    }
+    li.active > a:hover {
+      text-decoration: underline;
+    }
   }
   .schedule.hide {
     display: none;
   }
   .form-group {
+    margin: 0;
+
     div.checkbox-inline {
       input[type=checkbox] {
         position: static;
@@ -33,10 +41,25 @@
       font-style: italic;
     }
   }
-  .tab-pane {
-    padding-top: @padding-base-horizontal;
+  .tab-content {
+    background: @body-bg;
+    border: 1px solid @nav-tabs-border-color;
+    border-top: 0;
+    padding: @padding-base-vertical @padding-base-horizontal;
   }
   h3 {
     margin: 1em 0 !important;
+  }
+  .form-table {
+    th {
+      padding: 8px 0;
+    }
+    td {
+      padding: 0;
+
+      p {
+        margin: 0;
+      }
+    }
   }
 }

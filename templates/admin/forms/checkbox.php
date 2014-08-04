@@ -12,10 +12,10 @@ use Jigoshop\Admin\Helper\Forms;
  */
 ?>
 <div class="form-group <?php echo $id; ?>_field">
+	<?php if(!empty($tip)): ?>
+		<a href="#" data-toggle="tooltip" class="badge" data-placement="left" title="<?php echo $tip; ?>">?</a>
+	<?php endif; ?>
 	<div class="checkbox-inline">
-		<?php if(!empty($tip)): ?>
-			<a href="#" data-toggle="tooltip" class="badge" data-placement="left" title="<?php echo $tip; ?>">?</a>
-		<?php endif; ?>
 		<input type="hidden" name="<?php echo $name; ?>" value="off" />
 		<input type="checkbox" id="<?php echo $id; ?>" name="<?php echo $name; ?>" class="<?php echo join(' ', $classes); ?>"
 			<?php echo Forms::checked($value, true); ?> value="on" />
