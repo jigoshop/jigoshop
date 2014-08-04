@@ -239,6 +239,16 @@ function jigoshop_admin_bar_links($links)
 	), $links);
 }
 
+function jigoshop_admin_bar_edit($location, $term_id, $taxonomy)
+{
+	if (in_array($taxonomy, array('product_cat', 'product_tag'))) {
+		$location .= '&post_type=product';
+	}
+
+	return $location;
+}
+add_filter('get_edit_term_link', 'jigoshop_admin_bar_edit', 10, 3);
+
 /**
  * Jigoshop Init
  */
