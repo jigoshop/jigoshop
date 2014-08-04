@@ -97,6 +97,14 @@ class Options
 	}
 
 	/**
+	 * @return array All available options.
+	 */
+	public function getAll()
+	{
+		return $this->options;
+	}
+
+	/**
 	 * @param $name string Name of option to update.
 	 * @param $value mixed Value to set.
 	 */

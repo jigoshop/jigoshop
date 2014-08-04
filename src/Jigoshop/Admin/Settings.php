@@ -3,6 +3,7 @@
 namespace Jigoshop\Admin;
 
 use Jigoshop\Admin\Helper\Forms;
+use Jigoshop\Admin\Settings\GeneralTab;
 use Jigoshop\Admin\Settings\OwnerTab;
 use Jigoshop\Admin\Settings\TabInterface;
 use Jigoshop\Core\Options;
@@ -19,12 +20,17 @@ class Settings implements PageInterface
 {
 	const NAME = 'jigoshop_settings';
 
+	/** @var \WPAL\Wordpress */
 	private $wp;
+	/** @var Options */
+	private $options;
 	private $tabs = array();
+	private $currentTab;
 
-	public function __construct(Wordpress $wp)
+	public function __construct(Wordpress $wp, Options $options)
 	{
 		$this->wp = $wp;
+		$this->options = $options;
 		$wp->addAction('current_screen', array($this, 'register'));
 //		$this->wp->addAction('admin_print_scripts-'.$admin_page, array($this, 'settings_scripts')); // TODO: Use JWOS ability to check what current page is to properly include scripts
 //		$this->wp->addAction('admin_print_styles-'.$admin_page, array($this, 'settings_styles'));
@@ -37,7 +43,7 @@ class Settings implements PageInterface
 	 */
 	public function addTab(TabInterface $tab)
 	{
-		$this->tabs[] = $tab;
+		$this->tabs[$tab->getSlug()] = $tab;
 	}
 
 	/**
@@ -81,20 +87,36 @@ class Settings implements PageInterface
 
 		$this->wp->registerSetting(self::NAME, Options::NAME, array($this, 'validate'));
 
-		// TODO: Add current tab fetching
+		$tab = $this->getCurrentTab();
+		$tab = $this->tabs[$tab];
 
+		// Workaround for PHP pre-5.4
 		$that = $this;
 		/** @var TabInterface $tab */
-		foreach ($this->tabs as $tab) {
-			$this->wp->addSettingsSection($tab->getSlug(), '', function() use ($tab, $that){
-				$that->displayTab($tab);
-			}, self::NAME);
+		$this->wp->addSettingsSection($tab->getSlug(), '', function() use ($tab, $that){
+			$that->displayTab($tab);
+		}, self::NAME);
 
-			foreach ($tab->getFields() as $field) {
-				$field = $this->validateField($field);
-				$this->wp->addSettingsField($field['id'], $field['title'], array($this, 'displayField'), self::NAME, $tab->getSlug(), $field);
+		foreach ($tab->getFields() as $field) {
+			$field = $this->validateField($field);
+			$this->wp->addSettingsField($field['id'], $field['title'], array($this, 'displayField'), self::NAME, $tab->getSlug(), $field);
+		}
+	}
+
+	/**
+	 * @return string Slug of currently displayed tab
+	 */
+	protected function getCurrentTab()
+	{
+		if($this->currentTab === null){
+			$this->currentTab = GeneralTab::SLUG;
+			// Use REQUEST to work with both GET and POST parameters
+			if (isset($_REQUEST['tab']) && in_array($_REQUEST['tab'], array_keys($this->tabs))) {
+				$this->currentTab = $_REQUEST['tab'];
 			}
 		}
+
+		return $this->currentTab;
 	}
 
 	/**
@@ -104,7 +126,7 @@ class Settings implements PageInterface
 	{
 		Render::output('admin/settings', array(
 			'tabs' => $this->tabs,
-			'current_tab' => 'owner',
+			'current_tab' => $this->getCurrentTab(),
 		));
 	}
 
@@ -135,7 +157,8 @@ class Settings implements PageInterface
 		);
 
 		$field = $this->wp->wpParseArgs($field, $defaults);
-
+		// TODO: Think on how to improve this name hacking
+		$field['name'] = Options::NAME.$field['name'];
 		// TODO: Properly check if fields are valid.
 
 		return $field;
@@ -177,7 +200,11 @@ class Settings implements PageInterface
 	 */
 	public function validate($input)
 	{
-		// TODO: Introduce validation of input.
-		return $input;
+		$options = $this->options->getAll();
+		$currentTab = $this->getCurrentTab();
+		/** @var TabInterface $tab */
+		$tab = $this->tabs[$currentTab];
+		$options[$currentTab] = $tab->validate($input);
+		return $options;
 	}
 }

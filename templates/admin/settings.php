@@ -23,6 +23,7 @@ use Jigoshop\Admin\Settings;
 	<div class="tab-content">
 		<div class="tab-pane active">
 			<form action="options.php" id="jigoshop" method="post" enctype="multipart/form-data" role="form">
+				<input type="hidden" name="tab" value="<?php echo $current_tab; ?>" />
 				<?php settings_fields(Settings::NAME); ?>
 				<?php do_settings_sections(Settings::NAME); ?>
 				<button type="submit" class="btn btn-primary"><?php echo __('Save changes', 'jigoshop'); ?></button>

@@ -5,13 +5,13 @@ namespace Jigoshop\Admin\Settings;
 use Jigoshop\Core\Options;
 
 /**
- * Owner tab definition.
+ * General tab definition.
  *
  * @package Jigoshop\Admin\Settings
  */
-class OwnerTab implements TabInterface
+class GeneralTab implements TabInterface
 {
-	const SLUG = 'owner';
+	const SLUG = 'general';
 
 	/** @var array */
 	private $options;
@@ -26,7 +26,7 @@ class OwnerTab implements TabInterface
 	 */
 	public function getTitle()
 	{
-		return __('Owner', 'jigoshop');
+		return __('General', 'jigoshop');
 	}
 
 	/**
@@ -46,9 +46,8 @@ class OwnerTab implements TabInterface
 			array(
 				'id' => 'name',
 				'name' => '[name]',
-				'title' => 'Owner name',
+				'title' => 'Shop name',
 				'type' => 'text',
-				'description' => 'Owner name',
 				'value' => $this->options['name'],
 			)
 		);

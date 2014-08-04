@@ -122,8 +122,17 @@ services:
     class: Jigoshop\Admin\Settings
     arguments:
       - '@wpal'
+      - '@jigoshop.options'
+  jigoshop.admin.settings.general:
+    class: Jigoshop\Admin\Settings\GeneralTab
+    arguments:
+      - '@jigoshop.options'
+    tags:
+      - { name: jigoshop.admin.settings.tab }
   jigoshop.admin.settings.owner:
     class: Jigoshop\Admin\Settings\OwnerTab
+    arguments:
+      - '@jigoshop.options'
     tags:
       - { name: jigoshop.admin.settings.tab }
   jigoshop.admin.system_info:
