@@ -468,27 +468,21 @@
 	}
 
 	function jigoshop_file_upload() {
-		$('.upload_file_button').click( function(e) {
-
-			// Disable default action
+		$('.upload_file_button').on('click', function(e){
 			e.preventDefault();
-
-			// Set up variables
-			var $this   = $(this);
-			    $file   = $this.prev();
-			    post_id = $this.data('postid');
-
-			window.send_to_editor = function(html) {
-
-				// Attach the file URI to the relevant
-				$file.val( $(html).attr('href') );
-
-				// Hide thickbox
-				tb_remove();
+			var $this = $(this);
+			var $field = $this.prev();
+			if(!this.bound){
+				$this.jigoshop_media({
+					field: false,
+					bind: false,
+					callback: function(attachment){
+						$field.val(attachment.changed.url);
+					}
+				});
+				this.bound = true;
 			}
-
-			// Show thickbox
-			tb_show('', 'media-upload.php?post_id=' + post_id + '&type=downloadable_product&from=jigoshop_product&TB_iframe=true');
+			$(this).trigger('jigoshop_media');
 		});
 	}
 

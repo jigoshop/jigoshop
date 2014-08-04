@@ -732,10 +732,10 @@ function jigoshop_admin_scripts()
 		return;
 	}
 
-	wp_enqueue_script('thickbox');
-	wp_enqueue_script('jquery-ui-core');
+	wp_enqueue_media();
 	wp_enqueue_script('jquery-ui-sortable');
 	wp_enqueue_script('jquery-ui-datepicker');
+	jigoshop_add_script('jigoshop_media', JIGOSHOP_URL.'/assets/js/media.js', array('jquery', 'media-editor'));
 	jigoshop_add_script('jigoshop-select2', JIGOSHOP_URL.'/assets/js/select2.min.js', array('jquery'));
 	jigoshop_add_script('jigoshop_blockui', JIGOSHOP_URL.'/assets/js/blockui.js', array('jquery'), array('version' => '2.4.6'));
 	jigoshop_add_script('jigoshop_backend', JIGOSHOP_URL.'/assets/js/jigoshop_backend.js', array('jquery'), array('version' => '1.0'));

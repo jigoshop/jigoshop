@@ -1215,7 +1215,7 @@ class jigoshop_product extends Jigoshop_Base {
 				continue;
 
 			// Get Title & Value from attribute array
-			$name = jigoshop_product::attribute_label('pa_'.$attr['name']);
+			$name = $this->attribute_label('pa_'.$attr['name']);
 			$value = null;
 
 			if ( (bool) $attr['is_taxonomy'] ) {

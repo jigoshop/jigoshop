@@ -513,18 +513,14 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			<div class="inside">
 				<table cellpadding="0" cellspacing="0" class="jigoshop_variable_attributes">
 					<tbody>
-
 						<?php do_action('jigoshop_variable_product_table_begin', $variation, $attributes)?>
-
 						<tr>
 							<td class="upload_image" rowspan="2">
-								<a href="#" class="upload_image_button <?php if (isset($image_id)) echo 'remove'; ?>" rel="<?php echo $variation->ID; ?>">
+								<a href="#" class="upload_image_button" rel="<?php echo $variation->ID; ?>">
 									<img src="<?php echo $image ?>" width="93px" />
-									<input type="hidden" name="<?php echo esc_attr( $this->field_name('_thumbnail_id', $variation) ); ?>" class="upload_image_id" value="<?php if ( isset($image_id)) echo esc_attr( $image_id ); ?>" />
-									<!-- TODO: APPEND THIS IN JS <span class="overlay"></span> -->
+									<input type="hidden" name="<?php echo esc_attr( $this->field_name('_thumbnail_id', $variation) ); ?>" class="upload_image_id" value="<?php isset($image_id) and print esc_attr($image_id); ?>" />
 								</a>
 							</td>
-
 							<td>
 								<?php
 									$terms = get_the_terms( $variation->ID, 'product_type' );
