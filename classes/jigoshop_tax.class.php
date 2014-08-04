@@ -938,6 +938,7 @@ class jigoshop_tax extends Jigoshop_Base {
 	public function calculate_shipping_tax($price, $shipping_method_id, $tax_classes = array()){
 		$rates = $this->get_shipping_tax_rates($tax_classes);
 		$non_compound_amount = 0;
+		$selected_rate_id = jigoshop_session::instance()->selected_rate_id;
 
 		if(!empty($rates)){
 			foreach($rates as $tax_class => $rate){
@@ -948,22 +949,22 @@ class jigoshop_tax extends Jigoshop_Base {
 					$this->tax_amounts[$tax_class]['rate'] = $rate['rate'];
 					$this->tax_amounts[$tax_class]['compound'] = $rate['compound'];
 					$this->tax_amounts[$tax_class]['display'] = ($this->get_online_label_for_customer($tax_class) ? $this->get_online_label_for_customer($tax_class) : __('Tax', 'jigoshop'));
-					$this->tax_amounts[$tax_class][$shipping_method_id] = 0;
+					$this->tax_amounts[$tax_class][$shipping_method_id.$selected_rate_id] = 0;
 				}
 
 				// initialize shipping if not already initialized
 				if(!isset($this->tax_amounts[$tax_class][$shipping_method_id])){
-					$this->tax_amounts[$tax_class][$shipping_method_id] = 0;
+					$this->tax_amounts[$tax_class][$shipping_method_id.$selected_rate_id] = 0;
 				}
 
 				$tax_rate = round($rate['rate'], 4);
 				if($rate['compound'] == 'yes'){
 					// calculate compounded taxes. Increment value because of per-item shipping
-					$this->tax_amounts[$tax_class][$shipping_method_id] += ($this->tax_divisor > 0 ? (($price + $non_compound_amount) * ($tax_rate / 100) * $this->tax_divisor) : ($price + $non_compound_amount) * ($tax_rate / 100));
+					$this->tax_amounts[$tax_class][$shipping_method_id.$selected_rate_id] += ($this->tax_divisor > 0 ? (($price + $non_compound_amount) * ($tax_rate / 100) * $this->tax_divisor) : ($price + $non_compound_amount) * ($tax_rate / 100));
 				} else {
 					// calculate regular taxes. Increment value because of per-item shipping
 					$non_compound_amount += ($price * ($tax_rate / 100)); // don't use divisor here, as it will be used with compound tax above
-					$this->tax_amounts[$tax_class][$shipping_method_id] += ($this->tax_divisor > 0 ? ($price * ($tax_rate / 100)) * $this->tax_divisor : $price * ($tax_rate / 100));
+					$this->tax_amounts[$tax_class][$shipping_method_id.$selected_rate_id] += ($this->tax_divisor > 0 ? ($price * ($tax_rate / 100)) * $this->tax_divisor : $price * ($tax_rate / 100));
 				}
 			}
 		} else {
@@ -971,11 +972,11 @@ class jigoshop_tax extends Jigoshop_Base {
 
 			if(!empty($tax_classes)){
 				foreach($tax_classes as $tax_class){
-					$this->tax_amounts[$tax_class][$shipping_method_id] = 0;
+					$this->tax_amounts[$tax_class][$shipping_method_id.$selected_rate_id] = 0;
 				}
 			} else {
 				// auto calculate zero rate for all customers outside of tax base
-				$this->tax_amounts['jigoshop_zero_rate'][$shipping_method_id] = 0;
+				$this->tax_amounts['jigoshop_zero_rate'][$shipping_method_id.$selected_rate_id] = 0;
 			}
 		}
 
