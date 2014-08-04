@@ -2,6 +2,8 @@
 
 namespace Jigoshop\Core;
 
+use Jigoshop\Helper\Product;
+
 /**
  * Available currencies.
  *
@@ -266,5 +268,28 @@ class Currency
 		asort($countries);
 
 		return $countries;
+	}
+
+	public static function displays()
+	{
+		$symbol = Product::currencySymbol();
+		$separator = '.'; // TODO: Introduce decimal separator
+		$code = 'USD'; // TODO: Introduce currency code
+
+		// TODO: Maybe replace with proper sprintf() text?
+		return array(
+			'left' => sprintf('%1$s0%2$s00', $symbol, $separator),// symbol.'0'.separator.'00'
+			'left_space' => sprintf('%1$s0 %2$s00', $symbol, $separator),// symbol.' 0'.separator.'00'
+			'right' => sprintf('0%2$s00%1$s', $symbol, $separator),// '0'.separator.'00'.symbol
+			'right_space' => sprintf('0%2$s00 %1$s', $symbol, $separator),// '0'.separator.'00 '.symbol
+			'left_code' => sprintf('%1$s0%2$s00', $code, $separator),// code.'0'.separator.'00'
+			'left_code_space' => sprintf('%1$s 0%2$s00', $code, $separator),// code.' 0'.separator.'00'
+			'right_code' => sprintf('0%2$s00%1$s', $code, $separator),// '0'.separator.'00'.code
+			'right_code_space' => sprintf('0%2$s00 %1$s', $code, $separator),// '0'.separator.'00 '.code
+			'symbol_code' => sprintf('%1$s0%2$s00%3$s', $symbol, $separator, $code),// symbol.'0'.separator.'00'.code
+			'symbol_code_space' => sprintf('%1$s 0%2$s00 %3$s', $symbol, $separator, $code),// symbol.' 0'.separator.'00 '.code
+			'code_symbol' => sprintf('%3$s0%2$s00%1$s', $symbol, $separator, $code),// code.'0'.separator.'00'.symbol
+			'code_symbol_space' => sprintf('%3$s 0%2$s00 %1$s', $symbol, $separator, $code),// code.' 0'.separator.'00 '.symbol
+		);
 	}
 }

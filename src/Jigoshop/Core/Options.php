@@ -39,6 +39,7 @@ class Options
 			'show_message' => false,
 			'message' => 'Demo store',
 			'currency' => 'GBP',
+			'currency_position' => 'left', // TODO: Update to Currency::display()
 		),
 	);
 	private $options = array();

@@ -89,6 +89,13 @@ class GeneralTab implements TabInterface
 						'value' => $this->options['currency'],
 						'options' => Currency::countries(),
 					),
+					array(
+						'name' => '[currency_position]',
+						'title' => __('Currency position', 'jigoshop'),
+						'type' => 'select',
+						'value' => $this->options['currency_position'],
+						'options' => Currency::displays(),
+					)
 				),
 			),
 		);
