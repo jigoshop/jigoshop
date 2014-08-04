@@ -8,6 +8,7 @@ use Jigoshop\Admin\Settings;
 ?>
 <div class="wrap jigoshop">
 	<h1><?php _e('Jigoshop &rang; Settings', 'jigoshop'); ?></h1>
+	<?php settings_errors(); ?>
 	<?php do_action('jigoshop_admin_settings_notices'); ?>
 	<ul class="nav nav-tabs nav-justified" role="tablist">
 		<?php foreach($tabs as $tab): /** @var $tab \Jigoshop\Admin\Settings\TabInterface */ ?>
@@ -19,14 +20,13 @@ use Jigoshop\Admin\Settings;
 	<noscript>
 		<div class="alert alert-danger" role="alert"><?php _e('<strong>Warning</strong> Options panel will not work properly without JavaScript.', 'jigoshop'); ?></div>
 	</noscript>
-	<?php settings_errors(); ?>
 	<div class="tab-content">
 		<div class="tab-pane active">
-			<form action="options.php" id="jigoshop" method="post" enctype="multipart/form-data" role="form">
+			<form action="options.php" id="jigoshop" method="post" enctype="multipart/form-data" role="form" class="clearfix">
 				<input type="hidden" name="tab" value="<?php echo $current_tab; ?>" />
 				<?php settings_fields(Settings::NAME); ?>
 				<?php do_settings_sections(Settings::NAME); ?>
-				<button type="submit" class="btn btn-primary"><?php echo __('Save changes', 'jigoshop'); ?></button>
+				<button type="submit" class="btn btn-primary pull-right"><?php echo __('Save changes', 'jigoshop'); ?></button>
 			</form>
 		</div>
 	</div>

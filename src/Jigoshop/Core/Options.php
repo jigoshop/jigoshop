@@ -38,6 +38,7 @@ class Options
 			'email' => '',
 			'show_message' => false,
 			'message' => 'Demo store',
+			'currency' => 'GBP',
 		),
 	);
 	private $options = array();

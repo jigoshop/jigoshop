@@ -2,6 +2,7 @@
 
 namespace Jigoshop\Admin\Settings;
 
+use Jigoshop\Core\Currency;
 use Jigoshop\Core\Options;
 
 /**
@@ -45,6 +46,7 @@ class GeneralTab implements TabInterface
 		return array(
 			array(
 				'title' => __('Main', 'jigoshop'),
+				'id' => 'main',
 				'fields' => array(
 					array(
 						'name' => '[name]',
@@ -75,7 +77,20 @@ class GeneralTab implements TabInterface
 						'classes' => array('hidden'),
 					),
 				),
-			)
+			),
+			array(
+				'title' => __('Pricing options', 'jigoshop'),
+				'id' => 'pricing',
+				'fields' => array(
+					array(
+						'name' => '[currency]',
+						'title' => __('Currency', 'jigoshop'),
+						'type' => 'select',
+						'value' => $this->options['currency'],
+						'options' => Currency::countries(),
+					),
+				),
+			),
 		);
 	}
 
@@ -88,7 +103,7 @@ class GeneralTab implements TabInterface
 	 */
 	public function validate(array $settings)
 	{
-		// TODO: Implement validate() method.
+		$settings['show_message'] = $settings['show_message'] == 'on';
 		return $settings;
 	}
 }

@@ -94,13 +94,13 @@ class Settings implements PageInterface
 		$that = $this;
 		/** @var TabInterface $tab */
 		foreach ($tab->getSections() as $section) {
-			$this->wp->addSettingsSection($tab->getSlug(), $section['title'], function() use ($tab, $that){
+			$this->wp->addSettingsSection($section['id'], $section['title'], function() use ($tab, $that){
 				$that->displayTab($tab);
 			}, self::NAME);
 
 			foreach($section['fields'] as $field){
 				$field = $this->validateField($field);
-				$this->wp->addSettingsField($field['id'], $field['title'], array($this, 'displayField'), self::NAME, $tab->getSlug(), $field);
+				$this->wp->addSettingsField($field['id'], $field['title'], array($this, 'displayField'), self::NAME, $section['id'], $field);
 			}
 		}
 	}
@@ -164,6 +164,7 @@ class Settings implements PageInterface
 			$field['id'] = Forms::prepareIdFromName($field['name']);
 		}
 		$field['label_for'] = $field['id'];
+
 		// TODO: Think on how to improve this name hacking
 		$field['name'] = Options::NAME.$field['name'];
 		// TODO: Properly check if fields are valid.

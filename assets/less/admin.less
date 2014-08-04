@@ -2,6 +2,7 @@
 @import '../bower/bootstrap/less/mixins.less';
 
 .jigoshop {
+  @import '../bower/bootstrap/less/normalize.less';
   @import '../bower/bootstrap/less/component-animations.less';
   @import '../bower/bootstrap/less/grid.less';
   @import '../bower/bootstrap/less/forms.less';
@@ -9,6 +10,8 @@
   @import '../bower/bootstrap/less/navs.less';
   @import '../bower/bootstrap/less/badges.less';
   @import '../bower/bootstrap/less/tooltip.less';
+  @import '../bower/bootstrap/less/utilities.less';
+  @import '../bower/bootstrap/less/alerts.less';
 
   .form-group, .nav-tabs {
     .clearfix();
@@ -17,11 +20,10 @@
     li.hide {
       display: none;
     }
-    li > a {
-      text-decoration: none;
-    }
-    li.active > a:hover {
-      text-decoration: underline;
+    li {
+      a, &:hover a  {
+        text-decoration: none;
+      }
     }
   }
   .schedule.hide {

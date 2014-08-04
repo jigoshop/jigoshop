@@ -45,6 +45,7 @@ class ShoppingTab implements TabInterface
 		return array(
 			array(
 				'title' => __('Main', 'jigoshop'),
+				'id' => 'main',
 				'fields' => array(
 				),
 			)
