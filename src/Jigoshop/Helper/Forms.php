@@ -6,6 +6,10 @@ use Jigoshop\Exception;
 
 class Forms
 {
+	protected static $checkboxTemplate = 'forms/checkbox';
+	protected static $selectTemplate = 'forms/select';
+	protected static $textTemplate = 'forms/text';
+
 	/**
 	 * Returns string for checkboxes if value is checked (value and current are the same).
 	 *
@@ -21,6 +25,7 @@ class Forms
 
 		return '';
 	}
+
 	/**
 	 * Returns string for selects if value is within selected values.
 	 *
@@ -41,6 +46,7 @@ class Forms
 	 * Outputs simple text field.
 	 *
 	 * @param $field array Field parameters.
+	 * @throws \Jigoshop\Exception
 	 *
 	 * // TODO: Describe field parameters.
 	 */
@@ -66,13 +72,14 @@ class Forms
 			$field['id'] = self::prepareIdFromName($field['name']);
 		}
 
-		Render::output('forms/checkbox', $field);
+		Render::output(self::$checkboxTemplate, $field);
 	}
 
 	/**
 	 * Outputs select field.
 	 *
 	 * @param $field array Field parameters.
+	 * @throws \Jigoshop\Exception
 	 *
 	 * // TODO: Describe field parameters.
 	 */
@@ -106,13 +113,14 @@ class Forms
 
 		$field['description'] = esc_html($field['description']);
 
-		Render::output('forms/select', $field);
+		Render::output(self::$selectTemplate, $field);
 	}
 
 	/**
 	 * Outputs simple text field.
 	 *
 	 * @param $field array Field parameters.
+	 * @throws \Jigoshop\Exception
 	 *
 	 * // TODO: Describe field parameters.
 	 */
@@ -139,7 +147,7 @@ class Forms
 			$field['id'] = self::prepareIdFromName($field['name']);
 		}
 
-		Render::output('forms/text', $field);
+		Render::output(self::$textTemplate, $field);
 	}
 
 	private static function prepareIdFromName($name)

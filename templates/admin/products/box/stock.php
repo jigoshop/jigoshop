@@ -1,7 +1,7 @@
 <?php
+use Jigoshop\Admin\Helper\Forms;
 use Jigoshop\Entity\Product;
 use Jigoshop\Entity\Product\Attributes\StockStatus;
-use Jigoshop\Helper\Forms;
 
 /**
  * @var $product Product The product.

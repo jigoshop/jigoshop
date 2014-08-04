@@ -1,6 +1,6 @@
 <?php
+use Jigoshop\Admin\Helper\Forms;
 use Jigoshop\Entity\Product;
-use Jigoshop\Helper\Forms;
 use Jigoshop\Helper\Product as ProductHelper;
 
 /**
