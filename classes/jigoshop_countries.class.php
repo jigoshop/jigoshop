@@ -1034,11 +1034,11 @@ class jigoshop_countries extends Jigoshop_Base {
 			foreach($countries as $country_key => $country_value){
 				$country_value = $escape ? esc_js($country_value) : $country_value;
 
-				if($states = self::get_states($country_key)){
+				if(($states = self::get_states($country_key))){
 					$output .= '<optgroup label="'.$country_value.'">';
 
 					if($show_all){
-						if(!is_array($selected_country)){
+						if(!is_array($selected_country) || !in_array($country_key, $selected_country)){
 							$output .= '<option value="'.esc_attr($country_key).'"';
 							if($selected_country == $country_key && $selected_state == '*'){
 								$output .= ' selected="selected"';

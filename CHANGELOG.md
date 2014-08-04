@@ -6,6 +6,7 @@
     * New: Support for variable products in Price Filter widget.
     * New: `jigoshop_report_widgets` action to add custom report boxes.
     * New: `jQuery.payment()` function to ease payment redirection.
+    * New: Ability to always select "All of" in country dropdown.
     * Fix: Invalid formatting of shipping dropdown.
     * Fix: Displaying multiple select fields.
     * Fix: Properly calculate tax for shipping.
