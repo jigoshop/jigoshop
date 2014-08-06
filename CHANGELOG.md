@@ -1,5 +1,7 @@
 ## Changelog
 
+* 1.11.1:
+    * Fix: Proper selecting of shipping rate.
 * 1.11 - 2014-08-06:
     * New: Compatibility with WooThemes themes.
     * New: Check for PHP accelerators as they might cause problems.

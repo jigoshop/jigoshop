@@ -75,7 +75,7 @@ class jigoshop_shipping_method
 	{
 		if($this->is_chosen()){
 			if (is_numeric(jigoshop_session::instance()->selected_rate_id)) {
-				return $rate_index == $this->get_selected_service(jigoshop_session::instance()->selected_rate_id);
+				return $rate_index == jigoshop_session::instance()->selected_rate_id;
 			} else {
 				return $rate_index == $this->get_cheapest_service();
 			}
