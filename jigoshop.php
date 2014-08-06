@@ -20,7 +20,7 @@
  * Description:         Jigoshop, a WordPress eCommerce plugin that works.
  * Author:              Jigoshop
  * Author URI:          http://www.jigoshop.com
- * Version:             1.11
+ * Version:             1.11.1
  * Requires at least:   3.8
  * Tested up to:        3.9.1
  * Text Domain:         jigoshop

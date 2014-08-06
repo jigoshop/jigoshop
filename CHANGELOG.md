@@ -2,6 +2,7 @@
 
 * 1.11.1:
     * Fix: Proper selecting of shipping rate.
+    * Fix: Proper grouped and variable product price displaying.
 * 1.11 - 2014-08-06:
     * New: Compatibility with WooThemes themes.
     * New: Check for PHP accelerators as they might cause problems.
