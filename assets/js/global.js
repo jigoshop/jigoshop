@@ -2,10 +2,15 @@
 	"use strict";
 	$(document).ready(function($){
 		setTimeout(function(){
-			$('.jigoshop_error, .jigoshop_message').slideUp('normal', function(){
+			$('.jigoshop_message').slideUp('normal', function(){
 				$(this).remove();
 			});
-		}, 2000);
+		}, 4000);
+		setTimeout(function(){
+			$('.jigoshop_error').slideUp('normal', function(){
+				$(this).remove();
+			});
+		}, 8000);
 		// Lightbox
 		if(jigoshop_params.load_fancybox){
 			$('a.zoom').prettyPhoto(
