@@ -113,7 +113,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 
 == Changelog ==
 
-= 1.11 =
+= 1.11 - 2014-08-06 =
 * New: Compatibility with WooThemes themes.
 * New: Check for PHP accelerators as they might cause problems.
 * New: Support for variable products in Price Filter widget.
@@ -122,9 +122,11 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 * New: Ability to always select "All of" in country dropdown.
 * New: Replaced old ThickBox with WordPress Media Gallery.
 * Improved: "Edit Product Category" and "Edit Product Tag" admin bar links now works properly.
+* Improved: Better message and error disappearing times.
 * Fix: Invalid formatting of shipping dropdown.
 * Fix: Displaying multiple select fields.
 * Fix: Properly calculate tax for shipping.
+* Fix: Licence validator now checks if plugin URL is correct.
 
 = 1.10.6 - 2014-07-30 =
 * Fix: Security issue on comments feed.

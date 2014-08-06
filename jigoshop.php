@@ -255,12 +255,6 @@ add_filter('get_edit_term_link', 'jigoshop_admin_bar_edit', 10, 3);
 add_action('init', 'jigoshop_init', 0);
 function jigoshop_init()
 {
-	/* ensure nothing is output to the browser prior to this (other than headers) */
-	//ob_clean();
-
-	// http://www.geertdedeckere.be/article/loading-wordpress-language-files-the-right-way
-	// this means that all Jigoshop extensions, shipping modules and gateways must load their text domains on the 'init' action hook
-	//
 	// Override default translations with custom .mo's found in wp-content/languages/jigoshop first.
 	load_textdomain('jigoshop', WP_LANG_DIR.'/jigoshop/jigoshop-'.get_locale().'.mo');
 	load_plugin_textdomain('jigoshop', false, dirname(plugin_basename(__FILE__)).'/languages/');

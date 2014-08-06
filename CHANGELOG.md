@@ -1,6 +1,6 @@
 ## Changelog
 
-* 1.11:
+* 1.11 - 2014-08-06:
     * New: Compatibility with WooThemes themes.
     * New: Check for PHP accelerators as they might cause problems.
     * New: Support for variable products in Price Filter widget.
