@@ -27,9 +27,6 @@ add_filter('jigoshop_payment_gateways', function ($methods){
 
 class paypal extends jigoshop_payment_gateway {
 
-	// based on PayPal currency rule: https://developer.paypal.com/docs/classic/api/currency_codes/
-	private static $no_decimal_currencies = array('HUF', 'JPY', 'TWD');
-
 	public function __construct(){
 
 		parent::__construct();
@@ -47,7 +44,6 @@ class paypal extends jigoshop_payment_gateway {
 		$this->testmode = $options->get_option('jigoshop_paypal_testmode');
 		$this->testemail = $options->get_option('jigoshop_sandbox_email');
 		$this->send_shipping = $options->get_option('jigoshop_paypal_send_shipping');
-		$this->decimals = min($options->get_option('jigoshop_price_num_decimals'), (in_array($options->get_option('jigoshop_currency'), self::$no_decimal_currencies) ? 0 : 2));
 
 		$this->liveurl = 'https://www.paypal.com/webscr';
 		$this->testurl = 'https://www.sandbox.paypal.com/webscr';
@@ -261,7 +257,9 @@ class paypal extends jigoshop_payment_gateway {
 				'email' => $order->billing_email,
 				// Payment Info
 				'invoice' => $order->get_order_number(),
-				'amount' => number_format((float)$order->order_total, $this->decimals),
+				'amount' => $order->order_total,
+				//BN code
+				'bn' => 'Jigoshop_SP'
 			),
 			$phone_args
 		);
@@ -311,12 +309,12 @@ class paypal extends jigoshop_payment_gateway {
 
 			$paypal_args['item_name_1'] = sprintf(__('Order %s', 'jigoshop'), $order->get_order_number()).' - '.implode(', ', $item_names);
 			$paypal_args['quantity_1'] = 1;
-			$paypal_args['amount_1'] = number_format($order->order_total - $order->order_shipping - $order->order_shipping_tax + $order->order_discount, $this->decimals, '.', '');
+			$paypal_args['amount_1'] = number_format($order->order_total - $order->order_shipping - $order->order_shipping_tax + $order->order_discount, 2, '.', '');
 
 			if(($order->order_shipping + $order->order_shipping_tax) > 0){
 				$paypal_args['item_name_2'] = __('Shipping cost', 'jigoshop');
 				$paypal_args['quantity_2'] = '1';
-				$paypal_args['amount_2'] = number_format($order->order_shipping + $order->order_shipping_tax, $this->decimals, '.', '');
+				$paypal_args['amount_2'] = number_format($order->order_shipping + $order->order_shipping_tax, 2, '.', '');
 			}
 		} else {
 			// Cart Contents
@@ -335,7 +333,7 @@ class paypal extends jigoshop_payment_gateway {
 
 					$paypal_args['item_name_'.$item_loop] = $title;
 					$paypal_args['quantity_'.$item_loop] = $item['qty'];
-					$paypal_args['amount_'.$item_loop] = number_format(apply_filters('jigoshop_paypal_adjust_item_price', $item['cost'] / $item['qty'], $item, 10, 2), $this->decimals); //Apparently, Paypal did not like "28.4525" as the amount. Changing that to "28.45" fixed the issue.
+					$paypal_args['amount_'.$item_loop] = number_format(apply_filters('jigoshop_paypal_adjust_item_price', $item['cost'] / $item['qty'], $item, 10, 2), 2); //Apparently, Paypal did not like "28.4525" as the amount. Changing that to "28.45" fixed the issue.
 				}
 			}
 
@@ -344,7 +342,7 @@ class paypal extends jigoshop_payment_gateway {
 				$item_loop++;
 				$paypal_args['item_name_'.$item_loop] = __('Shipping cost', 'jigoshop');
 				$paypal_args['quantity_'.$item_loop] = '1';
-				$paypal_args['amount_'.$item_loop] = number_format((float)$order->order_shipping, $this->decimals);
+				$paypal_args['amount_'.$item_loop] = number_format((float)$order->order_shipping, 2);
 			}
 
 			$paypal_args['tax'] = $order->get_total_tax(false, false); // no currency sign or pricing options for separators
@@ -367,11 +365,40 @@ class paypal extends jigoshop_payment_gateway {
 		}
 
 		$paypal_args = apply_filters('jigoshop_paypal_args', $paypal_args);
+		$paypal_args_array = array();
 
-		return jigoshop_render_result('gateways/paypal', array(
-			'url' => $url,
-			'fields' => $paypal_args,
-		));
+		foreach($paypal_args as $key => $value){
+			$paypal_args_array[] = '<input type="hidden" name="'.esc_attr($key).'" value="'.esc_attr($value).'" />';
+		}
+
+		return '<form action="'.$url.'" method="post" id="paypal_payment_form">
+				'.implode('', $paypal_args_array).'
+				<input type="submit" class="button-alt" id="submit_paypal_payment_form" value="'.__('Pay via PayPal', 'jigoshop').'" />
+				<script type="text/javascript">
+					(function($){
+						$(document).ready(function(){
+							$("body").block(
+								{
+									message: "<img src=\"'.jigoshop::assets_url().'/assets/images/ajax-loader.gif\" alt=\"Redirecting...\" />'.__('Thank you for your order. We are now redirecting you to PayPal to make payment.', 'jigoshop').'",
+									overlayCSS:
+									{
+										background: "#fff",
+										opacity: 0.6
+									},
+									css: {
+										padding:		20,
+										textAlign:	  "center",
+										color:		  "#555",
+										border:		 "3px solid #aaa",
+										backgroundColor:"#fff",
+										cursor:		 "wait"
+									}
+								});
+							$("#submit_paypal_payment_form").click();
+						})
+					})(jQuery);
+				</script>
+			</form>';
 	}
 
 	/**
@@ -492,7 +519,7 @@ class paypal extends jigoshop_payment_gateway {
 						}
 
 						// Validate Amount
-						if(number_format((float)$order->order_total, $this->decimals, '.', '') != $posted['mc_gross']){
+						if($order->order_total != $posted['mc_gross']){
 							// Put this order on-hold for manual checking
 							$order->update_status('on-hold', sprintf(__('PayPal Validation Error: Payment amounts do not match initial order (gross %s).', 'jigoshop'), $posted['mc_gross']));
 							exit;
