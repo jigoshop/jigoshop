@@ -262,6 +262,8 @@ class paypal extends jigoshop_payment_gateway {
 				// Payment Info
 				'invoice' => $order->get_order_number(),
 				'amount' => number_format((float)$order->order_total, $this->decimals),
+				//BN code
+				'bn' => 'Jigoshop_SP'
 			),
 			$phone_args
 		);
