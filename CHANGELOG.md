@@ -9,9 +9,11 @@
     * New: Ability to always select "All of" in country dropdown.
     * New: Replaced old ThickBox with WordPress Media Gallery.
     * Improved: "Edit Product Category" and "Edit Product Tag" admin bar links now works properly.
+    * Improved: Better message and error disappearing times.
     * Fix: Invalid formatting of shipping dropdown.
     * Fix: Displaying multiple select fields.
     * Fix: Properly calculate tax for shipping.
+    * Fix: Licence validator now checks if plugin URL is correct.
 * 1.10.6 - 2014-07-30:
     * Fix: Security issue on comments feed.
     * Fix: Add obeying validate postcode setting in JavaScript validation.
