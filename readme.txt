@@ -3,7 +3,7 @@ Contributors: Jigoshop
 Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal, jigoshop, shipping, inventory, stock, online, sell, sales, weights, dimensions, configurable, variable, downloadable, external, affiliate, download, virtual, physical
 Requires at least: 3.8
 Tested up to: 3.9.1
-Stable tag: 1.11
+Stable tag: 1.11.1
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -112,6 +112,12 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 4. Standard customer checkout screen
 
 == Changelog ==
+
+= 1.11.1- 2014-08-07 =
+* Fix: Proper selecting of shipping rate.
+* Fix: Proper grouped and variable product price displaying.
+* Fix: Removing price from products is now available again.
+* Improved: Ability to set when messages and error disappear.
 
 = 1.11 - 2014-08-06 =
 * New: Compatibility with WooThemes themes.

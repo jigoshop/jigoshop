@@ -1,6 +1,6 @@
 ## Changelog
 
-* 1.11.1:
+* 1.11.1- 2014-08-07:
     * Fix: Proper selecting of shipping rate.
     * Fix: Proper grouped and variable product price displaying.
     * Fix: Removing price from products is now available again.
