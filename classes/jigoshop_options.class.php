@@ -708,6 +708,19 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 					'yes' => __('Yes', 'jigoshop'),
 				),
 			),
+			array('name' => __('Jigoshop messages', 'jigoshop'), 'type' => 'title', 'desc' => ''),
+			array(
+				'name' => __('Message disappear time', 'jigoshop'),
+				'desc' => __('How long message is displayed before disappearing (in ms). Set to 0 to keep it displayed.', 'jigoshop'),
+				'id' => 'jigoshop_message_disappear_time',
+				'type' => 'natural',
+			),
+			array(
+				'name' => __('Error disappear time', 'jigoshop'),
+				'desc' => __('How long error is displayed before disappearing (in ms). Set to 0 to keep it displayed.', 'jigoshop'),
+				'id' => 'jigoshop_error_disappear_time',
+				'type' => 'natural',
+			),
 			array('name' => __('Checkout page', 'jigoshop'), 'type' => 'title', 'desc' => ''),
 			array(
 				'name' => __('Validate postal/zip codes', 'jigoshop'),

@@ -1,31 +1,34 @@
 (function($){
 	"use strict";
 	$(document).ready(function($){
-		setTimeout(function(){
-			$('.jigoshop_message').slideUp('normal', function(){
-				$(this).remove();
-			});
-		}, 4000);
-		setTimeout(function(){
-			$('.jigoshop_error').slideUp('normal', function(){
-				$(this).remove();
-			});
-		}, 8000);
+		if(jigoshop_params.message_hide_time > 0){
+			setTimeout(function(){
+				$('.jigoshop_message').slideUp('normal', function(){
+					$(this).remove();
+				});
+			}, jigoshop_params.message_hide_time);
+		}
+		if(jigoshop_params.error_hide_time > 0){
+			setTimeout(function(){
+				$('.jigoshop_error').slideUp('normal', function(){
+					$(this).remove();
+				});
+			}, jigoshop_params.error_hide_time);
+		}
 		// Lightbox
 		if(jigoshop_params.load_fancybox){
-			$('a.zoom').prettyPhoto(
-				{
-					animation_speed: 'normal', /* fast/slow/normal */
-					slideshow: 5000, /* false OR interval time in ms */
-					autoplay_slideshow: false, /* true/false */
-					show_title: false,
-					theme: 'pp_default', /* pp_default / light_rounded / dark_rounded / light_square / dark_square / facebook */
-					horizontal_padding: 50,
-					opacity: 0.7,
-					overlay_gallery: false,
-					deeplinking: false,
-					social_tools: false
-				});
+			$('a.zoom').prettyPhoto({
+				animation_speed: 'normal', /* fast/slow/normal */
+				slideshow: 5000, /* false OR interval time in ms */
+				autoplay_slideshow: false, /* true/false */
+				show_title: false,
+				theme: 'pp_default', /* pp_default / light_rounded / dark_rounded / light_square / dark_square / facebook */
+				horizontal_padding: 50,
+				opacity: 0.7,
+				overlay_gallery: false,
+				deeplinking: false,
+				social_tools: false
+			});
 		}
 		// Quantity buttons
 		$("div.quantity, td.quantity").append('<input type="button" value="+" id="add1" class="plus" />').prepend('<input type="button" value="-" id="minus1" class="minus" />');

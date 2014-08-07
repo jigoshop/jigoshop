@@ -659,6 +659,8 @@ function jigoshop_frontend_scripts()
 		'billing_state' => jigoshop_customer::get_state(),
 		'shipping_state' => jigoshop_customer::get_shipping_state(),
 		'is_checkout' => (is_page(jigoshop_get_page_id('checkout')) || is_page(jigoshop_get_page_id('pay'))),
+		'error_hide_time' => Jigoshop_Base::get_options()->get_option('jigoshop_error_disappear_time', 8000),
+		'message_hide_time' => Jigoshop_Base::get_options()->get_option('jigoshop_message_disappear_time', 4000),
 	);
 
 	if (isset(jigoshop_session::instance()->min_price)) {

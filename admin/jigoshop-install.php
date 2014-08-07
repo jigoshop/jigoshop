@@ -147,6 +147,8 @@ function jigoshop_populate_options(){
 		'jigoshop_ship_to_billing_address_only' => 'no',
 		'jigoshop_show_checkout_shipping_fields' => 'no',
 		'jigoshop_default_gateway' => 'cheque',
+		'jigoshop_error_disappear_time' => 8000,
+		'jigoshop_message_disappear_time' => 4000,
 	);
 
 	$options = Jigoshop_Base::get_options();
