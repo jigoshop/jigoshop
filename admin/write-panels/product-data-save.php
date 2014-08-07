@@ -28,7 +28,14 @@ class jigoshop_product_meta
 		wp_set_object_terms($post_id, sanitize_title($_POST['product-type']), 'product_type');
 
 		// Process general product data
-		$regular_price = (isset($_POST['regular_price']) && $_POST['regular_price'] != null) ? jigoshop_sanitize_num($_POST['regular_price']) : 0.0;
+		$regular_price = 0.0;
+		if(isset($_POST['regular_price'])){
+			if(!empty($_POST['regular_price'])){
+				$regular_price = jigoshop_sanitize_num($_POST['regular_price']);
+			} else {
+				$regular_price = '';
+			}
+		}
 		update_post_meta($post_id, 'regular_price', $regular_price);
 
 		$sale_price = !empty($_POST['sale_price'])
