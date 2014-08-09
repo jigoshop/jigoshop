@@ -231,7 +231,6 @@ add_action('admin_bar_menu', 'jigoshop_admin_toolbar', 35);
 
 function jigoshop_admin_bar_links($links)
 {
-	unset($links[0]);
 	return array_merge(array(
 		'<a href="'.admin_url('admin.php?page=jigoshop_settings').'">'.__('Settings', 'jigoshop').'</a>',
 		'<a href="https://www.jigoshop.com/documentation/">'.__('Docs', 'jigoshop').'</a>',
@@ -673,21 +672,6 @@ function jigoshop_frontend_scripts()
 
 	$jigoshop_params = apply_filters('jigoshop_params', $jigoshop_params);
 	jigoshop_localize_script('jigoshop_global', 'jigoshop_params', $jigoshop_params);
-}
-
-/**
- * Add a "Settings" link to the plugins.php page for Jigoshop
- */
-add_filter('plugin_action_links', 'jigoshop_add_settings_link', 10, 2);
-function jigoshop_add_settings_link($links, $file)
-{
-	$this_plugin = plugin_basename(__FILE__);
-	if ($file == $this_plugin) {
-		$settings_link = '<a href="admin.php?page=jigoshop_settings">'.__('Settings', 'jigoshop').'</a>';
-		array_unshift($links, $settings_link);
-	}
-
-	return $links;
 }
 
 /**
