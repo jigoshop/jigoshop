@@ -38,7 +38,7 @@ class ProductService
 				$service = new SimpleCache($service);
 				break;
 			default:
-				$service = $this->wp->applyFilters('jigoshop\\core\\get_product_service', $service);
+				$service = $this->wp->applyFilters('jigoshop\core\get_product_service', $service);
 		}
 
 		return $service;

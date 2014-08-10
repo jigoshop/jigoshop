@@ -26,7 +26,7 @@ class Styles
 
 	/**
 	 * Enqueues stylesheet.
-	 * Calls filter `jigoshop\\style\\add`. If the filter returns empty value the style is omitted.
+	 * Calls filter `jigoshop\style\add`. If the filter returns empty value the style is omitted.
 	 * Available options:
 	 *   * version - Wordpress script version number
 	 *   * media - CSS media this script represents
@@ -44,7 +44,7 @@ class Styles
 		$page = isset($options['page']) ? (array)$options['page'] : array('all');
 
 		if ($this->pages->isOneOf($page)) {
-			$handle = $this->wp->applyFilters('jigoshop\\style\\add', $handle, $src, $dependencies, $options);
+			$handle = $this->wp->applyFilters('jigoshop\style\add', $handle, $src, $dependencies, $options);
 
 			if (!empty($handle)) {
 				$version = isset($options['version']) ? $options['version'] : false;

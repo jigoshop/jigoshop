@@ -76,7 +76,7 @@ class Jigoshop_Init
 			$loader = new YamlFileLoader($builder, new FileLocator(JIGOSHOP_DIR.'/config'));
 			$loader->load('services.yml');
 			// Load extension configuration
-			do_action('jigoshop\\plugins\\configure', $builder);
+			do_action('jigoshop\plugins\configure', $builder);
 			$builder->compile();
 
 			$dumper = new PhpDumper($builder);

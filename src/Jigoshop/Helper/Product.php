@@ -35,7 +35,7 @@ class Product
 				/** @var $product Simple */
 				return sprintf('%1$01.2f %2$s', $product->getPrice(), self::currencySymbol()); // TODO: Properly implement fetching price position and format
 			default:
-				return apply_filters('jigoshop\\helper\\product\\get_price', '', $product);
+				return apply_filters('jigoshop\helper\product\get_price', '', $product);
 		}
 	}
 
@@ -55,7 +55,7 @@ class Product
 					'<strong class="attention">'._x('Out of stock', 'product', 'jigoshop').'</strong>';
 				return sprintf(_x('%s <strong>(%d)</strong>', 'product', 'jigoshop'), $status, $product->getStock()->getStock());
 			default:
-				return apply_filters('jigoshop\\helper\\product\\get_stock', '', $product);
+				return apply_filters('jigoshop\helper\product\get_stock', '', $product);
 		}
 	}
 

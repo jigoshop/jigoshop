@@ -26,7 +26,7 @@ class Scripts
 
 	/**
 	 * Enqueues script.
-	 * Calls filter `jigoshop\\script\\add`. If the filter returns empty value the script is omitted.
+	 * Calls filter `jigoshop\script\add`. If the filter returns empty value the script is omitted.
 	 * Available options:
 	 *   * version - Wordpress script version number
 	 *   * in_footer - is this script required to add to the footer?
@@ -44,7 +44,7 @@ class Scripts
 		$page = isset($options['page']) ? (array)$options['page'] : array('all');
 
 		if ($this->pages->isOneOf($page)) {
-			$handle = $this->wp->applyFilters('jigoshop\\script\\add', $handle, $src, $dependencies, $options);
+			$handle = $this->wp->applyFilters('jigoshop\script\add', $handle, $src, $dependencies, $options);
 
 			if (!empty($handle)) {
 				$version = isset($options['version']) ? $options['version'] : false;

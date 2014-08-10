@@ -29,14 +29,14 @@ class OptionsTest extends \TestCase
 				'test' => 'value',
 			),
 		));
-		$this->wp->shouldReceive('applyFilters')->withArgs(array('jigoshop\\image\\sizes', m::any()))->andReturn(array(
+		$this->wp->shouldReceive('applyFilters')->withArgs(array('jigoshop\image\sizes', m::any()))->andReturn(array(
 			'test_size' => array(
 				'crop' => false,
 				'width' => 100,
 				'height' => 100,
 			),
 		));
-		$this->wp->shouldReceive('applyFilters')->withArgs(array('jigoshop\\image\\size\\crop', m::any(), m::any()))->andReturn(false);
+		$this->wp->shouldReceive('applyFilters')->withArgs(array('jigoshop\image\size\crop', m::any(), m::any()))->andReturn(false);
 		$this->wp->shouldReceive('addImageSize');
 		$this->wp->shouldReceive('addAction')->withArgs(array('shutdown', m::any()))->once();
 	}

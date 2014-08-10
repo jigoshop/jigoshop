@@ -47,9 +47,9 @@ class Core
 	{
 		if (!$this->wp->isAdmin()) {
 			/* Catalog Filters */
-			$this->wp->addFilter('jigoshop\\shop\\query', array($this, 'shopSortingFilter'));
-			$this->wp->addFilter('jigoshop\\shop\\columns', array($this, 'shopVisibleColumnsFilter'));
-			$this->wp->addFilter('jigoshop\\shop\\per_page', array($this, 'shopPerPageFilter'));
+			$this->wp->addFilter('jigoshop\shop\query', array($this, 'shopSortingFilter'));
+			$this->wp->addFilter('jigoshop\shop\columns', array($this, 'shopVisibleColumnsFilter'));
+			$this->wp->addFilter('jigoshop\shop\per_page', array($this, 'shopPerPageFilter'));
 		}
 	}
 

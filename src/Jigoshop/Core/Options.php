@@ -55,24 +55,24 @@ class Options
 
 	public function getImageSizes()
 	{
-		return array_values($this->wp->applyFilters('jigoshop\\image\\sizes', array(
+		return array_values($this->wp->applyFilters('jigoshop\image\sizes', array(
 			'shop_tiny' => array(
-				'crop' => $this->wp->applyFilters('jigoshop\\image\\size\\crop', false, 'shop_tiny'),
+				'crop' => $this->wp->applyFilters('jigoshop\image\size\crop', false, 'shop_tiny'),
 				'width' => '36',
 				'height' => '36',
 			),
 			'shop_thumbnail' => array(
-				'crop' => $this->wp->applyFilters('jigoshop\\image\\size\\crop', false, 'shop_thumbnail'),
+				'crop' => $this->wp->applyFilters('jigoshop\image\size\crop', false, 'shop_thumbnail'),
 				'width' => '90',
 				'height' => '90',
 			),
 			'shop_small' => array(
-				'crop' => $this->wp->applyFilters('jigoshop\\image\\size\\crop', false, 'shop_small'),
+				'crop' => $this->wp->applyFilters('jigoshop\image\size\crop', false, 'shop_small'),
 				'width' => '150',
 				'height' => '150',
 			),
 			'shop_large' => array(
-				'crop' => $this->wp->applyFilters('jigoshop\\image\\size\\crop', false, 'shop_large'),
+				'crop' => $this->wp->applyFilters('jigoshop\image\size\crop', false, 'shop_large'),
 				'width' => '300',
 				'height' => '300',
 			),
@@ -182,6 +182,6 @@ class Options
 	 */
 	public function getEnabledProductTypes()
 	{
-		return $this->wp->applyFilters('jigoshop\\product\\types', $this->get('enabled_product_types', array(Simple::TYPE)));
+		return $this->wp->applyFilters('jigoshop\product\types', $this->get('enabled_product_types', array(Simple::TYPE)));
 	}
 }

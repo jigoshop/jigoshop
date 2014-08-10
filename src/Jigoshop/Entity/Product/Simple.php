@@ -37,7 +37,7 @@ class Simple extends Product
 	 */
 	public function getPrice()
 	{
-		return $this->wp->applyFilters('jigoshop\\product\\get_price', $this->price, $this);
+		return $this->wp->applyFilters('jigoshop\product\get_price', $this->price, $this);
 	}
 
 	/**
@@ -48,7 +48,7 @@ class Simple extends Product
 	 */
 	public function setPrice($price)
 	{
-		$price = $this->wp->applyFilters('jigoshop\\product\\set_price', $price, $this);
+		$price = $this->wp->applyFilters('jigoshop\product\set_price', $price, $this);
 
 		if ($price !== false) {
 			$this->price = $price;
@@ -89,7 +89,7 @@ class Simple extends Product
 	 */
 	public function setSales(Sales $sales)
 	{
-		$sales = $this->wp->applyFilters('jigoshop\\product\\set_sales', $sales, $this);
+		$sales = $this->wp->applyFilters('jigoshop\product\set_sales', $sales, $this);
 
 		if ($sales !== false) {
 			$this->sales = $sales;

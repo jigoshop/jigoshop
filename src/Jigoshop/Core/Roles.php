@@ -28,14 +28,14 @@ class Roles
 		$roles = $wp->getRoles();
 
 		// Customer role
-		$wp->addRole('customer', \__('Customer', 'jigoshop'), $wp->applyFilters('jigoshop\\role\\customer', array(
+		$wp->addRole('customer', \__('Customer', 'jigoshop'), $wp->applyFilters('jigoshop\role\customer', array(
 			'read' => true,
 			'edit_posts' => false,
 			'delete_posts' => false
 		)));
 
 		// Shop manager role
-		$wp->addRole('shop_manager', \__('Shop Manager', 'jigoshop'), $wp->applyFilters('jigoshop\\role\\shop_manager', array(
+		$wp->addRole('shop_manager', \__('Shop Manager', 'jigoshop'), $wp->applyFilters('jigoshop\role\shop_manager', array(
 			'read' => true,
 			'read_private_pages' => true,
 			'read_private_posts' => true,
@@ -87,7 +87,7 @@ class Roles
 			)
 		);
 
-		$types = $this->wp->applyFilters('jigoshop\\capability\\types', array('product', 'shop_order', 'shop_coupon'));
+		$types = $this->wp->applyFilters('jigoshop\capability\types', array('product', 'shop_order', 'shop_coupon'));
 		foreach ($types as $type) {
 			$capabilities[$type] = array(
 				// Post type

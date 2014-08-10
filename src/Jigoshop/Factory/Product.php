@@ -98,7 +98,7 @@ class Product
 			$product->restoreState($state);
 		}
 
-		return $this->wp->applyFilters('jigoshop\\find\\product', $product, $state);
+		return $this->wp->applyFilters('jigoshop\find\product', $product, $state);
 	}
 
 	private function getAttributes($id)

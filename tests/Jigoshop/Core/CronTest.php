@@ -32,12 +32,12 @@ class CronTest extends \TestCase
 	{
 		// Given
 		$time = time();
-		$this->wp->shouldReceive('nextScheduled')->withArgs(array('jigoshop\\cron\\pending_orders'))->once()->andReturn(false);
-		$this->wp->shouldReceive('scheduleEvent')->withArgs(array($time, 'daily', 'jigoshop\\cron\\pending_orders'))->once();
-		$this->wp->shouldReceive('nextScheduled')->withArgs(array('jigoshop\\cron\\processing_orders'))->once()->andReturn(false);
-		$this->wp->shouldReceive('scheduleEvent')->withArgs(array($time, 'daily', 'jigoshop\\cron\\processing_orders'))->once();
-		$this->wp->shouldReceive('addAction')->withArgs(array('jigoshop\\cron\\pending_orders', m::any()))->once();
-		$this->wp->shouldReceive('addAction')->withArgs(array('jigoshop\\cron\\processing_orders', m::any()))->once();
+		$this->wp->shouldReceive('nextScheduled')->withArgs(array('jigoshop\cron\pending_orders'))->once()->andReturn(false);
+		$this->wp->shouldReceive('scheduleEvent')->withArgs(array($time, 'daily', 'jigoshop\cron\pending_orders'))->once();
+		$this->wp->shouldReceive('nextScheduled')->withArgs(array('jigoshop\cron\processing_orders'))->once()->andReturn(false);
+		$this->wp->shouldReceive('scheduleEvent')->withArgs(array($time, 'daily', 'jigoshop\cron\processing_orders'))->once();
+		$this->wp->shouldReceive('addAction')->withArgs(array('jigoshop\cron\pending_orders', m::any()))->once();
+		$this->wp->shouldReceive('addAction')->withArgs(array('jigoshop\cron\processing_orders', m::any()))->once();
 
 		// When
 		/** @noinspection PhpParamsInspection */
@@ -52,8 +52,8 @@ class CronTest extends \TestCase
 		// Given
 		$this->wp->shouldReceive('nextScheduled')->withArgs(array(m::any()))->andReturn(true);
 		$this->wp->shouldReceive('scheduleEvent')->never();
-		$this->wp->shouldReceive('addAction')->withArgs(array('jigoshop\\cron\\pending_orders', m::any()))->once();
-		$this->wp->shouldReceive('addAction')->withArgs(array('jigoshop\\cron\\processing_orders', m::any()))->once();
+		$this->wp->shouldReceive('addAction')->withArgs(array('jigoshop\cron\pending_orders', m::any()))->once();
+		$this->wp->shouldReceive('addAction')->withArgs(array('jigoshop\cron\processing_orders', m::any()))->once();
 
 		// When
 		/** @noinspection PhpParamsInspection */
@@ -68,8 +68,8 @@ class CronTest extends \TestCase
 		// Given
 		$this->wp->shouldReceive('nextScheduled')->withArgs(array(m::any()))->andReturn(true);
 		$this->wp->shouldReceive('scheduleEvent')->never();
-		$this->wp->shouldReceive('addAction')->withArgs(array('jigoshop\\cron\\pending_orders', m::any()))->once();
-		$this->wp->shouldReceive('addAction')->withArgs(array('jigoshop\\cron\\processing_orders', m::any()))->once();
+		$this->wp->shouldReceive('addAction')->withArgs(array('jigoshop\cron\pending_orders', m::any()))->once();
+		$this->wp->shouldReceive('addAction')->withArgs(array('jigoshop\cron\processing_orders', m::any()))->once();
 
 		$this->options->shouldReceive('get')->withArgs(array('reset_pending_orders'))->andReturn('yes');
 
@@ -94,8 +94,8 @@ class CronTest extends \TestCase
 		// Given
 		$this->wp->shouldReceive('nextScheduled')->withArgs(array(m::any()))->andReturn(true);
 		$this->wp->shouldReceive('scheduleEvent')->never();
-		$this->wp->shouldReceive('addAction')->withArgs(array('jigoshop\\cron\\pending_orders', m::any()))->once();
-		$this->wp->shouldReceive('addAction')->withArgs(array('jigoshop\\cron\\processing_orders', m::any()))->once();
+		$this->wp->shouldReceive('addAction')->withArgs(array('jigoshop\cron\pending_orders', m::any()))->once();
+		$this->wp->shouldReceive('addAction')->withArgs(array('jigoshop\cron\processing_orders', m::any()))->once();
 
 		$this->options->shouldReceive('get')->withArgs(array('reset_pending_orders'))->andReturn('no');
 
@@ -116,8 +116,8 @@ class CronTest extends \TestCase
 		// Given
 		$this->wp->shouldReceive('nextScheduled')->withArgs(array(m::any()))->andReturn(true);
 		$this->wp->shouldReceive('scheduleEvent')->never();
-		$this->wp->shouldReceive('addAction')->withArgs(array('jigoshop\\cron\\pending_orders', m::any()))->once();
-		$this->wp->shouldReceive('addAction')->withArgs(array('jigoshop\\cron\\processing_orders', m::any()))->once();
+		$this->wp->shouldReceive('addAction')->withArgs(array('jigoshop\cron\pending_orders', m::any()))->once();
+		$this->wp->shouldReceive('addAction')->withArgs(array('jigoshop\cron\processing_orders', m::any()))->once();
 
 		$this->options->shouldReceive('get')->withArgs(array('complete_processing_orders'))->andReturn('yes');
 
@@ -142,8 +142,8 @@ class CronTest extends \TestCase
 		// Given
 		$this->wp->shouldReceive('nextScheduled')->withArgs(array(m::any()))->andReturn(true);
 		$this->wp->shouldReceive('scheduleEvent')->never();
-		$this->wp->shouldReceive('addAction')->withArgs(array('jigoshop\\cron\\pending_orders', m::any()))->once();
-		$this->wp->shouldReceive('addAction')->withArgs(array('jigoshop\\cron\\processing_orders', m::any()))->once();
+		$this->wp->shouldReceive('addAction')->withArgs(array('jigoshop\cron\pending_orders', m::any()))->once();
+		$this->wp->shouldReceive('addAction')->withArgs(array('jigoshop\cron\processing_orders', m::any()))->once();
 
 		$this->options->shouldReceive('get')->withArgs(array('complete_processing_orders'))->andReturn('no');
 

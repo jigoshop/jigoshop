@@ -180,7 +180,7 @@ abstract class Product implements EntityInterface
 	 */
 	public function setSize(Size $size)
 	{
-		$size = $this->wp->applyFilters('jigoshop\\product\\set_size', $size, $this);
+		$size = $this->wp->applyFilters('jigoshop\product\set_size', $size, $this);
 
 		if ($size !== false) {
 			$this->size = $size;
@@ -204,7 +204,7 @@ abstract class Product implements EntityInterface
 	 */
 	public function setStock(StockStatus $stock)
 	{
-		$stock = $this->wp->applyFilters('jigoshop\\product\\set_stock', $stock, $this);
+		$stock = $this->wp->applyFilters('jigoshop\product\set_stock', $stock, $this);
 
 		if ($stock !== false) {
 			$this->stock = $stock;
@@ -235,7 +235,7 @@ abstract class Product implements EntityInterface
 			$key = count($this->attributes);
 		}
 
-		$attribute = $this->wp->applyFilters('jigoshop\\product\\add_attribute', $attribute, $this);
+		$attribute = $this->wp->applyFilters('jigoshop\product\add_attribute', $attribute, $this);
 
 		if ($attribute !== false) {
 			$this->attributes[$key] = $attribute;
@@ -256,7 +256,7 @@ abstract class Product implements EntityInterface
 		}
 
 		$key = $this->_findAttribute($attribute);
-		$key = $this->wp->applyFilters('jigoshop\\product\\delete_attribute', $key, $attribute, $this);
+		$key = $this->wp->applyFilters('jigoshop\product\delete_attribute', $key, $attribute, $this);
 
 		if ($key !== false) {
 			unset($this->attributes[$key]);

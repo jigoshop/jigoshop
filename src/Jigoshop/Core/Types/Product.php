@@ -297,7 +297,7 @@ class Product implements Post
 			case Simple::TYPE:
 				return __('Simple', 'jigoshop');
 			default:
-				return $this->wp->applyFilters('jigoshop\\product\\type\\name', $type);
+				return $this->wp->applyFilters('jigoshop\product\type\name', $type);
 		}
 	}
 

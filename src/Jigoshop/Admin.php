@@ -92,7 +92,7 @@ class Admin
 			$this->wp->addSubmenuPage('edit.php?post_type=shop_order', $page->getTitle(), $page->getTitle(), $page->getCapability(), $page->getMenuSlug(), array($page, 'display'));
 		}
 
-		$this->wp->doAction('jigoshop\\admin\\before_menu');
+		$this->wp->doAction('jigoshop\admin\before_menu');
 	}
 
 	/**
@@ -105,6 +105,6 @@ class Admin
 		$this->wp->addSubmenuPage('jigoshop', $this->systemInfo->getTitle(), $this->systemInfo->getTitle(), $this->systemInfo->getCapability(),
 			$this->systemInfo->getMenuSlug(), array($this->systemInfo, 'display'));
 
-		$this->wp->doAction('jigoshop\\admin\\after_menu');
+		$this->wp->doAction('jigoshop\admin\after_menu');
 	}
 }

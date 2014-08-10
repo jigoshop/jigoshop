@@ -21,26 +21,26 @@ class Cron
 		$this->service = $service;
 		$this->_scheduleEvents();
 
-		$wp->addAction('jigoshop\\cron\\pending_orders', array($this, 'updatePendingOrders'));
-		$wp->addAction('jigoshop\\cron\\processing_orders', array($this, 'completeProcessingOrders'));
+		$wp->addAction('jigoshop\cron\pending_orders', array($this, 'updatePendingOrders'));
+		$wp->addAction('jigoshop\cron\processing_orders', array($this, 'completeProcessingOrders'));
 	}
 
 	public function clear()
 	{
-		$this->wp->clearScheduledHook('jigoshop\\cron\\pending_orders');
-		$this->wp->clearScheduledHook('jigoshop\\cron\\processing_orders');
+		$this->wp->clearScheduledHook('jigoshop\cron\pending_orders');
+		$this->wp->clearScheduledHook('jigoshop\cron\processing_orders');
 	}
 
 	/** Schedules order processing events if not scheduled already. */
 	private function _scheduleEvents()
 	{
 		$time = time();
-		if (!$this->wp->nextScheduled('jigoshop\\cron\\pending_orders')) {
-			$this->wp->scheduleEvent($time, 'daily', 'jigoshop\\cron\\pending_orders');
+		if (!$this->wp->nextScheduled('jigoshop\cron\pending_orders')) {
+			$this->wp->scheduleEvent($time, 'daily', 'jigoshop\cron\pending_orders');
 		}
 
-		if (!$this->wp->nextScheduled('jigoshop\\cron\\processing_orders')) {
-			$this->wp->scheduleEvent($time, 'daily', 'jigoshop\\cron\\processing_orders');
+		if (!$this->wp->nextScheduled('jigoshop\cron\processing_orders')) {
+			$this->wp->scheduleEvent($time, 'daily', 'jigoshop\cron\processing_orders');
 		}
 	}
 
@@ -55,7 +55,7 @@ class Cron
 			$orders = $this->service->findOldPending();
 
 			// TODO: Disable notification of the user
-//			$this->wp->removeAction('jigoshop\\order\\status\\pending_to_on-hold', 'jigoshop_processing_order_customer_notification');
+//			$this->wp->removeAction('jigoshop\order\status\pending_to_on-hold', 'jigoshop_processing_order_customer_notification');
 
 			foreach ($orders as $order) {
 				/** @var $order \Jigoshop\Entity\Order */
@@ -63,7 +63,7 @@ class Cron
 			}
 
 			// TODO: Enable notification of the user
-//			$this->wp->addAction('jigoshop\\order\\status\\pending_to_on-hold', 'jigoshop_processing_order_customer_notification');
+//			$this->wp->addAction('jigoshop\order\status\pending_to_on-hold', 'jigoshop_processing_order_customer_notification');
 		}
 	}
 
@@ -78,7 +78,7 @@ class Cron
 			$orders = $this->service->findOldProcessing();
 
 			// TODO: Disable notification of the user
-//			$this->wp->removeAction('jigoshop\\order\\status\\completed', 'jigoshop_processing_order_customer_notification');
+//			$this->wp->removeAction('jigoshop\order\status\completed', 'jigoshop_processing_order_customer_notification');
 
 			foreach ($orders as $order) {
 				/** @var $order \Jigoshop\Entity\Order */
@@ -86,7 +86,7 @@ class Cron
 			}
 
 			// TODO: Enable notification of the user
-//			$this->wp->addAction('jigoshop\\order\\status\\completed', 'jigoshop_processing_order_customer_notification');
+//			$this->wp->addAction('jigoshop\order\status\completed', 'jigoshop_processing_order_customer_notification');
 		}
 	}
 }
