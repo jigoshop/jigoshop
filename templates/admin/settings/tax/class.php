@@ -23,7 +23,7 @@ use Jigoshop\Core\Options;
 		'placeholder' => __('Tax class', 'jigoshop'),
 	)); ?>
 	</td>
-	<td>
+	<td class="vert-align">
 		<button type="button" class="remove-tax-class btn btn-default" title="<?php _e('Remove', 'jigoshop'); ?>"><span class="glyphicon glyphicon-remove"></span></button>
 	</td>
 </tr>

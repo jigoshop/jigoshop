@@ -161,6 +161,7 @@ services:
     class: Jigoshop\Admin\Settings\TaxesTab
     arguments:
       - '@jigoshop.options'
+      - '@jigoshop.service.tax'
       - '@jigoshop.helper.scripts'
     tags:
       - { name: jigoshop.admin.settings.tab }

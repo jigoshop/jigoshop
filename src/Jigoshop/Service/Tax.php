@@ -80,10 +80,7 @@ class Tax
 //		', array($taxClass));
 //		$taxes = $wpdb->get_results($query, ARRAY_A);
 		// TODO: Finish fetching taxes
-		return array(
-			'rate' => 0.0,
-			'name' => 'No tax',
-		);
+		return $this->formatRule(array());
 	}
 
 	/**
@@ -105,6 +102,40 @@ class Tax
 			throw new Exception(sprintf('No tax class: %s', $taxClass));
 		}
 
-		return $this->taxes[$taxClass]['name'];
+		return $this->taxes[$taxClass]['label'];
+	}
+
+	/**
+	 * Fetches and returns properly formatted list of tax rules.
+	 *
+	 * @return array List of rules.
+	 */
+	public function getRules()
+	{
+		// TODO: Properly fetch
+		return array(
+			$this->formatRule(array()),
+		);
+	}
+
+	private function formatRule($rule)
+	{
+		// TODO: Proper data formatting
+		return array(
+			'id' => 0,
+			'rate' => 0.0,
+			'label' => 'No tax',
+			'class' => 'standard',
+		);
+	}
+
+	/**
+	 * Saves tax rule to database.
+	 *
+	 * @param $rule array Rule to save.
+	 */
+	public function save(array $rule)
+	{
+		// TODO: Properly save rules
 	}
 }
