@@ -3,23 +3,20 @@
 namespace Jigoshop\Factory;
 
 use Jigoshop\Core\Options;
-use Jigoshop\Service\Customer;
-use Jigoshop\Service\Tax as Service;
+use Jigoshop\Service\Customer as Service;
 use WPAL\Wordpress;
 
-class TaxService
+class CustomerService
 {
 	/** @var \WPAL\Wordpress */
 	private $wp;
 	/** @var \Jigoshop\Core\Options */
 	private $options;
-	private $customerService;
 
-	public function __construct(Wordpress $wp, Options $options, Customer $customerService)
+	public function __construct(Wordpress $wp, Options $options)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
-		$this->customerService = $customerService;
 	}
 
 	/**
@@ -28,7 +25,7 @@ class TaxService
 	 */
 	public function getService()
 	{
-		$service = new Service($this->wp, $this->options->get('tax.classes'), $this->customerService);
+		$service = new Service();
 
 		switch ($this->options->get('cache_mechanism')) {
 			// TODO: Add caching mechanisms
@@ -36,7 +33,7 @@ class TaxService
 //				$service = new SimpleCache($service);
 //				break;
 			default:
-				$service = $this->wp->applyFilters('jigoshop\core\get_tax_service', $service);
+				$service = $this->wp->applyFilters('jigoshop\core\get_customer_service', $service);
 		}
 
 		return $service;

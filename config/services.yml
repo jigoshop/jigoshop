@@ -93,6 +93,12 @@ services:
     arguments:
       - '@wpal'
       - '@jigoshop.options'
+      - '@jigoshop.service.customer'
+  jigoshop.factory.customer_service:
+    class: Jigoshop\Factory\CustomerService
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
   jigoshop.factory.product:
     class: Jigoshop\Factory\Product
     arguments:
@@ -108,6 +114,10 @@ services:
   jigoshop.service.tax:
     class: Jigoshop\Service\Tax
     factory_service: jigoshop.factory.tax_service
+    factory_method: getService
+  jigoshop.service.customer:
+    class: Jigoshop\Service\Customer
+    factory_service: jigoshop.factory.customer_service
     factory_method: getService
   jigoshop.admin:
     class: Jigoshop\Admin

@@ -2,7 +2,8 @@
 
 namespace Jigoshop\Service;
 
-use Jigoshop\Core\Options;
+use Jigoshop\Entity\Customer;
+use Jigoshop\Service\Customer as CustomerService;
 use Jigoshop\Entity\Product;
 use WPAL\Wordpress;
 
@@ -15,13 +16,16 @@ class Tax
 {
 	/** @var \WPAL\Wordpress */
 	private $wp;
+	/** @var \Jigoshop\Service\Customer */
+	private $customers;
 	private $taxes = array();
 	private $taxClasses = array();
 
-	public function __construct(Wordpress $wp, array $classes)
+	public function __construct(Wordpress $wp, array $classes, CustomerService $customers)
 	{
 		$this->wp = $wp;
 		$this->taxClasses = $classes;
+		$this->customers = $customers;
 	}
 
 	/**
@@ -53,7 +57,7 @@ class Tax
 		}
 
 		if (!isset($this->taxes[$taxClass])) {
-			$this->taxes[$taxClass] = $this->fetch($taxClass);
+			$this->taxes[$taxClass] = $this->fetch($taxClass, $this->customers->getCurrent());
 		}
 
 		// TODO: Support for compound taxes
@@ -64,9 +68,10 @@ class Tax
 	 * Finds and returns available tax definitions for selected parameters.
 	 *
 	 * @param $taxClass string Tax class.
+	 * @param $customer \Jigoshop\Entity\Customer Customer to fetch data for.
 	 * @return array Tax definition.
 	 */
-	protected function fetch($taxClass)
+	protected function fetch($taxClass, Customer $customer)
 	{
 //		$wpdb = $this->wp->getWPDB();
 //		$query = $wpdb->prepare('
