@@ -1,9 +1,8 @@
 <?php
+
 /**
  * Shipping class
- *
  * DISCLAIMER
- *
  * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
@@ -14,170 +13,133 @@
  * @copyright           Copyright © 2011-2014 Jigoshop.
  * @license             GNU General Public License v3
  */
-class jigoshop_shipping extends Jigoshop_Singleton {
+class jigoshop_shipping extends Jigoshop_Singleton
+{
 
-    protected static $enabled = false;
-    protected static $shipping_methods = array();
-    protected static $chosen_method = null;
-    protected static $shipping_total = 0;
-    protected static $shipping_tax = 0;
-    protected static $shipping_label = null;
-    private static $shipping_error_message = null;
+	protected static $enabled = false;
+	protected static $shipping_methods = array();
+	protected static $chosen_method = null;
+	protected static $shipping_total = 0;
+	protected static $shipping_tax = 0;
+	protected static $shipping_label = null;
+	private static $shipping_error_message = null;
 
-    /** Constructor */
-    protected function __construct() {
+	/** Constructor */
+	protected function __construct()
+	{
 
 		self::shipping_inits();
-        if (self::get_options()->get_option('jigoshop_calc_shipping') != 'no') :
-            self::$enabled = true;
-        endif;
-    }
+		if (self::get_options()->get_option('jigoshop_calc_shipping') != 'no') :
+			self::$enabled = true;
+		endif;
+	}
 
-    /**
-     * Initialize all shipping modules.
-     */
-    public static function shipping_inits() {
+	/**
+	 * Initialize all shipping modules.
+	 */
+	public static function shipping_inits()
+	{
 
-        do_action('jigoshop_shipping_init'); /* loaded plugins for shipping inits */
+		do_action('jigoshop_shipping_init'); /* loaded plugins for shipping inits */
 
-        $load_methods = apply_filters('jigoshop_shipping_methods', array());
+		$load_methods = apply_filters('jigoshop_shipping_methods', array());
 
-        foreach ($load_methods as $method) :
-            self::$shipping_methods[] = new $method();
-        endforeach;
-    }
+		foreach ($load_methods as $method) :
+			self::$shipping_methods[] = new $method();
+		endforeach;
+	}
 
-    public static function is_enabled() {
-        return self::$enabled;
-    }
+	public static function get_total()
+	{
+		return self::$shipping_total;
+	}
 
-    public static function get_total() {
-        return self::$shipping_total;
-    }
+	public static function get_tax()
+	{
+		return self::$shipping_tax;
+	}
 
-    public static function get_tax() {
-        return self::$shipping_tax;
-    }
+	public static function get_label()
+	{
+		return self::$shipping_label;
+	}
 
-    public static function get_label() {
-        return self::$shipping_label;
-    }
+	public static function show_shipping_calculator()
+	{
+		return (self::is_enabled() && self::get_options()->get_option('jigoshop_enable_shipping_calc') == 'yes' && jigoshop_cart::needs_shipping());
+	}
 
-    public static function get_all_methods() {
-        return self::$shipping_methods;
-    }
+	public static function is_enabled()
+	{
+		return self::$enabled;
+	}
 
-    public static function show_shipping_calculator() {
-        return (self::is_enabled() && self::get_options()->get_option('jigoshop_enable_shipping_calc')=='yes' && jigoshop_cart::needs_shipping());
-    }
+	public static function get_shipping_error_message()
+	{
+		return self::$shipping_error_message;
+	}
 
-    public static function get_available_shipping_methods() {
+	public static function set_shipping_error_message($message)
+	{
+		self::$shipping_error_message = $message;
+	}
 
-	    $_available_methods = array();
+	public static function get_chosen_method_title()
+	{
+		$_available_methods = self::get_available_shipping_methods();
+		$chosen_method = self::get_chosen_method();
 
-	    if(self::$enabled == 'yes'){
-		    foreach(self::get_all_methods() as $method){
-			    /** @var $method jigoshop_shipping_method */
-			    if(jigoshop_cart::has_free_shipping_coupon() && $method->id == 'free_shipping'){
-				    $_available_methods[$method->id] = $method;
-			    }
+		return $_available_methods[$chosen_method]->title;
+	}
 
-			    if($method->is_available()){
-				    if($method->cost >= 0){
-					    $_available_methods[$method->id] = $method;
-				    }
-			    }
-		    }
-	    }
+	public static function get_available_shipping_methods()
+	{
+		$_available_methods = array();
+
+		if (self::$enabled == 'yes') {
+			foreach (self::get_all_methods() as $method) {
+				/** @var $method jigoshop_shipping_method */
+				if (jigoshop_cart::has_free_shipping_coupon() && $method->id == 'free_shipping') {
+					$_available_methods[$method->id] = $method;
+				}
+
+				if ($method->is_available() && $method->cost >= 0) {
+					$_available_methods[$method->id] = $method;
+				}
+			}
+		}
 
 		//throw error if there are no shipping methods
-		if ( empty( $_available_methods )) {
+		if (empty($_available_methods)) {
 			self::$shipping_error_message = __('Please enter your shipping destination and postal code to view shipping options and rates.', 'jigoshop');
-			if ( self::get_options()->get_option('jigoshop_enable_shipping_calc') == 'no' && is_cart() ) {
-			self::$shipping_error_message .= __(' If the Shipping Calculator is not available here, you will need to advance to the Checkout to do this.','jigoshop');
+			if (self::get_options()->get_option('jigoshop_enable_shipping_calc') == 'no' && is_cart()) {
+				self::$shipping_error_message .= __(' If the Shipping Calculator is not available here, you will need to advance to the Checkout to do this.', 'jigoshop');
 			}
 			self::$shipping_error_message .= __(' There may be no methods available for your destination and you should contact us for assistance.', 'jigoshop');
 		}
 
-        return apply_filters('jigoshop_available_shipping_methods',$_available_methods);
-    }
-
-    public static function get_shipping_error_message() {
-    	return self::$shipping_error_message;
-    }
-
-	public static function set_shipping_error_message( $message ) {
-		self::$shipping_error_message = $message;
+		return apply_filters('jigoshop_available_shipping_methods', $_available_methods);
 	}
 
-    public static function reset_shipping_methods() {
-        foreach (self::$shipping_methods as $method) :
-            $method->reset_method();
-        endforeach;
-    }
+	public static function get_all_methods()
+	{
+		return self::$shipping_methods;
+	}
 
-    /**
-     * finds the cheapest shipping method
-     * @param type $available_methods all methods that are available
-     * @param type $tax jigoshop_tax class instance
-     * @return type the cheapest shipping method being used
-     */
-    private static function get_cheapest_method($available_methods, $tax) {
-        $_cheapest_fee = '';
-        $_cheapest_method = '';
-        $_selected_service = '';
-
-        foreach ($available_methods as $method) :
-            $method->set_tax($tax);
-            $method->calculate_shipping();
-
-            if ($method->id != 'local_pickup') : // don't let local_pickup be chosen automatically
-                if (!$method->has_error()) :
-                    $fee = $method->get_cheapest_price(); // obtain cheapest price
-                    if ($fee >= 0 && $fee < $_cheapest_fee || !is_numeric($_cheapest_fee)) :
-                        $_cheapest_fee = $fee;
-                        $_cheapest_method = $method->id;
-                        $_selected_service = $method->get_cheapest_service();
-                    endif;
-                else :
-                    $method_error_message = $method->get_error_message();
-
-                    if ($method_error_message) :
-                        self::$shipping_error_message .= $method_error_message . PHP_EOL;
-                    endif;
-
-                endif;
-            endif;
-        endforeach;
-
-        if (!empty($_selected_service)) :
-            $available_methods[$_cheapest_method]->set_selected_service_index($_selected_service);
-        endif;
-
-        return $_cheapest_method;
-    }
-
-    /**
-     *
-     * @return mixed the id of the chosen shipping method or false if none are chosen
-     */
-    public static function get_chosen_method() {
-        $_available_methods = self::get_available_shipping_methods();
-
-        foreach ($_available_methods as $method) :
-            if ($method->is_chosen()) :
-                return $method->id;
-            endif;
-        endforeach;
-
-        return false;
-    }
-
-	public static function get_chosen_method_title() {
+	/**
+	 * @return mixed the id of the chosen shipping method or false if none are chosen
+	 */
+	public static function get_chosen_method()
+	{
 		$_available_methods = self::get_available_shipping_methods();
 
-		$chosen_method = self::get_chosen_method();
-		return $_available_methods[$chosen_method]->title;
+		foreach ($_available_methods as $method) :
+			if ($method->is_chosen()) :
+				return $method->id;
+			endif;
+		endforeach;
+
+		return false;
 	}
 
 	/**
@@ -253,10 +215,61 @@ class jigoshop_shipping extends Jigoshop_Singleton {
 		endif; //self enabled == 'yes'
 	}
 
-    public static function reset_shipping() {
-        self::$shipping_total = 0;
-        self::$shipping_tax = 0;
-        self::$shipping_label = null;
-        self::$shipping_error_message = null;
-    }
+	public static function reset_shipping_methods()
+	{
+		foreach (self::$shipping_methods as $method) :
+			$method->reset_method();
+		endforeach;
+	}
+
+	public static function reset_shipping()
+	{
+		self::$shipping_total = 0;
+		self::$shipping_tax = 0;
+		self::$shipping_label = null;
+		self::$shipping_error_message = null;
+	}
+
+	/**
+	 * finds the cheapest shipping method
+	 *
+	 * @param type $available_methods all methods that are available
+	 * @param type $tax jigoshop_tax class instance
+	 * @return type the cheapest shipping method being used
+	 */
+	private static function get_cheapest_method($available_methods, $tax)
+	{
+		$_cheapest_fee = '';
+		$_cheapest_method = '';
+		$_selected_service = '';
+
+		foreach ($available_methods as $method) :
+			$method->set_tax($tax);
+			$method->calculate_shipping();
+
+			if ($method->id != 'local_pickup') : // don't let local_pickup be chosen automatically
+				if (!$method->has_error()) :
+					$fee = $method->get_cheapest_price(); // obtain cheapest price
+					if ($fee >= 0 && $fee < $_cheapest_fee || !is_numeric($_cheapest_fee)) :
+						$_cheapest_fee = $fee;
+						$_cheapest_method = $method->id;
+						$_selected_service = $method->get_cheapest_service();
+					endif;
+				else :
+					$method_error_message = $method->get_error_message();
+
+					if ($method_error_message) :
+						self::$shipping_error_message .= $method_error_message.PHP_EOL;
+					endif;
+
+				endif;
+			endif;
+		endforeach;
+
+		if (!empty($_selected_service)) :
+			$available_methods[$_cheapest_method]->set_selected_service_index($_selected_service);
+		endif;
+
+		return $_cheapest_method;
+	}
 }
