@@ -22,12 +22,11 @@ abstract class Product implements EntityInterface
 	private $id;
 	private $name;
 	private $sku;
+	private $taxClasses = array();
 	/** @var Size */
 	private $size;
 	/** @var StockStatus */
 	private $stock;
-
-	private $tax;
 
 	private $visibility = self::VISIBILITY_PUBLIC;
 	private $featured;
@@ -292,24 +291,29 @@ abstract class Product implements EntityInterface
 	}
 
 	/**
-	 * TODO: Implement taxing. Probably it is worth to use the same filters as in other setters.
-	 *
-	 * @param mixed $tax
+	 * @param array $tax New tax classes of the product.
 	 */
-	public function setTax($tax)
+	public function setTaxClasses(array $tax)
 	{
-		$this->tax = $tax;
+		$this->taxClasses = $tax;
 		$this->dirtyFields[] = 'tax';
 	}
 
 	/**
-	 * TODO: Implement taxing.
-	 *
-	 * @return mixed
+	 * @param string $tax New tax class for the product.
 	 */
-	public function getTax()
+	public function addTaxClass($tax)
 	{
-		return $this->tax;
+		$this->taxClasses[] = $tax;
+		$this->dirtyFields[] = 'tax';
+	}
+
+	/**
+	 * @return array Tax classes of the product.
+	 */
+	public function getTaxClasses()
+	{
+		return $this->taxClasses;
 	}
 
 	/**
@@ -345,7 +349,9 @@ abstract class Product implements EntityInterface
 				case 'type':
 					$toSave['type'] = $this->getType();
 					break;
-				// TODO: Save tax properly
+				case 'tax':
+					$toSave['tax'] = serialize($this->taxClasses);
+					break;
 			}
 		}
 
@@ -376,6 +382,9 @@ abstract class Product implements EntityInterface
 		if (isset($state['visibility'])) {
 			$this->visibility = (int)$state['visibility'];
 		}
+		if (isset($state['tax'])) {
+			$this->taxClasses = unserialize($state['tax']);
+		}
 		if (isset($state['size']) && !empty($state['size'])) {
 			if( is_array($state['size'])) {
 				$this->size->setWidth($state['size']['width']);
@@ -399,8 +408,6 @@ abstract class Product implements EntityInterface
 				$this->stock = unserialize($state['stock']);
 			}
 		}
-
-		// TODO: Restore tax (after thinking it over and implementing).
 
 		if (isset($state['attributes'])) {
 			$this->attributes = $state['attributes'];
