@@ -226,9 +226,9 @@ abstract class Product implements EntityInterface
 	 * If attribute already exists - it is replaced.
 	 * Calls `jigoshop\product\add_attribute` filter before adding. If filter returns false - attribute is not added.
 	 *
-	 * @param \Jigoshop\Entity\Product\Attribute $attribute New attribute for product.
+	 * @param \Jigoshop\Entity\Product\Attributes\Attribute $attribute New attribute for product.
 	 */
-	public function addAttribute(Product\Attribute $attribute)
+	public function addAttribute(Product\Attributes\Attribute $attribute)
 	{
 		$key = $this->_findAttribute($attribute->getName());
 
@@ -248,11 +248,11 @@ abstract class Product implements EntityInterface
 	 * Removes attribute from the product.
 	 * Calls `jigoshop\product\delete_attribute` filter before removing. If filter returns false - attribute is not removed.
 	 *
-	 * @param Product\Attribute|string $attribute Attribute to remove.
+	 * @param Product\Attributes\Attribute|string $attribute Attribute to remove.
 	 */
 	public function deleteAttribute($attribute)
 	{
-		if ($attribute instanceof Product\Attribute) {
+		if ($attribute instanceof Product\Attributes\Attribute) {
 			$attribute = $attribute->getName();
 		}
 
@@ -270,7 +270,7 @@ abstract class Product implements EntityInterface
 	 * If attribute is not found - returns {@code null}.
 	 *
 	 * @param $name string Attribute name.
-	 * @return Product\Attribute|null Attribute found or null.
+	 * @return Product\Attributes\Attribute|null Attribute found or null.
 	 */
 	public function getAttribute($name)
 	{
@@ -319,7 +319,7 @@ abstract class Product implements EntityInterface
 	protected function _findAttribute($attribute)
 	{
 		return array_search($attribute, array_map(function ($item){
-			/** @var $item \Jigoshop\Entity\Product\Attribute */
+			/** @var $item \Jigoshop\Entity\Product\Attributes\Attribute */
 			return $item->getName();
 		}, $this->attributes));
 	}
@@ -331,7 +331,7 @@ abstract class Product implements EntityInterface
 	{
 		$toSave = array();
 
-		foreach ($this->dirtyFields as $key => $field) {
+		foreach ($this->dirtyFields as $field) {
 			switch ($field) {
 				case 'sku':
 					$toSave['sku'] = $this->sku;
