@@ -697,6 +697,11 @@ class jigoshop_cart extends Jigoshop_Singleton
 
 	public static function get_applied_tax_classes()
 	{
+		// Do not display taxes if customer country is not set
+		if (jigoshop_customer::get_country() == '') {
+			return array();
+		}
+
 		return self::$tax->get_applied_tax_classes();
 	}
 
@@ -775,6 +780,11 @@ class jigoshop_cart extends Jigoshop_Singleton
 	{
 		/* Quit early if there is no shipping label. */
 		if (!jigoshop_shipping::get_label()) {
+			return false;
+		}
+
+		// Do not display taxes if shipping country is not set
+		if (jigoshop_customer::get_shipping_country() == '') {
 			return false;
 		}
 

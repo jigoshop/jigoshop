@@ -2,6 +2,7 @@
 
 * 1.11.2:
     * Fix: Removed duplicated "Settings" link in plugins panel.
+    * Improved: Hide shipping and tax from cart if customer country is not set.
 * 1.11.1- 2014-08-07:
     * Fix: Proper selecting of shipping rate.
     * Fix: Proper grouped and variable product price displaying.
