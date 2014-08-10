@@ -6,6 +6,7 @@ use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\Order;
 use Jigoshop\Helper\Render;
+use Jigoshop\Helper\Styles;
 use Jigoshop\Service\OrderServiceInterface;
 use Jigoshop\Service\ProductServiceInterface;
 use WPAL\Wordpress;
@@ -27,12 +28,13 @@ class Dashboard implements PageInterface
 	/** @var Options */
 	private $options;
 
-	public function __construct(Wordpress $wp, Options $options, OrderServiceInterface $orderService, ProductServiceInterface $productService)
+	public function __construct(Wordpress $wp, Options $options, OrderServiceInterface $orderService, ProductServiceInterface $productService, Styles $styles)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->orderService = $orderService;
 		$this->productService = $productService;
+		$styles->add('jigoshop.admin.dashboard', JIGOSHOP_URL.'/assets/css/admin/dashboard.css'); // TODO: Add ability to properly load on required pages
 	}
 
 	/** @return string Title of page. */
@@ -66,15 +68,15 @@ class Dashboard implements PageInterface
 		$this->wp->wpEnqueueScript('wp-lists');
 		$this->wp->wpEnqueueScript('postbox');
 
-		$this->wp->addMetaBox('jigoshop_dashboard_right_now', __('Right Now', 'jigoshop'), array($this, 'rightNow'), 'jigoshop', 'side', 'core');
-		$this->wp->addMetaBox('jigoshop_dashboard_recent_orders', __('Recent Orders', 'jigoshop'), array($this, 'recentOrders'), 'jigoshop', 'side', 'core');
+		$this->wp->addMetaBox('jigoshop_dashboard_right_now', __('<span>Shop</span> Content', 'jigoshop'), array($this, 'rightNow'), 'jigoshop', 'side', 'core');
+		$this->wp->addMetaBox('jigoshop_dashboard_recent_orders', __('<span>Recent</span> Orders', 'jigoshop'), array($this, 'recentOrders'), 'jigoshop', 'side', 'core');
 		if ($this->options->get('manage_stock') == 'yes') {
-			$this->wp->addMetaBox('jigoshop_dashboard_stock_report', __('Stock Report', 'jigoshop'), array($this, 'stockReport'), 'jigoshop', 'side', 'core');
+			$this->wp->addMetaBox('jigoshop_dashboard_stock_report', __('<span>Stock</span> Report', 'jigoshop'), array($this, 'stockReport'), 'jigoshop', 'side', 'core');
 		}
-		$this->wp->addMetaBox('jigoshop_dashboard_monthly_report', __('Monthly Report', 'jigoshop'), array($this, 'monthlyReport'), 'jigoshop', 'normal', 'core');
-		$this->wp->addMetaBox('jigoshop_dashboard_recent_reviews', __('Recent Reviews', 'jigoshop'), array($this, 'recentReviews'), 'jigoshop', 'normal', 'core');
-		$this->wp->addMetaBox('jigoshop_dashboard_latest_news', __('Latest News', 'jigoshop'), array($this, 'latestNews'), 'jigoshop', 'normal', 'core');
-		$this->wp->addMetaBox('jigoshop_dashboard_useful_links', __('Useful Links', 'jigoshop'), array($this, 'usefulLinks'), 'jigoshop', 'normal', 'core');
+		$this->wp->addMetaBox('jigoshop_dashboard_monthly_report', __('<span>Monthly</span> Report', 'jigoshop'), array($this, 'monthlyReport'), 'jigoshop', 'normal', 'core');
+		$this->wp->addMetaBox('jigoshop_dashboard_recent_reviews', __('<span>Recent</span> Reviews', 'jigoshop'), array($this, 'recentReviews'), 'jigoshop', 'normal', 'core');
+		$this->wp->addMetaBox('jigoshop_dashboard_latest_news', __('<span>Latest</span> News', 'jigoshop'), array($this, 'latestNews'), 'jigoshop', 'normal', 'core');
+		$this->wp->addMetaBox('jigoshop_dashboard_useful_links', __('<span>Useful</span> Links', 'jigoshop'), array($this, 'usefulLinks'), 'jigoshop', 'normal', 'core');
 
 		$submenu = $this->wp->getSubmenu();
 		Render::output('admin/dashboard', array(

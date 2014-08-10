@@ -1,0 +1,911 @@
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Open Sans Light'), local('OpenSans-Light'), url(//themes.googleusercontent.com/static/fonts/opensans/v8/DXI1ORHCpsQm3Vp6mXoaTRa1RVmPjeKy21_GQJaLlJI.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans'), local('OpenSans'), url(//themes.googleusercontent.com/static/fonts/opensans/v8/u-WUoqrET9fUeobQW7jkRT8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 600;
+  src: local('Open Sans Semibold'), local('OpenSans-Semibold'), url(//themes.googleusercontent.com/static/fonts/opensans/v8/MTP_ySUJH_bn48VBG8sNSha1RVmPjeKy21_GQJaLlJI.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Open Sans Bold'), local('OpenSans-Bold'), url(//themes.googleusercontent.com/static/fonts/opensans/v8/k3k702ZOKiLJc3WVjuplzBa1RVmPjeKy21_GQJaLlJI.woff) format('woff');
+}
+
+body.toplevel_page_jigoshop {
+  &, #wpcontent {
+    background-color: #e7ece3 !important;
+  }
+}
+
+#toplevel_page_jigoshop .wp-menu-image, #menu-posts-product .wp-menu-image, #menu-posts-shop_order .wp-menu-image {
+  background: url(../../images/icons/menu_icons.png) no-repeat;
+}
+
+.admin-color-classic #toplevel_page_jigoshop .wp-menu-image, .admin-color-classic #menu-posts-product .wp-menu-image, .admin-color-classic #menu-posts-shop_order .wp-menu-image {
+  background: url(../../images/icons/menu_icons_classic.png) no-repeat;
+}
+
+#toplevel_page_jigoshop .wp-menu-image img {
+  display: none;
+}
+
+#toplevel_page_jigoshop .wp-menu-image {
+  background-position: 0px -32px !important;
+}
+
+#toplevel_page_jigoshop:hover .wp-menu-image, #toplevel_page_jigoshop.wp-has-current-submenu .wp-menu-image {
+  background-position: 0px 0px !important;
+}
+
+#menu-posts-product .wp-menu-image {
+  background-position: -35px -32px !important;
+}
+
+#menu-posts-product:hover .wp-menu-image, #menu-posts-product.wp-has-current-submenu .wp-menu-image {
+  background-position: -35px 0px !important;
+}
+
+#menu-posts-shop_order .wp-menu-image {
+  background-position: -70px -32px !important;
+}
+
+#menu-posts-shop_order:hover .wp-menu-image, #menu-posts-shop_order.wp-has-current-submenu .wp-menu-image {
+  background-position: -70px 0px !important;
+}
+
+#toplevel_page_jigoshop .toplevel_page_jigoshop .wp-menu-image:before,
+#toplevel_page_jigoshop ul.wp-submenu a:before {
+  background: url(../../images/icons.png) no-repeat;
+  content: "";
+  width: 19px;
+  height: 15px;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  text-indent: -9999999px;
+  padding: 0;
+}
+
+#toplevel_page_jigoshop ul.wp-submenu a {
+  padding-left: 38px !important;
+  position: relative;
+}
+
+#toplevel_page_jigoshop ul.wp-submenu a:before {
+  background-position: 0 -22px;
+  width: 13px;
+  height: 13px;
+  left: 13px;
+  top: 7px;
+}
+
+#toplevel_page_jigoshop ul.wp-submenu .wp-first-item + li a:before {
+  background-position: 0 -42px;
+}
+
+#toplevel_page_jigoshop ul.wp-submenu .wp-first-item + li + li a:before {
+  background-position: 0 -61px;
+}
+
+#toplevel_page_jigoshop ul.wp-submenu .wp-first-item + li + li + li a:before {
+  background-position: 0 -80px;
+}
+
+#toplevel_page_jigoshop ul.wp-submenu .wp-first-item + li + li + li a:before {
+  background-position: 0 -80px;
+}
+
+#toplevel_page_jigoshop ul.wp-submenu .wp-first-item + li + li + li + li a:before {
+  background-position: 0 -80px;
+}
+
+#toplevel_page_jigoshop ul.wp-submenu .wp-first-item + li + li + li + li + li a:before {
+  background-position: 0 -80px;
+}
+
+#toplevel_page_jigoshop ul.wp-submenu .wp-first-item + li + li + li + li + li + li a:before {
+  background-position: 0 -80px;
+}
+
+#toplevel_page_jigoshop ul.wp-submenu .wp-first-item + li + li + li + li + li + li + li a:before {
+  background-position: 0 -99px;
+}
+
+#toplevel_page_jigoshop ul.wp-submenu .wp-first-item + li + li + li + li + li + li + li + li a:before {
+  background-position: 0 -80px;
+}
+
+#toplevel_page_jigoshop ul.wp-submenu li:last-child a:before {
+  background-position: -54px -133px !important;
+}
+
+div.pages ul.pages li a {
+  position: relative;
+}
+
+div.pages ul.pages li a:before {
+  background: url(../../images/icons.png) -27px -21px no-repeat;
+  content: "";
+  width: 19px;
+  height: 19px;
+  position: absolute;
+  left: 13px;
+  top: 14px;
+  text-indent: -9999999px;
+  padding: 0;
+}
+
+div.pages ul.pages li + li a:before {
+  background-position: -27px -40px;
+}
+
+div.pages ul.pages li + li + li a:before {
+  background-position: -27px -63px;
+}
+
+div.pages ul.pages li + li + li + li a:before {
+  background-position: -27px -83px;
+}
+
+div.pages ul.pages li + li + li + li a:before {
+  background-position: -27px -83px;
+}
+
+div.pages ul.pages li + li + li + li + li a:before {
+  background-position: -27px -83px;
+}
+
+div.pages ul.pages li + li + li + li + li + li a:before {
+  background-position: -27px -83px;
+}
+
+div.pages ul.pages li + li + li + li + li + li + li a:before {
+  background-position: -27px -83px;
+}
+
+div.pages ul.pages li + li + li + li + li + li + li + li a:before {
+  background-position: -27px -103px;
+}
+
+div.pages ul.pages li + li + li + li + li + li + li + li + li a:before {
+  background-position: -27px -83px;
+}
+
+div.pages ul.pages li:last-child a:before {
+  background-position: -27px -130px !important;
+}
+
+#wpadminbar > #wp-toolbar > #wp-admin-bar-root-default > li#wp-admin-bar-jigoshop > a:before {
+  content: ' ';
+  display: block;
+  background-image: url('../../images/icons.png') !important;
+  width: 19px;
+  height: 14px;
+  margin-top: 9px;
+}
+
+#jigoshop-metaboxes-main #dashboard-widgets .postbox {
+  border: none !important;
+  background: none !important;
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+}
+
+#jigoshop-metaboxes-main #dashboard-widgets .postbox h3, #jigoshop_dashboard_right_now .sub {
+  font: 300 45px "Open Sans", arial, sans-serif;
+  color: #464e3f;
+  margin: 0;
+  padding: 8px 12px 8px 0;
+  border-bottom: none;
+}
+
+#jigoshop-metaboxes-main #dashboard-widgets .postbox h3 span {
+  display: inline-block;
+  position: relative;
+  padding-right: 27px;
+}
+
+#jigoshop-metaboxes-main #dashboard-widgets .postbox h3 span:before {
+  background: url(../../images/icons.png) 0 -140px no-repeat;
+  content: "";
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  margin-top: -0.5px;
+}
+
+#jigoshop-metaboxes-main #dashboard-widgets .postbox.closed .inside {
+  display: block !important;
+}
+
+#jigoshop-metaboxes-main #dashboard-widgets .postbox .inside {
+  margin-top: 0;
+}
+
+#jigoshop-metaboxes-main #dashboard-widgets .postbox .handlediv {
+  display: none !important;
+}
+
+.toplevel_page_jigoshop #jigoshop-metaboxes-main h2 {
+  text-indent: -9999999px;
+  padding: 0;
+  margin: 35px 0 10px 22px;
+  display: inline-block;
+  height: 25px;
+  width: 132px;
+  background: url(../../images/icons.png) 0 -480px no-repeat;
+  float: left;
+}
+
+#jigoshop_dashboard_right_now h3 {
+  display: none;
+}
+
+#jigoshop_dashboard_right_now .table_content, #jigoshop_dashboard_right_now .table_discussion {
+  min-width: 265px;
+  float: left;
+  width: 50%;
+}
+
+#jigoshop_dashboard_right_now .table_discussion {
+  margin-top: 69px;
+}
+
+#jigoshop_dashboard_right_now .table {
+  font-size: 17px;
+}
+
+#jigoshop_dashboard_right_now .table td {
+  height: 44px;
+  padding: 13px 13px 13px 0;
+}
+
+#jigoshop_dashboard_right_now .table a {
+  color: #464e3f;
+}
+
+#jigoshop_dashboard_right_now .table_content td.b a,
+#jigoshop_dashboard_right_now .table_discussion td.b a {
+  font-weight: 300;
+  font-size: 36px;
+  padding: 0px 15px;
+  background: #d7ddd2;
+  border-radius: 50px;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+}
+
+#jigoshop_dashboard_right_now .table_discussion td.b a {
+  color: #ffffff;
+}
+
+#jigoshop_dashboard_right_now .table_discussion .first td.b a {
+  background: #f3ac32;
+}
+
+#jigoshop_dashboard_right_now .table_discussion .first + tr td.b a {
+  background: #e21b23;
+}
+
+#jigoshop_dashboard_right_now .table_discussion .first + tr + tr td.b a {
+  background: #2f79d5;
+}
+
+#jigoshop_dashboard_right_now .table_discussion .first + tr + tr + tr td.b a {
+  background: #98c242;
+}
+
+#jigoshop_dashboard_monthly_report h3 {
+  margin-bottom: 0 !important;
+  display: inline-block;
+}
+
+#jigoshop_dashboard_recent_orders .inside {
+  padding-left: 0;
+}
+
+#jigoshop_dashboard_recent_orders .recent-orders li {
+  font: 11px "Open Sans", arial, sans-serif;
+  background: #ffffff;
+  margin-bottom: 6px;
+  border-radius: 2px;
+  padding: 8px 9px;
+}
+
+#jigoshop_dashboard_recent_orders .recent-orders li a {
+  width: 70px;
+  display: inline-block;
+  float: left;
+  color: #464e3f;
+}
+
+#jigoshop_dashboard_recent_orders .recent-orders li a:hover {
+  text-decoration: underline;
+}
+
+#jigoshop_dashboard_recent_orders .recent-orders li br {
+  display: none;
+}
+
+#jigoshop_dashboard_recent_orders .recent-orders li small {
+  color: #91b93f;
+  font-size: 11px;
+}
+
+#jigoshop_dashboard_recent_orders .order-cost {
+  float: right;
+}
+
+#jigoshop_dashboard_recent_orders .recent-orders li .order-cost {
+  color: #464e3f;
+  margin-left: 17px;
+}
+
+#jigoshop_dashboard_recent_orders .order-status {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  text-indent: -999999px;
+  margin: 3px 17px;
+}
+
+#jigoshop_dashboard_recent_orders .order-status.cancelled {
+  background: #e21b23;
+}
+
+#jigoshop_dashboard_recent_orders .order-status.on-hold {
+  background: #e21b23 /* #2f79d5 */;
+}
+
+#jigoshop_dashboard_recent_orders .order-status.pending {
+  background: #f3ac32;
+}
+
+#jigoshop_dashboard_recent_orders .order-status.completed {
+  background: #98c242;
+}
+
+#jigoshop_dashboard_recent_orders .order-status.processing {
+  background: #2f79d5;
+}
+
+#jigoshop_dashboard_recent_orders .order-status.refunded {
+  background: #cccccc;
+}
+
+#jigoshop_dashboard_latest_news .inside,
+#jigoshop_dashboard_useful_links .inside,
+#jigoshop_dashboard_monthly_report .inside {
+  padding-left: 0;
+}
+
+#jigoshop_dashboard_latest_news .inside ul li,
+#jigoshop_dashboard_useful_links .inside ul li {
+  font: 14px "Open Sans", arial, sans-serif;
+  background: #ffffff;
+  margin-bottom: 6px;
+  border-radius: 2px;
+  padding: 8px 9px;
+}
+
+#jigoshop_dashboard_latest_news .inside ul li a,
+#jigoshop_dashboard_useful_links .inside ul li a {
+  padding-left: 28px;
+  position: relative;
+  display: inline-block;
+}
+
+#jigoshop_dashboard_latest_news .inside ul li a:before,
+#jigoshop_dashboard_useful_links .inside ul li a:before {
+  background: url(../../images/icons.png) 0 -162px no-repeat;
+  content: "";
+  width: 19px;
+  height: 19px;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+#jigoshop_dashboard_latest_news .inside ul li a:hover:before,
+#jigoshop_dashboard_useful_links .inside ul li a:hover:before {
+  background-position: 0 -189px;
+}
+
+#jigoshop_dashboard_useful_links {
+  overflow: hidden;
+}
+
+#jigoshop_dashboard_recent_reviews .inside {
+  padding-left: 0;
+}
+
+#jigoshop_dashboard_recent_reviews .inside.jigoshop-reviews-widget li {
+  position: relative;
+  padding-bottom: 31px;
+  margin-bottom: 27px;
+}
+
+#jigoshop_dashboard_recent_reviews .inside.jigoshop-reviews-widget li img.avatar {
+  border-radius: 50px;
+}
+
+#jigoshop_dashboard_recent_reviews .inside.jigoshop-reviews-widget li .meta {
+  color: #464e3f;
+  font: 14px "Open Sans", arial, sans-serif;
+}
+
+#jigoshop_dashboard_recent_reviews .inside.jigoshop-reviews-widget li .meta a {
+  color: #464e3f;
+}
+
+#jigoshop_dashboard_recent_reviews .inside.jigoshop-reviews-widget li .meta a:hover {
+  text-decoration: underline;
+}
+
+#jigoshop_dashboard_recent_reviews .inside.jigoshop-reviews-widget li blockquote {
+  color: #86947a;
+  font: italic 13px "Open Sans", arial, sans-serif;
+}
+
+#jigoshop_dashboard_recent_reviews .inside.jigoshop-reviews-widget li .star-rating {
+  position: absolute;
+  bottom: 0;
+  left: 43px;
+}
+
+div.pages {
+  clear: both;
+}
+
+div.pages ul.pages {
+  margin: 40px 0 0 7px;
+  float: left;
+  width: 100%;
+}
+
+div.pages ul.pages li {
+  display: inline-block;
+  float: left;
+  margin-bottom: 15px;
+  margin-left: 15px;
+}
+
+div.pages ul.pages li + li {
+  margin-left: 15px;
+}
+
+div.pages ul.pages li a {
+  border-radius: 2px;
+  color: #ffffff;
+  text-decoration: none;
+  font: 400 22px "Open Sans", arial, sans-serif;
+  display: inline-block;
+  background: #c2cbba;
+  padding: 8px 21px 11px 45px;
+}
+
+div.pages ul.pages li a:hover {
+  background-color: #474f40;
+}
+
+#wp-version-message {
+  color: #86947a;
+  float: left;
+  margin: 38px 0 0 60px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+#wp-version-message strong {
+  font-weight: bold !important;
+  color: #464e3f;
+}
+
+#dashboard-widgets {
+  clear: both;
+}
+
+#jigoshop-metaboxes-main .postbox h3 span span,
+#jigoshop_dashboard_right_now .table_content .sub span {
+  display: block !important;
+  font: 700 12.5px "Open Sans", arial, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin-bottom: -10px;
+}
+
+#jigoshop-metaboxes-main .postbox h3 span span:before,
+#jigoshop_dashboard_right_now .table_content .sub span:before {
+  display: none;
+}
+
+#jigoshop-stats {
+  position: relative;
+  background: #ffffff;
+  padding: 30px 0 0 19px;
+}
+
+#jigoshop-stats p {
+  position: absolute;
+  right: 0;
+  top: -54px;
+  z-index: 100;
+  margin: 0;
+}
+
+#jigoshop-stats .previous,
+#jigoshop-stats .next {
+  display: block;
+  width: 44px;
+  height: 44px;
+  text-indent: -9999999px;
+}
+
+#jigoshop-stats .previous:hover,
+#jigoshop-stats .next:hover {
+  opacity: 0.6;
+}
+
+#jigoshop-stats .previous {
+  background: url(../../images/icons.png) 0 -307px no-repeat;
+}
+
+#dashboard-widgets .jigoshop-links-widget .social {
+  background: #ffffff;
+  padding: 14px 0;
+  border-radius: 2px;
+  box-sizing: border-box;
+  margin-top: 13px;
+}
+
+#dashboard-widgets .jigoshop-links-widget .social > div {
+  padding: 0 11px;
+}
+
+#dashboard-widgets .jigoshop-links-widget .social p {
+  color: #89b431;
+}
+
+#jigoshop-stats .next {
+  background: url(../../images/icons.png) 0 -359px no-repeat;
+}
+
+#jigoshop_stock_report .inside {
+  padding-left: 0;
+}
+
+#jigoshop_stock_report .inside ol {
+  list-style: decimal inside;
+  margin-left: 0;
+  margin-bottom: 24px;
+}
+
+#jigoshop_stock_report .inside ol li {
+  font: 14px "Open Sans", arial, sans-serif;
+  background: #ffffff;
+  margin-bottom: 6px;
+  border-radius: 2px;
+  padding: 8px 9px;
+}
+
+#jigoshop_stock_report .inside .table {
+  float: none !important;
+  width: 100% !important;
+}
+
+#jigoshop_stock_report .inside .table .sub {
+  font: 12px arial, sans-serif;
+  color: #474d3f;
+  padding-left: 61px;
+  position: relative;
+  padding-bottom: 0
+}
+
+#jigoshop_stock_report .inside .table .sub:before {
+  background: url(../../images/icons.png) -58px -21px no-repeat;
+  content: "";
+  width: 54px;
+  height: 14px;
+  position: absolute;
+  left: 0;
+  top: 5px;
+}
+
+#jigoshop_stock_report .inside .table.table_discussion .sub:before {
+  background: url(../../images/icons.png) -58px -39px no-repeat;
+}
+
+#jigoshop-metaboxes-main div.error {
+  clear: both;
+}
+
+#jigoshop-metaboxes-main .links.jigo-links {
+  float: right
+}
+
+#jigoshop-metaboxes-main .links.jigo-links a {
+  font: 14px "Open Sans", arial, sans-serif;
+  color: #464e3f;
+}
+
+#jigoshop-metaboxes-main .links.jigo-links a:before {
+  background-position: 0 -189px;
+}
+
+#jigoshop-metaboxes-main .links.jigo-links a:hover:before {
+  background-position: 0 -162px;
+}
+
+#jigoshop-metaboxes-main .jigo-help {
+  width: 49%;
+  background: #ffffff;
+  border-radius: 2px;
+  box-sizing: border-box;
+  float: left;
+  position: relative;
+}
+
+#jigoshop-metaboxes-main .jigo-help .jigo-phone {
+  display: block;
+  color: #89b431;
+  font: 700 22px "Open Sans", arial, sans-serif;
+  padding: 14px 11px 5px 11px;
+}
+
+#jigoshop-metaboxes-main .jigo-help .jigo-email {
+  display: block;
+  padding: 5px 11px 14px;
+}
+
+#jigoshop-metaboxes-main .jigo-help .jigo-email a {
+  font-size: 13px;
+  color: #89b431;
+}
+
+#jigoshop-metaboxes-main .jigo-help .jigo-email a:hover {
+  text-decoration: underline;
+}
+
+.jigoshop-settings input[type="checkbox"] {
+  width: 14px;
+}
+
+#adminmenuback, #adminmenuwrap, #adminmenu {
+  height: 100%;
+}
+
+#dashboard-widgets #jigo-social li {
+  display: inline-block;
+  margin-right: 5px;
+  padding: 0;
+}
+
+#dashboard-widgets #jigo-social li a {
+  display: block;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  background-size: cover !important;
+  text-indent: -9999999px;
+}
+
+#dashboard-widgets #jigo-social li a:before {
+  display: none;
+}
+
+#dashboard-widgets #jigo-social #fb-icon {
+  background: url(../../images/icons/fb.png) no-repeat;
+}
+
+#dashboard-widgets #jigo-social #tw-icon {
+  background: url(../../images/icons/twit.png) no-repeat;
+}
+
+#dashboard-widgets #jigo-social #gp-icon {
+  background: url(../../images/icons/gplus.png) no-repeat;
+}
+
+.stats p {
+  padding-bottom: 15px
+}
+
+.stats p a {
+  float: right;
+  margin-left: 8px
+}
+
+ul.recent-orders li {
+  overflow: hidden;
+  zoom: 1;
+  border-bottom: #ececec 1px solid;
+  padding: 0 0 8px;
+  margin: 0 0 8px
+}
+
+ul.recent-orders li small {
+  color: #999999
+}
+
+ul.recent-orders li .order-cost {
+  margin-left: 8px
+}
+
+ul.recent-orders li .completed {
+  color: green
+}
+
+ul.recent-orders li .on-hold {
+  color: red
+}
+
+ul.recent-orders li .processing {
+  color: #21759b
+}
+
+ul.recent-orders li .pending {
+  color: #e66f00
+}
+
+ul.recent-orders li .refunded, ul.recent-orders li .cancelled {
+  color: #999999
+}
+
+.jigoshop_dashboard_right_now .inside {
+  font-size: 12px;
+  padding-top: 20px
+}
+
+.jigoshop_dashboard_right_now p.sub {
+  font-style: italic;
+  font-family: Georgia, "Times New Roman", "Bitstream Charter", Times, serif;
+  padding: 5px 10px 15px;
+  color: #777777;
+  font-size: 13px
+}
+
+.jigoshop_dashboard_right_now .table_discussion {
+  float: right;
+  width: 45%
+}
+
+.jigoshop_dashboard_right_now table td {
+  padding: 3px 0;
+  white-space: nowrap
+}
+
+.jigoshop_dashboard_right_now table tr.first td {
+  border-top: 0
+}
+
+.jigoshop_dashboard_right_now td.b a {
+  font-size: 18px
+}
+
+.jigoshop_dashboard_right_now td.b a:hover {
+  color: #d54e21
+}
+
+.jigoshop_dashboard_right_now .t a {
+  white-space: nowrap
+}
+
+.jigoshop_dashboard_right_now .onhold {
+  color: red
+}
+
+.jigoshop_dashboard_right_now .pending {
+  color: #e66f00
+}
+
+.jigoshop_dashboard_right_now .complete {
+  color: green
+}
+
+.jigoshop_dashboard_right_now .versions {
+  padding: 4px 15px 12px;
+  clear: both
+}
+
+.jigoshop-rss-widget ul li, .jigoshop-links-widget ul li {
+  line-height: 1.5em;
+  margin-bottom: 12px
+}
+
+.jigoshop-links-widget {
+  width: 100%;
+  height: 100%
+}
+
+.jigoshop-links-widget div.links {
+  float: left;
+  width: 49%
+}
+
+.jigoshop-links-widget .social {
+  float: right;
+  width: 49%
+}
+
+.jigoshop-links-widget .social h4 {
+  color: #999999
+}
+
+.jigoshop-links-widget .social h4.first {
+  margin-top: 0
+}
+
+.jigoshop-links-widget .social img {
+  width: 49%
+}
+
+.jigoshop-links-widget .social p {
+  color: #cccccc;
+  line-height: 1.5em;
+  font-style: italic
+}
+
+.jigoshop-reviews-widget li {
+  line-height: 1.5em;
+  margin-bottom: 12px
+}
+
+.jigoshop-reviews-widget h4.meta {
+  line-height: 1.4;
+  margin: -.2em 0 0 0;
+  font-weight: 400;
+  color: #999999
+}
+
+.jigoshop-reviews-widget blockquote {
+  padding: 0;
+  margin: 0
+}
+
+.jigoshop-reviews-widget .avatar {
+  float: left;
+  margin: 0 10px 5px 0
+}
+
+.jigoshop-reviews-widget .star-rating {
+  float: right;
+  width: 80px;
+  height: 16px;
+  background: url(../../images/star.png) repeat-x left 0
+}
+
+.jigoshop-reviews-widget .star-rating span {
+  background: url(../../images/star.png) repeat-x left -32px;
+  height: 0;
+  padding-top: 16px;
+  overflow: hidden;
+  float: left
+}
+
+@media (max-width: 1300px) {
+  #jigoshop_dashboard_right_now .table_discussion {
+    margin-top: -16px;
+  }
+}
+
+canvas.overlay {
+  z-index: 999;
+}

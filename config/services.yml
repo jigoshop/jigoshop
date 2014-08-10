@@ -132,6 +132,7 @@ services:
       - '@jigoshop.options'
       - '@jigoshop.service.order'
       - '@jigoshop.service.product'
+      - '@jigoshop.helper.styles'
     tags:
       - { name: jigoshop.admin.page }
   jigoshop.admin.reports:
@@ -143,6 +144,7 @@ services:
     arguments:
       - '@wpal'
       - '@jigoshop.options'
+      - '@jigoshop.helper.styles'
     tags:
       - { name: jigoshop.admin.page }
   jigoshop.admin.settings.general:

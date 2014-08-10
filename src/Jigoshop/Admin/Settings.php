@@ -8,6 +8,7 @@ use Jigoshop\Admin\Settings\OwnerTab;
 use Jigoshop\Admin\Settings\TabInterface;
 use Jigoshop\Core\Options;
 use Jigoshop\Helper\Render;
+use Jigoshop\Helper\Styles;
 use WPAL\Wordpress;
 
 /**
@@ -27,13 +28,12 @@ class Settings implements PageInterface
 	private $tabs = array();
 	private $currentTab;
 
-	public function __construct(Wordpress $wp, Options $options)
+	public function __construct(Wordpress $wp, Options $options, Styles $styles)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
 		$wp->addAction('current_screen', array($this, 'register'));
-//		$this->wp->addAction('admin_print_scripts-'.$admin_page, array($this, 'settings_scripts')); // TODO: Use JWOS ability to check what current page is to properly include scripts
-//		$this->wp->addAction('admin_print_styles-'.$admin_page, array($this, 'settings_styles'));
+		$styles->add('jigoshop.admin.settings', JIGOSHOP_URL.'/assets/css/admin/settings.css'); // TODO: Add ability to properly load on required pages
 	}
 
 	/**

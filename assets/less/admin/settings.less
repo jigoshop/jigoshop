@@ -1,0 +1,68 @@
+@import '../../bower/bootstrap/less/variables.less';
+@import '../../bower/bootstrap/less/mixins.less';
+
+.jigoshop {
+  @import '../../bower/bootstrap/less/component-animations.less';
+  @import '../../bower/bootstrap/less/grid.less';
+  @import '../../bower/bootstrap/less/forms.less';
+  @import '../../bower/bootstrap/less/tables.less';
+  @import '../../bower/bootstrap/less/buttons.less';
+  @import '../../bower/bootstrap/less/navs.less';
+  @import '../../bower/bootstrap/less/badges.less';
+  @import '../../bower/bootstrap/less/tooltip.less';
+  @import '../../bower/bootstrap/less/utilities.less';
+  @import '../../bower/bootstrap/less/alerts.less';
+  @import '../../bower/bootstrap/less/glyphicons.less';
+
+  .form-group, .nav-tabs {
+    .clearfix();
+  }
+  .nav-tabs {
+    li.hide {
+      display: none;
+    }
+    li {
+      a, &:hover a  {
+        text-decoration: none;
+      }
+    }
+  }
+  .schedule.hide {
+    display: none;
+  }
+  .form-group {
+    margin: 0;
+
+    div.checkbox-inline {
+      input[type=checkbox] {
+        position: static;
+        margin: 0;
+      }
+    }
+    .help {
+      color: @gray-light;
+      font-style: italic;
+    }
+  }
+  .tab-content {
+    background: @body-bg;
+    border: 1px solid @nav-tabs-border-color;
+    border-top: 0;
+    padding: @padding-base-vertical @padding-base-horizontal;
+  }
+  h3 {
+    margin: 1em 0 !important;
+  }
+  .form-table {
+    th {
+      padding: 8px 0;
+    }
+    td {
+      padding: 0;
+
+      p {
+        margin: 0;
+      }
+    }
+  }
+}
