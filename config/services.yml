@@ -124,12 +124,7 @@ services:
     lazy: true
     arguments:
       - '@wpal'
-      - '@jigoshop.options'
       - '@jigoshop.admin.dashboard'
-      - '@jigoshop.admin.settings'
-      - '@jigoshop.admin.system_info'
-      - '@jigoshop.admin.reports'
-      - '@jigoshop.admin.product.attributes'
   jigoshop.admin.dashboard:
     class: Jigoshop\Admin\Dashboard
     arguments:
@@ -137,11 +132,19 @@ services:
       - '@jigoshop.options'
       - '@jigoshop.service.order'
       - '@jigoshop.service.product'
+    tags:
+      - { name: jigoshop.admin.page }
+  jigoshop.admin.reports:
+    class: Jigoshop\Admin\Reports
+    tags:
+      - { name: jigoshop.admin.page }
   jigoshop.admin.settings:
     class: Jigoshop\Admin\Settings
     arguments:
       - '@wpal'
       - '@jigoshop.options'
+    tags:
+      - { name: jigoshop.admin.page }
   jigoshop.admin.settings.general:
     class: Jigoshop\Admin\Settings\GeneralTab
     arguments:
@@ -158,7 +161,9 @@ services:
     class: Jigoshop\Admin\SystemInfo
     arguments:
       - '@wpal'
-  jigoshop.admin.reports:
-    class: Jigoshop\Admin\Reports
+    tags:
+      - { name: jigoshop.admin.page }
   jigoshop.admin.product.attributes:
     class: Jigoshop\Admin\Product\Attributes
+    tags:
+      - { name: jigoshop.admin.page }

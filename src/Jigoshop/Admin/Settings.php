@@ -54,6 +54,12 @@ class Settings implements PageInterface
 		return __('Settings', 'jigoshop');
 	}
 
+	/** @return string Parent of the page string. */
+	public function getParent()
+	{
+		return 'jigoshop';
+	}
+
 	/**
 	 * @return string Required capability to view the page.
 	 */

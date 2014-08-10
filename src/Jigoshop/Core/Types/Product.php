@@ -67,7 +67,7 @@ class Product implements Post
 				'not_found_in_trash' => __('No Products found in trash', 'jigoshop'),
 				'parent' => __('Parent Product', 'jigoshop'),
 			),
-			'description' => \__('This is where you can add new products to your store.', 'jigoshop'),
+			'description' => __('This is where you can add new products to your store.', 'jigoshop'),
 			'public' => true,
 			'show_ui' => true,
 			'capability_type' => 'product',

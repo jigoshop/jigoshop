@@ -15,7 +15,7 @@
 				<?php endforeach; ?>
 			</ol>
 		<?php else: ?>
-			<p><?= \__('No products are low in stock.', 'jigoshop'); ?></p>
+			<p><?= __('No products are low in stock.', 'jigoshop'); ?></p>
 		<?php endif; ?>
 	</div>
 	<?php if ($notifyOutOfStock): ?>
@@ -28,7 +28,7 @@
 					<?php endforeach; ?>
 				</ol>
 			<?php else: ?>
-				<p><?= \__('No products are out of stock.', 'jigoshop'); ?></p>
+				<p><?= __('No products are out of stock.', 'jigoshop'); ?></p>
 			<?php endif; ?>
 		</div>
 	<?php endif; ?>

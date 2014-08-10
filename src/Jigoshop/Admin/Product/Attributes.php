@@ -17,7 +17,13 @@ class Attributes implements PageInterface
 	 */
 	public function getTitle()
 	{
-		return \__('Attributes', 'jigoshop');
+		return __('Attributes', 'jigoshop');
+	}
+
+	/** @return string Parent of the page string. */
+	public function getParent()
+	{
+		return 'products';
 	}
 
 	/**

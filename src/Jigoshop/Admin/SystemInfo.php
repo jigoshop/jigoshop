@@ -26,7 +26,13 @@ class SystemInfo implements PageInterface
 	 */
 	public function getTitle()
 	{
-		return \__('System Information', 'jigoshop');
+		return __('System Information', 'jigoshop');
+	}
+
+	/** @return string Parent of the page string. */
+	public function getParent()
+	{
+		return 'jigoshop';
 	}
 
 	/**

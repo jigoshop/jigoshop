@@ -12,7 +12,7 @@
 ?>
 <div id="jigoshop_right_now" class="jigoshop_right_now">
 	<div class="table table_content">
-		<p class="sub"><?= \__('Shop Content', 'jigoshop'); ?></p>
+		<p class="sub"><?= __('Shop Content', 'jigoshop'); ?></p>
 		<table>
 			<tbody>
 			<tr class="first">
@@ -35,7 +35,7 @@
 		</table>
 	</div>
 	<div class="table table_discussion">
-		<p class="sub"><?= \__('Orders', 'jigoshop'); ?></p>
+		<p class="sub"><?= __('Orders', 'jigoshop'); ?></p>
 		<table>
 			<tbody>
 			<tr class="first pending-orders">

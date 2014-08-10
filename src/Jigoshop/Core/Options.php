@@ -153,7 +153,7 @@ class Options
 	{
 		$options = (array)$this->wp->getOption(self::NAME);
 		foreach($this->defaults as $key => $value){
-			$options[$key] = array_merge($value, $options[$key]);
+			$options[$key] = array_merge($value, isset($options[$key]) ? $options[$key] : array());
 		}
 		$this->options = array_merge($this->defaults, $options);
 	}
