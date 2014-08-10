@@ -157,6 +157,13 @@ services:
       - '@jigoshop.options'
     tags:
       - { name: jigoshop.admin.settings.tab }
+  jigoshop.admin.settings.taxes:
+    class: Jigoshop\Admin\Settings\TaxesTab
+    arguments:
+      - '@jigoshop.options'
+      - '@jigoshop.helper.scripts'
+    tags:
+      - { name: jigoshop.admin.settings.tab }
   jigoshop.admin.system_info:
     class: Jigoshop\Admin\SystemInfo
     arguments:

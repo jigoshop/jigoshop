@@ -53,4 +53,21 @@ class Scripts
 			}
 		}
 	}
+
+	/**
+	 * Localizes script.
+	 * Calls filter `jigoshop\script\localize`. If the filter returns empty value the script is omitted.
+	 *
+	 * @param string $handle Handle name.
+	 * @param string $variable Variable name.
+	 * @param array $value List of values to localize.
+	 */
+	public function localize($handle, $variable, array $value)
+	{
+		$handle = apply_filters('jigoshop\script\localize', $handle, $value, $value);
+
+		if (!empty($handle)) {
+			wp_localize_script($handle, $variable, $value);
+		}
+	}
 }

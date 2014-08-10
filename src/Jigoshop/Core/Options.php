@@ -42,7 +42,11 @@ class Options
 			'currency_position' => 'left', // TODO: Update to Currency::display()
 		),
 		'tax' => array(
-			'classes' => array('standard'),
+			'before_coupons' => true,
+			'included' => false,
+			'classes' => array(
+				array('label' => 'Standard', 'class' => 'standard'),
+			),
 		),
 	);
 	private $options = array();
