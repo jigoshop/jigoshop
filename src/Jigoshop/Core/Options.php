@@ -41,6 +41,9 @@ class Options
 			'currency' => 'GBP',
 			'currency_position' => 'left', // TODO: Update to Currency::display()
 		),
+		'tax' => array(
+			'classes' => array('standard'),
+		),
 	);
 	private $options = array();
 	private $dirty = false;

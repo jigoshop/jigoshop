@@ -13,7 +13,7 @@ use WPAL\Wordpress;
  */
 class Installer
 {
-	const DB_VERSION = 0;
+	const DB_VERSION = 1;
 
 	/** @var \WPAL\Wordpress */
 	private $wp;
@@ -34,7 +34,7 @@ class Installer
 		$db = $this->wp->getOption('jigoshop_database_version');
 
 		if ($db === false) {
-//			$this->_createTables();
+			$this->_createTables();
 //			$this->_createPages();
 			$this->cron->clear();
 		}
@@ -61,6 +61,23 @@ class Installer
 		}
 
 		$tables = "
+			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}jigoshop_tax (
+				id INT NOT NULL AUTO_INCREMENT,
+				class VARCHAR(255) NOT NULL,
+				label VARCHAR(255) NOT NULL,
+				rate DOUBLE NOT NULL,
+				PRIMARY KEY id (id)
+			) {$collate};
+			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}jigoshop_tax_location (
+				id INT NOT NULL AUTO_INCREMENT,
+				tax_id INT NOT NULL,
+				country VARCHAR(255) NOT NULL,
+				state VARCHAR(255),
+				postcode VARCHAR(255),
+				PRIMARY KEY id (id)
+			) {$collate};
+		";
+		/*
 			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}jigoshop_attribute (
 				id INT(9) NOT NULL AUTO_INCREMENT,
 				attribute_name VARCHAR(255) NOT NULL,
@@ -87,7 +104,7 @@ class Installer
 				KEY order_item_id (order_item_id),
 				KEY meta_key (meta_key)
 			) {$collate};
-		";
+		 */
 		// TODO: Is attribute_meta table needed?
 //		$sql = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}jigoshop_termmeta (
 //			meta_id BIGINT(20) NOT NULL AUTO_INCREMENT,
