@@ -47,7 +47,7 @@ gulp.task 'clean', ->
   gulp.src ['assets/css/*', 'assets/js/*', 'assets/fonts'], {read: false}
     .pipe rimraf()
 
-gulp.task 'watch', ['styles', 'scripts'], ->
+gulp.task 'watch', ['styles', 'scripts', 'fonts'], ->
   gulp.watch ['assets/coffee/**/*.coffee'], ['scripts']
   gulp.watch ['assets/less/**/*.less'], ['styles']
 
