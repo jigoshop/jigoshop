@@ -10,7 +10,10 @@ use Jigoshop\Helper\Render;
 	<thead>
 		<tr>
 			<th scope="col"><?php _e('Label', 'jigoshop'); ?></th>
-			<th scope="col"><?php _e('Class', 'jigoshop'); ?></th>
+			<th scope="col">
+				<?php _e('Class', 'jigoshop'); ?>
+				<a href="#" data-toggle="tooltip" class="badge" data-placement="top" title="<?php _e('Tax classes needs to be saved first before updating rules.', 'jigoshop'); ?>">?</a>
+			</th>
 			<th scope="col"><?php _e('Rate', 'jigoshop'); ?></th>
 			<th scope="col"></th>
 		</tr>
