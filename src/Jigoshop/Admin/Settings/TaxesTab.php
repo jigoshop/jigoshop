@@ -141,12 +141,13 @@ class TaxesTab implements TabInterface
 		}
 		foreach ($settings['rules']['rate'] as $key => $rate) {
 			$this->taxService->save(array(
-				'id' => $settings['rules'][$key]['id'],
+				'id' => $settings['rules']['id'][$key],
 				'rate' => $rate,
-				'label' => $settings['rules'][$key]['label'],
-				'class' => $settings['rules'][$key]['class'],
+				'label' => $settings['rules']['label'][$key],
+				'class' => $settings['rules']['class'][$key],
 			));
 		}
+		$this->taxService->removeAllExcept($settings['rules']['id']);
 		unset($settings['rules']);
 
 		return $settings;

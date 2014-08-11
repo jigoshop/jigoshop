@@ -60,7 +60,7 @@ class Installer
 			}
 		}
 
-		$tables = "
+		$query = "
 			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}jigoshop_tax (
 				id INT NOT NULL AUTO_INCREMENT,
 				class VARCHAR(255) NOT NULL,
@@ -68,6 +68,9 @@ class Installer
 				rate DOUBLE NOT NULL,
 				PRIMARY KEY id (id)
 			) {$collate};
+		";
+		$wpdb->query($query);
+		$query = "
 			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}jigoshop_tax_location (
 				id INT NOT NULL AUTO_INCREMENT,
 				tax_id INT NOT NULL,
@@ -77,6 +80,7 @@ class Installer
 				PRIMARY KEY id (id)
 			) {$collate};
 		";
+		$wpdb->query($query);
 		/*
 			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}jigoshop_attribute (
 				id INT(9) NOT NULL AUTO_INCREMENT,
@@ -113,9 +117,6 @@ class Installer
 //			meta_value LONGTEXT NULL,
 //			PRIMARY KEY id (meta_id)
 //		) {$collate}";
-
-		// TODO: Remove dbDelta() call in order to make Jigoshop testable
-		dbDelta($tables);
 	}
 
 	private function _createPages()

@@ -112,20 +112,25 @@ class Tax
 	 */
 	public function getRules()
 	{
-		// TODO: Properly fetch
-		return array(
-			$this->formatRule(array()),
-		);
+		$wpdb = $this->wp->getWPDB();
+		$query = "SELECT t.id, t.class, t.label, t.rate FROM {$wpdb->prefix}jigoshop_tax t ORDER BY t.id";
+		$taxes = $wpdb->get_results($query, ARRAY_A);
+		$result = array();
+
+		foreach ($taxes as $tax) {
+			$result[] = $this->formatRule($tax);
+		}
+
+		return $result;
 	}
 
 	private function formatRule($rule)
 	{
-		// TODO: Proper data formatting
 		return array(
-			'id' => 0,
-			'rate' => 0.0,
-			'label' => 'No tax',
-			'class' => 'standard',
+			'id' => $rule['id'],
+			'rate' => (float)$rule['rate'],
+			'label' => $rule['label'],
+			'class' => $rule['class'],
 		);
 	}
 
@@ -136,6 +141,27 @@ class Tax
 	 */
 	public function save(array $rule)
 	{
-		// TODO: Properly save rules
+		$wpdb = $this->wp->getWPDB();
+		if ($rule['id'] == 0) {
+			$query = $wpdb->prepare("
+				INSERT INTO {$wpdb->prefix}jigoshop_tax (class, label, rate)
+				VALUES (%s, %s, %f)
+			", array($rule['class'], $rule['label'], (float)$rule['rate']));
+		} else {
+			$query = $wpdb->prepare("
+				UPDATE {$wpdb->prefix}jigoshop_tax
+				SET class = %s, label = %s, rate = %f
+				WHERE id = %d
+			", array($rule['class'], $rule['label'], (float)$rule['rate'], $rule['id']));
+		}
+		$wpdb->query($query);
+	}
+
+	public function removeAllExcept($ids)
+	{
+		$wpdb = $this->wp->getWPDB();
+		$ids = join(',', array_filter(array_map(function($item){ return (int)$item; }, $ids)));
+		$query = "DELETE FROM {$wpdb->prefix}jigoshop_tax WHERE id NOT IN ({$ids})";
+		$wpdb->query($query);
 	}
 }
