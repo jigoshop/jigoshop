@@ -17,7 +17,7 @@
 			<span class="help-block"><?php echo $description; ?></span>
 		<?php endif; ?>
 		<?php if(!empty($tip)): ?>
-			<a href="#" data-toggle="tooltip" class="badge" data-placement="left" title="<?php echo $tip; ?>">?</a>
+			<a href="#" data-toggle="tooltip" class="badge" data-placement="top" title="<?php echo $tip; ?>">?</a>
 		<?php endif; ?>
 	</div>
 </div>

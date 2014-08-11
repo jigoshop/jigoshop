@@ -14,7 +14,7 @@
 	<label for="<?php echo $id; ?>" class="col-sm-2 control-label">
 		<?php echo $label; ?>
 		<?php if(!empty($tip)): ?>
-			<a href="#" data-toggle="tooltip" class="badge" data-placement="left" title="<?php echo $tip; ?>">?</a>
+			<a href="#" data-toggle="tooltip" class="badge" data-placement="top" title="<?php echo $tip; ?>">?</a>
 		<?php endif; ?>
 	</label>
 	<div class="col-sm-9">
