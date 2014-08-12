@@ -131,6 +131,9 @@ class Tax
 			'rate' => (float)$rule['rate'],
 			'label' => $rule['label'],
 			'class' => $rule['class'],
+			'country' => '',
+			'states' => array(),
+			'postcode' => '',
 		);
 	}
 

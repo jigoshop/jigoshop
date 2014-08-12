@@ -1,10 +1,12 @@
 <?php
-use Jigoshop\Helper\Forms;
+use Jigoshop\Helper\Country;
+use Jigoshop\Admin\Helper\Forms;
 use Jigoshop\Core\Options;
 
 /**
  * @var $rule array Rule to display
  * @var $classes array List of currently available tax classes
+ * @var $countries array List of countries
  */
 ?>
 <tr>
@@ -32,6 +34,32 @@ use Jigoshop\Core\Options;
 		'value' => $rule['rate'],
 		'placeholder' => __('Tax rate', 'jigoshop'),
 	)); ?>
+	</td>
+	<td>
+	<?php Forms::select(array(
+		'id' => 'tax_rule_country_'.$rule['id'],
+		'name' => Options::NAME.'[rules][country][]',
+		'classes' => array('tax-rule-country'),
+		'value' => $rule['country'],
+		'options' => $countries,
+	)); ?>
+	</td>
+	<td>
+	<?php Forms::text(array(
+		'id' => 'tax_rule_states_'.$rule['id'],
+		'name' => Options::NAME.'[rules][states][]',
+		'classes' => array('tax-rule-states'),
+		'placeholder' => _x('Write the state', 'admin_taxing', 'jigoshop'),
+		'value' => is_array($rule['states']) ? join(',', $rule['states']) : $rule['states'],
+	)); ?>
+	</td>
+	<td>
+		<?php Forms::text(array(
+			'id' => 'tax_rule_postcode_'.$rule['id'],
+			'name' => Options::NAME.'[rules][postcode][]',
+			'value' => $rule['postcode'],
+			'placeholder' => __('Postcode', 'jigoshop'),
+		)); ?>
 	</td>
 	<td class="vert-align">
 		<input type="hidden" name="<?php echo Options::NAME.'[rules][id][]'; ?>" value="<?php echo $rule['id']; ?>" />

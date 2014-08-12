@@ -1,5 +1,5 @@
 <?php
-use Jigoshop\Helper\Forms;
+use Jigoshop\Admin\Helper\Forms;
 use Jigoshop\Core\Options;
 
 /**
