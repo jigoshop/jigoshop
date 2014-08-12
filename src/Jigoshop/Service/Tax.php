@@ -192,10 +192,13 @@ class Tax
 			$postcodes = explode(',', $rule['postcodes']);
 
 			if (!empty($states)) {
+				$this->_removeAllStatesExcept($rule, $states);
 				foreach ($states as $state) {
+					$this->_removeAllPostcodesExcept($rule, $state, $postcodes);
 					$this->_addPostcodes($rule, $state, $postcodes);
 				}
 			} else {
+				$this->_removeAllPostcodesExcept($rule, '', $postcodes);
 				$this->_addPostcodes($rule, '', $postcodes);
 			}
 		}
@@ -210,7 +213,7 @@ class Tax
 	{
 		$wpdb = $this->wp->getWPDB();
 		$ids = join(',', array_filter(array_map(function($item){ return (int)$item; }, $ids)));
-		// Support for removing all tax rules
+		// Support for removing all items
 		if (empty($ids)) {
 			$ids = '0';
 		}
@@ -222,17 +225,60 @@ class Tax
 	{
 		$wpdb = $this->wp->getWPDB();
 		$ids = array();
+		$query = $wpdb->prepare("
+			SELECT postcode FROM {$wpdb->prefix}jigoshop_tax_location
+			WHERE tax_id = %d AND country = %s AND state = %s
+		", array($rule['id'], $rule['country'], $state));
+		$existing = $wpdb->get_col($query);
 
 		foreach ($postcodes as $postcode) {
-			$wpdb->insert($wpdb->prefix.'jigoshop_tax_location', array(
-				'tax_id' => $rule['id'],
-				'country' => $rule['country'],
-				'state' => $state,
-				'postcode' => $postcode,
-			));
-			$ids[] = $wpdb->insert_id;
+			if (!in_array($postcode, $existing)) {
+				$wpdb->insert($wpdb->prefix.'jigoshop_tax_location', array(
+					'tax_id' => $rule['id'],
+					'country' => $rule['country'],
+					'state' => $state,
+					'postcode' => $postcode,
+				));
+				$ids[] = $wpdb->insert_id;
+			}
 		}
 
 		return $ids;
+	}
+
+	private function _removeAllStatesExcept($rule, $states)
+	{
+		$wpdb = $this->wp->getWPDB();
+		$values = join(',', array_filter(array_map(function($item){
+			$item = esc_sql($item);
+			return "'{$item}'";
+		}, $states)));
+		// Support for removing all items
+		if (empty($values)) {
+			$values = 'NULL';
+		}
+		$query = $wpdb->prepare(
+			"DELETE FROM {$wpdb->prefix}jigoshop_tax_location WHERE state NOT IN ({$values}) AND tax_id = %d",
+			array($rule['id'])
+		);
+		$wpdb->query($query);
+	}
+
+	private function _removeAllPostcodesExcept($rule, $state, $postcodes)
+	{
+		$wpdb = $this->wp->getWPDB();
+		$values = join(',', array_filter(array_map(function($item){
+			$item = esc_sql($item);
+			return "'{$item}'";
+		}, $postcodes)));
+		// Support for removing all items
+		if (empty($values)) {
+			$values = 'NULL';
+		}
+		$query = $wpdb->prepare(
+			"DELETE FROM {$wpdb->prefix}jigoshop_tax_location WHERE postcode NOT IN ({$values}) AND state = %s AND tax_id = %d",
+			array($state, $rule['id'])
+		);
+		$wpdb->query($query);
 	}
 }
