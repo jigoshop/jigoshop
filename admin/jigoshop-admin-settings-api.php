@@ -357,7 +357,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 						case 'user_defined' :
 							if(isset($option['update'])){
 								if(is_callable($option['update'], true)){
-									if(isset($oprion['params'])){
+									if(isset($option['params'])){
 										$result = call_user_func_array($option['update'], $option['params']);
 									} else {
 										$result = call_user_func($option['update']);
