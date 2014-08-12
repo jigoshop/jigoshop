@@ -116,6 +116,8 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 			'update' => null,
 			'extra' => null,
 			'options' => array(),
+			'params' => array(),
+
 		);
 
 		$option = wp_parse_args($option, $defaults);
@@ -138,6 +140,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 			'update' => $option['update'],
 			'extra' => $option['extra'],
 			'options' => $option['options'],
+			'params' => $option['params']
 		);
 
 		if($option['type'] != 'tab'){
@@ -354,7 +357,11 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 						case 'user_defined' :
 							if(isset($option['update'])){
 								if(is_callable($option['update'], true)){
-									$result = call_user_func($option['update']);
+									if(isset($oprion['params'])){
+										$result = call_user_func_array($option['update'], $option['params']);
+									} else {
+										$result = call_user_func($option['update']);
+									}
 									$valid_input[$setting['id']] = $result;
 								}
 							}
@@ -736,7 +743,12 @@ class Jigoshop_Options_Parser {
 			case 'user_defined':
 				if(isset($item['display'])){
 					if(is_callable($item['display'], true)){
-						$display .= call_user_func($item['display']);
+						if(isset($item['params']))
+						{
+							$display .= call_user_func_array($item['display'], $item['params']);
+						} else {
+							$display .= call_user_func($item['display']);
+						}
 					}
 				}
 				break;
