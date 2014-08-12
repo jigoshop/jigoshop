@@ -142,25 +142,40 @@ class Tax
 	public function save(array $rule)
 	{
 		$wpdb = $this->wp->getWPDB();
+
+		// Process main rule data
 		if ($rule['id'] == 0) {
-			$query = $wpdb->prepare("
-				INSERT INTO {$wpdb->prefix}jigoshop_tax (class, label, rate)
-				VALUES (%s, %s, %f)
-			", array($rule['class'], $rule['label'], (float)$rule['rate']));
+			$wpdb->insert($wpdb->prefix.'jigoshop_tax', array(
+				'class' => $rule['class'],
+				'label' => $rule['label'],
+				'rate' => (float)$rule['rate'],
+			));
+			$rule['id'] = $wpdb->insert_id;
 		} else {
-			$query = $wpdb->prepare("
-				UPDATE {$wpdb->prefix}jigoshop_tax
-				SET class = %s, label = %s, rate = %f
-				WHERE id = %d
-			", array($rule['class'], $rule['label'], (float)$rule['rate'], $rule['id']));
+			$wpdb->update($wpdb->prefix.'jigoshop_tax', array(
+				'class' => $rule['class'],
+				'label' => $rule['label'],
+				'rate' => (float)$rule['rate'],
+			), array(
+				'id' => $rule['id'],
+			));
 		}
-		$wpdb->query($query);
+
+		// Process rule locations
+		// TODO
 	}
 
+	/**
+	 * @param $ids array IDs to preserve.
+	 */
 	public function removeAllExcept($ids)
 	{
 		$wpdb = $this->wp->getWPDB();
 		$ids = join(',', array_filter(array_map(function($item){ return (int)$item; }, $ids)));
+		// Support for removing all tax rules
+		if (empty($ids)) {
+			$ids = '0';
+		}
 		$query = "DELETE FROM {$wpdb->prefix}jigoshop_tax WHERE id NOT IN ({$ids})";
 		$wpdb->query($query);
 	}
