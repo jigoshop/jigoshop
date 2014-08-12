@@ -8,9 +8,11 @@ argv = require('yargs')
 check = require('gulp-if')
 uglify = require('gulp-uglify')
 rimraf = require('gulp-rimraf')
+replace = require('gulp-replace')
 
 gulp.task 'styles-vendors', ->
   gulp.src ['assets/bower/select2/{select2,select2-bootstrap}.css', 'assets/bower/bootstrap-datepicker/css/datepicker3.css']
+    .pipe replace(/select2(.*?)\.(png|gif)/g, '../images/select2$1.$2')
     .pipe cssmin()
     .pipe concat('vendors.min.css')
     .pipe gulp.dest('assets/css')
