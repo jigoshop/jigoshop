@@ -173,6 +173,8 @@ class TaxesTab implements TabInterface
 			$settings['rules'] = array('id' => array());
 		}
 
+		$this->taxService->removeAllExcept($settings['rules']['id']);
+
 		foreach ($settings['rules']['id'] as $key => $id) {
 			$this->taxService->save(array(
 				'id' => $id,
@@ -184,8 +186,6 @@ class TaxesTab implements TabInterface
 				'postcodes' => $settings['rules']['postcodes'][$key],
 			));
 		}
-
-		$this->taxService->removeAllExcept($settings['rules']['id']);
 		unset($settings['rules']);
 
 		return $settings;
