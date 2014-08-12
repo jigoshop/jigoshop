@@ -31,7 +31,7 @@ class Installer
 
 	public function install()
 	{
-		$db = $this->wp->getOption('jigoshop_database_version');
+		$db = false;//$this->wp->getOption('jigoshop_database_version');
 
 		if ($db === false) {
 			$this->_createTables();
@@ -77,7 +77,8 @@ class Installer
 				country VARCHAR(255) NOT NULL,
 				state VARCHAR(255),
 				postcode VARCHAR(255),
-				PRIMARY KEY id (id)
+				PRIMARY KEY id (id),
+				FOREIGN KEY tax (tax_id) REFERENCES {$wpdb->prefix}jigoshop_tax (id) ON DELETE CASCADE
 			) {$collate};
 		";
 		$wpdb->query($query);

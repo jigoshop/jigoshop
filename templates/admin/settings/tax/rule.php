@@ -54,11 +54,12 @@ use Jigoshop\Core\Options;
 	)); ?>
 	</td>
 	<td>
-		<?php Forms::text(array(
-			'id' => 'tax_rule_postcode_'.$rule['id'],
-			'name' => Options::NAME.'[rules][postcode][]',
-			'value' => $rule['postcode'],
-			'placeholder' => __('Postcode', 'jigoshop'),
+		<?php Forms::hidden(array(
+			'id' => 'tax_rule_postcodes_'.$rule['id'],
+			'name' => Options::NAME.'[rules][postcodes][]',
+			'classes' => array('tax-rule-postcodes'),
+			'value' => is_array($rule['postcodes']) ? join(',', $rule['postcodes']) : $rule['postcodes'],
+			'placeholder' => __('Postcodes', 'jigoshop'),
 		)); ?>
 	</td>
 	<td class="vert-align">

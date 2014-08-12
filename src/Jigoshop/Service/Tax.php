@@ -113,41 +113,63 @@ class Tax
 	public function getRules()
 	{
 		$wpdb = $this->wp->getWPDB();
-		$query = "SELECT t.id, t.class, t.label, t.rate FROM {$wpdb->prefix}jigoshop_tax t ORDER BY t.id";
+		$query = "
+			SELECT t.id, t.class, t.label, t.rate, tl.country, tl.state, tl.postcode FROM {$wpdb->prefix}jigoshop_tax t
+		  LEFT JOIN {$wpdb->prefix}jigoshop_tax_location tl ON tl.tax_id = t.id
+			ORDER BY t.id
+		";
 		$taxes = $wpdb->get_results($query, ARRAY_A);
 		$result = array();
+		$processed = array();
 
 		foreach ($taxes as $tax) {
-			$result[] = $this->formatRule($tax);
+			if (in_array($tax['id'], $processed)) {
+				continue;
+			}
+
+			$processed[] = $tax['id'];
+			$rule = array_filter($taxes, function($item) use ($tax){ return $item['id'] == $tax['id']; });
+			$result[] = $this->formatRule($rule);
 		}
 
 		return $result;
 	}
 
-	private function formatRule($rule)
+	private function formatRule(array $source)
 	{
-		return array(
-			'id' => $rule['id'],
-			'rate' => (float)$rule['rate'],
-			'label' => $rule['label'],
-			'class' => $rule['class'],
-			'country' => '',
+		$item = reset($source);
+		$rule = array(
+			'id' => $item['id'],
+			'rate' => (float)$item['rate'],
+			'label' => $item['label'],
+			'class' => $item['class'],
+			'country' => $item['country'],
 			'states' => array(),
-			'postcode' => '',
+			'postcodes' => array(),
 		);
+
+		foreach ($source as $item) {
+			if (!in_array($item['state'], $rule['states']) && !empty($item['state'])) {
+				$rule['states'][] = $item['state'];
+			}
+			if (!in_array($item['postcode'], $rule['postcodes']) && !empty($item['postcode'])) {
+				$rule['postcodes'][] = $item['postcode'];
+			}
+		}
+
+		return $rule;
 	}
 
 	/**
-	 * Saves tax rule to database.
-	 *
 	 * @param $rule array Rule to save.
+	 * @return array Saved rule.
 	 */
 	public function save(array $rule)
 	{
 		$wpdb = $this->wp->getWPDB();
 
 		// Process main rule data
-		if ($rule['id'] == 0) {
+		if ($rule['id'] == '0') {
 			$wpdb->insert($wpdb->prefix.'jigoshop_tax', array(
 				'class' => $rule['class'],
 				'label' => $rule['label'],
@@ -165,7 +187,20 @@ class Tax
 		}
 
 		// Process rule locations
-		// TODO
+		if (!empty($rule['country'])) {
+			$states = explode(',', $rule['states']);
+			$postcodes = explode(',', $rule['postcodes']);
+
+			if (!empty($states)) {
+				foreach ($states as $state) {
+					$this->_addPostcodes($rule, $state, $postcodes);
+				}
+			} else {
+				$this->_addPostcodes($rule, '', $postcodes);
+			}
+		}
+
+		return $rule;
 	}
 
 	/**
@@ -181,5 +216,23 @@ class Tax
 		}
 		$query = "DELETE FROM {$wpdb->prefix}jigoshop_tax WHERE id NOT IN ({$ids})";
 		$wpdb->query($query);
+	}
+
+	private function _addPostcodes($rule, $state, $postcodes)
+	{
+		$wpdb = $this->wp->getWPDB();
+		$ids = array();
+
+		foreach ($postcodes as $postcode) {
+			$wpdb->insert($wpdb->prefix.'jigoshop_tax_location', array(
+				'tax_id' => $rule['id'],
+				'country' => $rule['country'],
+				'state' => $state,
+				'postcode' => $postcode,
+			));
+			$ids[] = $wpdb->insert_id;
+		}
+
+		return $ids;
 	}
 }

@@ -18,7 +18,7 @@ use Jigoshop\Helper\Render;
 			<th scope="col"><?php _e('Rate', 'jigoshop'); ?></th>
 			<th scope="col"><?php _e('Country', 'jigoshop'); ?></th>
 			<th scope="col"><?php _e('State', 'jigoshop'); ?></th>
-			<th scope="col"><?php _e('Postcode', 'jigoshop'); ?></th>
+			<th scope="col"><?php _e('Postcodes', 'jigoshop'); ?></th>
 			<th scope="col"></th>
 		</tr>
 	</thead>
