@@ -1,48 +1,75 @@
-# TODO: Replace this mess with a proper class
+class TaxSettings
+  params:
+    new_class: ''
+    new_rule: ''
 
-jQuery ($) ->
-  $('#add-tax-class').on 'click', (e) ->
-    e.preventDefault()
-    $('#tax-classes').append(jigoshop_admin_taxes.new_class)
-  $('#tax-classes').on 'click', 'button.remove-tax-class', (e) ->
-    e.preventDefault()
-    $(this).closest('tr').remove()
-  $('#add-tax-rule').on 'click', (e) ->
-    e.preventDefault()
-    $item = $(jigoshop_admin_taxes.new_rule)
-    $('.tax-rule-postcodes', $item).select2
+  constructor: (@params) ->
+    jQuery('#add-tax-class').on 'click', @addNewClass
+    jQuery('#tax-classes').on 'click', 'button.remove-tax-class', @removeItem
+    jQuery('#add-tax-rule').on 'click', @addNewRule
+    jQuery('#tax-rules')
+      .on 'click', 'button.remove-tax-rule', @removeItem
+      .on 'change', '.tax-rule-country', @updateStateField
+    @updateFields
+
+  removeItem: ->
+    jQuery(this).closest('tr').remove()
+    return false
+
+  addNewClass: =>
+    jQuery('#tax-classes').append(@params.new_class)
+    return false
+
+  addNewRule: =>
+    $item = jQuery(@params.new_rule)
+    jQuery('.tax-rule-postcodes', $item).select2
       tags: []
       tokenSeparators: [',']
       multiple: true
       formatNoMatches: ''
-    $('#tax-rules').append($item)
-  $('#tax-rules')
-  .on 'click', 'button.remove-tax-rule', (e) ->
-    e.preventDefault()
-    $(this).closest('tr').remove()
-  .on 'change', '.tax-rule-country', ->
-    $parent = $(this).closest('tr')
-    $states = $('.tax-rule-states', $parent)
-    $country = $('option:selected', $(this)).val()
-    if jigoshop_admin_taxes.states[$country]?
-      $states.attr('type', 'hidden')
-      $states.select2
-        data:
-          results: jigoshop_admin_taxes.states[$country]
-          text: 'text'
-        multiple: true
-        initSelection: (element, callback) ->
-          data = []
-          for value in element.val().split(',')
-            text = for state in jigoshop_admin_taxes.states[$country] when state.id == value
-              state
-            data.push text[0]
-          callback(data)
+    jQuery('#tax-rules').append($item)
+    return false
+
+  updateStateField: (event) =>
+    $parent = jQuery(event.target).closest('tr')
+    $states = jQuery('.tax-rule-states', $parent)
+    $country = jQuery('option:selected', jQuery(event.target)).val()
+    if @params.states[$country]?
+      @_attachSelectField($states, @params.states[$country])
     else
-      $states.select2('destroy').attr('type', 'text')
-  $('.tax-rule-country').change()
-  $('.tax-rule-postcodes').select2
-    tags: []
-    tokenSeparators: [',']
-    multiple: true
-    formatNoMatches: ''
+      @_attachTextField($states)
+
+  updateFields: ->
+    jQuery('.tax-rule-country').change()
+    jQuery('.tax-rule-postcodes').select2
+      tags: []
+      tokenSeparators: [',']
+      multiple: true
+      formatNoMatches: ''
+
+  ###
+  Attaches Select2 to provided field with proper states to select
+  ###
+  _attachSelectField: ($field, states) ->
+    $field.attr('type', 'hidden')
+    $field.select2
+      data:
+        results: states
+        text: 'text'
+      multiple: true
+      initSelection: (element, callback) ->
+        data = []
+        for value in element.val().split(',')
+          text = for state in states when state.id == value
+            state
+          data.push text[0]
+        callback(data)
+
+  ###
+  Attaches simple text field to write a state
+  ###
+  _attachTextField: ($field) ->
+    $field.select2('destroy').attr('type', 'text')
+
+jQuery () ->
+  new TaxSettings(jigoshop_admin_taxes)
