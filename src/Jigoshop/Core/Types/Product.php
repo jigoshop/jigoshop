@@ -38,8 +38,9 @@ class Product implements Post
 //		$wp->addAction('restrict_manage_posts', array($this, 'categoryFilter'));
 		$wp->addAction('restrict_manage_posts', array($this, 'typeFilter'));
 		$that = $this;
-		$wp->addAction('add_meta_boxes', function() use ($wp, $that){
+		$wp->addAction('add_meta_boxes_'.self::NAME, function() use ($wp, $that){
 			$wp->addMetaBox('jigoshop-product-data', __('Product Data', 'jigoshop'), array($that, 'box'), $that::NAME, 'normal', 'high');
+			$wp->removeMetaBox('commentstatusdiv', null, 'normal');
 		});
 	}
 

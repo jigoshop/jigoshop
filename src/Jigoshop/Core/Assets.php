@@ -57,6 +57,10 @@ class Assets
 		switch($adminPage){
 			case 'product':
 				$this->scripts->add('jigoshop-admin-product', JIGOSHOP_URL.'/assets/js/admin/product.js');
+				$wp = $this->wp;
+				$wp->addAction('admin_init', function() use ($wp){
+					$wp->wpDeregisterScript('autosave');
+				});
 				break;
 			case 'jigoshop_page_'.Settings::NAME:
 				$this->scripts->add('jigoshop-admin-settings', JIGOSHOP_URL.'/assets/js/admin/settings.js');

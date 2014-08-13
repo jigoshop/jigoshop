@@ -28,7 +28,7 @@ use Jigoshop\Entity\Product\Attributes\StockStatus;
 	));
 	?>
 </fieldset>
-<fieldset class="stock-status <?php !$product->getStock()->getManage() and print 'hidden'; ?>">
+<fieldset class="stock-status" style="<?php !$product->getStock()->getManage() and print 'display: none;'; ?>">
 	<?php
 	Forms::text(array(
 		'name' => 'product[stock][stock]',

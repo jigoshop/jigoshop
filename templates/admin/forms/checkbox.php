@@ -10,12 +10,20 @@ use Jigoshop\Admin\Helper\Forms;
  * @var $tip string Tip to show to the user.
  * @var $description string Field description.
  */
+$hasLabel = !empty($label);
 ?>
 <div class="form-group <?php echo $id; ?>_field">
-	<?php if(!empty($tip)): ?>
+	<?php if($hasLabel): ?>
+	<label for="<?php echo $id; ?>" class="col-sm-2 control-label">
+		<?php echo $label; ?>
+		<?php if(!empty($tip)): ?>
+			<a href="#" data-toggle="tooltip" class="badge" data-placement="top" title="<?php echo $tip; ?>">?</a>
+		<?php endif; ?>
+	</label>
+	<?php elseif(!empty($tip)): ?>
 		<a href="#" data-toggle="tooltip" class="badge" data-placement="top" title="<?php echo $tip; ?>">?</a>
 	<?php endif; ?>
-	<div class="checkbox-inline">
+	<div class="checkbox-inline<?php $hasLabel and print ' col-sm-9'; ?>">
 		<input type="hidden" name="<?php echo $name; ?>" value="off" />
 		<input type="checkbox" id="<?php echo $id; ?>" name="<?php echo $name; ?>" class="<?php echo join(' ', $classes); ?>"
 			<?php echo Forms::checked($value, true); ?> value="on" />

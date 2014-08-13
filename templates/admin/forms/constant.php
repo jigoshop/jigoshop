@@ -9,14 +9,23 @@
  * @var $tip string Tip to show to the user.
  * @var $description string Field description.
  */
+$hasLabel = !empty($label);
 ?>
 <div class="form-group <?php echo $id; ?>_field">
-	<div>
+	<?php if($hasLabel): ?>
+	<label for="<?php echo $id; ?>" class="col-sm-2 control-label">
+		<?php echo $label; ?>
+		<?php if(!empty($tip)): ?>
+			<a href="#" data-toggle="tooltip" class="badge" data-placement="top" title="<?php echo $tip; ?>">?</a>
+		<?php endif; ?>
+	</label>
+	<?php endif; ?>
+	<div class="<?php $hasLabel and print 'col-sm-9'; ?>">
 		<p class="form-control-static <?php echo join(' ', $classes); ?>" id="<?php echo $id; ?>"><?php echo $value; ?></p>
 		<?php if(!empty($description)): ?>
 			<span class="help-block"><?php echo $description; ?></span>
 		<?php endif; ?>
-		<?php if(!empty($tip)): ?>
+		<?php if(!$hasLabel && !empty($tip)): ?>
 			<a href="#" data-toggle="tooltip" class="badge" data-placement="top" title="<?php echo $tip; ?>">?</a>
 		<?php endif; ?>
 	</div>

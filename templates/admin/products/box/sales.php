@@ -28,7 +28,7 @@ if($product->isType(Product\Simple::TYPE)){
 	));
 	?>
 </fieldset>
-<fieldset class="schedule<?php !$enabled and print ' hide'; ?>">
+<fieldset class="schedule" style="<?php !$enabled and print 'display: none;'; ?>">
 	<h3><?php _e('Schedule', 'jigoshop'); ?></h3>
 	<?php
 	Forms::text(array(
