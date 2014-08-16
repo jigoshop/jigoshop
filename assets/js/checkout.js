@@ -264,8 +264,9 @@
 						var success = $.parseJSON(code);
 						if (success.result !== 'success') {
 							result.message = success.message;
+						} else {
+							result = success;
 						}
-						result.redirect = success.redirect;
 					}	catch(err) {
 						result.message = code;
 					}
