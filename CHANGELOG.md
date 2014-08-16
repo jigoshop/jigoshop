@@ -2,6 +2,7 @@
 
 * 1.11.2:
     * Fix: Removed duplicated "Settings" link in plugins panel.
+    * Fix: Proper handling of errors on checkout.
     * Improved: Hide shipping and tax from cart if customer country is not set.
     * Improved: Jigoshop toolbar items based on user capabilities.
 * 1.11.1- 2014-08-07:

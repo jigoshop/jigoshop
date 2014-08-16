@@ -256,19 +256,30 @@
 				data: $form.serialize(),
 				success: function(code){
 					$('.jigoshop_error, .jigoshop_message').remove();
+					var result = {
+						result: 'error'
+					};
+
 					try {
 						var success = $.parseJSON(code);
-						window.location = decodeURI(success.redirect);
+						if (success.result !== 'success') {
+							result.message = success.message;
+						}
+						result.redirect = success.redirect;
+					}	catch(err) {
+						result.message = code;
 					}
-					catch(err) {
-						$form.prepend(code);
-						$form.unblock();
-						$('html, body').animate({
-							scrollTop: ($('form.checkout').offset().top - 150)
-						}, 1000);
 
-						return false;
+					if(result.result === 'success'){
+						window.location.href = decodeURI(result.redirect);
+						return;
 					}
+
+					$form.prepend(result.message);
+					$form.unblock();
+					$('html, body').animate({
+						scrollTop: ($('form.checkout').offset().top - 150)
+					}, 1000);
 				},
 				dataType: 'html'
 			});
