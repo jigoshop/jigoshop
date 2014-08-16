@@ -85,6 +85,7 @@ class Product
 		}
 
 		$product = $this->get($type);
+		$state = array();
 
 		if($post){
 			$state = array_map(function ($item){

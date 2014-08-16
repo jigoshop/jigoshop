@@ -22,7 +22,6 @@ do_action('jigoshop\shop\content\before'); ?>
 ));
 ?>
 
-<?php do_action('jigoshop_pagination'); // TODO: Pagination rather inside list? ?>
 <?php do_action('jigoshop\shop\content\after'); ?>
 <?php do_action('jigoshop\sidebar'); ?>
 <?php get_footer('shop'); ?>

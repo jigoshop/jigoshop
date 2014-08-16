@@ -56,10 +56,11 @@ class Template
 	protected function productList()
 	{
 		$page = $this->wp->getPostField('post_content', $this->options->getPageId(Pages::SHOP));
-		// TODO: Properly fetch products
+		$query = $this->wp->getWpQuery();
+		$products = $this->productService->findByQuery($query);
 		Render::output('shop', array(
 			'page' => $page,
-			'products' => array(),
+			'products' => $products,
 		));
 	}
 }

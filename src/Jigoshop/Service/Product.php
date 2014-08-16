@@ -76,8 +76,6 @@ class Product implements ProductServiceInterface
 	 */
 	public function findByQuery($query)
 	{
-		// Fetch only IDs
-		$query->query_vars['fields'] = 'ids';
 		$results = $query->get_posts();
 		$products = array();
 

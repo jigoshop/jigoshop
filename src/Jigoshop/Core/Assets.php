@@ -43,8 +43,8 @@ class Assets
 		/* Our setting icons */
 //		$this->styles->add('jigoshop_admin_icons_style', JIGOSHOP_URL.'/assets/css/admin-icons.css');
 
-		$adminPage = $this->pages->isAdminPage();
-		if (!$adminPage) {
+		$adminPage = $this->pages->getAdminPage();
+		if ($adminPage === false) {
 			return;
 		}
 

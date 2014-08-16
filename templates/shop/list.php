@@ -10,3 +10,4 @@
 		)); ?>
 	<?php endforeach; ?>
 </ul>
+<?php do_action('jigoshop_pagination'); // TODO: Render pagination ?>

@@ -237,24 +237,32 @@ class Pages
 	public function isAdminPage($page)
 	{
 		if (!isset($this->cache[$page])) {
-			$currentScreen = $this->wp->getCurrentScreen();
-
-			if ($currentScreen === null) {
-				$this->cache[$page] = false;
-				return false;
-			}
-
-	//		if (in_array($currentScreen->post_type, array(Types::PRODUCT, Types::ORDER, Types::COUPON), true)) {
-			if (in_array($currentScreen->post_type, array(Types::PRODUCT), true)) {
-				$this->cache[$page] = $currentScreen->post_type == $page;
-			}	else if (strpos($currentScreen->id, 'jigoshop') !== false) {
-				$this->cache[$page] = $currentScreen->id == $page;
-			} else {
-				$this->cache[$page] = false;
-			}
+			$this->cache[$page] = $this->getAdminPage() == $page;
 		}
 
 		return $this->cache[$page];
+	}
+
+	/**
+	 * @return string|bool Currently displayed admin page slug or false.
+	 */
+	public function getAdminPage()
+	{
+		$currentScreen = $this->wp->getCurrentScreen();
+
+		if ($currentScreen === null) {
+			return false;
+		}
+
+		//		if (in_array($currentScreen->post_type, array(Types::PRODUCT, Types::ORDER, Types::COUPON), true)) {
+		if (in_array($currentScreen->post_type, array(Types::PRODUCT), true)) {
+			return $currentScreen->post_type;
+		}
+		if (strpos($currentScreen->id, 'jigoshop') !== false) {
+			return $currentScreen->id;
+		}
+
+		return false;
 	}
 
 	/**
