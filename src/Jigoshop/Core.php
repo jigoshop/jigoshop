@@ -5,6 +5,8 @@ namespace Jigoshop;
 use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Pages;
+use Jigoshop\Core\Template;
+use Jigoshop\Helper\Render;
 use WPAL\Wordpress;
 
 class Core
@@ -17,18 +19,20 @@ class Core
 	private $messages;
 	/** @var \Jigoshop\Core\Pages */
 	private $pages;
+	/** @var \Jigoshop\Core\Template */
+	private $template;
 	/** @var \Jigoshop\Admin */
 	private $admin;
 	/** @var \WPAL\Wordpress */
 	private $wp;
 
-	public function __construct(Wordpress $wp, Options $options, Messages $messages, Pages $pages, Admin $admin)
+	public function __construct(Wordpress $wp, Options $options, Messages $messages, Pages $pages, Template $template, Admin $admin)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->messages = $messages;
 		$this->pages = $pages;
-		$this->_addQueryFilters();
+		$this->template = $template;
 
 		if ($wp->isAdmin()) {
 			$this->admin = $admin;
@@ -41,6 +45,8 @@ class Core
 	public function run()
 	{
 		// TODO: Build required extensions
+		$this->_addQueryFilters();
+		$this->wp->addFilter('template_include', array($this->template, 'process'));
 	}
 
 	private function _addQueryFilters()

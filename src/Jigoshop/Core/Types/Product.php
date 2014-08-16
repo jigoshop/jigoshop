@@ -84,7 +84,7 @@ class Product implements Post
 			),
 			'query_var' => true,
 			'supports' => array('title', 'editor', 'thumbnail', 'comments', 'excerpt'),
-			'has_archive' => false,
+			'has_archive' => true,
 			'show_in_nav_menus' => false,
 			'menu_position' => 56
 		);

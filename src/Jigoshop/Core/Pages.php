@@ -8,6 +8,8 @@ use WPAL\Wordpress;
 /**
  * Class containing available pages in Jigoshop.
  *
+ * TODO: Add caching of result for speed.
+ *
  * @package Jigoshop
  * @author Amadeusz Starzykiewicz
  */
@@ -42,15 +44,17 @@ class Pages
 	 */
 	public function getAvailable()
 	{
-	return array(
-		self::CART,
-		self::CHECKOUT,
-		self::PRODUCT,
-		self::PRODUCT_CATEGORY,
-		self::PRODUCT_LIST,
-		self::PRODUCT_TAG,
-		self::ALL,
-	);
+		return array(
+			self::CART,
+			self::CHECKOUT,
+			self::PRODUCT,
+			self::PRODUCT_CATEGORY,
+			self::PRODUCT_LIST,
+			self::PRODUCT_TAG,
+			self::ACCOUNT,
+			self::ORDER_TRACKING,
+			self::ALL,
+		);
 	}
 
 	/**

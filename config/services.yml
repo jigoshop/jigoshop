@@ -9,6 +9,7 @@ services:
       - '@jigoshop.options'
       - '@jigoshop.messages'
       - '@jigoshop.pages'
+      - '@jigoshop.template'
       - '@jigoshop.admin'
   jigoshop.installer:
     class: Jigoshop\Core\Installer
@@ -51,6 +52,13 @@ services:
       - '@jigoshop.options'
       - '@jigoshop.helper.styles'
       - '@jigoshop.helper.scripts'
+  jigoshop.template:
+    class: Jigoshop\Core\Template
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.pages'
+      - '@jigoshop.service.product'
   jigoshop.post_type.product:
     class: Jigoshop\Core\Types\Product
     arguments:

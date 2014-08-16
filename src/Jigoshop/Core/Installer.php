@@ -35,7 +35,7 @@ class Installer
 
 		if ($db === false) {
 			$this->_createTables();
-//			$this->_createPages();
+			$this->_createPages();
 			$this->cron->clear();
 		}
 
@@ -127,7 +127,7 @@ class Installer
 		$data = array(
 			'post_status' => 'publish',
 			'post_type' => 'page',
-			'post_author' => 1,
+			'post_author' => get_current_user_id(),
 			'post_name' => '',
 			'post_content' => '',
 			'comment_status' => 'closed'
