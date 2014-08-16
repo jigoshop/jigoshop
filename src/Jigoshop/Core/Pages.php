@@ -8,7 +8,7 @@ use WPAL\Wordpress;
 /**
  * Class containing available pages in Jigoshop.
  *
- * TODO: Add caching of result for speed.
+ * TODO: Check if caching of current page does not break anything.
  *
  * @package Jigoshop
  * @author Amadeusz Starzykiewicz
@@ -30,6 +30,7 @@ class Pages
 	private $options;
 	/** @var \WPAL\Wordpress */
 	private $wp;
+	private $cache = array();
 
 	public function __construct(Wordpress $wp, Options $options)
 	{
@@ -101,7 +102,7 @@ class Pages
 			case self::ALL:
 				return true;
 			default:
-				return $this->isAdminPage() == $page;
+				return $this->isAdminPage($page);
 		}
 	}
 
@@ -113,7 +114,11 @@ class Pages
 	 */
 	public function isCart()
 	{
-		return $this->wp->isPage($this->options->getPageId(self::CART));
+		if (!isset($this->cache[self::CART])) {
+			$this->cache[self::CART] = $this->wp->isPage($this->options->getPageId(self::CART));
+		}
+
+		return $this->cache[self::CART];
 	}
 
 	/**
@@ -124,7 +129,11 @@ class Pages
 	 */
 	public function isCheckout()
 	{
-		return $this->wp->isPage($this->options->getPageId(self::CHECKOUT)); // || is_page(jigoshop_get_page_id('pay'));
+		if (!isset($this->cache[self::CHECKOUT])) {
+			$this->cache[self::CHECKOUT] = $this->wp->isPage($this->options->getPageId(self::CHECKOUT)); // || is_page(jigoshop_get_page_id('pay'))
+		}
+
+		return $this->cache[self::CHECKOUT];
 	}
 
 	/**
@@ -135,7 +144,11 @@ class Pages
 	 */
 	public function isProduct()
 	{
-		return $this->wp->isSingular(array(Types::PRODUCT));
+		if (!isset($this->cache[self::PRODUCT])) {
+			$this->cache[self::PRODUCT] =  $this->wp->isSingular(array(Types::PRODUCT));
+		}
+
+		return $this->cache[self::PRODUCT];
 	}
 
 	/**
@@ -146,7 +159,11 @@ class Pages
 	 */
 	public function isProductCategory()
 	{
-		return $this->wp->isTax(Types::PRODUCT_CATEGORY);
+		if (!isset($this->cache[self::PRODUCT_CATEGORY])) {
+			$this->cache[self::PRODUCT_CATEGORY] =  $this->wp->isTax(Types::PRODUCT_CATEGORY);
+		}
+
+		return $this->cache[self::PRODUCT_CATEGORY];
 	}
 
 	/**
@@ -157,8 +174,14 @@ class Pages
 	 */
 	public function isProductList()
 	{
-		return $this->wp->isPostTypeArchive(Types::PRODUCT) || $this->wp->isPage($this->options->getPageId(self::SHOP))
-		|| $this->isProductCategory() || $this->isProductTag();
+		if (!isset($this->cache[self::PRODUCT_LIST])) {
+			$this->cache[self::PRODUCT_LIST] = $this->wp->isPostTypeArchive(Types::PRODUCT) ||
+				$this->wp->isPage($this->options->getPageId(self::SHOP)) ||
+				$this->isProductCategory() ||
+				$this->isProductTag();
+		}
+
+		return $this->cache[self::PRODUCT_LIST];
 	}
 
 	/**
@@ -169,31 +192,69 @@ class Pages
 	 */
 	public function isProductTag()
 	{
-		return $this->wp->isTax(Types::PRODUCT_TAG);
+		if (!isset($this->cache[self::PRODUCT_TAG])) {
+			$this->cache[self::PRODUCT_TAG] =  $this->wp->isTax(Types::PRODUCT_TAG);
+		}
+
+		return $this->cache[self::PRODUCT_TAG];
 	}
 
 	/**
-	 * @return mixed Admin page or false.
+	 * Evaluates to true only on the main Account or any sub-account pages
+	 *
+	 * @return bool
 	 * @since 2.0
 	 */
-	public function isAdminPage()
+	public function isAccount()
 	{
-		$currentScreen = $this->wp->getCurrentScreen();
-
-		if ($currentScreen === null) {
-			return false;
+		if (!isset($this->cache[self::ACCOUNT])) {
+			$this->cache[self::ACCOUNT] =  $this->wp->isPage($this->options->getPageId(self::ACCOUNT)); // || is_page(jigoshop_get_page_id('edit_address')) || is_page(jigoshop_get_page_id('change_password')) || is_page(jigoshop_get_page_id('view_order'));
 		}
 
-//		if (in_array($currentScreen->post_type, array(Types::PRODUCT, Types::ORDER, Types::COUPON), true)) {
-		if (in_array($currentScreen->post_type, array(Types::PRODUCT), true)) {
-			return $currentScreen->post_type;
+		return $this->cache[self::ACCOUNT];
+	}
+
+	/**
+	 * Evaluates to true only on the Order Tracking page
+	 *
+	 * @return bool
+	 * @since 2.0
+	 */
+	public function isOrderTracker()
+	{
+		if (!isset($this->cache[self::ORDER_TRACKING])) {
+			$this->cache[self::CHECKOUT] =  $this->wp->isPage($this->options->getPageId(self::ORDER_TRACKING));
 		}
 
-		if (strpos($currentScreen->id, 'jigoshop') !== false) {
-			return $currentScreen->id;
+		return $this->cache[self::ORDER_TRACKING];
+	}
+
+	/**
+	 * @param $page string Page to check.
+	 * @return boolean Is current page selected one?
+	 * @since 2.0
+	 */
+	public function isAdminPage($page)
+	{
+		if (!isset($this->cache[$page])) {
+			$currentScreen = $this->wp->getCurrentScreen();
+
+			if ($currentScreen === null) {
+				$this->cache[$page] = false;
+				return false;
+			}
+
+	//		if (in_array($currentScreen->post_type, array(Types::PRODUCT, Types::ORDER, Types::COUPON), true)) {
+			if (in_array($currentScreen->post_type, array(Types::PRODUCT), true)) {
+				$this->cache[$page] = $currentScreen->post_type == $page;
+			}	else if (strpos($currentScreen->id, 'jigoshop') !== false) {
+				$this->cache[$page] = $currentScreen->id == $page;
+			} else {
+				$this->cache[$page] = false;
+			}
 		}
 
-		return false;
+		return $this->cache[$page];
 	}
 
 	/**
@@ -216,28 +277,6 @@ class Pages
 	public function isShop()
 	{
 		return $this->isProductList() || $this->isProduct();
-	}
-
-	/**
-	 * Evaluates to true only on the main Account or any sub-account pages
-	 *
-	 * @return bool
-	 * @since 2.0
-	 */
-	public function isAccount()
-	{
-		return $this->wp->isPage($this->options->getPageId(self::ACCOUNT)); // || is_page(jigoshop_get_page_id('edit_address')) || is_page(jigoshop_get_page_id('change_password')) || is_page(jigoshop_get_page_id('view_order'));
-	}
-
-	/**
-	 * Evaluates to true only on the Order Tracking page
-	 *
-	 * @return bool
-	 * @since 2.0
-	 */
-	public function isOrderTracker()
-	{
-		return $this->wp->isPage($this->options->getPageId(self::ORDER_TRACKING));
 	}
 
 	public function isAjax()
