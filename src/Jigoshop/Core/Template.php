@@ -43,9 +43,20 @@ class Template
 			return $template;
 		}
 
+		$content = '';
 		if ($this->pages->isProductList()) {
-			$this->productList();
+			$content = $this->productList();
 		}
+
+		$template = $this->wp->getOption('template');
+		$theme = $this->wp->wpGetTheme();
+		if ($theme->get('Author') === 'WooThemes') {
+			$template = 'woothemes';
+		}
+
+		Render::output('layout/'.$template, array(
+			'content' => $content,
+		));
 
 		return false;
 	}
@@ -58,7 +69,7 @@ class Template
 		$page = $this->wp->getPostField('post_content', $this->options->getPageId(Pages::SHOP));
 		$query = $this->wp->getWpQuery();
 		$products = $this->productService->findByQuery($query);
-		Render::output('shop', array(
+		return Render::get('shop', array(
 			'page' => $page,
 			'products' => $products,
 		));

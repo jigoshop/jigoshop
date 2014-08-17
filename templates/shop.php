@@ -3,7 +3,6 @@
  * @var $page string Page contents.
  * @var $products array List of products to display.
  */
-get_header('shop');
 do_action('jigoshop\shop\content\before'); ?>
 
 <?php if(is_search()): ?>
@@ -24,4 +23,3 @@ do_action('jigoshop\shop\content\before'); ?>
 
 <?php do_action('jigoshop\shop\content\after'); ?>
 <?php do_action('jigoshop\sidebar'); ?>
-<?php get_footer('shop'); ?>
