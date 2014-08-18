@@ -123,7 +123,14 @@ class jigoshop_order extends Jigoshop_Base
 		}
 	}
 
-	private function _fetch($key)
+	/**
+	 * This function is for internal uses only!
+	 *
+	 * @internal
+	 * @param $key
+	 * @return string
+	 */
+	public function _fetch($key)
 	{
 		foreach ((array)$key as $item) {
 			if (isset($this->order_data[$item])) {
@@ -211,10 +218,8 @@ class jigoshop_order extends Jigoshop_Base
 		if ($this->get_tax_classes() && is_array($this->get_tax_classes())) {
 			foreach ($this->get_tax_classes() as $tax_class) {
 				$order_tax += $this->order_tax[$tax_class]['amount'];
-				if (isset($this->order_tax[$tax_class][$this->shipping_method])) {
-					$order_tax += $this->order_tax[$tax_class][$this->shipping_method];
-				}
 			}
+			$order_tax += (float)$this->_fetch('order_shipping_tax');
 		}
 
 		if ($with_price_options) {
@@ -242,9 +247,7 @@ class jigoshop_order extends Jigoshop_Base
 	public function get_tax_amount($tax_class, $has_price = true)
 	{
 		$tax_amount = $this->order_tax[$tax_class]['amount'];
-		if (isset($this->order_tax[$tax_class][$this->shipping_method])) {
-			$tax_amount += $this->order_tax[$tax_class][$this->shipping_method];
-		}
+		$tax_amount += (float)$this->_fetch('order_shipping_tax');
 
 		return ($has_price ? jigoshop_price($tax_amount) : $tax_amount);
 	}
