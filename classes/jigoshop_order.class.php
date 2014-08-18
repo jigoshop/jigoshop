@@ -247,7 +247,11 @@ class jigoshop_order extends Jigoshop_Base
 	public function get_tax_amount($tax_class, $has_price = true)
 	{
 		$tax_amount = $this->order_tax[$tax_class]['amount'];
-		$tax_amount += (float)$this->_fetch('order_shipping_tax');
+		$keys = join('|', array_keys($this->order_tax[$tax_class]));
+		$shipping_method = $this->_fetch('shipping_method');
+		if (!empty($shipping_method) && strpos($keys, $this->_fetch('shipping_method'))) {
+			$tax_amount += (float)$this->_fetch('order_shipping_tax');
+		}
 
 		return ($has_price ? jigoshop_price($tax_amount) : $tax_amount);
 	}
