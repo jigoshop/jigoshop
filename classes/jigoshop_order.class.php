@@ -23,7 +23,7 @@ class jigoshop_order extends Jigoshop_Base
 	public function jigoshop_order($id = '')
 	{
 		if ($id > 0) {
-			apply_filters('jigoshop_get_order', $this->get_order($id), $id);
+			apply_filters('jigoshop_get_order', $this->get_order($id), $id, $this);
 		}
 		do_action('customized_emails_init'); /* load plugins for customized emails */
 	}

@@ -5,6 +5,7 @@
     * Fix: Proper handling of errors on checkout.
     * Improved: Hide shipping and tax from cart if customer country is not set.
     * Improved: Jigoshop toolbar items based on user capabilities.
+    * Improved: `jigoshop_get_order` filter also gets `$this` as 3rd parameter.
 * 1.11.1- 2014-08-07:
     * Fix: Proper selecting of shipping rate.
     * Fix: Proper grouped and variable product price displaying.
