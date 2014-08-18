@@ -69,7 +69,8 @@ function jigoshop_post_type() {
 			'supports'            => array( 'title', 'editor', 'thumbnail', 'comments', 'excerpt',/*, 'page-attributes'*/ ),
 			'has_archive'         => $base_slug,
 			'show_in_nav_menus'   => false,
-			'menu_position'       => 56
+			'menu_position'       => 56,
+			'menu_icon'           => 'dashicons-book',
 		)
 	);
 
@@ -253,7 +254,8 @@ function jigoshop_post_type() {
 			'query_var'           => true,
 			'supports'            => array( 'title', 'comments' ),
 			'has_archive'         => false,
-			'menu_position'       => 58
+			'menu_position'       => 58,
+			'menu_icon'           => 'dashicons-clipboard',
 		)
 	);
 
