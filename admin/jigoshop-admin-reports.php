@@ -521,7 +521,7 @@ jQuery(function(){
 						tickLength: 1,
 						minTickSize: [1, "day"]
 					},
-					yaxes: [ { min: 0, tickSize: 1, tickDecimals: 0 }, { position: "right", min: 0, tickDecimals: 2 } ],
+					yaxes: [ { min: 0, tickDecimals: 0 }, { position: "right", min: 0, tickDecimals: 2 } ],
 					colors: ["#21759B", "#ed8432"]
 				});
 

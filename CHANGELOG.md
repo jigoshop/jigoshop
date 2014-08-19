@@ -3,11 +3,12 @@
 * 1.11.2:
     * Fix: Removed duplicated "Settings" link in plugins panel.
     * Fix: Proper handling of errors on checkout.
-    * Fix: Proper total tax fetching.
+    * Fix: Proper total tax fetching. Thanks to @newash
     * Fix: Double `product_type` parameter when editing categories and tags from admin.
+    * Fix: Overlapping Y-axis values in Jigoshop Report.
     * Improved: Hide shipping and tax from cart if customer country is not set.
     * Improved: Jigoshop toolbar items based on user capabilities.
-    * Improved: `jigoshop_get_order` filter also gets `$this` as 3rd parameter.
+    * Improved: `jigoshop_get_order` filter also gets `$this` as 3rd parameter. Thanks to @newash
 * 1.11.1- 2014-08-07:
     * Fix: Proper selecting of shipping rate.
     * Fix: Proper grouped and variable product price displaying.
