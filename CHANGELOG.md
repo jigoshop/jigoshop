@@ -1,6 +1,6 @@
 ## Changelog
 
-* 1.11.2:
+* 1.11.2 - 2014-08-19:
     * Fix: Removed duplicated "Settings" link in plugins panel.
     * Fix: Proper handling of errors on checkout.
     * Fix: Proper total tax fetching. Thanks to @newash
