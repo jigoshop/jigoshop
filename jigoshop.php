@@ -254,7 +254,7 @@ function jigoshop_admin_bar_links($links)
 
 function jigoshop_admin_bar_edit($location, $term_id, $taxonomy)
 {
-	if (in_array($taxonomy, array('product_cat', 'product_tag'))) {
+	if (in_array($taxonomy, array('product_cat', 'product_tag')) && strpos($location, 'post_type=product') === false) {
 		$location .= '&post_type=product';
 	}
 

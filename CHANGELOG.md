@@ -4,6 +4,7 @@
     * Fix: Removed duplicated "Settings" link in plugins panel.
     * Fix: Proper handling of errors on checkout.
     * Fix: Proper total tax fetching.
+    * Fix: Double `product_type` parameter when editing categories and tags from admin.
     * Improved: Hide shipping and tax from cart if customer country is not set.
     * Improved: Jigoshop toolbar items based on user capabilities.
     * Improved: `jigoshop_get_order` filter also gets `$this` as 3rd parameter.
