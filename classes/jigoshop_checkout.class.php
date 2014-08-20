@@ -456,15 +456,13 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 
 				$field = '<p class="form-row '.implode(' ', $args['class']).'">
 					<label for="'.esc_attr($args['name']).'" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>
-					<input type="text" class="input-text'.esc_attr($input_required).'" name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'"
-						placeholder="'.$args['placeholder'].'" value="'.esc_attr($current_pc).'" rel="'.esc_attr($args['rel']).'" />
+					<input type="text" class="input-text'.esc_attr($input_required).'" name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" placeholder="'.$args['placeholder'].'" value="'.esc_attr($current_pc).'" rel="'.esc_attr($args['rel']).'" />
 				</p>'.$after;
 				break;
 			case 'textarea':
 				$field = '<p class="form-row '.implode(' ', $args['class']).'">
 					<label for="'.esc_attr($args['name']).'" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>
-					<textarea name="'.esc_attr($args['name']).'" class="input-text'.esc_attr($input_required).'" id="'.esc_attr($args['name']).'" placeholder="'.$args['placeholder'].'"
-						cols="5" rows="2" rel="'.esc_attr($args['rel']).'">'.esc_textarea($this->get_value($args['name'])).'</textarea>
+					<textarea name="'.esc_attr($args['name']).'" class="input-text'.esc_attr($input_required).'" id="'.esc_attr($args['name']).'" placeholder="'.$args['placeholder'].'" cols="5" rows="2" rel="'.esc_attr($args['rel']).'">'.esc_textarea($this->get_value($args['name'])).'</textarea>
 				</p>'.$after;
 				break;
 			case 'select':
@@ -486,8 +484,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 			case 'password':
 				$field = '<p class="form-row '.implode(' ', $args['class']).'">
 					<label for="'.esc_attr($args['name']).'" class="'.implode(' ', $args['label_class']).'">'.$args['label'].$required.'</label>
-					<input type="'.$args['type'].'" class="input-text'.esc_attr($input_required).'" name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'"
-						placeholder="'.$args['placeholder'].'" value="'.$this->get_value($args['name']).'" rel="'.esc_attr($args['rel']).'" />
+					<input type="'.$args['type'].'" class="input-text'.esc_attr($input_required).'" name="'.esc_attr($args['name']).'" id="'.esc_attr($args['name']).'" placeholder="'.$args['placeholder'].'" value="'.$this->get_value($args['name']).'" rel="'.esc_attr($args['rel']).'" />
 				</p>'.$after;
 				break;
 			default :
