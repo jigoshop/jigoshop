@@ -5,6 +5,7 @@
     * Fix: Warnings when adding or editing product attributes.
     * Fix: Problems with line breaks inside tags on checkout.
     * Fix: Redirection problems when using checkout without JavaScript.
+    * Improved: Ability to select whether to use billing or shipping for taxing. Thanks for the tip @elitistdogg
 * 1.11.2 - 2014-08-19:
     * Fix: Removed duplicated "Settings" link in plugins panel.
     * Fix: Proper handling of errors on checkout.

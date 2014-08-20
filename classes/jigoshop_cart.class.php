@@ -698,7 +698,7 @@ class jigoshop_cart extends Jigoshop_Singleton
 	public static function get_applied_tax_classes()
 	{
 		// Do not display taxes if customer country is not set
-		if (jigoshop_customer::get_country() == '') {
+		if (jigoshop_tax::get_customer_country() == '') {
 			return array();
 		}
 
@@ -1026,7 +1026,7 @@ class jigoshop_cart extends Jigoshop_Singleton
 
 			// only show estimated tag when customer is on the cart page and no shipping calculator is enabled to be able to change country
 			if (!jigoshop_shipping::show_shipping_calculator() && is_cart()) {
-				$return .= '<small>'.sprintf(__('estimated for: %s', 'jigoshop'), jigoshop_countries::get_country(jigoshop_customer::get_country())).'</small>';
+				$return .= '<small>'.sprintf(__('estimated for: %s', 'jigoshop'), jigoshop_countries::get_country(jigoshop_tax::get_customer_country())).'</small>';
 			}
 		}
 

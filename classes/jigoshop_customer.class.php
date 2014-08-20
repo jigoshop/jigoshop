@@ -91,7 +91,7 @@ class jigoshop_customer extends Jigoshop_Singleton {
 	/**
 	 * Find out if the customer should be taxed or not
 	 *
-	 * @param boolean $shippable tells if the cart has shipable items, and therefore we should use shipping country. Otherwise if not shippable items, we need to use the customer country.
+	 * @param boolean $shippable tells if the cart has shippable items, and therefore we should use shipping country. Otherwise if not shippable items, we need to use the customer country.
 	 * @return boolean true if customer is taxable, false otherwise
 	 * @since 1.4
 	 */
@@ -102,7 +102,7 @@ class jigoshop_customer extends Jigoshop_Singleton {
 		}
 
 		$shop_country = jigoshop_countries::get_base_country();
-		$my_country = ($shippable ? self::get_shipping_country() : self::get_country());
+		$my_country = jigoshop_tax::get_customer_country();
 
 		if(jigoshop_countries::is_eu_country($shop_country)){
 			return jigoshop_countries::is_eu_country($my_country);

@@ -289,6 +289,30 @@ class jigoshop_tax extends Jigoshop_Base {
 	}
 
 	/**
+	 * @return string Customer country to be used as base for taxes.
+	 */
+	public static function get_customer_country()
+	{
+		if (Jigoshop_Base::get_options()->get_option('jigoshop_country_base_tax') == 'shipping_country') {
+			return jigoshop_customer::get_shipping_country();
+		}
+
+		return jigoshop_customer::get_country();
+	}
+
+	/**
+	 * @return string Customer state to be used as base for taxes.
+	 */
+	public static function get_customer_state()
+	{
+		if (Jigoshop_Base::get_options()->get_option('jigoshop_country_base_tax') == 'shipping_country') {
+			return jigoshop_customer::get_shipping_state();
+		}
+
+		return jigoshop_customer::get_state();
+	}
+
+	/**
 	 * Gets the tax classes for the customer based on customer shipping
 	 * country and state.
 	 *
@@ -301,8 +325,8 @@ class jigoshop_tax extends Jigoshop_Base {
 		}
 
 		$allowed_countries = Jigoshop_Base::get_options()->get_option('jigoshop_allowed_countries');
-		$country = jigoshop_customer::get_country();
-		$state = jigoshop_customer::get_state();
+		$country = self::get_customer_country();
+		$state = self::get_customer_state();
 
 		if($allowed_countries === 'specific'){
 			$specific_countries = Jigoshop_Base::get_options()->get_option('jigoshop_specific_allowed_countries');
@@ -365,8 +389,8 @@ class jigoshop_tax extends Jigoshop_Base {
 		}
 
 		$allowed_countries = Jigoshop_Base::get_options()->get_option('jigoshop_allowed_countries');
-		$country = jigoshop_customer::get_country();
-		$state = jigoshop_customer::get_state();
+		$country = self::get_customer_country();
+		$state = self::get_customer_state();
 
 		if($allowed_countries === 'specific'){
 			$specific_countries = Jigoshop_Base::get_options()->get_option('jigoshop_specific_allowed_countries');
@@ -752,8 +776,8 @@ class jigoshop_tax extends Jigoshop_Base {
 		}
 
 		$allowed_countries = Jigoshop_Base::get_options()->get_option('jigoshop_allowed_countries');
-		$country = jigoshop_customer::get_country();
-		$state = jigoshop_customer::get_state();
+		$country = self::get_customer_country();
+		$state = self::get_customer_state();
 
 		if($allowed_countries === 'specific'){
 			$specific_countries = Jigoshop_Base::get_options()->get_option('jigoshop_specific_allowed_countries');
