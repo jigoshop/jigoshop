@@ -1,9 +1,7 @@
 <?php
 /**
  * Jigoshop Upgrade API
- *
  * DISCLAIMER
- *
  * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
  * versions in the future. If you wish to customise Jigoshop core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
@@ -14,27 +12,27 @@
  * @copyright           Copyright © 2011-2014 Jigoshop.
  * @license             GNU General Public License v3
  */
-
 /**
  * Run Jigoshop Upgrade functions.
-*/
-function jigoshop_upgrade() {
+ */
+function jigoshop_upgrade()
+{
 	// Get the db version
-	$jigoshop_db_version = get_site_option( 'jigoshop_db_version' );
-
-	if ( $jigoshop_db_version == JIGOSHOP_DB_VERSION )
+	$jigoshop_db_version = get_site_option('jigoshop_db_version');
+	if ($jigoshop_db_version == JIGOSHOP_DB_VERSION) {
 		return;
-
- 	if ( $jigoshop_db_version < 1307110 ) {
- 		jigoshop_upgrade_1_8_0();
- 	}
-
-	if ($jigoshop_db_version < 1407060 ) {
+	}
+	if ($jigoshop_db_version < 1307110) {
+		jigoshop_upgrade_1_8_0();
+	}
+	if ($jigoshop_db_version < 1407060) {
 		jigoshop_upgrade_1_10_0();
 	}
-
+	if ($jigoshop_db_version < 1408200) {
+		jigoshop_upgrade_1_10_3();
+	}
 	// Update the db option
-	update_site_option( 'jigoshop_db_version', JIGOSHOP_DB_VERSION );
+	update_site_option('jigoshop_db_version', JIGOSHOP_DB_VERSION);
 }
 
 /**
@@ -42,18 +40,19 @@ function jigoshop_upgrade() {
  *
  * @since 1.8
  */
-function jigoshop_upgrade_1_8_0() {
-	Jigoshop_Base::get_options()->add_option( 'jigoshop_complete_processing_orders', 'no' );
+function jigoshop_upgrade_1_8_0()
+{
+	Jigoshop_Base::get_options()->add_option('jigoshop_complete_processing_orders', 'no');
 }
 
-function jigoshop_upgrade_1_10_0(){
+function jigoshop_upgrade_1_10_0()
+{
 	/** @var $wpdb wpdb */
 	global $wpdb;
-
 	$data = $wpdb->get_results("SELECT umeta_id, user_id, meta_key, meta_value FROM {$wpdb->usermeta} WHERE meta_key LIKE 'billing-%' OR meta_key LIKE 'shipping-%'", ARRAY_A);
-	if(!empty($data)){
+	if (!empty($data)) {
 		$query = "REPLACE INTO {$wpdb->usermeta} VALUES ";
-		foreach($data as $item){
+		foreach ($data as $item) {
 			$key = str_replace(array('billing-', 'shipping-'), array('billing_', 'shipping_'), $item['meta_key']);
 			$query .= "({$item['umeta_id']}, {$item['user_id']}, '{$key}', '{$item['meta_value']}'),";
 		}
@@ -61,13 +60,17 @@ function jigoshop_upgrade_1_10_0(){
 		$query = rtrim($query, ',');
 		$wpdb->query($query);
 	}
-
 	$options = Jigoshop_Base::get_options();
 	$options->add_option('jigoshop_address_1', $options->get_option('jigoshop_address_line1'));
 	$options->add_option('jigoshop_address_2', $options->get_option('jigoshop_address_line2'));
 	$options->delete_option('jigoshop_address_line1');
 	$options->delete_option('jigoshop_address_line2');
-
 	// Set default customer country
 	$options->add_option('jigoshop_default_country_for_customer', $options->get_option('jigoshop_default_country'));
+}
+
+function jigoshop_upgrade_1_10_3()
+{
+	$options = Jigoshop_Base::get_options();
+	$options->add_option('jigoshop_country_base_tax', 'billing_country');
 }

@@ -1311,6 +1311,16 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 				),
 			),
 			array(
+				'name' => __('Country to base taxes on', 'jigoshop'),
+				'desc' => __('This option defines whether to use billing or shipping address to calculate taxes.', 'jigoshop'),
+				'id' => 'jigoshop_country_base_tax',
+				'type' => 'select',
+				'choices' => array(
+					'billing_country' => __('Billing', 'jigoshop'),
+					'shipping_country' => __('Shipping', 'jigoshop'),
+				),
+			),
+			array(
 				'name' => __('Additional Tax classes', 'jigoshop'),
 				'desc' => __('List 1 per line. This is in addition to the default <em>Standard Rate</em>.', 'jigoshop'),
 				'tip' => __('List product and shipping tax classes here, e.g. Zero Tax, Reduced Rate.', 'jigoshop'),
