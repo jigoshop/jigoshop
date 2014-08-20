@@ -697,16 +697,6 @@ function jigoshop_bulk_actions($actions) {
 }
 
 /**
- * Adds downloadable product support for thickbox
- * @todo: not sure if this is the best place for this?
- */
-add_action('media_upload_downloadable_product', 'jigoshop_media_upload_downloadable_product');
-
-function jigoshop_media_upload_downloadable_product() {
-	do_action('media_upload_file');
-}
-
-/**
  * Order messages
  * */
 add_filter( 'post_updated_messages', 'jigoshop_post_updated_messages' );

@@ -2,6 +2,7 @@
 
 * 1.11.3:
     * Fix: Problems with styling of posts not on Jigoshop pages.
+    * Fix: Warnings when adding or editing product attributes.
 * 1.11.2 - 2014-08-19:
     * Fix: Removed duplicated "Settings" link in plugins panel.
     * Fix: Proper handling of errors on checkout.

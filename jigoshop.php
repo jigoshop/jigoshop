@@ -138,6 +138,7 @@ include_once('gateways/cod.php');
 include_once('gateways/paypal.php');
 include_once('gateways/futurepay.php');
 include_once('gateways/worldpay.php');
+include_once('gateways/no_payment.php');
 
 include_once('shipping/shipping_method.class.php');
 include_once('shipping/jigoshop_calculable_shipping.php');

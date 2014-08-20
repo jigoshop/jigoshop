@@ -575,6 +575,10 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 		$this->posted['account_password'] = isset($_POST['account_password']) ? jigowatt_clean($_POST['account_password']) : '';
 		$this->posted['account_password_2'] = isset($_POST['account_password_2']) ? jigowatt_clean($_POST['account_password_2']) : '';
 
+		if (jigoshop_cart::get_total(false) == 0) {
+			$this->posted['payment_method'] = 'no_payment';
+		}
+
 		// establish customer billing and shipping locations
 		if (jigoshop_cart::ship_to_billing_address_only()) {
 			$this->posted['shiptobilling'] = 'true';

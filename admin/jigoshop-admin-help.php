@@ -35,7 +35,6 @@ function jigoshop_product_attributes_help() {
 		<p>'.__('Thats really all there is to it, enjoy', 'jigoshop').'!</p>
 	';
 
-	// TODO: ADD RELEVANT ARTICLE
 	$sidebar_content = '
         <p><strong>'.__('For more information', 'jigoshop').':</strong></p>
         <p><a href="http://forum.jigoshop.com/kb/" target="_blank">'.__('Documentation on', 'jigoshop').'<br/>'.__('Product Attributes', 'jigoshop').'</a></p>
@@ -86,7 +85,6 @@ function jigoshop_product_category_help() {
 		<p>'.__('You can change the display of this screen using the Screen Options tab to set how many items are displayed per screen and to display/hide columns in the table', 'jigoshop').'.</p>
     ';
 
-	// *TODO: ADD RELEVANT ARTICLE*
 	$sidebar_content = '
         <p><strong>'.__('For more information', 'jigoshop').':</strong></p>
         <p><a href="http://forum.jigoshop.com/kb/" target="_blank">'.__('Documentation on', 'jigoshop').'<br/>'.__('Product Categories', 'jigoshop').'</a></p>
@@ -129,7 +127,6 @@ function jigoshop_product_tag_help() {
 		<p>'.__('You can change the display of this screen using the Screen Options tab to set how many items are displayed per screen and to display/hide columns in the table', 'jigoshop').'.</p>
     ';
 
-	// *TODO: ADD RELEVANT ARTICLE*
 	$sidebar_content = '
         <p><strong>'.__('For more information', 'jigoshop').':</strong></p>
         <p><a href="http://forum.jigoshop.com/kb/" target="_blank">'.__('Documentation on', 'jigoshop').'<br/>'.__('Product Tags', 'jigoshop').'</a></p>
@@ -183,7 +180,6 @@ function jigoshop_product_list_help() {
 		<p>'.__('When using Bulk Edit, you can change the metadata (categories, author, etc.) for all selected products at once. To remove a product from the grouping, just click the x next to its name in the Bulk Edit area that appears', 'jigoshop').'.</p>
     ';
 
-	// *TODO: ADD RELEVANT ARTICLE*
     $sidebar_content = '
         <p><strong>'.__('For more information', 'jigoshop').':</strong></p>
         <p><a href="http://forum.jigoshop.com/kb/" target="_blank">'.__('Documentation on', 'jigoshop').'<br/>'.__('Managing Products', 'jigoshop').'</a></p>
