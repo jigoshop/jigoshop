@@ -54,7 +54,7 @@ add_action('wp_head', 'jigoshop_front_page_archive', 0);
  **/
 if (!function_exists('jigoshop_output_content_wrapper')) {
 	function jigoshop_output_content_wrapper(){
-		if ( wp_get_theme()->get('Author') === 'WooThemes' ) echo '<div id="content" class="col-full"><div id="main" class="col-left"><div class="post">';
+		if ( wp_get_theme()->get('Author') === 'WooThemes' ) echo '<div id="content" class="col-full woothemes-compatible"><div id="main" class="col-left"><div class="post">';
 		elseif ( get_option('template') === 'twentyfourteen' ) echo '<div id="primary" class="content-area"><div id="content" class="site-content" role="main">';
 		elseif ( get_option('template') === 'twentythirteen' ) echo '<div id="primary" class="content-area"><div id="content" class="site-content" role="main">';
 		elseif ( get_option('template') === 'twentytwelve' ) echo '<div id="primary" class="site-content"><div id="content" role="main">';

@@ -177,8 +177,13 @@ div.product div.images div.thumbnails a.first {
 
 div.product div.summary {
 	float: right;
+	width: 300px;
 }
-.jigoshop .post{
+
+.woothemes-compatible div.product div.summary {
+	width: auto;
+}
+.woothemes-compatible .post{
 	padding: 15px !important;
 }
 
