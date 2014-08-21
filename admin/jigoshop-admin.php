@@ -192,9 +192,9 @@ function jigoshop_system_info() {
 	WordPress Memory Limit:   <?php echo (jigoshop_let_to_num(WP_MEMORY_LIMIT)/(1024*1024))."MB"; ?><?php echo "\n"; ?>
 	Max Input Time:           <?php echo ini_get('max_input_time'); ?><?php echo "\n"; ?>
 	Max Input Vars:           <?php echo ini_get('max_input_vars'); ?><?php echo "\n"; ?>
-	WP_DEBUG:                 <?php echo (WP_DEBUG) ? __('On', 'jigoshop') : __('Off', 'jigoshop'); ?><?php echo "\n"; ?>
+	WP_DEBUG:                 <?php echo (WP_DEBUG) ? 'On' : 'Off'; ?><?php echo "\n"; ?>
 	DISPLAY ERRORS:           <?php echo (ini_get('display_errors')) ? 'On (' . ini_get('display_errors') . ')' : 'N/A'; ?><?php echo "\n"; ?>
-	FSOCKOPEN:                <?php echo (function_exists('fsockopen')) ? __('Your server supports fsockopen.', 'jigoshop') : __('Your server does not support fsockopen.', 'jigoshop'); ?><?php echo "\n"; ?>
+	FSOCKOPEN:                <?php echo (function_exists('fsockopen')) ? 'Supported' : 'Not supported'; ?><?php echo "\n"; ?>
 
 	ACTIVE PLUGINS:
 
@@ -214,14 +214,9 @@ foreach ( $plugins as $plugin_path => $plugin ):
 
 	CURRENT THEME:
 
-	<?php
-	if ( get_bloginfo('version') < '3.4' ) {
-		$theme_data = get_theme_data(get_stylesheet_directory() . '/style.css');
-		echo $theme_data['Name'] . ': ' . $theme_data['Version'];
-	} else {
-		$theme_data = wp_get_theme();
-		echo $theme_data->Name . ': ' . $theme_data->Version;
-	}
+<?php
+$theme_data = wp_get_theme();
+echo $theme_data->Name . ': ' . $theme_data->Version;
 ?>
 
 
