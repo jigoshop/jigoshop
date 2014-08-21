@@ -1,6 +1,6 @@
 ## Changelog
 
-* 1.11.3:
+* 1.11.3 - 2014-08-21:
     * Fix: Problems with styling of posts not on Jigoshop pages.
     * Fix: Warnings when adding or editing product attributes.
     * Fix: Problems with line breaks inside tags on checkout.
