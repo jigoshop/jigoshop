@@ -262,18 +262,18 @@ class jigoshop_validation
 		$country = strtoupper(trim($country));
 		$postcode = strtoupper(trim($postcode));
 
-		if (!isset(self::$postcodes[$country]) && $country !== 'GB') { // Special case for GB
-			return false;
+		// Assume that unknown countries has proper postcodes
+		if (!isset(self::$postcodes[$country]) && $country !== 'GB') {
+			return true;
 		}
 
 		if (Jigoshop_Base::get_options()->get_option('jigoshop_enable_postcode_validating') == 'yes') {
-
 			switch ($country) {
 				case 'GB':
 					jigoshop_log("VALIDATE POSTCODE: country = GB");
 					return self::is_GB_postcode($postcode);
 				default:
-					$regex = '/'.self::$postcodes[$country].'/';
+					$regex = '/^'.self::$postcodes[$country].'$/';
 					jigoshop_log("VALIDATE POSTCODE: country = ".$country." & regex = ".$regex);
 					$match = preg_match($regex, $postcode);
 					if ($match !== 1) {

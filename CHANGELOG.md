@@ -1,5 +1,8 @@
 ## Changelog
 
+* 1.11.4 - 2014-08-22:
+    * Fix: Unknown postcode rules are not invalid.
+    * Improved: Strengthened postcode validation to exact match.
 * 1.11.3 - 2014-08-21:
     * Fix: Problems with styling of posts not on Jigoshop pages.
     * Fix: Warnings when adding or editing product attributes.
