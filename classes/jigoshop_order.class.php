@@ -17,6 +17,49 @@
 class jigoshop_order extends Jigoshop_Base
 {
 	public $_data = array();
+	public $id;
+	public $order_date;
+	public $modified_date;
+	public $customer_note;
+	public $order_key;
+	public $user_id;
+	public $items;
+	public $billing_first_name;
+	public $billing_last_name;
+	public $billing_company;
+	public $billing_euvatno;
+	public $billing_address_1;
+	public $billing_address_2;
+	public $billing_city;
+	public $billing_postcode;
+	public $billing_country;
+	public $billing_state;
+	public $billing_email;
+	public $billing_phone;
+	public $shipping_first_name;
+	public $shipping_last_name;
+	public $shipping_company;
+	public $shipping_address_1;
+	public $shipping_address_2;
+	public $shipping_city;
+	public $shipping_postcode;
+	public $shipping_country;
+	public $shipping_state;
+	public $shipping_method;
+	public $shipping_service;
+	public $payment_method;
+	public $payment_method_title;
+	public $order_subtotal;
+	public $order_discount_subtotal;
+	public $order_shipping;
+	public $order_discount;
+	public $order_discount_coupons;
+	public $order_tax;
+	public $order_shipping_tax;
+	public $order_total;
+	public $order_total_prices_per_tax_class_ex_tax;
+	public $formatted_billing_address;
+	public $status;
 	private $order_data;
 
 	/** Get the order if ID is passed, otherwise the order is new and empty */
