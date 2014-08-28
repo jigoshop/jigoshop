@@ -642,6 +642,7 @@ function jigoshop_frontend_scripts()
 
 	if ($options->get_option('jigoshop_disable_fancybox') == 'no') {
 		jigoshop_add_script('prettyphoto', JIGOSHOP_URL.'/assets/js/jquery.prettyPhoto.js', array('jquery'), array('in_footer' => true));
+		jigoshop_add_style('prettyphoto', JIGOSHOP_URL.'/assets/css/prettyPhoto.css');
 	}
 
 	jigoshop_add_script('jigoshop_blockui', JIGOSHOP_URL.'/assets/js/blockui.js', array('jquery'), array('in_footer' => false));
@@ -716,8 +717,9 @@ function jigoshop_admin_styles()
 
 	wp_enqueue_style('thickbox');
 	jigoshop_add_style('jigoshop_admin_styles', JIGOSHOP_URL.'/assets/css/admin.css');
-	jigoshop_add_style('jquery_ui_jigoshop', JIGOSHOP_URL.'/assets/css/jquery-ui.css');
-	jigoshop_add_style('jigoshop_required', JIGOSHOP_URL.'/assets/css/required.css');
+	jigoshop_add_style('jigoshop-jquery-ui', JIGOSHOP_URL.'/assets/css/jquery-ui.css');
+	jigoshop_add_style('jigoshop-select2', JIGOSHOP_URL.'/assets/css/select2.css');
+	jigoshop_add_style('jigoshop-prettyPhoto', JIGOSHOP_URL.'/assets/css/prettyPhoto.css');
 }
 
 add_action('admin_enqueue_scripts', 'jigoshop_admin_scripts');
@@ -756,9 +758,7 @@ function jigoshop_admin_scripts()
 }
 
 /**
- *  Jigoshop 1.8 has a change that moves javascript library CSS to our frontend.css instead of loading
- *  individually (PrettyPhoto, jQuery UI, Select2)
- *  For Shops that might have our frontend.css disabled, install the required bits for these libraries
+ *  Load required CSS files when frontend styles
  */
 add_action('wp_enqueue_scripts', 'jigoshop_check_required_css', 99);
 function jigoshop_check_required_css()
@@ -766,7 +766,9 @@ function jigoshop_check_required_css()
 	global $wp_styles;
 
 	if (empty($wp_styles->registered['jigoshop_styles'])) {
-		jigoshop_add_style('jigoshop_required', JIGOSHOP_URL.'/assets/css/required.css');
+		jigoshop_add_style('jigoshop-jquery-ui', JIGOSHOP_URL.'/assets/css/jquery-ui.css');
+		jigoshop_add_style('jigoshop-select2', JIGOSHOP_URL.'/assets/css/select2.css');
+		jigoshop_add_style('jigoshop-prettyPhoto', JIGOSHOP_URL.'/assets/css/prettyPhoto.css');
 	}
 }
 

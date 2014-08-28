@@ -1,10 +1,11 @@
 ## Changelog
 
-* 1.11.4:
+* 1.11.4 - 2014-08-28:
     * Fix: Unknown postcode rules are not invalid.
     * Fix: Permalink options now works properly.
     * Improved: Strengthened postcode validation to exact match.
     * Improved: Compatibility with WooCommerce themes not created by WooThemes.
+    * Improved: Update prettyPhoto to 3.1.5
 * 1.11.3 - 2014-08-21:
     * Fix: Problems with styling of posts not on Jigoshop pages.
     * Fix: Warnings when adding or editing product attributes.
