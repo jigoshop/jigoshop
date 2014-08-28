@@ -3,6 +3,7 @@
 * 1.11.4 - 2014-08-28:
     * Fix: Unknown postcode rules are not invalid.
     * Fix: Permalink options now works properly.
+    * Fix: Remove all items sorting, it leaves only categories ordering working.
     * Improved: Strengthened postcode validation to exact match.
     * Improved: Compatibility with WooCommerce themes not created by WooThemes.
     * Improved: Update prettyPhoto to 3.1.5
