@@ -89,7 +89,7 @@ class jigoshop_shipping extends Jigoshop_Singleton
 		$_available_methods = self::get_available_shipping_methods();
 		$chosen_method = self::get_chosen_method();
 
-		return $_available_methods[$chosen_method]->title;
+		return $chosen_method !== false ? $_available_methods[$chosen_method]->title : '';
 	}
 
 	public static function get_available_shipping_methods()
