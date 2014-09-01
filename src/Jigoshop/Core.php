@@ -47,6 +47,7 @@ class Core
 		// TODO: Build required extensions
 		$this->_addQueryFilters();
 		$this->wp->addFilter('template_include', array($this->template, 'process'));
+		$this->wp->addFilter('template_redirect', array($this->template, 'redirect'));
 	}
 
 	private function _addQueryFilters()

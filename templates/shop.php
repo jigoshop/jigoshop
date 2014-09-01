@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $page string Page contents.
+ * @var $content string Page contents.
  * @var $products array List of products to display.
  */
 do_action('jigoshop\shop\content\before'); ?>
@@ -11,8 +11,8 @@ do_action('jigoshop\shop\content\before'); ?>
 	<?php echo apply_filters('jigoshop\shop\content\title', '<h1 class="page-title">'.__('All Products', 'jigoshop').'</h1>'); ?>
 <?php endif; ?>
 
-<?php if ($page): ?>
-	<?php echo apply_filters('the_content', $page); ?>
+<?php if ($content): ?>
+	<?php echo apply_filters('the_content', $content); ?>
 <?php endif; ?>
 
 <?php

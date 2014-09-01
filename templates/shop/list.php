@@ -10,4 +10,5 @@
 		)); ?>
 	<?php endforeach; ?>
 </ul>
+<a href="<?php echo get_pagenum_link(2); ?>">Next</a>
 <?php do_action('jigoshop_pagination'); // TODO: Render pagination ?>

@@ -432,4 +432,14 @@ abstract class Product implements EntityInterface
 		$this->dirtyFields[] = 'stock';
 		$this->dirtyFields = array_merge($this->dirtyFields, array_keys($state));
 	}
+
+	/**
+	 * Returns link for a product.
+	 *
+	 * @return bool|string
+	 */
+	public function getLink()
+	{
+		return get_permalink($this->getId());
+	}
 }

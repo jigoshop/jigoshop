@@ -32,6 +32,16 @@ class Template
 	}
 
 	/**
+	 * Redirect Jigoshop pages to proper types.
+	 */
+	public function redirect()
+	{
+		if (isset($_GET['page_id']) && $_GET['page_id'] == $this->options->getPageId(Pages::SHOP)) {
+			$this->wp->wpSafeRedirect($this->wp->getPostTypeArchiveLink(Types::PRODUCT));
+		}
+	}
+
+	/**
 	 * Loads proper template based on current page.
 	 *
 	 * @param $template string Template chain.
@@ -66,11 +76,12 @@ class Template
 	 */
 	protected function productList()
 	{
-		$page = $this->wp->getPostField('post_content', $this->options->getPageId(Pages::SHOP));
+		$content = $this->wp->getPostField('post_content', $this->options->getPageId(Pages::SHOP));
+//		$page = $this->wp->getQueryParameter('paged');
 		$query = $this->wp->getWpQuery();
 		$products = $this->productService->findByQuery($query);
 		return Render::get('shop', array(
-			'page' => $page,
+			'content' => $content,
 			'products' => $products,
 		));
 	}

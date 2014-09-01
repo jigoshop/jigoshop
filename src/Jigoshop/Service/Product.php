@@ -2,6 +2,7 @@
 
 namespace Jigoshop\Service;
 
+use Jigoshop\Core\Types;
 use Jigoshop\Entity\EntityInterface;
 use Jigoshop\Exception;
 use Jigoshop\Factory\Product as ProductFactory;
@@ -130,7 +131,7 @@ class Product implements ProductServiceInterface
 	{
 		// TODO: Replace \WP_Query in order to make Jigoshop testable
 		$query = new \WP_Query(array(
-			'post_type' => 'product',
+			'post_type' => Types::PRODUCT,
 			'post_status' => 'publish',
 			'ignore_sticky_posts' => 1,
 			'posts_per_page' => -1,
@@ -159,7 +160,7 @@ class Product implements ProductServiceInterface
 	{
 		// TODO: Replace \WP_Query in order to make Jigoshop testable
 		$query = new \WP_Query(array(
-			'post_type' => 'product',
+			'post_type' => Types::PRODUCT,
 			'post_status' => 'publish',
 			'ignore_sticky_posts' => 1,
 			'posts_per_page' => -1,

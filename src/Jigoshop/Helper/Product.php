@@ -4,6 +4,7 @@ namespace Jigoshop\Helper;
 
 use Jigoshop\Entity\Product\Attributes\StockStatus;
 use Jigoshop\Entity\Product\Simple;
+use Jigoshop\Entity\Product as ProductEntity;
 
 class Product
 {
@@ -25,10 +26,10 @@ class Product
 	/**
 	 * Formats price appropriately to the product type and returns a string.
 	 *
-	 * @param \Jigoshop\Entity\Product $product
+	 * @param ProductEntity $product
 	 * @return string
 	 */
-	public static function getPrice(\Jigoshop\Entity\Product $product)
+	public static function getPrice(ProductEntity $product)
 	{
 		switch($product->getType()){
 			case Simple::TYPE:
@@ -42,10 +43,10 @@ class Product
 	/**
 	 * Formats stock status appropriately to the product type and returns a string.
 	 *
-	 * @param \Jigoshop\Entity\Product $product
+	 * @param ProductEntity $product
 	 * @return string
 	 */
-	public static function getStock(\Jigoshop\Entity\Product $product)
+	public static function getStock(ProductEntity $product)
 	{
 		switch($product->getType()){
 			case Simple::TYPE:
@@ -62,10 +63,10 @@ class Product
 	/**
 	 * Gets thumbnail <img> tag for the product.
 	 *
-	 * @param \Jigoshop\Entity\Product $product
+	 * @param ProductEntity $product
 	 * @return string
 	 */
-	public static function getThumbnail(\Jigoshop\Entity\Product $product)
+	public static function getThumbnail(ProductEntity $product)
 	{
 		if (has_post_thumbnail($product->getId())) {
 			return get_the_post_thumbnail($product->getId(), 'admin_product_list');
@@ -77,10 +78,10 @@ class Product
 	/**
 	 * Formats stock status appropriately to the product type and returns a string.
 	 *
-	 * @param \Jigoshop\Entity\Product $product
+	 * @param ProductEntity $product
 	 * @return string
 	 */
-	public static function isFeatured(\Jigoshop\Entity\Product $product)
+	public static function isFeatured(ProductEntity $product)
 	{
 //				$url = wp_nonce_url( admin_url('admin-ajax.php?action=jigoshop-feature-product&product_id=' . $post->ID) );
 //				echo '<a href="'.esc_url($url).'" title="'.__('Change','jigoshop') .'">';

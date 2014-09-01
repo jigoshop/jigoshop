@@ -80,7 +80,7 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/** @test */
-	public function isAdminPageProduct()
+	public function getAdminPageProduct()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
@@ -90,14 +90,14 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$this->wp->shouldReceive('getCurrentScreen')->andReturn($currentScreen);
 
 		// When
-		$result = $pages->isAdminPage();
+		$result = $pages->getAdminPage();
 
 		// Then
 		$this->assertEquals(Types::PRODUCT, $result);
 	}
 
 	/** @test */
-	public function isAdminPageJigoshop()
+	public function getAdminPageJigoshop()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
@@ -108,14 +108,14 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$this->wp->shouldReceive('getCurrentScreen')->andReturn($currentScreen);
 
 		// When
-		$result = $pages->isAdminPage();
+		$result = $pages->getAdminPage();
 
 		// Then
 		$this->assertEquals('jigoshop', $result);
 	}
 
 	/** @test */
-	public function isNotAdminPage()
+	public function getNotAdminPage()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
@@ -123,14 +123,14 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$this->wp->shouldReceive('getCurrentScreen')->andReturn(null);
 
 		// When
-		$result = $pages->isAdminPage();
+		$result = $pages->getAdminPage();
 
 		// Then
 		$this->assertEquals(false, $result);
 	}
 
 	/** @test */
-	public function isAdminPageNotJigoshop()
+	public function getAdminPageNotJigoshop()
 	{
 		// Given
 		/** @noinspection PhpParamsInspection */
@@ -141,7 +141,7 @@ class PagesTest extends \PHPUnit_Framework_TestCase
 		$this->wp->shouldReceive('getCurrentScreen')->once()->andReturn($currentScreen);
 
 		// When
-		$result = $pages->isAdminPage();
+		$result = $pages->getAdminPage();
 
 		// Then
 		$this->assertEquals(false, $result);
