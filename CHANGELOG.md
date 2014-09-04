@@ -1,5 +1,9 @@
 ## Changelog
 
+* 1.11.5 - 2014-09-04:
+    * Fix: Warning when free shipping is selected.
+    * Improved: Added short open tag check to System Info page.
+    * Improved: Reformatted write panels admin file with removal of deprecated classes and functions.
 * 1.11.4 - 2014-08-28:
     * Fix: Unknown postcode rules are not invalid.
     * Fix: Permalink options now works properly.
