@@ -6,6 +6,7 @@
     * Improved: Saving order tax information into database.
     * Improved: Added short open tag check to System Info page.
     * Improved: Reformatted write panels admin file with removal of deprecated classes and functions.
+    * Improved: Link to support in footer of every Jigoshop page.
 * 1.11.4 - 2014-08-28:
     * Fix: Unknown postcode rules are not invalid.
     * Fix: Permalink options now works properly.
