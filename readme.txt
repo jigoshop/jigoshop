@@ -1,9 +1,9 @@
 === Jigoshop ===
 Contributors: Jigoshop
-Tags: ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal, jigoshop, shipping, inventory, stock, online, sell, sales, weights, dimensions, configurable, variable, downloadable, external, affiliate, download, virtual, physical
+Tags: e-commerce, ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal, jigoshop, shipping, inventory, stock, online, sell, sales, weights, dimensions, configurable, variable, downloadable, external, affiliate, download, virtual, physical
 Requires at least: 3.8
-Tested up to: 3.9.2
-Stable tag: 1.11.4
+Tested up to: 4.0
+Stable tag: 1.11.5
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -112,6 +112,14 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 4. Standard customer checkout screen
 
 == Changelog ==
+
+= 1.11.5 - 2014-09-04 =
+* Fix: Warning when free shipping is selected.
+* Fix: Free shipping method will correctly calculate minimum value to let it work.
+* Improved: Saving order tax information into database.
+* Improved: Added short open tag check to System Info page.
+* Improved: Reformatted write panels admin file with removal of deprecated classes and functions.
+* Improved: Link to support in footer of every Jigoshop page.
 
 = 1.11.4 - 2014-08-28 =
 * Fix: Unknown postcode rules are not invalid.
