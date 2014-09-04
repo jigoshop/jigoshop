@@ -849,7 +849,7 @@ td.quantity, .jigoshop #content div.quantity {
 
 .quantity input.qty {
 	border: 1px solid #cccccc;
-	width: 20px;
+	width: 40px;
 	height: 28px;
 	display: inline;
 	padding: 1px 5px 2px;
