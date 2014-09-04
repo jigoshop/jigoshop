@@ -2,6 +2,8 @@
 
 * 1.11.5 - 2014-09-04:
     * Fix: Warning when free shipping is selected.
+    * Fix: Free shipping method will correctly calculate minimum value to let it work.
+    * Improved: Saving order tax information into database.
     * Improved: Added short open tag check to System Info page.
     * Improved: Reformatted write panels admin file with removal of deprecated classes and functions.
 * 1.11.4 - 2014-08-28:

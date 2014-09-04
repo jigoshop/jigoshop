@@ -678,17 +678,15 @@ class jigoshop_product extends Jigoshop_Base {
 		if ($this->is_taxable() && self::get_options()->get_option('jigoshop_calc_taxes') == 'yes') {
 			$tax = new jigoshop_tax();
 
-			if ($tax->get_tax_classes_for_base()) {
-				foreach ($tax->get_tax_classes_for_base() as $tax_class) {
-					if (!in_array($tax_class, $this->get_tax_classes())) {
-						continue;
-					}
+			foreach ($tax->get_tax_classes_for_customer() as $tax_class) {
+				if (!in_array($tax_class, $this->get_tax_classes())) {
+					continue;
+				}
 
-					$rate = $tax->get_rate($tax_class);
+				$rate = $tax->get_rate($tax_class);
 
-					if ($rate > 0) {
-						$rates[$tax_class] = array('rate' => $rate, 'is_not_compound_tax' => !$tax->is_compound_tax());
-					}
+				if ($rate > 0) {
+					$rates[$tax_class] = array('rate' => $rate, 'is_not_compound_tax' => !$tax->is_compound_tax());
 				}
 			}
 		}

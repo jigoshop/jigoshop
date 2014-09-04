@@ -105,21 +105,23 @@ class jigoshop_cart extends Jigoshop_Singleton
 							$price_includes_tax
 						);
 
-						if (self::get_options()->get_option('jigoshop_prices_include_tax') == 'yes') {
-							if (self::get_options()->get_option('jigoshop_tax_after_coupon') == 'yes' && $discounted_item_price >= 0) {
-								$total_item_price = ($discounted_item_price + self::$tax->get_non_compounded_tax_amount() + self::$tax->get_compound_tax_amount()) * 100;
-							}
-						}
-
 						// reason we cannot use get_applied_tax_classes is because we may not have applied all tax classes for this product.
 						// get_applied_tax_classes will return all of the tax classes that have been applied on all products
+						$item_tax = 0.0;
 						foreach ($tax_classes_applied as $tax_class) {
 							$price_ex_tax = $_product->get_price_excluding_tax() * $values['quantity'];
+							$item_tax += self::$tax->calc_tax($price_ex_tax, self::$tax->get_rate($tax_class), false);
 
 							if (isset(self::$price_per_tax_class_ex_tax[$tax_class])) {
 								self::$price_per_tax_class_ex_tax[$tax_class] += $price_ex_tax;
 							} else {
 								self::$price_per_tax_class_ex_tax[$tax_class] = $price_ex_tax;
+							}
+						}
+
+						if (self::get_options()->get_option('jigoshop_prices_include_tax') == 'yes') {
+							if (self::get_options()->get_option('jigoshop_tax_after_coupon') == 'yes' && $discounted_item_price >= 0) {
+								$total_item_price += $item_tax;
 							}
 						}
 					}
