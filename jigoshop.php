@@ -1317,6 +1317,7 @@ function jigoshop_get_formatted_variation(jigoshop_product $product, $variation_
 		}
 
 		$variation_list = array();
+		$added = array();
 
 		foreach ($variation_data as $name => $value) {
 			if (empty($value)) {
@@ -1324,6 +1325,12 @@ function jigoshop_get_formatted_variation(jigoshop_product $product, $variation_
 			}
 
 			$name = str_replace('tax_', '', $name);
+
+			if (in_array($name, $added)) {
+				continue;
+			}
+
+			$added[] = $name;
 
 			if (taxonomy_exists('pa_'.$name)) {
 				$terms = get_terms('pa_'.$name, array('orderby' => 'slug', 'hide_empty' => '0'));
