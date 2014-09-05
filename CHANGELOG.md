@@ -1,5 +1,10 @@
 ## Changelog
 
+* 1.11.6 - 2014-09-05:
+    * Fix: PayPal invalid amounts.
+    * Fix: JWOS with WordPress 4.0 compatibility.
+    * Fix: Admin styles with WordPress 4.0
+    * Improved: Preventing from displaying the same data twice with `jigoshop_get_formatted_variation()` function.
 * 1.11.5 - 2014-09-04:
     * Fix: Warning when free shipping is selected.
     * Fix: Free shipping method will correctly calculate minimum value to let it work.
