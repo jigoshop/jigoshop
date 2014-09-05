@@ -6,6 +6,7 @@
     * Fix: Admin styles with WordPress 4.0
     * Improved: Preventing from displaying the same data twice with `jigoshop_get_formatted_variation()` function.
     * Improved: Flush rewrite rules as earlier update introduced small changes.
+    * Improved: Update checkout on load to ensure tax is properly calculated.
 * 1.11.5 - 2014-09-04:
     * Fix: Warning when free shipping is selected.
     * Fix: Free shipping method will correctly calculate minimum value to let it work.

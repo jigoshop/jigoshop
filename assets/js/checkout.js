@@ -8,6 +8,7 @@
 		// Init trigger
 		$('body').on('jigoshop.checkout.init', function(){
 			$('select.country_to_state').trigger('init');
+			update_checkout();
 		});
 
 		function update_checkout(){
