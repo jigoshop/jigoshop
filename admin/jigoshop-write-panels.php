@@ -225,8 +225,7 @@ function jigoshop_write_panel_scripts()
 
 	jigoshop_localize_script('jigoshop-writepanel', 'jigoshop_params', $params);
 }
-add_action('admin_print_scripts-post.php', 'jigoshop_write_panel_scripts');
-add_action('admin_print_scripts-post-new.php', 'jigoshop_write_panel_scripts');
+add_action('admin_enqueue_scripts', 'jigoshop_write_panel_scripts');
 
 /**
  * Meta scripts
