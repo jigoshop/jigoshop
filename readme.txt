@@ -118,6 +118,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 * Fix: JWOS with WordPress 4.0 compatibility.
 * Fix: Admin styles with WordPress 4.0
 * Improved: Preventing from displaying the same data twice with `jigoshop_get_formatted_variation()` function.
+* Improved: Flush rewrite rules as earlier update introduced small changes.
 
 = 1.11.5 - 2014-09-04 =
 * Fix: Warning when free shipping is selected.

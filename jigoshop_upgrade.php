@@ -31,6 +31,9 @@ function jigoshop_upgrade()
 	if ($jigoshop_db_version < 1408200) {
 		jigoshop_upgrade_1_10_3();
 	}
+	if ($jigoshop_db_version < 1409050) {
+		jigoshop_upgrade_1_10_6();
+	}
 	// Update the db option
 	update_site_option('jigoshop_db_version', JIGOSHOP_DB_VERSION);
 }
@@ -73,4 +76,11 @@ function jigoshop_upgrade_1_10_3()
 {
 	$options = Jigoshop_Base::get_options();
 	$options->add_option('jigoshop_country_base_tax', 'billing_country');
+}
+
+function jigoshop_upgrade_1_10_6()
+{
+	/** @var WP_Rewrite $wp_rewrite */
+	global $wp_rewrite;
+	$wp_rewrite->flush_rules(true);
 }
