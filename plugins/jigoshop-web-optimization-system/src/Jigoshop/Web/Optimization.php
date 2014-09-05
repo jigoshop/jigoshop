@@ -154,6 +154,7 @@ class Optimization
 		$pages = isset($options['page']) ? (array)$options['page'] : array('all');
 		$handle = $this->prepare_script_handle($handle);
 		$manager = $this->_factory->getAssetManager();
+
 		if(!$manager->has($handle) && $src && $this->check_script_dependencies($dependencies))
 		{
 			$this->_dependencies = array_merge($this->_dependencies, $dependencies);

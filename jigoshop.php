@@ -673,7 +673,7 @@ function jigoshop_frontend_scripts()
 	jigoshop_add_script('jigoshop-cart', JIGOSHOP_URL.'/assets/js/cart.js', array('jquery'), array('in_footer' => true, 'page' => JIGOSHOP_CART));
 	jigoshop_add_script('jigoshop-checkout', JIGOSHOP_URL.'/assets/js/checkout.js', array('jquery'), array('in_footer' => true, 'page' => JIGOSHOP_CHECKOUT));
 	jigoshop_add_script('jigoshop-validation', JIGOSHOP_URL.'/assets/js/validation.js', array(), array('in_footer' => true, 'page' => JIGOSHOP_CHECKOUT));
-	jigoshop_add_script('jigoshop-payment', JIGOSHOP_URL.'/assets/js/pay.js', array('jquery'), array('page' => JIGOSHOP_PAY));
+	jigoshop_add_script('jigoshop-payment', JIGOSHOP_URL.'/assets/js/pay.js', array('jquery'), array('page' => array(JIGOSHOP_PAY, JIGOSHOP_CHECKOUT)));
 	jigoshop_add_script('jigoshop-single-product', JIGOSHOP_URL.'/assets/js/single-product.js', array('jquery'), array('in_footer' => true, 'page' => JIGOSHOP_PRODUCT));
 	jigoshop_add_script('jigoshop-countries', JIGOSHOP_URL.'/assets/js/countries.js', array(), array(
 		'in_footer' => true,
