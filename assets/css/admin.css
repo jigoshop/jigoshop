@@ -1056,7 +1056,7 @@ a.tips {
 	float: left
 }
 
-.jigoshop_options_panel input {
+.jigoshop_options_panel input, .jigoshop_options_panel .form-field input {
 	width: 50%;
 	float: left
 }
@@ -1066,7 +1066,7 @@ a.tips {
 	margin-left: 10px
 }
 
-.jigoshop_options_panel .checkbox, table.jigoshop_variable_attributes .checkbox {
+.jigoshop_options_panel .checkbox, .jigoshop_options_panel .form-field .checkbox, table.jigoshop_variable_attributes .checkbox {
 	vertical-align: middle;
 	margin: 7px 0;
 	width: auto
@@ -1076,13 +1076,13 @@ a.tips {
 	float: left
 }
 
-.jigoshop_options_panel .short {
+.jigoshop_options_panel .short, .jigoshop_options_panel .form-field input.short {
 	width: 20%;
 	min-width: 125px;
 	margin-right: 10px
 }
 
-.jigoshop_options_panel .long {
+.jigoshop_options_panel .long, .jigoshop_options_panel .form-field input.long {
 	width: 20%;
 	min-width: 300px;
 	margin-right: 10px
