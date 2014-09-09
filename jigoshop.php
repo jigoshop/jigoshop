@@ -200,7 +200,7 @@ function jigoshop_admin_footer($text) {
 				'<a target="_blank" href="http://wordpress.org/support/view/plugin-reviews/jigoshop#postform" >',
 				'</a>'
 			),
-			__('Add your [stars] on [link]wordpress.org[/link] and keep this plugin essentially free.',WYSIJA)
+			__('Add your [stars] on [link]wordpress.org[/link] and keep this plugin essentially free.', 'jigoshop')
 		)
 	);
 }

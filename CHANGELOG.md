@@ -2,6 +2,7 @@
 
 * 1.11.7:
     * Fix: Select2 errors on product, order and coupon pages.
+    * Fix: Notice about `WYSIJA` constant.
 * 1.11.6 - 2014-09-05:
     * Fix: PayPal invalid amounts.
     * Fix: JWOS with WordPress 4.0 compatibility.
