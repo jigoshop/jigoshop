@@ -1,6 +1,5 @@
 /* Modifided script from the simple-page-ordering plugin */
-jQuery(document).ready(function($) {
-
+jQuery(function($) {
 	$('table.widefat.wp-list-table tbody th, table.widefat tbody td').css('cursor','move');
 
 	$("table.widefat.wp-list-table tbody").sortable({
@@ -11,7 +10,7 @@ jQuery(document).ready(function($) {
 		placeholder: 'product-cat-placeholder',
 		scrollSensitivity: 40,
 		helper: function(e, ui) {
-			ui.children().each(function() { jQuery(this).width(jQuery(this).width()); });
+			ui.children().each(function() { $(this).width($(this).width()); });
 			return ui;
 		},
 		start: function(event, ui) {
@@ -62,11 +61,10 @@ jQuery(document).ready(function($) {
 
 			// fix cell colors
 			$( 'table.widefat tbody tr' ).each(function(){
-				var i = jQuery('table.widefat tbody tr').index(this);
-				if ( i%2 == 0 ) jQuery(this).addClass('alternate');
-				else jQuery(this).removeClass('alternate');
+				var i = $('table.widefat tbody tr').index(this);
+				if ( i%2 == 0 ) $(this).addClass('alternate');
+				else $(this).removeClass('alternate');
 			});
 		}
 	});
-
 });

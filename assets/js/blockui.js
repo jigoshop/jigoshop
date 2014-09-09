@@ -13,7 +13,6 @@
  */
 
 /*jshint eqeqeq:false curly:false latedef:false */
-"use strict";
 
 function setup($) {
   $.fn._fadeIn = $.fn.fadeIn;
@@ -575,13 +574,12 @@ function setup($) {
 
 }
 
-(function($){
-  $(document).ready(function(){
-    /*global define:true */
-    if (typeof define === 'function' && define.amd && define.amd.jQuery) {
-      define(['jquery'], setup);
-    } else {
-      setup($);
-    }
-  });
-})(jQuery);
+jQuery(function($) {
+	"use strict";
+  /*global define:true */
+  if (typeof define === 'function' && define.amd && define.amd.jQuery) {
+    define(['jquery'], setup);
+  } else {
+    setup($);
+  }
+});

@@ -1,5 +1,5 @@
-"use strict";
 jQuery(function($){
+	"use strict";
 	var params = jigoshop_params || { assets_url: '' };
 	$.fn.payment = function(options){
 		var settings = $.extend({
