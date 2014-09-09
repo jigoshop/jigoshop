@@ -88,8 +88,6 @@ function jigoshop_after_admin_menu()
 {
 	$admin_page = add_submenu_page('jigoshop', __('Settings'), __('Settings'), 'manage_jigoshop', 'jigoshop_settings', array(Jigoshop_Admin_Settings::instance(), 'output_markup'));
 
-	add_action('admin_print_styles-'.$admin_page, array(Jigoshop_Admin_Settings::instance(), 'settings_styles'));
-	add_action('jigoshop_admin_enqueue_scripts', array(Jigoshop_Admin_Settings::instance(), 'settings_scripts'));
 	add_action('admin_print_scripts-'.$admin_page, function (){
 		do_action('jigoshop_admin_enqueue_scripts');
 	});

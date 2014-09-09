@@ -37,10 +37,9 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	 * @since 1.3
 	 */
 	public function settings_scripts(){
-		jigoshop_add_script('jquery-tools', JIGOSHOP_URL.'/assets/js/jquery.tools.min.js', array('jquery'), array('version' => '1.2.7'));
 		jigoshop_add_script('jigoshop-bootstrap-tooltip', JIGOSHOP_URL.'/assets/js/bootstrap-tooltip.min.js', array('jquery'), array('version' => '2.0.3'));
 		jigoshop_add_script('jigoshop-select2', JIGOSHOP_URL.'/assets/js/select2.min.js', array('jquery'));
-		jigoshop_add_script('jigoshop-settings', JIGOSHOP_URL.'/assets/js/settings.js', array('jquery', 'jquery-tools'));
+		jigoshop_add_script('jigoshop-settings', JIGOSHOP_URL.'/assets/js/settings.js', array('jquery'));
 	}
 
 	/**
@@ -93,6 +92,9 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 				}
 			}
 		}
+
+		add_action('admin_enqueue_styles', array($this, 'settings_styles'));
+		add_action('admin_enqueue_scripts', array($this, 'settings_scripts'));
 	}
 
 	/**
@@ -322,7 +324,6 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 					}
 
 					$value = isset($input[$setting['id']]) ? $input[$setting['id']] : null;
-					echo '<pre>'; var_dump($option, $value); echo '</pre>';
 
 					// we have a $setting
 					// $value has the WordPress user submitted value for this $setting
