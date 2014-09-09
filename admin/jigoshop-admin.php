@@ -294,13 +294,13 @@ function jigoshop_get_current_post_type() {
 /**
  * Load needed scripts to order categories
  */
-function jigoshop_categories_scripts() {
+function jigoshop_categories_scripts()
+{
+	if (!isset($_GET['taxonomy']) || $_GET['taxonomy'] !== 'product_cat') {
+		return;
+	}
 
-	if( !isset($_GET['taxonomy']) || $_GET['taxonomy'] !== 'product_cat') return;
-
-	wp_register_script('jigoshop-categories-ordering', jigoshop::assets_url() . '/assets/js/categories-ordering.js', array('jquery-ui-sortable'));
-	wp_print_scripts('jigoshop-categories-ordering');
-
+	jigoshop_add_script('jigoshop-categories-ordering', JIGOSHOP_URL.'/assets/js/categories-ordering.js', array('jquery-ui-sortable'));
 }
 add_action('admin_footer-edit-tags.php', 'jigoshop_categories_scripts');
 

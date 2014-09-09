@@ -52,33 +52,33 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 		if ( $hook != 'post.php' || $post->post_type != 'product' )
 			return;
 
-		jigoshop_add_script('jigoshop-variable-js', jigoshop::assets_url() . '/assets/js/variable.js' , array('jquery'), array('in_footer' => true));
-		jigoshop_localize_script( 'jigoshop-variable-js', 'varmeta', array(
-			'assets_url'  => jigoshop::assets_url(),
-			'ajax_url'    => admin_url('admin-ajax.php'),
-			'i18n'        => array(
-				'variations_required' => __('You need to add some variations first', 'jigoshop'),
-				'remove_all'          => __('Are you sure you want to delete all variations', 'jigoshop'),
-				'set_regular_price'   => __('Enter a regular price', 'jigoshop'),
-				'set_sale_price'      => __('Enter a sale price', 'jigoshop'),
-				'set_stock'           => __('Enter a stock value', 'jigoshop'),
-				'set_weight'          => __('Enter a weight value', 'jigoshop'),
-				'set_width'           => __('Enter a width value', 'jigoshop'),
-				'set_length'          => __('Enter a length value', 'jigoshop'),
-				'set_height'          => __('Enter a height value', 'jigoshop'),
-			),
-			'actions'     => array(
-				'remove'      => array(
-					'action'        => 'jigoshop_remove_variation',
-					'nonce'         => wp_create_nonce("delete-variation"),
-					'confirm'       => __('Are you sure you want to remove this variation?', 'jigoshop'),
-				),
-				'create'      => array(
-					'action'        => 'jigoshop_create_variation',
-					'panel'         => $this->generate_panel(maybe_unserialize( get_post_meta($post->ID, 'product_attributes', true) ))
-				)
-			)
-		));
+//		jigoshop_add_script('jigoshop-variable-js', jigoshop::assets_url() . '/assets/js/variable.js' , array('jquery'), array('in_footer' => true));
+//		jigoshop_localize_script( 'jigoshop-variable-js', 'varmeta', array(
+//			'assets_url'  => jigoshop::assets_url(),
+//			'ajax_url'    => admin_url('admin-ajax.php'),
+//			'i18n'        => array(
+//				'variations_required' => __('You need to add some variations first', 'jigoshop'),
+//				'remove_all'          => __('Are you sure you want to delete all variations', 'jigoshop'),
+//				'set_regular_price'   => __('Enter a regular price', 'jigoshop'),
+//				'set_sale_price'      => __('Enter a sale price', 'jigoshop'),
+//				'set_stock'           => __('Enter a stock value', 'jigoshop'),
+//				'set_weight'          => __('Enter a weight value', 'jigoshop'),
+//				'set_width'           => __('Enter a width value', 'jigoshop'),
+//				'set_length'          => __('Enter a length value', 'jigoshop'),
+//				'set_height'          => __('Enter a height value', 'jigoshop'),
+//			),
+//			'actions'     => array(
+//				'remove'      => array(
+//					'action'        => 'jigoshop_remove_variation',
+//					'nonce'         => wp_create_nonce("delete-variation"),
+//					'confirm'       => __('Are you sure you want to remove this variation?', 'jigoshop'),
+//				),
+//				'create'      => array(
+//					'action'        => 'jigoshop_create_variation',
+//					'panel'         => $this->generate_panel(maybe_unserialize( get_post_meta($post->ID, 'product_attributes', true) ))
+//				)
+//			)
+//		));
 	}
 
 	/**

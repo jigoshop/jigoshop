@@ -40,6 +40,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		jigoshop_add_script('jquery-tools', JIGOSHOP_URL.'/assets/js/jquery.tools.min.js', array('jquery'), array('version' => '1.2.7'));
 		jigoshop_add_script('jigoshop-bootstrap-tooltip', JIGOSHOP_URL.'/assets/js/bootstrap-tooltip.min.js', array('jquery'), array('version' => '2.0.3'));
 		jigoshop_add_script('jigoshop-select2', JIGOSHOP_URL.'/assets/js/select2.min.js', array('jquery'));
+		jigoshop_add_script('jigoshop-settings', JIGOSHOP_URL.'/assets/js/settings.js', array('jquery', 'jquery-tools'));
 	}
 
 	/**
@@ -206,30 +207,6 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 				</div>
 			</form>
 		</div>
-		<script type="text/javascript">
-		/*<![CDATA[*/
-			jQuery(function(){
-				// Fade out the status message
-				jQuery('.updated').delay(2500).fadeOut(1500);
-
-				// jQuery Tools range tool
-				jQuery(":range").rangeinput();
-
-				// Countries
-				jQuery('select#jigoshop_allowed_countries').change(function(){
-					// hide-show multi_select_countries
-					if (jQuery(this).val()=="specific") {
-						jQuery(this).parent().parent().next('tr').show();
-					} else {
-						jQuery(this).parent().parent().next('tr').hide();
-					}
-				}).change();
-
-				// permalink double save hack (do we need this anymore -JAP-)
-				jQuery.get('<?php echo admin_url('options-permalink.php') ?>');
-			});
-		/*]]>*/
-		</script>
 		<?php do_action( 'jigoshop_settings_scripts' );
 	}
 
