@@ -117,6 +117,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 * Fix: Select2 errors on product, order and coupon pages.
 * Fix: Notice about `WYSIJA` constant.
 * Fix: Re-add `jigoshop_form` class for Groups integration plugin.
+* Fix: Clearing multiple select fields.
 * Improved: Add "Allow URL fopen" to System Info page.
 * Improved: Handling of Jigoshop Settings scripts.
 
