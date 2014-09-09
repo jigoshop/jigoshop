@@ -195,7 +195,9 @@ function jigoshop_write_panel_scripts()
 		return;
 	}
 
-	jigoshop_add_script('jigoshop-writepanel', JIGOSHOP_URL.'/assets/js/write-panels.js', array('jquery'));
+	wp_enqueue_script('jquery-ui-datepicker');
+	jigoshop_add_script('jigoshop-select2', JIGOSHOP_URL.'/assets/js/select2.min.js', array('jquery'));
+	jigoshop_add_script('jigoshop-writepanel', JIGOSHOP_URL.'/assets/js/write-panels.js', array('jquery', 'jigoshop-select2'));
 	jigoshop_add_script('jigoshop-bootstrap-tooltip', JIGOSHOP_URL.'/assets/js/bootstrap-tooltip.min.js', array('jquery'), array('version' => '2.0.3'));
 
 	wp_enqueue_script('media-upload');

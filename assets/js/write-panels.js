@@ -1,41 +1,5 @@
-(function($) {
-
-	// On document Load
-	$(function() {
-
-		$('#product-type').select2({ width: '200px' });
-		$('.backorders_field').hide();
-
-		// Set up tabs
-		jigoshop_start_tabs();
-
-		// Setup options
-		jigoshop_product_type_options();
-
-		// Set up jigoshop sale datepicker
-		jigoshop_sale_picker();
-
-		// Jigoshop stock options
-		jigoshop_stock_options();
-
-		// Sortables
-		jigoshop_sortables();
-
-		// Orders
-		jigoshop_orders();
-
-		// Attributes
-		jigoshop_attributes();
-
-		// File Upload
-		jigoshop_file_upload();
-
-		// Ensure a tax class is set on products
-		jigoshop_default_product_taxclass();
-	});
-
+jQuery(function($) {
 	function jigoshop_start_tabs() {
-
 		var $tabs = $('.tabs');
 
 		// First show tabs & hide each panel
@@ -53,7 +17,6 @@
 			$('div.panel', $panels).hide();
 			$( $(this).attr('href') ).show();
 		});
-
 	}
 
 	function jigoshop_stock_options() {
@@ -265,9 +228,7 @@
 
 				Math.round = Math._round;   // return normal round function we altered at the start of function
 			}
-
 		});
-
 
 		$(document.body).on('click', 'button.billing-same-as-shipping', function(e){
 			e.preventDefault();
@@ -486,4 +447,19 @@
 		});
 	}
 
-})(window.jQuery);
+	var $product_type = $('select#product-type');
+	if ($product_type.length) {
+		$product_type.select2({ width: '200px' });
+		$('.backorders_field').hide();
+		jigoshop_product_type_options();
+		jigoshop_sale_picker();
+		jigoshop_stock_options();
+		jigoshop_sortables();
+		jigoshop_default_product_taxclass();
+	}
+
+	jigoshop_start_tabs();
+	jigoshop_orders();
+	jigoshop_attributes();
+	jigoshop_file_upload();
+});
