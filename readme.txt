@@ -116,6 +116,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 = 1.11.7 - 2014-09-09 =
 * Fix: Select2 errors on product, order and coupon pages.
 * Fix: Notice about `WYSIJA` constant.
+* Fix: Re-add `jigoshop_form` class for Groups integration plugin.
 * Improved: Add "Allow URL fopen" to System Info page.
 * Improved: Handling of Jigoshop Settings scripts.
 

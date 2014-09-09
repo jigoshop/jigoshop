@@ -246,3 +246,48 @@ function jigoshop_meta_scripts()
 	</script>
 <?php
 }
+
+class jigoshop_form
+{
+	public static function input($ID, $label, $desc = false, $value = null, $class = 'short', $placeholder = null, array $extras = array())
+	{
+		$args = array(
+			'id' => $ID,
+			'label' => $label,
+			'after_label' => isset($extras['after_label']) ? $extras['after_label'] : null,
+			'class' => $class,
+			'desc' => $desc,
+			'value' => $value,
+			'placeholder' => $placeholder,
+		);
+
+		return Jigoshop_Forms::input($args);
+	}
+
+	public static function select($ID, $label, $options, $selected = false, $desc = false, $class = 'select short')
+	{
+		$args = array(
+			'id' => $ID,
+			'label' => $label,
+			'class' => $class,
+			'desc' => $desc,
+			'options' => $options,
+			'selected' => $selected
+		);
+
+		return Jigoshop_Forms::select($args);
+	}
+
+	public static function checkbox($ID, $label, $value = false, $desc = false, $class = 'checkbox')
+	{
+		$args = array(
+			'id' => $ID,
+			'label' => $label,
+			'class' => $class,
+			'desc' => $desc,
+			'value' => $value
+		);
+
+		return Jigoshop_Forms::checkbox($args);
+	}
+}
