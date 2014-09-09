@@ -322,13 +322,14 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 					}
 
 					$value = isset($input[$setting['id']]) ? $input[$setting['id']] : null;
+					echo '<pre>'; var_dump($option, $value); echo '</pre>';
 
 					// we have a $setting
 					// $value has the WordPress user submitted value for this $setting
 					// $option has this $setting parameters
 					// validate for $option 'type' checking for a submitted $value
 					switch($option['type']){
-						case 'user_defined' :
+						case 'user_defined':
 							if(isset($option['update'])){
 								if(is_callable($option['update'], true)){
 									$result = call_user_func($option['update']);
@@ -336,24 +337,22 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 								}
 							}
 							break;
-						case 'multi_select_countries' :
-							if(isset($value)){
-								$countries = jigoshop_countries::get_countries();
-								asort($countries);
-								$selected = array();
-								foreach($countries as $key => $val){
-									if(in_array($key, (array)$value)){
-										$selected[] = $key;
-									}
+						case 'multi_select_countries':
+							$countries = jigoshop_countries::get_countries();
+							asort($countries);
+							$selected = array();
+							foreach($countries as $key => $val){
+								if(in_array($key, (array)$value)){
+									$selected[] = $key;
 								}
-								$valid_input[$setting['id']] = $selected;
 							}
+							$valid_input[$setting['id']] = $selected;
 							break;
-						case 'checkbox' :
+						case 'checkbox':
 							// there will be no $value for a false checkbox, set it now
 							$valid_input[$setting['id']] = $value !== null ? 'yes' : 'no';
 							break;
-						case 'multicheck' :
+						case 'multicheck':
 							$selected = array();
 							foreach($option['choices'] as $key => $val){
 								if(isset($value[$key])){
@@ -364,12 +363,12 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 							}
 							$valid_input[$setting['id']] = $selected;
 							break;
-						case 'text' :
-						case 'longtext' :
-						case 'textarea' :
+						case 'text':
+						case 'longtext':
+						case 'textarea':
 							$valid_input[$setting['id']] = esc_attr(jigowatt_clean($value));
 							break;
-						case 'codeblock' :
+						case 'codeblock':
 							$allowedtags = array(
 								'a' => array('href' => true, 'title' => true),
 								'img' => array('src' => true, 'title' => true, 'alt' => true),
@@ -389,7 +388,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 							);
 							$valid_input[$setting['id']] = wp_kses($value, $allowedtags);
 							break;
-						case 'email' :
+						case 'email':
 							$email = sanitize_email($value);
 							if($email <> $value){
 								add_settings_error(
@@ -403,7 +402,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 								$valid_input[$setting['id']] = esc_attr(jigowatt_clean($email));
 							}
 							break;
-						case 'decimal' :
+						case 'decimal':
 							$cleaned = jigowatt_clean($value);
 							if(!jigoshop_validation::is_decimal($cleaned) && $cleaned <> ''){
 								add_settings_error(
@@ -417,7 +416,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 								$valid_input[$setting['id']] = $cleaned;
 							}
 							break;
-						case 'integer' :
+						case 'integer':
 							$cleaned = jigowatt_clean($value);
 							if(!jigoshop_validation::is_integer($cleaned) && $cleaned <> ''){
 								add_settings_error(
@@ -431,7 +430,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 								$valid_input[$setting['id']] = $cleaned;
 							}
 							break;
-						case 'natural' :
+						case 'natural':
 							$cleaned = jigowatt_clean($value);
 							if(!jigoshop_validation::is_natural($cleaned) && $cleaned <> ''){
 								add_settings_error(
@@ -445,7 +444,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 								$valid_input[$setting['id']] = $cleaned;
 							}
 							break;
-						default :
+						default:
 							if(isset($value)){
 								$valid_input[$setting['id']] = $value;
 							}
