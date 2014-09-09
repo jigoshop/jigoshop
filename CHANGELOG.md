@@ -1,6 +1,6 @@
 ## Changelog
 
-* 1.11.7:
+* 1.11.7 - 2014-09-09:
     * Fix: Select2 errors on product, order and coupon pages.
     * Fix: Notice about `WYSIJA` constant.
 * 1.11.6 - 2014-09-05:
