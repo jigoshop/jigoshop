@@ -174,6 +174,7 @@ function jigoshop_system_info() {
 	PHP Post Max Size:        <?php if(function_exists('phpversion')) echo (jigoshop_let_to_num(ini_get('post_max_size'))/(1024*1024))."MB"; ?><?php echo "\n"; ?>
 	PHP Upload Max File Size: <?php if(function_exists('phpversion')) echo (jigoshop_let_to_num(ini_get('upload_max_filesize'))/(1024*1024))."MB"; ?><?php echo "\n"; ?>
 	Short Open Tag:           <?php echo (ini_get('short_open_tag') ? 'Enabled' : 'Disabled'); ?><?php echo "\n"; ?>
+	Allow URL fopen:          <?php echo (ini_get('allow_url_fopen') ? 'Enabled' : 'Disabled'); ?><?php echo "\n"; ?>
 
 	WP_DEBUG:                 <?php echo defined('WP_DEBUG') ? WP_DEBUG ? 'Enabled' . "\n" : 'Disabled' . "\n" : 'Not set' . "\n" ?>
 
