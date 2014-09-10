@@ -247,6 +247,11 @@ function jigoshop_meta_scripts()
 <?php
 }
 
+/**
+ * As of Jigoshop 1.3 this class is deprecated and replaced with classes/jigoshop_forms.class.php (Jigoshop_Forms)
+ *
+ * This is here for backwards compatibility only.
+ */
 class jigoshop_form
 {
 	public static function input($ID, $label, $desc = false, $value = null, $class = 'short', $placeholder = null, array $extras = array())
