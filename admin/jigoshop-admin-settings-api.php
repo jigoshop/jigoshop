@@ -352,7 +352,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 							break;
 						case 'checkbox':
 							// there will be no $value for a false checkbox, set it now
-							$valid_input[$setting['id']] = $value !== null ? 'yes' : 'no';
+							$valid_input[$setting['id']] = $value !== false ? 'yes' : 'no';
 							break;
 						case 'multicheck':
 							$selected = array();
