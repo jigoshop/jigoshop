@@ -71,6 +71,18 @@ class jigoshop_product_variation extends jigoshop_product {
 		return $this;
 	}
 
+	public function get_sku()
+	{
+		$sku = get_post_meta($this->variation_id, '_sku', true);
+
+		if ($sku === false) {
+			$sku = parent::get_sku();
+		}
+
+		return $sku;
+	}
+
+
 	/**
 	 * Get variation ID
 	 *
