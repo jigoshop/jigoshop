@@ -929,6 +929,19 @@ class Jigoshop_Options_Parser {
 					type="range" min="'.$item['extra']['min'].'" max="'.$item['extra']['max'].'" step="'.$item['extra']['step'].'"
 					value="'.$options->get_option($item['id']).'" />';
 				break;
+			case 'number':
+				$display .= '<input id="'.$item['id'].'" class="jigoshop-input '.$class.'" name="'.JIGOSHOP_OPTIONS.'['.$item['id'].']" type="number" value="'.$options->get_option($item['id']).'"';
+				if(isset($item['extra']['min'])){
+					$display .= ' min="'.$item['extra']['min'].'"';
+				}
+				if(isset($item['extra']['max'])){
+					$display .= ' max="'.$item['extra']['max'].'"';
+				}
+				if(isset($item['extra']['step'])){
+					$display .= ' step="'.$item['extra']['step'].'"';
+				}
+				$display .= ' />';
+				break;
 			case 'select':
 				$multiple = (!empty($item['multiple']) && $item['multiple'] == true)
 					? 'multiple="multiple"'

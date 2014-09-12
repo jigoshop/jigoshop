@@ -953,7 +953,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 				'desc' => __('Default = 3', 'jigoshop'),
 				'tip' => __('Determines how many products to show on one display row for Shop, Category and Tag pages.', 'jigoshop'),
 				'id' => 'jigoshop_catalog_columns',
-				'type' => 'range',
+				'type' => 'number',
 				'extra' => array(
 					'min' => 1,
 					'max' => 10,
@@ -965,7 +965,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 				'desc' => __('Default = 12', 'jigoshop'),
 				'tip' => __('Determines how many products to display on Shop, Category and Tag pages before needing next and previous page navigation.', 'jigoshop'),
 				'id' => 'jigoshop_catalog_per_page',
-				'type' => 'range',
+				'type' => 'number',
 				'extra' => array(
 					'min' => 1,
 					'max' => 100,
@@ -1187,7 +1187,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 				'desc' => __('Default = 3', 'jigoshop'),
 				'tip' => __('Determines how many extra product thumbnail images attached to a product to show on one row for the Single Product page.', 'jigoshop'),
 				'id' => 'jigoshop_product_thumbnail_columns',
-				'type' => 'range',
+				'type' => 'number',
 				'extra' => array(
 					'min' => 1,
 					'max' => 10,
