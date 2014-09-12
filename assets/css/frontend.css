@@ -1268,7 +1268,7 @@ div.shipping-address {
 	clear: left
 }
 
-.checkout #customer_details, .checkout #order_review, .checkout #payment {
+.checkout #customer_details, .checkout #order_review, .checkout #pay_for_order, .checkout #payment {
 	margin-bottom: 24px
 }
 

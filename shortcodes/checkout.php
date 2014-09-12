@@ -38,7 +38,7 @@ function jigoshop_checkout( $atts ) {
 
 function jigoshop_process_checkout()
 {
-	if (!is_checkout()) {
+	if (!is_checkout() || is_jigoshop_single_page(JIGOSHOP_PAY)) {
 		return;
 	}
 

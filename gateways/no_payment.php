@@ -13,7 +13,7 @@ class no_payment extends jigoshop_payment_gateway
 
 	public function is_available()
 	{
-		return true;
+		return !is_jigoshop_single_page(JIGOSHOP_PAY);
 	}
 
 	/**
@@ -47,7 +47,7 @@ class no_payment extends jigoshop_payment_gateway
  * Add the gateway to Jigoshop (only to be used on frontend for free orders!)
  */
 add_filter('jigoshop_payment_gateways', function($methods){
-	if (is_admin() && !is_ajax()) {
+	if ((is_admin() && !is_ajax())) {
 		return $methods;
 	}
 
