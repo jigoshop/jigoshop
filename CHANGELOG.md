@@ -4,6 +4,7 @@
     * Fix: Paying for pending orders.
     * Fix: Proper checkbox saving in admin panel.
     * Fix: Adding variations JavaScripts.
+    * Fix: Notice when related products are enabled.
     * Improved: `get_sku()` method on product variation object will now return variation SKU (if not available - product SKU).
     * Improved: Added `number` option type.
     * Improved: Replaced `range` items with `number` ones - better to use (visible values).

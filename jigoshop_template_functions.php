@@ -826,8 +826,8 @@ if (!function_exists('jigoshop_get_image_placeholder')) {
  **/
 if (!function_exists('jigoshop_output_related_products')) {
 	function jigoshop_output_related_products() {
-        $jigoshop_options = Jigoshop_Base::get_options();
-		if ($jigoshop_options->get_option ('jigoshop_enable_related_products') != 'no')
+    $options = Jigoshop_Base::get_options();
+		if ($options->get_option ('jigoshop_enable_related_products') != 'no')
 			// 2 Related Products in 2 columns
 			jigoshop_related_products( 2, 2 );
 	}
@@ -836,6 +836,7 @@ if (!function_exists('jigoshop_output_related_products')) {
 if (!function_exists('jigoshop_related_products')) {
 	function jigoshop_related_products( $posts_per_page = 4, $post_columns = 4, $orderby = 'rand' ) {
 
+		/** @var $_product jigoshop_product */
 		global $_product, $columns, $per_page;
 
 		// Pass vars to loop

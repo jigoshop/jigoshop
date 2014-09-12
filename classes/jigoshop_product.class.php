@@ -1066,21 +1066,27 @@ class jigoshop_product extends Jigoshop_Base {
 			),
 			'tax_query'       => array(
 				'relation'       => 'OR',
-				array(
-					'taxonomy'   => 'product_cat',
-					'field'      => 'id',
-					'terms'      => $cats
-				),
-				array(
-					'taxonomy'   => 'product_tag',
-					'field'      => 'id',
-					'terms'      => $tags
-				),
 			),
 		);
 
+		if (!empty($cats)) {
+			$query['tax_query'][] = array(
+				'taxonomy'   => 'product_cat',
+				'field'      => 'id',
+				'terms'      => $cats
+			);
+		}
+		if (!empty($tags)) {
+			$query['tax_query'][] = array(
+				'taxonomy'   => 'product_tag',
+				'field'      => 'id',
+				'terms'      => $tags
+			);
+		}
+
 		// Run the query
 		$q = get_posts( $query );
+
 		wp_reset_postdata();
 
 		return $q;
