@@ -113,6 +113,9 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 
 == Changelog ==
 
+= 1.11.9 =
+* Fix: EU VAT handling for same country orders.
+
 = 1.11.8 - 2014-09-12 =
 * Fix: Paying for pending orders.
 * Fix: Proper checkbox saving in admin panel.

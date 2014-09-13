@@ -682,7 +682,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 						jigoshop_log('EU VAT validation error with URL: '.$url);
 						jigoshop::add_error($field['label'].__(' (billing) is not a valid VAT Number.  Leave it blank to disable VAT validation. (VAT may be charged depending on your location)', 'jigoshop'));
 					} else {
-						$this->valid_euvatno = true;
+						$this->valid_euvatno = jigoshop_countries::get_base_country() != jigoshop_tax::get_customer_country() && jigoshop_countries::is_eu_country(jigoshop_tax::get_customer_country());
 					}
 				}
 			}
