@@ -3,7 +3,7 @@ Contributors: Jigoshop
 Tags: e-commerce, wp e-commerce, ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal, jigoshop, shipping, inventory, stock, online, sell, sales, weights, dimensions, configurable, variable, downloadable, external, affiliate, download, virtual, physical
 Requires at least: 3.8
 Tested up to: 4.0
-Stable tag: 1.11.8
+Stable tag: 1.11.9
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -113,8 +113,9 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 
 == Changelog ==
 
-= 1.11.9 =
+= 1.11.9 - 2014-09-16 =
 * Fix: EU VAT handling for same country orders.
+* Fix: Tax for shipping is properly added on new orders using PayPal standard.
 
 = 1.11.8 - 2014-09-12 =
 * Fix: Paying for pending orders.

@@ -262,7 +262,7 @@ class jigoshop_order extends Jigoshop_Base
 			foreach ($this->get_tax_classes() as $tax_class) {
 				$order_tax += $this->order_tax[$tax_class]['amount'];
 			}
-			$order_tax += (float)$this->_fetch('order_shipping_tax');
+			$order_tax += $this->get_shipping_tax();
 		}
 
 		if ($with_price_options) {
@@ -607,5 +607,19 @@ class jigoshop_order extends Jigoshop_Base
 			}
 		}
 		$this->add_order_note(__('Order item stock reduced successfully.', 'jigoshop'));
+	}
+
+	private function get_shipping_tax()
+	{
+		$tax = (float)$this->_fetch('order_shipping_tax');
+		if ($tax == 0 && isset(jigoshop_session::instance()->chosen_shipping_method_id) && isset(jigoshop_session::instance()->selected_rate_id)) {
+			foreach($this->get_tax_classes() as $class) {
+				if (isset($this->order_tax[$class][jigoshop_session::instance()->chosen_shipping_method_id.jigoshop_session::instance()->selected_rate_id])) {
+					$tax += (float)$this->order_tax[$class][jigoshop_session::instance()->chosen_shipping_method_id.jigoshop_session::instance()->selected_rate_id];
+				}
+			}
+		}
+
+		return $tax;
 	}
 }

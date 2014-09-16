@@ -1,7 +1,8 @@
 ## Changelog
 
-* 1.11.9:
+* 1.11.9 - 2014-09-16:
     * Fix: EU VAT handling for same country orders.
+    * Fix: Tax for shipping is properly added on new orders using PayPal standard.
 * 1.11.8 - 2014-09-12:
     * Fix: Paying for pending orders.
     * Fix: Proper checkbox saving in admin panel.
