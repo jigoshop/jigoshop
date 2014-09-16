@@ -30,7 +30,7 @@ class jigoshop_product_meta
 		// Process general product data
 		$regular_price = 0.0;
 		if(isset($_POST['regular_price'])){
-			if(!empty($_POST['regular_price'])){
+			if($_POST['regular_price'] != ''){
 				$regular_price = jigoshop_sanitize_num($_POST['regular_price']);
 			} else {
 				$regular_price = '';
