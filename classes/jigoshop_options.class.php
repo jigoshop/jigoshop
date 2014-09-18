@@ -151,16 +151,16 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	}
 
 	/**
-	 * Adds a named option to our collection
-	 *
+	 * Adds a named option
 	 * Will do nothing if option already exists to match WordPress behaviour
 	 * Use 'set_option' to actually set an existing option
 	 *
-	 * @param string $name the name of the option to add
-	 * @param mixed	$value the value to set if the option doesn't exist
-	 * @since	1.3
+	 * @param   string  the name of the option to add
+	 * @param   mixed  the value to set if the option doesn't exist
+	 * @since  1.12
 	 */
-	public function add_option($name, $value){
+	public function add($name, $value)
+	{
 		$this->get_current_options();
 		if(!isset(self::$current_options[$name])){
 			self::$current_options[$name] = $value;
@@ -171,14 +171,29 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	}
 
 	/**
+	 * Adds a named option to our collection
+	 *
+	 * Will do nothing if option already exists to match WordPress behaviour
+	 * Use 'set_option' to actually set an existing option
+	 *
+	 * @param string $name the name of the option to add
+	 * @param mixed	$value the value to set if the option doesn't exist
+	 * @since	1.3
+	 */
+	public function add_option($name, $value){
+		$this->add($name, $value);
+	}
+
+	/**
 	 * Returns a named Jigoshop option
 	 *
-	 * @param string $name the name of the option to retrieve
-	 * @param mixed $default the value to return if the option doesn't exist
-	 * @return mixed the value of the option, null if no $default and doesn't exist
-	 * @since  1.3
+	 * @param   string  the name of the option to retrieve
+	 * @param   mixed  the value to return if the option doesn't exist
+	 * @return  mixed  the value of the option, null if no $default and option doesn't exist
+	 * @since  1.12
 	 */
-	public function get_option($name, $default = null){
+	public function get($name, $default = null)
+	{
 		if(isset(self::$current_options[$name])){
 			return apply_filters('jigoshop_get_option', self::$current_options[$name], $name, $default);
 		} elseif(($old_option = get_option($name)) !== false){
@@ -191,13 +206,26 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	}
 
 	/**
+	 * Returns a named Jigoshop option
+	 *
+	 * @param string $name the name of the option to retrieve
+	 * @param mixed $default the value to return if the option doesn't exist
+	 * @return mixed the value of the option, null if no $default and doesn't exist
+	 * @since  1.3
+	 */
+	public function get_option($name, $default = null){
+		return $this->get($name, $default);
+	}
+
+	/**
 	 * Sets a named Jigoshop option
 	 *
-	 * @param string $name the name of the option to set
-	 * @param	mixed	$value the value to set
-	 * @since	1.3
+	 * @param   string  the name of the option to set
+	 * @param  mixed  the value to set
+	 * @since  1.12
 	 */
-	public function set_option($name, $value){
+	public function set($name, $value)
+	{
 		$this->get_current_options();
 
 		if(isset($name)){
@@ -209,13 +237,25 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	}
 
 	/**
-	 * Deletes a named Jigoshop option
+	 * Sets a named Jigoshop option
 	 *
-	 * @param string $name the name of the option to delete
-	 * @return bool true for successful completion if option found, false otherwise
+	 * @param string $name the name of the option to set
+	 * @param	mixed	$value the value to set
 	 * @since	1.3
 	 */
-	public function delete_option($name){
+	public function set_option($name, $value){
+		$this->set($name, $value);
+	}
+
+	/**
+	 * Deletes a named Jigoshop option
+	 *
+	 * @param   string  the name of the option to delete
+	 * @return  bool  true for successful completion if option found, false otherwise
+	 * @since  1.12
+	 */
+	public function delete($name)
+	{
 		$this->get_current_options();
 		if(isset($name)){
 			unset(self::$current_options[$name]);
@@ -230,6 +270,34 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	}
 
 	/**
+	 * Deletes a named Jigoshop option
+	 *
+	 * @param string $name the name of the option to delete
+	 * @return bool true for successful completion if option found, false otherwise
+	 * @since	1.3
+	 */
+	public function delete_option($name){
+		return $this->delete($name);
+	}
+
+	/**
+	 * Determines whether an Option exists
+	 *
+	 * @param $name string the name of option to check for existence
+	 * @return  bool  true for successful completion if option found, false otherwise
+	 * @since  1.12
+	 */
+	public function exists($name)
+	{
+		$this->get_current_options();
+		if(isset(self::$current_options[$name])){
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Determines whether an Option exists
 	 *
 	 * @param string $name Option name.
@@ -237,12 +305,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	 * @since 1.3
 	 */
 	public function exists_option($name){
-		$this->get_current_options();
-		if(isset(self::$current_options[$name])){
-			return true;
-		}
-
-		return false;
+		return $this->exists($name);
 	}
 
 	/**
