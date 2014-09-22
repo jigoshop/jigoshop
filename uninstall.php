@@ -42,7 +42,7 @@ $wp_roles->remove_cap( 'administrator', 'manage_jigoshop_products' );
 $wp_roles->remove_cap( 'administrator', 'view_jigoshop_reports' );
 
 // Pages
-$page_ids = Jigoshop_Base::get_options()->get_option( 'jigoshop_page-ids' );
+$page_ids = Jigoshop_Base::get_options()->get( 'jigoshop_page-ids' );
 if ( !empty( $page_ids ) && is_array( $page_ids ) ) foreach ( $page_ids as $id ) wp_delete_post( $id, true );
 
 // Tables

@@ -179,7 +179,7 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 							</label>
 						</td>
 						<td colspan="4" class="dimensions">
-							<label><?php _e('Dimensions', 'jigoshop') ?> <?php echo '('.Jigoshop_Base::get_options()->get_option('jigoshop_dimension_unit').')' ?></label>
+							<label><?php _e('Dimensions', 'jigoshop') ?> <?php echo '('.Jigoshop_Base::get_options()->get('jigoshop_dimension_unit').')' ?></label>
 							<?php $value = esc_attr(isset($meta['length'][0]) ? $meta['length'][0] : null); ?>
 							<input type="text" name="<?php echo esc_attr($this->field_name('length', $variation)); ?>" placeholder="<?php _e('Length', 'jigoshop') ?>" value="<?php echo $value; ?>" />
 							<?php $value = esc_attr(isset($meta['width'][0]) ? $meta['width'][0] : null); ?>
@@ -414,8 +414,8 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 				}
 			} else {
 				$_product = new jigoshop_product_variation($ID);
-				if (Jigoshop_Base::get_options()->get_option('jigoshop_hide_no_stock_product') == 'yes' && $_product->managing_stock()) {
-					if ($meta['stock'] <= Jigoshop_Base::get_options()->get_option('jigoshop_notify_no_stock_amount') && $meta['stock'] != '') {
+				if (Jigoshop_Base::get_options()->get('jigoshop_hide_no_stock_product') == 'yes' && $_product->managing_stock()) {
+					if ($meta['stock'] <= Jigoshop_Base::get_options()->get('jigoshop_notify_no_stock_amount') && $meta['stock'] != '') {
 						unset($meta['enabled']);
 					} else {
 						$meta['enabled'] = true;

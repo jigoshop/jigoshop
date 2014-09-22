@@ -313,7 +313,7 @@ class jigoshop_order extends Jigoshop_Base
 	public function get_subtotal_to_display()
 	{
 		$subtotal = jigoshop_price($this->order_subtotal);
-		if ($this->order_tax > 0 && self::get_options()->get_option('jigoshop_calc_taxes') == 'yes') {
+		if ($this->order_tax > 0 && self::get_options()->get('jigoshop_calc_taxes') == 'yes') {
 			$subtotal .= __(' <small>(ex. tax)</small>', 'jigoshop');
 		}
 
@@ -441,7 +441,7 @@ class jigoshop_order extends Jigoshop_Base
 	public function get_checkout_payment_url()
 	{
 		$payment_page = apply_filters('jigoshop_get_checkout_payment_url', get_permalink(jigoshop_get_page_id('pay')));
-		if (self::get_options()->get_option('jigoshop_force_ssl_checkout') == 'yes' || is_ssl()) {
+		if (self::get_options()->get('jigoshop_force_ssl_checkout') == 'yes' || is_ssl()) {
 			$payment_page = str_replace('http:', 'https:', $payment_page);
 		}
 
@@ -598,9 +598,9 @@ class jigoshop_order extends Jigoshop_Base
 						do_action('jigoshop_product_on_backorder_notification', $this->id, $_product, $item['qty']);
 					}
 					// stock status notifications
-					if (self::get_options()->get_option('jigoshop_notify_no_stock_amount') >= 0 && self::get_options()->get_option('jigoshop_notify_no_stock_amount') >= $new_quantity) {
+					if (self::get_options()->get('jigoshop_notify_no_stock_amount') >= 0 && self::get_options()->get('jigoshop_notify_no_stock_amount') >= $new_quantity) {
 						do_action('jigoshop_no_stock_notification', $_product);
-					} elseif (self::get_options()->get_option('jigoshop_notify_low_stock_amount') && self::get_options()->get_option('jigoshop_notify_low_stock_amount') >= $new_quantity) {
+					} elseif (self::get_options()->get('jigoshop_notify_low_stock_amount') && self::get_options()->get('jigoshop_notify_low_stock_amount') >= $new_quantity) {
 						do_action('jigoshop_low_stock_notification', $_product);
 					}
 				}

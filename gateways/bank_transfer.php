@@ -34,16 +34,16 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
         $this->id				= 'bank_transfer';
         $this->icon 			= '';
         $this->has_fields 		= false;
-		$this->enabled			= Jigoshop_Base::get_options()->get_option('jigoshop_bank_transfer_enabled');
-		$this->title 			= Jigoshop_Base::get_options()->get_option('jigoshop_bank_transfer_title');
-		$this->description 		= Jigoshop_Base::get_options()->get_option('jigoshop_bank_transfer_description');
-		$this->bank_name 		= Jigoshop_Base::get_options()->get_option('jigoshop_bank_transfer_bank_name');
-		$this->acc_number 		= Jigoshop_Base::get_options()->get_option('jigoshop_bank_transfer_acc_number');
-		$this->sort_code 		= Jigoshop_Base::get_options()->get_option('jigoshop_bank_transfer_sort_code');
-		$this->account_holder 	= Jigoshop_Base::get_options()->get_option('jigoshop_bank_transfer_account_holder');
-		$this->iban 			= Jigoshop_Base::get_options()->get_option('jigoshop_bank_transfer_iban');
-		$this->bic 				= Jigoshop_Base::get_options()->get_option('jigoshop_bank_transfer_bic');
-		$this->additional 		= Jigoshop_Base::get_options()->get_option('jigoshop_bank_transfer_additional');
+		$this->enabled			= Jigoshop_Base::get_options()->get('jigoshop_bank_transfer_enabled');
+		$this->title 			= Jigoshop_Base::get_options()->get('jigoshop_bank_transfer_title');
+		$this->description 		= Jigoshop_Base::get_options()->get('jigoshop_bank_transfer_description');
+		$this->bank_name 		= Jigoshop_Base::get_options()->get('jigoshop_bank_transfer_bank_name');
+		$this->acc_number 		= Jigoshop_Base::get_options()->get('jigoshop_bank_transfer_acc_number');
+		$this->sort_code 		= Jigoshop_Base::get_options()->get('jigoshop_bank_transfer_sort_code');
+		$this->account_holder 	= Jigoshop_Base::get_options()->get('jigoshop_bank_transfer_account_holder');
+		$this->iban 			= Jigoshop_Base::get_options()->get('jigoshop_bank_transfer_iban');
+		$this->bic 				= Jigoshop_Base::get_options()->get('jigoshop_bank_transfer_bic');
+		$this->additional 		= Jigoshop_Base::get_options()->get('jigoshop_bank_transfer_additional');
 
     	add_action( 'thankyou_bank_transfer', array(&$this, 'thankyou_page') );
     }
@@ -214,15 +214,15 @@ class jigoshop_bank_transfer extends jigoshop_payment_gateway {
 	 **/
 	public static function get_bank_details() {
 
-		$title 			= Jigoshop_Base::get_options()->get_option('jigoshop_bank_transfer_title');
-		$description 	= Jigoshop_Base::get_options()->get_option('jigoshop_bank_transfer_description');
-		$bank_name 		= Jigoshop_Base::get_options()->get_option('jigoshop_bank_transfer_bank_name');
-		$acc_number 	= Jigoshop_Base::get_options()->get_option('jigoshop_bank_transfer_acc_number');
-		$account_holder = Jigoshop_Base::get_options()->get_option('jigoshop_bank_transfer_account_holder');
-		$sort_code 		= Jigoshop_Base::get_options()->get_option('jigoshop_bank_transfer_sort_code');
-		$iban 			= Jigoshop_Base::get_options()->get_option('jigoshop_bank_transfer_iban');
-		$bic 			= Jigoshop_Base::get_options()->get_option('jigoshop_bank_transfer_bic');
-		$additional 	= Jigoshop_Base::get_options()->get_option('jigoshop_bank_transfer_additional');
+		$title 			= Jigoshop_Base::get_options()->get('jigoshop_bank_transfer_title');
+		$description 	= Jigoshop_Base::get_options()->get('jigoshop_bank_transfer_description');
+		$bank_name 		= Jigoshop_Base::get_options()->get('jigoshop_bank_transfer_bank_name');
+		$acc_number 	= Jigoshop_Base::get_options()->get('jigoshop_bank_transfer_acc_number');
+		$account_holder = Jigoshop_Base::get_options()->get('jigoshop_bank_transfer_account_holder');
+		$sort_code 		= Jigoshop_Base::get_options()->get('jigoshop_bank_transfer_sort_code');
+		$iban 			= Jigoshop_Base::get_options()->get('jigoshop_bank_transfer_iban');
+		$bic 			= Jigoshop_Base::get_options()->get('jigoshop_bank_transfer_bic');
+		$additional 	= Jigoshop_Base::get_options()->get('jigoshop_bank_transfer_additional');
 
 		$bank_info = null;
 		if ($description) $bank_info .= wpautop(wptexturize($description)) . PHP_EOL;

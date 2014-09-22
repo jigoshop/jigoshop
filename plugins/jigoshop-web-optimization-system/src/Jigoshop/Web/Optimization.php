@@ -36,7 +36,7 @@ class Optimization
 			\Jigoshop_Base::get_options()->install_external_options_tab(__('Web Optimization System', 'jigoshop_web_optimization_system'), $this->admin_settings());
 		}
 
-		if(\Jigoshop_Base::get_options()->get_option('jigoshop_web_optimization_system_enable', 'yes') == 'yes')
+		if(\Jigoshop_Base::get_options()->get('jigoshop_web_optimization_system_enable', 'yes') == 'yes')
 		{
 			require_once(JIGOSHOP_WEB_OPTIMIZATION_SYSTEM_DIR.'/vendor/CSSMin/cssmin.php');
 			require_once(JIGOSHOP_WEB_OPTIMIZATION_SYSTEM_DIR.'/vendor/minify/JSMinPlus.php');

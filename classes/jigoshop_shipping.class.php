@@ -29,7 +29,7 @@ class jigoshop_shipping extends Jigoshop_Singleton
 	{
 
 		self::shipping_inits();
-		if (self::get_options()->get_option('jigoshop_calc_shipping') != 'no') :
+		if (self::get_options()->get('jigoshop_calc_shipping') != 'no') :
 			self::$enabled = true;
 		endif;
 	}
@@ -66,7 +66,7 @@ class jigoshop_shipping extends Jigoshop_Singleton
 
 	public static function show_shipping_calculator()
 	{
-		return (self::is_enabled() && self::get_options()->get_option('jigoshop_enable_shipping_calc') == 'yes' && jigoshop_cart::needs_shipping());
+		return (self::is_enabled() && self::get_options()->get('jigoshop_enable_shipping_calc') == 'yes' && jigoshop_cart::needs_shipping());
 	}
 
 	public static function is_enabled()
@@ -112,7 +112,7 @@ class jigoshop_shipping extends Jigoshop_Singleton
 		//throw error if there are no shipping methods
 		if (empty($_available_methods)) {
 			self::$shipping_error_message = __('Please enter your shipping destination and postal code to view shipping options and rates.', 'jigoshop');
-			if (self::get_options()->get_option('jigoshop_enable_shipping_calc') == 'no' && is_cart()) {
+			if (self::get_options()->get('jigoshop_enable_shipping_calc') == 'no' && is_cart()) {
 				self::$shipping_error_message .= __(' If the Shipping Calculator is not available here, you will need to advance to the Checkout to do this.', 'jigoshop');
 			}
 			self::$shipping_error_message .= __(' There may be no methods available for your destination and you should contact us for assistance.', 'jigoshop');

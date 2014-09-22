@@ -92,20 +92,20 @@ class jigoshop_worldpay extends jigoshop_payment_gateway
 		$this->id = 'jigoshop_worldpay';
 		$this->icon = jigoshop::assets_url().'/assets/images/icons/worldpay.png';
 		$this->has_fields = false;
-		$this->enabled = $options->get_option('jigoshop_worldpay_is_enabled');
-		$this->title = $options->get_option('jigoshop_worldpay_method_title');
-		$this->description = $options->get_option('jigoshop_worldpay_checkout_description');
-		$this->testmode = $options->get_option('jigoshop_worldpay_test_mode');
-		$this->installation_id = $options->get_option('jigoshop_worldpay_install_id');
-		$this->fixed_currency = $options->get_option('jigoshop_worldpay_fixed_currency');
-		$this->md5_encrypt = $options->get_option('jigoshop_worldpay_md5');
-		$this->secret_word = $options->get_option('jigoshop_worldpay_md5_secret_word');
-		$this->response_pass = $options->get_option('jigoshop_worldpay_response_password');
+		$this->enabled = $options->get('jigoshop_worldpay_is_enabled');
+		$this->title = $options->get('jigoshop_worldpay_method_title');
+		$this->description = $options->get('jigoshop_worldpay_checkout_description');
+		$this->testmode = $options->get('jigoshop_worldpay_test_mode');
+		$this->installation_id = $options->get('jigoshop_worldpay_install_id');
+		$this->fixed_currency = $options->get('jigoshop_worldpay_fixed_currency');
+		$this->md5_encrypt = $options->get('jigoshop_worldpay_md5');
+		$this->secret_word = $options->get('jigoshop_worldpay_md5_secret_word');
+		$this->response_pass = $options->get('jigoshop_worldpay_response_password');
 
-		$this->receive_err_log = $options->get_option('jigoshop_worldpay_receive_security_logs');
-		$this->emailto_err_log = $options->get_option('jigoshop_worldpay_security_logs_emailto');
+		$this->receive_err_log = $options->get('jigoshop_worldpay_receive_security_logs');
+		$this->emailto_err_log = $options->get('jigoshop_worldpay_security_logs_emailto');
 
-		$this->currency = $options->get_option('jigoshop_currency');
+		$this->currency = $options->get('jigoshop_currency');
 
 		$this->notify_url = jigoshop_request_api::query_request('?js-api=JS_Gateway_WorldPay', false);
 		add_action('jigoshop_api_js_gateway_worldpay', array($this, 'check_worldpay_response'));
@@ -155,7 +155,7 @@ class jigoshop_worldpay extends jigoshop_payment_gateway
 
 		if (!in_array($this->currency, self::$allowed_currencies)) {
 			echo '<div class="error"><p>'.sprintf(__('The WorldPay gateway accepts payments in currencies of %s.  Your current currency is %s.  WorldPay won\'t work until you change the Jigoshop currency to an accepted one.  WorldPay is <strong>currently disabled</strong> on the Payment Gateways settings tab.', 'jigoshop'), implode(', ', self::$allowed_currencies), $this->currency).'</p></div>';
-			$options->set_option('jigoshop_worldpay_is_enabled', 'no');
+			$options->set('jigoshop_worldpay_is_enabled', 'no');
 		}
 
 		if ($this->md5_encrypt == 'yes' && empty($this->secret_word)) {
@@ -407,7 +407,7 @@ class jigoshop_worldpay extends jigoshop_payment_gateway
 		}
 
 		if (!empty($this->emailto_err_log)) $email = $this->emailto_err_log;
-		else $email = Jigoshop_Base::get_options()->get_option('jigoshop_email');
+		else $email = Jigoshop_Base::get_options()->get('jigoshop_email');
 
 		wp_mail($email, $subject, $message);
 	}
@@ -425,7 +425,7 @@ class jigoshop_worldpay extends jigoshop_payment_gateway
 		$authAmount = $this->get_post('authAmount');
 		$authCurrency = $this->get_post('authCurrency');
 		$currency = $this->get_post('currency');
-		$shop_currency = Jigoshop_Base::get_options()->get_option('jigoshop_currency');
+		$shop_currency = Jigoshop_Base::get_options()->get('jigoshop_currency');
 		$testMode = $this->get_post('testMode');
 
 		$error = array();

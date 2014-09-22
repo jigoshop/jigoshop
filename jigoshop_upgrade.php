@@ -45,7 +45,7 @@ function jigoshop_upgrade()
  */
 function jigoshop_upgrade_1_8_0()
 {
-	Jigoshop_Base::get_options()->add_option('jigoshop_complete_processing_orders', 'no');
+	Jigoshop_Base::get_options()->add('jigoshop_complete_processing_orders', 'no');
 }
 
 function jigoshop_upgrade_1_10_0()
@@ -64,18 +64,18 @@ function jigoshop_upgrade_1_10_0()
 		$wpdb->query($query);
 	}
 	$options = Jigoshop_Base::get_options();
-	$options->add_option('jigoshop_address_1', $options->get_option('jigoshop_address_line1'));
-	$options->add_option('jigoshop_address_2', $options->get_option('jigoshop_address_line2'));
-	$options->delete_option('jigoshop_address_line1');
-	$options->delete_option('jigoshop_address_line2');
+	$options->add('jigoshop_address_1', $options->get('jigoshop_address_line1'));
+	$options->add('jigoshop_address_2', $options->get('jigoshop_address_line2'));
+	$options->delete('jigoshop_address_line1');
+	$options->delete('jigoshop_address_line2');
 	// Set default customer country
-	$options->add_option('jigoshop_default_country_for_customer', $options->get_option('jigoshop_default_country'));
+	$options->add('jigoshop_default_country_for_customer', $options->get('jigoshop_default_country'));
 }
 
 function jigoshop_upgrade_1_10_3()
 {
 	$options = Jigoshop_Base::get_options();
-	$options->add_option('jigoshop_country_base_tax', 'billing_country');
+	$options->add('jigoshop_country_base_tax', 'billing_country');
 }
 
 function jigoshop_upgrade_1_10_6()

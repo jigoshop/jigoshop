@@ -5,7 +5,7 @@ function jigoshop_product_list($attributes)
 	$options = Jigoshop_Base::get_options();
 
 	$attributes = shortcode_atts(array(
-		'number' => $options->get_option('jigoshop_catalog_per_page'),
+		'number' => $options->get('jigoshop_catalog_per_page'),
 		'order_by' => 'date',
 		'order' => 'desc',
 		'orientation' => 'rows',

@@ -153,7 +153,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	/**
 	 * Adds a named option
 	 * Will do nothing if option already exists to match WordPress behaviour
-	 * Use 'set_option' to actually set an existing option
+	 * Use 'set' to actually set an existing option
 	 *
 	 * @param   string  the name of the option to add
 	 * @param   mixed  the value to set if the option doesn't exist
@@ -174,7 +174,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	 * Adds a named option to our collection
 	 *
 	 * Will do nothing if option already exists to match WordPress behaviour
-	 * Use 'set_option' to actually set an existing option
+	 * Use 'set' to actually set an existing option
 	 *
 	 * @param string $name the name of the option to add
 	 * @param mixed	$value the value to set if the option doesn't exist
@@ -334,8 +334,8 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 
 		if(!empty($options)){
 			foreach($options as $option){
-				if(isset($option['id']) && !$this->exists_option($option['id'])){
-					$this->add_option($option['id'], isset($option['std']) ? $option['std'] : '');
+				if(isset($option['id']) && !$this->exists($option['id'])){
+					$this->add($option['id'], isset($option['std']) ? $option['std'] : '');
 				}
 				$our_options[] = $option;
 			}
@@ -392,8 +392,8 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		$end = array_slice($our_options, $second_index);
 		/*** add the new elements to the array ***/
 		foreach($options as $option){
-			if(isset($option['id']) && !$this->exists_option($option['id'])){
-				$this->add_option($option['id'], isset($option['std']) ? $option['std'] : '');
+			if(isset($option['id']) && !$this->exists($option['id'])){
+				$this->add($option['id'], isset($option['std']) ? $option['std'] : '');
 			}
 			$start[] = $option;
 		}
@@ -438,8 +438,8 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		$end = array_slice($our_options, $first_index + 1);
 		/*** add the new elements to the array ***/
 		foreach($options as $option){
-			if(isset($option['id']) && !$this->exists_option($option['id'])){
-				$this->add_option($option['id'], isset($option['std']) ? $option['std'] : '');
+			if(isset($option['id']) && !$this->exists($option['id'])){
+				$this->add($option['id'], isset($option['std']) ? $option['std'] : '');
 			}
 			$start[] = $option;
 		}
@@ -518,8 +518,8 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 			$cSymbol = get_jigoshop_currency_symbol();
 		}
 
-		$cCode = $this->get_option('jigoshop_currency') ? $this->get_option('jigoshop_currency') : 'GBP';
-		$cSep = $this->get_option('jigoshop_price_decimal_sep') ? $this->get_option('jigoshop_price_decimal_sep') : '.';
+		$cCode = $this->get('jigoshop_currency') ? $this->get('jigoshop_currency') : 'GBP';
+		$cSep = $this->get('jigoshop_price_decimal_sep') ? $this->get('jigoshop_price_decimal_sep') : '.';
 
 		self::$default_options = array(
 			// Shop tab
@@ -537,7 +537,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 				'desc' => '',
 				'tip' => __('This is the country for your clients with new accounts.', 'jigoshop'),
 				'id' => 'jigoshop_default_country_for_customer',
-				'std' => $this->get_option('jigoshop_default_country'),
+				'std' => $this->get('jigoshop_default_country'),
 				'type' => 'single_select_country',
 				'options' => array(
 					'add_empty' => true,

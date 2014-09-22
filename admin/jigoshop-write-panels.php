@@ -169,14 +169,14 @@ add_action( 'admin_notices', 'jigoshop_meta_boxes_save_errors' );
 function jigoshop_meta_boxes_save_errors()
 {
 	$options = Jigoshop_Base::get_options();
-	$errors = $options->get_option('jigoshop_errors');
+	$errors = $options->get('jigoshop_errors');
 	if (is_array($errors) && count($errors)) {
 		echo '<div id="jigoshop_errors" class="error fade">';
 		foreach ($errors as $error) {
 			echo '<p>'.$error.'</p>';
 		}
 		echo '</div>';
-		$options->set_option('jigoshop_errors', '');
+		$options->set('jigoshop_errors', '');
 	}
 }
 
@@ -209,7 +209,7 @@ function jigoshop_write_panel_scripts()
 		'remove_item_notice' => __("Remove this item? If you have previously reduced this item's stock, or this order was submitted by a customer, will need to manually restore the item's stock.", 'jigoshop'),
 		'cart_total' => __('Calc totals based on order items and taxes?', 'jigoshop'),
 		'copy_billing' => __('Copy billing information to shipping information? This will remove any currently entered shipping information.', 'jigoshop'),
-		'prices_include_tax' => $options->get_option('jigoshop_prices_include_tax'),
+		'prices_include_tax' => $options->get('jigoshop_prices_include_tax'),
 		'ID' => __('ID', 'jigoshop'),
 		'item_name' => __('Item Name', 'jigoshop'),
 		'quantity' => __('Quantity e.g. 2', 'jigoshop'),

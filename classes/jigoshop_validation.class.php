@@ -267,7 +267,7 @@ class jigoshop_validation
 			return true;
 		}
 
-		if (Jigoshop_Base::get_options()->get_option('jigoshop_enable_postcode_validating') == 'yes') {
+		if (Jigoshop_Base::get_options()->get('jigoshop_enable_postcode_validating') == 'yes') {
 			switch ($country) {
 				case 'GB':
 					jigoshop_log("VALIDATE POSTCODE: country = GB");

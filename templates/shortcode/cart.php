@@ -103,7 +103,7 @@ $options = Jigoshop_Base::get_options();
 
 				<?php jigoshop::nonce_field('cart') ?>
 
-				<?php if ($options->get_option('jigoshop_cart_shows_shop_button') == 'no'): ?>
+				<?php if ($options->get('jigoshop_cart_shows_shop_button') == 'no'): ?>
 					<noscript>
 						<input type="submit" class="button" name="update_cart" value="<?php _e('Update Shopping Cart', 'jigoshop'); ?>" />
 					</noscript>
@@ -129,7 +129,7 @@ $options = Jigoshop_Base::get_options();
 				</td>
 			</tr>
 		<?php endif; ?>
-		<?php if ($options->get_option('jigoshop_cart_shows_shop_button') == 'yes') : ?>
+		<?php if ($options->get('jigoshop_cart_shows_shop_button') == 'yes') : ?>
 			<tr>
 				<td colspan="6" class="actions">
 					<a href="<?php echo esc_url(jigoshop_cart::get_shop_url()); ?>" class="checkout-button button-alt" style="float:left;"><?php _e('&larr; Return to Shop', 'jigoshop'); ?></a>
@@ -172,7 +172,7 @@ $options = Jigoshop_Base::get_options();
 							</td>
 						</tr>
 					<?php endif; ?>
-					<?php if (jigoshop_cart::show_retail_price() && $options->get_option('jigoshop_prices_include_tax') == 'no'): ?>
+					<?php if (jigoshop_cart::show_retail_price() && $options->get('jigoshop_prices_include_tax') == 'no'): ?>
 						<tr>
 							<th class="cart-row-subtotal-title"><?php _e('Subtotal', 'jigoshop'); ?></th>
 							<td class="cart-row-subtotal"><?php echo jigoshop_cart::get_cart_subtotal(true, true); ?></td>
@@ -193,7 +193,7 @@ $options = Jigoshop_Base::get_options();
 							<td class="cart-row-discount">-<?php echo jigoshop_cart::get_total_discount(); ?></td>
 						</tr>
 					<?php endif; ?>
-					<?php if ($options->get_option('jigoshop_calc_taxes') == 'yes'):
+					<?php if ($options->get('jigoshop_calc_taxes') == 'yes'):
 						foreach (jigoshop_cart::get_applied_tax_classes() as $tax_class):
 							if (jigoshop_cart::get_tax_for_display($tax_class)) : ?>
 								<tr data-tax="<?php echo $tax_class; ?>">

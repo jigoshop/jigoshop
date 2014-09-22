@@ -39,15 +39,15 @@ class paypal extends jigoshop_payment_gateway {
 		$this->id = 'paypal';
 		$this->icon = jigoshop::assets_url().'/assets/images/icons/paypal.png';
 		$this->has_fields = false;
-		$this->enabled = $options->get_option('jigoshop_paypal_enabled');
-		$this->title = $options->get_option('jigoshop_paypal_title');
-		$this->email = $options->get_option('jigoshop_paypal_email');
-		$this->description = $options->get_option('jigoshop_paypal_description');
-		$this->force_payment = $options->get_option('jigoshop_paypal_force_payment');
-		$this->testmode = $options->get_option('jigoshop_paypal_testmode');
-		$this->testemail = $options->get_option('jigoshop_sandbox_email');
-		$this->send_shipping = $options->get_option('jigoshop_paypal_send_shipping');
-		$this->decimals = min($options->get_option('jigoshop_price_num_decimals'), (in_array($options->get_option('jigoshop_currency'), self::$no_decimal_currencies) ? 0 : 2));
+		$this->enabled = $options->get('jigoshop_paypal_enabled');
+		$this->title = $options->get('jigoshop_paypal_title');
+		$this->email = $options->get('jigoshop_paypal_email');
+		$this->description = $options->get('jigoshop_paypal_description');
+		$this->force_payment = $options->get('jigoshop_paypal_force_payment');
+		$this->testmode = $options->get('jigoshop_paypal_testmode');
+		$this->testemail = $options->get('jigoshop_sandbox_email');
+		$this->send_shipping = $options->get('jigoshop_paypal_send_shipping');
+		$this->decimals = min($options->get('jigoshop_price_num_decimals'), (in_array($options->get('jigoshop_currency'), self::$no_decimal_currencies) ? 0 : 2));
 
 		$this->liveurl = 'https://www.paypal.com/webscr';
 		$this->testurl = 'https://www.sandbox.paypal.com/webscr';
@@ -238,7 +238,7 @@ class paypal extends jigoshop_payment_gateway {
 				'cmd' => '_cart',
 				'business' => $this->testmode == 'yes' ? $this->testemail : $this->email,
 				'no_note' => 1,
-				'currency_code' => Jigoshop_Base::get_options()->get_option('jigoshop_currency'),
+				'currency_code' => Jigoshop_Base::get_options()->get('jigoshop_currency'),
 				'charset' => 'UTF-8',
 				'rm' => 2,
 				'upload' => 1,
@@ -290,7 +290,7 @@ class paypal extends jigoshop_payment_gateway {
 		}
 
 		// If prices include tax, send the whole order as a single item
-		if(Jigoshop_Base::get_options()->get_option('jigoshop_prices_include_tax') == 'yes'){
+		if(Jigoshop_Base::get_options()->get('jigoshop_prices_include_tax') == 'yes'){
 			// Discount
 			$paypal_args['discount_amount_cart'] = $order->order_discount;
 
@@ -506,7 +506,7 @@ class paypal extends jigoshop_payment_gateway {
 							exit;
 						}
 
-						if(!in_array($posted['mc_currency'], apply_filters('jigoshop_multi_currencies_available', array(Jigoshop_Base::get_options()->get_option('jigoshop_currency'))))){
+						if(!in_array($posted['mc_currency'], apply_filters('jigoshop_multi_currencies_available', array(Jigoshop_Base::get_options()->get('jigoshop_currency'))))){
 							// Put this order on-hold for manual checking
 							$order->update_status('on-hold', sprintf(__('PayPal Validation Error: Payment currency received (%s) does not match Shop currency.', 'jigoshop'), $posted['mc_currency']));
 							exit;

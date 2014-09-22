@@ -94,8 +94,8 @@ class jigoshop_shipping_method
 
 		if ($this->availability == 'specific') {
 			$ship_to_countries = $this->countries;
-		} else if (Jigoshop_Base::get_options()->get_option('jigoshop_allowed_countries') == 'specific') {
-			$ship_to_countries = Jigoshop_Base::get_options()->get_option('jigoshop_specific_allowed_countries');
+		} else if (Jigoshop_Base::get_options()->get('jigoshop_allowed_countries') == 'specific') {
+			$ship_to_countries = Jigoshop_Base::get_options()->get('jigoshop_specific_allowed_countries');
 		}
 
 		return $ship_to_countries;
@@ -264,7 +264,7 @@ class jigoshop_shipping_method
 		$price += (empty($this->fee) ? 0 : $this->get_fee($this->fee, jigoshop_cart::$cart_contents_total_ex_dl));
 
 		$tax = 0;
-		if (Jigoshop_Base::get_options()->get_option('jigoshop_calc_taxes') == 'yes' && $this->tax_status == 'taxable' && $price > 0) {
+		if (Jigoshop_Base::get_options()->get('jigoshop_calc_taxes') == 'yes' && $this->tax_status == 'taxable' && $price > 0) {
 			$tax = $this->calculate_shipping_tax($price);
 		}
 

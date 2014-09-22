@@ -51,7 +51,7 @@ function jigoshop_save_attributes()
 			), array('%s', '%s'));
 
 			do_action('jigoshop_attribute_admin_add_after_save', $attribute_name, $attribute_label, $attribute_type);
-			$options->set_option('jigowatt_update_rewrite_rules', '1');
+			$options->set('jigowatt_update_rewrite_rules', '1');
 			wp_safe_redirect(get_admin_url().'edit.php?post_type=product&page=jigoshop_attributes');
 			exit;
 		} else {

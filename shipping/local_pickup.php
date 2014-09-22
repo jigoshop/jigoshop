@@ -29,10 +29,10 @@ class local_pickup extends jigoshop_shipping_method {
 		parent::__construct();
 
         $this->id 			= 'local_pickup';
-        $this->enabled		= Jigoshop_Base::get_options()->get_option('jigoshop_local_pickup_enabled');
-		$this->title 		= Jigoshop_Base::get_options()->get_option('jigoshop_local_pickup_title');
-		$this->availability = Jigoshop_Base::get_options()->get_option('jigoshop_local_pickup_availability');
-		$this->countries 	= Jigoshop_Base::get_options()->get_option('jigoshop_local_pickup_countries');
+        $this->enabled		= Jigoshop_Base::get_options()->get('jigoshop_local_pickup_enabled');
+		$this->title 		= Jigoshop_Base::get_options()->get('jigoshop_local_pickup_title');
+		$this->availability = Jigoshop_Base::get_options()->get('jigoshop_local_pickup_availability');
+		$this->countries 	= Jigoshop_Base::get_options()->get('jigoshop_local_pickup_countries');
 
 		if ( isset( jigoshop_session::instance()->chosen_shipping_method_id )
 			&& jigoshop_session::instance()->chosen_shipping_method_id == $this->id ) {

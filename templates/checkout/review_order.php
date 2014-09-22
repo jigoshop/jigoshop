@@ -36,7 +36,7 @@ $jigoshop_options = Jigoshop_Base::get_options(); ?>
 
             <?php jigoshop_checkout::render_shipping_dropdown(); ?>
 
-            <?php if ( jigoshop_cart::show_retail_price() && Jigoshop_Base::get_options()->get_option( 'jigoshop_prices_include_tax' ) == 'no' ) : ?>
+            <?php if ( jigoshop_cart::show_retail_price() && Jigoshop_Base::get_options()->get( 'jigoshop_prices_include_tax' ) == 'no' ) : ?>
                 <tr>
                     <td colspan="2"><?php _e('Subtotal', 'jigoshop'); ?></td>
                     <td><?php echo jigoshop_cart::get_cart_subtotal(true, true); ?></td>
@@ -59,7 +59,7 @@ $jigoshop_options = Jigoshop_Base::get_options(); ?>
                 </tr>
 			<?php endif; ?>
 
-            <?php if ($jigoshop_options->get_option('jigoshop_calc_taxes') == 'yes') :
+            <?php if ($jigoshop_options->get('jigoshop_calc_taxes') == 'yes') :
                 foreach (jigoshop_cart::get_applied_tax_classes() as $tax_class) :
                       if (jigoshop_cart::get_tax_for_display($tax_class)) : ?>
                         <tr>

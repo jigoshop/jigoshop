@@ -29,14 +29,14 @@ class flat_rate extends jigoshop_shipping_method
 		parent::__construct();
 
 		$this->id = 'flat_rate';
-		$this->enabled = Jigoshop_Base::get_options()->get_option('jigoshop_flat_rate_enabled');
-		$this->title = Jigoshop_Base::get_options()->get_option('jigoshop_flat_rate_title');
-		$this->availability = Jigoshop_Base::get_options()->get_option('jigoshop_flat_rate_availability');
-		$this->countries = Jigoshop_Base::get_options()->get_option('jigoshop_flat_rate_countries');
-		$this->type = Jigoshop_Base::get_options()->get_option('jigoshop_flat_rate_type');
-		$this->tax_status = Jigoshop_Base::get_options()->get_option('jigoshop_flat_rate_tax_status');
-		$this->cost = Jigoshop_Base::get_options()->get_option('jigoshop_flat_rate_cost');
-		$this->fee = Jigoshop_Base::get_options()->get_option('jigoshop_flat_rate_handling_fee');
+		$this->enabled = Jigoshop_Base::get_options()->get('jigoshop_flat_rate_enabled');
+		$this->title = Jigoshop_Base::get_options()->get('jigoshop_flat_rate_title');
+		$this->availability = Jigoshop_Base::get_options()->get('jigoshop_flat_rate_availability');
+		$this->countries = Jigoshop_Base::get_options()->get('jigoshop_flat_rate_countries');
+		$this->type = Jigoshop_Base::get_options()->get('jigoshop_flat_rate_type');
+		$this->tax_status = Jigoshop_Base::get_options()->get('jigoshop_flat_rate_tax_status');
+		$this->cost = Jigoshop_Base::get_options()->get('jigoshop_flat_rate_cost');
+		$this->fee = Jigoshop_Base::get_options()->get('jigoshop_flat_rate_handling_fee');
 
 		add_action('jigoshop_admin_enqueue_scripts', array($this, 'admin_scripts'));
 	}
@@ -52,7 +52,7 @@ class flat_rate extends jigoshop_shipping_method
 			$this->shipping_total = ($this->shipping_total < 0 ? 0 : $this->shipping_total);
 
 			// fix flat rate taxes for now. This is old and deprecated, but need to think about how to utilize the total_shipping_tax_amount yet
-			if (Jigoshop_Base::get_options()->get_option('jigoshop_calc_taxes') == 'yes' && $this->tax_status == 'taxable') {
+			if (Jigoshop_Base::get_options()->get('jigoshop_calc_taxes') == 'yes' && $this->tax_status == 'taxable') {
 				$this->shipping_tax = $this->calculate_shipping_tax($this->shipping_total);
 			}
 		} else { // Shipping per item

@@ -46,12 +46,12 @@ class futurepay extends jigoshop_payment_gateway {
 		$this->id           = 'futurepay';
 		$this->icon         = jigoshop::assets_url() . '/assets/images/icons/futurepay.png';
 		$this->has_fields 	= false;
-		$this->enabled      = Jigoshop_Base::get_options()->get_option('jigoshop_futurepay_enabled');
-		$this->title        = Jigoshop_Base::get_options()->get_option('jigoshop_futurepay_title');
-		$this->description  = Jigoshop_Base::get_options()->get_option('jigoshop_futurepay_description');
-		$this->gmid         = Jigoshop_Base::get_options()->get_option('jigoshop_futurepay_gmid');
+		$this->enabled      = Jigoshop_Base::get_options()->get('jigoshop_futurepay_enabled');
+		$this->title        = Jigoshop_Base::get_options()->get('jigoshop_futurepay_title');
+		$this->description  = Jigoshop_Base::get_options()->get('jigoshop_futurepay_description');
+		$this->gmid         = Jigoshop_Base::get_options()->get('jigoshop_futurepay_gmid');
 		self::$request_url  =
-			Jigoshop_Base::get_options()->get_option('jigoshop_futurepay_mode') == 'no'
+			Jigoshop_Base::get_options()->get('jigoshop_futurepay_mode') == 'no'
 			? self::FUTUREPAY_LIVE_URL
 			: self::FUTUREPAY_SANDBOX_URL;
 
@@ -147,9 +147,9 @@ class futurepay extends jigoshop_payment_gateway {
 
 		if ( $this->enabled == 'no' ) return;
 
-		if ( ! in_array( Jigoshop_Base::get_options()->get_option( 'jigoshop_currency' ), $this->allowed_currency )) {
-			echo '<div class="error"><p>'.sprintf(__('The FuturePay gateway accepts payments in currencies of %s.  Your current currency is %s.  FuturePay won\'t work until you change the Jigoshop currency to an accepted one.  FuturePay is currently disabled on the Payment Gateways settings tab.','jigoshop'), implode( ', ', $this->allowed_currency ), Jigoshop_Base::get_options()->get_option( 'jigoshop_currency' ) ).'</p></div>';
-			Jigoshop_Base::get_options()->set_option( 'jigoshop_futurepay_enabled', 'no' );
+		if ( ! in_array( Jigoshop_Base::get_options()->get( 'jigoshop_currency' ), $this->allowed_currency )) {
+			echo '<div class="error"><p>'.sprintf(__('The FuturePay gateway accepts payments in currencies of %s.  Your current currency is %s.  FuturePay won\'t work until you change the Jigoshop currency to an accepted one.  FuturePay is currently disabled on the Payment Gateways settings tab.','jigoshop'), implode( ', ', $this->allowed_currency ), Jigoshop_Base::get_options()->get( 'jigoshop_currency' ) ).'</p></div>';
+			Jigoshop_Base::get_options()->set( 'jigoshop_futurepay_enabled', 'no' );
 		}
 
 		if ( ! in_array( $this->shop_base_country, $this->merchant_countries )) {
@@ -158,7 +158,7 @@ class futurepay extends jigoshop_payment_gateway {
 				$country_list[] = jigoshop_countries::get_country($this_country);
 			}
 			echo '<div class="error"><p>'.sprintf(__('The FuturePay gateway is available to merchants from: %s.  Your country is: %s.  FuturePay won\'t work until you change the Jigoshop Shop Base country to an accepted one.  FuturePay is currently disabled on the Payment Gateways settings tab.','jigoshop'), implode( ', ', $country_list ), jigoshop_countries::get_base_country() ).'</p></div>';
-			Jigoshop_Base::get_options()->set_option( 'jigoshop_futurepay_enabled', 'no' );
+			Jigoshop_Base::get_options()->set( 'jigoshop_futurepay_enabled', 'no' );
 		}
 
 	}
@@ -173,7 +173,7 @@ class futurepay extends jigoshop_payment_gateway {
 			return false;
 		}
 
-		if ( ! in_array( Jigoshop_Base::get_options()->get_option( 'jigoshop_currency' ), $this->allowed_currency ) ) {
+		if ( ! in_array( Jigoshop_Base::get_options()->get( 'jigoshop_currency' ), $this->allowed_currency ) ) {
 			return false;
 		}
 

@@ -229,13 +229,13 @@ class jigoshop_dashboard {
 	 * Stock Reports
 	 */
 	function jigoshop_dash_stock_report(){
-		if(Jigoshop_Base::get_options()->get_option('jigoshop_manage_stock') == 'yes'){
-			$lowstockamount = Jigoshop_Base::get_options()->get_option('jigoshop_notify_low_stock_amount');
+		if(Jigoshop_Base::get_options()->get('jigoshop_manage_stock') == 'yes'){
+			$lowstockamount = Jigoshop_Base::get_options()->get('jigoshop_notify_low_stock_amount');
 			if(!is_numeric($lowstockamount)){
 				$lowstockamount = 1;
 			}
 
-			$nostockamount = Jigoshop_Base::get_options()->get_option('jigoshop_notify_no_stock_amount');
+			$nostockamount = Jigoshop_Base::get_options()->get('jigoshop_notify_no_stock_amount');
 			if(!is_numeric($nostockamount)){
 				$nostockamount = 0;
 			}

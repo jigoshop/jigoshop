@@ -97,7 +97,7 @@ class jigoshop_customer extends Jigoshop_Singleton {
 	 */
 	public static function is_taxable($shippable){
 		// if no taxes, than no one is taxable
-		if(self::get_options()->get_option('jigoshop_calc_taxes') == 'no'){
+		if(self::get_options()->get('jigoshop_calc_taxes') == 'no'){
 			return false;
 		}
 

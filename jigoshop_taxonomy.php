@@ -24,15 +24,15 @@ function jigoshop_post_type()
 
 	$shop_page_id = jigoshop_get_page_id('shop');
 	$base_slug = ($shop_page_id && $base_page = get_post($shop_page_id)) ? get_page_uri($shop_page_id) : 'shop';
-	$category_base = ($options->get_option('jigoshop_prepend_shop_page_to_urls') == 'yes') ? trailingslashit($base_slug) : '';
-	$category_slug = ($options->get_option('jigoshop_product_category_slug')) ? $options->get_option('jigoshop_product_category_slug') : _x('product-category', 'slug', 'jigoshop');
-	$tag_slug = ($options->get_option('jigoshop_product_tag_slug')) ? $options->get_option('jigoshop_product_tag_slug') : _x('product-tag', 'slug', 'jigoshop');
-	$product_base = ($options->get_option('jigoshop_prepend_shop_page_to_product') == 'yes') ? trailingslashit($base_slug) : trailingslashit(_x('product', 'slug', 'jigoshop'));
+	$category_base = ($options->get('jigoshop_prepend_shop_page_to_urls') == 'yes') ? trailingslashit($base_slug) : '';
+	$category_slug = ($options->get('jigoshop_product_category_slug')) ? $options->get('jigoshop_product_category_slug') : _x('product-category', 'slug', 'jigoshop');
+	$tag_slug = ($options->get('jigoshop_product_tag_slug')) ? $options->get('jigoshop_product_tag_slug') : _x('product-tag', 'slug', 'jigoshop');
+	$product_base = ($options->get('jigoshop_prepend_shop_page_to_product') == 'yes') ? trailingslashit($base_slug) : trailingslashit(_x('product', 'slug', 'jigoshop'));
 
-	if ($options->get_option('jigoshop_prepend_shop_page_to_product') == 'yes' && $options->get_option('jigoshop_prepend_shop_page_to_urls') == 'yes') {
+	if ($options->get('jigoshop_prepend_shop_page_to_product') == 'yes' && $options->get('jigoshop_prepend_shop_page_to_urls') == 'yes') {
 		$product_base .= trailingslashit(_x('product', 'slug', 'jigoshop'));
 	}
-	if ($options->get_option('jigoshop_prepend_category_to_product') == 'yes') {
+	if ($options->get('jigoshop_prepend_category_to_product') == 'yes') {
 		$product_base .= trailingslashit('%product_cat%');
 	}
 	$product_base = untrailingslashit($product_base);
@@ -309,10 +309,10 @@ function jigoshop_post_type()
 		)
 	);
 
-	if ($options->get_option('jigowatt_update_rewrite_rules') == '1') { // Re-generate rewrite rules
+	if ($options->get('jigowatt_update_rewrite_rules') == '1') { // Re-generate rewrite rules
 		global $wp_rewrite;
 		$wp_rewrite->flush_rules();
-		$options->set_option('jigowatt_update_rewrite_rules', '0');
+		$options->set('jigowatt_update_rewrite_rules', '0');
 	}
 }
 
@@ -527,7 +527,7 @@ function jigoshop_nav_menu_items_classes($menu_items, $args)
 		return $menu_items;
 	}
 
-	$home_page_id = (int)$options->get_option('page_for_posts');
+	$home_page_id = (int)$options->get('page_for_posts');
 
 	foreach ((array)$menu_items as $key => $menu_item) {
 		$classes = (array)$menu_item->classes;

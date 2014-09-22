@@ -27,7 +27,7 @@ interface Jigoshop_Options_Interface
 	/**
 	 * Adds a named option
 	 * Will do nothing if option already exists to match WordPress behaviour
-	 * Use 'set_option' to actually set an existing option
+	 * Use 'set' to actually set an existing option
 	 *
 	 * @param   string  the name of the option to add
 	 * @param   mixed  the value to set if the option doesn't exist
@@ -38,7 +38,7 @@ interface Jigoshop_Options_Interface
 	/**
 	 * Adds a named option
 	 * Will do nothing if option already exists to match WordPress behaviour
-	 * Use 'set_option' to actually set an existing option
+	 * Use 'set' to actually set an existing option
 	 *
 	 * @param   string  the name of the option to add
 	 * @param   mixed  the value to set if the option doesn't exist

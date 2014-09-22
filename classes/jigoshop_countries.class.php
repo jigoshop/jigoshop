@@ -914,7 +914,7 @@ class jigoshop_countries extends Jigoshop_Base {
 
 	/** get base country */
 	public static function get_base_country(){
-		$default = self::get_options()->get_option('jigoshop_default_country');
+		$default = self::get_options()->get('jigoshop_default_country');
 		$country = explode(':', $default);
 
 		return $country[0];
@@ -922,7 +922,7 @@ class jigoshop_countries extends Jigoshop_Base {
 
 	/** get base state */
 	public static function get_base_state(){
-		$default = self::get_options()->get_option('jigoshop_default_country');
+		$default = self::get_options()->get('jigoshop_default_country');
 		$country = explode(':', $default);
 
 		return count($country) == 2 ? $country[1] : '';
@@ -930,7 +930,7 @@ class jigoshop_countries extends Jigoshop_Base {
 
 	/** get customer default country */
 	public static function get_default_customer_country(){
-		$default = self::get_options()->get_option('jigoshop_default_country_for_customer');
+		$default = self::get_options()->get('jigoshop_default_country_for_customer');
 		if($default == -1){
 			return '';
 		}
@@ -941,7 +941,7 @@ class jigoshop_countries extends Jigoshop_Base {
 
 	/** get customer default state */
 	public static function get_default_customer_state(){
-		$default = self::get_options()->get_option('jigoshop_default_country_for_customer');
+		$default = self::get_options()->get('jigoshop_default_country_for_customer');
 		if($default == -1){
 			return '';
 		}
@@ -960,11 +960,11 @@ class jigoshop_countries extends Jigoshop_Base {
 	public static function get_allowed_countries(){
 		$countries = self::get_countries();
 
-		if(self::get_options()->get_option('jigoshop_allowed_countries') !== 'specific'){
+		if(self::get_options()->get('jigoshop_allowed_countries') !== 'specific'){
 			return $countries;
 		}
 
-		$specific_countries = self::get_options()->get_option('jigoshop_specific_allowed_countries');
+		$specific_countries = self::get_options()->get('jigoshop_specific_allowed_countries');
 		$allowed_countries = array();
 		foreach($specific_countries as $country){
 			$allowed_countries[$country] = $countries[$country];
@@ -1065,7 +1065,7 @@ class jigoshop_countries extends Jigoshop_Base {
 					// If the state is '*' , update the default country to the last state in the selected country
 					if(!$show_all && ($selected_state == '*' && $selected_country == $country_key)){
 						$state_keys = array_keys($states);
-						self::get_options()->set_option('jigoshop_default_country', $country_key.':'.end($state_keys));
+						self::get_options()->set('jigoshop_default_country', $country_key.':'.end($state_keys));
 					}
 				} else {
 					$is_selected = (is_array($selected_country) && in_array($country_key, $selected_country)) || ($selected_country == $country_key && $selected_state == '*');

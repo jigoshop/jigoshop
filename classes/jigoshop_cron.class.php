@@ -40,7 +40,7 @@ class jigoshop_cron extends Jigoshop_Base {
 
 	function jigoshop_update_pending_orders() {
 
-		if ( self::get_options()->get_option( 'jigoshop_reset_pending_orders' ) == 'yes' ) {
+		if ( self::get_options()->get( 'jigoshop_reset_pending_orders' ) == 'yes' ) {
 
 			add_filter( 'posts_where', array( $this, 'orders_filter_when' ));
 
@@ -70,7 +70,7 @@ class jigoshop_cron extends Jigoshop_Base {
 
 	function jigoshop_complete_processing_orders() {
 
-		if ( self::get_options()->get_option( 'jigoshop_complete_processing_orders' ) == 'yes' ) {
+		if ( self::get_options()->get( 'jigoshop_complete_processing_orders' ) == 'yes' ) {
 
 			add_filter( 'posts_where', array( $this, 'orders_filter_when' ));
 
