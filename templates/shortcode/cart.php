@@ -104,10 +104,14 @@ $options = Jigoshop_Base::get_options();
 				<?php jigoshop::nonce_field('cart') ?>
 
 				<?php if ($options->get_option('jigoshop_cart_shows_shop_button') == 'no'): ?>
-					<input type="submit" class="button" name="update_cart" value="<?php _e('Update Shopping Cart', 'jigoshop'); ?>" />
+					<noscript>
+						<input type="submit" class="button" name="update_cart" value="<?php _e('Update Shopping Cart', 'jigoshop'); ?>" />
+					</noscript>
 					<a href="<?php echo esc_url(jigoshop_cart::get_checkout_url()); ?>" class="checkout-button button-alt"><?php _e('Proceed to Checkout &rarr;', 'jigoshop'); ?></a>
 				<?php else: ?>
-					<input type="submit" class="button" name="update_cart" value="<?php _e('Update Shopping Cart', 'jigoshop'); ?>" />
+					<noscript>
+						<input type="submit" class="button" name="update_cart" value="<?php _e('Update Shopping Cart', 'jigoshop'); ?>" />
+					</noscript>
 				<?php endif; ?>
 			</td>
 		</tr>
