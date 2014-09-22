@@ -231,13 +231,12 @@ function jigoshop_coupon_data_box( $post ) {
 		?>
 			<script type="text/javascript">
 			/*<![CDATA[*/
-				jQuery(document).ready(function() {
-
-					jQuery('#date_from').datepicker( {dateFormat: 'yy-mm-dd', gotoCurrent: true} );
-					jQuery('#date_to').datepicker( {dateFormat: 'yy-mm-dd', gotoCurrent: true} );
+				jQuery(document).ready(function($) {
+					$('#date_from').datepicker( {dateFormat: 'yy-mm-dd', gotoCurrent: true} );
+					$('#date_to').datepicker( {dateFormat: 'yy-mm-dd', gotoCurrent: true} );
 
 					// allow searching of products to use on a coupon
-					jQuery("#include_products").select2({
+					$("#include_products").select2({
 						minimumInputLength: 3,
 						multiple: true,
 						closeOnSelect: true,
@@ -264,7 +263,7 @@ function jigoshop_coupon_data_box( $post ) {
 								term:       element.val()
 							};
 							var data = [];
-							jQuery.ajax({
+							$.ajax({
 								type: 		'GET',
 								url:        "<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>",
 								dataType: 	"json",
@@ -277,7 +276,7 @@ function jigoshop_coupon_data_box( $post ) {
 					});
 
 					// allow searching of products to exclude on a coupon
-					jQuery("#exclude_products").select2({
+					$("#exclude_products").select2({
 						minimumInputLength: 3,
 						multiple: true,
 						closeOnSelect: true,
@@ -303,7 +302,7 @@ function jigoshop_coupon_data_box( $post ) {
 								security:   '<?php echo wp_create_nonce( "search-products" ); ?>',
 								term:       element.val()
 							};
-							jQuery.ajax({
+							$.ajax({
 								type: 		'GET',
 								url:        "<?php echo (!is_ssl()) ? str_replace('https', 'http', admin_url('admin-ajax.php')) : admin_url('admin-ajax.php'); ?>",
 								dataType: 	"json",

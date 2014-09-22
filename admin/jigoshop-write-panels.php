@@ -196,6 +196,7 @@ function jigoshop_write_panel_scripts()
 	}
 
 	wp_enqueue_script('jquery-ui-datepicker');
+	jigoshop_add_script('jigoshop_datetimepicker', JIGOSHOP_URL.'/assets/js/jquery-ui-timepicker-addon.min.js', array('jquery', 'jquery-ui-datepicker'));
 	jigoshop_add_script('jigoshop-select2', JIGOSHOP_URL.'/assets/js/select2.min.js', array('jquery'));
 	jigoshop_add_script('jigoshop-writepanel', JIGOSHOP_URL.'/assets/js/write-panels.js', array('jquery', 'jigoshop-select2'));
 	jigoshop_add_script('jigoshop-bootstrap-tooltip', JIGOSHOP_URL.'/assets/js/bootstrap-tooltip.min.js', array('jquery'), array('version' => '2.0.3'));

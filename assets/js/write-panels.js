@@ -78,11 +78,11 @@ jQuery(function($) {
 			$('.sale_schedule').show();
 			$('.sale_price_dates_fields').slideUp(100, function() {
 				var option = this.id == "sale_price_dates_from" ? "minDate" : "maxDate";
-				$(this).closest('p').find('input').datepicker( "option", option, null ).val(null);
+				$(this).closest('p').find('input').datetimepicker( "option", option, null ).val(null);
 			});
 		});
 
-		var dates = $( "#sale_price_dates_from, #sale_price_dates_to" ).datepicker({
+		var dates = $( "#sale_price_dates_from, #sale_price_dates_to" ).datetimepicker({
 			dateFormat: 'yy-mm-dd',
 			gotoCurrent: true,
 			hideIfNoPrevNext: true,
@@ -95,7 +95,7 @@ jQuery(function($) {
 						instance.settings.dateFormat ||
 						$.datepicker._defaults.dateFormat,
 						selectedDate, instance.settings );
-				dates.not( this ).datepicker( "option", option, date );
+				dates.not( this ).datetimepicker( "option", option, date );
 			}
 		});
 	}

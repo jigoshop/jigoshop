@@ -181,11 +181,11 @@ function jigoshop_product_data_box() {
 				echo '	<p class="form-field sale_price_dates_fields">
 							<label for="' . esc_attr( $field['id'] ) . '_from">'.$field['label'].'</label>
 							<input type="text" class="short date-pick" name="' . esc_attr( $field['id'] ) . '_from" id="' . esc_attr( $field['id'] ) . '_from" value="';
-				if ($sale_price_dates_from) echo date('Y-m-d', $sale_price_dates_from);
-				echo '" placeholder="' . __('From', 'jigoshop') . ' (' . date('Y-m-d'). ')" maxlength="10" />
+				if ($sale_price_dates_from) echo date('Y-m-d H:i', $sale_price_dates_from);
+				echo '" placeholder="' . __('From', 'jigoshop') . ' (' . date('Y-m-d H:i'). ')" maxlength="16" />
 							<input type="text" class="short date-pick" name="' . esc_attr( $field['id'] ) . '_to" id="' . esc_attr( $field['id'] ) . '_to" value="';
-				if ($sale_price_dates_to) echo date('Y-m-d', $sale_price_dates_to);
-				echo '" placeholder="' . __('To', 'jigoshop') . ' (' . date('Y-m-d'). ')" maxlength="10" />
+				if ($sale_price_dates_to) echo date('Y-m-d H:i', $sale_price_dates_to);
+				echo '" placeholder="' . __('To', 'jigoshop') . ' (' . date('Y-m-d H:i'). ')" maxlength="16" />
 							<a href="#" class="cancel_sale_schedule">'.__('Cancel', 'jigoshop').'</a>
 						</p>';
 			?>
