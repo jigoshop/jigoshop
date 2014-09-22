@@ -1012,6 +1012,7 @@ class jigoshop_countries extends Jigoshop_Base {
 		$echo = true,
 		$add_empty = false
 	){
+		var_dump($selected_country, $selected_state);
 		$output = '';
 		$countries = self::get_countries();
 
