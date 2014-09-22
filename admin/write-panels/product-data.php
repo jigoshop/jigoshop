@@ -178,6 +178,7 @@ function jigoshop_product_data_box() {
 				$sale_price_dates_from = get_post_meta($thepostid, 'sale_price_dates_from', true);
 				$sale_price_dates_to = get_post_meta($thepostid, 'sale_price_dates_to', true);
 
+				echo '<p class="form-field sale_price_dates_fields">'.__('Current time:', 'jigoshop').' '.current_time('Y-m-d H:i').'</p>';
 				echo '	<p class="form-field sale_price_dates_fields">
 							<label for="' . esc_attr( $field['id'] ) . '_from">'.$field['label'].'</label>
 							<input type="text" class="short date-pick" name="' . esc_attr( $field['id'] ) . '_from" id="' . esc_attr( $field['id'] ) . '_from" value="';
