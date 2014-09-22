@@ -281,6 +281,11 @@ class JS_Coupons extends Jigoshop_Base {
 
 	}
 
+	public static function has_coupons()
+	{
+		$coupons = self::get_coupons();
+		return !empty($coupons);
+	}
 }
 
 if ( ! empty( $_GET['unset_coupon'] ) ) $coupons = new JS_Coupons();

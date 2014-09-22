@@ -84,4 +84,48 @@ jQuery(function($) {
       }
     }
   });
+
+	$('td.product-quantity')
+		.on('change', 'input.qty', function(){
+			var $parent = $(this).closest('tr');
+			$('.form-cart-items').block({
+				message: null,
+				overlayCSS: {
+					background: '#fff url('+jigoshop_params.assets_url+'/assets/images/ajax-loader.gif) no-repeat center',
+					opacity: 0.6
+				}
+			});
+			$.ajax(jigoshop_params.ajax_url, {
+				type: 'post',
+				dataType: 'json',
+				data: {
+					action: 'jigoshop_update_item_quantity',
+					qty: $(this).val(),
+					item: $parent.data('item')
+				}
+			})
+				.done(function(result){
+					$('.form-cart-items').unblock();
+					if (result.success){
+						$('td.product-subtotal', $parent).html(result.item_price);
+						var $totals = $('div.cart_totals_table');
+						$('.cart-row-subtotal', $totals).html(result.subtotal);
+						$('.cart-row-total', $totals).html(result.total);
+						var $shipping = $('.cart-row-shipping', $totals);
+						if($shipping.length) {
+							$shipping.html(result.shipping);
+						}
+						var $discount = $('.cart-row-discount', $totals);
+						if($discount.length) {
+							$discount.html(result.discount);
+						}
+						for (var tax in result.tax) {
+							$('tr[data-tax="'+tax+'"] .cart-row-tax', $totals).html(result.tax[tax]);
+						}
+					}
+				});
+		})
+		.on('click', '.plus, .minus', function(){
+			$('input.qty', $(this).closest('td.product-quantity')).trigger('change');
+		});
 });

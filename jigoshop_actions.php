@@ -1067,3 +1067,48 @@ add_action( 'wp_ajax_nopriv_jigoshop_validate_postcode', 'jigoshop_validate_post
 add_action('comment_feed_where', function($where){
 	return $where." AND comment_type <> 'order_note'";
 });
+
+
+function jigoshop_ajax_update_item_quantity()
+{
+	/** @var jigoshop_cart $cart */
+	$cart = jigoshop_cart::instance();
+	$cart->set_quantity($_POST['item'], (int)$_POST['qty']);
+	$items = $cart->get_cart();
+	$item = $items[$_POST['item']];
+	/** @var jigoshop_product $product */
+	$product = $item['data'];
+
+	if (jigoshop_cart::show_retail_price()) {
+		$subtotal = jigoshop_cart::get_cart_subtotal(true, false, true);
+	}	else if (jigoshop_cart::show_retail_price() && Jigoshop_Base::get_options()->get_option('jigoshop_prices_include_tax') == 'no') {
+		$subtotal = jigoshop_cart::get_cart_subtotal(true, true);
+	} else {
+		$subtotal = jigoshop_cart::$cart_contents_total_ex_tax + jigoshop_cart::$shipping_total;
+		$subtotal = jigoshop_price($subtotal, array('ex_tax_label' => 1));
+	}
+
+	$tax = array();
+	foreach (jigoshop_cart::get_applied_tax_classes() as $tax_class) {
+		if (jigoshop_cart::get_tax_for_display($tax_class)) {
+			$tax[$tax_class] = jigoshop_cart::get_tax_amount($tax_class);
+		}
+	}
+
+	$shipping = jigoshop_cart::get_cart_shipping_total(true, true).'<small>'.jigoshop_cart::get_cart_shipping_title().'</small>';
+	$discount = jigoshop_cart::get_total_discount();
+	$total = jigoshop_cart::get_total();
+
+	echo json_encode(array(
+		'success' => true,
+		'item_price' => apply_filters('jigoshop_product_subtotal_display_in_cart', jigoshop_price($product->get_price_excluding_tax() * $item['quantity']), $item['product_id'], $item),
+		'subtotal' => $subtotal,
+		'shipping' => $shipping,
+		'discount' => $discount,
+		'tax' => $tax,
+		'total' => $total,
+	));
+	exit;
+}
+add_action('wp_ajax_jigoshop_update_item_quantity', 'jigoshop_ajax_update_item_quantity');
+add_action('wp_ajax_nopriv_jigoshop_update_item_quantity', 'jigoshop_ajax_update_item_quantity');
