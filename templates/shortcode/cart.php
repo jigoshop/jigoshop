@@ -87,8 +87,7 @@ $options = Jigoshop_Base::get_options();
 					</tr>
 				<?php
 				endif;
-			endforeach;
-		endif;
+		endforeach;
 		do_action('jigoshop_shop_table_cart_body');
 		?>
 		</tbody>
@@ -227,3 +226,4 @@ $options = Jigoshop_Base::get_options();
 	do_action('jigoshop_after_shipping_calculator');
 	?>
 </div>
+<?php endif; ?>
