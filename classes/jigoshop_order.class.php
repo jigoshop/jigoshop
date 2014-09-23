@@ -59,6 +59,7 @@ class jigoshop_order extends Jigoshop_Base
 	public $order_total;
 	public $order_total_prices_per_tax_class_ex_tax;
 	public $formatted_billing_address;
+	public $formatted_shipping_address;
 	public $status;
 	private $order_data;
 
