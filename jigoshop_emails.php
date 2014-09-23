@@ -14,18 +14,6 @@
  */
 
 /**
- * Hooks for emails
- */
-add_action('jigoshop_low_stock_notification', 'jigoshop_low_stock_notification');
-add_action('jigoshop_no_stock_notification', 'jigoshop_no_stock_notification');
-add_action('jigoshop_product_on_backorder_notification', 'jigoshop_product_on_backorder_notification', 1, 3);
-
-
-add_action('order_status_pending_to_processing', 'jigoshop_new_order_notification');
-add_action('order_status_pending_to_completed', 'jigoshop_new_order_notification');
-add_action('order_status_pending_to_on-hold', 'jigoshop_new_order_notification');
-
-/**
  * New order notification email template
  *
  * @param $order_id
@@ -54,8 +42,9 @@ function jigoshop_new_order_notification($order_id)
 	remove_filter('wp_mail_from_name', 'jigoshop_mail_from_name', 99);
 }
 
-add_action('order_status_pending_to_processing', 'jigoshop_processing_order_customer_notification');
-add_action('order_status_pending_to_on-hold', 'jigoshop_processing_order_customer_notification');
+add_action('order_status_pending_to_processing', 'jigoshop_new_order_notification');
+add_action('order_status_pending_to_completed', 'jigoshop_new_order_notification');
+add_action('order_status_pending_to_on-hold', 'jigoshop_new_order_notification');
 
 /**
  * Processing order notification email template
@@ -97,7 +86,8 @@ function jigoshop_processing_order_customer_notification($order_id)
 	remove_filter('wp_mail_from_name', 'jigoshop_mail_from_name', 99);
 }
 
-add_action('order_status_completed', 'jigoshop_completed_order_customer_notification');
+add_action('order_status_pending_to_processing', 'jigoshop_processing_order_customer_notification');
+add_action('order_status_pending_to_on-hold', 'jigoshop_processing_order_customer_notification');
 
 /**
  * Completed order notification email template - this one includes download links for downloadable products
@@ -131,11 +121,13 @@ function jigoshop_completed_order_customer_notification($order_id)
 	remove_filter('wp_mail_from_name', 'jigoshop_mail_from_name', 99);
 }
 
+add_action('order_status_completed', 'jigoshop_completed_order_customer_notification');
+
 /**
  * Refunded order notification email template - this one does not include download links for downloadable products
- * */
-add_action('order_status_refunded', 'jigoshop_refunded_order_customer_notification');
-
+ *
+ * @param $order_id
+ */
 function jigoshop_refunded_order_customer_notification($order_id)
 {
 	$options = Jigoshop_Base::get_options();
@@ -161,6 +153,8 @@ function jigoshop_refunded_order_customer_notification($order_id)
 	wp_mail($order->billing_email, $subject, $message, "From: ".$options->get('jigoshop_email')."\r\n");
 	remove_filter('wp_mail_from_name', 'jigoshop_mail_from_name', 99);
 }
+
+add_action('order_status_refunded', 'jigoshop_refunded_order_customer_notification');
 
 /**
  * Customer invoice for an order.
@@ -241,6 +235,7 @@ function add_company_information()
 {
 	$options = Jigoshop_Base::get_options();
 	$add_eol = false;
+	echo __('Shop details:', 'jigoshop').PHP_EOL;
 
 	if ($options->get('jigoshop_company_name')) {
 		echo $options->get('jigoshop_company_name').PHP_EOL;
@@ -255,9 +250,13 @@ function add_company_information()
 		}
 	}
 
+	if ($options->get('jigoshop_calc_taxes') && $options->get('jigoshop_tax_number')) {
+		echo $options->get('jigoshop_tax_number').PHP_EOL.PHP_EOL;
+	}
+
 	if ($options->get('jigoshop_company_phone')) {
 		$add_eol = true;
-		echo $options->get('jigoshop_company_phone').PHP_EOL;
+		echo sprintf(__('Tax number: %s', 'jigoshop'), $options->get('jigoshop_company_phone')).PHP_EOL;
 	}
 
 	if ($options->get('jigoshop_company_email')) {
@@ -266,7 +265,7 @@ function add_company_information()
 	}
 
 	if ($add_eol) {
-		echo PHP_EOL;
+		echo add_email_separator('=').PHP_EOL;
 	}
 }
 
@@ -344,10 +343,6 @@ function add_order_totals($order, $show_download_links, $show_sku)
 	$info .= ' - '.__('via', 'jigoshop').' '.$method;
 	echo $info.PHP_EOL.PHP_EOL;
 
-	if ($options->get('jigoshop_calc_taxes') && $options->get('jigoshop_tax_number')) {
-		echo $options->get('jigoshop_tax_number').PHP_EOL.PHP_EOL;
-	}
-
 	do_action('jigoshop_after_email_order_info', $order->id);
 }
 
@@ -392,6 +387,9 @@ function add_billing_address_details($order)
 	do_action('jigoshop_after_email_billing_address', $order->id);
 }
 
+/**
+ * @param $order jigoshop_order
+ */
 function add_shipping_address_details($order)
 {
 	echo add_email_separator('-').PHP_EOL;
@@ -442,6 +440,8 @@ function jigoshop_low_stock_notification($product)
 	remove_filter('wp_mail_from_name', 'jigoshop_mail_from_name', 99);
 }
 
+add_action('jigoshop_low_stock_notification', 'jigoshop_low_stock_notification');
+
 /**
  * No stock notification email
  *
@@ -457,6 +457,8 @@ function jigoshop_no_stock_notification($product)
 	wp_mail($options->get('jigoshop_email'), $subject, $message, "From: ".$options->get('jigoshop_email')."\r\n");
 	remove_filter('wp_mail_from_name', 'jigoshop_mail_from_name', 99);
 }
+
+add_action('jigoshop_no_stock_notification', 'jigoshop_no_stock_notification');
 
 /**
  * Backorder notification emails
@@ -511,3 +513,5 @@ function jigoshop_product_on_backorder_notification($order_id, $product, $amount
 		remove_filter('wp_mail_from_name', 'jigoshop_mail_from_name', 99);
 	}
 }
+
+add_action('jigoshop_product_on_backorder_notification', 'jigoshop_product_on_backorder_notification', 1, 3);
