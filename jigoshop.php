@@ -56,6 +56,7 @@ if (!defined('JIGOSHOP_URL')) {
 	define('JIGOSHOP_URL', plugins_url('', __FILE__));
 }
 define('JIGOSHOP_REQUIRED_MEMORY', 64);
+define('JIGOSHOP_REQUIRED_WP_MEMORY', 64);
 define('JIGOSHOP_PHP_VERSION', '5.3');
 define('JIGOSHOP_WORDPRESS_VERSION', '3.8');
 
@@ -104,6 +105,28 @@ if($memory_limit < JIGOSHOP_REQUIRED_MEMORY*1024*1024){
 			'</p></div>';
 	}
 	add_action('admin_notices', 'jigoshop_required_memory_warning');
+}
+
+preg_match('/^(\d+)(\w*)?$/', WP_MEMORY_LIMIT, $memory);
+$memory_limit = $memory[1];
+if (isset($memory[2])) {
+	switch ($memory[2]) {
+		case 'M':
+			$memory_limit *= 1024;
+		case 'K':
+			$memory_limit *= 1024;
+	}
+}
+
+if($memory_limit < JIGOSHOP_REQUIRED_WP_MEMORY*1024*1024){
+	function jigoshop_required_wp_memory_warning()
+	{
+		echo '<div class="error"><p>'.
+			sprintf(__('<strong>Warning!</strong> Jigoshop requires at least %sM of memory for WordPress! Your system currently has: %s. <a href="%s" target="_blank">How to change?</a>', 'jigoshop'),
+				JIGOSHOP_REQUIRED_MEMORY, WP_MEMORY_LIMIT, 'http://codex.wordpress.org/Editing_wp-config.php#Increasing_memory_allocated_to_PHP').
+			'</p></div>';
+	}
+	add_action('admin_notices', 'jigoshop_required_wp_memory_warning');
 }
 
 /**
