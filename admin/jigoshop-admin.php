@@ -172,11 +172,14 @@ function jigoshop_system_info() {
 	PHP Memory Limit:         <?php echo ini_get('memory_limit') . "\n"; ?>
 	PHP Post Max Size:        <?php if(function_exists('phpversion')) echo (jigoshop_let_to_num(ini_get('post_max_size'))/(1024*1024))."MB"; ?><?php echo "\n"; ?>
 	PHP Upload Max File Size: <?php if(function_exists('phpversion')) echo (jigoshop_let_to_num(ini_get('upload_max_filesize'))/(1024*1024))."MB"; ?><?php echo "\n"; ?>
+	PHP Max Input Time:       <?php echo ini_get('max_input_time'); ?><?php echo "\n"; ?>
+	PHP Max Input Vars:       <?php echo ini_get('max_input_vars'); ?><?php echo "\n"; ?>
+	WordPress Memory Limit:   <?php echo (jigoshop_let_to_num(WP_MEMORY_LIMIT)/(1024*1024))."MB"; ?><?php echo "\n"; ?>
+
 	Short Open Tag:           <?php echo (ini_get('short_open_tag') ? 'Enabled' : 'Disabled'); ?><?php echo "\n"; ?>
 	Allow URL fopen:          <?php echo (ini_get('allow_url_fopen') ? 'Enabled' : 'Disabled'); ?><?php echo "\n"; ?>
 
 	WP_DEBUG:                 <?php echo defined('WP_DEBUG') ? WP_DEBUG ? 'Enabled' . "\n" : 'Disabled' . "\n" : 'Not set' . "\n" ?>
-
 	WP Table Prefix:          <?php global $wpdb; echo "Length: ". strlen($wpdb->prefix); echo " Status:"; if (strlen($wpdb->prefix)>16){echo " ERROR: Too Long";} else {echo " Acceptable";} echo "\n"; ?>
 
 	Show On Front:            <?php echo get_option('show_on_front') . "\n" ?>
@@ -190,10 +193,6 @@ function jigoshop_system_info() {
 	Use Cookies:              <?php echo (ini_get('session.use_cookies') ? 'On' : 'Off'); ?><?php echo "\n"; ?>
 	Use Only Cookies:         <?php echo (ini_get('session.use_only_cookies') ? 'On' : 'Off'); ?><?php echo "\n"; ?>
 
-	WordPress Memory Limit:   <?php echo (jigoshop_let_to_num(WP_MEMORY_LIMIT)/(1024*1024))."MB"; ?><?php echo "\n"; ?>
-	Max Input Time:           <?php echo ini_get('max_input_time'); ?><?php echo "\n"; ?>
-	Max Input Vars:           <?php echo ini_get('max_input_vars'); ?><?php echo "\n"; ?>
-	WP_DEBUG:                 <?php echo (WP_DEBUG) ? 'On' : 'Off'; ?><?php echo "\n"; ?>
 	DISPLAY ERRORS:           <?php echo (ini_get('display_errors')) ? 'On (' . ini_get('display_errors') . ')' : 'N/A'; ?><?php echo "\n"; ?>
 	FSOCKOPEN:                <?php echo (function_exists('fsockopen')) ? 'Supported' : 'Not supported'; ?><?php echo "\n"; ?>
 
