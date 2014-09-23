@@ -205,6 +205,7 @@ function jigoshop_product_data_box() {
 				echo Jigoshop_Forms::input( $args );
 			?>
 			</fieldset>
+			<?php do_action('jigoshop_product_general_panel'); ?>
 		</div>
 		<div id="tax" class="panel jigoshop_options_panel">
 			<fieldset id="tax_fieldset">
@@ -316,6 +317,7 @@ function jigoshop_product_data_box() {
 				echo Jigoshop_Forms::input( $args );
 			?>
 			</fieldset>
+			<?php do_action('jigoshop_product_tax_panel'); ?>
 
 		</div>
 
@@ -374,6 +376,7 @@ function jigoshop_product_data_box() {
 			echo '</div>';
 			?>
 			</fieldset>
+			<?php do_action('jigoshop_product_inventory_panel'); ?>
 		</div>
 		<?php endif; ?>
 
@@ -428,6 +431,7 @@ function jigoshop_product_data_box() {
 			);
 			echo Jigoshop_Forms::input( $args );
 			?>
+			<?php do_action('jigoshop_product_grouped_panel'); ?>
 		</div>
 
 		<div id="files" class="panel jigoshop_options_panel">
@@ -456,6 +460,7 @@ function jigoshop_product_data_box() {
 			do_action( 'additional_downloadable_product_type_options' );
 			?>
 			</fieldset>
+			<?php do_action('jigoshop_product_files_panel'); ?>
 		</div>
 
 		<?php do_action('jigoshop_product_write_panels'); ?>
