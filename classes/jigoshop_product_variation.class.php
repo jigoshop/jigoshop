@@ -38,6 +38,7 @@ class jigoshop_product_variation extends jigoshop_product {
 
 		// Get the meta & for each meta item overwrite with the variations ID
 		$meta = get_post_custom( $ID );
+		$variable_stock = 0;
 		foreach( $meta as $key => $array ) {
 			if ( $array[0] ) $this->meta[$key] = $array;
 			if ( $key == 'sku' ) if ( empty( $array[0] )) $tempsku = $ID;
