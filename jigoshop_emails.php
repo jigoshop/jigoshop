@@ -116,7 +116,7 @@ function jigoshop_completed_order_customer_notification($order_id)
 	echo __("Your order is complete. Your order's details are below:", 'jigoshop').PHP_EOL.PHP_EOL;
 	add_header_info($order);
 	$download_links = apply_filters('jigoshop_download_links_on_completed', true);
-	add_order_totals($order, true, true);
+	add_order_totals($order, $download_links, true);
 	add_customer_details($order);
 	add_billing_address_details($order);
 	add_shipping_address_details($order);
@@ -186,7 +186,7 @@ function jigoshop_send_customer_invoice($order_id)
 
 	if ($order->status == 'completed') {
 		$download_links = apply_filters('jigoshop_download_links_on_invoice', true);
-		add_order_totals($order, true, true);
+		add_order_totals($order, $download_links, true);
 	} else {
 		add_order_totals($order, false, true);
 	}
@@ -201,6 +201,9 @@ function jigoshop_send_customer_invoice($order_id)
 	remove_filter('wp_mail_from_name', 'jigoshop_mail_from_name', 99);
 }
 
+/**
+ * @param $order jigoshop_order
+ */
 function add_header_info($order)
 {
 	echo add_email_separator('=').PHP_EOL;
@@ -267,6 +270,11 @@ function add_company_information()
 	}
 }
 
+/**
+ * @param $order jigoshop_order
+ * @param $show_download_links boolean
+ * @param $show_sku boolean
+ */
 function add_order_totals($order, $show_download_links, $show_sku)
 {
 	do_action('jigoshop_before_email_order_info', $order->id);
@@ -457,7 +465,7 @@ function jigoshop_no_stock_notification($product)
  * if sent, an email is sent to the customer for each item backordered in the order
  *
  * @param string $order_id - the System Order number (ID)
- * @param string $product - the Product ID on backorder
+ * @param jigoshop_product $product - the Product ID on backorder
  * @param string $amount - the count of the product needed to fill the order
  */
 function jigoshop_product_on_backorder_notification($order_id, $product, $amount)
