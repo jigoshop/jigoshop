@@ -8,6 +8,7 @@
     * New: Cart quantity changes are immediately saved!
     * New: Ability to select exact hour when sales starts and ends.
     * New: WordPress memory limit check.
+    * New: Actions in each product panel for additional fields.
 * 1.11.9 - 2014-09-16:
     * Fix: EU VAT handling for same country orders.
     * Fix: Tax for shipping is properly added on new orders using PayPal standard.
