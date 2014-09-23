@@ -3,7 +3,7 @@ Contributors: Jigoshop
 Tags: e-commerce, wp e-commerce, ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal, jigoshop, shipping, inventory, stock, online, sell, sales, weights, dimensions, configurable, variable, downloadable, external, affiliate, download, virtual, physical
 Requires at least: 3.8
 Tested up to: 4.0
-Stable tag: 1.11.9
+Stable tag: 1.12
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -112,6 +112,15 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 4. Standard customer checkout screen
 
 == Changelog ==
+
+= 1.12 =
+* New: User fields in user's profile.
+* New: Support for disabled elements in admin settings.
+* New: `Jigoshop_Options` new methods `get`, `set`, `add`, `delete` and `exists` - replaces ones with `_option` in the name.
+* New: `jigoshop_enqueue_settings_scripts` action.
+* New: Cart quantity changes are immediately saved!
+* New: Ability to select exact hour when sales starts and ends.
+* New: WordPress memory limit check.
 
 = 1.11.9 - 2014-09-16 =
 * Fix: EU VAT handling for same country orders.
