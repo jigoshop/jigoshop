@@ -46,6 +46,11 @@ if (!defined('JIGOSHOP_DIR')) {
 if (!defined('JIGOSHOP_URL')) {
 	define('JIGOSHOP_URL', plugins_url('', __FILE__));
 }
+// Define plugin base name
+if (!defined('JIGOSHOP_BASE_NAME')) {
+	define('JIGOSHOP_BASE_NAME', plugin_basename(__FILE__));
+}
+
 define('JIGOSHOP_REQUIRED_MEMORY', 64);
 define('JIGOSHOP_REQUIRED_WP_MEMORY', 64);
 define('JIGOSHOP_PHP_VERSION', '5.3');

@@ -66,6 +66,7 @@ class JigoshopInit
 		// Override default translations with custom .mo's found in wp-content/languages/jigoshop first.
 		load_textdomain('jigoshop', WP_LANG_DIR.'/jigoshop/jigoshop-'.get_locale().'.mo');
 		load_plugin_textdomain('jigoshop', false, JIGOSHOP_DIR.'/languages/');
+		add_filter('plugin_action_links_'.JIGOSHOP_BASE_NAME, array($this, 'pluginLinks'));
 
 		/** @var \Jigoshop\Core $jigoshop */
 		// Initialize post types and roles
@@ -99,6 +100,15 @@ class JigoshopInit
 				__('Add your [stars] on [link]wordpress.org[/link] and keep this plugin essentially free.', 'jigoshop')
 			)
 		);
+	}
+
+	function pluginLinks($links)
+	{
+		return array_merge(array(
+			'<a href="'.admin_url('admin.php?page=jigoshop_settings').'">'.__('Settings', 'jigoshop').'</a>',
+			'<a href="https://www.jigoshop.com/documentation/">'.__('Docs', 'jigoshop').'</a>',
+			'<a href="https://www.jigoshop.com/support/">'.__('Support', 'jigoshop').'</a>',
+		), $links);
 	}
 
 	/**
