@@ -67,6 +67,7 @@ services:
     class: Jigoshop\Query\Interceptor
     arguments:
       - '@wpal'
+      - '@jigoshop.options'
   jigoshop.page.product_list:
     class: Jigoshop\Frontend\Page\ProductList
     arguments:

@@ -56,7 +56,6 @@ class Core
 			/* Catalog Filters */
 			$this->wp->addFilter('jigoshop\shop\query', array($this, 'shopSortingFilter'));
 			$this->wp->addFilter('jigoshop\shop\columns', array($this, 'shopVisibleColumnsFilter'));
-			$this->wp->addFilter('jigoshop\shop\per_page', array($this, 'shopPerPageFilter'));
 		}
 	}
 
@@ -129,13 +128,5 @@ class Core
 	public function shopVisibleColumnsFilter()
 	{
 		return $this->options->get('catalog_sort.columns');
-	}
-
-	/**
-	 * @return int Number of items per page in product list.
-	 */
-	public function shopPerPageFilter()
-	{
-		return $this->options->get('catalog_per_page');
 	}
 }

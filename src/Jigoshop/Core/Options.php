@@ -22,12 +22,6 @@ class Options
 	// TODO: Fill default options
 	private $defaults = array(
 //		'cache_mechanism' => 'simple',
-//		'catalog_per_page' => 9,
-//		'catalog_sort' => array(
-//			'order_by' => 'post_date',
-//			'order' => 'DESC',
-//			'columns' => 3,
-//		),
 //		'disable_css' => 'no',
 //		'disable_prettyphoto' => 'no',
 //		'load_frontend_css' => 'yes',
@@ -40,6 +34,11 @@ class Options
 			'message' => 'Demo store',
 			'currency' => 'GBP',
 			'currency_position' => 'left', // TODO: Update to Currency::display()
+		),
+		'shopping' => array(
+			'catalog_per_page' => 12,
+			'catalog_order_by' => 'post_date',
+			'catalog_order' => 'DESC',
 		),
 		'tax' => array(
 			'before_coupons' => true,

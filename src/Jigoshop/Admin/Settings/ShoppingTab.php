@@ -44,11 +44,38 @@ class ShoppingTab implements TabInterface
 	{
 		return array(
 			array(
-				'title' => __('Main', 'jigoshop'),
-				'id' => 'main',
+				'title' => __('Catalog', 'jigoshop'),
+				'id' => 'catalog',
 				'fields' => array(
+					array(
+						'name' => '[catalog_per_page]',
+						'title' => __('Items per page', 'jigoshop'),
+						'type' => 'text',
+						'value' => $this->options['catalog_per_page'],
+					),
+					array(
+						'name' => '[catalog_order_by]',
+						'title' => __('Order by', 'jigoshop'),
+						'type' => 'select',
+						'value' => $this->options['catalog_order_by'],
+						'options' => array(
+							'post_date' => __('Date', 'jigoshop'),
+							'post_title' => __('Product name', 'jigoshop'),
+							'menu_order' => __('Product post order', 'jigoshop'),
+						),
+					),
+					array(
+						'name' => '[catalog_order]',
+						'title' => __('Ordering', 'jigoshop'),
+						'type' => 'select',
+						'value' => $this->options['catalog_order'],
+						'options' => array(
+							'ASC' => __('Ascending', 'jigoshop'),
+							'DESC' => __('Descending', 'jigoshop'),
+						),
+					),
 				),
-			)
+			),
 		);
 	}
 
