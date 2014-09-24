@@ -44,6 +44,9 @@ class Options
 			'guest_purchases' => true,
 			'show_login_form' => false,
 			'allow_registration' => false,
+			'validate_zip' => true,
+			'restrict_selling_locations' => false,
+			'selling_locations' => array(),
 		),
 		'tax' => array(
 			'before_coupons' => true,

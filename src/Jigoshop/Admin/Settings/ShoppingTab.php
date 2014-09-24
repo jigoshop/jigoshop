@@ -3,6 +3,8 @@
 namespace Jigoshop\Admin\Settings;
 
 use Jigoshop\Core\Options;
+use Jigoshop\Helper\Country;
+use Jigoshop\Helper\Scripts;
 
 /**
  * Shopping tab definition.
@@ -16,9 +18,10 @@ class ShoppingTab implements TabInterface
 	/** @var array */
 	private $options;
 
-	public function __construct(Options $options)
+	public function __construct(Options $options, Scripts $scripts)
 	{
 		$this->options = $options->get(self::SLUG);
+		$scripts->add('jigoshop.admin.shopping', JIGOSHOP_URL.'/assets/js/admin/settings/shopping.js', array('jquery'));
 	}
 
 	/**
@@ -73,6 +76,36 @@ class ShoppingTab implements TabInterface
 							'ASC' => __('Ascending', 'jigoshop'),
 							'DESC' => __('Descending', 'jigoshop'),
 						),
+					),
+				),
+			),
+			array(
+				'title' => __('Validation', 'jigoshop'),
+				'id' => 'validation',
+				'fields' => array(
+					array(
+						'name' => '[validate_zip]',
+						'title' => __('Validate ZIP/postal code', 'jigoshop'),
+						'type' => 'checkbox',
+						'value' => $this->options['validate_zip'],
+					),
+					array(
+						'name' => '[restrict_selling_locations]',
+						'id' => 'restrict_selling_locations',
+						'title' => __('Restrict selling locations?', 'jigoshop'),
+						'description' => __('This option allows you to select what countries you want to sell to.', 'jigoshop'),
+						'type' => 'checkbox',
+						'value' => $this->options['restrict_selling_locations'],
+					),
+					array(
+						'name' => '[selling_locations]',
+						'id' => 'selling_locations',
+						'title' => __('Selling locations', 'jigoshop'),
+						'type' => 'select',
+						'multiple' => true,
+						'value' => $this->options['selling_locations'],
+						'options' => Country::getAll(),
+						'classes' => array('hidden'),
 					),
 				),
 			),
@@ -145,6 +178,12 @@ class ShoppingTab implements TabInterface
 		$settings['guest_purchases'] = $settings['guest_purchases'] == 'on';
 		$settings['show_login_form'] = $settings['show_login_form'] == 'on';
 		$settings['allow_registration'] = $settings['allow_registration'] == 'on';
+
+		$settings['validate_zip'] = $settings['validate_zip'] == 'on';
+		$settings['restrict_selling_locations'] = $settings['restrict_selling_locations'] == 'on';
+		if (!$settings['restrict_selling_locations']) {
+			$settings['selling_locations'] = array();
+		}
 
 		// TODO: Other settings validation
 
