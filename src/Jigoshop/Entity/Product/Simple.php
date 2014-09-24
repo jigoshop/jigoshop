@@ -103,7 +103,7 @@ class Simple extends Product
 
 		if ($this->sales !== null) {
 			if (strpos($this->sales->getPrice(), '%') !== false) {
-				$discount = trim('%', $this->sales->getPrice());
+				$discount = trim($this->sales->getPrice(), '%');
 				$sale = $this->regularPrice * (1 - $discount / 100);
 			} else {
 				$sale = $this->regularPrice - $this->sales->getPrice();
