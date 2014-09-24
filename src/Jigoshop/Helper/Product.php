@@ -34,7 +34,17 @@ class Product
 		switch($product->getType()){
 			case Simple::TYPE:
 				/** @var $product Simple */
-				return sprintf('%1$01.2f %2$s', $product->getPrice(), self::currencySymbol()); // TODO: Properly implement fetching price position and format
+				if ( self::isOnSale($product)) {
+					if (strpos($product->getSales()->getPrice(), '%') !== false) {
+						return '<del>'.self::formatPrice($product->getRegularPrice()).'</del>'.self::formatPrice($product->getPrice()).'
+						<ins>'.sprintf(__('%s off!', 'jigoshop'), $product->getSales()->getPrice()).'</ins>';
+					} else {
+						return '<del>'.self::formatPrice($product->getRegularPrice()).'</del>
+						<ins>'.self::getPrice($product).'</ins>';
+					}
+				}
+
+				return self::formatPrice($product->getPrice());
 			default:
 				return apply_filters('jigoshop\helper\product\get_price', '', $product);
 		}
@@ -116,5 +126,14 @@ class Product
 			default:
 				return apply_filters('jigoshop\helper\product\is_on_sales', '', $product);
 		}
+	}
+
+	/**
+	 * @param $price float Price to format.
+	 * @return string Formatted price with currency symbol.
+	 */
+	private static function formatPrice($price)
+	{
+		return sprintf('%1$01.2f %2$s', $price, self::currencySymbol()); // TODO: Properly implement fetching price position and format
 	}
 }
