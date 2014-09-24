@@ -45,18 +45,8 @@ class Core
 	public function run()
 	{
 		// TODO: Build required extensions
-		$this->_addQueryFilters();
 		$this->wp->addFilter('template_include', array($this->template, 'process'));
 		$this->wp->addFilter('template_redirect', array($this->template, 'redirect'));
-	}
-
-	private function _addQueryFilters()
-	{
-		if (!$this->wp->isAdmin()) {
-			/* Catalog Filters */
-			$this->wp->addFilter('jigoshop\shop\query', array($this, 'shopSortingFilter'));
-			$this->wp->addFilter('jigoshop\shop\columns', array($this, 'shopVisibleColumnsFilter'));
-		}
 	}
 
 	/**
@@ -107,26 +97,5 @@ class Core
 	public function getPages()
 	{
 		return $this->pages;
-	}
-
-	/**
-	 * @return array Arguments for post sorting of product list.
-	 */
-	public function shopSortingFilter()
-	{
-		$options = $this->options->get('catalog_sort');
-
-		return array(
-			'orderby' => $options['order_by'],
-			'order' => $options['order'],
-		);
-	}
-
-	/**
-	 * @return int Number of columns in product list.
-	 */
-	public function shopVisibleColumnsFilter()
-	{
-		return $this->options->get('catalog_sort.columns');
 	}
 }
