@@ -115,7 +115,8 @@ class Pages
 	public function isCart()
 	{
 		if (!isset($this->cache[self::CART])) {
-			$this->cache[self::CART] = $this->wp->isPage($this->options->getPageId(self::CART));
+			$page = $this->options->getPageId(self::CART);
+			$this->cache[self::CART] = $page !== false && $this->wp->isPage($page);
 		}
 
 		return $this->cache[self::CART];
@@ -130,7 +131,8 @@ class Pages
 	public function isCheckout()
 	{
 		if (!isset($this->cache[self::CHECKOUT])) {
-			$this->cache[self::CHECKOUT] = $this->wp->isPage($this->options->getPageId(self::CHECKOUT)); // || is_page(jigoshop_get_page_id('pay'))
+			$page = $this->options->getPageId(self::CHECKOUT);
+			$this->cache[self::CHECKOUT] = $page !== false && $this->wp->isPage($page); // || is_page(jigoshop_get_page_id('pay'))
 		}
 
 		return $this->cache[self::CHECKOUT];
@@ -175,8 +177,9 @@ class Pages
 	public function isProductList()
 	{
 		if (!isset($this->cache[self::PRODUCT_LIST])) {
+			$page = $this->options->getPageId(self::SHOP);
 			$this->cache[self::PRODUCT_LIST] = $this->wp->isPostTypeArchive(Types::PRODUCT) ||
-				$this->wp->isPage($this->options->getPageId(self::SHOP)) ||
+				($page !== false && $this->wp->isPage($page)) ||
 				$this->isProductCategory() ||
 				$this->isProductTag();
 		}
@@ -208,7 +211,8 @@ class Pages
 	public function isAccount()
 	{
 		if (!isset($this->cache[self::ACCOUNT])) {
-			$this->cache[self::ACCOUNT] =  $this->wp->isPage($this->options->getPageId(self::ACCOUNT)); // || is_page(jigoshop_get_page_id('edit_address')) || is_page(jigoshop_get_page_id('change_password')) || is_page(jigoshop_get_page_id('view_order'));
+			$page = $this->options->getPageId(self::ACCOUNT);
+			$this->cache[self::ACCOUNT] = $page !== false && $this->wp->isPage($page); // || is_page(jigoshop_get_page_id('edit_address')) || is_page(jigoshop_get_page_id('change_password')) || is_page(jigoshop_get_page_id('view_order'));
 		}
 
 		return $this->cache[self::ACCOUNT];
@@ -223,7 +227,8 @@ class Pages
 	public function isOrderTracker()
 	{
 		if (!isset($this->cache[self::ORDER_TRACKING])) {
-			$this->cache[self::ORDER_TRACKING] =  $this->wp->isPage($this->options->getPageId(self::ORDER_TRACKING));
+			$page = $this->options->getPageId(self::ORDER_TRACKING);
+			$this->cache[self::ORDER_TRACKING] = $page !== false && $this->wp->isPage($page);
 		}
 
 		return $this->cache[self::ORDER_TRACKING];
