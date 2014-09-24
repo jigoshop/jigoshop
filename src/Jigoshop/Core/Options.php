@@ -28,12 +28,18 @@ class Options
 //		'complete_processing_orders' => 'no',
 //		'reset_pending_orders' => 'no',
 		'general' => array(
-			'name' => '',
+			'country' => 'GB',
 			'email' => '',
 			'show_message' => false,
 			'message' => 'Demo store',
+			'company_name' => '',
+			'company_address_1' => '',
+			'company_address_2' => '',
+			'company_tax_number' => '',
+			'company_phone' => '',
+			'company_email' => '',
 			'currency' => 'GBP',
-			'currency_position' => 'left', // TODO: Update to Currency::display()
+			'currency_position' => 'left', // TODO: Update according to Currency::display()
 		),
 		'shopping' => array(
 			'catalog_per_page' => 12,

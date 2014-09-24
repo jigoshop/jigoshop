@@ -4,6 +4,7 @@ namespace Jigoshop\Admin\Settings;
 
 use Jigoshop\Core\Currency;
 use Jigoshop\Core\Options;
+use Jigoshop\Helper\Country;
 
 /**
  * General tab definition.
@@ -49,10 +50,11 @@ class GeneralTab implements TabInterface
 				'id' => 'main',
 				'fields' => array(
 					array(
-						'name' => '[name]',
-						'title' => __('Shop name', 'jigoshop'),
-						'type' => 'text',
-						'value' => $this->options['name'],
+						'name' => '[country]',
+						'title' => __('Shop location', 'jigoshop'),
+						'type' => 'select',
+						'value' => $this->options['country'],
+						'options' => Country::getAll(),
 					),
 					array(
 						'name' => '[email]',
@@ -96,6 +98,50 @@ class GeneralTab implements TabInterface
 						'value' => $this->options['currency_position'],
 						'options' => Currency::displays(),
 					)
+				),
+			),
+			array(
+				'title' => __('Company details', 'jigoshop'),
+				'description' => __('These details with shop location are used for invoicing and sent to customer via emails.', 'jigoshop'),
+				'id' => 'company',
+				'fields' => array(
+					array(
+						'name' => '[company_name]',
+						'title' => __('Name', 'jigoshop'),
+						'type' => 'text',
+						'value' => $this->options['company_name'],
+					),
+					array(
+						'name' => '[company_address_1]',
+						'title' => __('Address (first line)', 'jigoshop'),
+						'type' => 'text',
+						'value' => $this->options['company_address_1'],
+					),
+					array(
+						'name' => '[company_address_2]',
+						'title' => __('Address (second line)', 'jigoshop'),
+						'type' => 'text',
+						'value' => $this->options['company_address_2'],
+					),
+					array(
+						'name' => '[company_tax_number]',
+						'title' => __('Tax number', 'jigoshop'),
+						'description' => __('Add your tax registration label before the registration number and it will be printed as well. eg. <code>VAT Number: 88888888</code>', 'jigoshop'),
+						'type' => 'text',
+						'value' => $this->options['company_tax_number'],
+					),
+					array(
+						'name' => '[company_phone]',
+						'title' => __('Phone number', 'jigoshop'),
+						'type' => 'text',
+						'value' => $this->options['company_phone'],
+					),
+					array(
+						'name' => '[company_email]',
+						'title' => __('Email', 'jigoshop'),
+						'type' => 'text',
+						'value' => $this->options['company_email'],
+					),
 				),
 			),
 		);
