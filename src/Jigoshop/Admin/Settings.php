@@ -100,8 +100,8 @@ class Settings implements PageInterface
 		$that = $this;
 		/** @var TabInterface $tab */
 		foreach ($tab->getSections() as $section) {
-			$this->wp->addSettingsSection($section['id'], $section['title'], function() use ($tab, $that){
-				$that->displayTab($tab);
+			$this->wp->addSettingsSection($section['id'], $section['title'], function() use ($tab, $section, $that){
+				$that->displaySection($tab, $section);
 			}, self::NAME);
 
 			foreach($section['fields'] as $field){
@@ -142,11 +142,13 @@ class Settings implements PageInterface
 	 * Displays the tab.
 	 *
 	 * @param TabInterface $tab Tab to display.
+	 * @param array $section Section to display.
 	 */
-	public function displayTab(TabInterface $tab)
+	public function displaySection(TabInterface $tab, array $section)
 	{
-		Render::output('admin/settings/tab', array(
+		Render::output('admin/settings/section', array(
 			'tab' => $tab,
+			'section' => $section,
 		));
 	}
 
