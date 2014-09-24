@@ -26,6 +26,7 @@ class ProductList implements Page
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->productService = $productService;
+		$styles->add('jigoshop.shop', JIGOSHOP_URL.'/assets/css/shop.css');
 		$styles->add('jigoshop.shop.list', JIGOSHOP_URL.'/assets/css/shop/list.css');
 	}
 

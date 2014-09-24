@@ -99,4 +99,22 @@ class Product
 //				else echo '<img src="'.jigoshop::assets_url().'/assets/images/head_featured.png" alt="no" />';
 //				echo '</a>';
 	}
+
+	/**
+	 * Check whether selected product is on sale.
+	 *
+	 * @param ProductEntity $product
+	 * @return boolean
+	 */
+	public static function isOnSale(ProductEntity $product)
+	{
+		switch($product->getType()){
+			case Simple::TYPE:
+				/** @var $product Simple */
+				$time = time();
+				return $product->getSales()->isEnabled() && $product->getSales()->getFrom()->getTimestamp() <= $time && $product->getSales()->getTo()->getTimestamp() >= $time;
+			default:
+				return apply_filters('jigoshop\helper\product\is_on_sales', '', $product);
+		}
+	}
 }
