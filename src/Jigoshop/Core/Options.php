@@ -39,6 +39,8 @@ class Options
 			'catalog_per_page' => 12,
 			'catalog_order_by' => 'post_date',
 			'catalog_order' => 'DESC',
+			'redirect_add_to_cart' => 'product',
+			'redirect_continue_shopping' => 'product_list',
 		),
 		'tax' => array(
 			'before_coupons' => true,

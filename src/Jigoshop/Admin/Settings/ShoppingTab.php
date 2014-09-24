@@ -44,6 +44,35 @@ class ShoppingTab implements TabInterface
 	{
 		return array(
 			array(
+				'title' => __('Redirection', 'jigoshop'),
+				'id' => 'redirection',
+				'fields' => array(
+					array(
+						'name' => '[redirect_add_to_cart]',
+						'title' => __('After adding to cart', 'jigoshop'),
+						'type' => 'select',
+						'value' => $this->options['redirect_add_to_cart'],
+						'options' => array(
+							'product' => __('Product page', 'jigoshop'),
+							'cart' => __('Cart', 'jigoshop'),
+							'checkout' => __('Checkout', 'jigoshop'),
+							'product_list' => __('Product list', 'jigoshop'),
+						),
+					),
+					array(
+						'name' => '[redirect_continue_shopping]',
+						'title' => __('Coming back to shop', 'jigoshop'),
+						'description' => __("This will point users to the page you set for buttons like 'Return to shop' or 'Continue Shopping'.", 'jigoshop'),
+						'type' => 'select',
+						'value' => $this->options['redirect_continue_shopping'],
+						'options' => array(
+							'product_list' => __('Product list', 'jigoshop'),
+							'my_account' => __('My account', 'jigoshop'),
+						),
+					),
+				),
+			),
+			array(
 				'title' => __('Catalog', 'jigoshop'),
 				'id' => 'catalog',
 				'fields' => array(
