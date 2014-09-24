@@ -67,13 +67,19 @@ class JigoshopInit
 		// Override default translations with custom .mo's found in wp-content/languages/jigoshop first.
 		load_textdomain('jigoshop', WP_LANG_DIR.'/jigoshop/jigoshop-'.get_locale().'.mo');
 		load_plugin_textdomain('jigoshop', false, JIGOSHOP_DIR.'/languages/');
+
+		// Add links in Plugins page
 		add_filter('plugin_action_links_'.JIGOSHOP_BASE_NAME, array($this, 'pluginLinks'));
 
+		// Configure container before initializing Jigoshop
+		do_action('jigoshop\init', $this->container);
+
 		/** @var \Jigoshop\Core $jigoshop */
+		$jigoshop = $this->container->get('jigoshop');
+
 		// Initialize post types and roles
 		$this->container->get('jigoshop.types');
 		$this->container->get('jigoshop.roles');
-		$jigoshop = $this->container->get('jigoshop');
 		// Initialize Cron and Assets
 		$this->container->get('jigoshop.cron');
 		$this->container->get('jigoshop.assets');
