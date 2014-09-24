@@ -223,7 +223,7 @@ class Pages
 	public function isOrderTracker()
 	{
 		if (!isset($this->cache[self::ORDER_TRACKING])) {
-			$this->cache[self::CHECKOUT] =  $this->wp->isPage($this->options->getPageId(self::ORDER_TRACKING));
+			$this->cache[self::ORDER_TRACKING] =  $this->wp->isPage($this->options->getPageId(self::ORDER_TRACKING));
 		}
 
 		return $this->cache[self::ORDER_TRACKING];
