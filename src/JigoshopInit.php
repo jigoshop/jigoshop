@@ -54,6 +54,7 @@ class JigoshopInit
 		$this->container = new JigoshopContainer();
 
 		add_filter('admin_footer_text', array($this, 'footer'));
+		add_action('admin_bar_menu', array($this, 'toolbar'), 35);
 	}
 
 	/**
@@ -100,6 +101,65 @@ class JigoshopInit
 				__('Add your [stars] on [link]wordpress.org[/link] and keep this plugin essentially free.', 'jigoshop')
 			)
 		);
+	}
+	/**
+	 * Adds Jigoshop items to admin bar.
+	 */
+	function toolbar() {
+		/** @var WP_Admin_Bar $wp_admin_bar */
+		global $wp_admin_bar;
+		$manage_products = current_user_can('manage_jigoshop_products');
+		$manage_orders = current_user_can('manage_jigoshop_orders');
+		$manage_jigoshop = current_user_can('manage_jigoshop');
+		$view_reports = current_user_can('view_jigoshop_reports');
+
+		if (!is_admin() && ($manage_jigoshop || $manage_products || $manage_orders || $view_reports)) {
+			$wp_admin_bar->add_node(array(
+				'id' => 'jigoshop',
+				'title' => __('Jigoshop', 'jigoshop'),
+				'href' => $manage_jigoshop ? admin_url('admin.php?page=jigoshop') : '',
+				'parent' => false,
+				'meta' => array(
+					'class' => 'jigoshop-toolbar'
+				),
+			));
+
+			if ($manage_jigoshop) {
+				$wp_admin_bar->add_node(array(
+					'id' => 'jigoshop_dashboard',
+					'title' => __('Dashboard', 'jigoshop'),
+					'parent' => 'jigoshop',
+					'href' => admin_url('admin.php?page=jigoshop'),
+				));
+			}
+
+			if ($manage_products) {
+				$wp_admin_bar->add_node(array(
+					'id' => 'jigoshop_products',
+					'title' => __('Products', 'jigoshop'),
+					'parent' => 'jigoshop',
+					'href' => admin_url('edit.php?post_type=product'),
+				));
+			}
+
+			if ($manage_orders) {
+				$wp_admin_bar->add_node(array(
+					'id' => 'jigoshop_orders',
+					'title' => __('Orders', 'jigoshop'),
+					'parent' => 'jigoshop',
+					'href' => admin_url('edit.php?post_type=shop_order'),
+				));
+			}
+
+			if ($manage_jigoshop) {
+				$wp_admin_bar->add_node(array(
+					'id' => 'jigoshop_settings',
+					'title' => __('Settings', 'jigoshop'),
+					'parent' => 'jigoshop',
+					'href' => admin_url('admin.php?page=jigoshop_settings'),
+				));
+			}
+		}
 	}
 
 	function pluginLinks($links)
