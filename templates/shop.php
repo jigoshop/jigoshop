@@ -24,4 +24,3 @@ do_action('jigoshop\shop\content\before'); ?>
 ?>
 
 <?php do_action('jigoshop\shop\content\after'); ?>
-<?php do_action('jigoshop\sidebar'); ?>

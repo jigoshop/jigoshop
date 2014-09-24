@@ -11,4 +11,6 @@ get_header('shop');
 		</div>
 	</div>
 </div>
+<?php do_action('jigoshop\sidebar'); ?>
+<?php get_sidebar('shop'); // TODO: Remove on implementation of jigoshop\sidebar ?>
 <?php get_footer('shop'); ?>

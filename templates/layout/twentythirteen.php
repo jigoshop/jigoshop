@@ -9,4 +9,6 @@ get_header('shop');
 		<?php echo $content; ?>
 	</div>
 </div>
+<?php do_action('jigoshop\sidebar'); ?>
+<?php get_sidebar('shop'); // TODO: Remove on implementation of jigoshop\sidebar ?>
 <?php get_footer('shop'); ?>
