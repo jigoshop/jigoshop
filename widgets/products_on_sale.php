@@ -80,6 +80,7 @@ class Jigoshop_Widget_Products_On_Sale extends WP_Widget
 		}
 
 		// Set up query
+		$time = current_time('timestamp');
 		$query_args = array(
 			'posts_per_page' => -1,
 			'post_type' => 'product',
@@ -90,6 +91,16 @@ class Jigoshop_Widget_Products_On_Sale extends WP_Widget
 					'key' => 'visibility',
 					'value' => array('catalog', 'visible'),
 					'compare' => 'IN',
+				),
+				array(
+					'key' => 'sale_price_dates_from',
+					'value' => $time,
+					'compare' => '<=',
+				),
+				array(
+					'key' => 'sale_price_dates_to',
+					'value' => $time,
+					'compare' => '>=',
 				),
 			)
 		);
