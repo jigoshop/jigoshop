@@ -81,7 +81,7 @@ class GeneralTab implements TabInterface
 				),
 			),
 			array(
-				'title' => __('Pricing options', 'jigoshop'),
+				'title' => __('Pricing', 'jigoshop'),
 				'id' => 'pricing',
 				'fields' => array(
 					array(
@@ -96,8 +96,26 @@ class GeneralTab implements TabInterface
 						'title' => __('Currency position', 'jigoshop'),
 						'type' => 'select',
 						'value' => $this->options['currency_position'],
-						'options' => Currency::displays(),
-					)
+						'options' => Currency::positions(),
+					),
+					array(
+						'name' => '[currency_decimals]',
+						'title' => __('Number of decimals', 'jigoshop'),
+						'type' => 'text',
+						'value' => $this->options['currency_decimals'],
+					),
+					array(
+						'name' => '[currency_thousand_separator]',
+						'title' => __('Thousands separator', 'jigoshop'),
+						'type' => 'text',
+						'value' => $this->options['currency_thousand_separator'],
+					),
+					array(
+						'name' => '[currency_decimal_separator]',
+						'title' => __('Decimal separator', 'jigoshop'),
+						'type' => 'text',
+						'value' => $this->options['currency_decimal_separator'],
+					),
 				),
 			),
 			array(

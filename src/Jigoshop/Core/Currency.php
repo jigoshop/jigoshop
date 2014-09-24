@@ -270,7 +270,7 @@ class Currency
 		return $countries;
 	}
 
-	public static function displays()
+	public static function positions()
 	{
 		$symbol = Product::currencySymbol();
 		$separator = '.'; // TODO: Introduce decimal separator

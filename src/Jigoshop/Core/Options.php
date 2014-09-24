@@ -39,7 +39,10 @@ class Options
 			'company_phone' => '',
 			'company_email' => '',
 			'currency' => 'GBP',
-			'currency_position' => 'left', // TODO: Update according to Currency::display()
+			'currency_position' => 'left', // TODO: Update according to Currency::positions()
+			'currency_decimals' => 2,
+			'currency_thousand_separator' => ',',
+			'currency_decimal_separator' => '.',
 		),
 		'shopping' => array(
 			'catalog_per_page' => 12,
