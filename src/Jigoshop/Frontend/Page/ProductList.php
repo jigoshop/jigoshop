@@ -7,6 +7,8 @@ use Jigoshop\Core\Pages;
 use Jigoshop\Core\Types;
 use Jigoshop\Frontend\Page;
 use Jigoshop\Helper\Render;
+use Jigoshop\Helper\Scripts;
+use Jigoshop\Helper\Styles;
 use Jigoshop\Service\ProductServiceInterface;
 use WPAL\Wordpress;
 
@@ -19,11 +21,12 @@ class ProductList implements Page
 	/** @var ProductServiceInterface */
 	private $productService;
 
-	public function __construct(Wordpress $wp, Options $options, ProductServiceInterface $productService)
+	public function __construct(Wordpress $wp, Options $options, ProductServiceInterface $productService, Styles $styles)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->productService = $productService;
+		$styles->add('jigoshop.shop.list', JIGOSHOP_URL.'/assets/css/shop/list.css');
 	}
 
 

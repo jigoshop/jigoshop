@@ -5,9 +5,8 @@ use Jigoshop\Helper\Render;
  * @var $products array List of products to display
  * @var $product_count int Number of all available products.
  */
-have_posts();
 ?>
-<ul id="products">
+<ul id="products" class="list-inline">
 	<?php foreach($products as $product): ?>
 		<?php Render::output('shop/list/product', array(
 			'product' => $product,
@@ -15,7 +14,7 @@ have_posts();
 	<?php endforeach; ?>
 </ul>
 <?php
-next_posts_link(__('Next &raquo;', 'jigoshop'), $product_count);
-previous_posts_link(__('&laquo; Previous', 'jigoshop'));
+Render::output('shop/pagination', array(
+	'product_count' => $product_count,
+));
 ?>
-<?php //do_action('jigoshop\list\pagination', $product_count, $products); // TODO: Render pagination ?>

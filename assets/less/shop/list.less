@@ -1,0 +1,50 @@
+@import '../../bower/bootstrap/less/variables.less';
+@import '../../bower/bootstrap/less/mixins.less';
+
+.jigoshop {
+  @import '../../bower/bootstrap/less/normalize.less';
+  @import '../../bower/bootstrap/less/glyphicons.less';
+  @import '../../bower/bootstrap/less/type.less';
+
+  #products {
+    a {
+      text-decoration: none;
+    }
+    a img {
+      max-width: 150px !important;
+      max-height: 150px !important;
+      display: block;
+      margin: 0 auto 8px !important;
+      border: 1px solid #dddddd;
+    }
+    a:hover img {
+      border: 1px solid #bbbbbb;
+    }
+    strong {
+      color: #555555;
+      display: block;
+    }
+    .price {
+      color: green;
+      display: block;
+      font-weight: normal;
+      float: right;
+      text-align: right;
+      del {
+        font-size: 10px;
+        line-height: 10px;
+        margin: -2px 0 0 0;
+        display: block;
+        color: #aaaaaa;
+      }
+      .from {
+        font-size: 10px;
+        line-height: 10px;
+        margin: -2px 0 0 0;
+        display: block;
+        color: #aaaaaa;
+        padding-bottom: 3px;
+      }
+    }
+  }
+}

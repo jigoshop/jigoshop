@@ -78,7 +78,7 @@ class Options
 
 	public function getImageSizes()
 	{
-		return array_values($this->wp->applyFilters('jigoshop\image\sizes', array(
+		return $this->wp->applyFilters('jigoshop\image\sizes', array(
 			'shop_tiny' => array(
 				'crop' => $this->wp->applyFilters('jigoshop\image\size\crop', false, 'shop_tiny'),
 				'width' => '36',
@@ -99,7 +99,7 @@ class Options
 				'width' => '300',
 				'height' => '300',
 			),
-		)));
+		));
 	}
 
 	/**

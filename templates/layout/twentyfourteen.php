@@ -5,7 +5,7 @@
 get_header('shop');
 ?>
 <div id="primary" class="content-area">
-	<div id="content" class="site-content" role="main">
+	<div id="content" class="site-content jigoshop" role="main">
 		<?php echo $content; ?>
 	</div>
 </div>

@@ -64,14 +64,24 @@ class Product
 	 * Gets thumbnail <img> tag for the product.
 	 *
 	 * @param ProductEntity $product
+	 * @param string $size
 	 * @return string
 	 */
-	public static function getThumbnail(ProductEntity $product)
+	public static function getThumbnail(ProductEntity $product, $size = 'admin_product_list')
 	{
 		if (has_post_thumbnail($product->getId())) {
-			return get_the_post_thumbnail($product->getId(), 'admin_product_list');
+			return get_the_post_thumbnail($product->getId(), $size);
 		} else {
-			return '<img src="'.JIGOSHOP_URL.'/assets/images/placeholder.png" alt="Placeholder" width="70" height="70" />';
+			$width = 70;
+			$height = 70;
+
+			global $_wp_additional_image_sizes;
+			if (isset($_wp_additional_image_sizes) && isset($_wp_additional_image_sizes[$size])) {
+				$width = intval($_wp_additional_image_sizes[$size]['width']);
+				$height = intval($_wp_additional_image_sizes[$size]['height']);
+			}
+
+			return '<img src="'.JIGOSHOP_URL.'/assets/images/placeholder.png" alt="Placeholder" width="'.$width.'" height="'.$height.'" />';
 		}
 	}
 

@@ -74,6 +74,7 @@ services:
       - '@wpal'
       - '@jigoshop.options'
       - '@jigoshop.service.product'
+      - '@jigoshop.helper.styles'
   jigoshop.post_type.product:
     class: Jigoshop\Core\Types\Product
     arguments:

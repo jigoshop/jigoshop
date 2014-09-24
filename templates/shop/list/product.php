@@ -1,4 +1,6 @@
 <?php
+use Jigoshop\Helper\Product;
+
 /**
  * @var $product \Jigoshop\Entity\Product Product to display.
  */
@@ -7,8 +9,11 @@
 	<?php do_action('jigoshop\shop\list\product\before', $product); ?>
 	<a href="<?php echo $product->getLink(); ?>">
 		<?php do_action('jigoshop\shop\list\product\before_title', $product); ?>
+		<?php //if ($product->is_on_sale()) echo '<span class="onsale">'.__('Sale!', 'jigoshop').'</span>'; ?>
+		<?php echo Product::getThumbnail($product, 'shop_small'); ?>
 		<strong><?php echo $product->getName(); ?></strong>
 		<?php do_action('jigoshop\shop\list\product\after_title', $product); ?>
 	</a>
+	<span class="price"><?php echo Product::getPrice($product); ?></span>
 	<?php do_action('jigoshop\shop\list\product\after', $product); ?>
 </li>
