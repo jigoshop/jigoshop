@@ -3,8 +3,9 @@
 
 namespace Jigoshop\Core;
 
+use Jigoshop\Exception;
+use Jigoshop\Frontend\Page;
 use Jigoshop\Helper\Render;
-use Jigoshop\Service\ProductServiceInterface;
 use WPAL\Wordpress;
 
 /**
@@ -20,15 +21,24 @@ class Template
 	private $options;
 	/** @var \Jigoshop\Core\Pages */
 	private $pages;
-	/** @var ProductServiceInterface */
-	private $productService;
+	/** @var Page */
+	private $page;
 
-	public function __construct(Wordpress $wp, Options $options, Pages $pages, ProductServiceInterface $productService)
+	public function __construct(Wordpress $wp, Options $options, Pages $pages)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->pages = $pages;
-		$this->productService = $productService;
+	}
+
+	/**
+	 * Sets current page object.
+	 *
+	 * @param Page $page
+	 */
+	public function setPage($page)
+	{
+		$this->page = $page;
 	}
 
 	/**
@@ -36,8 +46,8 @@ class Template
 	 */
 	public function redirect()
 	{
-		if (isset($_GET['page_id']) && $_GET['page_id'] == $this->options->getPageId(Pages::SHOP)) {
-			$this->wp->wpSafeRedirect($this->wp->getPostTypeArchiveLink(Types::PRODUCT));
+		if ($this->page !== null) {
+			$this->page->action();
 		}
 	}
 
@@ -53,11 +63,11 @@ class Template
 			return $template;
 		}
 
-		$content = '';
-		if ($this->pages->isProductList()) {
-			$content = $this->productList();
+		if ($this->page === null) {
+			throw new Exception('Page object should already be set for Jigoshop pages, but none found.');
 		}
 
+		$content = $this->page->render();
 		$template = $this->wp->getOption('template');
 		$theme = $this->wp->wpGetTheme();
 		if ($theme->get('Author') === 'WooThemes') {
@@ -69,20 +79,5 @@ class Template
 		));
 
 		return false;
-	}
-
-	/**
-	 * Renders product list page.
-	 */
-	protected function productList()
-	{
-		$content = $this->wp->getPostField('post_content', $this->options->getPageId(Pages::SHOP));
-//		$page = $this->wp->getQueryParameter('paged');
-		$query = $this->wp->getWpQuery();
-		$products = $this->productService->findByQuery($query);
-		return Render::get('shop', array(
-			'content' => $content,
-			'products' => $products,
-		));
 	}
 }

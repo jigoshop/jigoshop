@@ -52,12 +52,26 @@ services:
       - '@jigoshop.options'
       - '@jigoshop.helper.styles'
       - '@jigoshop.helper.scripts'
+  jigoshop.page_resolver:
+    class: Jigoshop\Core\PageResolver
+    arguments:
+      - '@wpal'
+      - '@jigoshop.pages'
   jigoshop.template:
     class: Jigoshop\Core\Template
     arguments:
       - '@wpal'
       - '@jigoshop.options'
       - '@jigoshop.pages'
+  jigoshop.query.interceptor:
+    class: Jigoshop\Query\Interceptor
+    arguments:
+      - '@wpal'
+  jigoshop.page.product_list:
+    class: Jigoshop\Frontend\Page\ProductList
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
       - '@jigoshop.service.product'
   jigoshop.post_type.product:
     class: Jigoshop\Core\Types\Product

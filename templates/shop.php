@@ -2,6 +2,7 @@
 /**
  * @var $content string Page contents.
  * @var $products array List of products to display.
+ * @var $product_count int Number of all available products.
  */
 do_action('jigoshop\shop\content\before'); ?>
 
@@ -18,6 +19,7 @@ do_action('jigoshop\shop\content\before'); ?>
 <?php
 \Jigoshop\Helper\Render::output('shop/list', array(
 	'products' => $products,
+	'product_count' => $product_count,
 ));
 ?>
 

@@ -1,14 +1,21 @@
 <?php
+use Jigoshop\Helper\Render;
+
 /**
  * @var $products array List of products to display
+ * @var $product_count int Number of all available products.
  */
+have_posts();
 ?>
 <ul id="products">
 	<?php foreach($products as $product): ?>
-		<?php \Jigoshop\Helper\Render::output('shop/list/product', array(
+		<?php Render::output('shop/list/product', array(
 			'product' => $product,
 		)); ?>
 	<?php endforeach; ?>
 </ul>
-<a href="<?php echo get_pagenum_link(2); ?>">Next</a>
-<?php do_action('jigoshop_pagination'); // TODO: Render pagination ?>
+<?php
+next_posts_link(__('Next &raquo;', 'jigoshop'), $product_count);
+previous_posts_link(__('&laquo; Previous', 'jigoshop'));
+?>
+<?php //do_action('jigoshop\list\pagination', $product_count, $products); // TODO: Render pagination ?>

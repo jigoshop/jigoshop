@@ -34,8 +34,8 @@ class Pages
 
 	public function __construct(Wordpress $wp, Options $options)
 	{
-		$this->options = $options;
 		$this->wp = $wp;
+		$this->options = $options;
 	}
 
 	/**

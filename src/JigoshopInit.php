@@ -74,6 +74,9 @@ class JigoshopInit
 		// Configure container before initializing Jigoshop
 		do_action('jigoshop\init', $this->container);
 
+		// Load query interceptor before Jigoshop
+		$this->container->get('jigoshop.query.interceptor');
+
 		/** @var \Jigoshop\Core $jigoshop */
 		$jigoshop = $this->container->get('jigoshop');
 
@@ -84,6 +87,9 @@ class JigoshopInit
 		$this->container->get('jigoshop.cron');
 		$this->container->get('jigoshop.assets');
 
+		/** @var \Jigoshop\Core\PageResolver $resolver */
+		$resolver = $this->container->get('jigoshop.page_resolver');
+		$resolver->resolve($this->container);
 		$jigoshop->run();
 	}
 
