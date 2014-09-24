@@ -30,7 +30,7 @@ class jigoshop_product_meta
 		// Process general product data
 		$regular_price = 0.0;
 		if(isset($_POST['regular_price'])){
-			if($_POST['regular_price'] != ''){
+			if(!empty($_POST['regular_price'])){
 				$regular_price = jigoshop_sanitize_num($_POST['regular_price']);
 			} else {
 				$regular_price = '';
@@ -91,7 +91,7 @@ class jigoshop_product_meta
 		}
 
 		// Process the SKU
-		if (Jigoshop_Base::get_options()->get('jigoshop_enable_sku') !== 'no') {
+		if (Jigoshop_Base::get_options()->get_option('jigoshop_enable_sku') !== 'no') {
 			($this->is_unique_sku($post_id, $_POST['sku']))
 				? update_post_meta($post_id, 'sku', $_POST['sku'])
 				: delete_post_meta($post_id, 'sku');
@@ -115,7 +115,7 @@ class jigoshop_product_meta
 		}
 
 		// Process the sale dates
-		foreach ($this->process_sale_dates($_POST) as $key => $value) {
+		foreach ($this->process_sale_dates($_POST, $post_id) as $key => $value) {
 			update_post_meta($post_id, $key, $value);
 		}
 
@@ -129,7 +129,7 @@ class jigoshop_product_meta
 	 * @param   array $post The postback
 	 * @return  array
 	 **/
-	private function process_sale_dates( array $post ) {
+	private function process_sale_dates( array $post, $post_id ) {
 
 		// Set the default values
 		$array = array(
@@ -149,10 +149,42 @@ class jigoshop_product_meta
 
 				$array['sale_price_dates_from'] = $sale_start;
 				$array['sale_price_dates_to']   = $sale_end;
+				$this->grouped_sale_dates($array, $post_id);
 			}
 		}
 
 		return $array;
+	} 
+
+	/**
+	 * Check if product is in group and update sale dates meta of group
+	 *
+	 * @param array $dates Sale Dates
+	 * @param $post_id Post ID
+	 */
+	private function grouped_sale_dates (array $dates, $post_id)
+	{
+		$post = get_post($post_id);
+
+		//Process only if product has parent
+		if ($post->post_parent != '0') {
+			$parent = get_post($post->post_parent);
+
+			//Check if parent is grouped
+			if ($parent->post_name == 'grouped') {
+				$meta = get_post_meta($parent->ID);
+
+				//Update if current 'sale date from' is earlier than stored or is null
+				if ($dates['sale_price_dates_from'] < $meta['sale_price_dates_from'][0] || $meta['sale_price_dates_from'][0] == null) {
+					update_post_meta($parent->ID, 'sale_price_dates_from', $dates['sale_price_dates_from']);
+				}
+
+				//Update if current 'sale date to' is later than stored or is null
+				if ($dates['sale_price_dates_to'] > $meta['sale_price_dates_to'][0] || $meta['sale_price_dates_to'][0] == null) {
+					update_post_meta($parent->ID, 'sale_price_dates_to', $dates['sale_price_dates_to']);
+				}
+			}
+		}
 	}
 
 	/**
@@ -166,7 +198,7 @@ class jigoshop_product_meta
         $jigoshop_options = Jigoshop_Base::get_options();
 
 		// If the global stock switch is off
-		if ( !$jigoshop_options->get('jigoshop_manage_stock') )
+		if ( !$jigoshop_options->get_option('jigoshop_manage_stock') )
 			return false;
 
 		// Don't hold stock info for external & grouped products
@@ -184,8 +216,8 @@ class jigoshop_product_meta
 			$array['stock']        = absint( $post['stock'] );
 			$array['backorders']   = $post['backorders']; // should have a space
 			$array['stock_status'] = -1; // Discount if stock is managed
-			if ( $jigoshop_options->get( 'jigoshop_hide_no_stock_product' ) == 'yes' ) {
-				if ( $array['stock'] <= $jigoshop_options->get( 'jigoshop_notify_no_stock_amount' ) ) {
+			if ( $jigoshop_options->get_option( 'jigoshop_hide_no_stock_product' ) == 'yes' ) {
+				if ( $array['stock'] <= $jigoshop_options->get_option( 'jigoshop_notify_no_stock_amount' ) ) {
 					if ( $post['product-type'] <> 'grouped' && $post['product-type'] <> 'variable' ) {
 						update_post_meta( $post['ID'], 'visibility', 'hidden' );
 					} else {
