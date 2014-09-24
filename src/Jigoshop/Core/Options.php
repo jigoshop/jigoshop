@@ -41,6 +41,9 @@ class Options
 			'catalog_order' => 'DESC',
 			'redirect_add_to_cart' => 'product',
 			'redirect_continue_shopping' => 'product_list',
+			'guest_purchases' => true,
+			'show_login_form' => false,
+			'allow_registration' => false,
 		),
 		'tax' => array(
 			'before_coupons' => true,
