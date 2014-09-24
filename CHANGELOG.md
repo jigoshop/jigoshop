@@ -9,6 +9,10 @@
     * New: Ability to select exact hour when sales starts and ends.
     * New: WordPress memory limit check.
     * New: Actions in each product panel for additional fields.
+    * New: Customer email notification after placing order when getting to on-hold status.
+    * Improved: Emails: shop details header, tax number in company details.
+    * Improved: Formatted code of jigoshop emails.
+    * Improved: Removed invalid email about processing order when going to on-hold status.
 * 1.11.9 - 2014-09-16:
     * Fix: EU VAT handling for same country orders.
     * Fix: Tax for shipping is properly added on new orders using PayPal standard.

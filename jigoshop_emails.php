@@ -51,7 +51,7 @@ add_action('order_status_pending_to_on-hold', 'jigoshop_new_order_notification')
  *
  * @param $order_id
  */
-function jigoshop_processing_order_customer_notification($order_id)
+function jigoshop_new_order_customer_notification($order_id)
 {
 	$options = Jigoshop_Base::get_options();
 	$order = new jigoshop_order($order_id);
@@ -59,7 +59,7 @@ function jigoshop_processing_order_customer_notification($order_id)
 
 	ob_start();
 
-	echo __("Thank you, we are now processing your order. Your order's details are below:", 'jigoshop').PHP_EOL.PHP_EOL;
+	echo __("Thank you, we have received your order. Your order's details are below:", 'jigoshop').PHP_EOL.PHP_EOL;
 	add_header_info($order);
 	add_order_totals($order, false, true);
 
@@ -78,6 +78,37 @@ function jigoshop_processing_order_customer_notification($order_id)
 	add_shipping_address_details($order);
 
 	$message = ob_get_clean();
+	$message = apply_filters('jigoshop_change_new_order_email_contents', $message, $order);
+	$message = html_entity_decode(strip_tags($message), ENT_QUOTES, 'UTF-8');
+
+	add_filter('wp_mail_from_name', 'jigoshop_mail_from_name', 99);
+	wp_mail($order->billing_email, $subject, $message, "From: ".$options->get('jigoshop_email')."\r\n");
+	remove_filter('wp_mail_from_name', 'jigoshop_mail_from_name', 99);
+}
+
+add_action('order_status_pending_to_on-hold', 'jigoshop_new_order_customer_notification');
+
+/**
+ * Processing order notification email template
+ *
+ * @param $order_id
+ */
+function jigoshop_processing_order_customer_notification($order_id)
+{
+	$options = Jigoshop_Base::get_options();
+	$order = new jigoshop_order($order_id);
+	$subject = html_entity_decode('['.get_bloginfo('name').'] '.__('Order Received', 'jigoshop'), ENT_QUOTES, 'UTF-8');
+
+	ob_start();
+
+	echo __("Thank you, we are now processing your order. Your order's details are below:", 'jigoshop').PHP_EOL.PHP_EOL;
+	add_header_info($order);
+	add_order_totals($order, false, true);
+	add_customer_details($order);
+	add_billing_address_details($order);
+	add_shipping_address_details($order);
+
+	$message = ob_get_clean();
 	$message = apply_filters('jigoshop_change_processing_order_email_contents', $message, $order);
 	$message = html_entity_decode(strip_tags($message), ENT_QUOTES, 'UTF-8');
 
@@ -87,7 +118,7 @@ function jigoshop_processing_order_customer_notification($order_id)
 }
 
 add_action('order_status_pending_to_processing', 'jigoshop_processing_order_customer_notification');
-add_action('order_status_pending_to_on-hold', 'jigoshop_processing_order_customer_notification');
+add_action('order_status_on-hold_to_processing', 'jigoshop_processing_order_customer_notification');
 
 /**
  * Completed order notification email template - this one includes download links for downloadable products

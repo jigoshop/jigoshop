@@ -60,7 +60,7 @@ class jigoshop_catalog_query extends Jigoshop_Singleton {
 	 *
 	 * @since 1.0
 	 */
-	public static function is_search() {
+	 public static function is_search() {
 
 		if ( self::$original_query ) return self::$original_query->is_search;
 		return false;
