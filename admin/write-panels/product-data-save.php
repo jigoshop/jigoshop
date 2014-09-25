@@ -30,7 +30,7 @@ class jigoshop_product_meta
 		// Process general product data
 		$regular_price = 0.0;
 		if(isset($_POST['regular_price'])){
-			if(!empty($_POST['regular_price'])){
+			if($_POST['regular_price'] != ''){
 				$regular_price = jigoshop_sanitize_num($_POST['regular_price']);
 			} else {
 				$regular_price = '';
@@ -91,7 +91,7 @@ class jigoshop_product_meta
 		}
 
 		// Process the SKU
-		if (Jigoshop_Base::get_options()->get_option('jigoshop_enable_sku') !== 'no') {
+		if (Jigoshop_Base::get_options()->get('jigoshop_enable_sku') !== 'no') {
 			($this->is_unique_sku($post_id, $_POST['sku']))
 				? update_post_meta($post_id, 'sku', $_POST['sku'])
 				: delete_post_meta($post_id, 'sku');
@@ -154,7 +154,7 @@ class jigoshop_product_meta
 		}
 
 		return $array;
-	} 
+	}
 
 	/**
 	 * Check if product is in group and update sale dates meta of group
@@ -198,7 +198,7 @@ class jigoshop_product_meta
         $jigoshop_options = Jigoshop_Base::get_options();
 
 		// If the global stock switch is off
-		if ( !$jigoshop_options->get_option('jigoshop_manage_stock') )
+		if ( !$jigoshop_options->get('jigoshop_manage_stock') )
 			return false;
 
 		// Don't hold stock info for external & grouped products
@@ -216,8 +216,8 @@ class jigoshop_product_meta
 			$array['stock']        = absint( $post['stock'] );
 			$array['backorders']   = $post['backorders']; // should have a space
 			$array['stock_status'] = -1; // Discount if stock is managed
-			if ( $jigoshop_options->get_option( 'jigoshop_hide_no_stock_product' ) == 'yes' ) {
-				if ( $array['stock'] <= $jigoshop_options->get_option( 'jigoshop_notify_no_stock_amount' ) ) {
+			if ( $jigoshop_options->get( 'jigoshop_hide_no_stock_product' ) == 'yes' ) {
+				if ( $array['stock'] <= $jigoshop_options->get( 'jigoshop_notify_no_stock_amount' ) ) {
 					if ( $post['product-type'] <> 'grouped' && $post['product-type'] <> 'variable' ) {
 						update_post_meta( $post['ID'], 'visibility', 'hidden' );
 					} else {
