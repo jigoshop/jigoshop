@@ -7,7 +7,9 @@ get_header('shop');
 <div id="content" class="col-full">
 	<div id="main" class="col-left">
 		<div class="post jigoshop">
+			<?php do_action('jigoshop\shop\content\before'); ?>
 			<?php echo $content; ?>
+			<?php do_action('jigoshop\shop\content\after'); ?>
 		</div>
 	</div>
 </div>
