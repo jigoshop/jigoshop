@@ -42,5 +42,9 @@ class PageResolver
 		if ($this->pages->isProductList()) {
 			return $container->get('jigoshop.page.product_list');
 		}
+
+		if ($this->pages->isProduct()) {
+			return $container->get('jigoshop.page.product');
+		}
 	}
 }

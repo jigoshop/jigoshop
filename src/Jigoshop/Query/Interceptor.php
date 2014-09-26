@@ -38,7 +38,7 @@ class Interceptor
 		// TODO: Refactor preparing requests
 		if ($this->isProductList($request)) {
 			$options = $this->options->get('shopping');
-			$request = array(
+			return array(
 				'post_type' => Types::PRODUCT,
 				'post_status' => 'publish',
 				'ignore_sticky_posts' => true,
@@ -56,6 +56,15 @@ class Interceptor
 			);
 		}
 
+		if ($this->isProduct($request)) {
+			return array(
+				'name' => $request['product'],
+				'post_type' => Types::PRODUCT,
+				'post_status' => 'publish',
+				'posts_per_page' => 1,
+			);
+		}
+
 		return $request;
 	}
 
@@ -65,5 +74,10 @@ class Interceptor
 			(isset($request['pagename']) && $request['pagename'] == Pages::SHOP) ||
 			(isset($request['post_type']) && $request['post_type'] == Types::PRODUCT)
 		);
+	}
+
+	private function isProduct($request)
+	{
+		return isset($request['post_type']) && $request['post_type'] == Types::PRODUCT && isset($request['product']);
 	}
 }
