@@ -25,7 +25,7 @@ class Product implements ProductServiceInterface
 	{
 		$this->wp = $wp;
 		$this->factory = $factory;
-		$wp->addAction('save_post_'.\Jigoshop\Core\Types\Product::NAME, array($this, 'savePost'), 10);
+		$wp->addAction('save_post_'.Types\Product::NAME, array($this, 'savePost'), 10);
 	}
 
 	/**
@@ -102,9 +102,9 @@ class Product implements ProductServiceInterface
 
 		$fields = $object->getStateToSave();
 
-		if (isset($fields['id']) || isset($fields['name'])) {
-			// We do not need to save ID or name as they are saved by WordPress itself.
-			unset($fields['id'], $fields['name']);
+		if (isset($fields['id']) || isset($fields['name']) || isset($fields['description'])) {
+			// We do not need to save ID, name and description (excerpt) as they are saved by WordPress itself.
+			unset($fields['id'], $fields['name'], $fields['description']);
 		}
 
 		if (isset($fields['attributes'])) {

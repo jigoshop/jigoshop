@@ -21,6 +21,7 @@ abstract class Product implements EntityInterface
 
 	private $id;
 	private $name;
+	private $description;
 	private $sku;
 	private $taxClasses = array();
 	/** @var Size */
@@ -80,6 +81,20 @@ abstract class Product implements EntityInterface
 	public function getName()
 	{
 		return $this->name;
+	}
+
+	/**
+	 * @param string $description New product description.
+	 */
+	public function setDescription($description)
+	{
+		$this->description = $description;
+		$this->dirtyFields[] = 'description';
+	}
+
+	public function getDescription()
+	{
+		return $this->description;
 	}
 
 	/**
@@ -372,6 +387,9 @@ abstract class Product implements EntityInterface
 		}
 		if (isset($state['name'])) {
 			$this->name = $state['name'];
+		}
+		if (isset($state['description'])) {
+			$this->description = $state['description'];
 		}
 		if (isset($state['sku'])) {
 			$this->sku = $state['sku'];

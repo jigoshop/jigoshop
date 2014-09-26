@@ -64,6 +64,7 @@ class Product
 
 		if (!empty($_POST)) {
 			$product->setName($this->wp->sanitizeTitle($_POST['post_title']));
+			$product->setDescription($this->wp->wpautop($this->wp->wptexturize($_POST['post_excerpt'])));
 			$product->restoreState($_POST['product']);
 			$product->markAsDirty($_POST['product']);
 		}
@@ -95,6 +96,7 @@ class Product
 			$state['attributes'] = $this->getAttributes($post->ID);
 			$state['id'] = $post->ID;
 			$state['name'] = $post->post_title;
+			$state['description'] = $this->wp->wpautop($this->wp->wptexturize($post->post_content));
 
 			$product->restoreState($state);
 		}
