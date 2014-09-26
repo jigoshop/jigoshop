@@ -463,7 +463,7 @@ class jigoshop_cart extends Jigoshop_Singleton
 			}
 
 			$order_total_min = apply_filters('jigoshop_coupon_order_total_min', $coupon['order_total_min'], $coupon);
-			if (!empty($the_coupon['order_total_min']) && $subtotal < $order_total_min) {
+			if (!empty($coupon['order_total_min']) && $subtotal < $order_total_min) {
 				jigoshop::add_error(sprintf(__('Your subtotal does not match the <strong>minimum</strong> order total requirements of %.2f for coupon "%s" and it has been removed.', 'jigoshop'), $order_total_min, $coupon['code']));
 
 				return false;
