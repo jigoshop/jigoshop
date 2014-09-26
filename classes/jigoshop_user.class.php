@@ -30,31 +30,71 @@ class jigoshop_user
 		$this->id = $id;
 		$meta = get_user_meta($id);
 
-		$this->billing_first_name = $meta['billing_first_name'][0];
-		$this->billing_last_name = $meta['billing_last_name'][0];
-		$this->billing_company = $meta['billing_company'][0];
-		$this->billing_address_1 = $meta['billing_address_1'][0];
-		$this->billing_address_2 = $meta['billing_address_2'][0];
-		$this->billing_city = $meta['billing_city'][0];
-		$this->billing_state = $meta['billing_state'][0];
-		$this->billing_postcode = $meta['billing_postcode'][0];
-		$country = $meta['billing_country'][0];
-		$country = jigoshop_countries::has_country($country) ? $country : jigoshop_countries::get_base_country();
-		$this->billing_country = $country;
-		$this->billing_email = $meta['billing_email'][0];
-		$this->billing_phone = $meta['billing_phone'][0];
+		if (isset($meta['billing_first_name'])) {
+			$this->billing_first_name = $meta['billing_first_name'][0];
+		}
+		if (isset($meta['billing_last_name'])) {
+			$this->billing_last_name = $meta['billing_last_name'][0];
+		}
+		if (isset($meta['billing_company'])) {
+			$this->billing_company = $meta['billing_company'][0];
+		}
+		if (isset($meta['billing_address_1'])) {
+			$this->billing_address_1 = $meta['billing_address_1'][0];
+		}
+		if (isset($meta['billing_address_2'])) {
+			$this->billing_address_2 = $meta['billing_address_2'][0];
+		}
+		if (isset($meta['billing_city'])) {
+			$this->billing_city = $meta['billing_city'][0];
+		}
+		if (isset($meta['billing_state'])) {
+			$this->billing_state = $meta['billing_state'][0];
+		}
+		if (isset($meta['billing_postcode'])) {
+			$this->billing_postcode = $meta['billing_postcode'][0];
+		}
+		if (isset($meta['billing_country'])) {
+			$country = $meta['billing_country'][0];
+			$country = jigoshop_countries::has_country($country) ? $country : jigoshop_countries::get_base_country();
+			$this->billing_country = $country;
+		}
+		if (isset($meta['billing_email'])) {
+			$this->billing_email = $meta['billing_email'][0];
+		}
+		if (isset($meta['billing_first_name'])) {
+			$this->billing_phone = $meta['billing_phone'][0];
+		}
 
-		$this->shipping_first_name = $meta['shipping_first_name'][0];
-		$this->shipping_last_name = $meta['shipping_last_name'][0];
-		$this->shipping_company = $meta['shipping_company'][0];
-		$this->shipping_address_1 = $meta['shipping_address_1'][0];
-		$this->shipping_address_2 = $meta['shipping_address_2'][0];
-		$this->shipping_city = $meta['shipping_city'][0];
-		$this->shipping_state = $meta['shipping_state'][0];
-		$this->shipping_postcode = $meta['shipping_postcode'][0];
-		$country = $meta['shipping_country'][0];
-		$country = jigoshop_countries::has_country($country) ? $country : jigoshop_countries::get_base_country();
-		$this->shipping_country = $country;
+		if (isset($meta['shipping_first_name'])) {
+			$this->shipping_first_name = $meta['shipping_first_name'][0];
+		}
+		if (isset($meta['shipping_last_name'])) {
+			$this->shipping_last_name = $meta['shipping_last_name'][0];
+		}
+		if (isset($meta['shipping_company'])) {
+			$this->shipping_company = $meta['shipping_company'][0];
+		}
+		if (isset($meta['shipping_address_1'])) {
+			$this->shipping_address_1 = $meta['shipping_address_1'][0];
+		}
+		if (isset($meta['shipping_address_2'])) {
+			$this->shipping_address_2 = $meta['shipping_address_2'][0];
+		}
+		if (isset($meta['shipping_city'])) {
+			$this->shipping_city = $meta['shipping_city'][0];
+		}
+		if (isset($meta['shipping_state'])) {
+			$this->shipping_state = $meta['shipping_state'][0];
+		}
+		if (isset($meta['shipping_postcode'])) {
+			$this->shipping_postcode = $meta['shipping_postcode'][0];
+		}
+		if (isset($meta['shipping_country'])) {
+			$country = $meta['shipping_country'][0];
+			$country = jigoshop_countries::has_country($country) ? $country : jigoshop_countries::get_base_country();
+			$this->shipping_country = $country;
+		}
 	}
 
 	public function populate(array $data)
