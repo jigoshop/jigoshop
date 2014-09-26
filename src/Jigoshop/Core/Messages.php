@@ -22,6 +22,7 @@ class Messages
 
 	public function __construct(Wordpress $wp)
 	{
+		session_start();
 		if (isset($_SESSION[self::NOTICES])) {
 			$this->notices = $_SESSION[self::NOTICES];
 		}
@@ -48,13 +49,23 @@ class Messages
 	}
 
 	/**
+	 * @return bool Whether there are notices to show.
+	 */
+	public function hasNotices()
+	{
+		return !empty($this->notices);
+	}
+
+	/**
 	 * @return array Stored notices.
 	 */
 	public function getNotices()
 	{
-		return array_map(function ($item){
+		$notices = array_map(function ($item){
 			return $item['message'];
 		}, $this->notices);
+		$this->notices = array();
+		return $notices;
 	}
 
 	/**
@@ -70,13 +81,23 @@ class Messages
 	}
 
 	/**
+	 * @return bool Whether there are warnings to show.
+	 */
+	public function hasWarnings()
+	{
+		return !empty($this->warnings);
+	}
+
+	/**
 	 * @return array Stored warnings.
 	 */
 	public function getWarnings()
 	{
-		return array_map(function ($item){
+		$warnings = array_map(function ($item){
 			return $item['message'];
 		}, $this->warnings);
+		$this->warnings = array();
+		return $warnings;
 	}
 
 	/**
@@ -92,13 +113,23 @@ class Messages
 	}
 
 	/**
+	 * @return bool Whether there are errors to show.
+	 */
+	public function hasErrors()
+	{
+		return !empty($this->errors);
+	}
+
+	/**
 	 * @return array Stored errors.
 	 */
 	public function getErrors()
 	{
-		return array_map(function ($item){
+		$errors = array_map(function ($item){
 			return $item['message'];
 		}, $this->errors);
+		$this->errors = array();
+		return $errors;
 	}
 
 	/**
@@ -115,5 +146,6 @@ class Messages
 		$_SESSION[self::ERRORS] = array_values(array_filter($this->errors, function ($item){
 			return $item['persistent'];
 		}));
+		session_write_close();
 	}
 }

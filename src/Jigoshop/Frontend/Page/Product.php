@@ -2,7 +2,6 @@
 
 namespace Jigoshop\Frontend\Page;
 
-use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Pages;
 use Jigoshop\Core\Types;
@@ -21,15 +20,12 @@ class ProductList implements Page
 	private $options;
 	/** @var ProductServiceInterface */
 	private $productService;
-	/** @var Messages  */
-	private $messages;
 
-	public function __construct(Wordpress $wp, Options $options, ProductServiceInterface $productService, Messages $messages, Styles $styles)
+	public function __construct(Wordpress $wp, Options $options, ProductServiceInterface $productService, Styles $styles)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->productService = $productService;
-		$this->messages = $messages;
 		$styles->add('jigoshop.shop', JIGOSHOP_URL.'/assets/css/shop.css');
 		$styles->add('jigoshop.shop.list', JIGOSHOP_URL.'/assets/css/shop/list.css');
 	}
@@ -51,7 +47,6 @@ class ProductList implements Page
 			'content' => $content,
 			'products' => $products,
 			'product_count' => $query->max_num_pages,
-			'messages' => $this->messages,
 		));
 	}
 }
