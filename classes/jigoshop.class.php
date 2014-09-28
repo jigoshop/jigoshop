@@ -486,7 +486,7 @@ class jigoshop extends Jigoshop_Singleton
 			'PEN' => __('Peru Nuevo Sol', 'jigoshop'),
 			'PHP' => __('Philippines Peso', 'jigoshop'),
 			'PKR' => __('Pakistan Rupee', 'jigoshop'),
-			'PLN' => __('Poland Zloty &#122;&#322;)', 'jigoshop'),
+			'PLN' => __('Polish Zloty', 'jigoshop'),
 			'PYG' => __('Paraguay Guarani', 'jigoshop'),
 			'QAR' => __('Qatar Riyal', 'jigoshop'),
 			'RON' => __('Romania New Leu', 'jigoshop'),
