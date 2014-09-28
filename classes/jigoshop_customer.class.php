@@ -26,6 +26,11 @@ class jigoshop_customer extends Jigoshop_Singleton {
 		// remove customer billing/shipping information
 		$this->add_action('wp_logout', 'update_signed_out_customer');
 
+		if (get_current_user_id() > 0) {
+			$user = wp_get_current_user();
+			$this->update_signed_in_customer('', $user);
+		}
+
 		// if we don't check the status of the customer, we will constantly destroy what the customer
 		// has selected in their forms as pages get reloaded or refreshed.
 		if(!isset(jigoshop_session::instance()->customer)){

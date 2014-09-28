@@ -877,13 +877,9 @@ if (!function_exists('jigoshop_shipping_calculator')) {
 			<section class="shipping-calculator-form">
 			<p class="form-row">
 				<select name="calc_shipping_country" id="calc_shipping_country" class="country_to_state" rel="calc_shipping_state">
-					<?php
-						foreach(jigoshop_countries::get_allowed_countries() as $key=>$value) :
-							echo '<option value="'.esc_attr($key).'"';
-							if (jigoshop_customer::get_shipping_country()==$key) echo ' selected="selected"';
-							echo '>'.$value.'</option>';
-						endforeach;
-					?>
+					<?php	foreach(jigoshop_countries::get_allowed_countries() as $key => $value): ?>
+						<option value="<?php echo esc_attr($key); ?>" <?php selected(jigoshop_customer::get_shipping_country(), $key); ?>><?php echo $value; ?></option>
+					<?php endforeach; ?>
 				</select>
 			</p>
 			<div class="col2-set">

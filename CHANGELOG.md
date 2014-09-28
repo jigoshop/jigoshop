@@ -14,6 +14,7 @@
     * Improved: Formatted code of jigoshop emails.
     * Improved: Removed invalid email about processing order when going to on-hold status.
     * Improved: Grouped products are checking parent group for sales dates.
+    * Improved: Shipping calculator always works with data set in My Account page.
     * Fix: Variation SKU fetching.
     * Fix: Order total minimum requirement for coupons.
 * 1.11.9 - 2014-09-16:
