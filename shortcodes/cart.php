@@ -60,7 +60,7 @@ function jigoshop_cart($atts)
 		$shipping_method->choose(); // chooses the method selected by user.
 	}
 
-	// Re-Calc prices. This needs to happen every time the cart page is loaded and after checking post results. It will happen twice for coupon.
+	// Re-Calc prices. This needs to happen every time the cart page is loaded and after checking post results.
 	jigoshop_cart::calculate_totals();
 
 	$result = jigoshop_cart::check_cart_item_stock();
