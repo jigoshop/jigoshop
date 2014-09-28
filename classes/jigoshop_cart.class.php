@@ -604,8 +604,6 @@ class jigoshop_cart extends Jigoshop_Singleton
 					self::$tax->update_tax_amount($tax_class, $tax * 100, false, true);
 				}
 
-				self::$tax->calculate_shipping_tax(self::$shipping_total, $shipping_method, self::get_applied_tax_classes());
-
 			// check again in case tax calcs are disabled
 				$total_discounts = $total_cart_discounts + $total_product_discounts;
 				if ($total_discounts > $total_to_use) {
