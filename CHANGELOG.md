@@ -17,6 +17,7 @@
     * Improved: Shipping calculator always works with data set in My Account page.
     * Fix: Variation SKU fetching.
     * Fix: Order total minimum requirement for coupons.
+    * Fix: Shipping taxes are calculated for each applicable tax class.
 * 1.11.9 - 2014-09-16:
     * Fix: EU VAT handling for same country orders.
     * Fix: Tax for shipping is properly added on new orders using PayPal standard.

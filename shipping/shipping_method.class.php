@@ -286,14 +286,8 @@ class jigoshop_shipping_method
 
 	protected function calculate_shipping_tax($rate)
 	{
-		/** @var jigoshop_tax $_tax */
-		$_tax = $this->get_tax();
-
-		$tax_rate = $_tax->get_shipping_tax_rate();
-
-		if ($tax_rate > 0) :
-			return $_tax->calc_shipping_tax($rate, $tax_rate);
-		endif;
+		$tax = $this->get_tax();
+		$tax->calculate_shipping_tax($rate, $this->id, $tax->get_tax_classes_for_customer());
 
 		return 0;
 	}

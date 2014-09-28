@@ -541,7 +541,6 @@ class jigoshop_tax extends Jigoshop_Base {
 					}
 
 					$non_compound_tax_amount += $tax;
-					$total_tax += $tax;
 				} else {
 					$tax = $this->calc_tax($total_item_price + $non_compound_tax_amount, $tax_rate, $prices_include_tax);
 
@@ -557,8 +556,9 @@ class jigoshop_tax extends Jigoshop_Base {
 					}
 
 					$compounded_tax_amount += $tax;
-					$total_tax += $tax;
 				}
+
+				$total_tax += $tax;
 			}
 		} else {
 			$tax_classes = $this->get_tax_classes_for_base();
@@ -977,7 +977,7 @@ class jigoshop_tax extends Jigoshop_Base {
 				}
 
 				// initialize shipping if not already initialized
-				if(!isset($this->tax_amounts[$tax_class][$shipping_method_id])){
+				if(!isset($this->tax_amounts[$tax_class][$shipping_method_id.$selected_rate_id])){
 					$this->tax_amounts[$tax_class][$shipping_method_id.$selected_rate_id] = 0;
 				}
 
@@ -988,7 +988,11 @@ class jigoshop_tax extends Jigoshop_Base {
 				} else {
 					// calculate regular taxes. Increment value because of per-item shipping
 					$non_compound_amount += ($price * ($tax_rate / 100)); // don't use divisor here, as it will be used with compound tax above
-					$this->tax_amounts[$tax_class][$shipping_method_id.$selected_rate_id] += ($this->tax_divisor > 0 ? ($price * ($tax_rate / 100)) * $this->tax_divisor : $price * ($tax_rate / 100));
+					$tax = $price * $tax_rate / 100;
+					if ($this->tax_divisor > 0) {
+						$tax *= $this->tax_divisor;
+					}
+					$this->tax_amounts[$tax_class][$shipping_method_id.$selected_rate_id] += $tax;
 				}
 			}
 		} else {
