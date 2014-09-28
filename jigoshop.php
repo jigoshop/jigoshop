@@ -758,50 +758,58 @@ function jigoshop_admin_styles()
 	/* Our setting icons */
 	jigoshop_add_style('jigoshop_admin_icons_style', JIGOSHOP_URL.'/assets/css/admin-icons.css');
 
-	if (!jigoshop_is_admin_page()) {
+	global $current_screen;
+	if (!jigoshop_is_admin_page() && $current_screen->base !== 'user-edit') {
 		return;
 	}
 
-	wp_enqueue_style('thickbox');
-	jigoshop_add_style('jigoshop_admin_styles', JIGOSHOP_URL.'/assets/css/admin.css');
-	jigoshop_add_style('jigoshop-jquery-ui', JIGOSHOP_URL.'/assets/css/jquery-ui.css');
 	jigoshop_add_style('jigoshop-select2', JIGOSHOP_URL.'/assets/css/select2.css');
-	jigoshop_add_style('jigoshop-prettyPhoto', JIGOSHOP_URL.'/assets/css/prettyPhoto.css');
+
+	if (jigoshop_is_admin_page()) {
+		wp_enqueue_style('thickbox');
+		jigoshop_add_style('jigoshop_admin_styles', JIGOSHOP_URL.'/assets/css/admin.css');
+		jigoshop_add_style('jigoshop-jquery-ui', JIGOSHOP_URL.'/assets/css/jquery-ui.css');
+		jigoshop_add_style('jigoshop-prettyPhoto', JIGOSHOP_URL.'/assets/css/prettyPhoto.css');
+	}
 }
 
 add_action('admin_enqueue_scripts', 'jigoshop_admin_scripts');
 function jigoshop_admin_scripts()
 {
-	if (!jigoshop_is_admin_page()) {
+	global $current_screen;
+	if (!jigoshop_is_admin_page() && $current_screen->base !== 'user-edit') {
 		return;
 	}
 
-	wp_enqueue_media();
-	wp_enqueue_script('jquery-ui-sortable');
-	wp_enqueue_script('jquery-ui-datepicker');
-	jigoshop_add_script('jigoshop_datetimepicker', JIGOSHOP_URL.'/assets/js/jquery-ui-timepicker-addon.min.js', array('jquery', 'jquery-ui-datepicker'));
-	jigoshop_add_script('jigoshop_media', JIGOSHOP_URL.'/assets/js/media.js', array('jquery', 'media-editor'));
 	jigoshop_add_script('jigoshop-select2', JIGOSHOP_URL.'/assets/js/select2.min.js', array('jquery'));
-	jigoshop_add_script('jigoshop_blockui', JIGOSHOP_URL.'/assets/js/blockui.js', array('jquery'), array('version' => '2.4.6'));
-	jigoshop_add_script('jigoshop_backend', JIGOSHOP_URL.'/assets/js/backend.js', array('jquery'), array('version' => '1.0'));
-	jigoshop_add_script('jquery_flot', JIGOSHOP_URL.'/assets/js/jquery.flot.min.js', array('jquery'), array(
-			'version' => '1.0',
-			'page' => array('jigoshop_page_jigoshop_reports', 'toplevel_page_jigoshop')
-		)
-	);
-	jigoshop_add_script('jquery_flot_pie', JIGOSHOP_URL.'/assets/js/jquery.flot.pie.min.js', array('jquery'), array(
-			'version' => '1.0',
-			'page' => array('jigoshop_page_jigoshop_reports', 'toplevel_page_jigoshop')
-		)
-	);
 
-	/**
-	 * Disable autosaves on the order and coupon pages. Prevents the javascript alert when modifying.
-	 * `wp_deregister_script( 'autosave' )` would produce errors, so we use a filter instead.
-	 */
-	$pagenow = jigoshop_is_admin_page();
-	if ($pagenow == 'shop_order' || $pagenow == 'shop_coupon') {
-		add_filter('script_loader_src', 'jigoshop_disable_autosave', 10, 2);
+	if (jigoshop_is_admin_page()) {
+		wp_enqueue_media();
+		wp_enqueue_script('jquery-ui-sortable');
+		wp_enqueue_script('jquery-ui-datepicker');
+		jigoshop_add_script('jigoshop_datetimepicker', JIGOSHOP_URL.'/assets/js/jquery-ui-timepicker-addon.min.js', array('jquery', 'jquery-ui-datepicker'));
+		jigoshop_add_script('jigoshop_media', JIGOSHOP_URL.'/assets/js/media.js', array('jquery', 'media-editor'));
+		jigoshop_add_script('jigoshop_blockui', JIGOSHOP_URL.'/assets/js/blockui.js', array('jquery'), array('version' => '2.4.6'));
+		jigoshop_add_script('jigoshop_backend', JIGOSHOP_URL.'/assets/js/backend.js', array('jquery'), array('version' => '1.0'));
+		jigoshop_add_script('jquery_flot', JIGOSHOP_URL.'/assets/js/jquery.flot.min.js', array('jquery'), array(
+				'version' => '1.0',
+				'page' => array('jigoshop_page_jigoshop_reports', 'toplevel_page_jigoshop')
+			)
+		);
+		jigoshop_add_script('jquery_flot_pie', JIGOSHOP_URL.'/assets/js/jquery.flot.pie.min.js', array('jquery'), array(
+				'version' => '1.0',
+				'page' => array('jigoshop_page_jigoshop_reports', 'toplevel_page_jigoshop')
+			)
+		);
+
+		/**
+		 * Disable autosaves on the order and coupon pages. Prevents the javascript alert when modifying.
+		 * `wp_deregister_script( 'autosave' )` would produce errors, so we use a filter instead.
+		 */
+		$pagenow = jigoshop_is_admin_page();
+		if ($pagenow == 'shop_order' || $pagenow == 'shop_coupon') {
+			add_filter('script_loader_src', 'jigoshop_disable_autosave', 10, 2);
+		}
 	}
 }
 
