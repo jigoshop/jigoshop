@@ -1101,7 +1101,7 @@ function jigoshop_ajax_update_item_quantity()
 	}
 
 	$shipping = jigoshop_cart::get_cart_shipping_total(true, true).'<small>'.jigoshop_cart::get_cart_shipping_title().'</small>';
-	$discount = jigoshop_cart::get_total_discount();
+	$discount = '-'.jigoshop_cart::get_total_discount();
 	$total = jigoshop_cart::get_total();
 
 	echo json_encode(array(
