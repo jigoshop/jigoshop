@@ -34,7 +34,6 @@ class jigoshop_cart extends Jigoshop_Singleton
 
 	private static $price_per_tax_class_ex_tax;
 	private static $tax;
-	private static $total_coupon_discounts;
 
 	/** constructor */
 	protected function __construct()
@@ -843,28 +842,10 @@ class jigoshop_cart extends Jigoshop_Singleton
 		return $cart_discount;
 	}
 
-	/** calculate totals for all taxable products in the cart */
-	private static function get_cart_taxable_products_total_excluding_tax()
-	{
-		$total = 0;
-
-		if (!empty(self::$cart_contents)) {
-			foreach (self::$cart_contents as $values) {
-				/** @var jigoshop_product $_product */
-				$_product = $values['data'];
-
-				// do we need to exclude taxable products that have a zero tax rate?
-				if ($_product->is_taxable()) {
-					$total += $_product->get_price_excluding_tax() * $values['quantity'];
-				}
-			}
-		}
-
-		return $total;
-	}
-
 	/**
 	 * @deprecated Use jigoshop_cart::is_valid_coupon()
+	 * @param $coupon_code
+	 * @return bool
 	 */
 	public static function valid_coupon($coupon_code)
 	{
@@ -873,6 +854,8 @@ class jigoshop_cart extends Jigoshop_Singleton
 
 	/**
 	 * @deprecated Use jigoshop_cart::has_valid_products_for_coupon()
+	 * @param $coupon
+	 * @return bool
 	 */
 	public static function has_valid_coupon_for_products($coupon)
 	{
@@ -933,7 +916,11 @@ class jigoshop_cart extends Jigoshop_Singleton
 		return '';
 	}
 
-	/** gets the url to remove an item from the cart */
+	/** gets the url to remove an item from the cart
+	 *
+	 * @param $cart_item_key
+	 * @return mixed|string|void
+	 */
 	public static function get_remove_url($cart_item_key)
 	{
 		$cart_page_id = jigoshop_get_page_id('cart');
@@ -992,7 +979,11 @@ class jigoshop_cart extends Jigoshop_Singleton
 		return self::$cart_contents_total_ex_tax;
 	}
 
-	/** gets the total (after calculation) */
+	/** gets the total (after calculation)
+	 *
+	 * @param bool $for_display
+	 * @return mixed|string|void
+	 */
 	public static function get_total($for_display = true)
 	{
 		return ($for_display ? jigoshop_price(self::$total) : number_format(self::$total, 2, '.', ''));
@@ -1100,6 +1091,9 @@ class jigoshop_cart extends Jigoshop_Singleton
 
 	/**
 	 * Title of the chosen shipping method.
+	 *
+	 * @param $taxes_as_string
+	 * @return array
 	 */
 	public static function get_taxes_as_array($taxes_as_string)
 	{
@@ -1171,7 +1165,11 @@ class jigoshop_cart extends Jigoshop_Singleton
 		return true;
 	}
 
-	/** returns whether or not a discount has been applied */
+	/** returns whether or not a discount has been applied
+	 *
+	 * @param $code
+	 * @return bool
+	 */
 	public static function has_discount($code)
 	{
 		return in_array($code, self::$applied_coupons);
@@ -1193,6 +1191,10 @@ class jigoshop_cart extends Jigoshop_Singleton
 
 	/**
 	 * Gets and formats a list of cart item data + variations for display on the frontend
+	 *
+	 * @param $cart_item
+	 * @param bool $flat
+	 * @return string
 	 */
 	public static function get_item_data($cart_item, $flat = false)
 	{
