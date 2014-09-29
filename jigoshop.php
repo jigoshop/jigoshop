@@ -91,8 +91,10 @@ $memory_limit = $memory[1];
 if (isset($memory[2])) {
 	switch ($memory[2]) {
 		case 'M':
+		case 'm':
 			$memory_limit *= 1024;
 		case 'K':
+		case 'k':
 			$memory_limit *= 1024;
 	}
 }
@@ -112,8 +114,10 @@ $memory_limit = $memory[1];
 if (isset($memory[2])) {
 	switch ($memory[2]) {
 		case 'M':
+		case 'm':
 			$memory_limit *= 1024;
 		case 'K':
+		case 'k':
 			$memory_limit *= 1024;
 	}
 }
