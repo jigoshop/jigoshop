@@ -98,13 +98,12 @@ class Product
 	}
 
 	/**
-	 * Gets placeholder <img> tag for products.
+	 * Returns width and height for images of given size.
 	 *
-	 * @param string $size
-	 * @return string
+	 * @param $size string Size name to fetch.
+	 * @return array Width and height values.
 	 */
-	public static function getImagePlaceholder($size = 'admin_product_list')
-	{
+	public static function getImageSize($size) {
 		$width = 70;
 		$height = 70;
 
@@ -114,7 +113,20 @@ class Product
 			$height = intval($_wp_additional_image_sizes[$size]['height']);
 		}
 
-		return '<img src="'.JIGOSHOP_URL.'/assets/images/placeholder.png" alt="" width="'.$width.'" height="'.$height.'" />';
+		return array('width' => $width, 'height' => $height);
+	}
+
+	/**
+	 * Gets placeholder <img> tag for products.
+	 *
+	 * @param string $size
+	 * @return string
+	 */
+	public static function getImagePlaceholder($size = 'admin_product_list')
+	{
+		$size = self::getImageSize($size);
+
+		return '<img src="'.JIGOSHOP_URL.'/assets/images/placeholder.png" alt="" width="'.$size['width'].'" height="'.$size['height'].'" />';
 	}
 
 	/**
@@ -140,14 +152,15 @@ class Product
 	 */
 	public static function isOnSale(ProductEntity $product)
 	{
+		$status = false;
 		switch($product->getType()){
 			case Simple::TYPE:
 				/** @var $product Simple */
 				$time = time();
-				return $product->getSales()->isEnabled() && $product->getSales()->getFrom()->getTimestamp() <= $time && $product->getSales()->getTo()->getTimestamp() >= $time;
-			default:
-				return apply_filters('jigoshop\helper\product\is_on_sales', '', $product);
+				$status = $product->getSales()->isEnabled() && $product->getSales()->getFrom()->getTimestamp() <= $time && $product->getSales()->getTo()->getTimestamp() >= $time;
 		}
+
+		return apply_filters('jigoshop\helper\product\is_on_sales', $status, $product);
 	}
 
 	/**
