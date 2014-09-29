@@ -533,14 +533,6 @@ class jigoshop_cart extends Jigoshop_Singleton
 			$shipping_tax_classes = self::$tax->get_shipping_tax_classes();
 			self::$tax->calculate_shipping_tax(self::$shipping_total, $shipping_method, $shipping_tax_classes);
 			self::$shipping_tax_total = self::$tax->get_total_shipping_tax_amount();
-
-			foreach ($shipping_tax_classes as $tax_class) {
-				if (empty(self::$price_per_tax_class_ex_tax[$tax_class])) {
-					self::$price_per_tax_class_ex_tax[$tax_class] = self::$shipping_total;
-				} else {
-					self::$price_per_tax_class_ex_tax[$tax_class] += self::$shipping_total;
-				}
-			}
 		}
 
 		// Subtotal
@@ -603,6 +595,8 @@ class jigoshop_cart extends Jigoshop_Singleton
 					$tax -= $discounts;
 					self::$tax->update_tax_amount($tax_class, $tax * 100, false, true);
 				}
+
+				self::$shipping_tax_total = self::$tax->get_total_shipping_tax_amount();
 
 			// check again in case tax calcs are disabled
 				$total_discounts = $total_cart_discounts + $total_product_discounts;
@@ -814,6 +808,11 @@ class jigoshop_cart extends Jigoshop_Singleton
 	public static function get_shipping_total()
 	{
 		return self::$shipping_total;
+	}
+
+	public static function get_shipping_tax()
+	{
+		return self::$shipping_tax_total;
 	}
 
 	/**

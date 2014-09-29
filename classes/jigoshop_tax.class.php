@@ -966,6 +966,9 @@ class jigoshop_tax extends Jigoshop_Base {
 
 		if(!empty($rates)){
 			foreach($rates as $tax_class => $rate){
+				if (isset($this->tax_amounts[$tax_class]) && isset($this->tax_amounts[$tax_class][$shipping_method_id.$selected_rate_id])) {
+					continue;
+				}
 
 				// no tax on products, but shipping tax should be applied
 				if(!isset($this->tax_amounts[$tax_class])){

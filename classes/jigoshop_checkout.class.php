@@ -928,7 +928,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 				$data['order_tax'] = jigoshop_cart::get_taxes_as_string();
 				$data['order_tax_no_shipping_tax'] = jigoshop_cart::get_total_cart_tax_without_shipping_tax();
 				$data['order_tax_divisor'] = jigoshop_cart::get_tax_divisor();
-				$data['order_shipping_tax'] = jigoshop_cart::$shipping_tax_total;
+				$data['order_shipping_tax'] = jigoshop_cart::get_shipping_tax();
 				$data['order_total'] = jigoshop_cart::get_total(false);
 				$data['order_total_prices_per_tax_class_ex_tax'] = jigoshop_cart::get_price_per_tax_class_ex_tax();
 
@@ -941,21 +941,21 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 
 				// Cart items
 				$order_items = array();
-				foreach (jigoshop_cart::$cart_contents as $values) {
-					/** @var jigoshop_product $_product */
-					$_product = $values['data'];
+				foreach (jigoshop_cart::get_cart() as $values) {
+					/** @var jigoshop_product $product */
+					$product = $values['data'];
 
 					// Check stock levels
-					if (!$_product->has_enough_stock($values['quantity'])) {
-						jigoshop::add_error(sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'), $_product->get_title()));
+					if (!$product->has_enough_stock($values['quantity'])) {
+						jigoshop::add_error(sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'), $product->get_title()));
 						if(self::get_options()->get('jigoshop_show_stock') == 'yes'){
-							jigoshop::add_error(sprintf(__('We have only %d available at this time.', 'jigoshop'), $_product->get_stock()));
+							jigoshop::add_error(sprintf(__('We have only %d available at this time.', 'jigoshop'), $product->get_stock()));
 						}
 						break;
 					}
 
 					// Calc item tax to store
-					$rates = $_product->get_tax_destination_rate();
+					$rates = $product->get_tax_destination_rate();
 					$rates = current($rates);
 
 					if (isset($rates['rate'])) {
@@ -968,7 +968,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 						$rate = 0.00;
 					}
 
-					$price_inc_tax = $_product->get_price_with_tax();
+					$price_inc_tax = $product->get_price_with_tax();
 
 					if (!empty($values['variation_id'])) {
 						$product_id = $values['variation_id'];
@@ -988,9 +988,9 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 						'variation_id' => $values['variation_id'],
 						'variation' => $values['variation'],
 						'customization' => $custom,
-						'name' => $_product->get_title(),
+						'name' => $product->get_title(),
 						'qty' => (int)$values['quantity'],
-						'cost' => $_product->get_price_excluding_tax(),
+						'cost' => $product->get_price_excluding_tax(),
 						'cost_inc_tax' => $price_inc_tax,
 						'taxrate' => $rate
 					), $values);
