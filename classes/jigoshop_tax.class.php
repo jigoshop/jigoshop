@@ -1013,4 +1013,17 @@ class jigoshop_tax extends Jigoshop_Base {
 
 		$this->imploded_tax_amounts = self::array_implode($this->tax_amounts);
 	}
+
+	/**
+	 * @param $tax_class string Tax class to get tax for.
+	 * @return float Tax value for current shipping and selected tax class.
+	 */
+	public function get_shipping_tax($tax_class)
+	{
+		if (isset($this->tax_amounts[$tax_class]) && isset($this->tax_amounts[$tax_class][jigoshop_session::instance()->chosen_shipping_method_id.jigoshop_session::instance()->selected_rate_id])) {
+			return $this->tax_amounts[$tax_class][jigoshop_session::instance()->chosen_shipping_method_id.jigoshop_session::instance()->selected_rate_id]/100;
+		}
+
+		return 0.0;
+	}
 }
