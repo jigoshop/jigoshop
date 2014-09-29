@@ -6,6 +6,7 @@ use Jigoshop\Core\Types;
 use Jigoshop\Entity\EntityInterface;
 use Jigoshop\Exception;
 use Jigoshop\Factory\Product as ProductFactory;
+use Jigoshop\Helper\Product as ProductHelper;
 use WPAL\Wordpress;
 
 /**
@@ -200,5 +201,35 @@ class Product implements ProductServiceInterface
 	{
 		$product = $this->factory->create($id);
 		$this->save($product);
+	}
+
+	/**
+	 * @param \Jigoshop\Entity\Product $product Product to find thumbnails for.
+	 * @return array List of thumbnails attached to the product.
+	 */
+	public function getThumbnails(\Jigoshop\Entity\Product $product)
+	{
+		$query = new \WP_Query();
+		$args = array(
+			'post_type' => 'attachment',
+			'post_mime_type' => 'image',
+			'orderby' => 'menu_order',
+			'order' => 'asc',
+			'numberposts' => -1,
+			'post_status' => 'inherit',
+			'post_parent' => $product->getId(),
+			'suppress_filters' => true,
+		);
+
+		$thumbnails = array();
+		foreach ($query->query($args) as $thumbnail) {
+			$thumbnails[$thumbnail->ID] = array(
+				'title' => $thumbnail->post_title,
+				'url' => $this->wp->wpGetAttachmentUrl($thumbnail->ID),
+				'image' => $this->wp->wpGetAttachmentImage($thumbnail->ID, 'shop_thumbnail'),
+			);
+		}
+
+		return $thumbnails;
 	}
 }

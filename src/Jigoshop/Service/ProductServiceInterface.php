@@ -47,4 +47,10 @@ interface ProductServiceInterface extends ServiceInterface
 	 * @return array List of products that are low in stock.
 	 */
 	public function findLowStock($threshold);
+
+	/**
+	 * @param Product $product Product to find thumbnails for.
+	 * @return array List of thumbnails attached to the product.
+	 */
+	public function getThumbnails(Product $product);
 }

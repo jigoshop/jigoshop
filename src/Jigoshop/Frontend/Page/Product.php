@@ -7,6 +7,7 @@ use Jigoshop\Core\Options;
 use Jigoshop\Core\Pages;
 use Jigoshop\Core\Types;
 use Jigoshop\Frontend\Page;
+use Jigoshop\Helper\Product as ProductHelper;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
@@ -32,6 +33,7 @@ class Product implements Page
 		$this->messages = $messages;
 		$styles->add('jigoshop.shop', JIGOSHOP_URL.'/assets/css/shop.css');
 		$styles->add('jigoshop.shop.product', JIGOSHOP_URL.'/assets/css/shop/product.css');
+		$this->wp->addAction('jigoshop\product\before_summary', array($this, 'productImages'), 10, 1);
 	}
 
 
@@ -46,6 +48,27 @@ class Product implements Page
 		return Render::get('shop/product', array(
 			'product' => $product,
 			'messages' => $this->messages,
+		));
+	}
+
+	/**
+	 * Renders images section of product page.
+	 *
+	 * @param $product \Jigoshop\Entity\Product The product to render data for.
+	 */
+	public function productImages($product)
+	{
+		$imageClasses = apply_filters('jigoshop\product\image_classes', array(), $product);
+		$featured = ProductHelper::getFeaturedImage($product, 'shop_large');
+		$featuredUrl = ProductHelper::hasFeaturedImage($product) ? wp_get_attachment_url($product->getId()) : '';
+		$thumbnails = $this->productService->getThumbnails($product);
+
+		Render::output('shop/product/images', array(
+			'product' => $product,
+			'featured' => $featured,
+			'featuredUrl' => $featuredUrl,
+			'thumbnails' => $thumbnails,
+			'imageClasses' => $imageClasses,
 		));
 	}
 }

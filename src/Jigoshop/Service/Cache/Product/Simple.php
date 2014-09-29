@@ -120,4 +120,14 @@ class Simple implements ProductServiceInterface
 
 		return $this->queries['low_stock_'.$threshold];
 	}
+
+	/**
+	 * @param Product $product Product to find thumbnails for.
+	 * @return array List of thumbnails attached to the product.
+	 */
+	public function getThumbnails(Product $product)
+	{
+		// TODO: Implement getThumbnails() method.
+		return $this->service->getThumbnails($product);
+	}
 }
