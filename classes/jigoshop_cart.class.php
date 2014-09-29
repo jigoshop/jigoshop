@@ -1076,14 +1076,18 @@ class jigoshop_cart extends Jigoshop_Singleton
 		return (self::get_options()->get('jigoshop_tax_after_coupon') == 'yes');
 	}
 
-	/** Returns the total discount amount. */
-	public static function get_total_discount()
+	/** Returns the total discount amount.
+	 *
+	 * @param bool $with_price
+	 * @return bool|mixed|void
+	 */
+	public static function get_total_discount($with_price = true)
 	{
 		if (empty(self::$discount_total)) {
 			return false;
 		}
 
-		return (jigoshop_price(self::$discount_total));
+		return $with_price ? jigoshop_price(self::$discount_total) : self::$discount_total;
 	}
 
 	/**

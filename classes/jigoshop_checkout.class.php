@@ -924,7 +924,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 				$data['order_subtotal'] = jigoshop_cart::get_subtotal();
 				$data['order_discount_subtotal'] = jigoshop_cart::get_discount_subtotal();
 				$data['order_shipping'] = jigoshop_cart::get_shipping_total();
-				$data['order_discount'] = jigoshop_cart::$discount_total;
+				$data['order_discount'] = jigoshop_cart::get_total_discount(false);
 				$data['order_tax'] = jigoshop_cart::get_taxes_as_string();
 				$data['order_tax_no_shipping_tax'] = jigoshop_cart::get_total_cart_tax_without_shipping_tax();
 				$data['order_tax_divisor'] = jigoshop_cart::get_tax_divisor();
