@@ -586,16 +586,16 @@ class jigoshop_cart extends Jigoshop_Singleton
 								$discounts += self::$tax->calc_tax($coupon['amount']*$total_tax_part, $rate, false);
 								break;
 							case 'percent':
-								// Do not change anything
+								var_dump($coupon);
+//								$discounts += self::$tax->calc_tax($coupon['amount'] * self::$price_per_tax_class_ex_tax[$tax_class], $rate, false);
 								break;
 						}
 					}
 
+					var_dump($discounts);
 					$tax -= $discounts;
 					self::$tax->update_tax_amount($tax_class, $tax * 100, false, true);
 				}
-
-				self::$shipping_tax_total = self::$tax->get_total_shipping_tax_amount();
 
 			// check again in case tax calcs are disabled
 				$total_discounts = $total_cart_discounts + $total_product_discounts;
@@ -625,8 +625,7 @@ class jigoshop_cart extends Jigoshop_Singleton
 					// with an initial discount, recalc taxes and get a proper discount
 					foreach (self::get_applied_tax_classes() as $tax_class) {
 						$rate = self::$tax->get_rate($tax_class);
-						$total_to_use = self::$cart_contents_total_ex_tax + self::$shipping_total;
-						$tax = self::$tax->calc_tax($total_to_use, $rate, false);
+						$tax = self::$tax->calc_tax(self::$cart_contents_total_ex_tax, $rate, false);
 						self::$tax->update_tax_amount($tax_class, $tax * 100, false, true);
 						$temp += self::$tax->get_tax_amount($tax_class);
 					}
