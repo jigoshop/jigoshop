@@ -12,7 +12,7 @@ use Jigoshop\Helper\Product;
 		<?php if (Product::isOnSale($product)): ?>
 			<span class="on-sale"><?php _e('Sale!', 'jigoshop'); ?></span>
 		<?php endif; ?>
-		<?php echo Product::getThumbnail($product, 'shop_small'); ?>
+		<?php echo Product::getFeaturedImage($product, 'shop_small'); ?>
 		<strong><?php echo $product->getName(); ?></strong>
 		<?php do_action('jigoshop\shop\list\product\after_title', $product); ?>
 	</a>

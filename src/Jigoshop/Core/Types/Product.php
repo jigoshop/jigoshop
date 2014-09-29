@@ -127,7 +127,7 @@ class Product implements Post
 		$product = $this->productService->find($post->ID);
 		switch ($column) {
 			case 'thumbnail':
-				echo \Jigoshop\Helper\Product::getThumbnail($product);
+				echo \Jigoshop\Helper\Product::getFeaturedImage($product);
 				break;
 			case 'price':
 				echo \Jigoshop\Helper\Product::getPrice($product);
