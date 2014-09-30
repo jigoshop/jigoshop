@@ -36,6 +36,10 @@ class Interceptor
 	private function parseRequest($request)
 	{
 		// TODO: Refactor preparing requests
+		if ($this->isCart($request)) {
+			return $request;
+		}
+
 		if ($this->isProductList($request)) {
 			$options = $this->options->get('shopping');
 			return array(
@@ -79,5 +83,10 @@ class Interceptor
 	private function isProduct($request)
 	{
 		return isset($request['post_type']) && $request['post_type'] == Types::PRODUCT && isset($request['product']);
+	}
+
+	private function isCart($request)
+	{
+		return isset($request['pagename']) && $request['pagename'] == Pages::CART;
 	}
 }
