@@ -83,9 +83,15 @@ $options = Jigoshop_Base::get_options();
 							echo apply_filters('jigoshop_product_quantity_display_in_cart', $quantity_display, $values['product_id'], $values);
 							?>
 						</td>
-						<td class="product-subtotal">
-							<?php echo apply_filters('jigoshop_product_subtotal_display_in_cart', jigoshop_price($product->get_defined_price() * $values['quantity']), $values['product_id'], $values); ?>
-						</td>
+						<?php if(Jigoshop_Base::get_options()->get('jigoshop_show_prices_with_tax') == 'yes') : ?>
+							<td class="product-total">
+								<?php echo apply_filters('jigoshop_product_total_display_in_cart', jigoshop_price($product->get_defined_price() * $values['quantity']), $values['product_id'], $values); ?>
+							</td>
+						<?php else : ?>
+							<td class="product-subtotal">
+								<?php echo apply_filters('jigoshop_product_subtotal_display_in_cart', jigoshop_price($product->get_defined_price() * $values['quantity']), $values['product_id'], $values); ?>
+							</td>
+						<?php endif; ?>
 					</tr>
 				<?php
 				endif;

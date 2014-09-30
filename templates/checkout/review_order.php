@@ -108,7 +108,7 @@ $options = Jigoshop_Base::get_options(); ?>
 					<td><?php echo $values['quantity']; ?></td>
 					<td>
 						<?php
-						echo jigoshop_price($product->get_defined_price() * $values['quantity'], Jigoshop_Base::get_options()->get('jigoshop_show_prices_with_tax') == 'no' ? array('ex_tax_label' => 1) : '');
+						echo jigoshop_price($product->get_defined_price() * $values['quantity'], array('ex_tax_label' => Jigoshop_Base::get_options()->get('jigoshop_show_prices_with_tax') == 'yes' ?  2 : 1));
 						?></td>
 				</tr>
 			<?php endif;
