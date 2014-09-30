@@ -1037,6 +1037,17 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 			),
 			array('name' => __('Pricing Options', 'jigoshop'), 'type' => 'title', 'desc' => ''),
 			array(
+				'name' => __('Show prices with tax', 'jigoshop'),
+				'desc' => __("This controls the display of the product price in cart and checkout page.", 'jigoshop'),
+				'tip' => '',
+				'id' => 'jigoshop_show_prices_with_tax',
+				'type' => 'checkbox',
+				'choices' => array(
+					'no' => __('No', 'jigoshop'),
+					'yes' => __('Yes', 'jigoshop'),
+				),
+			),
+			array(
 				'name' => __('Currency display', 'jigoshop'),
 				'desc' => __("This controls the display of the currency symbol and currency code.", 'jigoshop'),
 				'tip' => '',

@@ -73,7 +73,7 @@ $options = Jigoshop_Base::get_options();
 							?>
 						</td>
 						<td class="product-price">
-							<?php echo apply_filters('jigoshop_product_price_display_in_cart', jigoshop_price($product->get_price_excluding_tax()), $values['product_id'], $values); ?>
+							<?php echo apply_filters('jigoshop_product_price_display_in_cart', jigoshop_price($product->get_defined_price()), $values['product_id'], $values); ?>
 						</td>
 						<td class="product-quantity">
 							<?php ob_start(); // It is important to keep quantity in single line ?>
@@ -84,7 +84,7 @@ $options = Jigoshop_Base::get_options();
 							?>
 						</td>
 						<td class="product-subtotal">
-							<?php echo apply_filters('jigoshop_product_subtotal_display_in_cart', jigoshop_price($product->get_price_excluding_tax() * $values['quantity']), $values['product_id'], $values); ?>
+							<?php echo apply_filters('jigoshop_product_subtotal_display_in_cart', jigoshop_price($product->get_defined_price() * $values['quantity']), $values['product_id'], $values); ?>
 						</td>
 					</tr>
 				<?php
