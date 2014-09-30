@@ -1,0 +1,38 @@
+parameters: ~
+services:
+  jigoshop.query.interceptor:
+    class: Jigoshop\Query\Interceptor
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+  jigoshop.page_resolver:
+    class: Jigoshop\Core\PageResolver
+    arguments:
+      - '@wpal'
+      - '@jigoshop.pages'
+  jigoshop.page.product_list:
+    class: Jigoshop\Frontend\Page\ProductList
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.service.product'
+      - '@jigoshop.messages'
+      - '@jigoshop.helper.styles'
+  jigoshop.page.product:
+    class: Jigoshop\Frontend\Page\Product
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.service.product'
+      - '@jigoshop.messages'
+      - '@jigoshop.helper.styles'
+      - '@jigoshop.helper.scripts'
+  jigoshop.page.cart:
+    class: Jigoshop\Frontend\Page\Cart
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.messages'
+      - '@jigoshop.service.cart'
+      - '@jigoshop.helper.styles'
+      - '@jigoshop.helper.scripts'

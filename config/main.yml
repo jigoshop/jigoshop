@@ -1,0 +1,76 @@
+parameters: ~
+services:
+  wpal:
+    class: WPAL\Wordpress
+  jigoshop:
+    class: Jigoshop\Core
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.messages'
+      - '@jigoshop.pages'
+      - '@jigoshop.template'
+      - '@jigoshop.admin'
+  jigoshop.installer:
+    class: Jigoshop\Core\Installer
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.cron'
+  jigoshop.options:
+    class: Jigoshop\Core\Options
+    arguments:
+      - '@wpal'
+  jigoshop.cron:
+    class: Jigoshop\Core\Cron
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.service.order'
+  jigoshop.pages:
+    class: Jigoshop\Core\Pages
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+  jigoshop.messages:
+    class: Jigoshop\Core\Messages
+    arguments:
+      - '@wpal'
+  jigoshop.types:
+    class: Jigoshop\Core\Types
+    arguments:
+      - '@wpal'
+  jigoshop.roles:
+    class: Jigoshop\Core\Roles
+    arguments:
+      - '@wpal'
+  jigoshop.assets:
+    class: Jigoshop\Core\Assets
+    arguments:
+      - '@wpal'
+      - '@jigoshop.pages'
+      - '@jigoshop.options'
+      - '@jigoshop.helper.styles'
+      - '@jigoshop.helper.scripts'
+  jigoshop.template:
+    class: Jigoshop\Core\Template
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.pages'
+  jigoshop.post_type.product:
+    class: Jigoshop\Core\Types\Product
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.service.product'
+    tags:
+      - { name: jigoshop.type.post }
+  jigoshop.taxonomy.product_category:
+    class: Jigoshop\Core\Types\ProductCategory
+    tags:
+      - { name: jigoshop.type.taxonomy }
+  jigoshop.taxonomy.product_tag:
+    class: Jigoshop\Core\Types\ProductTag
+    tags:
+      - { name: jigoshop.type.taxonomy }

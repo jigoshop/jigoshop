@@ -1,0 +1,61 @@
+parameters: ~
+services:
+  jigoshop.admin:
+    class: Jigoshop\Admin
+    lazy: true
+    arguments:
+      - '@wpal'
+      - '@jigoshop.admin.dashboard'
+  jigoshop.admin.dashboard:
+    class: Jigoshop\Admin\Dashboard
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.service.order'
+      - '@jigoshop.service.product'
+      - '@jigoshop.helper.styles'
+    tags:
+      - { name: jigoshop.admin.page }
+  jigoshop.admin.reports:
+    class: Jigoshop\Admin\Reports
+    tags:
+      - { name: jigoshop.admin.page }
+  jigoshop.admin.settings:
+    class: Jigoshop\Admin\Settings
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.helper.styles'
+    tags:
+      - { name: jigoshop.admin.page }
+  jigoshop.admin.settings.general:
+    class: Jigoshop\Admin\Settings\GeneralTab
+    arguments:
+      - '@jigoshop.options'
+    tags:
+      - { name: jigoshop.admin.settings.tab }
+  jigoshop.admin.settings.shopping:
+    class: Jigoshop\Admin\Settings\ShoppingTab
+    arguments:
+      - '@jigoshop.options'
+      - '@jigoshop.helper.scripts'
+    tags:
+      - { name: jigoshop.admin.settings.tab }
+  jigoshop.admin.settings.taxes:
+    class: Jigoshop\Admin\Settings\TaxesTab
+    arguments:
+      - '@jigoshop.options'
+      - '@jigoshop.service.tax'
+      - '@jigoshop.helper.scripts'
+    tags:
+      - { name: jigoshop.admin.settings.tab }
+  jigoshop.admin.system_info:
+    class: Jigoshop\Admin\SystemInfo
+    arguments:
+      - '@wpal'
+    tags:
+      - { name: jigoshop.admin.page }
+  jigoshop.admin.product.attributes:
+    class: Jigoshop\Admin\Product\Attributes
+    tags:
+      - { name: jigoshop.admin.page }

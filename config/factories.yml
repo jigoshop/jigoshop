@@ -1,0 +1,28 @@
+parameters: ~
+services:
+  jigoshop.factory.order_service:
+    class: Jigoshop\Factory\OrderService
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+  jigoshop.factory.product_service:
+    class: Jigoshop\Factory\ProductService
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.factory.product'
+  jigoshop.factory.tax_service:
+    class: Jigoshop\Factory\TaxService
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.service.customer'
+  jigoshop.factory.customer_service:
+    class: Jigoshop\Factory\CustomerService
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+  jigoshop.factory.product:
+    class: Jigoshop\Factory\Product
+    arguments:
+      - '@wpal'

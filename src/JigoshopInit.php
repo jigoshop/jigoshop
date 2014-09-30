@@ -36,6 +36,11 @@ class JigoshopInit
 			$builder->addCompilerPass(new Jigoshop\Admin\CompilerPass());
 			$builder->addCompilerPass(new Jigoshop\Admin\Settings\CompilerPass());
 			$loader = new YamlFileLoader($builder, new FileLocator(JIGOSHOP_DIR.'/config'));
+			$loader->load('admin.yml');
+			$loader->load('factories.yml');
+			$loader->load('helpers.yml');
+			$loader->load('main.yml');
+			$loader->load('pages.yml');
 			$loader->load('services.yml');
 			// Load extension configuration
 			do_action('jigoshop\plugins\configure', $builder);
