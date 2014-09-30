@@ -236,7 +236,7 @@ function jigoshop_product_data_box() {
 	            	$checked = checked(in_array('*', $selections), true, false);
 
 	            	printf('<label %s><input type="checkbox" name="tax_classes[]" value="%s" %s/> %s</label>'
-								, !empty($checked) || $selections[0] == '' ? 'class="selected"' : ''
+								, !empty($checked) ? 'class="selected"' : ''
 								, '*'
 								, $checked
 								, __('Standard', 'jigoshop'));
