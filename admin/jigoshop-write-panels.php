@@ -263,7 +263,11 @@ function jigoshop_get_user_address_data()
 			'shipping_country' => '',
 		);
 
-		print_r(json_encode(wp_parse_args(get_user_meta($_GET['load_address'], '', true), $defaults)));
+		$data = array_map(function($arg) {
+			return $arg[0];
+		}, wp_parse_args(get_user_meta($_GET['load_address'], '', true), $defaults));
+
+		echo json_encode($data);
 		exit;
 	}
 }
