@@ -85,6 +85,14 @@ services:
       - '@jigoshop.messages'
       - '@jigoshop.helper.styles'
       - '@jigoshop.helper.scripts'
+  jigoshop.page.cart:
+    class: Jigoshop\Frontend\Page\Cart
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.messages'
+      - '@jigoshop.helper.styles'
+      - '@jigoshop.helper.scripts'
   jigoshop.post_type.product:
     class: Jigoshop\Core\Types\Product
     arguments:
