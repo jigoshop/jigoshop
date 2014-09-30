@@ -20,6 +20,7 @@
     * Fix: Shipping taxes are calculated for each applicable tax class.
     * Fix: Proper calculation of taxes after coupons have been applied.
     * Fix: Memory checking when provided lowercase.
+    * Fix: Monthly report and reports are showing the same data now.
 * 1.11.9 - 2014-09-16:
     * Fix: EU VAT handling for same country orders.
     * Fix: Tax for shipping is properly added on new orders using PayPal standard.

@@ -60,24 +60,15 @@ class Jigoshop_reports {
 					  : strtotime(date('Ymd', current_time('timestamp')));
 
 		$args = array(
-			'numberposts'      => -1,
-			'orderby'          => 'post_date',
-			'order'            => 'ASC',
-			'post_type'        => 'shop_order',
-			'post_status'      => 'publish' ,
-			'suppress_filters' => 0,
-			'tax_query'        => array(
-				array(
-					'taxonomy' => 'shop_order_status',
-					'terms'    => array('completed'),
-					'field'    => 'slug',
-					'operator' => 'IN'
-				)
-			)
+			'numberposts' => -1,
+			'orderby' => 'post_date',
+			'order' => 'ASC',
+			'post_type' => 'shop_order',
+			'post_status' => 'publish',
+			'suppress_filters'=> false,
 		);
 
 		return get_posts( $args );
-
 	}
 
 	function on_show_page() {
@@ -189,21 +180,11 @@ function jigoshop_pie_charts($id = '') {
 ?>
 <script type="text/javascript">
 /* <![CDATA[ */
-jQuery(function(){
-
-	function pieHover(event, pos, obj) {
-
-		if (!obj) return;
-		percent = parseFloat(obj.series.percent).toFixed(2);
-		jQuery("#plothover").html('<span style="font-weight: bold; color: '+obj.series.color+'">'+obj.series.label+' ('+percent+'%)</span>');
-	}
-
+jQuery(function($){
 	var data = [
-
 		<?php echo implode(',', $values); ?>
-
 	];
-	jQuery.plot(jQuery("#<?php echo $id; ?>"), data, {
+	$.plot($("#<?php echo $id; ?>"), data, {
 		series: {
 			pie: {
 				show: true,
@@ -217,17 +198,15 @@ jQuery(function(){
 					radius: 2/3,
 					formatter: function(label, series){
 						return '<div style="font-size:8pt;text-align:center;padding:2px;color:black;">'+Math.round(series.percent)+'%</div>';
-					},
+					}
 				}
 			}
 		},
 		legend: {
 			show: true,
-			container: jQuery("#<?php echo $id; ?>").prev()
+			container: $("#<?php echo $id; ?>").prev()
 		}
 	});
-	//jQuery("#top_earners_pie").bind("plothover", pieHover);
-	//jQuery("#top_earners_pie").bind("plotclick", pieClick);
 });
 /* ]]> */
 </script>

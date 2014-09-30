@@ -502,12 +502,12 @@ class jigoshop_dashboard {
 							add_filter( 'posts_where', 'orders_this_month' );
 
 							$args = array(
-								'numberposts'     => -1,
-								'orderby'         => 'post_date',
-								'order'           => 'DESC',
-								'post_type'       => 'shop_order',
-								'post_status'     => 'publish' ,
-								'suppress_filters'=> false
+								'numberposts' => -1,
+								'orderby' => 'post_date',
+								'order' => 'DESC',
+								'post_type' => 'shop_order',
+								'post_status' => 'publish',
+								'suppress_filters'=> false,
 							);
 							$orders = get_posts( $args );
 
