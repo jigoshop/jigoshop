@@ -1,5 +1,8 @@
 ## Changelog
 
+* 1.13:
+    * New: Ability to select whether to show prices with or without tax in cart.
+    * New: Ability to select user when creating new order manually in admin panel.
 * 1.12.4 - 2014-11-10:
     * Improved: `jigoshop_remove_style()` with support in JWOS.
 * 1.12.3 - 2014-10-27:
