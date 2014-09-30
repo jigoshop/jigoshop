@@ -113,14 +113,29 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 
 == Changelog ==
 
-= 1.12 =
+= 1.12 - 2014-09-30 =
 * New: User fields in user's profile.
 * New: Support for disabled elements in admin settings.
 * New: `Jigoshop_Options` new methods `get`, `set`, `add`, `delete` and `exists` - replaces ones with `_option` in the name.
 * New: `jigoshop_enqueue_settings_scripts` action.
+* New: `jigoshop.cart.update` on `.form-cart-items` after Ajax cart update.
 * New: Cart quantity changes are immediately saved!
 * New: Ability to select exact hour when sales starts and ends.
 * New: WordPress memory limit check.
+* New: Actions in each product panel for additional fields.
+* New: Customer email notification after placing order when getting to on-hold status.
+* Improved: Emails: shop details header, tax number in company details.
+* Improved: Formatted code of jigoshop emails.
+* Improved: Removed invalid email about processing order when going to on-hold status.
+* Improved: Grouped products are checking parent group for sales dates.
+* Improved: Shipping calculator always works with data set in My Account page.
+* Improved: Products do not need to have tax classes selected.
+* Fix: Variation SKU fetching.
+* Fix: Order total minimum requirement for coupons.
+* Fix: Shipping taxes are calculated for each applicable tax class.
+* Fix: Proper calculation of taxes after coupons have been applied.
+* Fix: Memory checking when provided lowercase.
+* Fix: Monthly report and reports are showing the same data now.
 
 = 1.11.9 - 2014-09-16 =
 * Fix: EU VAT handling for same country orders.
