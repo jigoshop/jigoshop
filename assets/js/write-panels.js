@@ -270,26 +270,26 @@ jQuery(function($) {
 		$( "#customer_user" ).change(function() {
 			if($(this).val() > 0) {
 				$.getJSON("?post_type=shop_order&load_address=" + $(this).val(), function(data) {
-					$("#billing_first_name").val(data.billing_first_name[0]);
-					$("#billing_last_name").val(data.billing_last_name[0]);
-					$("#billing_company").val(data.billing_company[0]);
-					$("#billing_address_1").val(data.billing_address_1[0]);
-					$("#billing_address_2").val(data.billing_address_2[0]);
-					$("#billing_city").val(data.billing_city[0]);
-					$("#billing_state").val(data.billing_state[0]);
-					$("#billing_postcode").val(data.billing_postcode[0]);
-					$("#billing_country").val(data.billing_country[0]);
-					$("#billing_phone").val(data.billing_phone[0]);
-					$("#billing_email").val(data.billing_email[0]);
-					$("#shipping_first_name").val(data.shipping_first_name[0]);
-					$("#shipping_last_name").val(data.shipping_last_name[0]);
-					$("#shipping_company").val(data.shipping_company[0]);
-					$("#shipping_address_1").val(data.shipping_address_1[0]);
-					$("#shipping_address_2").val(data.shipping_address_2[0]);
-					$("#shipping_city").val(data.shipping_city[0]);
-					$("#shipping_state").val(data.shipping_state[0]);
-					$("#shipping_postcode").val(data.shipping_postcode[0]);
-					$("#shipping_country").val(data.shipping_country[0]);
+					$("#billing_first_name").val(data.billing_first_name);
+					$("#billing_last_name").val(data.billing_last_name);
+					$("#billing_company").val(data.billing_company);
+					$("#billing_address_1").val(data.billing_address_1);
+					$("#billing_address_2").val(data.billing_address_2);
+					$("#billing_city").val(data.billing_city);
+					$("#billing_state").val(data.billing_state);
+					$("#billing_postcode").val(data.billing_postcode);
+					$("#billing_country").val(data.billing_country);
+					$("#billing_phone").val(data.billing_phone);
+					$("#billing_email").val(data.billing_email);
+					$("#shipping_first_name").val(data.shipping_first_name);
+					$("#shipping_last_name").val(data.shipping_last_name);
+					$("#shipping_company").val(data.shipping_company);
+					$("#shipping_address_1").val(data.shipping_address_1);
+					$("#shipping_address_2").val(data.shipping_address_2);
+					$("#shipping_city").val(data.shipping_city);
+					$("#shipping_state").val(data.shipping_state);
+					$("#shipping_postcode").val(data.shipping_postcode);
+					$("#shipping_country").val(data.shipping_country);
 				});
 			} else {
 				$("#billing_first_name").val('');
