@@ -7,12 +7,18 @@ use WPAL\Wordpress;
 
 class CartService implements CartServiceInterface
 {
+	const CART = 'jigoshop_cart';
+
 	/** @var Wordpress */
 	private $wp;
 
 	public function __construct(Wordpress $wp)
 	{
 		$this->wp = $wp;
+
+		if (!isset($_SESSION[self::CART])) {
+			$_SESSION[self::CART] = array();
+		}
 	}
 
 	/**
@@ -24,7 +30,13 @@ class CartService implements CartServiceInterface
 	 */
 	public function get($id)
 	{
-		// TODO: Implement get() method.
+		// TODO: Support for transients?
+		if (isset($_SESSION[self::CART][$id])) {
+			return unserialize($_SESSION[self::CART][$id]);
+		}
+
+		// TODO: ID generation
+		return new Cart('');
 	}
 
 	/**
@@ -34,7 +46,8 @@ class CartService implements CartServiceInterface
 	 */
 	public function save(Cart $cart)
 	{
-		// TODO: Implement save() method.
+		// TODO: Support for transients?
+		$_SESSION[self::CART][$cart->getId()] = serialize($cart);
 	}
 
 	/**
@@ -44,5 +57,8 @@ class CartService implements CartServiceInterface
 	 */
 	public function remove(Cart $cart)
 	{
-		// TODO: Implement remove() method.
+		// TODO: Support for transients?
+		if (isset($_SESSION[self::CART][$cart->getId()])) {
+			unset($_SESSION[self::CART][$cart->getId()]);
+		}
 }}
