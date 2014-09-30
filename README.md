@@ -4,11 +4,14 @@ Jigoshop is a feature-packed eCommerce plugin built upon WordPress core function
 
 ## Quick start
 
-1. Install [Composer](http://getcomposer.org)
+1. Install [Composer](http://getcomposer.org), [Gulp](http://gulpjs.com) and [Bower](http://bower.io/)
 2. Clone the git repository: `git clone https://github.com/jigoshop/jigoshop.git`
 3. Install required dependencies: `composer.phar update --no-dev`
     * Note: if you want to run tests or make some changes to the code remove `--no-dev` parameter from Composer update call.
 4. (Optionally) Run tests to verify everything is working correctly: `php vendor/phpunit/phpunit/phpunit.php --configuration phpunit.xml.dist`
+5. Run `bower update` to update frontend libraries.
+6. Run `gulp dist` to prepare final package.
+7. Use files located inside `dist` directory to run your Jigoshop build!
 
 ## Bug tracker
 
