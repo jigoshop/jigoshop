@@ -15,6 +15,7 @@ use Jigoshop\Helper\Render;
 	<?php do_action('jigoshop\product\before_summary', $product); ?>
 	<div class="summary">
 		<p class="price"><?php echo Product::getPrice($product); ?></p>
+		<p class="stock"><?php echo Product::getStock($product); ?></p>
 		<?php echo $product->getDescription(); ?>
 		<dl class="dl-horizontal">
 			<?php if($product->getSku()): ?>

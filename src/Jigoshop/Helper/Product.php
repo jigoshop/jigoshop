@@ -58,13 +58,18 @@ class Product
 	 */
 	public static function getStock(ProductEntity $product)
 	{
+		if (!$product->getStock()->getManage()) {
+			return '';
+		}
+
+		// TODO: Respect shopping options for displaying stock values
 		switch($product->getType()){
 			case Simple::TYPE:
 				/** @var $product Simple */
 				$status = $product->getStock()->getStatus() == StockStatus::IN_STOCK ?
 					_x('In stock', 'product', 'jigoshop') :
 					'<strong class="attention">'._x('Out of stock', 'product', 'jigoshop').'</strong>';
-				return sprintf(_x('%s <strong>(%d)</strong>', 'product', 'jigoshop'), $status, $product->getStock()->getStock());
+				return sprintf(_x('%s <strong>(%d available)</strong>', 'product', 'jigoshop'), $status, $product->getStock()->getStock());
 			default:
 				return apply_filters('jigoshop\helper\product\get_stock', '', $product);
 		}
