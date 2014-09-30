@@ -231,6 +231,45 @@ function jigoshop_write_panel_scripts()
 add_action('admin_enqueue_scripts', 'jigoshop_write_panel_scripts');
 
 /**
+ * User Address
+ *
+ * Shows JSON encoded array with user billing and shipping address.
+ *
+ * @since        1.13
+ */
+function jigoshop_get_user_address_data()
+{
+	if (isset($_GET['load_address']) && is_numeric($_GET['load_address'])) {
+		$defaults = array(
+			'billing_first_name' => '',
+			'billing_last_name' => '',
+			'billing_company' => '',
+			'billing_address_1' => '',
+			'billing_address_2' => '',
+			'billing_city' => '',
+			'billing_state' => '',
+			'billing_postcode' => '',
+			'billing_country' => '',
+			'billing_phone' => '',
+			'billing_email' => '',
+			'shipping_first_name' => '',
+			'shipping_last_name' => '',
+			'shipping_company' => '',
+			'shipping_address_1' => '',
+			'shipping_address_2' => '',
+			'shipping_city' => '',
+			'shipping_state' => '',
+			'shipping_postcode' => '',
+			'shipping_country' => '',
+		);
+
+		print_r(json_encode(wp_parse_args(get_user_meta($_GET['load_address'], '', true), $defaults)));
+		exit;
+	}
+}
+add_action('init', 'jigoshop_get_user_address_data');
+
+/**
  * Meta scripts
  *
  * Outputs JavaScript used by the meta panels.
