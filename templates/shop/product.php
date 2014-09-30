@@ -10,13 +10,12 @@ use Jigoshop\Helper\Render;
 
 <?php do_action('jigoshop\product\before', $product); ?>
 <article id="post-<?php echo $product->getId(); ?>" <?php post_class(); ?>>
-	<h1><?php echo $product->getName(); ?></h1>
 	<?php Render::output('shop/messages', array('messages' => $messages)); ?>
 	<?php do_action('jigoshop\product\before_summary', $product); ?>
 	<div class="summary">
+		<h1><?php echo $product->getName(); ?></h1>
 		<p class="price"><?php echo Product::getPrice($product); ?></p>
 		<p class="stock"><?php echo Product::getStock($product); ?></p>
-		<?php echo $product->getDescription(); ?>
 		<dl class="dl-horizontal">
 			<?php if($product->getSku()): ?>
 			<dt><?php echo __('SKU', 'jigoshop'); ?></dt><dd><?php echo $product->getSku(); ?></dd>

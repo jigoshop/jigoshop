@@ -84,6 +84,7 @@ services:
       - '@jigoshop.service.product'
       - '@jigoshop.messages'
       - '@jigoshop.helper.styles'
+      - '@jigoshop.helper.scripts'
   jigoshop.post_type.product:
     class: Jigoshop\Core\Types\Product
     arguments:

@@ -11,8 +11,13 @@ rimraf = require('gulp-rimraf')
 replace = require('gulp-replace')
 
 gulp.task 'styles-vendors', ->
-  gulp.src ['assets/bower/select2/{select2,select2-bootstrap}.css', 'assets/bower/bootstrap-datepicker/css/datepicker3.css']
+  gulp.src [
+    'assets/bower/select2/{select2,select2-bootstrap}.css',
+    'assets/bower/bootstrap-datepicker/css/datepicker3.css',
+    'assets/bower/jquery-colorbox/example1/colorbox.css',
+  ]
     .pipe replace(/select2(.*?)\.(png|gif)/g, '../images/select2$1.$2')
+    .pipe replace(/images\/(.*?)\.(png|gif)/g, '../images/$1.$2')
     .pipe cssmin()
     .pipe concat('vendors.min.css')
     .pipe gulp.dest('assets/css')
@@ -24,7 +29,12 @@ gulp.task 'styles', ['styles-vendors'], ->
     .pipe gulp.dest('assets/css')
 
 gulp.task 'scripts-vendors', ->
-  gulp.src ['assets/bower/select2/select2.js', 'assets/bower/bootstrap/js/{tab,transition,tooltip}.js', 'assets/bower/bootstrap-datepicker/js/bootstrap-datepicker.js']
+  gulp.src [
+    'assets/bower/select2/select2.js',
+    'assets/bower/bootstrap/js/{tab,transition,tooltip}.js',
+    'assets/bower/bootstrap-datepicker/js/bootstrap-datepicker.js',
+    'assets/bower/jquery-colorbox/jquery.colorbox-min.js',
+  ]
     .pipe uglify()
     .pipe concat('vendors.min.js')
     .pipe gulp.dest('assets/js')

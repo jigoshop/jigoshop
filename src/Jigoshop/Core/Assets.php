@@ -110,26 +110,26 @@ class Assets
 
 	public function loadFrontendAssets()
 	{
-		$frontend_css = JIGOSHOP_URL.'/assets/css/frontend.css';
-		$theme_css = file_exists($this->wp->getStylesheetDirectory().'/jigoshop/style.css') ? $this->wp->getStylesheetDirectoryUri().'/jigoshop/style.css' : $frontend_css;
+//		$frontend_css = JIGOSHOP_URL.'/assets/css/shop.css';
+//		$theme_css = file_exists($this->wp->getStylesheetDirectory().'/jigoshop/style.css') ? $this->wp->getStylesheetDirectoryUri().'/jigoshop/style.css' : $frontend_css;
+//
+//		if ($this->options->get('disable_css') == 'no') {
+//			if ($this->options->get('load_frontend_css') == 'yes') {
+//				$this->styles->add('jigoshop_theme_styles', $frontend_css);
+//			}
+//			$this->styles->add('jigoshop_styles', $theme_css);
+//		}
 
-		if ($this->options->get('disable_css') == 'no') {
-			if ($this->options->get('load_frontend_css') == 'yes') {
-				$this->styles->add('jigoshop_theme_styles', $frontend_css);
-			}
-			$this->styles->add('jigoshop_styles', $theme_css);
-		}
+//		$this->scripts->add('jigoshop_global', JIGOSHOP_URL.'/assets/js/global.js', array('jquery'), array('in_footer' => true));
 
-		$this->scripts->add('jigoshop_global', JIGOSHOP_URL.'/assets/js/global.js', array('jquery'), array('in_footer' => true));
+//		if ($this->options->get('disable_prettyphoto') == 'no') {
+//			$this->scripts->add('prettyphoto', JIGOSHOP_URL.'/assets/js/jquery.prettyPhoto.js', array('jquery'), array('in_footer' => true));
+//		}
 
-		if ($this->options->get('disable_prettyphoto') == 'no') {
-			$this->scripts->add('prettyphoto', JIGOSHOP_URL.'/assets/js/jquery.prettyPhoto.js', array('jquery'), array('in_footer' => true));
-		}
-
-		$this->scripts->add('jigoshop_blockui', JIGOSHOP_URL.'/assets/js/blockui.js', array('jquery'), array('in_footer' => true));
-		$this->scripts->add('jigoshop-cart', JIGOSHOP_URL.'/assets/js/cart.js', array('jquery'), array('in_footer' => true, 'page' => Pages::CART));
-		$this->scripts->add('jigoshop-checkout', JIGOSHOP_URL.'/assets/js/checkout.js', array('jquery'), array('in_footer' => true, 'page' => Pages::CHECKOUT));
-		$this->scripts->add('jigoshop-single-product', JIGOSHOP_URL.'/assets/js/single-product.js', array('jquery'), array('in_footer' => true, 'page' => Pages::PRODUCT));
-		$this->scripts->add('jigoshop-countries', JIGOSHOP_URL.'/assets/js/countries.js', array(), array('in_footer' => true, 'page' => array(Pages::CHECKOUT, Pages::CART)));
+//		$this->scripts->add('jigoshop_blockui', JIGOSHOP_URL.'/assets/js/blockui.js', array('jquery'), array('in_footer' => true));
+//		$this->scripts->add('jigoshop-cart', JIGOSHOP_URL.'/assets/js/cart.js', array('jquery'), array('in_footer' => true, 'page' => Pages::CART));
+//		$this->scripts->add('jigoshop-checkout', JIGOSHOP_URL.'/assets/js/checkout.js', array('jquery'), array('in_footer' => true, 'page' => Pages::CHECKOUT));
+//		$this->scripts->add('jigoshop-single-product', JIGOSHOP_URL.'/assets/js/single-product.js', array('jquery'), array('in_footer' => true, 'page' => Pages::PRODUCT));
+//		$this->scripts->add('jigoshop-countries', JIGOSHOP_URL.'/assets/js/countries.js', array(), array('in_footer' => true, 'page' => array(Pages::CHECKOUT, Pages::CART)));
 	}
 }

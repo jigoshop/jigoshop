@@ -219,6 +219,7 @@ class Product implements ProductServiceInterface
 			'post_status' => 'inherit',
 			'post_parent' => $product->getId(),
 			'suppress_filters' => true,
+			'post__not_in' => array($this->wp->getPostThumbnailId($product->getId())),
 		);
 
 		$thumbnails = array();
