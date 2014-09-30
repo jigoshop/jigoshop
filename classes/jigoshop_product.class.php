@@ -571,6 +571,21 @@ class jigoshop_product extends Jigoshop_Base {
 	}
 
 	/**
+	 * Get the product total price excluding or with tax
+	 *
+	 * @param int $quantity
+	 * @return float the total price of the product times the quantity.
+	 */
+	public function get_defined_price($quantity = 1)
+	{
+		if(self::get_options()->get('jigoshop_show_prices_with_tax') == 'yes') {
+			return $this->get_price_with_tax($quantity);
+		} else {
+			return $this->get_price_excluding_tax($quantity);
+		}
+	}
+
+	/**
 	 * Get the product total price excluding tax
 	 *
 	 * @param int $quantity
