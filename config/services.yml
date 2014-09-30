@@ -91,6 +91,7 @@ services:
       - '@wpal'
       - '@jigoshop.options'
       - '@jigoshop.messages'
+      - '@jigoshop.service.cart'
       - '@jigoshop.helper.styles'
       - '@jigoshop.helper.scripts'
   jigoshop.post_type.product:
@@ -161,6 +162,10 @@ services:
     class: Jigoshop\Service\Customer
     factory_service: jigoshop.factory.customer_service
     factory_method: getService
+  jigoshop.service.cart:
+    class: Jigoshop\Service\CartService
+    arguments:
+      - '@wpal'
   jigoshop.admin:
     class: Jigoshop\Admin
     lazy: true
