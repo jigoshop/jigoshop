@@ -56,7 +56,7 @@ class Product implements Page
 			try {
 				$cart->addItem($product, (int)$_POST['quantity']);
 				$this->cartService->save($cart);
-				$this->messages->addNotice(__('Item added to cart.', 'jigoshop'), false);
+				$this->messages->addNotice(sprintf(__('%s successfully added to your cart.', 'jigoshop'), $product->getName()), false);
 			} catch(Exception $e) {
 				// TODO: Could be improved with `NotEnoughStockException` and others
 				$this->messages->addError(sprintf(__('A problem ocurred when adding to cart: %s', 'jigoshop'), $e->getMessage()), false);

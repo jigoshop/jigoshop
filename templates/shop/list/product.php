@@ -17,5 +17,11 @@ use Jigoshop\Helper\Product;
 		<?php do_action('jigoshop\shop\list\product\after_title', $product); ?>
 	</a>
 	<span class="price"><?php echo Product::getPrice($product); ?></span>
+	<form action="" method="post" class="form-inline" role="form">
+		<!-- TODO: Render proper form based on product type -->
+		<input type="hidden" name="action" value="add-to-cart" />
+		<input type="hidden" name="item" value="<?php echo $product->getId(); ?>" />
+		<button class="btn btn-primary" type="submit"><?php _e('Add to cart', 'jigoshop'); ?></button>
+	</form>
 	<?php do_action('jigoshop\shop\list\product\after', $product); ?>
 </li>
