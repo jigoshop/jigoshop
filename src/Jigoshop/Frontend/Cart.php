@@ -2,6 +2,9 @@
 
 namespace Jigoshop\Frontend;
 
+use Jigoshop\Entity\Product;
+use Jigoshop\Exception;
+
 class Cart implements \Serializable
 {
 	/** @var string */
@@ -27,6 +30,7 @@ class Cart implements \Serializable
 	 *
 	 * @param Product $product Product to add to cart.
 	 * @param $quantity int Quantity of products to add.
+	 * @throws Exception On error.
 	 */
 	public function addItem(Product $product, $quantity)
 	{
@@ -37,6 +41,7 @@ class Cart implements \Serializable
 	 * Removes item from cart.
 	 *
 	 * @param Product $product Product to remove from cart.
+	 * @return bool Is item removed?
 	 */
 	public function removeItem(Product $product)
 	{
@@ -69,6 +74,7 @@ class Cart implements \Serializable
 	public function serialize()
 	{
 		// TODO: Implement serialize() method.
+		return serialize(array());
 	}
 
 	/**

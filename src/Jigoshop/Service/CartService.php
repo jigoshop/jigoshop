@@ -32,7 +32,13 @@ class CartService implements CartServiceInterface
 	{
 		// TODO: Support for transients?
 		if (isset($_SESSION[self::CART][$id])) {
-			return unserialize($_SESSION[self::CART][$id]);
+			$cart = unserialize($_SESSION[self::CART][$id]);
+
+			if ($cart === null) {
+				$cart = new Cart($id);
+			}
+
+			return $cart;
 		}
 
 		// TODO: ID generation
@@ -61,4 +67,5 @@ class CartService implements CartServiceInterface
 		if (isset($_SESSION[self::CART][$cart->getId()])) {
 			unset($_SESSION[self::CART][$cart->getId()]);
 		}
-}}
+	}
+}

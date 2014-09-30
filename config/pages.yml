@@ -24,6 +24,7 @@ services:
       - '@wpal'
       - '@jigoshop.options'
       - '@jigoshop.service.product'
+      - '@jigoshop.service.cart'
       - '@jigoshop.messages'
       - '@jigoshop.helper.styles'
       - '@jigoshop.helper.scripts'

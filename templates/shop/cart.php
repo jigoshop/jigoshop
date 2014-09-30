@@ -3,6 +3,8 @@ use Jigoshop\Helper\Render;
 
 /**
  * @var $messages \Jigoshop\Core\Messages Messages container.
+ * @var $content string Contents of cart page
+ * @var $cart \Jigoshop\Frontend\Cart Cart object.
  */
 return;
 ?>
