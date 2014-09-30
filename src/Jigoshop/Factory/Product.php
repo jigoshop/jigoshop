@@ -2,6 +2,7 @@
 
 namespace Jigoshop\Factory;
 
+use Jigoshop\Core\Types;
 use Jigoshop\Entity\Product\Simple;
 use Jigoshop\Exception;
 use WPAL\Wordpress;
@@ -65,6 +66,12 @@ class Product
 		if (!empty($_POST)) {
 			$product->setName($this->wp->sanitizeTitle($_POST['post_title']));
 			$product->setDescription($this->wp->wpautop($this->wp->wptexturize($_POST['post_excerpt'])));
+			$_POST['product']['categories'] = $this->getTerms($id, Types::PRODUCT_CATEGORY, $this->wp->getTerms(Types::PRODUCT_CATEGORY, array(
+				'posts__in' => $_POST['tax_input']['product_category'],
+			)));
+			$_POST['product']['tags'] = $this->getTerms($id, Types::PRODUCT_TAG, $this->wp->getTerms(Types::PRODUCT_TAG, array(
+				'posts__in' => $_POST['tax_input']['product_tag'],
+			)));
 			$product->restoreState($_POST['product']);
 			$product->markAsDirty($_POST['product']);
 		}
@@ -97,11 +104,35 @@ class Product
 			$state['id'] = $post->ID;
 			$state['name'] = $post->post_title;
 			$state['description'] = $this->wp->wpautop($this->wp->wptexturize($post->post_content));
+			$state['categories'] = $this->getTerms($post->ID, Types::PRODUCT_CATEGORY);
+			$state['tags'] = $this->getTerms($post->ID, Types::PRODUCT_TAG);
 
 			$product->restoreState($state);
 		}
 
 		return $this->wp->applyFilters('jigoshop\find\product', $product, $state);
+	}
+
+	private function getTerms($id, $term, $items = null)
+	{
+		$wp = $this->wp;
+		if ($items === null) {
+			$items = $wp->getTheTerms($id, $term);
+		}
+
+		if (!is_array($items)) {
+			return array();
+		}
+
+		return array_map(function($item) use ($wp, $term) {
+			return array(
+				'id' => $item->term_id,
+				'name' => $item->name,
+				'slug' => $item->slug,
+				'link' => $wp->getTermLink($item, $term),
+				'object' => $item,
+			);
+		}, $items);
 	}
 
 	private function getAttributes($id)

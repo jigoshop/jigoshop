@@ -1,0 +1,18 @@
+@import '../../bower/bootstrap/less/variables.less';
+@import '../../bower/bootstrap/less/mixins.less';
+
+.jigoshop {
+  @import '../../bower/bootstrap/less/normalize.less';
+  @import '../../bower/bootstrap/less/type.less';
+
+  .product {
+    dd.tags, dd.categories {
+      a:after {
+        content: ', ';
+      }
+      a:last-child:after {
+        content: '';
+      }
+    }
+  }
+}

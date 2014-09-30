@@ -20,8 +20,22 @@ use Jigoshop\Helper\Render;
 			<?php if($product->getSku()): ?>
 			<dt><?php echo __('SKU', 'jigoshop'); ?></dt><dd><?php echo $product->getSku(); ?></dd>
 			<?php endif; ?>
-<!--			<dt>--><?php //echo __('Categories', 'jigoshop'); ?><!--</dt><dd>--><?php //echo join(', ', $product->getCategories()); ?><!--</dd>-->
-<!--			<dt>--><?php //echo __('Tagged as', 'jigoshop'); ?><!--</dt><dd>--><?php //echo join(', ', $product->getTags()); ?><!--</dd>-->
+			<?php if(count($product->getCategories()) > 0): ?>
+			<dt><?php echo __('Categories', 'jigoshop'); ?></dt>
+			<dd class="categories">
+				<?php foreach($product->getCategories() as $category): ?>
+					<a href="<?php echo $category['link']; ?>"><?php echo $category['name']; ?></a>
+				<?php endforeach; ?>
+			</dd>
+			<?php endif; ?>
+			<?php if(count($product->getTags()) > 0): ?>
+			<dt><?php echo __('Tagged as', 'jigoshop'); ?></dt>
+			<dd class="tags">
+				<?php foreach($product->getTags() as $tag): ?>
+					<a href="<?php echo $tag['link']; ?>"><?php echo $tag['name']; ?></a>
+				<?php endforeach; ?>
+			</dd>
+			<?php endif; ?>
 			<?php do_action('jigoshop\product\data', $product); ?>
 		</dl>
 		<?php do_action('jigoshop\product\summary', $product); ?>
