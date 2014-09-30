@@ -27,11 +27,13 @@ $options = Jigoshop_Base::get_options();
 		</thead>
 		<tbody>
 		<?php foreach ($cart as $cart_item_key => $values): ?>
-				<?php $product = $values['data'];
+				<?php
+				/** @var jigoshop_product $product */
+				$product = $values['data'];
 				if ($product->exists() && $values['quantity'] > 0) :
 					$additional_description = jigoshop_cart::get_item_data($values);
 					?>
-					<tr data-item="<?php echo $cart_item_key; ?>">
+					<tr data-item="<?php echo $cart_item_key; ?>" data-product="<?php echo $product->id; ?>">
 						<td class="product-remove">
 							<a href="<?php echo esc_url(jigoshop_cart::get_remove_url($cart_item_key)); ?>" class="remove" title="<?php echo esc_attr(__('Remove this item.', 'jigoshop')); ?>">&times;</a>
 						</td>
