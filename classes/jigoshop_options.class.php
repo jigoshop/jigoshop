@@ -706,6 +706,18 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 				),
 			),
 			array(
+				'name' => __('Cart status after login', 'jigoshop'),
+				'desc' => __('Current cart <b>always</b> will be loaded if customer logs in checkout page.', 'jigoshop'),
+				'tip' => __("Define what should happen with shopping cart if customer added items to shopping cart as guest and than he logs in to your shop.", 'jigoshop'),
+				'id' => 'jigoshop_cart_after_login',
+				'type' => 'select',
+				'choices' => array(
+					'load_saved' => __('Load saved cart', 'jigoshop'),
+					'load_current' => __('Load current cart', 'jigoshop'),
+					'merge' => __('Merge saved and current carts', 'jigoshop'),
+				)
+			),
+			array(
 				'name' => __('Reset pending Orders', 'jigoshop'),
 				'desc' => __("Change all 'Pending' Orders older than one month to 'On Hold'", 'jigoshop'),
 				'tip' => __("For customers that have not completed the Checkout process or haven't paid for an Order after a period of time, this will reset the Order to On Hold allowing the Shop owner to take action.  WARNING: For the first use on an existing Shop this setting <em>can</em> generate a <strong>lot</strong> of email!", 'jigoshop'),
