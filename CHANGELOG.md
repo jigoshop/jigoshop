@@ -4,6 +4,7 @@
     * Fix: Phone number in order email.
     * Fix: Updated polish translation.
     * Fix: Triggering `jigoshop.cart.update` now properly passes data.
+    * Fix: `jigoshop.cart.update` gets called before data is updated (or removed). 
 * 1.12 - 2014-09-30:
     * New: User fields in user's profile.
     * New: Support for disabled elements in admin settings.
