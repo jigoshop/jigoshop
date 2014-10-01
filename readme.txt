@@ -113,6 +113,10 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 
 == Changelog ==
 
+= 1.12.1 =
+* Fix: Phone number in order email.
+* Fix: Updated polish translation.
+
 = 1.12 - 2014-09-30 =
 * New: User fields in user's profile.
 * New: Support for disabled elements in admin settings.
