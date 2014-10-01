@@ -1,4 +1,5 @@
 ## Changelog
+
 * 1.12.1:
 	* Fix: Phone number in order email.
 * 1.12 - 2014-09-30:
