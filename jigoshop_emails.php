@@ -282,12 +282,12 @@ function add_company_information()
 	}
 
 	if ($options->get('jigoshop_calc_taxes') && $options->get('jigoshop_tax_number')) {
-		echo $options->get('jigoshop_tax_number').PHP_EOL.PHP_EOL;
+		echo sprintf(__('Tax number: %s', 'jigoshop'), $options->get('jigoshop_tax_number')).PHP_EOL.PHP_EOL;
 	}
 
 	if ($options->get('jigoshop_company_phone')) {
 		$add_eol = true;
-		echo sprintf(__('Tax number: %s', 'jigoshop'), $options->get('jigoshop_company_phone')).PHP_EOL;
+		echo sprintf(__('Phone: %s', 'jigoshop'), $options->get('jigoshop_company_phone')).PHP_EOL;
 	}
 
 	if ($options->get('jigoshop_company_email')) {
