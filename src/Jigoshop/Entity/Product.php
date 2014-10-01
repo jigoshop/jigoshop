@@ -19,7 +19,7 @@ abstract class Product implements EntityInterface
 	const VISIBILITY_PUBLIC = 3; // CATALOG | SEARCH
 	const VISIBILITY_NONE = 0;
 
-	private $id;
+	private $id = 0;
 	private $name;
 	private $description;
 	private $categories;
@@ -487,4 +487,9 @@ abstract class Product implements EntityInterface
 	{
 		return get_permalink($this->getId());
 	}
+
+	/**
+	 * @return array Minimal state to identify the product.
+	 */
+	public abstract function getState();
 }

@@ -6,7 +6,7 @@ use Jigoshop\Entity\Product;
 use Jigoshop\Entity\Product\Attributes\Sales;
 use WPAL\Wordpress;
 
-class Simple extends Product
+class Simple extends Product implements Purchasable
 {
 	const TYPE = 'simple';
 
@@ -176,5 +176,13 @@ class Simple extends Product
 		$this->dirtyFields[] = 'sales';
 
 		parent::markAsDirty($state);
+	}
+
+	public function getState()
+	{
+		return array(
+			'type' => $this->getType(),
+			'id' => $this->getId(),
+		);
 	}
 }

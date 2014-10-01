@@ -4,11 +4,15 @@ namespace Jigoshop\Frontend;
 
 use Jigoshop\Entity\Product;
 use Jigoshop\Exception;
+use Jigoshop\Service\ProductServiceInterface;
+use WPAL\Wordpress;
 
 class Cart implements \Serializable
 {
 	/** @var string */
 	private $id;
+	private $items = array();
+	private $total = 0.0;
 
 	public function __construct($id)
 	{
@@ -28,13 +32,34 @@ class Cart implements \Serializable
 	 *
 	 * If item is already present - increases it's quantity.
 	 *
-	 * @param Product $product Product to add to cart.
+	 * @param Product|Product\Purchasable $product Product to add to cart.
 	 * @param $quantity int Quantity of products to add.
 	 * @throws Exception On error.
 	 */
 	public function addItem(Product $product, $quantity)
 	{
-		// TODO: Implement
+		if ($product === null || $product->getId() === 0) {
+			throw new Exception(__('Product not found', 'jigoshop'));
+		}
+
+		if (!($product instanceof Product\Purchasable)) {
+			throw new Exception(sprintf(__('Product of type "%s" cannot be added to cart', 'jigoshop'), $product->getType()));
+		}
+
+		if ($quantity <= 0) {
+			throw new Exception(__('Quantity has to be positive number', 'jigoshop'));
+		}
+
+		if (isset($this->items[$product->getId()])) {
+			$this->items[$product->getId()]['quantity'] += $quantity;
+		} else {
+			$this->items[$product->getId()] = array(
+				'item' => $product->getState(),
+				'quantity' => $quantity,
+			);
+		}
+
+		$this->total += $quantity * $product->getPrice();
 	}
 
 	/**
@@ -45,7 +70,11 @@ class Cart implements \Serializable
 	 */
 	public function removeItem(Product $product)
 	{
-		// TODO: Implement
+		if (isset($this->items[$product->getId()])) {
+			unset($this->items[$product->getId()]);
+		}
+
+		return true;
 	}
 
 	/**
@@ -53,7 +82,7 @@ class Cart implements \Serializable
 	 */
 	public function getItems()
 	{
-		// TODO: Implement
+		return $this->items;
 	}
 
 	/**
@@ -61,7 +90,7 @@ class Cart implements \Serializable
 	 */
 	public function getTotal()
 	{
-		// TODO: Implement
+		return $this->total;
 	}
 
 	/**
@@ -73,8 +102,11 @@ class Cart implements \Serializable
 	 */
 	public function serialize()
 	{
-		// TODO: Implement serialize() method.
-		return serialize(array());
+		return serialize(array(
+			'id' => $this->id,
+			'items' => $this->items,
+			'total' => $this->total,
+		));
 	}
 
 	/**
@@ -89,6 +121,9 @@ class Cart implements \Serializable
 	 */
 	public function unserialize($serialized)
 	{
-		// TODO: Implement unserialize() method.
+		$data = unserialize($serialized);
+		$this->id = $data['id'];
+		$this->items = $data['items'];
+		$this->total = $data['total'];
 	}
 }
