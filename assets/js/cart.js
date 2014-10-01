@@ -114,7 +114,7 @@ jQuery(function($){
 						for(var tax in result.tax){
 							$('tr[data-tax="' + tax + '"] .cart-row-tax', $totals).html(result.tax[tax]);
 						}
-						$form.trigger('jigoshop.cart.update', $parent, result);
+						$form.trigger('jigoshop.cart.update', [$parent, result]);
 					}
 				});
 		})

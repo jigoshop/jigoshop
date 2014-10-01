@@ -116,6 +116,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 = 1.12.1 =
 * Fix: Phone number in order email.
 * Fix: Updated polish translation.
+* Fix: Triggering `jigoshop.cart.update` now properly passes data.
 
 = 1.12 - 2014-09-30 =
 * New: User fields in user's profile.
