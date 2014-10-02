@@ -46,17 +46,16 @@ class jigoshop_session extends Jigoshop_Singleton {
 				unset($_SESSION['jigoshop'][JIGOSHOP_VERSION][$key]);
 				return $cart;
 			}
-
-			global $current_user;
-			if (@$current_user->ID) {
+			$current_user_id = get_current_user_id();
+			if ($current_user_id > 0) {
 				switch (self::get_options()->get('jigoshop_cart_after_login')) {
 					case 'load_saved':
-						if ($cart = get_transient(self::$cart_transient_prefix.$current_user->ID)) {
+						if ($cart = get_transient(self::$cart_transient_prefix.$current_user_id)) {
 							return $cart;
 						}
 						break;
 					case 'merge':
-						$cart = get_transient(self::$cart_transient_prefix.$current_user->ID);
+						$cart = get_transient(self::$cart_transient_prefix.$current_user_id);
 						if ($cart && isset($_SESSION['jigoshop'][JIGOSHOP_VERSION][$key])) {
 							$cart = array_merge($cart, $_SESSION['jigoshop'][JIGOSHOP_VERSION][$key]);
 							$this->__set($key, $cart);
@@ -77,7 +76,7 @@ class jigoshop_session extends Jigoshop_Singleton {
 							$cart =  $_SESSION['jigoshop'][JIGOSHOP_VERSION][$key];
 							unset($_SESSION['jigoshop'][JIGOSHOP_VERSION][$key]);
 							return $cart;
-						} else if ($cart = get_transient(self::$cart_transient_prefix.$current_user->ID)) {
+						} else if ($cart = get_transient(self::$cart_transient_prefix.$current_user_id)) {
 							return $cart;
 						}
 						break;
