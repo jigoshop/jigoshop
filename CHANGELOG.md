@@ -3,6 +3,7 @@
 * 1.13:
     * New: Ability to select whether to show prices with or without tax in cart.
     * New: Ability to select user when creating new order manually in admin panel.
+    * Fix: Disappearing items from cart after login.
 * 1.12 - 2014-09-30:
     * New: User fields in user's profile.
     * New: Support for disabled elements in admin settings.
