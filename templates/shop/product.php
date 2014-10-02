@@ -7,7 +7,6 @@ use Jigoshop\Helper\Render;
  * @var $messages \Jigoshop\Core\Messages Messages container.
  */
 ?>
-
 <?php do_action('jigoshop\product\before', $product); ?>
 <article id="post-<?php echo $product->getId(); ?>" <?php post_class(); ?>>
 	<?php Render::output('shop/messages', array('messages' => $messages)); ?>

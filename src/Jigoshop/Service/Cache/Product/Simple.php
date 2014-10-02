@@ -15,6 +15,7 @@ class Simple implements ProductServiceInterface
 {
 	private $objects = array();
 	private $queries = array();
+	private $states = array();
 
 	/** @var \Jigoshop\Service\ProductServiceInterface */
 	private $service;
@@ -129,5 +130,22 @@ class Simple implements ProductServiceInterface
 	{
 		// TODO: Implement getThumbnails() method.
 		return $this->service->getThumbnails($product);
+	}
+
+	/**
+	 * Finds item specified by state.
+	 *
+	 * @param array $state State of the product to be found.
+	 * @return Product|Product\Purchasable Item found.
+	 */
+	public function findForState(array $state)
+	{
+		// TODO: For simple products state and ID is exactly the same - worth to try to integrate (lower DB queries).
+		$key = serialize($state);
+		if (!isset($this->states[$key])) {
+			$this->states[$key] = $this->service->findForState($state);
+		}
+
+		return $this->states[$key];
 	}
 }

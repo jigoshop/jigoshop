@@ -172,7 +172,7 @@ class Product
 	 * @param $price float Price to format.
 	 * @return string Formatted price with currency symbol.
 	 */
-	private static function formatPrice($price)
+	public static function formatPrice($price)
 	{
 		return sprintf('%1$01.2f %2$s', $price, self::currencySymbol()); // TODO: Properly implement fetching price position and format
 	}

@@ -65,16 +65,21 @@ class Cart implements \Serializable
 	/**
 	 * Removes item from cart.
 	 *
-	 * @param Product $product Product to remove from cart.
+	 * @param int $id Item id to remove from cart.
 	 * @return bool Is item removed?
 	 */
-	public function removeItem(Product $product)
+	public function removeItem($id)
 	{
-		if (isset($this->items[$product->getId()])) {
-			unset($this->items[$product->getId()]);
+		if (isset($this->items[$id])) {
+			unset($this->items[$id]);
 		}
 
 		return true;
+	}
+
+	public function getRemoveUrl($id)
+	{
+		return add_query_arg(array('action' => 'remove-item', 'item' => $id));
 	}
 
 	/**
@@ -83,6 +88,14 @@ class Cart implements \Serializable
 	public function getItems()
 	{
 		return $this->items;
+	}
+
+	/**
+	 * @return bool Is the cart empty?
+	 */
+	public function isEmpty()
+	{
+		return empty($this->items);
 	}
 
 	/**

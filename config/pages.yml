@@ -36,5 +36,6 @@ services:
       - '@jigoshop.options'
       - '@jigoshop.messages'
       - '@jigoshop.service.cart'
+      - '@jigoshop.service.product'
       - '@jigoshop.helper.styles'
       - '@jigoshop.helper.scripts'

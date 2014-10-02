@@ -70,6 +70,20 @@ class Product implements ProductServiceInterface
 	}
 
 	/**
+	 * Finds item specified by state.
+	 *
+	 * @param array $state State of the product to be found.
+	 * @return \Jigoshop\Entity\Product Item found.
+	 */
+	public function findForState(array $state)
+	{
+		$post = $this->wp->getPost($state['id']);
+		$product = $this->factory->fetch($post);
+		// TODO: Restore state if needed
+		return $product;
+	}
+
+	/**
 	 * Finds items specified using WordPress query.
 	 * TODO: Replace \WP_Query in order to make Jigoshop testable
 	 *
