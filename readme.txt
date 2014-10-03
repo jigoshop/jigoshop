@@ -118,6 +118,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 * Fix: Updated polish translation.
 * Fix: Triggering `jigoshop.cart.update` now properly passes data.
 * Fix: `jigoshop.cart.update` gets called before data is updated (or removed).
+* Fix: Pass properly rounded discount values to PayPal.
 
 = 1.12 - 2014-09-30 =
 * New: User fields in user's profile.
