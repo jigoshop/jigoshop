@@ -2,6 +2,7 @@
 
 namespace Jigoshop\Core;
 
+use Jigoshop\Frontend\Page;
 use Symfony\Component\DependencyInjection\Container;
 use WPAL\Wordpress;
 
@@ -25,17 +26,22 @@ class PageResolver
 
 	public function resolve(Container $container)
 	{
-		$that = $this;
-		$this->wp->addAction('template_redirect', function() use ($container, $that){
-			$page = $that->getPage($container);
-			$container->set('jigoshop.page.current', $page);
-			$container->get('jigoshop.template')->setPage($page);
-		});
+		if (defined('DOING_AJAX') && DOING_AJAX) {
+			// Instantiate page to install Ajax actions
+			$this->getPage($container);
+		} else {
+			$that = $this;
+			$this->wp->addAction('template_redirect', function () use ($container, $that){
+				$page = $that->getPage($container);
+				$container->set('jigoshop.page.current', $page);
+				$container->get('jigoshop.template')->setPage($page);
+			});
+		}
 	}
 
 	public function getPage(Container $container)
 	{
-		if (!$this->pages->isJigoshop()) {
+		if (!$this->pages->isJigoshop() && !$this->pages->isAjax()) {
 			return null;
 		}
 

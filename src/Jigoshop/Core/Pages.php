@@ -117,6 +117,7 @@ class Pages
 		if (!isset($this->cache[self::CART])) {
 			$page = $this->options->getPageId(self::CART);
 			$this->cache[self::CART] = $page !== false && $this->wp->isPage($page);
+			$this->cache[self::CART] |= $this->isAjax() && strpos($_REQUEST['action'], 'cart') !== false;
 		}
 
 		return $this->cache[self::CART];
@@ -294,7 +295,7 @@ class Pages
 
 	public function isAjax()
 	{
-		if (defined('DOING_AJAX')) {
+		if (defined('DOING_AJAX') && strpos($_REQUEST['action'], 'jigoshop') !== false) {
 			return true;
 		}
 

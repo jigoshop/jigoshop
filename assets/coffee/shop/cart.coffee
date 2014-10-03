@@ -1,13 +1,12 @@
 jQuery ($) ->
   $('#cart').on 'change', 'input.quantity', ->
-    cart = {}
-    cart[$(this).closest('tr').data('id')] = $(this).val()
-
-    $.post(jigoshop.ajax,
+    $.ajax(jigoshop.ajax,
+      type: 'post'
       dataType: 'json'
       data:
-        action: 'jigoshop_update_cart'
-        cart: cart
+        action: 'jigoshop_cart_update_item'
+        item: $(this).closest('tr').data('id')
+        quantity: $(this).val()
     )
     .done (result) ->
       # TODO

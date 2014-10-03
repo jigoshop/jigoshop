@@ -49,11 +49,14 @@ class Cart implements Page
 			'ajax' => admin_url('admin-ajax.php', 'jigoshop'),
 		));
 
-		// TODO: Properly resolve problems with calling Ajax from frontend
-		$wp->addAction('wp_ajax_jigoshop_update_cart', array($this, 'action'));
-		$wp->addAction('wp_ajax_nopriv_jigoshop_update_cart', array($this, 'action'));
+		$wp->addAction('wp_ajax_jigoshop_cart_update_item', array($this, 'ajaxUpdateItem'));
+		$wp->addAction('wp_ajax_nopriv_jigoshop_cart_update_item', array($this, 'ajaxUpdateItem'));
 	}
 
+	public function ajaxUpdateItem()
+	{
+		// TODO: Update item count
+	}
 
 	public function action()
 	{
