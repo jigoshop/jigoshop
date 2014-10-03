@@ -44,6 +44,8 @@ class Product implements Page
 		$scripts->add('jigoshop.shop.product', JIGOSHOP_URL.'/assets/js/shop/product.js');
 		$scripts->add('jigoshop.vendors', JIGOSHOP_URL.'/assets/js/vendors.min.js');
 		$this->wp->addAction('jigoshop\product\before_summary', array($this, 'productImages'), 10, 1);
+		$this->wp->addAction('jigoshop\product\after_summary', array($this, 'productTabs'), 10, 1);
+		$this->wp->addAction('jigoshop\product\tab_panels', array($this, 'productDescription'), 10, 2);
 	}
 
 
@@ -94,6 +96,36 @@ class Product implements Page
 			'featuredUrl' => $featuredUrl,
 			'thumbnails' => $thumbnails,
 			'imageClasses' => $imageClasses,
+		));
+	}
+
+	/**
+	 * @param $product \Jigoshop\Entity\Product Shown product.
+	 */
+	public function productTabs($product)
+	{
+		$tabs = array();
+		if ($product->getDescription()) {
+			$tabs['description'] = __('Description', 'jigoshop');
+		}
+		$tabs = $this->wp->applyFilters('jigoshop\product\tabs', $tabs);
+
+		Render::output('shop/product/tabs', array(
+			'product' => $product,
+			'tabs' => $tabs,
+			'currentTab' => 'description',
+		));
+	}
+
+	/**
+	 * @param $currentTab string Current tab name.
+	 * @param $product \Jigoshop\Entity\Product Shown product.
+	 */
+	public function productDescription($currentTab, $product)
+	{
+		Render::output('shop/product/description', array(
+			'product' => $product,
+			'currentTab' => $currentTab,
 		));
 	}
 }

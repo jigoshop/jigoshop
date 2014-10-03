@@ -11,6 +11,9 @@
   @import '../../bower/bootstrap/less/type.less';
   @import '../../bower/bootstrap/less/forms.less';
   @import '../../bower/bootstrap/less/buttons.less';
+  @import '../../bower/bootstrap/less/navs.less';
+  @import '../../bower/bootstrap/less/utilities.less';
+
 
   .product {
     position: relative;
@@ -77,6 +80,20 @@
       a:last-child:after {
         content: '';
       }
+    }
+    ul.nav {
+      margin: 0;
+
+      &:after {
+        content: '';
+        display: block;
+        clear: both;
+      }
+    }
+    div.tab-content {
+      border: 1px solid @nav-tabs-border-color;
+      border-top: 0;
+      padding: @padding-base-vertical @padding-base-horizontal;
     }
   }
 }
