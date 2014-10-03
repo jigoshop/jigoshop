@@ -292,7 +292,7 @@ class paypal extends jigoshop_payment_gateway {
 		// If prices include tax, send the whole order as a single item
 		if(Jigoshop_Base::get_options()->get('jigoshop_prices_include_tax') == 'yes'){
 			// Discount
-			$paypal_args['discount_amount_cart'] = $order->order_discount;
+			$paypal_args['discount_amount_cart'] = number_format((float)$order->order_discount, $this->decimals);
 
 			// Don't pass items - PayPal breaks tax due to catalog prices include tax.
 			// PayPal has no option for tax inclusive pricing.
