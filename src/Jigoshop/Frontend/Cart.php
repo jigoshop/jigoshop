@@ -65,21 +65,21 @@ class Cart implements \Serializable
 	/**
 	 * Removes item from cart.
 	 *
-	 * @param int $id Item id to remove from cart.
+	 * @param string $key Item id to remove from cart.
 	 * @return bool Is item removed?
 	 */
-	public function removeItem($id)
+	public function removeItem($key)
 	{
-		if (isset($this->items[$id])) {
-			unset($this->items[$id]);
+		if (isset($this->items[$key])) {
+			unset($this->items[$key]);
 		}
 
 		return true;
 	}
 
-	public function getRemoveUrl($id)
+	public function getRemoveUrl($key)
 	{
-		return add_query_arg(array('action' => 'remove-item', 'item' => $id));
+		return add_query_arg(array('action' => 'remove-item', 'item' => $key));
 	}
 
 	/**
@@ -138,5 +138,30 @@ class Cart implements \Serializable
 		$this->id = $data['id'];
 		$this->items = $data['items'];
 		$this->total = $data['total'];
+	}
+
+	/**
+	 * Updates quantity of selected item by it's key.
+
+	 *
+*@param $key string Item key in the cart.
+	 * @param $quantity int Quantity to set.
+	 */
+	public function updateQuantity($key, $quantity)
+	{
+		if (!isset($this->items[$key])) {
+			throw new Exception(__('Item does not exists', 'jigoshop')); // TODO: Will be nice to get better error message
+		}
+
+		if (!is_numeric($quantity)) {
+			throw new Exception(__('Quantity has to be numeric value', 'jigoshop'));
+		}
+
+		if ($quantity <= 0) {
+			$this->removeItem($key);
+			return;
+		}
+
+		$this->items[$key]['quantity'] = $quantity;
 	}
 }

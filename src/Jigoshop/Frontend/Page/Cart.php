@@ -6,6 +6,7 @@ use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Pages;
 use Jigoshop\Core\Types;
+use Jigoshop\Exception;
 use Jigoshop\Frontend\Page;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
@@ -26,7 +27,7 @@ class Cart implements Page
 	private $cartService;
 	/** @var ProductServiceInterface */
 	private $productService;
-	/** @var Cart */
+	/** @var \Jigoshop\Frontend\Cart */
 	private $cart;
 
 	public function __construct(Wordpress $wp, Options $options, Messages $messages, CartServiceInterface $cartService, ProductServiceInterface $productService, Styles $styles,
@@ -41,15 +42,32 @@ class Cart implements Page
 
 		$styles->add('jigoshop.shop', JIGOSHOP_URL.'/assets/css/shop.css');
 		$styles->add('jigoshop.shop.cart', JIGOSHOP_URL.'/assets/css/shop/cart.css');
+		$scripts->add('jigoshop.helpers', JIGOSHOP_URL.'/assets/js/helpers.js');
+		$scripts->add('jigoshop.shop', JIGOSHOP_URL.'/assets/js/shop.js');
 		$scripts->add('jigoshop.shop.cart', JIGOSHOP_URL.'/assets/js/shop/cart.js');
+		$scripts->localize('jigoshop.shop.cart', 'jigoshop', array(
+			'ajax' => admin_url('admin-ajax.php', 'jigoshop'),
+		));
 
-		// TODO: Ajax update cart action
+		// TODO: Properly resolve problems with calling Ajax from frontend
+		$wp->addAction('wp_ajax_jigoshop_update_cart', array($this, 'action'));
+		$wp->addAction('wp_ajax_nopriv_jigoshop_update_cart', array($this, 'action'));
 	}
 
 
 	public function action()
 	{
-		// TODO: Update cart action
+		if (isset($_POST['cart']) && is_array($_POST['cart'])) {
+			try {
+				foreach ($_POST['cart'] as $item => $quantity) {
+					$this->cart->updateQuantity($item, (int)$quantity);
+				}
+				$this->cartService->save($this->cart);
+				$this->messages->addNotice(__('Successfully updated the cart.', 'jigoshop'));
+			} catch(Exception $e) {
+				$this->messages->addError(sprintf(__('Error occurred while updating cart: %s', 'jigoshop'), $e->getMessage()));
+			}
+		}
 
 		if (isset($_GET['action']) && isset($_GET['item']) && $_GET['action'] === 'remove-item' && is_numeric($_GET['item'])) {
 			$this->cart->removeItem((int)$_GET['item']);
