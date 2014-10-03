@@ -12,3 +12,5 @@ jQuery ($) ->
     .done (result) ->
       if result.success == true
         $('.product-subtotal', $item).html(result.html.item_subtotal)
+      else
+        $item.remove()

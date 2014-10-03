@@ -59,7 +59,6 @@ class Cart implements Page
 		try {
 			$this->cart->updateQuantity($_POST['item'], (int)$_POST['quantity']);
 			$item = $this->cart->getItem($_POST['item']);
-			$this->cartService->save($this->cart);
 
 			$result = array(
 				'success' => true,
@@ -78,6 +77,7 @@ class Cart implements Page
 				'error' => $e->getMessage(),
 			);
 		}
+		$this->cartService->save($this->cart);
 		echo json_encode($result);
 		exit;
 	}
