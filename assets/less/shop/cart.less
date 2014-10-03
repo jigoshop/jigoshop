@@ -2,7 +2,20 @@
 @import '../../bower/bootstrap/less/mixins.less';
 
 .jigoshop {
-  #cart tfoot button {
-    text-transform: none;
+  table, th, td {
+    border: 0;
+  }
+
+  @import '../../bower/bootstrap/less/alerts.less';
+  @import '../../bower/bootstrap/less/tables.less';
+  @import '../../bower/bootstrap/less/utilities.less';
+
+  #cart {
+    td {
+      vertical-align: middle;
+    }
+    tfoot button {
+      text-transform: none;
+    }
   }
 }
