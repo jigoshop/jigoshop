@@ -1,5 +1,6 @@
 === Jigoshop ===
 Contributors: Jigoshop
+License: GNU General Public License v3
 Tags: e-commerce, wp e-commerce, ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal, jigoshop, shipping, inventory, stock, online, sell, sales, weights, dimensions, configurable, variable, downloadable, external, affiliate, download, virtual, physical
 Requires at least: 3.8
 Tested up to: 4.0
@@ -9,46 +10,51 @@ A feature-packed eCommerce plugin built upon WordPress core functionality ensuri
 
 == Description ==
 
-Jigoshop, a WordPress eCommerce plugin developed by professionals with years of experience delivering online shops for global brands.
+Use <a href="https://www.jigoshop.com">Jigoshop</a> to turn your WordPress website into a dynamic eCommerce store.
+Jigoshop is led by a motivated development team with years of experience with delivering professional online shops
+for global brands. Our number one priority is to make it easy to get professional results for WordPress eCommerce solution.
+
+With the Jigoshop plugin for WordPress you have your very own web store for your website. You have complete control
+of your eCommerce shop.
 
 = SETUP IN MINUTES =
 
-Complete your shop in minutes with physical and downloadable products or even services. Jigoshop provides you with the features necessary to set up an eCommerce web site lickety-split.
-
-With the option to create a multitude of product types and apply detailed attributes customers can easily refine your catalog, ensuring they find what they're looking for in just a couple of clicks.
+Setup your web store in minutes with an extensive amount of shop settings including base country, currency,
+catalog options, stock management, unlimited tax settings, shipping and payment gateways out of the box.
+Plus there are hundreds of additional extensions to build up Jigoshop to be an even more powerful WP eCommerce
+solution.
 
 = PRODUCT TYPES =
 
+Jigoshop includes several product type options for your eCommerce shop. They include:
+
 * Downloadable or Virtual products
-* Variable products (eg, offer `Size: S,M,L` for one product)
-* Affiliate (External) products (ie, link your `Add to cart` button off-site)
+* Variable products (e.g. offer Size: S,M,L for one product)
+* Affiliate (External) products (i.e. link your Add to cart button off-site)
 * Grouped products
 
 = DETAILED REPORTS =
 
-Inside the custom dashboard you get sortable sales graphs, incoming order / review notifications as well as stats on your stores performance.
+Within the Jigoshop eCommerce plugin are various reporting features to give you real-time insight of your
+shops performance. Features include sortable sales graphs and incoming order/review notifications.
 
-= MANAGE STOCK =
+= STOCK MANAGEMENT =
 
-Manage your stock levels and customer orders easily. Jigoshop has been engineered to make the boring parts of eCommerce, well, less boring!
+Jigoshop has the ability to manage your shops stock. Included is an option to allow Jigoshop to inform you
+of low stock once it reaches your set threshold so that your shop never runs out of stock.
 
-= EXTEND YOUR SHOP =
+= EXTEND YOUR SHOP! =
 
-Extend Jigoshop with Payment Gateways, Shipping Methods, and various other plugins:
+Sure, Jigoshop runs out of the box! But Jigoshop’s functionality doesn’t have end there. We have over
+one hundred extensions for Jigoshop available that will further extend the power of the best eCommerce
+plugin ever! They include more Payment Gateways, more Shipping methods and much more.
 
-http://www.jigoshop.com/product-category/extensions/
+Jigoshop eCommerce strives to maintain its status as the best WordPress eCommerce plugin ever. We hope you’ll
+choose the best to power your eCommerce shop and help us prove to you that we really are the best!
 
-Premium themes optimised for Jigoshop:
+You can take a look at our official extensions here: http://www.jigoshop.com/product-category/extensions/
 
-http://www.jigoshop.com/product-category/themes/
-
-= MORE INFO =
-
-Built upon the WordPress core you get all the benefits of this global leading platform: free, easy to use, secure, highly customisable and with a great support community to hold your hand.
-
-Find out more on our official Jigoshop website:
-
-http://www.jigoshop.com/
+And our Jigoshop-optimized themes here: http://www.jigoshop.com/product-category/themes/
 
 == Installation ==
 
