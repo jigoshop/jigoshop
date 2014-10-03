@@ -6,9 +6,9 @@
     border: 0;
   }
 
-  @import '../../bower/bootstrap/less/alerts.less';
+  @import '../../bower/bootstrap/less/buttons.less';
   @import '../../bower/bootstrap/less/tables.less';
-  @import '../../bower/bootstrap/less/utilities.less';
+  @import '../../bower/bootstrap/less/type.less';
 
   #cart {
     td {
@@ -16,6 +16,10 @@
     }
     tfoot button {
       text-transform: none;
+    }
+
+    &.alert a.btn {
+      margin-top: @padding-base-horizontal;
     }
   }
 }

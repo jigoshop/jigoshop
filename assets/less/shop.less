@@ -1,7 +1,16 @@
 @import '../bower/bootstrap/less/variables.less';
+@import '../bower/bootstrap/less/mixins.less';
 
 .jigoshop {
+  @import '../bower/bootstrap/less/alerts.less';
+  @import '../bower/bootstrap/less/utilities.less';
   padding: @padding-base-vertical @padding-base-horizontal;
+
+  .alert {
+    button, a.btn {
+      margin-top: -(@alert-padding/4);
+    }
+  }
 
   span.on-sale {
     background: green;

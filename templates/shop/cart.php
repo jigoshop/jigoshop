@@ -15,9 +15,9 @@ use Jigoshop\Helper\Render;
 <?php Render::output('shop/messages', array('messages' => $messages)); ?>
 <?php echo wpautop(wptexturize($content)); ?>
 <?php if ($cart->isEmpty()): ?>
-	<div class="alert alert-info text-center">
+	<div class="alert alert-info text-center" id="cart">
 		<p><?php _e('Your cart is empty.', 'jigoshop'); ?></p>
-		<a href="<?php echo $shopUrl; ?>" class="alert-link"><?php _e('Return to shop', 'jigoshop'); ?></a>
+		<a href="<?php echo $shopUrl; ?>" class="btn btn-primary"><?php _e('Return to shop', 'jigoshop'); ?></a>
 	</div>
 <?php else: ?>
 	<form id="cart" role="form" action="" method="post">

@@ -56,7 +56,8 @@ class Product implements Page
 			try {
 				$cart->addItem($product, (int)$_POST['quantity']);
 				$this->cartService->save($cart);
-				$this->messages->addNotice(sprintf(__('%s successfully added to your cart.', 'jigoshop'), $product->getName()), false);
+				$button = sprintf('<a href="%s" class="btn btn-warning pull-right">%s</a>', $this->wp->getPermalink($this->options->getPageId(Pages::CART)), __('View cart', 'jigoshop'));
+				$this->messages->addNotice(sprintf(__('%s successfully added to your cart. %s', 'jigoshop'), $product->getName(), $button), false);
 			} catch(Exception $e) {
 				// TODO: Could be improved with `NotEnoughStockException` and others
 				$this->messages->addError(sprintf(__('A problem ocurred when adding to cart: %s', 'jigoshop'), $e->getMessage()), false);

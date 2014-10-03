@@ -2,16 +2,17 @@
 @import '../../bower/bootstrap/less/mixins.less';
 
 .jigoshop {
+  @import '../../bower/bootstrap/less/buttons.less';
   @import '../../bower/bootstrap/less/normalize.less';
   @import '../../bower/bootstrap/less/glyphicons.less';
   @import '../../bower/bootstrap/less/type.less';
   @import '../../bower/bootstrap/less/scaffolding.less';
   @import '../../bower/bootstrap/less/forms.less';
-  @import '../../bower/bootstrap/less/buttons.less';
 
   #products {
     .product {
       position: relative;
+      width: 160px;
 
       .on-sale {
         top: 0;
@@ -21,30 +22,46 @@
       }
       a {
         text-decoration: none;
+        display: inline;
+
+        &:hover {
+          text-decoration: underline;
+        }
+
+        strong {
+          color: #555555;
+        }
       }
-      a img {
-        max-width: 150px !important;
-        max-height: 150px !important;
+      a.image {
         display: block;
-        margin: 0 auto 8px !important;
-        border: 1px solid #dddddd;
-      }
-      a:hover img {
-        border: 1px solid #bbbbbb;
-      }
-      a:hover .on-sale {
-        color: #ffff00;
-      }
-      strong {
-        color: #555555;
-        display: block;
+
+        &:hover {
+          text-decoration: none;
+
+          img {
+            border: 1px solid #bbbbbb;
+          }
+          .on-sale {
+            color: #ffff00;
+          }
+        }
+
+        img {
+          max-width: 150px !important;
+          max-height: 150px !important;
+          display: block;
+          margin: 0 auto 8px !important;
+          border: 1px solid #dddddd;
+        }
       }
       .price {
         color: green;
-        display: block;
-        font-weight: normal;
+        display: inline-block;
         float: right;
+        font-weight: normal;
         text-align: right;
+        font-size: @font-size-large;
+        line-height: @line-height-base;
 
         del {
           font-size: 10px;
@@ -61,6 +78,9 @@
           color: #aaaaaa;
           padding-bottom: 3px;
         }
+      }
+      .cart {
+        .clearfix();
       }
     }
   }
