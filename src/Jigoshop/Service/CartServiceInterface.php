@@ -35,4 +35,14 @@ interface CartServiceInterface
 	 * @param Cart $cart Cart to remove.
 	 */
 	public function remove(Cart $cart);
+
+	/**
+	 * Returns cart ID for current user.
+	 *
+	 * If the user is logged in - returns his ID so his cart will be properly loaded.
+	 * Otherwise generates random string based on available user data to preserve it's cart.
+	 *
+	 * @return string Cart ID for currently logged in user.
+	 */
+	public function getCartIdForCurrentUser();
 }

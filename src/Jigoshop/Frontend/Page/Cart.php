@@ -39,7 +39,7 @@ class Cart implements Page
 		$this->messages = $messages;
 		$this->cartService = $cartService;
 		$this->productService = $productService;
-		$this->cart = $cartService->get(''); // TODO: Properly find user's cart ID, proposition: current user ID, if not logged - some random string
+		$this->cart = $cartService->get($cartService->getCartIdForCurrentUser());
 
 		$styles->add('jigoshop.shop', JIGOSHOP_URL.'/assets/css/shop.css');
 		$styles->add('jigoshop.shop.cart', JIGOSHOP_URL.'/assets/css/shop/cart.css');

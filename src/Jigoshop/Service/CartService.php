@@ -8,9 +8,12 @@ use WPAL\Wordpress;
 class CartService implements CartServiceInterface
 {
 	const CART = 'jigoshop_cart';
+	const CART_ID = 'jigoshop_cart_id';
 
 	/** @var Wordpress */
 	private $wp;
+	/** @var string */
+	private $currentUserCartId;
 
 	public function __construct(Wordpress $wp)
 	{
@@ -19,6 +22,8 @@ class CartService implements CartServiceInterface
 		if (!isset($_SESSION[self::CART])) {
 			$_SESSION[self::CART] = array();
 		}
+
+		$this->currentUserCartId = $this->generateCartId();
 	}
 
 	/**
@@ -41,8 +46,7 @@ class CartService implements CartServiceInterface
 			return $cart;
 		}
 
-		// TODO: ID generation
-		return new Cart('');
+		return new Cart($this->getCartIdForCurrentUser());
 	}
 
 	/**
@@ -67,5 +71,34 @@ class CartService implements CartServiceInterface
 		if (isset($_SESSION[self::CART][$cart->getId()])) {
 			unset($_SESSION[self::CART][$cart->getId()]);
 		}
+	}
+
+	/**
+	 * Returns cart ID for current user.
+	 * If the user is logged in - returns his ID so his cart will be properly loaded.
+	 * Otherwise generates random string based on available user data to preserve it's cart.
+	 *
+	 * @return string Cart ID for currently logged in user.
+	 */
+	public function getCartIdForCurrentUser()
+	{
+		return $this->currentUserCartId;
+	}
+
+	private function generateCartId()
+	{
+		if ($this->wp->getCurrentUserId() > 0) {
+			$id = $this->wp->getCurrentUserId();
+		} elseif(isset($_COOKIE[self::CART_ID])){
+			$id = $_COOKIE[self::CART_ID];
+		} else {
+			$id = md5($_SERVER['HTTP_USER_AGENT'].time().$_SERVER['REMOTE_ADDR'].rand(1, 10000000));
+		}
+
+		if (!isset($_COOKIE[self::CART_ID])) {
+			setcookie(self::CART_ID, $id, null, '/', null, null, true);
+		}
+
+		return $id;
 	}
 }

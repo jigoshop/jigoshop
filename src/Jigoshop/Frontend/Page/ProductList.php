@@ -51,7 +51,7 @@ class ProductList implements Page
 
 		if (isset($_POST['action']) && $_POST['action'] == 'add-to-cart') {
 			$product = $this->productService->find($_POST['item']);
-			$cart = $this->cartService->get(''); // TODO: Fetch proper cart ID
+			$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
 
 			try {
 				$cart->addItem($product, 1);

@@ -52,7 +52,7 @@ class Product implements Page
 		if (isset($_POST['action']) && $_POST['action'] == 'add-to-cart') {
 			$post = $this->wp->getGlobalPost();
 			$product = $this->productService->findForPost($post);
-			$cart = $this->cartService->get(''); // TODO: Fetch proper cart ID
+			$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
 
 			try {
 				$cart->addItem($product, (int)$_POST['quantity']);
