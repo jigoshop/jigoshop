@@ -1,5 +1,6 @@
 jQuery ($) ->
-  $('#cart').on 'change', 'input.quantity', ->
+  $('#cart').on 'change', '.product-quantity input', ->
+    $item = $(this).closest('tr')
     $.ajax(jigoshop.ajax,
       type: 'post'
       dataType: 'json'
@@ -9,5 +10,5 @@ jQuery ($) ->
         quantity: $(this).val()
     )
     .done (result) ->
-      # TODO
-      window.console.dir(result)
+      if result.success == true
+        $('.product-subtotal', $item).html(result.html.item_subtotal)

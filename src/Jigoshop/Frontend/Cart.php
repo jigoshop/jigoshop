@@ -55,6 +55,7 @@ class Cart implements \Serializable
 		} else {
 			$this->items[$product->getId()] = array(
 				'item' => $product->getState(),
+				'price' => $product->getPrice(),
 				'quantity' => $quantity,
 			);
 		}
@@ -80,6 +81,42 @@ class Cart implements \Serializable
 	public function getRemoveUrl($key)
 	{
 		return add_query_arg(array('action' => 'remove-item', 'item' => $key));
+	}
+
+	/**
+	 * Updates quantity of selected item by it's key.
+	 *
+	 * @param $key string Item key in the cart.
+	 * @param $quantity int Quantity to set.
+	 * @throws Exception When product does not exists or quantity is not numeric.
+	 */
+	public function updateQuantity($key, $quantity)
+	{
+		if (!isset($this->items[$key])) {
+			throw new Exception(__('Item does not exists', 'jigoshop')); // TODO: Will be nice to get better error message
+		}
+
+		if (!is_numeric($quantity)) {
+			throw new Exception(__('Quantity has to be numeric value', 'jigoshop'));
+		}
+
+		if ($quantity <= 0) {
+			$this->removeItem($key);
+			return;
+		}
+
+		$this->total -= $this->items[$key]['price'] * $this->items[$key]['quantity'];
+		$this->total += $this->items[$key]['price'] * $quantity;
+		$this->items[$key]['quantity'] = $quantity;
+	}
+
+	public function getItem($key)
+	{
+		if (!isset($this->items[$key])) {
+			throw new Exception(__('Item does not exists', 'jigoshop')); // TODO: Will be nice to get better error message
+		}
+
+		return $this->items[$key];
 	}
 
 	/**
@@ -138,30 +175,5 @@ class Cart implements \Serializable
 		$this->id = $data['id'];
 		$this->items = $data['items'];
 		$this->total = $data['total'];
-	}
-
-	/**
-	 * Updates quantity of selected item by it's key.
-
-	 *
-*@param $key string Item key in the cart.
-	 * @param $quantity int Quantity to set.
-	 */
-	public function updateQuantity($key, $quantity)
-	{
-		if (!isset($this->items[$key])) {
-			throw new Exception(__('Item does not exists', 'jigoshop')); // TODO: Will be nice to get better error message
-		}
-
-		if (!is_numeric($quantity)) {
-			throw new Exception(__('Quantity has to be numeric value', 'jigoshop'));
-		}
-
-		if ($quantity <= 0) {
-			$this->removeItem($key);
-			return;
-		}
-
-		$this->items[$key]['quantity'] = $quantity;
 	}
 }

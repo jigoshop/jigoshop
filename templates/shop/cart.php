@@ -40,14 +40,14 @@ use Jigoshop\Helper\Render;
 					$url = apply_filters('jigoshop\cart\product_url', get_permalink($product->getId()), $key);
 					?>
 				<tr data-id="<?php echo $key; ?>" data-product="<?php echo $product->getId(); ?>">
-					<td>
+					<td class="product-remove">
 						<a href="<?php echo esc_url($cart->getRemoveUrl($key)); ?>" class="remove" title="<?php echo __('Remove this item.', 'jigoshop'); ?>">&times;</a>
 					</td>
-					<td><a href="<?php echo $url; ?>"><?php echo Product::getFeaturedImage($product, 'shop_tiny'); ?></a></td>
-					<td><a href="<?php echo $url; ?>"><?php echo $product->getName(); ?></a></td>
-					<td><?php echo Product::formatPrice($product->getPrice()); ?></td>
-					<td><input type="number" name="cart[<?php echo $key; ?>]" class="quantity" value="<?php echo $item['quantity']; ?>" /></td>
-					<td><?php echo Product::formatPrice($item['quantity'] * $product->getPrice()); ?></td>
+					<td class="product-thumbnail"><a href="<?php echo $url; ?>"><?php echo Product::getFeaturedImage($product, 'shop_tiny'); ?></a></td>
+					<td class="product-name"><a href="<?php echo $url; ?>"><?php echo $product->getName(); ?></a></td>
+					<td class="product-price"><?php echo Product::formatPrice($product->getPrice()); ?></td>
+					<td class="product-quantity"><input type="number" name="cart[<?php echo $key; ?>]" value="<?php echo $item['quantity']; ?>" /></td>
+					<td class="product-subtotal"><?php echo Product::formatPrice($item['quantity'] * $product->getPrice()); ?></td>
 				</tr>
 				<?php endforeach; ?>
 				<?php do_action('jigoshop\cart\table_body', $cart); ?>
@@ -55,9 +55,9 @@ use Jigoshop\Helper\Render;
 			<tfoot>
 				<tr>
 					<td colspan="6">
-<!--						<noscript>-->
+						<noscript>
 							<button type="submit" class="btn btn-success pull-right"><?php _e('Update Shopping Cart', 'jigoshop'); ?></button>
-<!--						</noscript>-->
+						</noscript>
 					</td>
 				</tr>
 				<?php if (false && $options->get('jigoshop_cart_shows_shop_button') == 'yes') : ?>

@@ -8,6 +8,7 @@ use Jigoshop\Core\Pages;
 use Jigoshop\Core\Types;
 use Jigoshop\Exception;
 use Jigoshop\Frontend\Page;
+use Jigoshop\Helper\Product;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
@@ -55,7 +56,30 @@ class Cart implements Page
 
 	public function ajaxUpdateItem()
 	{
-		// TODO: Update item count
+		try {
+			$this->cart->updateQuantity($_POST['item'], (int)$_POST['quantity']);
+			$item = $this->cart->getItem($_POST['item']);
+			$this->cartService->save($this->cart);
+
+			$result = array(
+				'success' => true,
+				'item_price' => $item['price'],
+				'item_subtotal' => $item['price'] * $item['quantity'],
+				'total' => $this->cart->getTotal(),
+				'html' => array(
+					'item_price' => Product::formatPrice($item['price']),
+					'item_subtotal' => Product::formatPrice($item['price'] * $item['quantity']),
+					'total' => Product::formatPrice($this->cart->getTotal()),
+				)
+			);
+		} catch(Exception $e) {
+			$result = array(
+				'success' => false,
+				'error' => $e->getMessage(),
+			);
+		}
+		echo json_encode($result);
+		exit;
 	}
 
 	public function action()

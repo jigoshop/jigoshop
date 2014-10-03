@@ -4,6 +4,7 @@ namespace Jigoshop\Frontend\Page;
 
 use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
+use Jigoshop\Core\Pages;
 use Jigoshop\Core\Types;
 use Jigoshop\Exception;
 use Jigoshop\Frontend\Page;
