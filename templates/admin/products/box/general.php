@@ -1,6 +1,7 @@
 <?php
 use Jigoshop\Admin\Helper\Forms;
 use Jigoshop\Entity\Product;
+use Jigoshop\Helper\Currency;
 use Jigoshop\Helper\Product as ProductHelper;
 
 /**
@@ -11,7 +12,7 @@ use Jigoshop\Helper\Product as ProductHelper;
 	<?php
 	Forms::text(array(
 		'name' => 'product[regular_price]',
-		'label' => __('Price', 'jigoshop').' ('.ProductHelper::currencySymbol().')',
+		'label' => __('Price', 'jigoshop').' ('.Currency::symbol().')',
 		'value' => $product->getRegularPrice(),
 	));
 	Forms::text(array(

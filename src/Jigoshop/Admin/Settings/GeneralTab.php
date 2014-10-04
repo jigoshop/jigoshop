@@ -2,9 +2,9 @@
 
 namespace Jigoshop\Admin\Settings;
 
-use Jigoshop\Core\Currency;
 use Jigoshop\Core\Options;
 use Jigoshop\Helper\Country;
+use Jigoshop\Helper\Currency;
 
 /**
  * General tab definition.

@@ -96,6 +96,10 @@ class JigoshopInit
 		}
 
 		$interceptor->run();
+		/** @var \Jigoshop\Core\Options $options */
+		$options = $this->container->get('jigoshop.options');
+		Jigoshop\Helper\Currency::setOptions($options);
+		Jigoshop\Helper\Product::setOptions($options);
 
 		/** @var \Jigoshop\Core $jigoshop */
 		$jigoshop = $this->container->get('jigoshop');

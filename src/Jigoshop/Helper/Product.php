@@ -2,15 +2,22 @@
 
 namespace Jigoshop\Helper;
 
+use Jigoshop\Core\Options;
 use Jigoshop\Entity\Product\Attributes\StockStatus;
 use Jigoshop\Entity\Product\Simple;
 use Jigoshop\Entity\Product as ProductEntity;
 
 class Product
 {
-	public static function currencySymbol()
+	/** @var Options */
+	private static $options;
+
+	/**
+	 * @param Options $options Options object.
+	 */
+	public static function setOptions($options)
 	{
-		return '$'; // TODO: Properly implement after setting up the settings page.
+		self::$options = $options;
 	}
 
 	public static function dimensionsUnit()
@@ -174,6 +181,6 @@ class Product
 	 */
 	public static function formatPrice($price)
 	{
-		return sprintf('%1$01.2f %2$s', $price, self::currencySymbol()); // TODO: Properly implement fetching price position and format
+		return sprintf(Currency::format(), Currency::symbol(), Currency::code(), number_format($price, Currency::decimals(), Currency::decimalSeparator(), Currency::thousandsSeparator()));
 	}
 }

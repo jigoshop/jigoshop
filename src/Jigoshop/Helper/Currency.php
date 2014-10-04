@@ -1,17 +1,89 @@
 <?php
 
-namespace Jigoshop\Core;
+namespace Jigoshop\Helper;
 
-use Jigoshop\Helper\Product;
+use Jigoshop\Core\Options;
 
 /**
  * Available currencies.
  *
- * @package Jigoshop\Core
+ * @package Jigoshop\Helper
  * @author Amadeusz Starzykiewicz
  */
 class Currency
 {
+	/** @var Options */
+	private static $options;
+	private static $symbol;
+	private static $code;
+	private static $format;
+	private static $decimals;
+	private static $decimalSeparator;
+	private static $thousandsSeparator;
+
+	/**
+	 * @param Options $options Options object.
+	 */
+	public static function setOptions($options)
+	{
+		self::$options = $options;
+	}
+
+	public static function symbol()
+	{
+		if (self::$symbol === null) {
+			$symbols = Currency::symbols();
+			self::$symbol = $symbols[self::$options->get('general.currency')];
+		}
+
+		return self::$symbol;
+	}
+
+	public static function code()
+	{
+		if (self::$code === null) {
+			self::$code = self::$options->get('general.currency');
+		}
+
+		return self::$code;
+	}
+
+	public static function format()
+	{
+		if (self::$format === null) {
+			self::$format = self::$options->get('general.currency_position');
+		}
+
+		return self::$format;
+	}
+
+	public static function decimals()
+	{
+		if (self::$decimals === null) {
+			self::$decimals = self::$options->get('general.currency_decimals');
+		}
+
+		return self::$decimals;
+	}
+
+	public static function decimalSeparator()
+	{
+		if (self::$decimalSeparator === null) {
+			self::$decimalSeparator = self::$options->get('general.currency_decimal_separator');
+		}
+
+		return self::$decimalSeparator;
+	}
+
+	public static function thousandsSeparator()
+	{
+		if (self::$thousandsSeparator === null) {
+			self::$thousandsSeparator = self::$options->get('general.currency_thousand_separator');
+		}
+
+		return self::$thousandsSeparator;
+	}
+
 	/**
 	 * @return array List of currency symbols.
 	 */
@@ -272,24 +344,23 @@ class Currency
 
 	public static function positions()
 	{
-		$symbol = Product::currencySymbol();
-		$separator = '.'; // TODO: Introduce decimal separator
-		$code = 'USD'; // TODO: Introduce currency code
+		$symbol = self::symbol();
+		$separator = self::decimalSeparator();
+		$code = self::code();
 
-		// TODO: Maybe replace with proper sprintf() text?
 		return array(
-			'left' => sprintf('%1$s0%2$s00', $symbol, $separator),// symbol.'0'.separator.'00'
-			'left_space' => sprintf('%1$s0 %2$s00', $symbol, $separator),// symbol.' 0'.separator.'00'
-			'right' => sprintf('0%2$s00%1$s', $symbol, $separator),// '0'.separator.'00'.symbol
-			'right_space' => sprintf('0%2$s00 %1$s', $symbol, $separator),// '0'.separator.'00 '.symbol
-			'left_code' => sprintf('%1$s0%2$s00', $code, $separator),// code.'0'.separator.'00'
-			'left_code_space' => sprintf('%1$s 0%2$s00', $code, $separator),// code.' 0'.separator.'00'
-			'right_code' => sprintf('0%2$s00%1$s', $code, $separator),// '0'.separator.'00'.code
-			'right_code_space' => sprintf('0%2$s00 %1$s', $code, $separator),// '0'.separator.'00 '.code
-			'symbol_code' => sprintf('%1$s0%2$s00%3$s', $symbol, $separator, $code),// symbol.'0'.separator.'00'.code
-			'symbol_code_space' => sprintf('%1$s 0%2$s00 %3$s', $symbol, $separator, $code),// symbol.' 0'.separator.'00 '.code
-			'code_symbol' => sprintf('%3$s0%2$s00%1$s', $symbol, $separator, $code),// code.'0'.separator.'00'.symbol
-			'code_symbol_space' => sprintf('%3$s 0%2$s00 %1$s', $symbol, $separator, $code),// code.' 0'.separator.'00 '.symbol
+			'%1$s%3$s' => sprintf('%1$s0%2$s00', $symbol, $separator),// symbol.'0'.separator.'00'
+			'%1$s %3$s' => sprintf('%1$s 0%2$s00', $symbol, $separator),// symbol.' 0'.separator.'00'
+			'%3$s%1$s' => sprintf('0%2$s00%1$s', $symbol, $separator),// '0'.separator.'00'.symbol
+			'%3$s %1$s' => sprintf('0%2$s00 %1$s', $symbol, $separator),// '0'.separator.'00 '.symbol
+			'%2$s%3$s' => sprintf('%1$s0%2$s00', $code, $separator),// code.'0'.separator.'00'
+			'%2$s %3$s' => sprintf('%1$s 0%2$s00', $code, $separator),// code.' 0'.separator.'00'
+			'%3$s%2$s' => sprintf('0%2$s00%1$s', $code, $separator),// '0'.separator.'00'.code
+			'%3$s %2$s' => sprintf('0%2$s00 %1$s', $code, $separator),// '0'.separator.'00 '.code
+			'%1$s%3$s%2$s' => sprintf('%1$s0%2$s00%3$s', $symbol, $separator, $code),// symbol.'0'.separator.'00'.code
+			'%1$s %3$s %2$s' => sprintf('%1$s 0%2$s00 %3$s', $symbol, $separator, $code),// symbol.' 0'.separator.'00 '.code
+			'%2$s%3$s%1$s' => sprintf('%3$s0%2$s00%1$s', $symbol, $separator, $code),// code.'0'.separator.'00'.symbol
+			'%2$s %3$s %1$s' => sprintf('%3$s 0%2$s00 %1$s', $symbol, $separator, $code),// code.' 0'.separator.'00 '.symbol
 		);
 	}
 }
