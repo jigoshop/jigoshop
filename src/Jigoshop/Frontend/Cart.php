@@ -72,6 +72,7 @@ class Cart implements \Serializable
 	public function removeItem($key)
 	{
 		if (isset($this->items[$key])) {
+			$this->total -= $this->items[$key]['price'] * $this->items[$key]['quantity'];
 			unset($this->items[$key]);
 		}
 

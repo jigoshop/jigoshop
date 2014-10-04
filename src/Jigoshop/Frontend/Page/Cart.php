@@ -69,12 +69,15 @@ class Cart implements Page
 					'item_price' => Product::formatPrice($item['price']),
 					'item_subtotal' => Product::formatPrice($item['price'] * $item['quantity']),
 					'total' => Product::formatPrice($this->cart->getTotal()),
-				)
+				),
 			);
 		} catch(Exception $e) {
 			$result = array(
 				'success' => false,
 				'error' => $e->getMessage(),
+				'html' => array(
+					'total' => Product::formatPrice($this->cart->getTotal()),
+				),
 			);
 		}
 		$this->cartService->save($this->cart);

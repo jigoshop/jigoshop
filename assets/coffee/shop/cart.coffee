@@ -12,6 +12,6 @@ jQuery ($) ->
     .done (result) ->
       if result.success == true
         $('.product-subtotal', $item).html(result.html.item_subtotal)
-        $('#cart-total > td').html(result.html.total)
       else
         $item.remove()
+      $('#cart-total > td').html(result.html.total)

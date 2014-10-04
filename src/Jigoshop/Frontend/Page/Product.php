@@ -59,11 +59,31 @@ class Product implements Page
 			try {
 				$cart->addItem($product, (int)$_POST['quantity']);
 				$this->cartService->save($cart);
-				$button = sprintf('<a href="%s" class="btn btn-warning pull-right">%s</a>', $this->wp->getPermalink($this->options->getPageId(Pages::CART)), __('View cart', 'jigoshop'));
-				$this->messages->addNotice(sprintf(__('%s successfully added to your cart. %s', 'jigoshop'), $product->getName(), $button), false);
+
+				$url = false;
+				$button = '';
+				switch ($this->options->get('shopping.redirect_add_to_cart')) {
+					case 'cart':
+						$url = $this->wp->getPermalink($this->options->getPageId(Pages::CART));
+						break;
+					case 'checkout':
+						$url = $this->wp->getPermalink($this->options->getPageId(Pages::CHECKOUT));
+						break;
+					case 'product_list':
+						$url = $this->wp->getPermalink($this->options->getPageId(Pages::SHOP));
+					case 'product':
+					default:
+						$button = sprintf('<a href="%s" class="btn btn-warning pull-right">%s</a>', $this->wp->getPermalink($this->options->getPageId(Pages::CART)), __('View cart', 'jigoshop'));
+				}
+
+				$this->messages->addNotice(sprintf(__('%s successfully added to your cart. %s', 'jigoshop'), $product->getName(), $button));
+				if ($url !== false) {
+					$this->messages->preserveMessages();
+					$this->wp->wpRedirect($url);
+				}
 			} catch(Exception $e) {
 				// TODO: Could be improved with `NotEnoughStockException` and others
-				$this->messages->addError(sprintf(__('A problem ocurred when adding to cart: %s', 'jigoshop'), $e->getMessage()), false);
+				$this->messages->addError(sprintf(__('A problem ocurred when adding to cart: %s', 'jigoshop'), $e->getMessage()));
 			}
 		}
 	}
