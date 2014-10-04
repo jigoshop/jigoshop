@@ -87,15 +87,23 @@ class Cart implements Page
 
 	public function action()
 	{
-		if (isset($_POST['cart']) && is_array($_POST['cart'])) {
-			try {
-				foreach ($_POST['cart'] as $item => $quantity) {
-					$this->cart->updateQuantity($item, (int)$quantity);
-				}
-				$this->cartService->save($this->cart);
-				$this->messages->addNotice(__('Successfully updated the cart.', 'jigoshop'));
-			} catch(Exception $e) {
-				$this->messages->addError(sprintf(__('Error occurred while updating cart: %s', 'jigoshop'), $e->getMessage()));
+		if (isset($_POST['action'])) {
+			switch ($_POST['action']) {
+				case 'checkout':
+					$this->wp->wpRedirect($this->wp->getPermalink($this->options->getPageId(Pages::CHECKOUT)));
+					exit;
+				case 'update-cart':
+					if (isset($_POST['cart']) && is_array($_POST['cart'])) {
+						try {
+							foreach ($_POST['cart'] as $item => $quantity) {
+								$this->cart->updateQuantity($item, (int)$quantity);
+							}
+							$this->cartService->save($this->cart);
+							$this->messages->addNotice(__('Successfully updated the cart.', 'jigoshop'));
+						} catch(Exception $e) {
+							$this->messages->addError(sprintf(__('Error occurred while updating cart: %s', 'jigoshop'), $e->getMessage()));
+						}
+					}
 			}
 		}
 

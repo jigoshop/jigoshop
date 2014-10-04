@@ -56,7 +56,7 @@ use Jigoshop\Helper\Render;
 				<tr>
 					<td colspan="6">
 						<noscript>
-							<button type="submit" class="btn btn-success pull-right"><?php _e('Update Shopping Cart', 'jigoshop'); ?></button>
+							<button type="submit" class="btn btn-success pull-right" name="action" value="update-cart"><?php _e('Update Shopping Cart', 'jigoshop'); ?></button>
 						</noscript>
 					</td>
 				</tr>
@@ -172,6 +172,6 @@ use Jigoshop\Helper\Render;
 			</tr>
 		<?php endif; //*/ ?>
 		<a href="<?php echo $shopUrl; ?>" class="btn btn-default pull-left"><?php _e('&larr; Return to shopping', 'jigoshop'); ?></a>
-		<button class="btn btn-primary pull-right"><?php _e('Proceed to checkout &rarr;', 'jigoshopp'); ?></button>
+		<button class="btn btn-primary pull-right" name="action" value="checkout"><?php _e('Proceed to checkout &rarr;', 'jigoshopp'); ?></button>
 	</form>
 <?php endif; ?>
