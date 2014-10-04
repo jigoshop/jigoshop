@@ -80,7 +80,22 @@ class JigoshopInit
 		do_action('jigoshop\init', $this->container);
 
 		// Load query interceptor before Jigoshop
-		$this->container->get('jigoshop.query.interceptor');
+		$interceptor = $this->container->get('jigoshop.query.interceptor');
+
+		if (!($interceptor instanceof Jigoshop\Query\Interceptor)) {
+			if (is_admin()) {
+				add_action('admin_notices', function(){
+					echo '<div class="error"><p>';
+					echo __('Invalid query interceptor instance in Jigoshop. The shop will remain inactive until configured properly.', 'jigoshop');
+					echo '</p></div>';
+				});
+				return;
+			}
+
+			wp_die(__('Invalid query interceptor instance in Jigoshop. Unable to proceed.', 'jigoshop')); // TODO: Replace with error message on admin pages
+		}
+
+		$interceptor->run();
 
 		/** @var \Jigoshop\Core $jigoshop */
 		$jigoshop = $this->container->get('jigoshop');

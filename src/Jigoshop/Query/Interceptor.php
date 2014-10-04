@@ -20,7 +20,11 @@ class Interceptor
 	{
 		$this->wp = $wp;
 		$this->options = $options;
-		$wp->addFilter('request', array($this, 'intercept'));
+	}
+
+	public function run()
+	{
+		$this->wp->addFilter('request', array($this, 'intercept'));
 	}
 
 	public function intercept($request)
@@ -40,65 +44,19 @@ class Interceptor
 		}
 
 		if ($this->isProductCategory($request)) {
-			$options = $this->options->get('shopping');
-			return array(
-				Types\ProductCategory::NAME => $request[Types\ProductCategory::NAME],
-				'post_type' => Types::PRODUCT,
-				'post_status' => 'publish',
-				'ignore_sticky_posts' => true,
-				'posts_per_page' => $options['catalog_per_page'],
-				'paged' => isset($request['paged']) ? $request['paged'] : 1,
-				'orderby' => $options['catalog_order_by'],
-				'order' => $options['catalog_order'],
-				'meta_query' => array(
-					array(
-						'key' => 'visibility',
-						'value' => array(Product::VISIBILITY_CATALOG, Product::VISIBILITY_PUBLIC),
-						'compare' => 'IN'
-					),
-				),
-			);
+			$query = $this->getProductListQuery($request);
+			$query[Types\ProductCategory::NAME] = $request[Types\ProductCategory::NAME];
+			return $query;
 		}
 
 		if ($this->isProductTag($request)) {
-			$options = $this->options->get('shopping');
-			return array(
-				Types\ProductTag::NAME => $request[Types\ProductTag::NAME],
-				'post_type' => Types::PRODUCT,
-				'post_status' => 'publish',
-				'ignore_sticky_posts' => true,
-				'posts_per_page' => $options['catalog_per_page'],
-				'paged' => isset($request['paged']) ? $request['paged'] : 1,
-				'orderby' => $options['catalog_order_by'],
-				'order' => $options['catalog_order'],
-				'meta_query' => array(
-					array(
-						'key' => 'visibility',
-						'value' => array(Product::VISIBILITY_CATALOG, Product::VISIBILITY_PUBLIC),
-						'compare' => 'IN'
-					),
-				),
-			);
+			$query = $this->getProductListQuery($request);
+			$query[Types\ProductTag::NAME] = $request[Types\ProductTag::NAME];
+			return $query;
 		}
 
 		if ($this->isProductList($request)) {
-			$options = $this->options->get('shopping');
-			return array(
-				'post_type' => Types::PRODUCT,
-				'post_status' => 'publish',
-				'ignore_sticky_posts' => true,
-				'posts_per_page' => $options['catalog_per_page'],
-				'paged' => isset($request['paged']) ? $request['paged'] : 1,
-				'orderby' => $options['catalog_order_by'],
-				'order' => $options['catalog_order'],
-				'meta_query' => array(
-					array(
-						'key' => 'visibility',
-						'value' => array(Product::VISIBILITY_CATALOG, Product::VISIBILITY_PUBLIC),
-						'compare' => 'IN'
-					),
-				),
-			);
+			return $this->getProductListQuery($request);
 		}
 
 		if ($this->isProduct($request)) {
@@ -139,5 +97,26 @@ class Interceptor
 	private function isProductTag($request)
 	{
 		return isset($request[Types\ProductTag::NAME]);
+	}
+
+	private function getProductListQuery($request)
+	{
+		$options = $this->options->get('shopping');
+		return array(
+			'post_type' => Types::PRODUCT,
+			'post_status' => 'publish',
+			'ignore_sticky_posts' => true,
+			'posts_per_page' => $options['catalog_per_page'],
+			'paged' => isset($request['paged']) ? $request['paged'] : 1,
+			'orderby' => $options['catalog_order_by'],
+			'order' => $options['catalog_order'],
+			'meta_query' => array(
+				array(
+					'key' => 'visibility',
+					'value' => array(Product::VISIBILITY_CATALOG, Product::VISIBILITY_PUBLIC),
+					'compare' => 'IN'
+				),
+			),
+		);
 	}
 }
