@@ -4,19 +4,44 @@ namespace Jigoshop\Frontend;
 
 use Jigoshop\Entity\Product;
 use Jigoshop\Exception;
+use Jigoshop\Service\CartServiceInterface;
 use Jigoshop\Service\ProductServiceInterface;
 use WPAL\Wordpress;
 
-class Cart implements \Serializable
+class Cart
 {
+	/** @var Wordpress */
+	private $wp;
+	/** @var ProductServiceInterface  */
+	private $productService;
+
 	/** @var string */
 	private $id;
 	private $items = array();
 	private $total = 0.0;
 
-	public function __construct($id)
+	public function __construct(Wordpress $wp, ProductServiceInterface $productService)
+	{
+		$this->wp = $wp;
+		$this->productService = $productService;
+	}
+
+	/**
+	 * @param string $id
+	 * @param string $data
+	 */
+	public function initializeFor($id, $data = '')
 	{
 		$this->id = $id;
+
+		if (!empty($data)) {
+			$this->id = $data['id'];
+			// TODO: Properly restore items
+			$this->items = $data['items'];
+			foreach ($this->items as $key => $item){
+				$this->total += $item['price'] * $item['quantity'];
+			}
+		}
 	}
 
 	/**
@@ -145,37 +170,16 @@ class Cart implements \Serializable
 	}
 
 	/**
-	 * (PHP 5 &gt;= 5.1.0)<br/>
-	 * String representation of object
+	 * Generates representation of current cart state.
 	 *
-	 * @link http://php.net/manual/en/serializable.serialize.php
-	 * @return string the string representation of the object or null
+	 * @return string the string representation of the cart or null
 	 */
-	public function serialize()
+	public function getState()
 	{
-		return serialize(array(
+		// TODO: Properly serialize items
+		return array(
 			'id' => $this->id,
 			'items' => $this->items,
-		));
-	}
-
-	/**
-	 * (PHP 5 &gt;= 5.1.0)<br/>
-	 * Constructs the object
-	 *
-	 * @link http://php.net/manual/en/serializable.unserialize.php
-	 * @param string $serialized <p>
-	 * The string representation of the object.
-	 * </p>
-	 * @return void
-	 */
-	public function unserialize($serialized)
-	{
-		$data = unserialize($serialized);
-		$this->id = $data['id'];
-		$this->items = $data['items'];
-		foreach ($this->items as $key => $item){
-			$this->total += $item['price'] * $item['quantity'];
-		}
+		);
 	}
 }

@@ -14,10 +14,13 @@ class CartService implements CartServiceInterface
 	private $wp;
 	/** @var string */
 	private $currentUserCartId;
+	/** @var Cart */
+	private $cart;
 
-	public function __construct(Wordpress $wp)
+	public function __construct(Wordpress $wp, Cart $cart)
 	{
 		$this->wp = $wp;
+		$this->cart = $cart;
 
 		if (!isset($_SESSION[self::CART])) {
 			$_SESSION[self::CART] = array();
@@ -36,17 +39,13 @@ class CartService implements CartServiceInterface
 	public function get($id)
 	{
 		// TODO: Support for transients?
+		$data = array();
 		if (isset($_SESSION[self::CART][$id])) {
-			$cart = unserialize($_SESSION[self::CART][$id]);
-
-			if ($cart === null) {
-				$cart = new Cart($id);
-			}
-
-			return $cart;
+			$data = unserialize($_SESSION[self::CART][$id]);
 		}
 
-		return new Cart($this->getCartIdForCurrentUser());
+		$this->cart->initializeFor($this->getCartIdForCurrentUser(), $data);
+		return $this->cart;
 	}
 
 	/**
@@ -57,7 +56,7 @@ class CartService implements CartServiceInterface
 	public function save(Cart $cart)
 	{
 		// TODO: Support for transients?
-		$_SESSION[self::CART][$cart->getId()] = serialize($cart);
+		$_SESSION[self::CART][$cart->getId()] = serialize($cart->getState());
 	}
 
 	/**
@@ -89,12 +88,17 @@ class CartService implements CartServiceInterface
 	{
 		if ($this->wp->getCurrentUserId() > 0) {
 			$id = $this->wp->getCurrentUserId();
+		} elseif(isset($_SESSION[self::CART_ID])){
+			$id = $_SESSION[self::CART_ID];
 		} elseif(isset($_COOKIE[self::CART_ID])){
 			$id = $_COOKIE[self::CART_ID];
 		} else {
 			$id = md5($_SERVER['HTTP_USER_AGENT'].time().$_SERVER['REMOTE_ADDR'].rand(1, 10000000));
 		}
 
+		if (!isset($_SESSION[self::CART_ID])) {
+			$_SESSION[self::CART_ID] = $id;
+		}
 		if (!isset($_COOKIE[self::CART_ID])) {
 			setcookie(self::CART_ID, $id, null, '/', null, null, true);
 		}

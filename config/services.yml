@@ -20,3 +20,9 @@ services:
     class: Jigoshop\Service\CartService
     arguments:
       - '@wpal'
+      - '@jigoshop.cart'
+  jigoshop.cart:
+    class: Jigoshop\Frontend\Cart
+    arguments:
+      - '@wpal'
+      - '@jigoshop.service.product'
