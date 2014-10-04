@@ -7,6 +7,7 @@
   }
 
   @import '../../bower/bootstrap/less/buttons.less';
+  @import '../../bower/bootstrap/less/panels.less';
   @import '../../bower/bootstrap/less/tables.less';
   @import '../../bower/bootstrap/less/type.less';
 
@@ -20,6 +21,22 @@
 
     &.alert a.btn {
       margin-top: @padding-base-horizontal;
+    }
+
+    .btn {
+      text-transform: none;
+    }
+
+    #cart-collaterals {
+      .clearfix();
+
+      #cart-totals {
+        width: 50%;
+
+        th {
+          text-align: right;
+        }
+      }
     }
   }
 }
