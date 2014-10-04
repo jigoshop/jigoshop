@@ -24,7 +24,7 @@ use Jigoshop\Entity\Product\Attributes\StockStatus;
 			StockStatus::IN_STOCK => __('In stock', 'jigoshop'),
 			StockStatus::OUT_STOCK => __('Out of stock', 'jigoshop'),
 		),
-		'classes' => array($product->getStock()->getManage() ? 'hidden' : ''),
+		'classes' => array($product->getStock()->getManage() ? 'not-active' : ''),
 	));
 	?>
 </fieldset>

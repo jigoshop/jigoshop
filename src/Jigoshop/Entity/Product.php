@@ -25,6 +25,7 @@ abstract class Product implements EntityInterface
 	private $categories;
 	private $tags;
 	private $sku;
+	private $taxable;
 	private $taxClasses = array();
 	/** @var Size */
 	private $size;
@@ -327,12 +328,31 @@ abstract class Product implements EntityInterface
 	}
 
 	/**
+	 * @return bool Is this product taxable?
+	 */
+	public function isTaxable()
+	{
+		return $this->taxable;
+	}
+
+	/**
+	 * Sets the product to be taxable or not.
+	 *
+	 * @param $taxable bool New taxable status.
+	 */
+	public function setTaxable($taxable)
+	{
+		$this->taxable = (bool)$taxable;
+		$this->dirtyFields[] = 'taxable';
+	}
+
+	/**
 	 * @param array $tax New tax classes of the product.
 	 */
 	public function setTaxClasses(array $tax)
 	{
 		$this->taxClasses = $tax;
-		$this->dirtyFields[] = 'tax';
+		$this->dirtyFields[] = 'tax_classes';
 	}
 
 	/**
@@ -341,7 +361,7 @@ abstract class Product implements EntityInterface
 	public function addTaxClass($tax)
 	{
 		$this->taxClasses[] = $tax;
-		$this->dirtyFields[] = 'tax';
+		$this->dirtyFields[] = 'tax_classes';
 	}
 
 	/**
@@ -385,8 +405,11 @@ abstract class Product implements EntityInterface
 				case 'type':
 					$toSave['type'] = $this->getType();
 					break;
-				case 'tax':
-					$toSave['tax'] = serialize($this->taxClasses);
+				case 'is_taxable':
+					$toSave['is_taxable'] = $this->taxable;
+					break;
+				case 'tax_classes':
+					$toSave['tax_classes'] = $this->taxClasses;
 					break;
 			}
 		}
@@ -422,13 +445,16 @@ abstract class Product implements EntityInterface
 			$this->sku = $state['sku'];
 		}
 		if (isset($state['featured'])) {
-			$this->visibility = (bool)$state['featured'];
+			$this->featured = is_numeric($state['featured']) ? (bool)$state['featured'] : $state['featured'] == 'on';
 		}
 		if (isset($state['visibility'])) {
 			$this->visibility = (int)$state['visibility'];
 		}
-		if (isset($state['tax'])) {
-			$this->taxClasses = unserialize($state['tax']);
+		if (isset($state['is_taxable'])) {
+			$this->taxable = is_numeric($state['is_taxable']) ? (bool)$state['is_taxable'] : $state['is_taxable'] == 'on';
+		}
+		if (isset($state['tax_classes'])) {
+			$this->taxClasses = $state['tax_classes'];
 		}
 		if (isset($state['size']) && !empty($state['size'])) {
 			if( is_array($state['size'])) {
@@ -485,7 +511,7 @@ abstract class Product implements EntityInterface
 	 */
 	public function getLink()
 	{
-		return get_permalink($this->getId());
+		return $this->wp->getPermalink($this->getId());
 	}
 
 	/**

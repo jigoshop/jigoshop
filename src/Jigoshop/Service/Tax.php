@@ -61,7 +61,7 @@ class Tax
 		}
 
 		// TODO: Support for compound taxes
-		return $this->taxes[$taxClass]['rate'] * $product->getPrice();
+		return $this->taxes[$taxClass]['rate'] * $product->getPrice() / 100;
 	}
 
 	/**

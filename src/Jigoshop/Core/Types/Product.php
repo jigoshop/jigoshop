@@ -7,6 +7,7 @@ use Jigoshop\Core\Types;
 use Jigoshop\Entity\Product\Simple;
 use Jigoshop\Helper\Render;
 use Jigoshop\Service\ProductServiceInterface;
+use Jigoshop\Service\Tax;
 use WPAL\Wordpress;
 
 class Product implements Post
@@ -19,14 +20,17 @@ class Product implements Post
 	private $options;
 	/** @var \Jigoshop\Service\ProductServiceInterface */
 	private $productService;
+	/** @var Tax */
+	private $taxService;
 	/** @var array */
 	private $enabledTypes = array();
 
-	public function __construct(Wordpress $wp, Options $options, ProductServiceInterface $productService)
+	public function __construct(Wordpress $wp, Options $options, ProductServiceInterface $productService, Tax $taxService)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->productService = $productService;
+		$this->taxService = $taxService;
 
 		$this->enabledTypes = $options->getEnabledProductTypes();
 		foreach ($this->enabledTypes as $type) {
@@ -35,6 +39,7 @@ class Product implements Post
 
 		$wp->addFilter(sprintf('manage_edit-%s_columns', Types::PRODUCT), array($this, 'columns'));
 		$wp->addAction(sprintf('manage_%s_posts_custom_column', Types::PRODUCT), array($this, 'displayColumn'), 2);
+		// TODO: Introduce proper category filter
 //		$wp->addAction('restrict_manage_posts', array($this, 'categoryFilter'));
 		$wp->addAction('restrict_manage_posts', array($this, 'typeFilter'));
 		$that = $this;
@@ -130,7 +135,7 @@ class Product implements Post
 				echo \Jigoshop\Helper\Product::getFeaturedImage($product);
 				break;
 			case 'price':
-				echo \Jigoshop\Helper\Product::getPrice($product);
+				echo \Jigoshop\Helper\Product::getPriceHtml($product);
 				break;
 			case 'featured':
 				echo \Jigoshop\Helper\Product::isFeatured($product);
@@ -237,12 +242,17 @@ class Product implements Post
 
 		$menu = $this->wp->applyFilters('jigoshop\admin\product\menu', array(
 			'general' => array('label' => __('General', 'jigoshop'), 'visible' => true),
+			'advanced' => array('label' => __('Advanced', 'jigoshop'), 'visible' => true),
 			'stock' => array('label' => __('Stock', 'jigoshop'), 'visible' => true),
 			'sales' => array('label' => __('Sales', 'jigoshop'), 'visible' => array('simple')),
-//			'advanced' => __('Advanced', 'jigoshop'),
 //			'inventory' => __('Inventory', 'jigoshop'),
 //			'attributes' => __('Attributes', 'jigoshop'),
 		));
+		$taxClasses = array();
+		foreach ($this->taxService->getClasses() as $class) {
+			$taxClasses[$class['class']] = $class['label'];
+		}
+
 		$tabs = $this->wp->applyFilters('jigoshop\admin\product\tabs', array(
 			'general' => array(
 				'product' => $product,
@@ -253,7 +263,10 @@ class Product implements Post
 			'sales' => array(
 				'product' => $product,
 			),
-//			'advanced' => array(),
+			'advanced' => array(
+				'product' => $product,
+				'taxClasses' => $taxClasses,
+			),
 //			'inventory' => array(),
 //			'attributes' => array(),
 		));

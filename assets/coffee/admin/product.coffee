@@ -14,6 +14,11 @@ jQuery ($) ->
       $('.schedule').slideDown()
     else
       $('.schedule').slideUp()
+  $('#is_taxable').on 'change', ->
+    if $(this).is(':checked')
+      $('.tax_classes_field').slideDown()
+    else
+      $('.tax_classes_field').slideUp()
   $('#sales-from').datepicker
     todayBtn: 'linked'
     autoclose: true

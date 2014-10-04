@@ -64,6 +64,7 @@ services:
       - '@wpal'
       - '@jigoshop.options'
       - '@jigoshop.service.product'
+      - '@jigoshop.service.tax'
     tags:
       - { name: jigoshop.type.post }
   jigoshop.taxonomy.product_category:

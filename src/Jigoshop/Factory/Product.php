@@ -72,6 +72,11 @@ class Product
 			$_POST['product']['tags'] = $this->getTerms($id, Types::PRODUCT_TAG, $this->wp->getTerms(Types::PRODUCT_TAG, array(
 				'posts__in' => $_POST['tax_input']['product_tag'],
 			)));
+
+			if (!isset($_POST['product']['tax_classes'])) {
+				$_POST['product']['tax_classes'] = array();
+			}
+
 			$product->restoreState($_POST['product']);
 			$product->markAsDirty($_POST['product']);
 		}
@@ -106,6 +111,7 @@ class Product
 			$state['description'] = $this->wp->wpautop($this->wp->wptexturize($post->post_content));
 			$state['categories'] = $this->getTerms($post->ID, Types::PRODUCT_CATEGORY);
 			$state['tags'] = $this->getTerms($post->ID, Types::PRODUCT_TAG);
+			$state['tax_classes'] = unserialize($state['tax_classes']);
 
 			$product->restoreState($state);
 		}

@@ -36,7 +36,7 @@ class Product
 	 * @param ProductEntity $product
 	 * @return string
 	 */
-	public static function getPrice(ProductEntity $product)
+	public static function getPriceHtml(ProductEntity $product)
 	{
 		switch($product->getType()){
 			case Simple::TYPE:
@@ -47,7 +47,7 @@ class Product
 						<ins>'.sprintf(__('%s off!', 'jigoshop'), $product->getSales()->getPrice()).'</ins>';
 					} else {
 						return '<del>'.self::formatPrice($product->getRegularPrice()).'</del>
-						<ins>'.self::getPrice($product).'</ins>';
+						<ins>'.self::formatPrice($product->getPrice()).'</ins>';
 					}
 				}
 

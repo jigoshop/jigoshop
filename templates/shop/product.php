@@ -13,7 +13,7 @@ use Jigoshop\Helper\Render;
 	<?php do_action('jigoshop\product\before_summary', $product); ?>
 	<div class="summary">
 		<h1><?php echo $product->getName(); ?></h1>
-		<p class="price"><?php echo Product::getPrice($product); ?></p>
+		<p class="price"><?php echo Product::getPriceHtml($product); ?></p>
 		<p class="stock"><?php echo Product::getStock($product); ?></p>
 		<form action="" method="post" class="form-inline" role="form">
 			<!-- TODO: Render proper form based on product type -->
