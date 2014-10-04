@@ -156,7 +156,6 @@ class Cart implements \Serializable
 		return serialize(array(
 			'id' => $this->id,
 			'items' => $this->items,
-			'total' => $this->total,
 		));
 	}
 
@@ -175,6 +174,8 @@ class Cart implements \Serializable
 		$data = unserialize($serialized);
 		$this->id = $data['id'];
 		$this->items = $data['items'];
-		$this->total = $data['total'];
+		foreach ($this->items as $key => $item){
+			$this->total += $item['price'] * $item['quantity'];
+		}
 	}
 }

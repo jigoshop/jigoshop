@@ -12,6 +12,7 @@
   #products {
     .product {
       position: relative;
+      vertical-align: bottom;
       width: 160px;
 
       .on-sale {
@@ -64,11 +65,13 @@
         line-height: @line-height-base;
 
         del {
-          font-size: 10px;
-          line-height: 10px;
-          margin: -2px 0 0 0;
-          display: block;
+          font-size: @font-size-small;
+          display: inline-block;
           color: #aaaaaa;
+        }
+        ins {
+          display: inline-block;
+          font-size: @font-size-base;
         }
         .from {
           font-size: 10px;
