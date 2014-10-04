@@ -29,10 +29,10 @@ class Tax
 	}
 
 	/**
-	 * @param $product Product\Simple Product to calculate tax for.
+	 * @param $product Product Product to calculate tax for.
 	 * @return float Overall tax value.
 	 */
-	public function calculate(Product\Simple $product)
+	public function calculate(Product $product)
 	{
 		$tax = 0.0;
 		foreach ($product->getTaxClasses() as $taxClass) {
@@ -45,12 +45,12 @@ class Tax
 	}
 
 	/**
-	 * @param $product Product\Simple Product to calculate tax for.
+	 * @param $product Product|Product\Purchasable Product to calculate tax for.
 	 * @param $taxClass string Tax class.
 	 * @throws Exception When tax class is not found.
 	 * @return float Tax value for selected tax class.
 	 */
-	public function get(Product\Simple $product, $taxClass)
+	public function get(Product $product, $taxClass)
 	{
 		if (!in_array($taxClass, $this->taxClasses)) {
 			throw new Exception(sprintf('No tax class: %s', $taxClass));
@@ -99,7 +99,7 @@ class Tax
 	public function getLabel($taxClass)
 	{
 		if (!in_array($taxClass, $this->taxClasses)) {
-			throw new Exception(sprintf('No tax class: %s', $taxClass));
+			throw new Exception(sprintf(__('No tax class: %s', 'jigoshop'), $taxClass));
 		}
 
 		return $this->taxes[$taxClass]['label'];
