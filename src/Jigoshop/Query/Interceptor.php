@@ -35,9 +35,50 @@ class Interceptor
 
 	private function parseRequest($request)
 	{
-		// TODO: Refactor preparing requests
 		if ($this->isCart($request)) {
 			return $request;
+		}
+
+		if ($this->isProductCategory($request)) {
+			$options = $this->options->get('shopping');
+			return array(
+				Types\ProductCategory::NAME => $request[Types\ProductCategory::NAME],
+				'post_type' => Types::PRODUCT,
+				'post_status' => 'publish',
+				'ignore_sticky_posts' => true,
+				'posts_per_page' => $options['catalog_per_page'],
+				'paged' => isset($request['paged']) ? $request['paged'] : 1,
+				'orderby' => $options['catalog_order_by'],
+				'order' => $options['catalog_order'],
+				'meta_query' => array(
+					array(
+						'key' => 'visibility',
+						'value' => array(Product::VISIBILITY_CATALOG, Product::VISIBILITY_PUBLIC),
+						'compare' => 'IN'
+					),
+				),
+			);
+		}
+
+		if ($this->isProductTag($request)) {
+			$options = $this->options->get('shopping');
+			return array(
+				Types\ProductTag::NAME => $request[Types\ProductTag::NAME],
+				'post_type' => Types::PRODUCT,
+				'post_status' => 'publish',
+				'ignore_sticky_posts' => true,
+				'posts_per_page' => $options['catalog_per_page'],
+				'paged' => isset($request['paged']) ? $request['paged'] : 1,
+				'orderby' => $options['catalog_order_by'],
+				'order' => $options['catalog_order'],
+				'meta_query' => array(
+					array(
+						'key' => 'visibility',
+						'value' => array(Product::VISIBILITY_CATALOG, Product::VISIBILITY_PUBLIC),
+						'compare' => 'IN'
+					),
+				),
+			);
 		}
 
 		if ($this->isProductList($request)) {
@@ -88,5 +129,15 @@ class Interceptor
 	private function isCart($request)
 	{
 		return isset($request['pagename']) && $request['pagename'] == Pages::CART;
+	}
+
+	private function isProductCategory($request)
+	{
+		return isset($request[Types\ProductCategory::NAME]);
+	}
+
+	private function isProductTag($request)
+	{
+		return isset($request[Types\ProductTag::NAME]);
 	}
 }

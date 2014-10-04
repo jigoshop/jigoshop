@@ -290,7 +290,7 @@ class Pages
 	 */
 	public function isShop()
 	{
-		return $this->isProductList() || $this->isProduct();
+		return $this->isProductList() || $this->isProduct() || $this->isProductCategory() || $this->isProductTag();
 	}
 
 	public function isAjax()

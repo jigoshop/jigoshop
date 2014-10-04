@@ -56,12 +56,13 @@ class ProductCategory implements Taxonomy
 			'hierarchical' => true,
 //				'update_count_callback' => '_update_post_term_count', // TODO: Analyze if `update_count_callback` is needed for product_category
 			'show_ui' => true,
-			'query_var' => true,
+			'query_var' => self::NAME,
 			'rewrite' => array(
-				'slug' => 'category',
+				'slug' => 'product-category',
 				'with_front' => true,
-				'feeds' => true,
+				'feeds' => false,
 				'pages' => true,
+				'ep_mask' => EP_ALL,
 			),
 		);
 	}

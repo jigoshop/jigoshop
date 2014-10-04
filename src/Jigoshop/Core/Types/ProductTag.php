@@ -55,10 +55,13 @@ class ProductTag implements Taxonomy
 			),
 			'hierarchical' => false,
 			'show_ui' => true,
-			'query_var' => true,
+			'query_var' => self::NAME,
 			'rewrite' => array(
-				'slug' => 'tag',
-				'with_front' => false
+				'slug' => 'product-tag',
+				'with_front' => true,
+				'feeds' => false,
+				'pages' => true,
+				'ep_mask' => EP_ALL,
 			),
 		);
 	}

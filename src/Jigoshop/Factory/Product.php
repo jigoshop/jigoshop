@@ -113,23 +113,23 @@ class Product
 		return $this->wp->applyFilters('jigoshop\find\product', $product, $state);
 	}
 
-	private function getTerms($id, $term, $items = null)
+	private function getTerms($id, $taxonomy, $items = null)
 	{
 		$wp = $this->wp;
 		if ($items === null) {
-			$items = $wp->getTheTerms($id, $term);
+			$items = $wp->getTheTerms($id, $taxonomy);
 		}
 
 		if (!is_array($items)) {
 			return array();
 		}
 
-		return array_map(function($item) use ($wp, $term) {
+		return array_map(function($item) use ($wp, $taxonomy) {
 			return array(
 				'id' => $item->term_id,
 				'name' => $item->name,
 				'slug' => $item->slug,
-				'link' => $wp->getTermLink($item, $term),
+				'link' => $wp->getTermLink($item, $taxonomy),
 				'object' => $item,
 			);
 		}, $items);

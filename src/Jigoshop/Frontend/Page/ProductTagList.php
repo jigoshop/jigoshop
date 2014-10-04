@@ -14,7 +14,7 @@ use Jigoshop\Service\CartServiceInterface;
 use Jigoshop\Service\ProductServiceInterface;
 use WPAL\Wordpress;
 
-class ProductList extends AbstractProductList
+class ProductTagList extends AbstractProductList
 {
 	public function __construct(Wordpress $wp, Options $options, ProductServiceInterface $productService, CartServiceInterface $cartService, Messages $messages, Styles $styles,
 		Scripts $scripts)
@@ -22,22 +22,19 @@ class ProductList extends AbstractProductList
 		parent::__construct($wp, $options, $productService, $cartService, $messages, $styles, $scripts);
 	}
 
-	public function action()
-	{
-		if (isset($_GET['page_id']) && $_GET['page_id'] == $this->options->getPageId(Pages::SHOP)) {
-			$this->wp->wpSafeRedirect($this->wp->getPostTypeArchiveLink(Types::PRODUCT));
-		}
-
-		parent::action();
-	}
-
 	public function getTitle()
 	{
-		return __('All products', 'jigoshop');
+		$term = $this->wp->getTermBy('slug', $this->wp->getQueryParameter(Types\ProductTag::NAME), Types\ProductTag::NAME);
+
+		if ($term) {
+			return sprintf(__('Products tagged with "%s"', 'jigoshop'), $term->name);
+		}
+
+		return $this->wp->getQueryParameter(Types\ProductTag::NAME);
 	}
 
 	public function getContent()
 	{
-		return $this->wp->getPostField('post_content', $this->options->getPageId(Pages::SHOP));
+		return '';
 	}
 }

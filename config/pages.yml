@@ -20,6 +20,26 @@ services:
       - '@jigoshop.messages'
       - '@jigoshop.helper.styles'
       - '@jigoshop.helper.scripts'
+  jigoshop.page.product_category_list:
+    class: Jigoshop\Frontend\Page\ProductCategoryList
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.service.product'
+      - '@jigoshop.service.cart'
+      - '@jigoshop.messages'
+      - '@jigoshop.helper.styles'
+      - '@jigoshop.helper.scripts'
+  jigoshop.page.product_tag_list:
+    class: Jigoshop\Frontend\Page\ProductTagList
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.service.product'
+      - '@jigoshop.service.cart'
+      - '@jigoshop.messages'
+      - '@jigoshop.helper.styles'
+      - '@jigoshop.helper.scripts'
   jigoshop.page.product:
     class: Jigoshop\Frontend\Page\Product
     arguments:
