@@ -10,7 +10,6 @@ class Simple extends Product implements Purchasable
 {
 	const TYPE = 'simple';
 
-	private $price = 0.0;
 	private $regularPrice = 0.0;
 	/** @var Sales */
 	private $sales;
@@ -37,23 +36,7 @@ class Simple extends Product implements Purchasable
 	 */
 	public function getPrice()
 	{
-		return $this->wp->applyFilters('jigoshop\product\get_price', $this->price, $this);
-	}
-
-	/**
-	 * Sets new product price.
-	 * Applies `jigoshop\product\set_price` filter to allow plugins to modify the price. When filter returns false price is not modified at all.
-	 *
-	 * @param float $price New product price.
-	 */
-	public function setPrice($price)
-	{
-		$price = $this->wp->applyFilters('jigoshop\product\set_price', $price, $this);
-
-		if ($price !== false) {
-			$this->price = $price;
-			$this->dirtyFields[] = 'price';
-		}
+		return $this->wp->applyFilters('jigoshop\product\get_price', $this->calculatePrice(), $this);
 	}
 
 	/**
@@ -101,7 +84,7 @@ class Simple extends Product implements Purchasable
 	{
 		$price = $this->regularPrice;
 
-		if ($this->sales !== null) {
+		if ($this->sales !== null && $this->sales->isEnabled()) {
 			if (strpos($this->sales->getPrice(), '%') !== false) {
 				$discount = trim($this->sales->getPrice(), '%');
 				$sale = $this->regularPrice * (1 - $discount / 100);
@@ -133,7 +116,6 @@ class Simple extends Product implements Purchasable
 		}
 
 		$toSave['sales'] = $this->sales;
-		$toSave['price'] = $this->calculatePrice();
 
 		return $toSave;
 	}
@@ -145,9 +127,6 @@ class Simple extends Product implements Purchasable
 	{
 		parent::restoreState($state);
 
-		if (isset($state['price'])) {
-			$this->price = (float)$state['price'];
-		}
 		if (isset($state['regular_price'])) {
 			$this->regularPrice = (float)$state['regular_price'];
 		}
@@ -155,11 +134,9 @@ class Simple extends Product implements Purchasable
 		if (isset($state['sales']) && !empty($state['sales'])) {
 			if (is_array($state['sales'])) {
 				$this->sales->setEnabled($state['sales']['enabled'] == 'on');
-				if ($this->sales->isEnabled()) {
-					$this->sales->setFromTime($state['sales']['from']);
-					$this->sales->setToTime($state['sales']['to']);
-					$this->sales->setPrice($state['sales']['price']);
-				}
+				$this->sales->setFromTime($state['sales']['from']);
+				$this->sales->setToTime($state['sales']['to']);
+				$this->sales->setPrice($state['sales']['price']);
 			} else {
 				$this->sales = unserialize($state['sales']);
 			}
@@ -178,6 +155,9 @@ class Simple extends Product implements Purchasable
 		parent::markAsDirty($state);
 	}
 
+	/**
+	 * @return array Minimal state to identify the product.
+	 */
 	public function getState()
 	{
 		return array(

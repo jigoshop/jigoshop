@@ -168,8 +168,7 @@ class Product
 		switch($product->getType()){
 			case Simple::TYPE:
 				/** @var $product Simple */
-				$time = time();
-				$status = $product->getSales()->isEnabled() && $product->getSales()->getFrom()->getTimestamp() <= $time && $product->getSales()->getTo()->getTimestamp() >= $time;
+				$status = $product->getSales()->isEnabled();
 		}
 
 		return apply_filters('jigoshop\helper\product\is_on_sales', $status, $product);

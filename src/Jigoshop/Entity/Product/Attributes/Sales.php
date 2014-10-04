@@ -88,7 +88,8 @@ class Sales implements \Serializable
 	 */
 	public function isEnabled()
 	{
-		return $this->enabled;
+		$time = time();
+		return $this->enabled && $this->getFrom()->getTimestamp() <= $time && $this->getTo()->getTimestamp() >= $time;
 	}
 
 	/**
