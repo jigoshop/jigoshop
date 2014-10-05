@@ -60,6 +60,7 @@ class Cart implements Page
 			$this->cart->updateQuantity($_POST['item'], (int)$_POST['quantity']);
 			$item = $this->cart->getItem($_POST['item']);
 
+			// TODO: Improve totals calculation
 			$result = array(
 				'success' => true,
 				'item_price' => $item['price'],

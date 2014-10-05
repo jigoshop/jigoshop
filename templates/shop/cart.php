@@ -46,9 +46,9 @@ use Jigoshop\Helper\Render;
 					</td>
 					<td class="product-thumbnail"><a href="<?php echo $url; ?>"><?php echo Product::getFeaturedImage($product, 'shop_tiny'); ?></a></td>
 					<td class="product-name"><a href="<?php echo $url; ?>"><?php echo $product->getName(); ?></a></td>
-					<td class="product-price"><?php echo Product::formatPrice($item['price']); ?></td>
+					<td class="product-price"><?php echo Product::formatPrice($item['price'] + $item['tax']); ?></td>
 					<td class="product-quantity"><input type="number" name="cart[<?php echo $key; ?>]" value="<?php echo $item['quantity']; ?>" /></td>
-					<td class="product-subtotal"><?php echo Product::formatPrice($item['quantity'] * $item['price']); ?></td>
+					<td class="product-subtotal"><?php echo Product::formatPrice($item['quantity'] * ($item['price'] + $item['tax'])); ?></td>
 				</tr>
 				<?php endforeach; ?>
 				<?php do_action('jigoshop\cart\table_body', $cart); ?>
@@ -69,10 +69,17 @@ use Jigoshop\Helper\Render;
 				<div class="panel-heading"><h2 class="panel-title"><?php _e('Cart Totals', 'jigoshop'); ?></h2></div>
 				<table class="table">
 					<tbody>
-<!--					<tr>-->
-<!--						<th scope="row">--><?php //_e('Subtotal', 'jigoshop'); ?><!--</th>-->
-<!--						<td>--><?php //// TODO: Show subtotal echo $cart->getTotal(); ?><!--</td>-->
-<!--					</tr>-->
+					<tr>
+						<th scope="row"><?php _e('Subtotal', 'jigoshop'); ?></th>
+						<td><?php echo Product::formatPrice($cart->getSubtotal()); ?></td>
+					</tr>
+					<?php foreach ($cart->getTax() as $taxClass => $tax): ?>
+						<?php if ($tax == 0) continue; ?>
+						<tr>
+							<th scope="row"><?php echo $cart->getTaxLabel($taxClass); ?></th>
+							<td><?php echo Product::formatPrice($tax); ?></td>
+						</tr>
+					<?php endforeach; ?>
 					<tr id="cart-total">
 						<th scope="row"><?php _e('Total', 'jigoshop'); ?></th>
 						<td><?php echo Product::formatPrice($cart->getTotal()); ?></td>

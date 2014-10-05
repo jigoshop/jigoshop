@@ -26,6 +26,7 @@ class Cart
 	private $items = array();
 	private $tax = array();
 	private $total = 0.0;
+	private $subtotal = 0.0;
 
 	/**
 	 * @param Wordpress $wp
@@ -55,22 +56,33 @@ class Cart
 
 		if (!empty($data)) {
 			$this->id = $data['id'];
-
 			$items = unserialize($data['items']);
+			$taxIncludedInPrice = $this->options->get('tax.included');
+
 			if (is_array($items)) {
 				foreach ($items as $item) {
 					$product = $this->productService->findForState($item['item']);
-					$this->total += $product->getPrice() * $item['quantity'];
 
 					foreach ($product->getTaxClasses() as $class) {
-						$this->tax[$class] = $this->taxService->get($product, $class);
+						$this->tax[$class] += $this->taxService->get($product, $class) * $item['quantity'];
 					}
 
 					$key = $this->getItemKey($product);
+					$price = $product->getPrice();
+					$tax = $this->taxService->calculate($product);
+
+					if ($taxIncludedInPrice) {
+						$price -= $tax;
+					}
+
+					$this->subtotal += $price * $item['quantity'];
+					$this->total += ($price + $tax) * $item['quantity'];
+
 					$this->items[$key] = array(
 						'item' => $product,
 						'quantity' => $item['quantity'],
-						'price' => $product->getPrice(),
+						'price' => $price,
+						'tax' => $tax,
 					);
 				}
 			}
@@ -113,7 +125,7 @@ class Cart
 			$this->items[$key]['quantity'] += $quantity;
 		} else {
 			foreach ($product->getTaxClasses() as $class) {
-				$this->tax[$class] += $this->taxService->get($product, $class);
+				$this->tax[$class] += $this->taxService->get($product, $class) * $quantity;
 			}
 
 			$tax = $this->taxService->calculate($product);
@@ -122,6 +134,9 @@ class Cart
 				$price -= $tax;
 			}
 
+			$this->total += $quantity * ($price + $tax);
+			$this->subtotal += $quantity * $price;
+
 			$this->items[$key] = array(
 				'item' => $product,
 				'price' => $price,
@@ -129,8 +144,6 @@ class Cart
 				'quantity' => $quantity,
 			);
 		}
-
-		$this->total += $quantity * $product->getPrice();
 	}
 
 	/**
@@ -213,6 +226,28 @@ class Cart
 	{
 		return $this->total;
 	}
+
+	/**
+	 * @return float Current subtotal of the cart.
+	 */
+	public function getSubtotal()
+	{
+		return $this->subtotal;
+	}
+
+	/**
+	 * @return array List of tax values per tax class.
+	 */
+	public function getTax()
+	{
+		return $this->tax;
+	}
+
+	public function getTaxLabel($taxClass)
+	{
+		return $this->taxService->getLabel($taxClass);
+	}
+
 
 	/**
 	 * Generates representation of current cart state.

@@ -89,6 +89,8 @@ class Tax
 			;
 		});
 
+		// TODO: Sort by matching (most filled - best)
+
 		return array_shift($rules);
 	}
 
@@ -111,7 +113,7 @@ class Tax
 			throw new Exception(sprintf(__('No tax class: %s', 'jigoshop'), $taxClass));
 		}
 
-		return $this->taxes[$taxClass]['label'];
+		return sprintf('%s (%s%%)', $this->taxes[$taxClass]['label'], $this->taxes[$taxClass]['rate']);
 	}
 
 	/**
