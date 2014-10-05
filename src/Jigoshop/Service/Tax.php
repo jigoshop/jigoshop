@@ -89,7 +89,32 @@ class Tax
 			;
 		});
 
-		// TODO: Sort by matching (most filled - best)
+		usort($rules, function($a, $b){
+			$aRate = 0;
+			$bRate = 0;
+
+			if (!empty($a['country'])) {
+				$aRate += 1;
+			}
+			if (!empty($a['states'])) {
+				$aRate += 1;
+			}
+			if (!empty($a['postcodes'])) {
+				$aRate += 1;
+			}
+
+			if (!empty($b['country'])) {
+				$bRate += 1;
+			}
+			if (!empty($b['states'])) {
+				$bRate += 1;
+			}
+			if (!empty($b['postcodes'])) {
+				$bRate += 1;
+			}
+
+			return $bRate - $aRate;
+		});
 
 		return array_shift($rules);
 	}
