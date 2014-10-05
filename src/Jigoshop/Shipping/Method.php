@@ -17,6 +17,11 @@ interface Method
 	public function getId();
 
 	/**
+	 * @return string Human readable name of method.
+	 */
+	public function getName();
+
+	/**
 	 * @return bool Whether current method is enabled and able to work.
 	 */
 	public function isEnabled();
@@ -25,6 +30,15 @@ interface Method
 	 * @return array List of options to display on Shipping settings page.
 	 */
 	public function getOptions();
+
+	/**
+	 * Validates and returns properly sanitized options.
+
+	 *
+*@param $settings array Input options.
+	 * @return array Sanitized result.
+	 */
+	public function validateOptions($settings);
 
 	/**
 	 * @param Cart $cart Cart to calculate shipping for.

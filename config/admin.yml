@@ -48,6 +48,14 @@ services:
       - '@jigoshop.helper.scripts'
     tags:
       - { name: jigoshop.admin.settings.tab }
+  jigoshop.admin.settings.shipping:
+    class: Jigoshop\Admin\Settings\ShippingTab
+    arguments:
+      - '@jigoshop.options'
+      - '@jigoshop.service.shipping'
+      - '@jigoshop.helper.scripts'
+    tags:
+      - { name: jigoshop.admin.settings.tab }
   jigoshop.admin.system_info:
     class: Jigoshop\Admin\SystemInfo
     arguments:

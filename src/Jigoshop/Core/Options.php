@@ -65,6 +65,15 @@ class Options
 				array('label' => 'Standard', 'class' => 'standard'),
 			),
 		),
+		'shipping' => array(
+			'enabled' => true,
+			'calculator' => true,
+			'only_to_billing' => false,
+			'always_show_shipping' => false,
+			'flat_rate' => array(
+				'enabled' => false,
+			),
+		),
 	);
 	private $options = array();
 	private $dirty = false;

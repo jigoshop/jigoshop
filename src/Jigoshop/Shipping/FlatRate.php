@@ -26,6 +26,14 @@ class FlatRate implements Method
 	}
 
 	/**
+	 * @return string Human readable name of method.
+	 */
+	public function getName()
+	{
+		return __('Flat rate', 'jigoshop');
+	}
+
+	/**
 	 * @return bool Whether current method is enabled and able to work.
 	 */
 	public function isEnabled()
@@ -39,7 +47,27 @@ class FlatRate implements Method
 	 */
 	public function getOptions()
 	{
-		// TODO: Implement getOptions() method.
+		return array(
+			array(
+				'name' => sprintf('[%s][enabled]', self::NAME),
+				'title' => __('Is enabled?', 'jigoshop'),
+				'type' => 'checkbox',
+				'value' => $this->options['enabled'],
+			),
+		);
+	}
+
+	/**
+	 * Validates and returns properly sanitized options.
+	 *
+	 * @param $settings array Input options.
+	 * @return array Sanitized result.
+	 */
+	public function validateOptions($settings)
+	{
+		$settings['enabled'] = $settings['enabled'] == 'on';
+
+		return $settings;
 	}
 
 	/**
