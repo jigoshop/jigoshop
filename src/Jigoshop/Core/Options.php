@@ -39,10 +39,11 @@ class Options
 			'company_phone' => '',
 			'company_email' => '',
 			'currency' => 'GBP',
-			'currency_position' => 'left', // TODO: Update according to Currency::positions()
+			'currency_position' => '%1$s%3$s', // Currency symbol on the left without spaces
 			'currency_decimals' => 2,
 			'currency_thousand_separator' => ',',
 			'currency_decimal_separator' => '.',
+			'price_tax' => 'with_tax',
 		),
 		'shopping' => array(
 			'catalog_per_page' => 12,
@@ -58,7 +59,7 @@ class Options
 			'selling_locations' => array(),
 		),
 		'tax' => array(
-			'before_coupons' => true,
+			'before_coupons' => false,
 			'included' => false,
 			'classes' => array(
 				array('label' => 'Standard', 'class' => 'standard'),

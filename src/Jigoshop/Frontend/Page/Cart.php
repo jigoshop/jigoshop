@@ -125,6 +125,7 @@ class Cart implements Page
 			'messages' => $this->messages,
 			'productService' => $this->productService,
 			'shopUrl' => $this->wp->getPermalink($this->options->getPageId(Pages::SHOP)),
+			'showWithTax' => $this->options->get('general.price_tax') == 'with_tax',
 		));
 	}
 }

@@ -9,6 +9,7 @@ use Jigoshop\Helper\Render;
  * @var $content string Contents of cart page
  * @var $cart \Jigoshop\Frontend\Cart Cart object.
  * @var $shopUrl string Url to sh
+ * @var $showWithTax bool Whether to show product price with or without tax.
  */
 ?>
 <h1><?php _e('Cart', 'jigoshop'); ?></h1>
@@ -39,6 +40,7 @@ use Jigoshop\Helper\Render;
 					/** @var \Jigoshop\Entity\Product $product */
 					$product = $item['item'];
 					$url = apply_filters('jigoshop\cart\product_url', get_permalink($product->getId()), $key);
+					$price = $showWithTax ? $item['price'] + $item['tax'] : $item['price'];
 					?>
 				<tr data-id="<?php echo $key; ?>" data-product="<?php echo $product->getId(); ?>">
 					<td class="product-remove">
@@ -46,9 +48,9 @@ use Jigoshop\Helper\Render;
 					</td>
 					<td class="product-thumbnail"><a href="<?php echo $url; ?>"><?php echo Product::getFeaturedImage($product, 'shop_tiny'); ?></a></td>
 					<td class="product-name"><a href="<?php echo $url; ?>"><?php echo $product->getName(); ?></a></td>
-					<td class="product-price"><?php echo Product::formatPrice($item['price'] + $item['tax']); ?></td>
+					<td class="product-price"><?php echo Product::formatPrice($price); ?></td>
 					<td class="product-quantity"><input type="number" name="cart[<?php echo $key; ?>]" value="<?php echo $item['quantity']; ?>" /></td>
-					<td class="product-subtotal"><?php echo Product::formatPrice($item['quantity'] * ($item['price'] + $item['tax'])); ?></td>
+					<td class="product-subtotal"><?php echo Product::formatPrice($item['quantity'] * $price); ?></td>
 				</tr>
 				<?php endforeach; ?>
 				<?php do_action('jigoshop\cart\table_body', $cart); ?>
