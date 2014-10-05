@@ -59,16 +59,20 @@ class Cart implements Page
 		try {
 			$this->cart->updateQuantity($_POST['item'], (int)$_POST['quantity']);
 			$item = $this->cart->getItem($_POST['item']);
+			$price = $this->options->get('general.price_tax') == 'with_tax' ? $item['price'] + $item['tax'] : $item['price'];
 
-			// TODO: Improve totals calculation
 			$result = array(
 				'success' => true,
-				'item_price' => $item['price'],
-				'item_subtotal' => $item['price'] * $item['quantity'],
+				'item_price' => $price,
+				'item_subtotal' => $price * $item['quantity'],
+				'subtotal' => $this->cart->getSubtotal(),
+				'tax' => $this->cart->getTax(),
 				'total' => $this->cart->getTotal(),
 				'html' => array(
-					'item_price' => Product::formatPrice($item['price']),
-					'item_subtotal' => Product::formatPrice($item['price'] * $item['quantity']),
+					'item_price' => Product::formatPrice($price),
+					'item_subtotal' => Product::formatPrice($price * $item['quantity']),
+					'subtotal' => Product::formatPrice($this->cart->getSubtotal()),
+					'tax' => array_map(function($tax){ return Product::formatPrice($tax); }, $this->cart->getTax()),
 					'total' => Product::formatPrice($this->cart->getTotal()),
 				),
 			);
@@ -77,6 +81,8 @@ class Cart implements Page
 				'success' => false,
 				'error' => $e->getMessage(),
 				'html' => array(
+					'subtotal' => Product::formatPrice($this->cart->getSubtotal()),
+					'tax' => array_map(function($tax){ return Product::formatPrice($tax); }, $this->cart->getTax()),
 					'total' => Product::formatPrice($this->cart->getTotal()),
 				),
 			);

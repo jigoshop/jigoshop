@@ -1,5 +1,4 @@
 <?php
-use Jigoshop\Core\Pages;
 use Jigoshop\Helper\Product;
 use Jigoshop\Helper\Render;
 
@@ -71,13 +70,13 @@ use Jigoshop\Helper\Render;
 				<div class="panel-heading"><h2 class="panel-title"><?php _e('Cart Totals', 'jigoshop'); ?></h2></div>
 				<table class="table">
 					<tbody>
-					<tr>
+					<tr id="cart-subtotal">
 						<th scope="row"><?php _e('Subtotal', 'jigoshop'); ?></th>
 						<td><?php echo Product::formatPrice($cart->getSubtotal()); ?></td>
 					</tr>
 					<?php foreach ($cart->getTax() as $taxClass => $tax): ?>
 						<?php if ($tax == 0) continue; ?>
-						<tr>
+						<tr id="tax-<?php echo $taxClass; ?>">
 							<th scope="row"><?php echo $cart->getTaxLabel($taxClass); ?></th>
 							<td><?php echo Product::formatPrice($tax); ?></td>
 						</tr>

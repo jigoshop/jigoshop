@@ -15,3 +15,6 @@ jQuery ($) ->
       else
         $item.remove()
       $('#cart-total > td').html(result.html.total)
+      $('#cart-subtotal > td').html(result.html.subtotal)
+      for own taxClass, tax of result.html.tax
+        $("#tax-#{taxClass} > td").html(tax)

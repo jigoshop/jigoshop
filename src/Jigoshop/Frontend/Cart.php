@@ -5,7 +5,6 @@ namespace Jigoshop\Frontend;
 use Jigoshop\Core\Options;
 use Jigoshop\Entity\Product;
 use Jigoshop\Exception;
-use Jigoshop\Service\CartServiceInterface;
 use Jigoshop\Service\ProductServiceInterface;
 use Jigoshop\Service\Tax;
 use WPAL\Wordpress;
@@ -155,7 +154,14 @@ class Cart
 	public function removeItem($key)
 	{
 		if (isset($this->items[$key])) {
-			$this->total -= $this->items[$key]['price'] * $this->items[$key]['quantity'];
+			/** @var Product $product */
+			$product = $this->items[$key]['item'];
+			$this->total -= ($this->items[$key]['price'] + $this->items[$key]['tax']) * $this->items[$key]['quantity'];
+			$this->subtotal -= $this->items[$key]['price'] * $this->items[$key]['quantity'];
+			foreach ($product->getTaxClasses() as $class) {
+				$this->tax[$class] -= $this->taxService->get($product, $class) * $this->items[$key]['quantity'];
+			}
+
 			unset($this->items[$key]);
 		}
 
@@ -189,8 +195,14 @@ class Cart
 			return;
 		}
 
-		$this->total -= $this->items[$key]['price'] * $this->items[$key]['quantity'];
-		$this->total += $this->items[$key]['price'] * $quantity;
+		/** @var Product $product */
+		$product = $this->items[$key]['item'];
+		$difference = $quantity - $this->items[$key]['quantity'];
+		$this->total += ($this->items[$key]['price'] + $this->items[$key]['tax']) * $difference;
+		$this->subtotal += $this->items[$key]['price'] * $difference;
+		foreach ($product->getTaxClasses() as $class) {
+			$this->tax[$class] += $this->taxService->get($product, $class) * $difference;
+		}
 		$this->items[$key]['quantity'] = $quantity;
 	}
 
