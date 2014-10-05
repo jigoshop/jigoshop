@@ -3,8 +3,8 @@
 namespace Jigoshop\Service;
 
 use Jigoshop\Entity\Customer;
-use Jigoshop\Service\Customer as CustomerService;
 use Jigoshop\Entity\Product;
+use Jigoshop\Service\Customer as CustomerService;
 use WPAL\Wordpress;
 
 /**
@@ -18,18 +18,21 @@ class Tax
 	private $wp;
 	/** @var \Jigoshop\Service\Customer */
 	private $customers;
+	private $taxIncludedInPrice;
 	private $taxes = array();
 	private $taxClasses = array();
+	private $rules;
 
-	public function __construct(Wordpress $wp, array $classes, CustomerService $customers)
+	public function __construct(Wordpress $wp, array $classes, CustomerService $customers, $taxIncludedInPrice)
 	{
 		$this->wp = $wp;
 		$this->taxClasses = $classes;
 		$this->customers = $customers;
+		$this->taxIncludedInPrice = $taxIncludedInPrice;
 	}
 
 	/**
-	 * @param $product Product Product to calculate tax for.
+	 * @param $product Product|Product\Purchasable Product to calculate tax for.
 	 * @return float Overall tax value.
 	 */
 	public function calculate(Product $product)
@@ -61,6 +64,10 @@ class Tax
 		}
 
 		// TODO: Support for compound taxes
+		if ($this->taxIncludedInPrice) {
+			return $product->getPrice() * (1 - 1 / (100 + $this->taxes[$taxClass]['rate']) * 100);
+		}
+
 		return $this->taxes[$taxClass]['rate'] * $product->getPrice() / 100;
 	}
 
@@ -73,14 +80,16 @@ class Tax
 	 */
 	protected function fetch($taxClass, Customer $customer)
 	{
-//		$wpdb = $this->wp->getWPDB();
-//		$query = $wpdb->prepare('
-//			SELECT t.id, t.label, t.rate FROM {$wpdb->prefix}jigoshop_tax t
-//			WHERE t.class = %s
-//		', array($taxClass));
-//		$taxes = $wpdb->get_results($query, ARRAY_A);
-		// TODO: Finish fetching taxes
-		return $this->formatRule(array());
+		// TODO: Probably it will be good idea to update getRules() call to fetch and format only proper rules for the customer
+		$rules = array_filter($this->getRules(), function($item) use ($taxClass, $customer) {
+			return $item['class'] == $taxClass &&
+				(empty($item['country']) || $item['country'] == $customer->getCountry()) &&
+				(empty($item['states']) || in_array($customer->getState(), $item['states'])) &&
+				(empty($item['postcodes']) || in_array($customer->getPostcode(), $item['postcodes']))
+			;
+		});
+
+		return array_shift($rules);
 	}
 
 	/**
@@ -112,27 +121,33 @@ class Tax
 	 */
 	public function getRules()
 	{
-		$wpdb = $this->wp->getWPDB();
-		$query = "
-			SELECT t.id, t.class, t.label, t.rate, tl.country, tl.state, tl.postcode FROM {$wpdb->prefix}jigoshop_tax t
-		  LEFT JOIN {$wpdb->prefix}jigoshop_tax_location tl ON tl.tax_id = t.id
-			ORDER BY t.id
-		";
-		$taxes = $wpdb->get_results($query, ARRAY_A);
-		$result = array();
-		$processed = array();
+		if ($this->rules === null) {
+			$wpdb = $this->wp->getWPDB();
+			$query = "
+				SELECT t.id, t.class, t.label, t.rate, tl.country, tl.state, tl.postcode FROM {$wpdb->prefix}jigoshop_tax t
+			  LEFT JOIN {$wpdb->prefix}jigoshop_tax_location tl ON tl.tax_id = t.id
+				ORDER BY t.id
+			";
+			$taxes = $wpdb->get_results($query, ARRAY_A);
+			$result = array();
+			$processed = array();
 
-		foreach ($taxes as $tax) {
-			if (in_array($tax['id'], $processed)) {
-				continue;
+			foreach ($taxes as $tax) {
+				if (in_array($tax['id'], $processed)) {
+					continue;
+				}
+
+				$processed[] = $tax['id'];
+				$rule = array_filter($taxes, function ($item) use ($tax){
+						return $item['id'] == $tax['id'];
+					});
+				$result[] = $this->formatRule($rule);
 			}
 
-			$processed[] = $tax['id'];
-			$rule = array_filter($taxes, function($item) use ($tax){ return $item['id'] == $tax['id']; });
-			$result[] = $this->formatRule($rule);
+			$this->rules = $result;
 		}
 
-		return $result;
+		return $this->rules;
 	}
 
 	private function formatRule(array $source)

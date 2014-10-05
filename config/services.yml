@@ -25,4 +25,6 @@ services:
     class: Jigoshop\Frontend\Cart
     arguments:
       - '@wpal'
+      - '@jigoshop.options'
       - '@jigoshop.service.product'
+      - '@jigoshop.service.tax'

@@ -36,7 +36,8 @@ use Jigoshop\Helper\Render;
 			<tbody>
 				<?php foreach($cart->getItems() as $key => $item): ?>
 					<?php
-					$product = $productService->findForState($item['item']);
+					/** @var \Jigoshop\Entity\Product $product */
+					$product = $item['item'];
 					$url = apply_filters('jigoshop\cart\product_url', get_permalink($product->getId()), $key);
 					?>
 				<tr data-id="<?php echo $key; ?>" data-product="<?php echo $product->getId(); ?>">

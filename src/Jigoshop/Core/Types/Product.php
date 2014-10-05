@@ -249,7 +249,7 @@ class Product implements Post
 //			'attributes' => __('Attributes', 'jigoshop'),
 		));
 		$taxClasses = array();
-		foreach ($this->taxService->getClasses() as $class) {
+		foreach ($this->options->get('tax.classes') as $class) {
 			$taxClasses[$class['class']] = $class['label'];
 		}
 

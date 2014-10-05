@@ -2,28 +2,47 @@
 
 namespace Jigoshop\Frontend;
 
+use Jigoshop\Core\Options;
 use Jigoshop\Entity\Product;
 use Jigoshop\Exception;
 use Jigoshop\Service\CartServiceInterface;
 use Jigoshop\Service\ProductServiceInterface;
+use Jigoshop\Service\Tax;
 use WPAL\Wordpress;
 
 class Cart
 {
 	/** @var Wordpress */
 	private $wp;
+	/** @var Options */
+	private $options;
 	/** @var ProductServiceInterface  */
 	private $productService;
+	/** @var Tax */
+	private $taxService;
 
 	/** @var string */
 	private $id;
 	private $items = array();
+	private $tax = array();
 	private $total = 0.0;
 
-	public function __construct(Wordpress $wp, ProductServiceInterface $productService)
+	/**
+	 * @param Wordpress $wp
+	 * @param Options $options
+	 * @param ProductServiceInterface $productService
+	 * @param Tax $taxService
+	 */
+	public function __construct(Wordpress $wp, Options $options, ProductServiceInterface $productService, Tax $taxService)
 	{
 		$this->wp = $wp;
+		$this->options = $options;
 		$this->productService = $productService;
+		$this->taxService = $taxService;
+
+		foreach ($this->options->get('tax.classes') as $class) {
+			$this->tax[$class['class']] = 0.0;
+		}
 	}
 
 	/**
@@ -36,10 +55,24 @@ class Cart
 
 		if (!empty($data)) {
 			$this->id = $data['id'];
-			// TODO: Properly restore items
-			$this->items = $data['items'];
-			foreach ($this->items as $key => $item){
-				$this->total += $item['price'] * $item['quantity'];
+
+			$items = unserialize($data['items']);
+			if (is_array($items)) {
+				foreach ($items as $item) {
+					$product = $this->productService->findForState($item['item']);
+					$this->total += $product->getPrice() * $item['quantity'];
+
+					foreach ($product->getTaxClasses() as $class) {
+						$this->tax[$class] = $this->taxService->get($product, $class);
+					}
+
+					$key = $this->getItemKey($product);
+					$this->items[$key] = array(
+						'item' => $product,
+						'quantity' => $item['quantity'],
+						'price' => $product->getPrice(),
+					);
+				}
 			}
 		}
 	}
@@ -75,12 +108,24 @@ class Cart
 			throw new Exception(__('Quantity has to be positive number', 'jigoshop'));
 		}
 
-		if (isset($this->items[$product->getId()])) {
-			$this->items[$product->getId()]['quantity'] += $quantity;
+		$key = $this->getItemKey($product);
+		if (isset($this->items[$key])) {
+			$this->items[$key]['quantity'] += $quantity;
 		} else {
-			$this->items[$product->getId()] = array(
-				'item' => $product->getState(),
-				'price' => $product->getPrice(),
+			foreach ($product->getTaxClasses() as $class) {
+				$this->tax[$class] += $this->taxService->get($product, $class);
+			}
+
+			$tax = $this->taxService->calculate($product);
+			$price = $product->getPrice();
+			if ($this->options->get('tax.included')) {
+				$price -= $tax;
+			}
+
+			$this->items[$key] = array(
+				'item' => $product,
+				'price' => $price,
+				'tax' => $tax,
 				'quantity' => $quantity,
 			);
 		}
@@ -176,10 +221,27 @@ class Cart
 	 */
 	public function getState()
 	{
-		// TODO: Properly serialize items
 		return array(
 			'id' => $this->id,
-			'items' => $this->items,
+			'items' => serialize(array_map(function($item){
+				/** @var $product Product */
+				$product = $item['item'];
+				return array(
+					'item' => $product->getState(),
+					'quantity' => $item['quantity'],
+				);
+			}, $this->items)),
 		);
+	}
+
+	/**
+	 * Returns unique key for product in the cart.
+	 *
+	 * @param $product Product|Product\Purchasable Product to get key for.
+	 * @return string
+	 */
+	private function getItemKey($product)
+	{
+		return $product->getId();
 	}
 }
