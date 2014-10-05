@@ -26,3 +26,8 @@ services:
     class: Jigoshop\Factory\Product
     arguments:
       - '@wpal'
+  jigoshop.factory.shipping_service:
+    class: Jigoshop\Factory\ShippingService
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'

@@ -33,6 +33,7 @@ class JigoshopInit
 		if (!$config_cache->isFresh()) {
 			$builder = new ContainerBuilder();
 			$builder->addCompilerPass(new Jigoshop\Core\Types\CompilerPass());
+			$builder->addCompilerPass(new Jigoshop\Shipping\CompilerPass());
 			$builder->addCompilerPass(new Jigoshop\Admin\CompilerPass());
 			$builder->addCompilerPass(new Jigoshop\Admin\Settings\CompilerPass());
 			$loader = new YamlFileLoader($builder, new FileLocator(JIGOSHOP_DIR.'/config'));
@@ -42,6 +43,7 @@ class JigoshopInit
 			$loader->load('main.yml');
 			$loader->load('pages.yml');
 			$loader->load('services.yml');
+			$loader->load('shipping.yml');
 			// Load extension configuration
 			do_action('jigoshop\plugins\configure', $builder);
 			$builder->compile();
@@ -118,7 +120,7 @@ class JigoshopInit
 		/** @var \Jigoshop\Core\PageResolver $resolver */
 		$resolver = $this->container->get('jigoshop.page_resolver');
 		$resolver->resolve($this->container);
-		$jigoshop->run();
+		$jigoshop->run($this->container);
 	}
 
 	public function footer($text) {

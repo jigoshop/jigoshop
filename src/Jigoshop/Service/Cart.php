@@ -2,10 +2,10 @@
 
 namespace Jigoshop\Service;
 
-use Jigoshop\Frontend\Cart;
+use Jigoshop\Frontend\Cart as CartContainer;
 use WPAL\Wordpress;
 
-class CartService implements CartServiceInterface
+class Cart implements CartServiceInterface
 {
 	const CART = 'jigoshop_cart';
 	const CART_ID = 'jigoshop_cart_id';
@@ -14,10 +14,10 @@ class CartService implements CartServiceInterface
 	private $wp;
 	/** @var string */
 	private $currentUserCartId;
-	/** @var Cart */
+	/** @var CartContainer */
 	private $cart;
 
-	public function __construct(Wordpress $wp, Cart $cart)
+	public function __construct(Wordpress $wp, CartContainer $cart)
 	{
 		$this->wp = $wp;
 		$this->cart = $cart;
@@ -34,7 +34,7 @@ class CartService implements CartServiceInterface
 	 * If cart is not found - returns new empty one.
 	 *
 	 * @param $id string Id of cart to fetch.
-	 * @return Cart Prepared cart instance.
+	 * @return CartContainer Prepared cart instance.
 	 */
 	public function get($id)
 	{
@@ -51,9 +51,9 @@ class CartService implements CartServiceInterface
 	/**
 	 * Saves cart for current user.
 	 *
-	 * @param Cart $cart Cart to save.
+	 * @param CartContainer $cart Cart to save.
 	 */
-	public function save(Cart $cart)
+	public function save(CartContainer $cart)
 	{
 		// TODO: Support for transients?
 		$_SESSION[self::CART][$cart->getId()] = serialize($cart->getState());
@@ -62,9 +62,9 @@ class CartService implements CartServiceInterface
 	/**
 	 * Removes cart.
 	 *
-	 * @param Cart $cart Cart to remove.
+	 * @param CartContainer $cart Cart to remove.
 	 */
-	public function remove(Cart $cart)
+	public function remove(CartContainer $cart)
 	{
 		// TODO: Support for transients?
 		if (isset($_SESSION[self::CART][$cart->getId()])) {

@@ -16,8 +16,12 @@ services:
     class: Jigoshop\Service\Customer
     factory_service: jigoshop.factory.customer_service
     factory_method: getService
+  jigoshop.service.shipping:
+    class: Jigoshop\Service\Shipping
+    factory_service: jigoshop.factory.shipping_service
+    factory_method: getService
   jigoshop.service.cart:
-    class: Jigoshop\Service\CartService
+    class: Jigoshop\Service\Cart
     arguments:
       - '@wpal'
       - '@jigoshop.cart'
@@ -28,3 +32,4 @@ services:
       - '@jigoshop.options'
       - '@jigoshop.service.product'
       - '@jigoshop.service.tax'
+      - '@jigoshop.service.shipping'

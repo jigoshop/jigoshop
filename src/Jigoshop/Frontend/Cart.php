@@ -6,6 +6,7 @@ use Jigoshop\Core\Options;
 use Jigoshop\Entity\Product;
 use Jigoshop\Exception;
 use Jigoshop\Service\ProductServiceInterface;
+use Jigoshop\Service\ShippingServiceInterface;
 use Jigoshop\Service\TaxServiceInterface;
 use WPAL\Wordpress;
 
@@ -19,6 +20,8 @@ class Cart
 	private $productService;
 	/** @var TaxServiceInterface */
 	private $taxService;
+	/** @var ShippingServiceInterface */
+	private $shippingService;
 
 	/** @var string */
 	private $id;
@@ -32,13 +35,15 @@ class Cart
 	 * @param Options $options
 	 * @param ProductServiceInterface $productService
 	 * @param TaxServiceInterface $taxService
+	 * @param ShippingServiceInterface $shippingService
 	 */
-	public function __construct(Wordpress $wp, Options $options, ProductServiceInterface $productService, TaxServiceInterface $taxService)
+	public function __construct(Wordpress $wp, Options $options, ProductServiceInterface $productService, TaxServiceInterface $taxService, ShippingServiceInterface $shippingService)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->productService = $productService;
 		$this->taxService = $taxService;
+		$this->shippingService = $shippingService;
 
 		foreach ($this->options->get('tax.classes') as $class) {
 			$this->tax[$class['class']] = 0.0;

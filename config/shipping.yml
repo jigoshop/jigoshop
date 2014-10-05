@@ -1,0 +1,8 @@
+parameters: ~
+services:
+  jigoshop.shipping.flat_rate:
+    class: Jigoshop\Shipping\FlatRate
+    arguments:
+      - '@jigoshop.options'
+    tags:
+      - { name: jigoshop.shipping.required_method }

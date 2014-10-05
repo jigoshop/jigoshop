@@ -36,9 +36,12 @@ class Core
 
 	/**
 	 * Starts Jigoshop extensions and Jigoshop itself.
+	 *
+	 * @param \JigoshopContainer $container
 	 */
-	public function run()
+	public function run(\JigoshopContainer $container)
 	{
+		// TODO: Build enabled shipping methods
 		// TODO: Build required extensions
 		$this->wp->addFilter('template_include', array($this->template, 'process'));
 		$this->wp->addFilter('template_redirect', array($this->template, 'redirect'));
