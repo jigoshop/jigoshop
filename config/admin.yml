@@ -2,7 +2,6 @@ parameters: ~
 services:
   jigoshop.admin:
     class: Jigoshop\Admin
-    lazy: true
     arguments:
       - '@wpal'
       - '@jigoshop.admin.dashboard'

@@ -16,8 +16,8 @@ gulp.task 'styles-vendors', ->
     'assets/bower/bootstrap-datepicker/css/datepicker3.css',
     'assets/bower/jquery-colorbox/example1/colorbox.css',
   ]
-    .pipe replace(/select2(.*?)\.(png|gif)/g, '../images/select2$1.$2')
     .pipe replace(/images\/(.*?)\.(png|gif)/g, '../images/$1.$2')
+    .pipe replace(/select2(.*?)\.(png|gif)/g, '../images/select2$1.$2')
     .pipe cssmin()
     .pipe concat('vendors.min.css')
     .pipe gulp.dest('assets/css')

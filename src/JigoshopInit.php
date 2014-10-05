@@ -111,6 +111,10 @@ class JigoshopInit
 		$this->container->get('jigoshop.cron');
 		$this->container->get('jigoshop.assets');
 
+		if (is_admin()) {
+			$this->container->get('jigoshop.admin');
+		}
+
 		/** @var \Jigoshop\Core\PageResolver $resolver */
 		$resolver = $this->container->get('jigoshop.page_resolver');
 		$resolver->resolve($this->container);

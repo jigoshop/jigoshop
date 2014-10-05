@@ -10,7 +10,6 @@ services:
       - '@jigoshop.messages'
       - '@jigoshop.pages'
       - '@jigoshop.template'
-      - '@jigoshop.admin'
   jigoshop.installer:
     class: Jigoshop\Core\Installer
     arguments:

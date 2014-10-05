@@ -6,7 +6,6 @@ use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Pages;
 use Jigoshop\Core\Template;
-use Jigoshop\Helper\Render;
 use WPAL\Wordpress;
 
 class Core
@@ -21,12 +20,10 @@ class Core
 	private $pages;
 	/** @var \Jigoshop\Core\Template */
 	private $template;
-	/** @var \Jigoshop\Admin */
-	private $admin;
 	/** @var \WPAL\Wordpress */
 	private $wp;
 
-	public function __construct(Wordpress $wp, Options $options, Messages $messages, Pages $pages, Template $template, Admin $admin)
+	public function __construct(Wordpress $wp, Options $options, Messages $messages, Pages $pages, Template $template)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
@@ -34,9 +31,7 @@ class Core
 		$this->pages = $pages;
 		$this->template = $template;
 
-		if ($wp->isAdmin()) {
-			$this->admin = $admin;
-		}
+		$wp->wpEnqueueScript('jquery');
 	}
 
 	/**
@@ -55,21 +50,6 @@ class Core
 	public function getWordpress()
 	{
 		return $this->wp;
-	}
-
-	/**
-	 * Returns admin panel manager.
-	 *
-	 * @return Admin Admin panel manager.
-	 * @throws Exception When called not in admin.
-	 */
-	public function getAdmin()
-	{
-		if (!$this->wp->isAdmin()) {
-			throw new Exception('Invalid use of Core::getAdmin() function - not in admin panel!');
-		}
-
-		return $this->admin;
 	}
 
 	/**

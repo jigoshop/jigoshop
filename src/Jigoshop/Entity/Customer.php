@@ -12,7 +12,7 @@ class Customer
 	public function getCountry()
 	{
 		// TODO: Implement
-		return 'PL';
+		return 'US';
 	}
 
 	public function getState()
