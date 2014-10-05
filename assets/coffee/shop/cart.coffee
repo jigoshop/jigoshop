@@ -18,3 +18,6 @@ jQuery ($) ->
       $('#cart-subtotal > td').html(result.html.subtotal)
       for own taxClass, tax of result.html.tax
         $("#tax-#{taxClass} > td").html(tax)
+
+  $('#shipping-calculator').on 'click', '.panel-heading', ->
+    $('#shipping-calculator .panel-body').slideToggle()

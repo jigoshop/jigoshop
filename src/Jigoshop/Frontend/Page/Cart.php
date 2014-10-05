@@ -13,6 +13,7 @@ use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
 use Jigoshop\Service\CartServiceInterface;
+use Jigoshop\Service\Customer;
 use Jigoshop\Service\ProductServiceInterface;
 use WPAL\Wordpress;
 
@@ -28,24 +29,29 @@ class Cart implements Page
 	private $cartService;
 	/** @var ProductServiceInterface */
 	private $productService;
+	/** @var Customer */
+	private $customerService;
 	/** @var \Jigoshop\Frontend\Cart */
 	private $cart;
 
-	public function __construct(Wordpress $wp, Options $options, Messages $messages, CartServiceInterface $cartService, ProductServiceInterface $productService, Styles $styles,
-		Scripts $scripts)
+	public function __construct(Wordpress $wp, Options $options, Messages $messages, CartServiceInterface $cartService, ProductServiceInterface $productService,
+		Customer $customerService, Styles $styles, Scripts $scripts)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->messages = $messages;
 		$this->cartService = $cartService;
 		$this->productService = $productService;
+		$this->customerService = $customerService;
 		$this->cart = $cartService->get($cartService->getCartIdForCurrentUser());
 
 		$styles->add('jigoshop.shop', JIGOSHOP_URL.'/assets/css/shop.css');
 		$styles->add('jigoshop.shop.cart', JIGOSHOP_URL.'/assets/css/shop/cart.css');
+		$styles->add('jigoshop-vendors', JIGOSHOP_URL.'/assets/css/vendors.min.css');
 		$scripts->add('jigoshop.helpers', JIGOSHOP_URL.'/assets/js/helpers.js');
 		$scripts->add('jigoshop.shop', JIGOSHOP_URL.'/assets/js/shop.js');
 		$scripts->add('jigoshop.shop.cart', JIGOSHOP_URL.'/assets/js/shop/cart.js');
+		$scripts->add('jigoshop-vendors', JIGOSHOP_URL.'/assets/js/vendors.min.js');
 		$scripts->localize('jigoshop.shop.cart', 'jigoshop', array(
 			'ajax' => admin_url('admin-ajax.php', 'jigoshop'),
 		));
@@ -130,8 +136,10 @@ class Cart implements Page
 			'cart' => $this->cart,
 			'messages' => $this->messages,
 			'productService' => $this->productService,
+			'customer' => $this->customerService->getCurrent(),
 			'shopUrl' => $this->wp->getPermalink($this->options->getPageId(Pages::SHOP)),
 			'showWithTax' => $this->options->get('general.price_tax') == 'with_tax',
+			'showShippingCalculator' => $this->options->get('shipping.calculator'),
 		));
 	}
 }

@@ -7,6 +7,7 @@
   }
 
   @import '../../bower/bootstrap/less/buttons.less';
+  @import '../../bower/bootstrap/less/forms.less';
   @import '../../bower/bootstrap/less/panels.less';
   @import '../../bower/bootstrap/less/tables.less';
   @import '../../bower/bootstrap/less/type.less';
@@ -35,6 +36,16 @@
 
         th {
           text-align: right;
+        }
+      }
+      #shipping-calculator {
+        width: 45%;
+
+        .panel-body {
+          display: none;
+        }
+        label {
+          display: none;
         }
       }
     }

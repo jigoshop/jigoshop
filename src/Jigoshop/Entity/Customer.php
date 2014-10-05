@@ -18,12 +18,12 @@ class Customer
 	public function getState()
 	{
 		// TODO: Implement
-		return '';
+		return 'AK';
 	}
 
 	public function getPostcode()
 	{
 		// TODO: Implement
-		return '';
+		return '123';
 	}
 }

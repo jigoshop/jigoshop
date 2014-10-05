@@ -7,6 +7,7 @@ use Jigoshop\Helper\Render;
  * @var $productService \Jigoshop\Service\ProductServiceInterface Product service.
  * @var $content string Contents of cart page
  * @var $cart \Jigoshop\Frontend\Cart Cart object.
+ * @var $customer \Jigoshop\Entity\Customer Current customer.
  * @var $shopUrl string Url to sh
  * @var $showWithTax bool Whether to show product price with or without tax.
  */
@@ -66,7 +67,7 @@ use Jigoshop\Helper\Render;
 		</table>
 		<div id="cart-collaterals">
 			<?php do_action('cart-collaterals', $cart); ?>
-			<div id="cart-totals" class="panel panel-default pull-right">
+			<div id="cart-totals" class="panel panel-primary pull-right">
 				<div class="panel-heading"><h2 class="panel-title"><?php _e('Cart Totals', 'jigoshop'); ?></h2></div>
 				<table class="table">
 					<tbody>
@@ -171,6 +172,31 @@ use Jigoshop\Helper\Render;
 		do_action('jigoshop_after_shipping_calculator');
 		//*/ ?>
 			</div>
+			<?php if ($showShippingCalculator): ?>
+				<div id="shipping-calculator" class="panel panel-default pull-left">
+					<div class="panel-heading">
+						<h3 class="panel-title"><?php _e('Shipping calculator', 'jigoshop'); ?></h3>
+					</div>
+					<div class="panel-body">
+						<?php \Jigoshop\Helper\Forms::select(array(
+							'name' => 'country',
+							'value' => $customer->getCountry(),
+							'options' => \Jigoshop\Helper\Country::getAll(), // TODO: Work on restricted selling locations
+						)); ?>
+						<?php \Jigoshop\Helper\Forms::select(array(
+							'name' => 'state',
+							'value' => $customer->getState(),
+							'options' => \Jigoshop\Helper\Country::getStates($customer->getCountry()), // TODO: Work on restricted selling locations
+						)); ?>
+						<?php \Jigoshop\Helper\Forms::text(array(
+							'name' => 'postcode',
+							'value' => $customer->getPostcode(),
+							'placeholder' => __('Postcode', 'jigoshop'),
+						)); ?>
+						<button name="action" value="update-shipping" class="btn btn-default"><?php _e('Update', 'jigoshop'); ?></button>
+					</div>
+				</div>
+			<?php endif; ?>
 		</div>
 		<?php /* if (false && $options->get('jigoshop_cart_shows_shop_button') == 'yes') : ?>
 			<tr>

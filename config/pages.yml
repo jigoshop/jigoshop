@@ -58,5 +58,6 @@ services:
       - '@jigoshop.messages'
       - '@jigoshop.service.cart'
       - '@jigoshop.service.product'
+      - '@jigoshop.service.customer'
       - '@jigoshop.helper.styles'
       - '@jigoshop.helper.scripts'
