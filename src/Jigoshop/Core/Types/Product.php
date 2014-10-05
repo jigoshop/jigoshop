@@ -7,7 +7,7 @@ use Jigoshop\Core\Types;
 use Jigoshop\Entity\Product\Simple;
 use Jigoshop\Helper\Render;
 use Jigoshop\Service\ProductServiceInterface;
-use Jigoshop\Service\Tax;
+use Jigoshop\Service\TaxServiceInterface;
 use WPAL\Wordpress;
 
 class Product implements Post
@@ -20,12 +20,12 @@ class Product implements Post
 	private $options;
 	/** @var \Jigoshop\Service\ProductServiceInterface */
 	private $productService;
-	/** @var Tax */
+	/** @var TaxServiceInterface */
 	private $taxService;
 	/** @var array */
 	private $enabledTypes = array();
 
-	public function __construct(Wordpress $wp, Options $options, ProductServiceInterface $productService, Tax $taxService)
+	public function __construct(Wordpress $wp, Options $options, ProductServiceInterface $productService, TaxServiceInterface $taxService)
 	{
 		$this->wp = $wp;
 		$this->options = $options;

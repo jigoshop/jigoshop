@@ -7,7 +7,7 @@ use Jigoshop\Core\Options;
 use Jigoshop\Helper\Country;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
-use Jigoshop\Service\Tax;
+use Jigoshop\Service\TaxServiceInterface;
 
 /**
  * Taxes tab definition.
@@ -20,10 +20,10 @@ class TaxesTab implements TabInterface
 
 	/** @var array */
 	private $options;
-	/** @var \Jigoshop\Service\Tax */
+	/** @var TaxServiceInterface */
 	private $taxService;
 
-	public function __construct(Options $options, Tax $taxService, Scripts $scripts)
+	public function __construct(Options $options, TaxServiceInterface $taxService, Scripts $scripts)
 	{
 		$this->options = $options->get(self::SLUG);
 		$this->taxService = $taxService;

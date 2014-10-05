@@ -12,7 +12,7 @@ use WPAL\Wordpress;
  *
  * @package Jigoshop\Service
  */
-class Tax
+class Tax implements TaxServiceInterface
 {
 	/** @var \WPAL\Wordpress */
 	private $wp;
