@@ -4,13 +4,13 @@ class TaxSettings
     new_rule: ''
 
   constructor: (@params) ->
-    jQuery('#add-tax-class').on 'click', @addNewClass
-    jQuery('#tax-classes').on 'click', 'button.remove-tax-class', @removeItem
-    jQuery('#add-tax-rule').on 'click', @addNewRule
+    jQuery('#add-tax-class').on('click', @addNewClass)
+    jQuery('#tax-classes').on('click', 'button.remove-tax-class', @removeItem)
+    jQuery('#add-tax-rule').on('click', @addNewRule)
     jQuery('#tax-rules')
-      .on 'click', 'button.remove-tax-rule', @removeItem
-      .on 'change', '.tax-rule-country', @updateStateField
-    @updateFields
+      .on('click', 'button.remove-tax-rule', @removeItem)
+      .on('change', '.tax-rule-country', @updateStateField)
+    @updateFields()
 
   removeItem: ->
     jQuery(this).closest('tr').remove()
@@ -51,7 +51,6 @@ class TaxSettings
   Attaches Select2 to provided field with proper states to select
   ###
   _attachSelectField: ($field, states) ->
-    $field.attr('type', 'hidden')
     $field.select2
       data:
         results: states
@@ -69,7 +68,7 @@ class TaxSettings
   Attaches simple text field to write a state
   ###
   _attachTextField: ($field) ->
-    $field.select2('destroy').attr('type', 'text')
+    $field.select2('destroy')
 
 jQuery () ->
   new TaxSettings(jigoshop_admin_taxes)

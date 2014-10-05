@@ -1,5 +1,4 @@
 <?php
-use Jigoshop\Helper\Country;
 use Jigoshop\Admin\Helper\Forms;
 use Jigoshop\Core\Options;
 
@@ -54,7 +53,7 @@ use Jigoshop\Core\Options;
 	)); ?>
 	</td>
 	<td>
-		<?php Forms::hidden(array(
+		<?php Forms::text(array(
 			'id' => 'tax_rule_postcodes_'.$rule['id'],
 			'name' => Options::NAME.'[rules][postcodes][]',
 			'classes' => array('tax-rule-postcodes'),
