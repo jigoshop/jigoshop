@@ -4,7 +4,7 @@ License: GNU General Public License v3
 Tags: e-commerce, wp e-commerce, ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal, jigoshop, shipping, inventory, stock, online, sell, sales, weights, dimensions, configurable, variable, downloadable, external, affiliate, download, virtual, physical
 Requires at least: 3.8
 Tested up to: 4.0
-Stable tag: 1.12
+Stable tag: 1.12.1
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -119,7 +119,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 
 == Changelog ==
 
-= 1.12.1 =
+= 1.12.1 - 2014-10-07 =
 * Fix: Phone number in order email.
 * Fix: Updated polish translation.
 * Fix: Triggering `jigoshop.cart.update` now properly passes data.
