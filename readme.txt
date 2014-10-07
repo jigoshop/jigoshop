@@ -119,7 +119,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 
 == Changelog ==
 
-= 1.12.1 =
+= 1.12.1 - 2014-10-07 =
 * Fix: Phone number in order email.
 * Fix: Updated polish translation.
 * Fix: Triggering `jigoshop.cart.update` now properly passes data.
