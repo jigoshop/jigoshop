@@ -6,3 +6,9 @@ services:
       - '@jigoshop.options'
     tags:
       - { name: jigoshop.shipping.required_method }
+  jigoshop.shipping.free_shipping:
+    class: Jigoshop\Shipping\FreeShipping
+    arguments:
+      - '@jigoshop.options'
+    tags:
+      - { name: jigoshop.shipping.required_method }

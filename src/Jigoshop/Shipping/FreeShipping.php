@@ -5,9 +5,9 @@ namespace Jigoshop\Shipping;
 use Jigoshop\Core\Options;
 use Jigoshop\Frontend\Cart;
 
-class FlatRate implements Method
+class FreeShipping implements Method
 {
-	const NAME = 'flat_rate';
+	const NAME = 'free_shipping';
 
 	/** @var array */
 	private $options;
@@ -30,7 +30,7 @@ class FlatRate implements Method
 	 */
 	public function getName()
 	{
-		return __('Flat rate', 'jigoshop');
+		return __('Free shipping', 'jigoshop');
 	}
 
 	/**
@@ -77,6 +77,6 @@ class FlatRate implements Method
 	public function calculate(Cart $cart)
 	{
 		// TODO: Implement calculate() method.
-		return 1.0;
+		return 0.0;
 	}
 }

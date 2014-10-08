@@ -1,4 +1,5 @@
 <?php
+use Jigoshop\Helper\Country;
 use Jigoshop\Helper\Product;
 use Jigoshop\Helper\Render;
 
@@ -8,6 +9,7 @@ use Jigoshop\Helper\Render;
  * @var $content string Contents of cart page
  * @var $cart \Jigoshop\Frontend\Cart Cart object.
  * @var $customer \Jigoshop\Entity\Customer Current customer.
+ * @var $shippingMethods array List of available shipping methods.
  * @var $shopUrl string Url to sh
  * @var $showWithTax bool Whether to show product price with or without tax.
  */
@@ -75,6 +77,51 @@ use Jigoshop\Helper\Render;
 						<th scope="row"><?php _e('Subtotal', 'jigoshop'); ?></th>
 						<td><?php echo Product::formatPrice($cart->getSubtotal()); ?></td>
 					</tr>
+					<?php if ($showShippingCalculator): ?>
+						<tr id="shipping-calculator">
+							<th scope="row"><?php _e('Shipping', 'jigoshop'); ?></th>
+							<td>
+								<p class="small text-muted"><?php echo sprintf(__('Estimated for %s', 'jigoshop'), Country::getName($customer->getCountry())); ?></p>
+								<ul class="list-group">
+									<?php foreach($shippingMethods as $method): /** @var $method \Jigoshop\Shipping\Method */ ?>
+										<li class="list-group-item">
+											<label>
+												<input type="radio" name="shipping-method" value="<?php echo $method->getId(); ?>" />
+												<?php echo $method->getName(); ?>
+											</label>
+											<span class="pull-right"><?php echo Product::formatPrice($method->calculate($cart)); ?></span>
+										</li>
+									<?php endforeach; ?>
+								</ul>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h3 class="panel-title">
+											<?php _e('Select your destination', 'jigoshop'); ?>
+											<button class="btn btn-default pull-right close"><?php _e('Close', 'jigoshop'); ?></button>
+										</h3>
+									</div>
+									<div class="panel-body">
+										<?php \Jigoshop\Helper\Forms::select(array(
+											'name' => 'country',
+											'value' => $customer->getCountry(),
+											'options' => Country::getAll(), // TODO: Work on restricted selling locations
+										)); ?>
+										<?php \Jigoshop\Helper\Forms::select(array(
+											'name' => 'state',
+											'value' => $customer->getState(),
+											'options' => Country::getStates($customer->getCountry()), // TODO: Work on restricted selling locations
+										)); ?>
+										<?php \Jigoshop\Helper\Forms::text(array(
+											'name' => 'postcode',
+											'value' => $customer->getPostcode(),
+											'placeholder' => __('Postcode', 'jigoshop'),
+										)); ?>
+									</div>
+								</div>
+								<button name="action" value="update-shipping" class="btn btn-default pull-right" id="change-destination"><?php _e('Change destination', 'jigoshop'); ?></button>
+							</td>
+						</tr>
+					<?php endif; ?>
 					<?php foreach ($cart->getTax() as $taxClass => $tax): ?>
 						<?php if ($tax == 0) continue; ?>
 						<tr id="tax-<?php echo $taxClass; ?>">
@@ -172,31 +219,6 @@ use Jigoshop\Helper\Render;
 		do_action('jigoshop_after_shipping_calculator');
 		//*/ ?>
 			</div>
-			<?php if ($showShippingCalculator): ?>
-				<div id="shipping-calculator" class="panel panel-default pull-left">
-					<div class="panel-heading">
-						<h3 class="panel-title"><?php _e('Shipping calculator', 'jigoshop'); ?></h3>
-					</div>
-					<div class="panel-body">
-						<?php \Jigoshop\Helper\Forms::select(array(
-							'name' => 'country',
-							'value' => $customer->getCountry(),
-							'options' => \Jigoshop\Helper\Country::getAll(), // TODO: Work on restricted selling locations
-						)); ?>
-						<?php \Jigoshop\Helper\Forms::select(array(
-							'name' => 'state',
-							'value' => $customer->getState(),
-							'options' => \Jigoshop\Helper\Country::getStates($customer->getCountry()), // TODO: Work on restricted selling locations
-						)); ?>
-						<?php \Jigoshop\Helper\Forms::text(array(
-							'name' => 'postcode',
-							'value' => $customer->getPostcode(),
-							'placeholder' => __('Postcode', 'jigoshop'),
-						)); ?>
-						<button name="action" value="update-shipping" class="btn btn-default"><?php _e('Update', 'jigoshop'); ?></button>
-					</div>
-				</div>
-			<?php endif; ?>
 		</div>
 		<?php /* if (false && $options->get('jigoshop_cart_shows_shop_button') == 'yes') : ?>
 			<tr>

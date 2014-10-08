@@ -6,9 +6,11 @@
     border: 0;
   }
 
+  @import '../../bower/bootstrap/less/badges.less';
   @import '../../bower/bootstrap/less/buttons.less';
   @import '../../bower/bootstrap/less/forms.less';
   @import '../../bower/bootstrap/less/panels.less';
+  @import '../../bower/bootstrap/less/list-group.less';
   @import '../../bower/bootstrap/less/tables.less';
   @import '../../bower/bootstrap/less/type.less';
 
@@ -28,6 +30,31 @@
       text-transform: none;
     }
 
+    tr#shipping-calculator {
+      button.close {
+        margin-top: -8px;
+      }
+      .list-group {
+        margin-left: 0;
+      }
+      .list-group-item label {
+        margin: 0;
+
+        input {
+          vertical-align: sub;
+          margin-right: @padding-base-vertical;
+        }
+      }
+      td > div {
+        &, label {
+          display: none;
+        }
+        div.form-group:last-child {
+          margin: 0;
+        }
+      }
+    }
+
     #cart-collaterals {
       .clearfix();
 
@@ -36,16 +63,7 @@
 
         th {
           text-align: right;
-        }
-      }
-      #shipping-calculator {
-        width: 45%;
-
-        .panel-body {
-          display: none;
-        }
-        label {
-          display: none;
+          width: 30%;
         }
       }
     }

@@ -19,5 +19,13 @@ jQuery ($) ->
       for own taxClass, tax of result.html.tax
         $("#tax-#{taxClass} > td").html(tax)
 
-  $('#shipping-calculator').on 'click', '.panel-heading', ->
-    $('#shipping-calculator .panel-body').slideToggle()
+  $('#shipping-calculator').on 'click', '#change-destination', (e) ->
+    e.preventDefault()
+    $('#shipping-calculator td > div').slideToggle()
+    $(this).slideToggle()
+    return false
+  .on 'click', '.close', (e) ->
+    e.preventDefault()
+    $('#shipping-calculator td > div').slideToggle()
+    $('#change-destination').slideToggle()
+    return false

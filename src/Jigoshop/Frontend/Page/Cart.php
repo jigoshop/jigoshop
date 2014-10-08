@@ -15,6 +15,7 @@ use Jigoshop\Helper\Styles;
 use Jigoshop\Service\CartServiceInterface;
 use Jigoshop\Service\Customer;
 use Jigoshop\Service\ProductServiceInterface;
+use Jigoshop\Service\ShippingServiceInterface;
 use WPAL\Wordpress;
 
 class Cart implements Page
@@ -31,11 +32,13 @@ class Cart implements Page
 	private $productService;
 	/** @var Customer */
 	private $customerService;
+	/** @var ShippingServiceInterface */
+	private $shippingService;
 	/** @var \Jigoshop\Frontend\Cart */
 	private $cart;
 
 	public function __construct(Wordpress $wp, Options $options, Messages $messages, CartServiceInterface $cartService, ProductServiceInterface $productService,
-		Customer $customerService, Styles $styles, Scripts $scripts)
+		Customer $customerService, ShippingServiceInterface $shippingService, Styles $styles, Scripts $scripts)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
@@ -43,6 +46,7 @@ class Cart implements Page
 		$this->cartService = $cartService;
 		$this->productService = $productService;
 		$this->customerService = $customerService;
+		$this->shippingService = $shippingService;
 		$this->cart = $cartService->get($cartService->getCartIdForCurrentUser());
 
 		$styles->add('jigoshop.shop', JIGOSHOP_URL.'/assets/css/shop.css');
@@ -103,6 +107,7 @@ class Cart implements Page
 		if (isset($_POST['action'])) {
 			switch ($_POST['action']) {
 				case 'checkout':
+					// TODO: Update values with non-JS mode
 					$this->wp->wpRedirect($this->wp->getPermalink($this->options->getPageId(Pages::CHECKOUT)));
 					exit;
 				case 'update-cart':
@@ -137,6 +142,7 @@ class Cart implements Page
 			'messages' => $this->messages,
 			'productService' => $this->productService,
 			'customer' => $this->customerService->getCurrent(),
+			'shippingMethods' => $this->shippingService->getAvailable(),
 			'shopUrl' => $this->wp->getPermalink($this->options->getPageId(Pages::SHOP)),
 			'showWithTax' => $this->options->get('general.price_tax') == 'with_tax',
 			'showShippingCalculator' => $this->options->get('shipping.calculator'),
