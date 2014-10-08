@@ -8,6 +8,7 @@ use Jigoshop\Exception;
 use Jigoshop\Service\ProductServiceInterface;
 use Jigoshop\Service\ShippingServiceInterface;
 use Jigoshop\Service\TaxServiceInterface;
+use Jigoshop\Shipping\Method;
 use WPAL\Wordpress;
 
 class Cart
@@ -27,6 +28,8 @@ class Cart
 	private $id;
 	private $items = array();
 	private $tax = array();
+	/** @var Method */
+	private $shippingMethod;
 	private $total = 0.0;
 	private $subtotal = 0.0;
 
@@ -61,6 +64,9 @@ class Cart
 		if (!empty($data)) {
 			$this->id = $data['id'];
 			$items = unserialize($data['items']);
+			if (isset($data['shipping_method'])) {
+				$this->setShippingMethod($this->shippingService->findForState($data['shipping_method']));
+			}
 			$taxIncludedInPrice = $this->options->get('tax.included');
 
 			if (is_array($items)) {
@@ -265,6 +271,39 @@ class Cart
 		return $this->taxService->getLabel($taxClass);
 	}
 
+	/**
+	 * @return Method Currently selected shipping method.
+	 */
+	public function getShippingMethod()
+	{
+		return $this->shippingMethod;
+	}
+
+	/**
+	 * Sets shipping method and updates cart totals to reflect it's price.
+	 *
+	 * @param Method $method New shipping method.
+	 */
+	public function setShippingMethod(Method $method)
+	{
+		// TODO: Improve this part of code.
+		if ($this->shippingMethod !== null) {
+			$price = $this->shippingMethod->calculate($this);
+			$this->subtotal -= $price;
+			$this->total -= $price + $this->taxService->calculateShipping($this->shippingMethod, $price);
+			foreach ($this->shippingMethod->getTaxClasses() as $class) {
+				$this->tax[$class] -= $this->taxService->getShipping($this->shippingMethod, $price, $class);
+			}
+		}
+
+		$this->shippingMethod = $method;
+		$price = $method->calculate($this);
+		$this->subtotal += $price;
+		$this->total += $price + $this->taxService->calculateShipping($method, $price);
+		foreach ($method->getTaxClasses() as $class) {
+			$this->tax[$class] += $this->taxService->getShipping($method, $price, $class);
+		}
+	}
 
 	/**
 	 * Generates representation of current cart state.
@@ -275,6 +314,7 @@ class Cart
 	{
 		return array(
 			'id' => $this->id,
+			'shipping_method' => $this->shippingMethod->getState(),
 			'items' => serialize(array_map(function($item){
 				/** @var $product Product */
 				$product = $item['item'];

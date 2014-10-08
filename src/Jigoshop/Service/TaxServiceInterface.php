@@ -2,6 +2,7 @@
 namespace Jigoshop\Service;
 
 use Jigoshop\Entity\Product;
+use Jigoshop\Shipping\Method;
 
 
 /**
@@ -24,6 +25,21 @@ interface TaxServiceInterface
 	 * @return float Tax value for selected tax class.
 	 */
 	public function get(Product $product, $taxClass);
+
+	/**
+	 * @param Method $method Method to calculate tax for.
+	 * @param $price float Price calculated for current cart.
+	 * @return float Overall tax value.
+	 */
+	public function calculateShipping(Method $method, $price);
+
+	/**
+	 * @param Method $method Method to calculate tax for.
+	 * @param $price float Price calculated for current cart.
+	 * @param $taxClass string Tax class.
+	 * @return float Tax value for selected tax class.
+	 */
+	public function getShipping(Method $method, $price, $taxClass);
 
 	/**
 	 * @return array List of available tax classes.

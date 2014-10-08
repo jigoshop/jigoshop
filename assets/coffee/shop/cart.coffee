@@ -1,31 +1,55 @@
-jQuery ($) ->
-  $('#cart').on 'change', '.product-quantity input', ->
-    $item = $(this).closest('tr')
-    $.ajax(jigoshop.ajax,
+class Cart
+  params:
+    ajax: ''
+
+  constructor: (@params) ->
+    jQuery('#cart').on 'change', '.product-quantity input', @updateQuantity
+    jQuery('#shipping-calculator')
+      .on 'click', '#change-destination', @changeDestination
+      .on 'click', '.close', @changeDestination
+      .on 'click', 'input[type=radio]', @selectShipping
+    # TODO: Add functions for changing destination
+    # TODO: Maybe blocking while doing update?
+
+  changeDestination: (e) ->
+    e.preventDefault()
+    jQuery('#shipping-calculator td > div').slideToggle()
+    jQuery('#change-destination').slideToggle()
+    return false
+
+  selectShipping: =>
+    jQuery.ajax(@params.ajax,
+      type: 'post'
+      dataType: 'json'
+      data:
+        action: 'jigoshop_cart_select_shipping'
+        method: jQuery('#shipping-calculator input[type=radio]:checked').val()
+    )
+    .done (result) ->
+      jQuery('#cart-total > td').html(result.html.total)
+      jQuery('#cart-subtotal > td').html(result.html.subtotal)
+      for own taxClass, tax of result.html.tax
+        jQuery("#tax-#{taxClass} > td").html(tax)
+
+  updateQuantity: ->
+    $item = jQuery(this).closest('tr')
+    jQuery.ajax(@params.ajax,
       type: 'post'
       dataType: 'json'
       data:
         action: 'jigoshop_cart_update_item'
-        item: $(this).closest('tr').data('id')
-        quantity: $(this).val()
+        item: jQuery(this).closest('tr').data('id')
+        quantity: jQuery(this).val()
     )
     .done (result) ->
       if result.success == true
-        $('.product-subtotal', $item).html(result.html.item_subtotal)
+        jQuery('.product-subtotal', $item).html(result.html.item_subtotal)
       else
         $item.remove()
-      $('#cart-total > td').html(result.html.total)
-      $('#cart-subtotal > td').html(result.html.subtotal)
+      jQuery('#cart-total > td').html(result.html.total)
+      jQuery('#cart-subtotal > td').html(result.html.subtotal)
       for own taxClass, tax of result.html.tax
-        $("#tax-#{taxClass} > td").html(tax)
+        jQuery("#tax-#{taxClass} > td").html(tax)
 
-  $('#shipping-calculator').on 'click', '#change-destination', (e) ->
-    e.preventDefault()
-    $('#shipping-calculator td > div').slideToggle()
-    $(this).slideToggle()
-    return false
-  .on 'click', '.close', (e) ->
-    e.preventDefault()
-    $('#shipping-calculator td > div').slideToggle()
-    $('#change-destination').slideToggle()
-    return false
+jQuery () ->
+  new Cart(jigoshop)

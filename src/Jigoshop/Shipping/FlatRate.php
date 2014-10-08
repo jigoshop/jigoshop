@@ -79,4 +79,22 @@ class FlatRate implements Method
 		// TODO: Implement calculate() method.
 		return 1.0;
 	}
+
+	/**
+	 * @return array List of applicable tax classes.
+	 */
+	public function getTaxClasses()
+	{
+		return array('standard');
+	}
+
+	/**
+	 * @return array Minimal state to fully identify shipping method.
+	 */
+	public function getState()
+	{
+		return array(
+			'id' => $this->getId(),
+		);
+	}
 }

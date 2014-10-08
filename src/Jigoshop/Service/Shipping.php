@@ -42,6 +42,19 @@ class Shipping implements ShippingServiceInterface
 	}
 
 	/**
+	 * Finds item specified by state.
+	 *
+	 * @param array $state State of the method to be found.
+	 * @return Method Method found.
+	 */
+	public function findForState(array $state)
+	{
+		$method = $this->get($state['id']);
+		// TODO: Maybe some kind of state refreshing?
+		return $method;
+	}
+
+	/**
 	 * Finds and returns ID of cheapest available shipping method.
 	 *
 	 * @param Cart $cart Cart to calculate method prices for.

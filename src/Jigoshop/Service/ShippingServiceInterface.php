@@ -31,6 +31,14 @@ interface ShippingServiceInterface
 	public function get($id);
 
 	/**
+	 * Finds item specified by state.
+	 *
+	 * @param array $state State of the method to be found.
+	 * @return Method Method found.
+	 */
+	public function findForState(array $state);
+
+	/**
 	 * Finds and returns ID of cheapest available shipping method.
 	 *
 	 * @param Cart $cart Cart to calculate method prices for.

@@ -73,10 +73,6 @@ use Jigoshop\Helper\Render;
 				<div class="panel-heading"><h2 class="panel-title"><?php _e('Cart Totals', 'jigoshop'); ?></h2></div>
 				<table class="table">
 					<tbody>
-					<tr id="cart-subtotal">
-						<th scope="row"><?php _e('Subtotal', 'jigoshop'); ?></th>
-						<td><?php echo Product::formatPrice($cart->getSubtotal()); ?></td>
-					</tr>
 					<?php if ($showShippingCalculator): ?>
 						<tr id="shipping-calculator">
 							<th scope="row">
@@ -88,7 +84,7 @@ use Jigoshop\Helper\Render;
 									<?php foreach($shippingMethods as $method): /** @var $method \Jigoshop\Shipping\Method */ ?>
 										<li class="list-group-item">
 											<label>
-												<input type="radio" name="shipping-method" value="<?php echo $method->getId(); ?>" />
+												<input type="radio" name="shipping-method" value="<?php echo $method->getId(); ?>" <?php echo \Jigoshop\Helper\Forms::checked($method->getId(), $cart->getShippingMethod()->getId()); ?> />
 												<?php echo $method->getName(); ?>
 											</label>
 											<span class="pull-right"><?php echo Product::formatPrice($method->calculate($cart)); ?></span>
@@ -124,6 +120,10 @@ use Jigoshop\Helper\Render;
 							</td>
 						</tr>
 					<?php endif; ?>
+					<tr id="cart-subtotal">
+						<th scope="row"><?php _e('Subtotal', 'jigoshop'); ?></th>
+						<td><?php echo Product::formatPrice($cart->getSubtotal()); ?></td>
+					</tr>
 					<?php foreach ($cart->getTax() as $taxClass => $tax): ?>
 						<?php if ($tax == 0) continue; ?>
 						<tr id="tax-<?php echo $taxClass; ?>">

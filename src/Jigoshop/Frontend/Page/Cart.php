@@ -62,8 +62,38 @@ class Cart implements Page
 
 		$wp->addAction('wp_ajax_jigoshop_cart_update_item', array($this, 'ajaxUpdateItem'));
 		$wp->addAction('wp_ajax_nopriv_jigoshop_cart_update_item', array($this, 'ajaxUpdateItem'));
+		$wp->addAction('wp_ajax_jigoshop_cart_select_shipping', array($this, 'ajaxSelectShipping'));
+		$wp->addAction('wp_ajax_nopriv_jigoshop_cart_select_shipping', array($this, 'ajaxSelectShipping'));
 	}
 
+	// TODO: Add functions for changing destination
+
+	/**
+	 * Processes change of selected shipping method and returns updated cart details.
+	 */
+	public function ajaxSelectShipping()
+	{
+		// TODO: Bullet-proof a little bit this code (i.e. invalid shipping method or something)
+		$this->cart->setShippingMethod($this->shippingService->get($_POST['method']));
+		$this->cartService->save($this->cart);
+
+		echo json_encode(array(
+			'success' => true,
+			'subtotal' => $this->cart->getSubtotal(),
+			'tax' => $this->cart->getTax(),
+			'total' => $this->cart->getTotal(),
+			'html' => array(
+				'subtotal' => Product::formatPrice($this->cart->getSubtotal()),
+				'tax' => array_map(function($tax){ return Product::formatPrice($tax); }, $this->cart->getTax()),
+				'total' => Product::formatPrice($this->cart->getTotal()),
+			),
+		));
+		exit;
+	}
+
+	/**
+	 * Processes change of item quantity and returns updated item value and cart details.
+	 */
 	public function ajaxUpdateItem()
 	{
 		try {

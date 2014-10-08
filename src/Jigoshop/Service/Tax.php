@@ -5,6 +5,7 @@ namespace Jigoshop\Service;
 use Jigoshop\Entity\Customer;
 use Jigoshop\Entity\Product;
 use Jigoshop\Service\Customer as CustomerService;
+use Jigoshop\Shipping\Method;
 use WPAL\Wordpress;
 
 /**
@@ -69,6 +70,47 @@ class Tax implements TaxServiceInterface
 		}
 
 		return $this->taxes[$taxClass]['rate'] * $product->getPrice() / 100;
+	}
+
+	/**
+	 * @param Method $method Method to calculate tax for.
+	 * @param $price float Price calculated for current cart.
+	 * @return float Overall tax value.
+	 */
+	public function calculateShipping(Method $method, $price)
+	{
+		$tax = 0.0;
+		foreach ($method->getTaxClasses() as $taxClass) {
+			$tax += $this->getShipping($method, $price, $taxClass);
+		}
+
+		// TODO: Support for compound taxes
+
+		return $tax;
+	}
+
+	/**
+	 * @param Method $method Method to calculate tax for.
+	 * @param $price float Price calculated for current cart.
+	 * @param $taxClass string Tax class.
+	 * @return float Tax value for selected tax class.
+	 */
+	public function getShipping(Method $method, $price, $taxClass)
+	{
+		if (!in_array($taxClass, $this->taxClasses)) {
+			throw new Exception(sprintf('No tax class: %s', $taxClass));
+		}
+
+		if (!isset($this->taxes[$taxClass])) {
+			$this->taxes[$taxClass] = $this->fetch($taxClass, $this->customers->getCurrent());
+		}
+
+		// TODO: Support for compound taxes
+		if ($this->taxIncludedInPrice) {
+			return $price * (1 - 1 / (100 + $this->taxes[$taxClass]['rate']) * 100);
+		}
+
+		return $this->taxes[$taxClass]['rate'] * $price / 100;
 	}
 
 	/**

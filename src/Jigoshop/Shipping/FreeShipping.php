@@ -79,4 +79,22 @@ class FreeShipping implements Method
 		// TODO: Implement calculate() method.
 		return 0.0;
 	}
+
+	/**
+	 * @return array List of applicable tax classes.
+	 */
+	public function getTaxClasses()
+	{
+		return array();
+	}
+
+	/**
+	 * @return array Minimal state to fully identify shipping method.
+	 */
+	public function getState()
+	{
+		return array(
+			'id' => $this->getId(),
+		);
+	}
 }
