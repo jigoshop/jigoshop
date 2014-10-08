@@ -1,5 +1,7 @@
 ## Changelog
 
+* 1.12.2:
+    * Fix: Changing state or country in checkout will properly trigger recalculation of cart taxes.
 * 1.12.1 - 2014-10-07:
     * Fix: Phone number in order email.
     * Fix: Updated polish translation.

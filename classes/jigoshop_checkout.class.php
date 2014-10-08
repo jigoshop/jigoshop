@@ -808,7 +808,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 			define('JIGOSHOP_CHECKOUT', true);
 		}
 
-		// always calculate totals when coming to checkout, as we need the total calculated on the cart here
+		// Initialize cart
 		jigoshop_cart::get_cart();
 		jigoshop_cart::calculate_totals();
 
@@ -854,6 +854,10 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 					'email' => $this->posted['billing_email'],
 				);
 
+				jigoshop_customer::set_country($billing['country']);
+				jigoshop_customer::set_state($billing['state']);
+				jigoshop_customer::set_postcode($billing['postcode']);
+
 				if(isset($this->posted['billing_euvatno']) && $this->valid_euvatno){
 					$billing['euvatno'] = $this->posted['billing_euvatno'];
 					$billing['euvatno'] = str_replace(' ', '', $billing['euvatno']);
@@ -881,6 +885,13 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 						'country' => $this->posted['shipping_country'],
 					);
 				}
+
+				jigoshop_customer::set_shipping_country($shipping['country']);
+				jigoshop_customer::set_shipping_state($shipping['state']);
+				jigoshop_customer::set_shipping_postcode($shipping['postcode']);
+
+				// Update totals based on processed customer address
+				jigoshop_cart::calculate_totals();
 
 				// Save billing/shipping to user meta fields
 				if ($user_id > 0) {
