@@ -840,6 +840,15 @@ class Country
 		return isset(self::$countries[$countryCode]);
 	}
 
+	public static function getStateName($countryCode, $stateCode)
+	{
+		if (!self::hasState($countryCode, $stateCode)) {
+			return '';
+		}
+
+		return self::$states[$countryCode][$stateCode];
+	}
+
 	/**
 	 * Returns list of all defined states.
 	 *

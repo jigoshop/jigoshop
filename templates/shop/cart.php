@@ -79,9 +79,11 @@ use Jigoshop\Helper\Render;
 					</tr>
 					<?php if ($showShippingCalculator): ?>
 						<tr id="shipping-calculator">
-							<th scope="row"><?php _e('Shipping', 'jigoshop'); ?></th>
+							<th scope="row">
+								<?php _e('Shipping', 'jigoshop'); ?>
+								<p class="small text-muted"><?php echo sprintf(__('Estimated for:<br/>%s', 'jigoshop'), $customer->getLocation()); ?></p>
+							</th>
 							<td>
-								<p class="small text-muted"><?php echo sprintf(__('Estimated for %s', 'jigoshop'), Country::getName($customer->getCountry())); ?></p>
 								<ul class="list-group">
 									<?php foreach($shippingMethods as $method): /** @var $method \Jigoshop\Shipping\Method */ ?>
 										<li class="list-group-item">
