@@ -9,6 +9,7 @@ use Jigoshop\Helper\Render;
  * @var $placeholder string Field's placeholder.
  * @var $multiple boolean Is field supposed to accept multiple values?
  * @var $value mixed Currently selected value(s).
+ * @var $disabled bool Is field disabled?
  * @var $tip string Tip to show to the user.
  * @var $description string Field description.
  */
@@ -22,7 +23,7 @@ use Jigoshop\Helper\Render;
 	</label>
 	<div class="col-sm-9">
 		<select id="<?php echo $id; ?>" name="<?php echo $name; ?>" class="form-control"
-		        placeholder="<?php echo $placeholder; ?>"<?php $multiple and print ' multiple="multiple"'; ?>>
+		        placeholder="<?php echo $placeholder; ?>"<?php $multiple and print ' multiple="multiple"'; ?><?php $disabled and print ' disabled'; ?>>
 			<?php foreach($options as $option => $item): ?>
 				<?php if(is_array($item)): ?>
 					<optgroup label="<?php echo $option; ?>">

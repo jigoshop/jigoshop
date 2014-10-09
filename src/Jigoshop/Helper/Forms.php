@@ -45,6 +45,21 @@ class Forms
 	}
 
 	/**
+	 * Returns disabled string for inputs.
+	 *
+	 * @param $status bool Disable field.
+	 * @return string
+	 */
+	public static function disabled($status)
+	{
+		if ($status) {
+			return ' disabled="disabled"';
+		}
+
+		return '';
+	}
+
+	/**
 	 * Outputs simple text field.
 	 *
 	 * @param $field array Field parameters.
@@ -59,6 +74,7 @@ class Forms
 			'name' => null,
 			'label' => null,
 			'value' => false,
+			'disabled' => false,
 			'classes' => array(),
 			'description' => false,
 			'tip' => false,
@@ -94,6 +110,7 @@ class Forms
 			'value' => false,
 			'multiple' => false,
 			'placeholder' => '',
+			'disabled' => false,
 			'classes' => array(),
 			'description' => false,
 			'tip' => false,
@@ -134,6 +151,7 @@ class Forms
 			'label' => null,
 			'value' => false,
 			'placeholder' => '',
+			'disabled' => false,
 			'classes' => array(),
 			'description' => false,
 			'tip' => false,
