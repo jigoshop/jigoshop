@@ -314,7 +314,7 @@ class Cart
 	{
 		return array(
 			'id' => $this->id,
-			'shipping_method' => $this->shippingMethod->getState(),
+			'shipping_method' => $this->shippingMethod !== null ? $this->shippingMethod->getState() : null,
 			'items' => serialize(array_map(function($item){
 				/** @var $product Product */
 				$product = $item['item'];
@@ -335,5 +335,20 @@ class Cart
 	private function getItemKey($product)
 	{
 		return $product->getId();
+	}
+
+	/**
+	 * Checks whether given shipping method is set for current cart.
+	 *
+	 * @param $method Method Shipping method to check.
+	 * @return bool Is the method selected?
+	 */
+	public function hasShippingMethod($method)
+	{
+		if ($this->shippingMethod !== null) {
+			return $this->shippingMethod->getId() == $method->getId();
+		}
+
+		return false;
 	}
 }

@@ -82,9 +82,9 @@ use Jigoshop\Helper\Render;
 							<td>
 								<ul class="list-group">
 									<?php foreach($shippingMethods as $method): /** @var $method \Jigoshop\Shipping\Method */ ?>
-										<li class="list-group-item">
+										<li class="list-group-item" data-id="<?php echo $method->getId(); ?>">
 											<label>
-												<input type="radio" name="shipping-method" value="<?php echo $method->getId(); ?>" <?php echo \Jigoshop\Helper\Forms::checked($method->getId(), $cart->getShippingMethod()->getId()); ?> />
+												<input type="radio" name="shipping-method" value="<?php echo $method->getId(); ?>" <?php echo \Jigoshop\Helper\Forms::checked($cart->hasShippingMethod($method), true); ?> />
 												<?php echo $method->getName(); ?>
 											</label>
 											<span class="pull-right"><?php echo Product::formatPrice($method->calculate($cart)); ?></span>
@@ -104,10 +104,9 @@ use Jigoshop\Helper\Render;
 											'value' => $customer->getCountry(),
 											'options' => Country::getAll(), // TODO: Work on restricted selling locations
 										)); ?>
-										<?php \Jigoshop\Helper\Forms::select(array(
+										<?php \Jigoshop\Helper\Forms::text(array(
 											'name' => 'state',
 											'value' => $customer->getState(),
-											'options' => Country::getStates($customer->getCountry()), // TODO: Work on restricted selling locations
 										)); ?>
 										<?php \Jigoshop\Helper\Forms::text(array(
 											'name' => 'postcode',

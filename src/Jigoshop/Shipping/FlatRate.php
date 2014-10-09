@@ -4,6 +4,7 @@ namespace Jigoshop\Shipping;
 
 use Jigoshop\Core\Options;
 use Jigoshop\Frontend\Cart;
+use Jigoshop\Service\Customer;
 
 class FlatRate implements Method
 {
@@ -11,10 +12,13 @@ class FlatRate implements Method
 
 	/** @var array */
 	private $options;
+	/** @var \Jigoshop\Entity\Customer */
+	private $customer;
 
-	public function __construct(Options $options)
+	public function __construct(Options $options, Customer $customerService)
 	{
 		$this->options = $options->get('shipping.'.self::NAME);
+		$this->customer = $customerService->getCurrent();
 	}
 
 	/**
@@ -77,6 +81,10 @@ class FlatRate implements Method
 	public function calculate(Cart $cart)
 	{
 		// TODO: Implement calculate() method.
+		if ($this->customer->getCountry() == 'US') {
+			return 5.0;
+		}
+
 		return 1.0;
 	}
 

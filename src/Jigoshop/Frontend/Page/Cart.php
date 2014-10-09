@@ -8,6 +8,7 @@ use Jigoshop\Core\Pages;
 use Jigoshop\Core\Types;
 use Jigoshop\Exception;
 use Jigoshop\Frontend\Page;
+use Jigoshop\Helper\Country;
 use Jigoshop\Helper\Product;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
@@ -64,9 +65,81 @@ class Cart implements Page
 		$wp->addAction('wp_ajax_nopriv_jigoshop_cart_update_item', array($this, 'ajaxUpdateItem'));
 		$wp->addAction('wp_ajax_jigoshop_cart_select_shipping', array($this, 'ajaxSelectShipping'));
 		$wp->addAction('wp_ajax_nopriv_jigoshop_cart_select_shipping', array($this, 'ajaxSelectShipping'));
+		$wp->addAction('wp_ajax_jigoshop_cart_change_country', array($this, 'ajaxChangeCountry'));
+		$wp->addAction('wp_ajax_nopriv_jigoshop_cart_change_country', array($this, 'ajaxChangeCountry'));
+		$wp->addAction('wp_ajax_jigoshop_cart_change_state', array($this, 'ajaxChangeState'));
+		$wp->addAction('wp_ajax_nopriv_jigoshop_cart_change_state', array($this, 'ajaxChangeState'));
+		$wp->addAction('wp_ajax_jigoshop_cart_change_postcode', array($this, 'ajaxChangePostcode'));
+		$wp->addAction('wp_ajax_nopriv_jigoshop_cart_change_postcode', array($this, 'ajaxChangePostcode'));
 	}
 
 	// TODO: Add functions for changing destination
+	public function ajaxChangeCountry()
+	{
+		$customer = $this->customerService->getCurrent();
+		$customer->setCountry($_POST['country']);
+
+		// TODO: Recalculate cart values
+		// TODO: Fetch shipping values
+		// TODO: Also reload shipping estimation, tax labels and available shipping rates
+
+		echo json_encode(array(
+			'success' => true,
+			'has_states' => Country::hasStates($customer->getCountry()),
+			'states' => Country::getStates($customer->getCountry()),
+			'subtotal' => $this->cart->getSubtotal(),
+			'tax' => $this->cart->getTax(),
+			'total' => $this->cart->getTotal(),
+			'html' => array(
+				'subtotal' => Product::formatPrice($this->cart->getSubtotal()),
+				'tax' => array_map(function($tax){ return Product::formatPrice($tax); }, $this->cart->getTax()),
+				'total' => Product::formatPrice($this->cart->getTotal()),
+			),
+		));
+		exit;
+	}
+
+	public function ajaxChangeState()
+	{
+		$customer = $this->customerService->getCurrent();
+		$customer->setState($_POST['state']);
+
+		// TODO: Recalculate cart values
+
+		echo json_encode(array(
+			'success' => true,
+			'subtotal' => $this->cart->getSubtotal(),
+			'tax' => $this->cart->getTax(),
+			'total' => $this->cart->getTotal(),
+			'html' => array(
+				'subtotal' => Product::formatPrice($this->cart->getSubtotal()),
+				'tax' => array_map(function($tax){ return Product::formatPrice($tax); }, $this->cart->getTax()),
+				'total' => Product::formatPrice($this->cart->getTotal()),
+			),
+		));
+		exit;
+	}
+
+	public function ajaxChangePostcode()
+	{
+		$customer = $this->customerService->getCurrent();
+		$customer->setPostcode($_POST['postcode']);
+
+		// TODO: Recalculate cart values
+
+		echo json_encode(array(
+			'success' => true,
+			'subtotal' => $this->cart->getSubtotal(),
+			'tax' => $this->cart->getTax(),
+			'total' => $this->cart->getTotal(),
+			'html' => array(
+				'subtotal' => Product::formatPrice($this->cart->getSubtotal()),
+				'tax' => array_map(function($tax){ return Product::formatPrice($tax); }, $this->cart->getTax()),
+				'total' => Product::formatPrice($this->cart->getTotal()),
+			),
+		));
+		exit;
+	}
 
 	/**
 	 * Processes change of selected shipping method and returns updated cart details.

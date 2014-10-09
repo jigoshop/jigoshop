@@ -4,6 +4,7 @@ services:
     class: Jigoshop\Shipping\FlatRate
     arguments:
       - '@jigoshop.options'
+      - '@jigoshop.service.customer'
     tags:
       - { name: jigoshop.shipping.required_method }
   jigoshop.shipping.free_shipping:
