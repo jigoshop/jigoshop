@@ -17,6 +17,7 @@ use Jigoshop\Service\CartServiceInterface;
 use Jigoshop\Service\Customer;
 use Jigoshop\Service\ProductServiceInterface;
 use Jigoshop\Service\ShippingServiceInterface;
+use Jigoshop\Shipping\Method;
 use WPAL\Wordpress;
 
 class Cart implements Page
@@ -77,13 +78,19 @@ class Cart implements Page
 		$customer->setCountry($_POST['country']);
 		$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
 
+		$shipping = array();
+		foreach ($this->shippingService->getAvailable() as $method) {
+			/** @var $method Method */
+			$shipping[$method->getId()] = $method->calculate($cart);
+		}
+
 		$response = $this->getAjaxCartResponse($cart);
 		// Add some additional fields
 		$response['has_states'] = Country::hasStates($customer->getCountry());
 		$response['states'] = Country::getStates($customer->getCountry());
+		$response['shipping'] = $shipping;
 		$response['html']['estimation'] = $customer->getLocation();
-
-		// TODO: Fetch shipping values
+		$response['html']['shipping'] = array_map(function($item){ return Product::formatPrice($item); }, $shipping);
 
 		echo json_encode($response);
 		exit;
@@ -229,7 +236,7 @@ class Cart implements Page
 			);
 		}
 
-		return array(
+		$response = array(
 			'success' => true,
 			'subtotal' => $cart->getSubtotal(),
 			'tax' => $cart->getTax(),
@@ -240,5 +247,7 @@ class Cart implements Page
 				'total' => Product::formatPrice($cart->getTotal()),
 			),
 		);
+
+		return $response;
 	}
 }

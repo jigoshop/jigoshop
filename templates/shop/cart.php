@@ -82,7 +82,7 @@ use Jigoshop\Helper\Render;
 							<td>
 								<ul class="list-group">
 									<?php foreach($shippingMethods as $method): /** @var $method \Jigoshop\Shipping\Method */ ?>
-										<li class="list-group-item" data-id="<?php echo $method->getId(); ?>">
+										<li class="list-group-item" id="shipping-<?php echo $method->getId(); ?>">
 											<label>
 												<input type="radio" name="shipping-method" value="<?php echo $method->getId(); ?>" <?php echo \Jigoshop\Helper\Forms::checked($cart->hasShippingMethod($method), true); ?> />
 												<?php echo $method->getName(); ?>

@@ -75,6 +75,14 @@ class Cart
         else
           jQuery('#state').select2('destroy').val('')
 
+        for own shippingClass, value of result.html.shipping
+          $method = jQuery("#shipping-#{shippingClass}")
+          jQuery('span', $method).html(value)
+          if result.shipping[shippingClass] > 0
+            $method.show()
+          else
+            $methd.hide()
+
   updateState: =>
     jQuery.ajax(@params.ajax,
       type: 'post'
