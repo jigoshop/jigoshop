@@ -101,6 +101,25 @@ class Cart
     .done (result) ->
       if result.success == true
         jQuery('#shipping-calculator th p > span').html(result.html.estimation)
+        jQuery('#cart-total > td').html(result.html.total)
+        jQuery('#cart-subtotal > td').html(result.html.subtotal)
+
+        for own taxClass, tax of result.html.tax
+          $tax = jQuery("#tax-#{taxClass}")
+          jQuery("th", $tax).html(tax.label)
+          jQuery("td", $tax).html(tax.value)
+          if result.tax[taxClass] > 0
+            $tax.show()
+          else
+            $tax.hide()
+
+        for own shippingClass, value of result.html.shipping
+          $method = jQuery("#shipping-#{shippingClass}")
+          jQuery('span', $method).html(value)
+          if result.shipping[shippingClass] != -1
+            $method.show()
+          else
+            $method.hide()
 
   updatePostcode: =>
     jQuery.ajax(@params.ajax,

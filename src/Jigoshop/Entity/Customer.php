@@ -52,9 +52,11 @@ class Customer
 	 */
 	public function setCountry($country)
 	{
-		$this->country = $country;
-		$this->setState(''); // On country change - also clear state.
-		$_SESSION['jigoshop_customer']['country'] = $country;
+		if ($this->country != $country) {
+			$this->country = $country;
+			$this->setState(''); // On country change - also clear state.
+			$_SESSION['jigoshop_customer']['country'] = $country;
+		}
 	}
 
 	/**

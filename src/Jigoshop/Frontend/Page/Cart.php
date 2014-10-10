@@ -102,8 +102,16 @@ class Cart implements Page
 		$customer->setState($_POST['state']);
 		$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
 
+		$shipping = array();
+		foreach ($this->shippingService->getAvailable() as $method) {
+			/** @var $method Method */
+			$shipping[$method->getId()] = $method->calculate($cart);
+		}
+
 		$response = $this->getAjaxCartResponse($cart);
+		$response['shipping'] = $shipping;
 		$response['html']['estimation'] = $customer->getLocation();
+		$response['html']['shipping'] = array_map(function($item){ return Product::formatPrice($item); }, $shipping);
 
 		// TODO: Fetch shipping values
 

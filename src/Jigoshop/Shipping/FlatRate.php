@@ -83,6 +83,9 @@ class FlatRate implements Method
 		$customer = $this->customerService->getCurrent();
 		// TODO: Implement calculate() method.
 		if ($customer->getCountry() == 'US') {
+			if ($customer->getState() == 'AK') {
+				return 3.0;
+			}
 			return 5.0;
 		}
 

@@ -1,6 +1,16 @@
 @import '../../bower/bootstrap/less/variables.less';
 @import '../../bower/bootstrap/less/mixins.less';
 
+.customize-support .jigoshop #cart tr#shipping-calculator {
+  td > div {
+    display: none;
+  }
+
+  button.close {
+    display: inline-block;
+  }
+}
+
 .jigoshop {
   table, th, td {
     border: 0;
@@ -36,6 +46,7 @@
       }
       button.close {
         margin-top: -8px;
+        display: none;
       }
       .list-group {
         margin-left: 0;
@@ -49,7 +60,7 @@
         }
       }
       td > div {
-        &, label {
+        label {
           display: none;
         }
         div.form-group:last-child {
