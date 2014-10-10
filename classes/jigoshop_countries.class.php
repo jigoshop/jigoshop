@@ -1067,7 +1067,7 @@ class jigoshop_countries extends Jigoshop_Base {
 						self::get_options()->set('jigoshop_default_country', $country_key.':'.end($state_keys));
 					}
 				} else {
-					$is_selected = (is_array($selected_country) && in_array($country_key, $selected_country)) || ($selected_country == $country_key && $selected_state == '*');
+					$is_selected = (is_array($selected_country) && in_array($country_key, $selected_country)) || ($selected_country == $country_key);
 					$output .= '<option';
 					if($is_selected){
 						$output .= ' selected="selected"';
