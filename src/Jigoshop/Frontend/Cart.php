@@ -60,6 +60,11 @@ class Cart
 	public function initializeFor($id, $data = '')
 	{
 		$this->id = $id;
+		$this->items = array();
+		$this->total = 0.0;
+		$this->subtotal = 0.0;
+		$this->tax = array_map(function(){ return 0.0; }, $this->tax);
+		$this->shippingMethod = null;
 
 		if (!empty($data)) {
 			$this->id = $data['id'];

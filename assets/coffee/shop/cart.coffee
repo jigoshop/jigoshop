@@ -44,6 +44,19 @@ class Cart
     )
     .done (result) ->
       if result.success == true
+        jQuery('#shipping-calculator th p > span').html(result.html.estimation)
+        jQuery('#cart-total > td').html(result.html.total)
+        jQuery('#cart-subtotal > td').html(result.html.subtotal)
+
+        for own taxClass, tax of result.html.tax
+          $tax = jQuery("#tax-#{taxClass}")
+          jQuery("th", $tax).html(tax.label)
+          jQuery("td", $tax).html(tax.value)
+          if result.tax[taxClass] > 0
+            $tax.show()
+          else
+            $tax.hide()
+
         if result.has_states
           data = []
           for own state, label of result.states
@@ -70,6 +83,9 @@ class Cart
         action: 'jigoshop_cart_change_state'
         state: jQuery('#state').val()
     )
+    .done (result) ->
+      if result.success == true
+        jQuery('#shipping-calculator th p > span').html(result.html.estimation)
 
   updatePostcode: =>
     jQuery.ajax(@params.ajax,
@@ -79,16 +95,19 @@ class Cart
         action: 'jigoshop_cart_change_postcode'
         postcode: jQuery('#postcode').val()
     )
+    .done (result) ->
+      if result.success == true
+        jQuery('#shipping-calculator th p > span').html(result.html.estimation)
 
-  updateQuantity: =>
-    $item = jQuery(this).closest('tr')
+  updateQuantity: (e) =>
+    $item = jQuery(e.target).closest('tr')
     jQuery.ajax(@params.ajax,
       type: 'post'
       dataType: 'json'
       data:
         action: 'jigoshop_cart_update_item'
-        item: jQuery(this).closest('tr').data('id')
-        quantity: jQuery(this).val()
+        item: $item.data('id')
+        quantity: jQuery(e.target).val()
     )
     .done (result) ->
       if result.success == true
@@ -98,7 +117,13 @@ class Cart
       jQuery('#cart-total > td').html(result.html.total)
       jQuery('#cart-subtotal > td').html(result.html.subtotal)
       for own taxClass, tax of result.html.tax
-        jQuery("#tax-#{taxClass} > td").html(tax)
+        $tax = jQuery("#tax-#{taxClass}")
+        jQuery("th", $tax).html(tax.label)
+        jQuery("td", $tax).html(tax.value)
+        if result.tax[taxClass] > 0
+          $tax.show()
+        else
+          $tax.hide()
 
 jQuery () ->
   new Cart(jigoshop)

@@ -77,7 +77,7 @@ use Jigoshop\Helper\Render;
 						<tr id="shipping-calculator">
 							<th scope="row">
 								<?php _e('Shipping', 'jigoshop'); ?>
-								<p class="small text-muted"><?php echo sprintf(__('Estimated for:<br/>%s', 'jigoshop'), $customer->getLocation()); ?></p>
+								<p class="small text-muted"><?php echo sprintf(__('Estimated for:<br/><span>%s</span>', 'jigoshop'), $customer->getLocation()); ?></p>
 							</th>
 							<td>
 								<ul class="list-group">
@@ -124,8 +124,7 @@ use Jigoshop\Helper\Render;
 						<td><?php echo Product::formatPrice($cart->getSubtotal()); ?></td>
 					</tr>
 					<?php foreach ($cart->getTax() as $taxClass => $tax): ?>
-						<?php if ($tax == 0) continue; ?>
-						<tr id="tax-<?php echo $taxClass; ?>">
+						<tr id="tax-<?php echo $taxClass; ?>"<?php $tax == 0 and print ' style="display: none;"'; ?>>
 							<th scope="row"><?php echo $cart->getTaxLabel($taxClass); ?></th>
 							<td><?php echo Product::formatPrice($tax); ?></td>
 						</tr>

@@ -180,6 +180,10 @@ class Tax implements TaxServiceInterface
 			throw new Exception(sprintf(__('No tax class: %s', 'jigoshop'), $taxClass));
 		}
 
+		if (!isset($this->taxes[$taxClass])) {
+			$this->taxes[$taxClass] = $this->fetch($taxClass, $this->customers->getCurrent());
+		}
+
 		return sprintf('%s (%s%%)', $this->taxes[$taxClass]['label'], $this->taxes[$taxClass]['rate']);
 	}
 

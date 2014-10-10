@@ -12,13 +12,13 @@ class FlatRate implements Method
 
 	/** @var array */
 	private $options;
-	/** @var \Jigoshop\Entity\Customer */
-	private $customer;
+	/** @var Customer */
+	private $customerService;
 
 	public function __construct(Options $options, Customer $customerService)
 	{
 		$this->options = $options->get('shipping.'.self::NAME);
-		$this->customer = $customerService->getCurrent();
+		$this->customerService = $customerService;
 	}
 
 	/**
@@ -76,12 +76,13 @@ class FlatRate implements Method
 
 	/**
 	 * @param Cart $cart Cart to calculate shipping for.
-	 * @return float Calculates value of shipping for the cart.
+	 * @return float Calculated value of shipping for the cart.
 	 */
 	public function calculate(Cart $cart)
 	{
+		$customer = $this->customerService->getCurrent();
 		// TODO: Implement calculate() method.
-		if ($this->customer->getCountry() == 'US') {
+		if ($customer->getCountry() == 'US') {
 			return 5.0;
 		}
 

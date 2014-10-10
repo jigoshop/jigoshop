@@ -35,8 +35,6 @@ class Cart implements Page
 	private $customerService;
 	/** @var ShippingServiceInterface */
 	private $shippingService;
-	/** @var \Jigoshop\Frontend\Cart */
-	private $cart;
 
 	public function __construct(Wordpress $wp, Options $options, Messages $messages, CartServiceInterface $cartService, ProductServiceInterface $productService,
 		Customer $customerService, ShippingServiceInterface $shippingService, Styles $styles, Scripts $scripts)
@@ -48,7 +46,6 @@ class Cart implements Page
 		$this->productService = $productService;
 		$this->customerService = $customerService;
 		$this->shippingService = $shippingService;
-		$this->cart = $cartService->get($cartService->getCartIdForCurrentUser());
 
 		$styles->add('jigoshop.shop', JIGOSHOP_URL.'/assets/css/shop.css');
 		$styles->add('jigoshop.shop.cart', JIGOSHOP_URL.'/assets/css/shop/cart.css');
@@ -73,29 +70,22 @@ class Cart implements Page
 		$wp->addAction('wp_ajax_nopriv_jigoshop_cart_change_postcode', array($this, 'ajaxChangePostcode'));
 	}
 
-	// TODO: Add functions for changing destination
+	// TODO: Refactor functions
 	public function ajaxChangeCountry()
 	{
 		$customer = $this->customerService->getCurrent();
 		$customer->setCountry($_POST['country']);
+		$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
 
-		// TODO: Recalculate cart values
+		$response = $this->getAjaxCartResponse($cart);
+		// Add some additional fields
+		$response['has_states'] = Country::hasStates($customer->getCountry());
+		$response['states'] = Country::getStates($customer->getCountry());
+		$response['html']['estimation'] = $customer->getLocation();
+
 		// TODO: Fetch shipping values
-		// TODO: Also reload shipping estimation, tax labels and available shipping rates
 
-		echo json_encode(array(
-			'success' => true,
-			'has_states' => Country::hasStates($customer->getCountry()),
-			'states' => Country::getStates($customer->getCountry()),
-			'subtotal' => $this->cart->getSubtotal(),
-			'tax' => $this->cart->getTax(),
-			'total' => $this->cart->getTotal(),
-			'html' => array(
-				'subtotal' => Product::formatPrice($this->cart->getSubtotal()),
-				'tax' => array_map(function($tax){ return Product::formatPrice($tax); }, $this->cart->getTax()),
-				'total' => Product::formatPrice($this->cart->getTotal()),
-			),
-		));
+		echo json_encode($response);
 		exit;
 	}
 
@@ -103,20 +93,14 @@ class Cart implements Page
 	{
 		$customer = $this->customerService->getCurrent();
 		$customer->setState($_POST['state']);
+		$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
 
-		// TODO: Recalculate cart values
+		$response = $this->getAjaxCartResponse($cart);
+		$response['html']['estimation'] = $customer->getLocation();
 
-		echo json_encode(array(
-			'success' => true,
-			'subtotal' => $this->cart->getSubtotal(),
-			'tax' => $this->cart->getTax(),
-			'total' => $this->cart->getTotal(),
-			'html' => array(
-				'subtotal' => Product::formatPrice($this->cart->getSubtotal()),
-				'tax' => array_map(function($tax){ return Product::formatPrice($tax); }, $this->cart->getTax()),
-				'total' => Product::formatPrice($this->cart->getTotal()),
-			),
-		));
+		// TODO: Fetch shipping values
+
+		echo json_encode($response);
 		exit;
 	}
 
@@ -124,20 +108,14 @@ class Cart implements Page
 	{
 		$customer = $this->customerService->getCurrent();
 		$customer->setPostcode($_POST['postcode']);
+		$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
 
-		// TODO: Recalculate cart values
+		$response = $this->getAjaxCartResponse($cart);
+		$response['html']['estimation'] = $customer->getLocation();
 
-		echo json_encode(array(
-			'success' => true,
-			'subtotal' => $this->cart->getSubtotal(),
-			'tax' => $this->cart->getTax(),
-			'total' => $this->cart->getTotal(),
-			'html' => array(
-				'subtotal' => Product::formatPrice($this->cart->getSubtotal()),
-				'tax' => array_map(function($tax){ return Product::formatPrice($tax); }, $this->cart->getTax()),
-				'total' => Product::formatPrice($this->cart->getTotal()),
-			),
-		));
+		// TODO: Fetch shipping values
+
+		echo json_encode($response);
 		exit;
 	}
 
@@ -147,20 +125,13 @@ class Cart implements Page
 	public function ajaxSelectShipping()
 	{
 		// TODO: Bullet-proof a little bit this code (i.e. invalid shipping method or something)
-		$this->cart->setShippingMethod($this->shippingService->get($_POST['method']));
-		$this->cartService->save($this->cart);
+		$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
+		$cart->setShippingMethod($this->shippingService->get($_POST['method']));
+		$this->cartService->save($cart);
 
-		echo json_encode(array(
-			'success' => true,
-			'subtotal' => $this->cart->getSubtotal(),
-			'tax' => $this->cart->getTax(),
-			'total' => $this->cart->getTotal(),
-			'html' => array(
-				'subtotal' => Product::formatPrice($this->cart->getSubtotal()),
-				'tax' => array_map(function($tax){ return Product::formatPrice($tax); }, $this->cart->getTax()),
-				'total' => Product::formatPrice($this->cart->getTotal()),
-			),
-		));
+		$response = $this->getAjaxCartResponse($cart);
+
+		echo json_encode($response);
 		exit;
 	}
 
@@ -170,43 +141,38 @@ class Cart implements Page
 	public function ajaxUpdateItem()
 	{
 		try {
-			$this->cart->updateQuantity($_POST['item'], (int)$_POST['quantity']);
-			$item = $this->cart->getItem($_POST['item']);
+			$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
+			$cart->updateQuantity($_POST['item'], (int)$_POST['quantity']);
+			$item = $cart->getItem($_POST['item']);
 			$price = $this->options->get('general.price_tax') == 'with_tax' ? $item['price'] + $item['tax'] : $item['price'];
 
-			$result = array(
-				'success' => true,
-				'item_price' => $price,
-				'item_subtotal' => $price * $item['quantity'],
-				'subtotal' => $this->cart->getSubtotal(),
-				'tax' => $this->cart->getTax(),
-				'total' => $this->cart->getTotal(),
-				'html' => array(
-					'item_price' => Product::formatPrice($price),
-					'item_subtotal' => Product::formatPrice($price * $item['quantity']),
-					'subtotal' => Product::formatPrice($this->cart->getSubtotal()),
-					'tax' => array_map(function($tax){ return Product::formatPrice($tax); }, $this->cart->getTax()),
-					'total' => Product::formatPrice($this->cart->getTotal()),
-				),
-			);
+			$response = $this->getAjaxCartResponse($cart);
+			// Add some additional fields
+			$response['item_price'] = $price;
+			$response['item_subtotal'] = $price * $item['quantity'];
+			$response['html']['item_price'] = Product::formatPrice($price);
+			$response['html']['item_subtotal'] = Product::formatPrice($price * $item['quantity']);
 		} catch(Exception $e) {
-			$result = array(
+			$response = array(
 				'success' => false,
 				'error' => $e->getMessage(),
 				'html' => array(
-					'subtotal' => Product::formatPrice($this->cart->getSubtotal()),
-					'tax' => array_map(function($tax){ return Product::formatPrice($tax); }, $this->cart->getTax()),
-					'total' => Product::formatPrice($this->cart->getTotal()),
+					'subtotal' => Product::formatPrice($cart->getSubtotal()),
+					'tax' => array_map(function($tax){ return Product::formatPrice($tax); }, $cart->getTax()),
+					'total' => Product::formatPrice($cart->getTotal()),
 				),
 			);
 		}
-		$this->cartService->save($this->cart);
-		echo json_encode($result);
+
+		$this->cartService->save($cart);
+		echo json_encode($response);
 		exit;
 	}
 
 	public function action()
 	{
+		$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
+
 		if (isset($_POST['action'])) {
 			switch ($_POST['action']) {
 				case 'checkout':
@@ -217,9 +183,9 @@ class Cart implements Page
 					if (isset($_POST['cart']) && is_array($_POST['cart'])) {
 						try {
 							foreach ($_POST['cart'] as $item => $quantity) {
-								$this->cart->updateQuantity($item, (int)$quantity);
+								$cart->updateQuantity($item, (int)$quantity);
 							}
-							$this->cartService->save($this->cart);
+							$this->cartService->save($cart);
 							$this->messages->addNotice(__('Successfully updated the cart.', 'jigoshop'));
 						} catch(Exception $e) {
 							$this->messages->addError(sprintf(__('Error occurred while updating cart: %s', 'jigoshop'), $e->getMessage()));
@@ -229,19 +195,20 @@ class Cart implements Page
 		}
 
 		if (isset($_GET['action']) && isset($_GET['item']) && $_GET['action'] === 'remove-item' && is_numeric($_GET['item'])) {
-			$this->cart->removeItem((int)$_GET['item']);
-			$this->cartService->save($this->cart);
+			$cart->removeItem((int)$_GET['item']);
+			$this->cartService->save($cart);
 			$this->messages->addNotice(__('Successfully removed item from cart.', 'jigoshop'), false);
 		}
 	}
 
 	public function render()
 	{
+		$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
 		$content = $this->wp->getPostField('post_content', $this->options->getPageId(Pages::CART));
 
 		return Render::get('shop/cart', array(
 			'content' => $content,
-			'cart' => $this->cart,
+			'cart' => $cart,
 			'messages' => $this->messages,
 			'productService' => $this->productService,
 			'customer' => $this->customerService->getCurrent(),
@@ -250,5 +217,28 @@ class Cart implements Page
 			'showWithTax' => $this->options->get('general.price_tax') == 'with_tax',
 			'showShippingCalculator' => $this->options->get('shipping.calculator'),
 		));
+	}
+
+	private function getAjaxCartResponse(\Jigoshop\Frontend\Cart $cart)
+	{
+		$tax = array();
+		foreach ($cart->getTax() as $class => $value) {
+			$tax[$class] = array(
+				'label' => $cart->getTaxLabel($class),
+				'value' => Product::formatPrice($value),
+			);
+		}
+
+		return array(
+			'success' => true,
+			'subtotal' => $cart->getSubtotal(),
+			'tax' => $cart->getTax(),
+			'total' => $cart->getTotal(),
+			'html' => array(
+				'subtotal' => Product::formatPrice($cart->getSubtotal()),
+				'tax' => $tax,
+				'total' => Product::formatPrice($cart->getTotal()),
+			),
+		);
 	}
 }
