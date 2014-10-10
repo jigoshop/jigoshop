@@ -2,6 +2,7 @@ class Cart
   params:
     ajax: ''
 
+  # TODO: Refactoring
   constructor: (@params) ->
     jQuery('#cart').on 'change', '.product-quantity input', @updateQuantity
     jQuery('#shipping-calculator')
@@ -32,7 +33,13 @@ class Cart
       jQuery('#cart-total > td').html(result.html.total)
       jQuery('#cart-subtotal > td').html(result.html.subtotal)
       for own taxClass, tax of result.html.tax
-        jQuery("#tax-#{taxClass} > td").html(tax)
+        $tax = jQuery("#tax-#{taxClass}")
+        jQuery("th", $tax).html(tax.label)
+        jQuery("td", $tax).html(tax.value)
+        if result.tax[taxClass] > 0
+          $tax.show()
+        else
+          $tax.hide()
 
   updateCountry: =>
     jQuery.ajax(@params.ajax,
@@ -78,10 +85,10 @@ class Cart
         for own shippingClass, value of result.html.shipping
           $method = jQuery("#shipping-#{shippingClass}")
           jQuery('span', $method).html(value)
-          if result.shipping[shippingClass] > 0
+          if result.shipping[shippingClass] != -1
             $method.show()
           else
-            $methd.hide()
+            $method.hide()
 
   updateState: =>
     jQuery.ajax(@params.ajax,
