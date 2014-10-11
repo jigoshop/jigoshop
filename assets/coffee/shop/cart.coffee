@@ -146,6 +146,7 @@ class Cart
     .done (result) ->
       if result.success == true
         jQuery('.product-subtotal', $item).html(result.html.item_subtotal)
+        jQuery('#product-subtotal > td').html(result.html.product_subtotal)
       else
         $item.remove()
       jQuery('#cart-total > td').html(result.html.total)

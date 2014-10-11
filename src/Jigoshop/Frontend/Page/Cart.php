@@ -247,10 +247,12 @@ class Cart implements Page
 		$response = array(
 			'success' => true,
 			'subtotal' => $cart->getSubtotal(),
+			'product_subtotal' => $cart->getProductSubtotal(),
 			'tax' => $cart->getTax(),
 			'total' => $cart->getTotal(),
 			'html' => array(
 				'subtotal' => Product::formatPrice($cart->getSubtotal()),
+				'product_subtotal' => Product::formatPrice($cart->getProductSubtotal()),
 				'tax' => $tax,
 				'total' => Product::formatPrice($cart->getTotal()),
 			),

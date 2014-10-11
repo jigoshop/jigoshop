@@ -32,6 +32,7 @@ class Cart
 	private $shippingMethod;
 	private $total = 0.0;
 	private $subtotal = 0.0;
+	private $productSubtotal = 0.0;
 
 	/**
 	 * @param Wordpress $wp
@@ -63,6 +64,7 @@ class Cart
 		$this->items = array();
 		$this->total = 0.0;
 		$this->subtotal = 0.0;
+		$this->productSubtotal = 0.0;
 		$this->tax = array_map(function(){ return 0.0; }, $this->tax);
 		$this->shippingMethod = null;
 
@@ -91,6 +93,7 @@ class Cart
 					}
 
 					$this->subtotal += $price * $item['quantity'];
+					$this->productSubtotal += $price * $item['quantity'];
 					$this->total += ($price + $tax) * $item['quantity'];
 
 					$this->items[$key] = array(
@@ -151,6 +154,7 @@ class Cart
 
 			$this->total += $quantity * ($price + $tax);
 			$this->subtotal += $quantity * $price;
+			$this->productSubtotal += $quantity * $price;
 
 			$this->items[$key] = array(
 				'item' => $product,
@@ -174,6 +178,7 @@ class Cart
 			$product = $this->items[$key]['item'];
 			$this->total -= ($this->items[$key]['price'] + $this->items[$key]['tax']) * $this->items[$key]['quantity'];
 			$this->subtotal -= $this->items[$key]['price'] * $this->items[$key]['quantity'];
+			$this->productSubtotal -= $this->items[$key]['price'] * $this->items[$key]['quantity'];
 			foreach ($product->getTaxClasses() as $class) {
 				$this->tax[$class] -= $this->taxService->get($product, $class) * $this->items[$key]['quantity'];
 			}
@@ -216,6 +221,7 @@ class Cart
 		$difference = $quantity - $this->items[$key]['quantity'];
 		$this->total += ($this->items[$key]['price'] + $this->items[$key]['tax']) * $difference;
 		$this->subtotal += $this->items[$key]['price'] * $difference;
+		$this->productSubtotal += $this->items[$key]['price'] * $difference;
 		foreach ($product->getTaxClasses() as $class) {
 			$this->tax[$class] += $this->taxService->get($product, $class) * $difference;
 		}
@@ -261,6 +267,14 @@ class Cart
 	public function getSubtotal()
 	{
 		return $this->subtotal;
+	}
+
+	/**
+	 * @return float Current products subtotal of the cart.
+	 */
+	public function getProductSubtotal()
+	{
+		return $this->productSubtotal;
 	}
 
 	/**

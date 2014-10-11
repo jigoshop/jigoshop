@@ -58,6 +58,10 @@ use Jigoshop\Helper\Render;
 				<?php do_action('jigoshop\cart\table_body', $cart); ?>
 			</tbody>
 			<tfoot>
+				<tr id="product-subtotal">
+					<th scope="row" colspan="5" class="text-right"><?php _e('Products subtotal', 'jigoshop'); ?></th>
+					<td><?php echo Product::formatPrice($cart->getProductSubtotal()); ?></td>
+				</tr>
 				<tr>
 					<td colspan="6">
 						<noscript>
