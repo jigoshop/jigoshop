@@ -41,7 +41,7 @@ class jigoshop_licence_validator
 	public function __construct($file, $identifier, $home_shop_url)
 	{
 
-		$info = get_file_data($file, array('Title' => 'Plugin Name', 'Version' => 'Version'), 'plugin');
+		$info = get_file_data($file, array('Title' => 'Plugin Name', 'Version' => 'Version', 'Url' => 'Plugin URI'), 'plugin');
 
 		$this->identifier = $identifier;
 		$this->file = $file;
@@ -51,6 +51,7 @@ class jigoshop_licence_validator
 		$this->file_slug = str_replace('.php', '', $b);
 		$this->title = $info['Title'];
 		$this->version = $info['Version'];
+		$this->plugin_url = $info['Url'];
 		$this->home_shop_url = $home_shop_url;
 
 		if (is_ssl()) {
@@ -73,10 +74,12 @@ class jigoshop_licence_validator
 
 			add_action('admin_menu', array($this, 'register_nav_menu_link'));
 			// define the alternative API for updating checking
-			add_filter('pre_set_site_transient_update_plugins', array($this, 'check_for_update'));
+			add_filter('site_transient_update_plugins', array($this, 'check_for_update'));
 			// Define the alternative response for information checking
 			add_filter('plugins_api', array($this, 'get_update_info'), 20, 3);
 		}
+
+		add_action('in_plugin_update_message-'.$this->plugin_slug, array($this, 'in_plugin_update_message'), 10, 2);
 	}
 
 	/**
@@ -88,14 +91,19 @@ class jigoshop_licence_validator
 	 */
 	public function is_licence_active()
 	{
-		$keys = $this->get_keys();
-		$active = (isset($keys[$this->identifier]['status']) && $keys[$this->identifier]['status']);
+		$active = $this->is_active();
 
 		if (!$active) {
 			add_action('admin_notices', array($this, 'display_inactive_plugin_warning'));
 		}
 
 		return $active;
+	}
+
+	private function is_active()
+	{
+		$keys = $this->get_keys();
+		return (isset($keys[$this->identifier]['status']) && $keys[$this->identifier]['status']);
 	}
 
 	/**
@@ -185,17 +193,16 @@ class jigoshop_licence_validator
 		$response = $this->get_update_version($this->identifier, $licence_key, $licence_email);
 
 		if (isset($response->version)) {
-			if (strlen($response->update_url) === 0 && isset($response->outdated_license) && $response->outdated_license == 1) {
+			if (isset($response->outdated_license) && $response->outdated_license == 1) {
 				$this->display_incorrect_update_warning();
 			}
 
 			// If a newer version is available, add the update
 			if (version_compare($this->version, $response->version, '<')) {
 				$obj = new stdClass();
-				$obj->plugin_name = $this->title;
 				$obj->slug = $this->file_slug;
 				$obj->new_version = $response->version;
-				$obj->download_link = $response->update_url;
+				$obj->url = $response->homepage;
 				$obj->package = $response->update_url;
 
 				$transient->response[$this->plugin_slug] = $obj;
@@ -295,7 +302,7 @@ class jigoshop_licence_validator
 	public function get_update_info($false, $action, $arg)
 	{
 		if ($action == 'plugin_information') {
-			if ($arg->slug === $this->plugin_slug) {
+			if ($arg->slug === $this->file_slug) {
 				$keys = $this->get_keys();
 				$licence_key = isset($keys[$this->identifier]['licence_key'])	? $keys[$this->identifier]['licence_key']	: '';
 				$licence_email = isset($keys[$this->identifier]['email'])	? $keys[$this->identifier]['email']	: '';
@@ -304,8 +311,16 @@ class jigoshop_licence_validator
 				$response = $this->get_update_version($this->identifier, $licence_key, $licence_email);
 
 				$obj = new stdClass();
-				$obj->plugin_name = $this->title;
+				$obj->name = $this->title;
 				$obj->slug = $this->file_slug;
+				$obj->homepage = $response->homepage;
+				$obj->author_url = $response->author_url;
+				$obj->version = $response->version;
+				$obj->author = $response->author;
+				$obj->url = $response->homepage;
+				$obj->requires = $response->requires;
+				$obj->tested = $response->tested;
+
 				if (isset($response->sections)) {
 					$converted = get_object_vars($response->sections);
 					foreach ($converted as $index => $value) {
@@ -320,7 +335,17 @@ class jigoshop_licence_validator
 			}
 		}
 
-		return false;
+		return $false;
+	}
+
+	function in_plugin_update_message($plugin_data, $r)
+	{
+		if ($this->is_active()) {
+			return;
+		}
+
+		$m = __('Please enter your license key on the <a href="%s">Manage Licences</a> page to enable automatic updates. You can buy your licence on <a href="%s">Jigoshop.com</a>.', 'jigoshop');
+		echo '<br />' . sprintf($m, admin_url('admin.php?page=jigoshop-licence-validator'), $r->url);
 	}
 
 	/**
