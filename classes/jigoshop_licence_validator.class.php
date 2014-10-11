@@ -74,12 +74,12 @@ class jigoshop_licence_validator
 			self::$instance = true;
 
 			add_action('admin_menu', array($this, 'register_nav_menu_link'));
-			// define the alternative API for updating checking
-			add_filter('site_transient_update_plugins', array($this, 'check_for_update'));
 			// Define the alternative response for information checking
 			add_filter('plugins_api', array($this, 'get_update_info'), 20, 3);
 		}
 
+		// define the alternative API for updating checking
+		add_filter('site_transient_update_plugins', array($this, 'check_for_update'));
 		add_action('in_plugin_update_message-'.$this->plugin_slug, array($this, 'in_plugin_update_message'), 10, 2);
 	}
 
