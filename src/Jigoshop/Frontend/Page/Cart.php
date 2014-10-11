@@ -172,15 +172,16 @@ class Cart implements Page
 			$response['html']['item_price'] = Product::formatPrice($price);
 			$response['html']['item_subtotal'] = Product::formatPrice($price * $item['quantity']);
 		} catch(Exception $e) {
-			$response = array(
-				'success' => false,
-				'error' => $e->getMessage(),
-				'html' => array(
-					'subtotal' => Product::formatPrice($cart->getSubtotal()),
-					'tax' => array_map(function($tax){ return Product::formatPrice($tax); }, $cart->getTax()),
-					'total' => Product::formatPrice($cart->getTotal()),
-				),
-			);
+			if ($cart->isEmpty()) {
+				$response = array(
+					'success' => true,
+					'empty_cart' => true,
+					'html' => Render::get('shop/cart/empty', array('shopUrl' => $this->wp->getPermalink($this->options->getPageId(Pages::SHOP)))),
+				);
+			} else {
+				$response = $this->getAjaxCartResponse($cart);
+				$response['remove_item'] = true;
+			}
 		}
 
 		$this->cartService->save($cart);

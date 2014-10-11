@@ -10,7 +10,7 @@ use Jigoshop\Helper\Render;
  * @var $cart \Jigoshop\Frontend\Cart Cart object.
  * @var $customer \Jigoshop\Entity\Customer Current customer.
  * @var $shippingMethods array List of available shipping methods.
- * @var $shopUrl string Url to sh
+ * @var $shopUrl string Url to shop (product list).
  * @var $showWithTax bool Whether to show product price with or without tax.
  */
 ?>
@@ -18,10 +18,7 @@ use Jigoshop\Helper\Render;
 <?php Render::output('shop/messages', array('messages' => $messages)); ?>
 <?php echo wpautop(wptexturize($content)); ?>
 <?php if ($cart->isEmpty()): ?>
-	<div class="alert alert-info text-center" id="cart">
-		<p><?php _e('Your cart is empty.', 'jigoshop'); ?></p>
-		<a href="<?php echo $shopUrl; ?>" class="btn btn-primary"><?php _e('Return to shop', 'jigoshop'); ?></a>
-	</div>
+	<?php Render::output('shop/cart/empty', array('shopUrl' => $shopUrl)); ?>
 <?php else: ?>
 	<form id="cart" role="form" action="" method="post">
 		<table class="table table-hover">

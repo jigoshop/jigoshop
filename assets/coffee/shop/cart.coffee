@@ -3,7 +3,9 @@ class Cart
     ajax: ''
 
   constructor: (@params) ->
-    jQuery('#cart').on 'change', '.product-quantity input', @updateQuantity
+    jQuery('#cart')
+      .on 'change', '.product-quantity input', @updateQuantity
+      .on 'click', '.product-remove a', @removeItem
     jQuery('#shipping-calculator')
       .on 'click', '#change-destination', @changeDestination
       .on 'click', '.close', @changeDestination
@@ -86,6 +88,13 @@ class Cart
         @_updateTaxes(result.tax, result.html.tax)
         @_updateShipping(result.shipping, result.html.shipping)
 
+  removeItem: (e) =>
+    # TODO: Ask nicely if client is sure?
+    e.preventDefault()
+    $item = jQuery(e.target).closest('tr')
+    jQuery('.product-quantity', $item).val(0)
+    @updateQuantity(e)
+
   updateQuantity: (e) =>
     $item = jQuery(e.target).closest('tr')
     jQuery.ajax(@params.ajax,
@@ -98,12 +107,22 @@ class Cart
     )
     .done (result) =>
       if result.success == true
-        jQuery('.product-subtotal', $item).html(result.html.item_subtotal)
+        if result.empty_cart? == true
+          $empty = jQuery(result.html).hide()
+          $cart = jQuery('#cart')
+          $cart.after($empty)
+          $cart.slideUp()
+          $empty.slideDown()
+          return
+
+        if result.remove_item? == true
+          $item.remove()
+        else
+          jQuery('.product-subtotal', $item).html(result.html.item_subtotal)
+
         jQuery('#product-subtotal > td').html(result.html.product_subtotal)
-      else
-        $item.remove()
-      @_updateTotals(result.html.total, result.html.subtotal)
-      @_updateTaxes(result.tax, result.html.tax)
+        @_updateTotals(result.html.total, result.html.subtotal)
+        @_updateTaxes(result.tax, result.html.tax)
 
   _updateTotals: (total, subtotal) ->
     jQuery('#cart-total > td').html(total)
