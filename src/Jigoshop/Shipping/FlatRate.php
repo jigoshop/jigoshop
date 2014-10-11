@@ -86,6 +86,9 @@ class FlatRate implements Method
 			if ($customer->getState() == 'AK') {
 				return 3.0;
 			}
+			if ($customer->getPostcode() == '123') {
+				return 4.0;
+			}
 			return 5.0;
 		}
 

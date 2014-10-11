@@ -2,7 +2,6 @@ class Cart
   params:
     ajax: ''
 
-  # TODO: Refactoring
   constructor: (@params) ->
     jQuery('#cart').on 'change', '.product-quantity input', @updateQuantity
     jQuery('#shipping-calculator')
@@ -29,17 +28,9 @@ class Cart
         action: 'jigoshop_cart_select_shipping'
         method: jQuery('#shipping-calculator input[type=radio]:checked').val()
     )
-    .done (result) ->
-      jQuery('#cart-total > td').html(result.html.total)
-      jQuery('#cart-subtotal > td').html(result.html.subtotal)
-      for own taxClass, tax of result.html.tax
-        $tax = jQuery("#tax-#{taxClass}")
-        jQuery("th", $tax).html(tax.label)
-        jQuery("td", $tax).html(tax.value)
-        if result.tax[taxClass] > 0
-          $tax.show()
-        else
-          $tax.hide()
+    .done (result) =>
+      @_updateTotals(result.html.total, result.html.subtotal)
+      @_updateTaxes(result.tax, result.html.tax)
 
   updateCountry: =>
     jQuery.ajax(@params.ajax,
@@ -47,22 +38,14 @@ class Cart
       dataType: 'json'
       data:
         action: 'jigoshop_cart_change_country'
-        country: jQuery('#country').val()
+        value: jQuery('#country').val()
     )
-    .done (result) ->
+    .done (result) =>
       if result.success == true
         jQuery('#shipping-calculator th p > span').html(result.html.estimation)
-        jQuery('#cart-total > td').html(result.html.total)
-        jQuery('#cart-subtotal > td').html(result.html.subtotal)
-
-        for own taxClass, tax of result.html.tax
-          $tax = jQuery("#tax-#{taxClass}")
-          jQuery("th", $tax).html(tax.label)
-          jQuery("td", $tax).html(tax.value)
-          if result.tax[taxClass] > 0
-            $tax.show()
-          else
-            $tax.hide()
+        @_updateTotals(result.html.total, result.html.subtotal)
+        @_updateTaxes(result.tax, result.html.tax)
+        @_updateShipping(result.shipping, result.html.shipping)
 
         if result.has_states
           data = []
@@ -82,56 +65,26 @@ class Cart
         else
           jQuery('#state').select2('destroy').val('')
 
-        for own shippingClass, value of result.html.shipping
-          $method = jQuery("#shipping-#{shippingClass}")
-          jQuery('span', $method).html(value)
-          if result.shipping[shippingClass] != -1
-            $method.show()
-          else
-            $method.hide()
-
   updateState: =>
-    jQuery.ajax(@params.ajax,
-      type: 'post'
-      dataType: 'json'
-      data:
-        action: 'jigoshop_cart_change_state'
-        state: jQuery('#state').val()
-    )
-    .done (result) ->
-      if result.success == true
-        jQuery('#shipping-calculator th p > span').html(result.html.estimation)
-        jQuery('#cart-total > td').html(result.html.total)
-        jQuery('#cart-subtotal > td').html(result.html.subtotal)
-
-        for own taxClass, tax of result.html.tax
-          $tax = jQuery("#tax-#{taxClass}")
-          jQuery("th", $tax).html(tax.label)
-          jQuery("td", $tax).html(tax.value)
-          if result.tax[taxClass] > 0
-            $tax.show()
-          else
-            $tax.hide()
-
-        for own shippingClass, value of result.html.shipping
-          $method = jQuery("#shipping-#{shippingClass}")
-          jQuery('span', $method).html(value)
-          if result.shipping[shippingClass] != -1
-            $method.show()
-          else
-            $method.hide()
+    @_updateShippingField('jigoshop_cart_change_state', jQuery('#state').val())
 
   updatePostcode: =>
+    @_updateShippingField('jigoshop_cart_change_postcode', jQuery('#postcode').val())
+
+  _updateShippingField: (action, value) =>
     jQuery.ajax(@params.ajax,
       type: 'post'
       dataType: 'json'
       data:
-        action: 'jigoshop_cart_change_postcode'
-        postcode: jQuery('#postcode').val()
+        action: action
+        value: value
     )
-    .done (result) ->
+    .done (result) =>
       if result.success == true
         jQuery('#shipping-calculator th p > span').html(result.html.estimation)
+        @_updateTotals(result.html.total, result.html.subtotal)
+        @_updateTaxes(result.tax, result.html.tax)
+        @_updateShipping(result.shipping, result.html.shipping)
 
   updateQuantity: (e) =>
     $item = jQuery(e.target).closest('tr')
@@ -143,22 +96,37 @@ class Cart
         item: $item.data('id')
         quantity: jQuery(e.target).val()
     )
-    .done (result) ->
+    .done (result) =>
       if result.success == true
         jQuery('.product-subtotal', $item).html(result.html.item_subtotal)
         jQuery('#product-subtotal > td').html(result.html.product_subtotal)
       else
         $item.remove()
-      jQuery('#cart-total > td').html(result.html.total)
-      jQuery('#cart-subtotal > td').html(result.html.subtotal)
-      for own taxClass, tax of result.html.tax
-        $tax = jQuery("#tax-#{taxClass}")
-        jQuery("th", $tax).html(tax.label)
-        jQuery("td", $tax).html(tax.value)
-        if result.tax[taxClass] > 0
-          $tax.show()
-        else
-          $tax.hide()
+      @_updateTotals(result.html.total, result.html.subtotal)
+      @_updateTaxes(result.tax, result.html.tax)
+
+  _updateTotals: (total, subtotal) ->
+    jQuery('#cart-total > td').html(total)
+    jQuery('#cart-subtotal > td').html(subtotal)
+
+  _updateShipping: (shipping, html) ->
+    for own shippingClass, value of html
+      $method = jQuery("#shipping-#{shippingClass}")
+      jQuery('span', $method).html(value)
+      if shipping[shippingClass] != -1
+        $method.show()
+      else
+        $method.hide()
+
+  _updateTaxes: (taxes, html) ->
+    for own taxClass, tax of html
+      $tax = jQuery("#tax-#{taxClass}")
+      jQuery("th", $tax).html(tax.label)
+      jQuery("td", $tax).html(tax.value)
+      if taxes[taxClass] > 0
+        $tax.show()
+      else
+        $tax.hide()
 
 jQuery () ->
   new Cart(jigoshop)

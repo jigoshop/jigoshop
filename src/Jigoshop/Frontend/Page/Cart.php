@@ -75,7 +75,7 @@ class Cart implements Page
 	public function ajaxChangeCountry()
 	{
 		$customer = $this->customerService->getCurrent();
-		$customer->setCountry($_POST['country']);
+		$customer->setCountry($_POST['value']);
 		$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
 
 		$shipping = array();
@@ -99,7 +99,7 @@ class Cart implements Page
 	public function ajaxChangeState()
 	{
 		$customer = $this->customerService->getCurrent();
-		$customer->setState($_POST['state']);
+		$customer->setState($_POST['value']);
 		$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
 
 		$shipping = array();
@@ -113,8 +113,6 @@ class Cart implements Page
 		$response['html']['estimation'] = $customer->getLocation();
 		$response['html']['shipping'] = array_map(function($item){ return Product::formatPrice($item); }, $shipping);
 
-		// TODO: Fetch shipping values
-
 		echo json_encode($response);
 		exit;
 	}
@@ -122,13 +120,19 @@ class Cart implements Page
 	public function ajaxChangePostcode()
 	{
 		$customer = $this->customerService->getCurrent();
-		$customer->setPostcode($_POST['postcode']);
+		$customer->setPostcode($_POST['value']);
 		$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
 
-		$response = $this->getAjaxCartResponse($cart);
-		$response['html']['estimation'] = $customer->getLocation();
+		$shipping = array();
+		foreach ($this->shippingService->getAvailable() as $method) {
+			/** @var $method Method */
+			$shipping[$method->getId()] = $method->calculate($cart);
+		}
 
-		// TODO: Fetch shipping values
+		$response = $this->getAjaxCartResponse($cart);
+		$response['shipping'] = $shipping;
+		$response['html']['estimation'] = $customer->getLocation();
+		$response['html']['shipping'] = array_map(function($item){ return Product::formatPrice($item); }, $shipping);
 
 		echo json_encode($response);
 		exit;
