@@ -80,6 +80,16 @@ use Jigoshop\Helper\Render;
 								<p class="small text-muted"><?php echo sprintf(__('Estimated for:<br/><span>%s</span>', 'jigoshop'), $customer->getLocation()); ?></p>
 							</th>
 							<td>
+								<noscript>
+									<style type="text/css">
+										.jigoshop #cart tr#shipping-calculator td > div {
+											display: block;
+										}
+										.jigoshop #cart tr#shipping-calculator td button.close {
+											display: none;
+										}
+									</style>
+								</noscript>
 								<ul class="list-group">
 									<?php foreach($shippingMethods as $method): /** @var $method \Jigoshop\Shipping\Method */ ?>
 										<li class="list-group-item" id="shipping-<?php echo $method->getId(); ?>">

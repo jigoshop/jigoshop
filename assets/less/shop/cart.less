@@ -2,15 +2,7 @@
 @import '../../bower/bootstrap/less/mixins.less';
 
 .customize-support .jigoshop #cart tr#shipping-calculator {
-  td > div {
-    display: none;
-  }
-
-  button.close {
-    display: inline-block;
-  }
 }
-
 .jigoshop {
   table, th, td {
     border: 0;
@@ -45,11 +37,12 @@
         font-weight: normal;
       }
       button.close {
+        display: inline-block;
         margin-top: -8px;
-        display: none;
       }
       .list-group {
         margin-left: 0;
+        margin-bottom: 8px;
       }
       .list-group-item label {
         margin: 0;
@@ -60,6 +53,8 @@
         }
       }
       td > div {
+        display: none;
+
         label {
           display: none;
         }
