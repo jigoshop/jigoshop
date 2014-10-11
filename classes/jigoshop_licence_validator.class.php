@@ -20,6 +20,7 @@ class jigoshop_licence_validator
 {
 	private static $instance = false; /* Product ID from the selling shop */
 	private static $plugins = array(); /* full server path to this plugin folder */
+	private static $checked = array(); /* full server path to this plugin folder */
 	private $identifier; /* full server path to this plugin main file */
 	private $path; /* this plugin slug (plugin_directory/plugin_file.php) */
 	private $file; /* this plugin file slug (plugin_filename without .php) */
@@ -185,12 +186,21 @@ class jigoshop_licence_validator
 	 */
 	public function check_for_update($transient)
 	{
+		if (isset(self::$checked[$this->identifier])) {
+			if (self::$checked[$this->identifier] !== false) {
+				$transient->response[$this->plugin_slug] = self::$checked[$this->identifier];
+			}
+
+			return $transient;
+		}
+
 		$keys = $this->get_keys();
 		$licence_key = isset($keys[$this->identifier]['licence_key'])	? $keys[$this->identifier]['licence_key']	: '';
 		$licence_email = isset($keys[$this->identifier]['email'])	? $keys[$this->identifier]['email']	: '';
 
 		// Get the remote version
 		$response = $this->get_update_version($this->identifier, $licence_key, $licence_email);
+		$obj = false;
 
 		if (isset($response->version)) {
 			if (isset($response->outdated_license) && $response->outdated_license == 1) {
@@ -208,6 +218,8 @@ class jigoshop_licence_validator
 				$transient->response[$this->plugin_slug] = $obj;
 			}
 		}
+
+		self::$checked[$this->identifier] = $obj;
 
 		return $transient;
 	}
