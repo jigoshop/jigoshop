@@ -79,7 +79,7 @@ class Cart implements Page
 		$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
 
 		$shipping = array();
-		foreach ($this->shippingService->getAvailable() as $method) {
+		foreach ($this->shippingService->getEnabled() as $method) {
 			/** @var $method Method */
 			$shipping[$method->getId()] = $method->calculate($cart);
 		}
@@ -103,7 +103,7 @@ class Cart implements Page
 		$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
 
 		$shipping = array();
-		foreach ($this->shippingService->getAvailable() as $method) {
+		foreach ($this->shippingService->getEnabled() as $method) {
 			/** @var $method Method */
 			$shipping[$method->getId()] = $method->calculate($cart);
 		}
@@ -124,7 +124,7 @@ class Cart implements Page
 		$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
 
 		$shipping = array();
-		foreach ($this->shippingService->getAvailable() as $method) {
+		foreach ($this->shippingService->getEnabled() as $method) {
 			/** @var $method Method */
 			$shipping[$method->getId()] = $method->calculate($cart);
 		}
@@ -232,7 +232,7 @@ class Cart implements Page
 			'messages' => $this->messages,
 			'productService' => $this->productService,
 			'customer' => $this->customerService->getCurrent(),
-			'shippingMethods' => $this->shippingService->getAvailable(),
+			'shippingMethods' => $this->shippingService->getEnabled(),
 			'shopUrl' => $this->wp->getPermalink($this->options->getPageId(Pages::SHOP)),
 			'showWithTax' => $this->options->get('general.price_tax') == 'with_tax',
 			'showShippingCalculator' => $this->options->get('shipping.calculator'),

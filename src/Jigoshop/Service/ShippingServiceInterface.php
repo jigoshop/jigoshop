@@ -52,4 +52,11 @@ interface ShippingServiceInterface
 	 * @return array List of available shipping methods.
 	 */
 	public function getAvailable();
+
+	/**
+	 * Returns list of enabled shipping methods.
+	 *
+	 * @return array List of enabled shipping methods.
+	 */
+	public function getEnabled();
 }

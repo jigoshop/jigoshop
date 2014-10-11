@@ -74,4 +74,17 @@ class Shipping implements ShippingServiceInterface
 	{
 		return $this->methods;
 	}
+
+	/**
+	 * Returns list of enabled shipping methods.
+	 *
+	 * @return array List of enabled shipping methods.
+	 */
+	public function getEnabled()
+	{
+		return array_filter($this->methods, function($method){
+			/** @var $method Method */
+			return $method->isEnabled();
+		});
+	}
 }
