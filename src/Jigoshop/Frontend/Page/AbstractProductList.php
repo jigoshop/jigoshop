@@ -66,6 +66,7 @@ abstract class AbstractProductList implements Page
 					case 'product':
 					default:
 						$url = $this->wp->getPermalink($product->getId());
+					case 'same_page':
 					case 'product_list':
 						$button = sprintf('<a href="%s" class="btn btn-warning pull-right">%s</a>', $this->wp->getPermalink($this->options->getPageId(Pages::CART)), __('View cart', 'jigoshop'));
 				}

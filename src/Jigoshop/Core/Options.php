@@ -49,7 +49,7 @@ class Options
 			'catalog_per_page' => 12,
 			'catalog_order_by' => 'post_date',
 			'catalog_order' => 'DESC',
-			'redirect_add_to_cart' => 'product',
+			'redirect_add_to_cart' => 'same_page',
 			'redirect_continue_shopping' => 'product_list',
 			'guest_purchases' => true,
 			'show_login_form' => false,

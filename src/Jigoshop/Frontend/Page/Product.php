@@ -72,6 +72,7 @@ class Product implements Page
 					case 'product_list':
 						$url = $this->wp->getPermalink($this->options->getPageId(Pages::SHOP));
 					case 'product':
+					case 'same_page':
 					default:
 						$button = sprintf('<a href="%s" class="btn btn-warning pull-right">%s</a>', $this->wp->getPermalink($this->options->getPageId(Pages::CART)), __('View cart', 'jigoshop'));
 				}

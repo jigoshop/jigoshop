@@ -144,6 +144,7 @@ class ShoppingTab implements TabInterface
 						'type' => 'select',
 						'value' => $this->options['redirect_add_to_cart'],
 						'options' => array(
+							'same_page' => __('The same page', 'jigoshop'),
 							'product' => __('Product page', 'jigoshop'),
 							'cart' => __('Cart', 'jigoshop'),
 							'checkout' => __('Checkout', 'jigoshop'),
