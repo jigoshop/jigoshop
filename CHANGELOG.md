@@ -5,6 +5,7 @@
     * Fix: Countries with not defined states, will properly shown as selected.
     * Fix: Email notifications about product stock status can be properly disabled.
     * Improved: Show plugin updates even when licence is not activated.
+    * Improved: Checking for updates is now 5 times faster.
 * 1.12.1 - 2014-10-07:
     * Fix: Phone number in order email.
     * Fix: Updated polish translation.
