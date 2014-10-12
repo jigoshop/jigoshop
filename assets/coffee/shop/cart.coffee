@@ -9,8 +9,6 @@ class Cart
     jQuery('#cart')
       .on 'change', '.product-quantity input', @updateQuantity
       .on 'click', '.product-remove a', @removeItem
-      .ajaxStart @block
-      .ajaxStop @unblock
     jQuery('#shipping-calculator')
       .on 'click', '#change-destination', @changeDestination
       .on 'click', '.close', @changeDestination
@@ -18,7 +16,7 @@ class Cart
       .on 'change', '#country', @updateCountry
       .on 'change', '#state', @updateState
       .on 'change', '#postcode', @updatePostcode
-    jQuery('#country').change()
+    jQuery('#country').change() # TODO: Get rid of this call (this will also fix non-JS cart functioning)
 
   block: =>
     jQuery('#content').block
@@ -29,7 +27,7 @@ class Cart
         height: 'auto'
         border: '1px solid #83AC31'
       overlayCss:
-        opacity: 0.2
+        opacity: 0.01
 
   unblock: ->
     jQuery('#content').unblock()
@@ -57,6 +55,7 @@ class Cart
         alert result.error
 
   updateCountry: =>
+    @block()
     jQuery.ajax(@params.ajax,
       type: 'post'
       dataType: 'json'
@@ -79,15 +78,9 @@ class Cart
               text: label
           jQuery('#state').select2
             data: data
-            initSelection: (element, callback) ->
-              value = element.val()
-              if value != ''
-                callback(
-                  id: value
-                  text: result.states[value]
-                )
         else
-          jQuery('#state').select2('destroy').val('')
+          jQuery('#state').attr('type', 'text').select2('destroy').val('')
+      @unblock()
 
   updateState: =>
     @_updateShippingField('jigoshop_cart_change_state', jQuery('#state').val())
@@ -96,6 +89,7 @@ class Cart
     @_updateShippingField('jigoshop_cart_change_postcode', jQuery('#postcode').val())
 
   _updateShippingField: (action, value) =>
+    @block()
     jQuery.ajax(@params.ajax,
       type: 'post'
       dataType: 'json'
@@ -109,6 +103,7 @@ class Cart
         @_updateTotals(result.html.total, result.html.subtotal)
         @_updateTaxes(result.tax, result.html.tax)
         @_updateShipping(result.shipping, result.html.shipping)
+      @unblock()
 
   removeItem: (e) =>
     # TODO: Ask nicely if client is sure?
@@ -119,6 +114,7 @@ class Cart
 
   updateQuantity: (e) =>
     $item = jQuery(e.target).closest('tr')
+    @block()
     jQuery.ajax(@params.ajax,
       type: 'post'
       dataType: 'json'
@@ -145,6 +141,7 @@ class Cart
         jQuery('#product-subtotal > td').html(result.html.product_subtotal)
         @_updateTotals(result.html.total, result.html.subtotal)
         @_updateTaxes(result.tax, result.html.tax)
+      @unblock()
 
   _updateTotals: (total, subtotal) ->
     jQuery('#cart-total > td').html(total)

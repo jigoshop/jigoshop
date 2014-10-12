@@ -244,20 +244,37 @@ class Cart implements Page
 
 	public function action()
 	{
-		$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
-
 		if (isset($_POST['action'])) {
 			switch ($_POST['action']) {
+				case 'update-shipping':
+					$customer = $this->customerService->getCurrent();
+					$this->updateCustomer($customer);
+					break;
 				case 'checkout':
-					// TODO: Update values with non-JS mode
-					$this->wp->wpRedirect($this->wp->getPermalink($this->options->getPageId(Pages::CHECKOUT)));
+					try {
+						$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
+						// Update quantities
+						$this->updateQuantities($cart);
+						// Update customer (if needed)
+						if ($this->options->get('shopping.calculator')) {
+							$customer = $this->customerService->getCurrent();
+							$this->updateCustomer($customer);
+						}
+						// Select shipping method
+						$method = $this->shippingService->get($_POST['shipping-method']);
+						$cart->setShippingMethod($method);
+
+						$this->cartService->save($cart);
+						$this->wp->wpRedirect($this->wp->getPermalink($this->options->getPageId(Pages::CHECKOUT)));
+					} catch(Exception $e) {
+						$this->messages->addError(sprintf(__('Error occurred while updating cart: %s', 'jigoshop'), $e->getMessage()));
+					}
 					exit;
 				case 'update-cart':
 					if (isset($_POST['cart']) && is_array($_POST['cart'])) {
 						try {
-							foreach ($_POST['cart'] as $item => $quantity) {
-								$cart->updateQuantity($item, (int)$quantity);
-							}
+							$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
+							$this->updateQuantities($cart);
 							$this->cartService->save($cart);
 							$this->messages->addNotice(__('Successfully updated the cart.', 'jigoshop'));
 						} catch(Exception $e) {
@@ -268,10 +285,27 @@ class Cart implements Page
 		}
 
 		if (isset($_GET['action']) && isset($_GET['item']) && $_GET['action'] === 'remove-item' && is_numeric($_GET['item'])) {
+			$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
 			$cart->removeItem((int)$_GET['item']);
 			$this->cartService->save($cart);
 			$this->messages->addNotice(__('Successfully removed item from cart.', 'jigoshop'), false);
 		}
+	}
+
+	private function updateQuantities(\Jigoshop\Frontend\Cart $cart)
+	{
+		if (isset($_POST['cart']) && is_array($_POST['cart'])) {
+			foreach ($_POST['cart'] as $item => $quantity) {
+				$cart->updateQuantity($item, (int)$quantity);
+			}
+		}
+	}
+
+	private function updateCustomer(\Jigoshop\Entity\Customer $customer)
+	{
+		$customer->setCountry($_POST['country']);
+		$customer->setState($_POST['state']);
+		$customer->setPostcode($_POST['postcode']);
 	}
 
 	public function render()
