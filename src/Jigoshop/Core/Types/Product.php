@@ -91,7 +91,8 @@ class Product implements Post
 			'supports' => array('title', 'editor', 'thumbnail', 'comments', 'excerpt'),
 			'has_archive' => true,
 			'show_in_nav_menus' => false,
-			'menu_position' => 56
+			'menu_position' => 56,
+			'menu_icon' => 'dashicons-book',
 		);
 	}
 

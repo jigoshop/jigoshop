@@ -74,3 +74,12 @@ services:
     class: Jigoshop\Core\Types\ProductTag
     tags:
       - { name: jigoshop.type.taxonomy }
+  jigoshop.post_type.order:
+    class: Jigoshop\Core\Types\Order
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.service.order'
+      - '@jigoshop.service.tax'
+    tags:
+      - { name: jigoshop.type.post }

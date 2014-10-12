@@ -89,9 +89,9 @@ class Assets
 		 * Disable autosaves on the order and coupon pages. Prevents the javascript alert when modifying.
 		 * `wp_deregister_script( 'autosave' )` would produce errors, so we use a filter instead.
 		 */
-//		if (in_array($adminPage, array(Types::ORDER, Types::COUPON), true)) {
-//			$this->wp->addFilter('script_loader_src', array($this, 'disableAutoSave'), 10, 2);
-//		}
+		if (in_array($adminPage, array(Types::ORDER/*, Types::COUPON*/), true)) {
+			$this->wp->addFilter('script_loader_src', array($this, 'disableAutoSave'), 10, 2);
+		}
 	}
 
 	/**

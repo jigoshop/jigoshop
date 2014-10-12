@@ -261,7 +261,7 @@ class Pages
 		}
 
 		//		if (in_array($currentScreen->post_type, array(Types::PRODUCT, Types::ORDER, Types::COUPON), true)) {
-		if (in_array($currentScreen->post_type, array(Types::PRODUCT), true)) {
+		if (in_array($currentScreen->post_type, array(Types::PRODUCT, Types::ORDER), true)) {
 			return $currentScreen->post_type;
 		}
 		if (strpos($currentScreen->id, 'jigoshop') !== false) {
