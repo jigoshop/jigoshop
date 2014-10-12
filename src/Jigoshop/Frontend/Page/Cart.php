@@ -55,8 +55,13 @@ class Cart implements Page
 		$scripts->add('jigoshop.shop', JIGOSHOP_URL.'/assets/js/shop.js');
 		$scripts->add('jigoshop.shop.cart', JIGOSHOP_URL.'/assets/js/shop/cart.js');
 		$scripts->add('jigoshop-vendors', JIGOSHOP_URL.'/assets/js/vendors.min.js');
+		$scripts->add('jquery-blockui', '//cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.66.0-2013.10.09/jquery.blockUI.min.js');
 		$scripts->localize('jigoshop.shop.cart', 'jigoshop', array(
 			'ajax' => admin_url('admin-ajax.php', 'jigoshop'),
+			'assets' => JIGOSHOP_URL.'/assets',
+			'i18n' => array(
+				'loading' => __('Loading...', 'jigoshop'),
+			),
 		));
 
 		$wp->addAction('wp_ajax_jigoshop_cart_update_item', array($this, 'ajaxUpdateItem'));
@@ -184,12 +189,19 @@ class Cart implements Page
 	 */
 	public function ajaxSelectShipping()
 	{
-		// TODO: Bullet-proof a little bit this code (i.e. invalid shipping method or something)
-		$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
-		$cart->setShippingMethod($this->shippingService->get($_POST['method']));
-		$this->cartService->save($cart);
+		try {
+			$method = $this->shippingService->get($_POST['method']);
+			$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
+			$cart->setShippingMethod($method);
+			$this->cartService->save($cart);
 
-		$response = $this->getAjaxCartResponse($cart);
+			$response = $this->getAjaxCartResponse($cart);
+		} catch (Exception $e) {
+			$response = array(
+				'success' => false,
+				'error' => $e->getMessage(),
+			);
+		}
 
 		echo json_encode($response);
 		exit;

@@ -1,11 +1,16 @@
 class Cart
   params:
     ajax: ''
+    assets: ''
+    i18n:
+      loading: 'Loading...'
 
   constructor: (@params) ->
     jQuery('#cart')
       .on 'change', '.product-quantity input', @updateQuantity
       .on 'click', '.product-remove a', @removeItem
+      .ajaxStart @block
+      .ajaxStop @unblock
     jQuery('#shipping-calculator')
       .on 'click', '#change-destination', @changeDestination
       .on 'click', '.close', @changeDestination
@@ -13,8 +18,21 @@ class Cart
       .on 'change', '#country', @updateCountry
       .on 'change', '#state', @updateState
       .on 'change', '#postcode', @updatePostcode
-    # TODO: Maybe blocking while doing update?
     jQuery('#country').change()
+
+  block: =>
+    jQuery('#content').block
+      message: '<img src="' + @params.assets + '/images/loading.gif" alt="' + @params.i18n.loading + '" />'
+      css:
+        padding: '20px'
+        width: 'auto'
+        height: 'auto'
+        border: '1px solid #83AC31'
+      overlayCss:
+        opacity: 0.2
+
+  unblock: ->
+    jQuery('#content').unblock()
 
   changeDestination: (e) ->
     e.preventDefault()
@@ -31,8 +49,12 @@ class Cart
         method: jQuery('#shipping-calculator input[type=radio]:checked').val()
     )
     .done (result) =>
-      @_updateTotals(result.html.total, result.html.subtotal)
-      @_updateTaxes(result.tax, result.html.tax)
+      if result.success
+        @_updateTotals(result.html.total, result.html.subtotal)
+        @_updateTaxes(result.tax, result.html.tax)
+      else
+        # TODO: It would be nice to have kind of helper for error messages
+        alert result.error
 
   updateCountry: =>
     jQuery.ajax(@params.ajax,
