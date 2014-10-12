@@ -132,6 +132,7 @@ class Cart
           $cart.after($empty)
           $cart.slideUp()
           $empty.slideDown()
+          @unblock()
           return
 
         if result.remove_item? == true
