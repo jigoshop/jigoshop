@@ -34,6 +34,7 @@ class Order implements EntityInterface
 	public function getStatuses()
 	{
 		$order_types = array(
+			Status::CREATED => __('New', 'jigoshop'),
 			Status::PENDING => __('Pending', 'jigoshop'),
 			Status::ON_HOLD => __('On-Hold', 'jigoshop'),
 			Status::PROCESSING => __('Processing', 'jigoshop'),
@@ -115,6 +116,14 @@ class Order implements EntityInterface
 	}
 
 	/**
+	 * @return int Order number.
+	 */
+	public function getNumber()
+	{
+		return 0; // TODO: Implement
+	}
+
+	/**
 	 * @return mixed
 	 */
 	public function getBillingAddress()
@@ -187,7 +196,7 @@ class Order implements EntityInterface
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
 	public function getStatus()
 	{

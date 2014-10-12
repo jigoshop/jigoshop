@@ -10,6 +10,7 @@ namespace Jigoshop\Entity\Order;
  */
 class Status
 {
+	const CREATED = 'new';
 	const PENDING = 'pending';
 	const ON_HOLD = 'on-hold';
 	const PROCESSING = 'processing';

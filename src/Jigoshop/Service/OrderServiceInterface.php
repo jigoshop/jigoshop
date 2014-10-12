@@ -2,6 +2,8 @@
 
 namespace Jigoshop\Service;
 
+use Jigoshop\Entity\Order;
+
 /**
  * Orders service interface.
  *

@@ -4,6 +4,7 @@ namespace Jigoshop\Core\Types;
 
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
+use Jigoshop\Helper\Order as OrderHelper;
 use Jigoshop\Helper\Product;
 use Jigoshop\Service\OrderServiceInterface;
 use Jigoshop\Service\TaxServiceInterface;
@@ -87,7 +88,7 @@ class Order implements Post
 		$columns = array(
 			'cb' => '<input type="checkbox" />',
 			'status' => _x('Status', 'order', 'jigoshop'),
-			'title' => _x('Order', 'order', 'jigoshop'),
+			'order_title' => _x('Order', 'order', 'jigoshop'),
 			'customer' => _x('Customer', 'order', 'jigoshop'),
 			'billing_address' => _x('Billing address', 'order', 'jigoshop'),
 			'shipping_address' => _x('Shipping address', 'order', 'jigoshop'),
@@ -105,11 +106,16 @@ class Order implements Post
 			return;
 		}
 
-		//$product = $this->productService->find($post->ID);
+		$order = $this->orderService->findForPost($post);
 		switch ($column) {
 			case 'status':
-				// TODO: Add proper displaying
-				echo 'test';
+				echo OrderHelper::getStatus($order);
+				break;
+			case 'order_title':
+				$fullFormat = _x('Y/m/d g:i:s A', 'time', 'jigoshop');
+				$format = _x('Y/m/d', 'time', 'jigoshop');
+				echo '<a href="'.admin_url('post.php?post='.$order->getId().'&action=edit').'">'.sprintf(__('Order %s', 'jigoshop'), $order->getNumber()).'</a>';
+				echo '<time title="'.mysql2date($fullFormat, $post->post_date).'">'.apply_filters('post_date_column_time', mysql2date($format, $post->post_date), $post ).'</time>';
 				break;
 			case 'customer':
 				// TODO: Add proper displaying
@@ -126,11 +132,6 @@ class Order implements Post
 			case 'total':
 				// TODO: Add proper displaying
 				echo Product::formatPrice(0.0);
-				break;
-			case 'creation':
-				$fullFormat = _x('Y/m/d g:i:s A', 'time', 'jigoshop');
-				$format = _x('Y/m/d', 'time', 'jigoshop');
-				echo '<abbr title="'.mysql2date($fullFormat, $post->post_date).'">'.apply_filters('post_date_column_time', mysql2date($format, $post->post_date), $post ).'</abbr>';
 				break;
 		}
 	}
