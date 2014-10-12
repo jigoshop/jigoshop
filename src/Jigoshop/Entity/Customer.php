@@ -83,7 +83,7 @@ class Customer
 		return trim(sprintf(
 			_x('%1$s, %2$s', 'customer', 'jigoshop'),
 			Country::getName($this->getCountry()),
-			Country::getStateName($this->getCountry(), $this->getState()),
+			Country::hasStates($this->getCountry()) ? Country::getStateName($this->getCountry(), $this->getState()) : $this->getState(),
 			$this->getPostcode()
 		), ' ,');
 	}

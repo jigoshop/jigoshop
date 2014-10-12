@@ -14,9 +14,9 @@ class Cart
       .on 'click', '.close', @changeDestination
       .on 'click', 'input[type=radio]', @selectShipping
       .on 'change', '#country', @updateCountry
-      .on 'change', '#state', @updateState
+      .on 'change', '#state', @updateState.bind(@, '#state')
+      .on 'change', '#noscript_state', @updateState.bind(@, '#noscript_state')
       .on 'change', '#postcode', @updatePostcode
-    jQuery('#country').change() # TODO: Get rid of this call (this will also fix non-JS cart functioning)
 
   block: =>
     jQuery('#content').block
@@ -56,6 +56,7 @@ class Cart
 
   updateCountry: =>
     @block()
+    jQuery('.noscript_state_field').remove()
     jQuery.ajax(@params.ajax,
       type: 'post'
       dataType: 'json'
@@ -82,8 +83,8 @@ class Cart
           jQuery('#state').attr('type', 'text').select2('destroy').val('')
       @unblock()
 
-  updateState: =>
-    @_updateShippingField('jigoshop_cart_change_state', jQuery('#state').val())
+  updateState: (field) =>
+    @_updateShippingField('jigoshop_cart_change_state', jQuery(field).val())
 
   updatePostcode: =>
     @_updateShippingField('jigoshop_cart_change_postcode', jQuery('#postcode').val())

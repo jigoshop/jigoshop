@@ -115,10 +115,25 @@ use Jigoshop\Helper\Render;
 											'value' => $customer->getCountry(),
 											'options' => Country::getAll(), // TODO: Work on restricted selling locations
 										)); ?>
-										<?php \Jigoshop\Helper\Forms::text(array(
+										<?php \Jigoshop\Helper\Forms::hidden(array(
+											'id' => 'state',
 											'name' => 'state',
 											'value' => $customer->getState(),
 										)); ?>
+										<?php if ($customer->getCountry() && Country::hasStates($customer->getCountry())): ?>
+											<?php \Jigoshop\Helper\Forms::select(array(
+												'id' => 'noscript_state',
+												'name' => 'state',
+												'value' => $customer->getState(),
+												'options' => Country::getStates($customer->getCountry()),
+											)); ?>
+										<?php else: ?>
+											<?php \Jigoshop\Helper\Forms::text(array(
+												'id' => 'noscript_state',
+												'name' => 'state',
+												'value' => $customer->getState(),
+											)); ?>
+										<?php endif; ?>
 										<?php \Jigoshop\Helper\Forms::text(array(
 											'name' => 'postcode',
 											'value' => $customer->getPostcode(),
