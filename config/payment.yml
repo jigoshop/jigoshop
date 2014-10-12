@@ -1,0 +1,9 @@
+parameters: ~
+services:
+#  jigoshop.payment.cheque:
+#    class: Jigoshop\Payment\Cheque
+#    arguments:
+#      - '@jigoshop.options'
+#      - '@jigoshop.service.customer'
+#    tags:
+#      - { name: jigoshop.payment.required_method }

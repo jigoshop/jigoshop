@@ -20,6 +20,10 @@ services:
     class: Jigoshop\Service\Shipping
     factory_service: jigoshop.factory.shipping_service
     factory_method: getService
+  jigoshop.service.payment:
+    class: Jigoshop\Service\Payment
+    factory_service: jigoshop.factory.payment_service
+    factory_method: getService
   jigoshop.service.cart:
     class: Jigoshop\Service\Cart
     arguments:

@@ -28,11 +28,12 @@ class JigoshopInit
 		// Initialize Jigoshop Dependency Injection Container
 		$file = JIGOSHOP_DIR.'/cache/container.php';
 		$is_debug = WP_DEBUG;
-		$config_cache = new ConfigCache($file, $is_debug);
+		$cache = new ConfigCache($file, $is_debug);
 
-		if (!$config_cache->isFresh()) {
+		if (!$cache->isFresh()) {
 			$builder = new ContainerBuilder();
 			$builder->addCompilerPass(new Jigoshop\Core\Types\CompilerPass());
+			$builder->addCompilerPass(new Jigoshop\Payment\CompilerPass());
 			$builder->addCompilerPass(new Jigoshop\Shipping\CompilerPass());
 			$builder->addCompilerPass(new Jigoshop\Admin\CompilerPass());
 			$builder->addCompilerPass(new Jigoshop\Admin\Settings\CompilerPass());
@@ -42,6 +43,7 @@ class JigoshopInit
 			$loader->load('helpers.yml');
 			$loader->load('main.yml');
 			$loader->load('pages.yml');
+			$loader->load('payment.yml');
 			$loader->load('services.yml');
 			$loader->load('shipping.yml');
 			// Load extension configuration
@@ -49,7 +51,7 @@ class JigoshopInit
 			$builder->compile();
 
 			$dumper = new PhpDumper($builder);
-			$config_cache->write(
+			$cache->write(
 				$dumper->dump(array('class' => 'JigoshopContainer')),
 				$builder->getResources()
 			);

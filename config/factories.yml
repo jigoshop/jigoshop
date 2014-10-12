@@ -31,3 +31,8 @@ services:
     arguments:
       - '@wpal'
       - '@jigoshop.options'
+  jigoshop.factory.payment_service:
+    class: Jigoshop\Factory\PaymentService
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
