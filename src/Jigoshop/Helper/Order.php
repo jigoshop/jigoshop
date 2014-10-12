@@ -9,7 +9,11 @@ class Order
 	public static function getStatus(\Jigoshop\Entity\Order $order)
 	{
 		$statuses = $order->getStatuses();
-		$status = isset($statuses[$order->getStatus()]) ? $statuses[$order->getStatus()] : $statuses[Status::CREATED];
-		return sprintf('<mark class="status-%s">%s</mark>', sanitize_title($order->getStatus()), $status);
+		$status = $order->getStatus();
+		if (!isset($statuses[$status])) {
+			$status = Status::CREATED;
+		}
+		$text = $statuses[$status];
+		return sprintf('<mark class="%s">%s</mark>', $status, $text);
 	}
 }

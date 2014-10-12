@@ -6,6 +6,7 @@ use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
 use Jigoshop\Helper\Order as OrderHelper;
 use Jigoshop\Helper\Product;
+use Jigoshop\Helper\Styles;
 use Jigoshop\Service\OrderServiceInterface;
 use Jigoshop\Service\TaxServiceInterface;
 use WPAL\Wordpress;
@@ -23,7 +24,7 @@ class Order implements Post
 	/** @var TaxServiceInterface */
 	private $taxService;
 
-	public function __construct(Wordpress $wp, Options $options, OrderServiceInterface $orderService, TaxServiceInterface $taxService)
+	public function __construct(Wordpress $wp, Options $options, OrderServiceInterface $orderService, TaxServiceInterface $taxService, Styles $styles)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
@@ -32,6 +33,11 @@ class Order implements Post
 
 		$wp->addFilter(sprintf('manage_edit-%s_columns', Types::ORDER), array($this, 'columns'));
 		$wp->addAction(sprintf('manage_%s_posts_custom_column', Types::ORDER), array($this, 'displayColumn'), 2);
+		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $styles){
+			if ($wp->getPostType() == Order::NAME) {
+				$styles->add('jigoshop.admin.orders', JIGOSHOP_URL.'/assets/css/admin/orders.css');
+			}
+		});
 		// TODO: Introduce proper category filter
 //		$wp->addAction('restrict_manage_posts', array($this, 'categoryFilter'));
 //		$wp->addAction('restrict_manage_posts', array($this, 'typeFilter'));
@@ -40,6 +46,8 @@ class Order implements Post
 //			$wp->addMetaBox('jigoshop-product-data', __('Product Data', 'jigoshop'), array($that, 'box'), $that::NAME, 'normal', 'high');
 //			$wp->removeMetaBox('commentstatusdiv', null, 'normal');
 //		});
+
+		$wp->addFilter('post_row_actions', array($this, 'displayTitle'));
 	}
 
 	public function getName()
@@ -88,10 +96,11 @@ class Order implements Post
 		$columns = array(
 			'cb' => '<input type="checkbox" />',
 			'status' => _x('Status', 'order', 'jigoshop'),
-			'order_title' => _x('Order', 'order', 'jigoshop'),
+			'title' => _x('Order', 'order', 'jigoshop'),
 			'customer' => _x('Customer', 'order', 'jigoshop'),
 			'billing_address' => _x('Billing address', 'order', 'jigoshop'),
 			'shipping_address' => _x('Shipping address', 'order', 'jigoshop'),
+			'shipping_payment' => _x('Shipping &amp; Payment', 'order', 'jigoshop'),
 			'total' => _x('Total', 'order', 'jigoshop'),
 			'creation' => _x('Created at', 'product', 'jigoshop'),
 		);
@@ -111,12 +120,6 @@ class Order implements Post
 			case 'status':
 				echo OrderHelper::getStatus($order);
 				break;
-			case 'order_title':
-				$fullFormat = _x('Y/m/d g:i:s A', 'time', 'jigoshop');
-				$format = _x('Y/m/d', 'time', 'jigoshop');
-				echo '<a href="'.admin_url('post.php?post='.$order->getId().'&action=edit').'">'.sprintf(__('Order %s', 'jigoshop'), $order->getNumber()).'</a>';
-				echo '<time title="'.mysql2date($fullFormat, $post->post_date).'">'.apply_filters('post_date_column_time', mysql2date($format, $post->post_date), $post ).'</time>';
-				break;
 			case 'customer':
 				// TODO: Add proper displaying
 				echo 'test2';
@@ -129,10 +132,27 @@ class Order implements Post
 				// TODO: Add proper displaying
 				echo 'test sh addr';
 				break;
+			case 'shipping_payment':
+				// TODO: Add proper displaying
+				echo 'test sh pay';
+				break;
 			case 'total':
 				// TODO: Add proper displaying
 				echo Product::formatPrice(0.0);
 				break;
 		}
+	}
+
+	public function displayTitle($actions){
+		$post = $this->wp->getGlobalPost();
+		// TODO: Remember to save order title as "Order %d"
+
+		if ($post->post_type == self::NAME) {
+			$fullFormat = _x('Y/m/d g:i:s A', 'time', 'jigoshop');
+			$format = _x('Y/m/d', 'time', 'jigoshop');
+			echo '<time title="'.mysql2date($fullFormat, $post->post_date).'">'.apply_filters('post_date_column_time', mysql2date($format, $post->post_date), $post ).'</time>';
+		}
+
+		return $actions;
 	}
 }

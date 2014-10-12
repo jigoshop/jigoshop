@@ -1,0 +1,60 @@
+.column-title {
+  width: 120px;
+
+  time {
+    color: #999999;
+  }
+}
+
+.column-customer {
+  width: 140px;
+}
+.column-status {
+  width: 80px;
+  text-align: center;
+
+  mark {
+    display: block;
+    text-align: left;
+    text-indent: -9999px;
+    background: #ffffff;
+    height: 16px;
+    width: 16px;
+    background: #ffffff;
+    -webkit-box-shadow: inset 0 0 0 3px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    margin: 1px auto;
+    font-size: 9px;
+    text-transform: uppercase;
+    color: #ffffff;
+    font-weight: bold;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+    -webkit-transition: all ease-in-out .1s;
+  }
+  mark.new {
+    background: #cbe600;
+  }
+  mark.pending {
+    background: #e66f00;
+  }
+  mark.completed {
+    background: green;
+  }
+  mark.on-hold {
+    background: red;
+  }
+  mark.cancelled {
+    background: #dfdfdf;
+  }
+  mark.processing {
+    background: #2184c2;
+  }
+  mark.refunded {
+    background: #cccccc;
+  }
+  mark:hover {
+    text-indent: 0;
+    width: auto;
+    text-align: center;
+  }
+}
