@@ -1,3 +1,11 @@
+@order-new-color: #cbe600;
+@order-pending-color: #e66f00;
+@order-processing-color: #2184c2;
+@order-completed-color: green;
+@order-on-hold-color: red;
+@order-cancelled-color: #dfdfdf; // TODO: Improve this color as it's not visible at all
+@order-refunded-color: #cccccc;
+
 .column-title {
   width: 120px;
 
@@ -31,30 +39,54 @@
     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
     -webkit-transition: all ease-in-out .1s;
   }
-  mark.new {
-    background: #cbe600;
+  mark.jigoshop-new {
+    background: @order-new-color;
   }
-  mark.pending {
-    background: #e66f00;
+  mark.jigoshop-pending {
+    background: @order-pending-color;
   }
-  mark.completed {
-    background: green;
+  mark.jigoshop-completed {
+    background: @order-completed-color;
   }
-  mark.on-hold {
-    background: red;
+  mark.jigoshop-on-hold {
+    background: @order-on-hold-color;
   }
-  mark.cancelled {
-    background: #dfdfdf;
+  mark.jigoshop-cancelled {
+    background: @order-cancelled-color;
   }
-  mark.processing {
-    background: #2184c2;
+  mark.jigoshop-processing {
+    background: @order-processing-color;
   }
-  mark.refunded {
-    background: #cccccc;
+  mark.jigoshop-refunded {
+    background: @order-refunded-color;
   }
   mark:hover {
     text-indent: 0;
     width: auto;
     text-align: center;
+  }
+}
+
+ul.subsubsub {
+  li.jigoshop-jigoshop-new a {
+    color: @order-new-color;
+  }
+  li.jigoshop-pending a {
+    color: @order-pending-color;
+  }
+  li.jigoshop-processing a {
+    color: @order-processing-color;
+  }
+  li.jigoshop-completed a {
+    color: @order-completed-color;
+  }
+  li.jigoshop-on-hold a {
+    color: @order-on-hold-color;
+  }
+  li.jigoshop-cancelled a {
+    color: @order-cancelled-color;
+  }
+  li.jigoshop-refunded a {
+    color: @order-refunded-color;
   }
 }
