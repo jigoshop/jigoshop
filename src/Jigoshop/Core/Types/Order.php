@@ -45,12 +45,37 @@ class Order implements Post
 				$styles->add('jigoshop.admin.orders', JIGOSHOP_URL.'/assets/css/admin/orders.css');
 			}
 		});
-//		$that = $this;
-//		$wp->addAction('add_meta_boxes_'.self::NAME, function() use ($wp, $that){
-//			$wp->addMetaBox('jigoshop-product-data', __('Product Data', 'jigoshop'), array($that, 'box'), $that::NAME, 'normal', 'high');
-//			$wp->removeMetaBox('commentstatusdiv', null, 'normal');
-//		});
 
+		$that = $this;
+		$wp->addAction('add_meta_boxes_'.self::NAME, function() use ($wp, $that){
+			$wp->addMetaBox('jigoshop-order-data', __('Order Data', 'jigoshop'), array($that, 'dataBox'), Order::NAME, 'normal', 'high');
+			$wp->addMetaBox('jigoshop-order-items', __('Order Items', 'jigoshop'), array($that, 'itemsBox'), Order::NAME, 'normal', 'high');
+			$wp->addMetaBox('jigoshop-order-totals', __('Order Totals', 'jigoshop'), array($that, 'totalsBox'), Order::NAME, 'normal', 'default');
+//			add_meta_box('jigoshop-order-attributes', __('Order Variation Attributes / Addons', 'jigoshop'), array($that, 'itemsBox'), Order::NAME, 'side', 'default');
+
+			$wp->addMetaBox('jigoshop-order-actions', __('Order Actions', 'jigoshop'), array($that, 'actionsBox'), Order::NAME, 'side', 'default');
+			$wp->removeMetaBox('commentstatusdiv', null, 'normal');
+		});
+	}
+
+	public function dataBox()
+	{
+		//
+	}
+
+	public function itemsBox()
+	{
+		//
+	}
+
+	public function totalsBox()
+	{
+		//
+	}
+
+	public function actionsBox()
+	{
+		//
 	}
 
 	public function request($vars)
