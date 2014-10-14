@@ -6,6 +6,8 @@
     * Fix: Email notifications about product stock status can be properly disabled.
     * Improved: Show plugin updates even when licence is not activated.
     * Improved: Checking for updates is now 5 times faster.
+    * Fix: JS problems on admin user profile page.
+    * Fix: Date on Reports Page can be properly picked.
 * 1.12.1 - 2014-10-07:
     * Fix: Phone number in order email.
     * Fix: Updated polish translation.
