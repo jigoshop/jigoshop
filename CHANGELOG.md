@@ -8,6 +8,7 @@
     * Improved: Checking for updates is now 5 times faster.
     * Fix: JS problems on admin user profile page.
     * Fix: Date on Reports Page can be properly picked.
+    * Fix: Redirecting from my account pages will no longer generate errors.
 * 1.12.1 - 2014-10-07:
     * Fix: Phone number in order email.
     * Fix: Updated polish translation.
