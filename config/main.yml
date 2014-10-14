@@ -82,5 +82,6 @@ services:
       - '@jigoshop.service.order'
       - '@jigoshop.service.tax'
       - '@jigoshop.helper.styles'
+      - '@jigoshop.helper.scripts'
     tags:
       - { name: jigoshop.type.post }

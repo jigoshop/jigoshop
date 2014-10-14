@@ -9,7 +9,6 @@ use Jigoshop\Admin\Settings;
 <div class="wrap jigoshop">
 	<h1><?php _e('Jigoshop &rang; Settings', 'jigoshop'); ?></h1>
 	<?php settings_errors(); ?>
-	<?php do_action('jigoshop_admin_settings_notices'); ?>
 	<ul class="nav nav-tabs nav-justified" role="tablist">
 		<?php foreach($tabs as $tab): /** @var $tab \Jigoshop\Admin\Settings\TabInterface */ ?>
 		<li class="<?php $tab->getSlug() == $current_tab and print 'active'; ?>">

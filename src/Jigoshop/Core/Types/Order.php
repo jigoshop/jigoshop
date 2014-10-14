@@ -7,6 +7,8 @@ use Jigoshop\Core\Types;
 use Jigoshop\Entity\Order\Status;
 use Jigoshop\Helper\Order as OrderHelper;
 use Jigoshop\Helper\Product;
+use Jigoshop\Helper\Render;
+use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
 use Jigoshop\Service\OrderServiceInterface;
 use Jigoshop\Service\TaxServiceInterface;
@@ -25,7 +27,7 @@ class Order implements Post
 	/** @var TaxServiceInterface */
 	private $taxService;
 
-	public function __construct(Wordpress $wp, Options $options, OrderServiceInterface $orderService, TaxServiceInterface $taxService, Styles $styles)
+	public function __construct(Wordpress $wp, Options $options, OrderServiceInterface $orderService, TaxServiceInterface $taxService, Styles $styles, Scripts $scripts)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
@@ -40,9 +42,11 @@ class Order implements Post
 		$wp->addFilter(sprintf('manage_edit-%s_columns', Types::ORDER), array($this, 'columns'));
 		$wp->addAction(sprintf('manage_%s_posts_custom_column', Types::ORDER), array($this, 'displayColumn'), 2);
 		$wp->addAction('init', array($this, 'registerOrderStatuses'));
-		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $styles){
+		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $styles, $scripts){
 			if ($wp->getPostType() == Order::NAME) {
+				$styles->add('jigoshop.admin.order', JIGOSHOP_URL.'/assets/css/admin/order.css');
 				$styles->add('jigoshop.admin.orders', JIGOSHOP_URL.'/assets/css/admin/orders.css');
+				$scripts->add('jigoshop.vendors', JIGOSHOP_URL.'/assets/js/vendors.min.js');
 			}
 		});
 
@@ -58,9 +62,43 @@ class Order implements Post
 		});
 	}
 
+	// TODO: Think on better place to keep order displaying functions
 	public function dataBox()
 	{
-		//
+		$post = $this->wp->getGlobalPost();
+		$order = $this->orderService->findForPost($post);
+		$billingFields = $this->wp->applyFilters('jigoshop\admin\order\billing_fields', array(
+			'company' => __('Company', 'jigoshop'),
+			'euvatno' => __('EU VAT Number', 'jigoshop'),
+			'first_name' => __('First Name', 'jigoshop'),
+			'last_name' => __('Last Name', 'jigoshop'),
+			'address_1' => __('Address 1', 'jigoshop'),
+			'address_2' => __('Address 2', 'jigoshop'),
+			'city' => __('City', 'jigoshop'),
+			'postcode' => __('Postcode', 'jigoshop'),
+			'country' => __('Country', 'jigoshop'),
+			'state' => __('State/Province', 'jigoshop'),
+			'phone' => __('Phone', 'jigoshop'),
+			'email' => __('Email Address', 'jigoshop'),
+		), $order);
+		$shippingFields = $this->wp->applyFilters('jigoshop\admin\order\shipping_fields', array(
+			'company' => __('Company', 'jigoshop'),
+			'first_name' => __('First Name', 'jigoshop'),
+			'last_name' => __('Last Name', 'jigoshop'),
+			'address_1' => __('Address 1', 'jigoshop'),
+			'address_2' => __('Address 2', 'jigoshop'),
+			'city' => __('City', 'jigoshop'),
+			'postcode' => __('Postcode', 'jigoshop'),
+			'country' => __('Country', 'jigoshop'),
+			'state' => __('State/Province', 'jigoshop'),
+			'phone' => __('Phone', 'jigoshop'),
+		), $order);
+
+		Render::output('admin/orders/dataBox', array(
+			'order' => $order,
+			'billingFields' => $billingFields,
+			'shippingFields' => $shippingFields,
+		));
 	}
 
 	public function itemsBox()

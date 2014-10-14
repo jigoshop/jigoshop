@@ -242,4 +242,13 @@ class Order implements EntityInterface
 	{
 		// TODO: Implement restoreState() method.
 	}
+
+	/**
+	 * @return string Customer's note on the order.
+	 */
+	public function getNote()
+	{
+		// TODO: Implement getNote() method.
+		return 'Note';
+	}
 }
