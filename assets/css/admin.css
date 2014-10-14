@@ -2369,6 +2369,7 @@ div.pages ul.pages li a:hover {
 	width: 14px;
 }
 
+
 #adminmenuback, #adminmenuwrap, #adminmenu {
 	height: 100%;
 }
@@ -2411,5 +2412,5 @@ div.pages ul.pages li a:hover {
 }
 
 canvas.overlay {
-	z-index: 999;
+	z-index: 1;
 }
