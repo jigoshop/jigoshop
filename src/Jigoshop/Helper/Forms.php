@@ -11,6 +11,7 @@ class Forms
 	protected static $textTemplate = 'forms/text';
 	protected static $constantTemplate = 'forms/constant';
 	protected static $hiddenTemplate = 'forms/hidden';
+	protected static $textareaTemplate = 'forms/textarea';
 
 	/**
 	 * Returns string for checkboxes if value is checked (value and current are the same).
@@ -168,6 +169,41 @@ class Forms
 		}
 
 		Render::output(static::$textTemplate, $field);
+	}
+
+	/**
+	 * Outputs textarea field.
+	 *
+	 * @param $field array Field parameters.
+	 * @throws \Jigoshop\Exception
+	 *
+	 * // TODO: Describe field parameters.
+	 */
+	public static function textarea($field)
+	{
+		$defaults = array(
+			'id' => null,
+			'name' => null,
+			'label' => null,
+			'value' => false,
+			'rows' => 3,
+			'disabled' => false,
+			'classes' => array(),
+			'description' => false,
+			'tip' => false,
+			'options' => array(),
+		);
+		$field = wp_parse_args($field, $defaults);
+
+		if (empty($field['name'])) {
+			throw new Exception(sprintf('Field "%s" must have a name!', serialize($field)));
+		}
+
+		if (empty($field['id'])) {
+			$field['id'] = self::prepareIdFromName($field['name']);
+		}
+
+		Render::output(static::$textareaTemplate, $field);
 	}
 
 	/**

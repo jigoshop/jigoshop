@@ -19,9 +19,7 @@
 		<?php endif; ?>
 	</label>
 	<div class="col-sm-9">
-		<input type="text" id="<?php echo $id; ?>" name="<?php echo $name; ?>"
-		       class="form-control <?php echo join(' ', $classes); ?>"
-		       placeholder="<?php echo $placeholder; ?>" value="<?php echo $value; ?>"<?php $disabled and print ' disabled'; ?> />
+		<input type="text" id="<?php echo $id; ?>" name="<?php echo $name; ?>" class="form-control <?php echo join(' ', $classes); ?>" placeholder="<?php echo $placeholder; ?>" value="<?php echo $value; ?>"<?php $disabled and print ' disabled'; ?> />
 		<?php if(!empty($description)): ?>
 			<span class="help-block"><?php echo $description; ?></span>
 		<?php endif; ?>

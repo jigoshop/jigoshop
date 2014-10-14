@@ -9,4 +9,5 @@ class Forms extends \Jigoshop\Helper\Forms
 	protected static $textTemplate = 'admin/forms/text';
 	protected static $constantTemplate = 'admin/forms/constant';
 	protected static $hiddenTemplate = 'admin/forms/hidden';
+	protected static $textareaTemplate = 'admin/forms/textarea';
 }

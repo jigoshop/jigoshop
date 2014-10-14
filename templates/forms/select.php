@@ -22,8 +22,7 @@ use Jigoshop\Helper\Render;
 		<?php endif; ?>
 	</label>
 	<div class="col-sm-9">
-		<select id="<?php echo $id; ?>" name="<?php echo $name; ?>" class="form-control"
-		        placeholder="<?php echo $placeholder; ?>"<?php $multiple and print ' multiple="multiple"'; ?><?php $disabled and print ' disabled'; ?>>
+		<select id="<?php echo $id; ?>" name="<?php echo $name; ?>" class="form-control" placeholder="<?php echo $placeholder; ?>"<?php $multiple and print ' multiple="multiple"'; ?><?php $disabled and print ' disabled'; ?>>
 			<?php foreach($options as $option => $item): ?>
 				<?php if(is_array($item)): ?>
 					<optgroup label="<?php echo $option; ?>">
