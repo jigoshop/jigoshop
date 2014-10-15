@@ -7,7 +7,7 @@ use Jigoshop\Entity\Product\Simple;
 use Jigoshop\Exception;
 use WPAL\Wordpress;
 
-class Product
+class Product implements EntityFactoryInterface
 {
 	/** @var \WPAL\Wordpress */
 	private $wp;

@@ -20,4 +20,9 @@ class Guest extends Customer
 	{
 		return __('Guest', 'jigoshop');
 	}
+
+	public function __toString()
+	{
+		return $this->getName();
+	}
 }

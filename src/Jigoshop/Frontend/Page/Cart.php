@@ -14,7 +14,7 @@ use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
 use Jigoshop\Service\CartServiceInterface;
-use Jigoshop\Service\Customer;
+use Jigoshop\Service\CustomerServiceInterface;
 use Jigoshop\Service\ProductServiceInterface;
 use Jigoshop\Service\ShippingServiceInterface;
 use Jigoshop\Shipping\Method;
@@ -32,13 +32,13 @@ class Cart implements Page
 	private $cartService;
 	/** @var ProductServiceInterface */
 	private $productService;
-	/** @var Customer */
+	/** @var CustomerServiceInterface */
 	private $customerService;
 	/** @var ShippingServiceInterface */
 	private $shippingService;
 
 	public function __construct(Wordpress $wp, Options $options, Messages $messages, CartServiceInterface $cartService, ProductServiceInterface $productService,
-		Customer $customerService, ShippingServiceInterface $shippingService, Styles $styles, Scripts $scripts)
+		CustomerServiceInterface $customerService, ShippingServiceInterface $shippingService, Styles $styles, Scripts $scripts)
 	{
 		$this->wp = $wp;
 		$this->options = $options;

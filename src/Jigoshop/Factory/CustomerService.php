@@ -3,6 +3,7 @@
 namespace Jigoshop\Factory;
 
 use Jigoshop\Core\Options;
+use Jigoshop\Service\Cache\Customer\Simple as SimpleCache;
 use Jigoshop\Service\Customer as Service;
 use WPAL\Wordpress;
 
@@ -12,11 +13,14 @@ class CustomerService
 	private $wp;
 	/** @var \Jigoshop\Core\Options */
 	private $options;
+	/** @var Customer */
+	private $factory;
 
-	public function __construct(Wordpress $wp, Options $options)
+	public function __construct(Wordpress $wp, Options $options, Customer $factory)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
+		$this->factory = $factory;
 	}
 
 	/**
@@ -25,13 +29,13 @@ class CustomerService
 	 */
 	public function getService()
 	{
-		$service = new Service();
+		$service = new Service($this->wp, $this->factory);
 
 		switch ($this->options->get('cache_mechanism')) {
 			// TODO: Add caching mechanisms
-//			case 'simple':
-//				$service = new SimpleCache($service);
-//				break;
+			case 'simple':
+				$service = new SimpleCache($service);
+				break;
 			default:
 				$service = $this->wp->applyFilters('jigoshop\core\get_customer_service', $service);
 		}

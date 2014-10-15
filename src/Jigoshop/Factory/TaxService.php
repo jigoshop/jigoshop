@@ -3,7 +3,7 @@
 namespace Jigoshop\Factory;
 
 use Jigoshop\Core\Options;
-use Jigoshop\Service\Customer;
+use Jigoshop\Service\CustomerServiceInterface;
 use Jigoshop\Service\Tax as Service;
 use WPAL\Wordpress;
 
@@ -15,7 +15,7 @@ class TaxService
 	private $options;
 	private $customerService;
 
-	public function __construct(Wordpress $wp, Options $options, Customer $customerService)
+	public function __construct(Wordpress $wp, Options $options, CustomerServiceInterface $customerService)
 	{
 		$this->wp = $wp;
 		$this->options = $options;

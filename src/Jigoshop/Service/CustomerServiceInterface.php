@@ -1,13 +1,16 @@
 <?php
 namespace Jigoshop\Service;
 
+use Jigoshop\Entity\Customer;
+use Jigoshop\Entity\EntityInterface;
+
 
 /**
  * Customer service.
  *
  * @package Jigoshop\Service
  */
-interface CustomerServiceInterface
+interface CustomerServiceInterface extends ServiceInterface
 {
 	/**
 	 * Returns currently logged in customer.
@@ -22,7 +25,7 @@ interface CustomerServiceInterface
 	 * @param $id int Customer ID.
 	 * @return \Jigoshop\Entity\Customer Customer for selected ID.
 	 */
-	public function get($id);
+	public function find($id);
 
 	/**
 	 * Finds and fetches all available WordPress users.
@@ -30,4 +33,12 @@ interface CustomerServiceInterface
 	 * @return array List of all available users.
 	 */
 	public function findAll();
+
+	/**
+	 * Saves product to database.
+	 *
+	 * @param EntityInterface $object Customer to save.
+	 * @throws Exception
+	 */
+	public function save(EntityInterface $object);
 }

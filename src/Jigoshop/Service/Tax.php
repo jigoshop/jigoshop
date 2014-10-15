@@ -4,7 +4,6 @@ namespace Jigoshop\Service;
 
 use Jigoshop\Entity\Customer;
 use Jigoshop\Entity\Product;
-use Jigoshop\Service\Customer as CustomerService;
 use Jigoshop\Shipping\Method;
 use WPAL\Wordpress;
 
@@ -17,14 +16,14 @@ class Tax implements TaxServiceInterface
 {
 	/** @var \WPAL\Wordpress */
 	private $wp;
-	/** @var \Jigoshop\Service\Customer */
+	/** @var \Jigoshop\Service\CustomerServiceInterface */
 	private $customers;
 	private $taxIncludedInPrice;
 	private $taxes = array();
 	private $taxClasses = array();
 	private $rules;
 
-	public function __construct(Wordpress $wp, array $classes, CustomerService $customers, $taxIncludedInPrice)
+	public function __construct(Wordpress $wp, array $classes, CustomerServiceInterface $customers, $taxIncludedInPrice)
 	{
 		$this->wp = $wp;
 		$this->taxClasses = $classes;

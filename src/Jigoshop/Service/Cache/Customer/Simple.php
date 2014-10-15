@@ -1,51 +1,50 @@
 <?php
 
-namespace Jigoshop\Service;
+namespace Jigoshop\Service\Cache\Customer;
 
-use Jigoshop\Entity\Customer as Entity;
 use Jigoshop\Entity\EntityInterface;
-use Jigoshop\Factory\Customer as Factory;
-use WPAL\Wordpress;
+use Jigoshop\Service\CustomerServiceInterface;
+use Jigoshop\Service\Exception;
 
-/**
- * Customer service.
- *
- * @package Jigoshop\Service
- */
-class Customer implements CustomerServiceInterface
+class Simple implements CustomerServiceInterface
 {
-	/** @var Wordpress */
-	private $wp;
-	/** @var Factory */
-	private $factory;
+	/** @var \Jigoshop\Service\CustomerServiceInterface */
+	private $service;
+	private $current;
+	private $customers = array();
+	private $fetchedAll = false;
 
-	public function __construct(Wordpress $wp, Factory $factory)
+	public function __construct(CustomerServiceInterface $service)
 	{
-		$this->wp = $wp;
-		$this->factory = $factory;
+		$this->service = $service;
 	}
-
 	/**
 	 * Returns currently logged in customer.
 	 *
-	 * @return Entity Current customer entity.
+	 * @return \Jigoshop\Entity\Customer Current customer entity.
 	 */
 	public function getCurrent()
 	{
-		$user = $this->wp->wpGetCurrentUser();
-		return $this->factory->fetch($user);
+		if ($this->current === null) {
+			$this->current = $this->service->getCurrent();
+		}
+
+		return $this->current;
 	}
 
 	/**
 	 * Finds single user with specified ID.
 	 *
 	 * @param $id int Customer ID.
-	 * @return Entity Customer for selected ID.
+	 * @return \Jigoshop\Entity\Customer Customer for selected ID.
 	 */
 	public function find($id)
 	{
-		$user = $this->wp->getUserData($id);
-		return $this->factory->fetch($user);
+		if (!isset($this->customers[$id])) {
+			$this->customers[$id] = $this->service->find($id);
+		}
+
+		return $this->customers[$id];
 	}
 
 	/**
@@ -55,17 +54,11 @@ class Customer implements CustomerServiceInterface
 	 */
 	public function findAll()
 	{
-		$guest = new Entity\Guest();
-		$customers = array(
-			$guest->getId() => $guest,
-		);
-
-		$users = $this->wp->getUsers();
-		foreach ($users as $user) {
-			$customers[$user->ID] = $this->factory->fetch($user);
+		if (!$this->fetchedAll) {
+			$this->customers = $this->service->findAll();
 		}
 
-		return $customers;
+		return $this->customers;
 	}
 
 	/**
@@ -76,11 +69,8 @@ class Customer implements CustomerServiceInterface
 	 */
 	public function save(EntityInterface $object)
 	{
-		if (!($object instanceof Entity)) {
-			throw new Exception('Trying to save not a customer!');
-		}
-
-		// TODO: Implement save() method.
+		$this->customers[$object->getId()] = $object;
+		$this->service->save($object);
 	}
 
 	/**
