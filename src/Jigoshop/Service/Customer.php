@@ -4,6 +4,7 @@ namespace Jigoshop\Service;
 
 use Jigoshop\Entity\Customer as Entity;
 use Jigoshop\Entity\EntityInterface;
+use Jigoshop\Exception;
 use Jigoshop\Factory\Customer as Factory;
 use WPAL\Wordpress;
 
@@ -80,7 +81,22 @@ class Customer implements CustomerServiceInterface
 			throw new Exception('Trying to save not a customer!');
 		}
 
-		// TODO: Implement save() method.
+		$fields = $object->getStateToSave();
+
+		if (isset($fields['id']) || isset($fields['name']) || isset($fields['email']) || isset($fields['login'])) {
+			// TODO: Do we want to update user data like this?
+//			$this->wp->wpUpdateUser(array(
+//				'ID' => $fields['id'],
+//				'display_name' => $fields['name'],
+//				'user_email' => $fields['email'],
+//			));
+
+			unset($fields['id'], $fields['name'], $fields['email'], $fields['login']);
+		}
+
+		foreach ($fields as $field => $value) {
+			$this->wp->updateUserMeta($object->getId(), $field, $value);
+		}
 	}
 
 	/**
@@ -91,7 +107,8 @@ class Customer implements CustomerServiceInterface
 	 */
 	public function findForPost($post)
 	{
-		// TODO: Implement findForPost() method.
+		// TODO: Think on implementing this function either way.
+		throw new Exception('Customer service do not support fetching for post - users are not stored this way.');
 	}
 
 	/**
@@ -102,6 +119,7 @@ class Customer implements CustomerServiceInterface
 	 */
 	public function findByQuery($query)
 	{
-		// TODO: Implement findByQuery() method.
+		// TODO: Think on implementing this function either way.
+		throw new Exception('Customer service do not support fetching by query - users are not stored like posts.');
 	}
 }

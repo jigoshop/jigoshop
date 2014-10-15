@@ -7,8 +7,6 @@ use Jigoshop\Helper\Country;
 /**
  * Customer entity.
  *
- * TODO: Proper implementation.
- *
  * @package Jigoshop\Entity
  */
 class Customer implements EntityInterface
@@ -21,21 +19,6 @@ class Customer implements EntityInterface
 	private $country;
 	private $state;
 	private $postcode;
-
-	public function __construct()
-	{
-		if (!isset($_SESSION['jigoshop_customer'])) {
-			$_SESSION['jigoshop_customer'] = array(
-				'country' => 'GB',
-				'state' => '',
-				'postcode' => '',
-			);
-		}
-
-		$this->country = $_SESSION['jigoshop_customer']['country'];
-		$this->state = $_SESSION['jigoshop_customer']['state'];
-		$this->postcode = $_SESSION['jigoshop_customer']['postcode'];
-	}
 
 	public function getId()
 	{
@@ -109,11 +92,30 @@ class Customer implements EntityInterface
 	}
 
 	/**
+	 * @param string $country New country code for current customer.
+	 */
+	public function setCountry($country)
+	{
+		if ($this->country != $country) {
+			$this->country = $country;
+			$this->setState(''); // On country change - also clear state.
+		}
+	}
+
+	/**
 	 * @return string State code or name.
 	 */
 	public function getState()
 	{
 		return $this->state;
+	}
+
+	/**
+	 * @param string $state New state name or code.
+	 */
+	public function setState($state)
+	{
+		$this->state = $state;
 	}
 
 	/**
@@ -125,33 +127,11 @@ class Customer implements EntityInterface
 	}
 
 	/**
-	 * @param string $country Country code for current customer.
-	 */
-	public function setCountry($country)
-	{
-		if ($this->country != $country) {
-			$this->country = $country;
-			$this->setState(''); // On country change - also clear state.
-			$_SESSION['jigoshop_customer']['country'] = $country;
-		}
-	}
-
-	/**
-	 * @param mixed $postcode
+	 * @param string $postcode New postcode.
 	 */
 	public function setPostcode($postcode)
 	{
 		$this->postcode = $postcode;
-		$_SESSION['jigoshop_customer']['postcode'] = $postcode;
-	}
-
-	/**
-	 * @param mixed $state
-	 */
-	public function setState($state)
-	{
-		$this->state = $state;
-		$_SESSION['jigoshop_customer']['state'] = $state;
 	}
 
 	public function getLocation()
@@ -175,7 +155,15 @@ class Customer implements EntityInterface
 	 */
 	public function getStateToSave()
 	{
-		// TODO: Implement getStateToSave() method.
+		return array(
+			'id' => $this->id,
+			'login' => $this->login,
+			'email' => $this->email,
+			'name' => $this->name,
+			'country' => $this->country,
+			'state' => $this->state,
+			'postcode' => $this->postcode,
+		);
 	}
 
 	/**
