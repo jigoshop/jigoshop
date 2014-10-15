@@ -2,7 +2,8 @@
 
 namespace Jigoshop\Entity;
 
-use Jigoshop\Entity\Order\Status;
+use Jigoshop\Entity\Customer\Guest;
+use WPAL\Wordpress;
 
 /**
  * Order class.
@@ -14,7 +15,7 @@ use Jigoshop\Entity\Order\Status;
 class Order implements EntityInterface
 {
 	private $id;
-	private $date;
+	private $number;
 	private $created_at;
 	private $updated_at;
 	private $customer;
@@ -27,23 +28,15 @@ class Order implements EntityInterface
 	private $discount;
 	private $tax;
 	private $status;
+	private $customerNote;
 
-	/**
-	 * @return array List of available order statuses.
-	 */
-	public function getStatuses()
+	/** @var \WPAL\Wordpress */
+	protected $wp;
+
+	public function __construct(Wordpress $wp)
 	{
-		$order_types = array(
-			Status::CREATED => __('New', 'jigoshop'),
-			Status::PENDING => __('Pending', 'jigoshop'),
-			Status::ON_HOLD => __('On-Hold', 'jigoshop'),
-			Status::PROCESSING => __('Processing', 'jigoshop'),
-			Status::COMPLETED => __('Completed', 'jigoshop'),
-			Status::CANCELLED => __('Cancelled', 'jigoshop'),
-			Status::REFUNDED => __('Refunded', 'jigoshop'),
-		);
-
-		return apply_filters('jigoshop_filter_order_status_names', $order_types);
+		$this->wp = $wp;
+		$this->customer = new Guest();
 	}
 
 	/**
@@ -55,6 +48,7 @@ class Order implements EntityInterface
 	 */
 	public function addNote($note, $private = true)
 	{
+		// TODO: Remove WP calls
 		$comment = array(
 			'comment_post_ID' => $this->id,
 			'comment_author' => __('Jigoshop', 'jigoshop'),
@@ -112,7 +106,15 @@ class Order implements EntityInterface
 	 */
 	public function getId()
 	{
-		// TODO: Implement getId() method.
+		return $this->id;
+	}
+
+	/**
+	 * @return string Title of the order.
+	 */
+	public function getTitle()
+	{
+		return sprintf(__('Order %d', 'jigoshop'), $this->getNumber());
 	}
 
 	/**
@@ -120,15 +122,23 @@ class Order implements EntityInterface
 	 */
 	public function getNumber()
 	{
-		return 0; // TODO: Implement
+		return $this->number;
 	}
 
 	/**
-	 * @return mixed
+	 * @return array Billing address.
 	 */
 	public function getBillingAddress()
 	{
 		return $this->billingAddress;
+	}
+
+	/**
+	 * @return array Shipping address.
+	 */
+	public function getShippingAddress()
+	{
+		return $this->shippingAddress;
 	}
 
 	/**
@@ -140,7 +150,7 @@ class Order implements EntityInterface
 	}
 
 	/**
-	 * @return mixed
+	 * @return Customer The customer.
 	 */
 	public function getCustomer()
 	{
@@ -148,15 +158,7 @@ class Order implements EntityInterface
 	}
 
 	/**
-	 * @return mixed
-	 */
-	public function getDate()
-	{
-		return $this->date;
-	}
-
-	/**
-	 * @return mixed
+	 * @return float Value of discounts added to the order.
 	 */
 	public function getDiscount()
 	{
@@ -164,7 +166,7 @@ class Order implements EntityInterface
 	}
 
 	/**
-	 * @return mixed
+	 * @return array List of items bought.
 	 */
 	public function getItems()
 	{
@@ -172,7 +174,7 @@ class Order implements EntityInterface
 	}
 
 	/**
-	 * @return mixed
+	 * @return string Payment gateway ID.
 	 */
 	public function getPayment()
 	{
@@ -180,7 +182,7 @@ class Order implements EntityInterface
 	}
 
 	/**
-	 * @return mixed
+	 * @return string Shipping method ID.
 	 */
 	public function getShipping()
 	{
@@ -188,15 +190,7 @@ class Order implements EntityInterface
 	}
 
 	/**
-	 * @return mixed
-	 */
-	public function getShippingAddress()
-	{
-		return $this->shippingAddress;
-	}
-
-	/**
-	 * @return string
+	 * @return string Current order status.
 	 */
 	public function getStatus()
 	{
@@ -204,7 +198,7 @@ class Order implements EntityInterface
 	}
 
 	/**
-	 * @return mixed
+	 * @return float Subtotal value of the cart.
 	 */
 	public function getSubtotal()
 	{
@@ -212,7 +206,7 @@ class Order implements EntityInterface
 	}
 
 	/**
-	 * @return mixed
+	 * @return array List of applied tax classes with it's values.
 	 */
 	public function getTax()
 	{
@@ -246,9 +240,8 @@ class Order implements EntityInterface
 	/**
 	 * @return string Customer's note on the order.
 	 */
-	public function getNote()
+	public function getCustomerNote()
 	{
-		// TODO: Implement getNote() method.
-		return 'Note';
+		return $this->customerNote;
 	}
 }

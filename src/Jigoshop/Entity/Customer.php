@@ -32,6 +32,24 @@ class Customer
 		$this->postcode = $_SESSION['jigoshop_customer']['postcode'];
 	}
 
+	public function getId()
+	{
+		// TODO: Implement fetching ID.
+		return 1;
+	}
+
+	public function getLogin()
+	{
+		// TODO: Implement fetching login.
+		return 'Customer login';
+	}
+
+	public function getName()
+	{
+		// TODO: Implement fetching name.
+		return 'Customer Name';
+	}
+
 	public function getCountry()
 	{
 		return $this->country;
@@ -86,5 +104,10 @@ class Customer
 			Country::hasStates($this->getCountry()) ? Country::getStateName($this->getCountry(), $this->getState()) : $this->getState(),
 			$this->getPostcode()
 		), ' ,');
+	}
+
+	public function __toString()
+	{
+		return $this->getName();
 	}
 }

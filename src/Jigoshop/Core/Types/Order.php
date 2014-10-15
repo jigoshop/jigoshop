@@ -10,6 +10,7 @@ use Jigoshop\Helper\Product;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
+use Jigoshop\Service\CustomerServiceInterface;
 use Jigoshop\Service\OrderServiceInterface;
 use Jigoshop\Service\TaxServiceInterface;
 use WPAL\Wordpress;
@@ -26,13 +27,17 @@ class Order implements Post
 	private $orderService;
 	/** @var TaxServiceInterface */
 	private $taxService;
+	/** @var CustomerServiceInterface */
+	private $customerService;
 
-	public function __construct(Wordpress $wp, Options $options, OrderServiceInterface $orderService, TaxServiceInterface $taxService, Styles $styles, Scripts $scripts)
+	public function __construct(Wordpress $wp, Options $options, OrderServiceInterface $orderService, TaxServiceInterface $taxService, CustomerServiceInterface $customerService,
+		Styles $styles, Scripts $scripts)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->orderService = $orderService;
 		$this->taxService = $taxService;
+		$this->customerService = $customerService;
 
 		$wp->addFilter('post_row_actions', array($this, 'displayTitle'));
 		$wp->addFilter('post_updated_messages', array($this, 'updateMessages'));
@@ -93,11 +98,13 @@ class Order implements Post
 			'state' => __('State/Province', 'jigoshop'),
 			'phone' => __('Phone', 'jigoshop'),
 		), $order);
+		$customers = $this->customerService->findAll();
 
 		Render::output('admin/orders/dataBox', array(
 			'order' => $order,
 			'billingFields' => $billingFields,
 			'shippingFields' => $shippingFields,
+			'customers' => $customers
 		));
 	}
 
@@ -212,8 +219,7 @@ class Order implements Post
 				echo OrderHelper::getStatus($order);
 				break;
 			case 'customer':
-				// TODO: Add proper displaying
-				echo 'test2';
+				echo OrderHelper::getUserLink($order->getCustomer());
 				break;
 			case 'billing_address':
 				// TODO: Add proper displaying

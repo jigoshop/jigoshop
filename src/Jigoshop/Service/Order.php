@@ -30,7 +30,7 @@ class Order implements OrderServiceInterface
 	public function find($id)
 	{
 		// TODO: Implement
-		return new \Jigoshop\Entity\Order();
+		return new \Jigoshop\Entity\Order($this->wp);
 	}
 
 	/**
@@ -42,7 +42,7 @@ class Order implements OrderServiceInterface
 	public function findForPost($post)
 	{
 		// TODO: Implement findForPost() method.
-		return new \Jigoshop\Entity\Order();
+		return new \Jigoshop\Entity\Order($this->wp);
 	}
 
 	/**
