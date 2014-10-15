@@ -657,7 +657,7 @@ function is_jigoshop_single_page($page)
 		case JIGOSHOP_VIEW_ORDER:
 			return is_page(jigoshop_get_page_id(JIGOSHOP_VIEW_ORDER));
 		case JIGOSHOP_CHANGE_PASSWORD:
-		return is_page(jigoshop_get_page_id(JIGOSHOP_CHANGE_PASSWORD));
+			return is_page(jigoshop_get_page_id(JIGOSHOP_CHANGE_PASSWORD));
 		case JIGOSHOP_PRODUCT:
 			return is_product();
 		case JIGOSHOP_PRODUCT_CATEGORY:
