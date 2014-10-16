@@ -5,6 +5,7 @@ namespace Jigoshop;
 use Jigoshop\Admin\Dashboard;
 use Jigoshop\Admin\PageInterface;
 use Jigoshop\Admin\Settings;
+use Jigoshop\Core\Types;
 use WPAL\Wordpress;
 
 /**
@@ -73,12 +74,12 @@ class Admin
 
 		foreach ($this->pages['products'] as $page) {
 			/** @var $page PageInterface */
-			$this->wp->addSubmenuPage('edit.php?post_type=product', $page->getTitle(), $page->getTitle(), $page->getCapability(), $page->getMenuSlug(), array($page, 'display'));
+			$this->wp->addSubmenuPage('edit.php?post_type='.Types::PRODUCT, $page->getTitle(), $page->getTitle(), $page->getCapability(), $page->getMenuSlug(), array($page, 'display'));
 		}
 
 		foreach ($this->pages['orders'] as $page) {
 			/** @var $page PageInterface */
-			$this->wp->addSubmenuPage('edit.php?post_type=shop_order', $page->getTitle(), $page->getTitle(), $page->getCapability(), $page->getMenuSlug(), array($page, 'display'));
+			$this->wp->addSubmenuPage('edit.php?post_type='.Types::ORDER, $page->getTitle(), $page->getTitle(), $page->getCapability(), $page->getMenuSlug(), array($page, 'display'));
 		}
 
 		$this->wp->doAction('jigoshop\admin\before_menu');

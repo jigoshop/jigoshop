@@ -222,12 +222,14 @@ class Order implements Post
 				echo OrderHelper::getUserLink($order->getCustomer());
 				break;
 			case 'billing_address':
-				// TODO: Add proper displaying
-				echo 'test addr';
+				Render::output('admin/orders/billing_address', array(
+					'order' => $order,
+				));
 				break;
 			case 'shipping_address':
-				// TODO: Add proper displaying
-				echo 'test sh addr';
+				Render::output('admin/orders/shipping_address', array(
+					'order' => $order,
+				));
 				break;
 			case 'shipping_payment':
 				// TODO: Add proper displaying

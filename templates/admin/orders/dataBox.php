@@ -10,7 +10,7 @@ use Jigoshop\Entity\Order\Status;
  */
 ?>
 <style type="text/css">
-	#titlediv, #major-publishing-actions, #minor-publishing-actions { display:none }
+	#titlediv { display:none }
 </style>
 <div class="panels jigoshop">
 	<input name="post_title" type="hidden" value="<?php echo $order->getTitle(); ?>" />
@@ -33,7 +33,7 @@ use Jigoshop\Entity\Order\Status;
 				'options' => Status::getStatuses(),
 			)); ?>
 			<?php echo Forms::select(array(
-				'name' => 'customer',
+				'name' => 'order[customer]',
 				'label' => __('Customer', 'jigoshop'),
 				'value' => $order->getCustomer() ? $order->getCustomer()->getId() : '',
 				'options' => $customers,
@@ -48,9 +48,9 @@ use Jigoshop\Entity\Order\Status;
 			<?php $address = $order->getBillingAddress(); ?>
 			<?php foreach($billingFields as $field => $label): ?>
 			<?php echo Forms::text(array(
-				'name' => "billing[{$field}]",
+				'name' => "order[billing][{$field}]",
 				'label' => $label,
-				'value' => $address[$field],
+				'value' => $address->get($field),
 			)); ?>
 			<?php endforeach; ?>
 		</div>
@@ -58,9 +58,9 @@ use Jigoshop\Entity\Order\Status;
 			<?php $address = $order->getShippingAddress(); ?>
 			<?php foreach($shippingFields as $field => $label): ?>
 				<?php echo Forms::text(array(
-					'name' => "shipping[{$field}]",
+					'name' => "order[shipping][{$field}]",
 					'label' => $label,
-					'value' => $address[$field],
+					'value' => $address->get($field),
 				)); ?>
 			<?php endforeach; ?>
 		</div>

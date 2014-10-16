@@ -163,4 +163,45 @@ class Address
 	{
 		return $this->state;
 	}
+
+	/**
+	 * @return string Full name for the address.
+	 */
+	public function getName()
+	{
+		return $this->firstName.' '.$this->lastName;
+	}
+
+	/**
+	 * @return string Formatted address for Google Maps.
+	 */
+	public function getGoogleAddress()
+	{
+		return trim($this->address.', '.$this->city.', '.$this->postcode.', '.$this->country.', '.$this->state, ', ');
+	}
+
+	public function get($field)
+	{
+		$value = false;
+
+		switch ($field) {
+			case 'first_name':
+				$value = $this->getFirstName();
+				break;
+		}
+
+		return $value;
+	}
+
+	public function __toString()
+	{
+		return trim(str_replace(
+			array(', ,', ', <'),
+			array('', '<'),
+			sprintf(
+				_x('%1$s, %2$s, %3$s<br/>%4$s, %5$s', 'order-address', 'jigoshop'),
+				$this->address, $this->city, $this->postcode, $this->country, $this->state
+			)
+		), ', ');
+	}
 }
