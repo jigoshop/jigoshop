@@ -5,6 +5,7 @@ services:
     arguments:
       - '@wpal'
       - '@jigoshop.options'
+      - '@jigoshop.factory.order'
   jigoshop.factory.product_service:
     class: Jigoshop\Factory\ProductService
     arguments:
@@ -25,6 +26,10 @@ services:
       - '@jigoshop.factory.customer'
   jigoshop.factory.product:
     class: Jigoshop\Factory\Product
+    arguments:
+      - '@wpal'
+  jigoshop.factory.order:
+    class: Jigoshop\Factory\Order
     arguments:
       - '@wpal'
   jigoshop.factory.customer:

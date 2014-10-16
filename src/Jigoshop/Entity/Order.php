@@ -37,6 +37,8 @@ class Order implements EntityInterface
 	{
 		$this->wp = $wp;
 		$this->customer = new Guest();
+		$this->billingAddress = new Order\Address();
+		$this->shippingAddress = new Order\Address();
 	}
 
 	/**
@@ -110,6 +112,14 @@ class Order implements EntityInterface
 	}
 
 	/**
+	 * @param $id int Order ID.
+	 */
+	public function setId($id)
+	{
+		$this->id = $id;
+	}
+
+	/**
 	 * @return string Title of the order.
 	 */
 	public function getTitle()
@@ -126,7 +136,7 @@ class Order implements EntityInterface
 	}
 
 	/**
-	 * @return array Billing address.
+	 * @return Order\Address Billing address.
 	 */
 	public function getBillingAddress()
 	{
@@ -134,7 +144,7 @@ class Order implements EntityInterface
 	}
 
 	/**
-	 * @return array Shipping address.
+	 * @return Order\Address Shipping address.
 	 */
 	public function getShippingAddress()
 	{

@@ -14,11 +14,14 @@ class OrderService
 	private $wp;
 	/** @var \Jigoshop\Core\Options */
 	private $options;
+	/** @var Order */
+	private $factory;
 
-	public function __construct(Wordpress $wp, Options $options)
+	public function __construct(Wordpress $wp, Options $options, Order $factory)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
+		$this->factory = $factory;
 	}
 
 	/**
@@ -28,7 +31,7 @@ class OrderService
 	public function getService()
 	{
 		/** @var \WPAL\Wordpress $wp */
-		$service = new Service($this->wp);
+		$service = new Service($this->wp, $this->factory);
 
 		switch ($this->options->get('cache_mechanism')) {
 			case 'simple':

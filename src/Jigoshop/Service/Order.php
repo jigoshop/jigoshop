@@ -2,7 +2,9 @@
 
 namespace Jigoshop\Service;
 
+use Jigoshop\Core\Types;
 use Jigoshop\Entity\EntityInterface;
+use Jigoshop\Factory\Order as Factory;
 use WPAL\Wordpress;
 
 /**
@@ -15,10 +17,15 @@ class Order implements OrderServiceInterface
 {
 	/** @var \WPAL\Wordpress */
 	private $wp;
+	/** @var Factory */
+	private $factory;
 
-	public function __construct(Wordpress $wp)
+	public function __construct(Wordpress $wp, Factory $factory)
 	{
 		$this->wp = $wp;
+		$this->factory = $factory;
+
+		$wp->addAction('save_post_'.Types\Order::NAME, array($this, 'savePost'), 10);
 	}
 
 	/**
@@ -29,8 +36,13 @@ class Order implements OrderServiceInterface
 	 */
 	public function find($id)
 	{
-		// TODO: Implement
-		return new \Jigoshop\Entity\Order($this->wp);
+		$post = null;
+
+		if ($id !== null) {
+			$post = $this->wp->getPost($id);
+		}
+
+		return $this->factory->fetch($post);
 	}
 
 	/**
@@ -41,8 +53,7 @@ class Order implements OrderServiceInterface
 	 */
 	public function findForPost($post)
 	{
-		// TODO: Implement findForPost() method.
-		return new \Jigoshop\Entity\Order($this->wp);
+		return $this->factory->fetch($post);
 	}
 
 	/**
@@ -93,6 +104,17 @@ class Order implements OrderServiceInterface
 //		{
 //			update_post_meta($object->getId(), $field, $object->get($field));
 //		}
+	}
+
+	/**
+	 * Save the order data upon post saving.
+	 *
+	 * @param $id int Post ID.
+	 */
+	public function savePost($id)
+	{
+		$order = $this->factory->create($id);
+		$this->save($order);
 	}
 
 	/**
