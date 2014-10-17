@@ -28,6 +28,11 @@ class Order implements EntityFactoryInterface
 		$order->setId($id);
 
 		if (!empty($_POST)) {
+			$order->setCreatedAt(new \Date());
+			$order->setBillingAddress($this->createAddress($_POST['order']['billing']));
+			$order->setShippingAddress($this->createAddress($_POST['order']['shipping']));
+			echo '<pre>'; var_dump($_POST['order'], $order); exit;
+
 //			$order->setName($this->wp->sanitizeTitle($_POST['post_title']));
 //			$order->setDescription($this->wp->wpautop($this->wp->wptexturize($_POST['post_excerpt'])));
 //			$_POST['product']['categories'] = $this->getTerms($id, Types::PRODUCT_CATEGORY, $this->wp->getTerms(Types::PRODUCT_CATEGORY, array(
@@ -72,5 +77,34 @@ class Order implements EntityFactoryInterface
 //		}
 
 		return $this->wp->applyFilters('jigoshop\find\order', $order, $state);
+	}
+
+	private function createAddress($data)
+	{
+		if (!empty($data['company'])) {
+			$address = new Entity\CompanyAddress();
+			$address->setCompany($data['company']);
+			$address->setVatNumber($data['euvatno']);
+		} else {
+			$address = new Entity\Address();
+		}
+
+		$address->setFirstName($data['first_name']);
+		$address->setLastName($data['last_name']);
+		$address->setAddress($data['address']);
+		$address->setCountry($data['country']);
+		$address->setState($data['state']);
+		$address->setCity($data['city']);
+		$address->setPostcode($data['postcode']);
+
+		if (isset($data['phone'])) {
+			$address->setPhone($data['phone']);
+		}
+
+		if (isset($data['email'])) {
+			$address->setEmail($data['email']);
+		}
+
+		return $address;
 	}
 }

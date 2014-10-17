@@ -3,6 +3,7 @@
 namespace Jigoshop\Entity\Customer;
 
 use Jigoshop\Entity\Customer;
+use Jigoshop\Exception;
 
 class Guest extends Customer
 {
@@ -11,14 +12,29 @@ class Guest extends Customer
 		return '';
 	}
 
+	public function setId()
+	{
+		throw new Exception(__('Guest customer cannot be updated!', 'jigoshop'));
+	}
+
 	public function getLogin()
 	{
 		return '';
 	}
 
+	public function setLogin($login)
+	{
+		throw new Exception(__('Guest customer cannot be updated!', 'jigoshop'));
+	}
+
 	public function getName()
 	{
 		return __('Guest', 'jigoshop');
+	}
+
+	public function setName($name)
+	{
+		throw new Exception(__('Guest customer cannot be updated!', 'jigoshop'));
 	}
 
 	public function __toString()

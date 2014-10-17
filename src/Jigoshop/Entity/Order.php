@@ -3,6 +3,10 @@
 namespace Jigoshop\Entity;
 
 use Jigoshop\Entity\Customer\Guest;
+use Jigoshop\Entity\Order\Status;
+use Jigoshop\Entity\Product\Purchasable;
+use Jigoshop\Payment\Method as PaymentMethod;
+use Jigoshop\Shipping\Method as ShippingMethod;
 use WPAL\Wordpress;
 
 /**
@@ -14,20 +18,35 @@ use WPAL\Wordpress;
  */
 class Order implements EntityInterface
 {
+	/** @var int */
 	private $id;
+	/** @var string */
 	private $number;
+	/** @var \DateTime */
 	private $created_at;
+	/** @var \DateTime */
 	private $updated_at;
+	/** @var Customer */
 	private $customer;
+	/** @var array */
 	private $items;
+	/** @var Order\Address */
 	private $billingAddress;
+	/** @var Order\Address */
 	private $shippingAddress;
+	/** @var ShippingMethod */
 	private $shipping;
+	/** @var PaymentMethod */
 	private $payment;
+	/** @var float */
 	private $subtotal;
+	/** @var float */
 	private $discount;
+	/** @var array */
 	private $tax;
+	/** @var string */
 	private $status;
+	/** @var string */
 	private $customerNote;
 
 	/** @var \WPAL\Wordpress */
@@ -36,9 +55,12 @@ class Order implements EntityInterface
 	public function __construct(Wordpress $wp)
 	{
 		$this->wp = $wp;
+
 		$this->customer = new Guest();
 		$this->billingAddress = new Order\Address();
 		$this->shippingAddress = new Order\Address();
+		$this->created_at = new \DateTime();
+		$this->updated_at = new \DateTime();
 	}
 
 	/**
@@ -69,38 +91,6 @@ class Order implements EntityInterface
 		add_comment_meta($comment_id, 'private', $private);
 
 		return $comment_id;
-	}
-
-	/**
-	 * @param $status string New status slug.
-	 * @param $message string Message to add.
-	 * @since 2.0
-	 */
-	public function updateStatus($status, $message = '')
-	{
-		// TODO: Update order status
-		$old_status = get_term_by('slug', $this->status, 'shop_order_status');
-		$new_status = get_term_by('slug', $status, 'shop_order_status');
-
-		if ($new_status) {
-			wp_set_object_terms($this->id, array($new_status->slug), 'shop_order_status', false);
-
-			if ($this->status != $new_status->slug) {
-//				do_action('order_status_'.$new_status->slug, $this->id);
-//				do_action('order_status_'.$this->status.'_to_'.$new_status->slug, $this->id);
-				$this->addNote($message.sprintf(__('Order status changed from %s to %s.', 'jigoshop'), __($old_status->name, 'jigoshop'), __($new_status->name, 'jigoshop')));
-
-				// Date
-				if ($new_status->slug == 'completed') {
-					update_post_meta($this->id, 'completed_date', current_time('timestamp'));
-					foreach ($this->items as $item) {
-						/** @var \Jigoshop\Entity\Order\Item $item */
-						$sales = get_post_meta($item->getProduct()->getId(), 'quantity_sold', true) + $item->getQuantity();
-						update_post_meta($item->getProduct()->getId(), 'quantity_sold', $sales);
-					}
-				}
-			}
-		}
 	}
 
 	/**
@@ -136,11 +126,27 @@ class Order implements EntityInterface
 	}
 
 	/**
+	 * @param string $number The order number.
+	 */
+	public function setNumber($number)
+	{
+		$this->number = $number;
+	}
+
+	/**
 	 * @return Order\Address Billing address.
 	 */
 	public function getBillingAddress()
 	{
 		return $this->billingAddress;
+	}
+
+	/**
+	 * @param Order\Address $billingAddress
+	 */
+	public function setBillingAddress($billingAddress)
+	{
+		$this->billingAddress = $billingAddress;
 	}
 
 	/**
@@ -152,7 +158,15 @@ class Order implements EntityInterface
 	}
 
 	/**
-	 * @return mixed
+	 * @param Order\Address $shippingAddress
+	 */
+	public function setShippingAddress($shippingAddress)
+	{
+		$this->shippingAddress = $shippingAddress;
+	}
+
+	/**
+	 * @return \DateTime Time the order was created at.
 	 */
 	public function getCreatedAt()
 	{
@@ -160,11 +174,36 @@ class Order implements EntityInterface
 	}
 
 	/**
+	 * @return \DateTime Time the order was updated at.
+	 */
+	public function getUpdatedAt()
+	{
+		return $this->updated_at;
+	}
+
+	/**
+	 * @param \DateTime $updated_at Last updated time
+	 */
+	public function setUpdatedAt($updated_at)
+	{
+		$this->updated_at = $updated_at;
+	}
+
+
+	/**
 	 * @return Customer The customer.
 	 */
 	public function getCustomer()
 	{
 		return $this->customer;
+	}
+
+	/**
+	 * @param Customer $customer
+	 */
+	public function setCustomer($customer)
+	{
+		$this->customer = $customer;
 	}
 
 	/**
@@ -176,6 +215,14 @@ class Order implements EntityInterface
 	}
 
 	/**
+	 * @param float $discount Total value of discounts for the order.
+	 */
+	public function setDiscount($discount)
+	{
+		$this->discount = $discount;
+	}
+
+	/**
 	 * @return array List of items bought.
 	 */
 	public function getItems()
@@ -184,7 +231,16 @@ class Order implements EntityInterface
 	}
 
 	/**
-	 * @return string Payment gateway ID.
+	 * @param Purchasable $item Item to add.
+	 */
+	public function addItem(Purchasable $item)
+	{
+		// TODO: Properly store items.
+		$this->items[] = $item;
+	}
+
+	/**
+	 * @return PaymentMethod Payment gateway object.
 	 */
 	public function getPayment()
 	{
@@ -192,11 +248,27 @@ class Order implements EntityInterface
 	}
 
 	/**
-	 * @return string Shipping method ID.
+	 * @param PaymentMethod $payment Method used to pay.
+	 */
+	public function setPayment($payment)
+	{
+		$this->payment = $payment;
+	}
+
+	/**
+	 * @return ShippingMethod Shipping method.
 	 */
 	public function getShipping()
 	{
 		return $this->shipping;
+	}
+
+	/**
+	 * @param ShippingMethod $shipping Method used for shipping the order.
+	 */
+	public function setShipping($shipping)
+	{
+		$this->shipping = $shipping;
 	}
 
 	/**
@@ -208,11 +280,75 @@ class Order implements EntityInterface
 	}
 
 	/**
+	 * @param string $status New order status.
+	 */
+	public function setStatus($status)
+	{
+		$this->status = $status;
+	}
+
+	/**
+	 * @param $status string New order status.
+	 * @param $message string Message to add.
+	 * @since 2.0
+	 */
+	public function updateStatus($status, $message = '')
+	{
+		if ($status) {
+			if ($this->status != $status) {
+				// Do actions for changing statuses
+				$this->wp->doAction('jigoshop\order\before\\'.$status, $this);
+				$this->wp->doAction('jigoshop\order\\'.$this->status.'_to_'.$status, $this);
+
+				$this->addNote($message.sprintf(__('Order status changed from %s to %s.', 'jigoshop'), Status::getName($this->status), Status::getName($status)));
+				$this->status = $status;
+
+				// Date
+				if ($status == Status::COMPLETED) {
+					// TODO: Add completion date and save overall quantity sold.
+//					update_post_meta($this->id, 'completed_date', current_time('timestamp'));
+//					foreach ($this->items as $item) {
+//						/** @var \Jigoshop\Entity\Order\Item $item */
+//						$sales = get_post_meta($item->getProduct()->getId(), 'quantity_sold', true) + $item->getQuantity();
+//						update_post_meta($item->getProduct()->getId(), 'quantity_sold', $sales);
+//					}
+				}
+
+				$this->wp->doAction('jigoshop\order\after\\'.$status, $this);
+			}
+		}
+	}
+
+	/**
+	 * @return string Customer's note on the order.
+	 */
+	public function getCustomerNote()
+	{
+		return $this->customerNote;
+	}
+
+	/**
+	 * @param string $customerNote Customer's note on the order.
+	 */
+	public function setCustomerNote($customerNote)
+	{
+		$this->customerNote = $customerNote;
+	}
+
+	/**
 	 * @return float Subtotal value of the cart.
 	 */
 	public function getSubtotal()
 	{
 		return $this->subtotal;
+	}
+
+	/**
+	 * @param float $subtotal New subtotal value.
+	 */
+	public function setSubtotal($subtotal)
+	{
+		$this->subtotal = $subtotal;
 	}
 
 	/**
@@ -224,11 +360,24 @@ class Order implements EntityInterface
 	}
 
 	/**
-	 * @return mixed
+	 * @return float Total tax of the order.
 	 */
-	public function getUpdatedAt()
+	public function getTotalTax()
 	{
-		return $this->updated_at;
+		$tax = 0.0;
+		foreach ($this->tax as $value) {
+			$tax += $value;
+		}
+
+		return $tax;
+	}
+
+	/**
+	 * @param array $tax Tax data array.
+	 */
+	public function setTax($tax)
+	{
+		$this->tax = $tax;
 	}
 
 	/**
@@ -245,13 +394,5 @@ class Order implements EntityInterface
 	public function restoreState(array $state)
 	{
 		// TODO: Implement restoreState() method.
-	}
-
-	/**
-	 * @return string Customer's note on the order.
-	 */
-	public function getCustomerNote()
-	{
-		return $this->customerNote;
 	}
 }
