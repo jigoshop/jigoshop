@@ -230,8 +230,9 @@ class Order implements Post
 				));
 				break;
 			case 'shipping_payment':
-				// TODO: Add proper displaying
-				echo 'test sh pay';
+				Render::output('admin/orders/shipping_payment', array(
+					'order' => $order,
+				));
 				break;
 			case 'total':
 				// TODO: Add proper displaying
