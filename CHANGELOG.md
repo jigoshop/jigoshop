@@ -11,6 +11,7 @@
     * Fix: Redirecting from my account pages will no longer generate errors.
     * Fix: Worldpay payment page now will be correctly loaded.
     * Fix: Coupon warnings about division by 0.
+    * Fix: Adding new tax will show properly buttons which are assigned to country/state select.
 * 1.12.1 - 2014-10-07:
     * Fix: Phone number in order email.
     * Fix: Updated polish translation.
