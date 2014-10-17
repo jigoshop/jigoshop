@@ -112,7 +112,12 @@ class Order implements Post
 
 	public function itemsBox()
 	{
-		//
+		$post = $this->wp->getGlobalPost();
+		$order = $this->orderService->findForPost($post);
+
+		Render::output('admin/orders/itemsBox', array(
+			'order' => $order,
+		));
 	}
 
 	public function totalsBox()
@@ -306,7 +311,7 @@ class Order implements Post
 		if ($this->wp->getPostType() === 'shop_order') {
 			$messages['post'][1] = __('Order updated.', 'jigoshop');
 			$messages['post'][4] = __('Order updated.', 'jigoshop');
-			$messages['post'][6] = __('Order published.', 'jigoshop');
+			$messages['post'][6] = __('Order updated.', 'jigoshop');
 
 			$messages['post'][8] = __('Order submitted.', 'jigoshop');
 			$messages['post'][10] = __('Order draft updated.', 'jigoshop');

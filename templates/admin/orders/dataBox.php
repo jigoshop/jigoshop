@@ -10,7 +10,7 @@ use Jigoshop\Entity\Order\Status;
  */
 ?>
 <style type="text/css">
-	#titlediv { display:none }
+	#titlediv, #minor-publishing { display:none }
 </style>
 <div class="panels jigoshop">
 	<input name="post_title" type="hidden" value="<?php echo $order->getTitle(); ?>" />
@@ -27,7 +27,7 @@ use Jigoshop\Entity\Order\Status;
 	<div class="tab-content form-horizontal">
 		<div class="tab-pane active" id="order">
 			<?php echo Forms::select(array(
-				'name' => 'post_status',
+				'name' => 'order[status]',
 				'label' => __('Order status', 'jigoshop'),
 				'value' => $order->getStatus(),
 				'options' => Status::getStatuses(),

@@ -136,6 +136,7 @@ class Order implements OrderServiceInterface
 			// TODO: Create order only single time (not twice, here and in savePost).
 			$order = $this->factory->create($post['ID']);
 			$data['post_title'] = $order->getTitle();
+			$data['post_status'] = $_POST['post_status'] = $order->getStatus();
 		}
 
 		return $data;

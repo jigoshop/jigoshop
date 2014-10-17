@@ -42,6 +42,8 @@ class Order implements EntityFactoryInterface
 			$order->setNumber($id); // TODO: Support for continuous numeration and custom order numbers
 			$order->setUpdatedAt(new \DateTime());
 			$order->setCustomerNote($_POST['post_excerpt']);
+			$order->setStatus($_POST['order']['status']);
+
 			if (isset($_POST['order']['billing'])) {
 				$order->setBillingAddress($this->createAddress($_POST['order']['billing']));
 			}
@@ -93,7 +95,9 @@ class Order implements EntityFactoryInterface
 		if (!empty($data['company'])) {
 			$address = new Entity\CompanyAddress();
 			$address->setCompany($data['company']);
-			$address->setVatNumber($data['euvatno']);
+			if (isset($data['euvatno'])) {
+				$address->setVatNumber($data['euvatno']);
+			}
 		} else {
 			$address = new Entity\Address();
 		}
