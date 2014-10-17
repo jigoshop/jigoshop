@@ -2,6 +2,8 @@
 
 namespace Jigoshop\Entity\Order;
 
+use Jigoshop\Helper\Country;
+
 /**
  * Address of the customer.
  *
@@ -21,7 +23,7 @@ class Address implements \Serializable
 	private $phone;
 
 	/**
-	 * @param mixed $address
+	 * @param string $address Street, house etc. value.
 	 */
 	public function setAddress($address)
 	{
@@ -29,7 +31,7 @@ class Address implements \Serializable
 	}
 
 	/**
-	 * @return mixed
+	 * @return string Address line.
 	 */
 	public function getAddress()
 	{
@@ -37,7 +39,7 @@ class Address implements \Serializable
 	}
 
 	/**
-	 * @param mixed $city
+	 * @param string $city New city name.
 	 */
 	public function setCity($city)
 	{
@@ -45,7 +47,7 @@ class Address implements \Serializable
 	}
 
 	/**
-	 * @return mixed
+	 * @return string City name.
 	 */
 	public function getCity()
 	{
@@ -53,7 +55,7 @@ class Address implements \Serializable
 	}
 
 	/**
-	 * @param mixed $country
+	 * @param string $country New country code.
 	 */
 	public function setCountry($country)
 	{
@@ -61,7 +63,7 @@ class Address implements \Serializable
 	}
 
 	/**
-	 * @return mixed
+	 * @return string Country code.
 	 */
 	public function getCountry()
 	{
@@ -69,7 +71,7 @@ class Address implements \Serializable
 	}
 
 	/**
-	 * @param mixed $email
+	 * @param string $email New email.
 	 */
 	public function setEmail($email)
 	{
@@ -77,7 +79,7 @@ class Address implements \Serializable
 	}
 
 	/**
-	 * @return mixed
+	 * @return Email.
 	 */
 	public function getEmail()
 	{
@@ -85,7 +87,7 @@ class Address implements \Serializable
 	}
 
 	/**
-	 * @param mixed $firstName
+	 * @param string $firstName New first name.
 	 */
 	public function setFirstName($firstName)
 	{
@@ -93,7 +95,7 @@ class Address implements \Serializable
 	}
 
 	/**
-	 * @return mixed
+	 * @return string First name.
 	 */
 	public function getFirstName()
 	{
@@ -101,7 +103,7 @@ class Address implements \Serializable
 	}
 
 	/**
-	 * @param mixed $lastName
+	 * @param string $lastName New last name.
 	 */
 	public function setLastName($lastName)
 	{
@@ -109,7 +111,7 @@ class Address implements \Serializable
 	}
 
 	/**
-	 * @return mixed
+	 * @return string Last name.
 	 */
 	public function getLastName()
 	{
@@ -117,7 +119,7 @@ class Address implements \Serializable
 	}
 
 	/**
-	 * @param mixed $phone
+	 * @param string $phone New phone number.
 	 */
 	public function setPhone($phone)
 	{
@@ -125,7 +127,7 @@ class Address implements \Serializable
 	}
 
 	/**
-	 * @return mixed
+	 * @return string Phone number.
 	 */
 	public function getPhone()
 	{
@@ -133,7 +135,7 @@ class Address implements \Serializable
 	}
 
 	/**
-	 * @param mixed $postcode
+	 * @param string $postcode New postcode.
 	 */
 	public function setPostcode($postcode)
 	{
@@ -141,7 +143,7 @@ class Address implements \Serializable
 	}
 
 	/**
-	 * @return mixed
+	 * @return string Postcode.
 	 */
 	public function getPostcode()
 	{
@@ -149,7 +151,7 @@ class Address implements \Serializable
 	}
 
 	/**
-	 * @param mixed $state
+	 * @param string $state New state name or code.
 	 */
 	public function setState($state)
 	{
@@ -157,7 +159,7 @@ class Address implements \Serializable
 	}
 
 	/**
-	 * @return array
+	 * @return string State name or code.
 	 */
 	public function getState()
 	{
@@ -180,6 +182,12 @@ class Address implements \Serializable
 		return trim($this->address.', '.$this->city.', '.$this->postcode.', '.$this->country.', '.$this->state, ', ');
 	}
 
+	/**
+	 * Returns field value based on it's string name.
+	 *
+	 * @param $field string Name of the field.
+	 * @return bool|string Value or false if not found.
+	 */
 	public function get($field)
 	{
 		$value = false;
@@ -191,21 +199,54 @@ class Address implements \Serializable
 			case 'last_name':
 				$value = $this->getLastName();
 				break;
+			case 'address':
+				$value = $this->getAddress();
+				break;
+			case 'city':
+				$value = $this->getCity();
+				break;
+			case 'postcode':
+				$value = $this->getPostcode();
+				break;
+			case 'country':
+				$value = $this->getCountry();
+				break;
+			case 'state':
+				$value = $this->getState();
+				break;
+			case 'email':
+				$value = $this->getEmail();
+				break;
+			case 'phone':
+				$value = $this->getPhone();
+				break;
 		}
 
 		return $value;
 	}
 
+	/**
+	 * @return string String representation of the whole address.
+	 */
 	public function __toString()
 	{
-		return trim(str_replace(
+		$result = trim(str_replace(
 			array(', ,', ', <'),
 			array('', '<'),
 			sprintf(
-				_x('%1$s, %2$s, %3$s<br/>%4$s, %5$s', 'order-address', 'jigoshop'),
-				$this->address, $this->city, $this->postcode, $this->country, $this->state
+				_x('<strong>%1$s</strong><br/>%2$s, %3$s, %4$s<br/>%5$s, %6$s', 'order-address', 'jigoshop'),
+				$this->getName(), $this->address, $this->city, $this->postcode, Country::getName($this->country), Country::getStateName($this->country, $this->state)
 			)
 		), ', ');
+
+		if (!empty($this->phone)) {
+			$result .= sprintf(_x('<br/>Phone: %s', 'order-address', 'jigoshop'), $this->phone);
+		}
+		if (!empty($this->email)) {
+			$result .= sprintf(_x('<br/>Email: <a href="mailto: %1$s">%1$s</a>', 'order-address', 'jigoshop'), $this->email);
+		}
+
+		return $result;
 	}
 
 	/**

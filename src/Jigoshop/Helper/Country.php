@@ -843,7 +843,7 @@ class Country
 	public static function getStateName($countryCode, $stateCode)
 	{
 		if (!self::hasState($countryCode, $stateCode)) {
-			return '';
+			return $stateCode;
 		}
 
 		return self::$states[$countryCode][$stateCode];
