@@ -8,7 +8,7 @@ namespace Jigoshop\Entity\Order;
  * @package Jigoshop\Entity\Order
  * @author Amadeusz Starzykiewicz
  */
-class Address
+class Address implements \Serializable
 {
 	private $firstName;
 	private $lastName;
@@ -157,7 +157,7 @@ class Address
 	}
 
 	/**
-	 * @return mixed
+	 * @return array
 	 */
 	public function getState()
 	{
@@ -188,6 +188,9 @@ class Address
 			case 'first_name':
 				$value = $this->getFirstName();
 				break;
+			case 'last_name':
+				$value = $this->getLastName();
+				break;
 		}
 
 		return $value;
@@ -203,5 +206,51 @@ class Address
 				$this->address, $this->city, $this->postcode, $this->country, $this->state
 			)
 		), ', ');
+	}
+
+	/**
+	 * (PHP 5 &gt;= 5.1.0)<br/>
+	 * String representation of object
+	 *
+	 * @link http://php.net/manual/en/serializable.serialize.php
+	 * @return string the string representation of the object or null
+	 */
+	public function serialize()
+	{
+		return serialize(array(
+			'first_name' => $this->firstName,
+			'last_name' => $this->lastName,
+			'address' => $this->address,
+			'city' => $this->city,
+			'postcode' => $this->postcode,
+			'country' => $this->country,
+			'state' => $this->state,
+			'email' => $this->email,
+			'phone' => $this->phone,
+		));
+	}
+
+	/**
+	 * (PHP 5 &gt;= 5.1.0)<br/>
+	 * Constructs the object
+	 *
+	 * @link http://php.net/manual/en/serializable.unserialize.php
+	 * @param string $serialized <p>
+	 * The string representation of the object.
+	 * </p>
+	 * @return void
+	 */
+	public function unserialize($serialized)
+	{
+		$data = unserialize($serialized);
+		$this->firstName = $data['first_name'];
+		$this->lastName = $data['last_name'];
+		$this->address = $data['address'];
+		$this->city = $data['city'];
+		$this->postcode = $data['postcode'];
+		$this->country = $data['country'];
+		$this->state = $data['state'];
+		$this->email = $data['email'];
+		$this->phone = $data['phone'];
 	}
 }

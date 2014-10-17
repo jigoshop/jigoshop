@@ -26,6 +26,7 @@ class Order implements OrderServiceInterface
 		$this->factory = $factory;
 
 		$wp->addAction('save_post_'.Types\Order::NAME, array($this, 'savePost'), 10);
+		$wp->addFilter('wp_insert_post_data', array($this, 'updateTitle'), 10, 2);
 	}
 
 	/**
@@ -89,21 +90,26 @@ class Order implements OrderServiceInterface
 			throw new Exception('Trying to save not an order!');
 		}
 
-//		$fields = $object->getDirtyFields();
-//
-//		if(in_array('id', $fields) || in_array('name', $fields))
-//		{
-//			wp_update_post(array(
-//				'ID' => $object->getId(),
-//				'post_title' => $object->getName(),
-//			));
-//			unset($fields[array_search('id', $fields)], $fields[array_search('name', $fields)]);
-//		}
-//
-//		foreach($fields as $field)
-//		{
-//			update_post_meta($object->getId(), $field, $object->get($field));
-//		}
+		$fields = $object->getStateToSave();
+
+		/** @var \Jigoshop\Entity\Order $object */
+		if (isset($fields['id'])) {
+			unset($fields['id']);
+		}
+
+		if (isset($fields['customer_note']) || isset($fields['status'])) {
+			// We don't need to save these values - they are stored by WordPress itself.
+			unset($fields['customer_note'], $fields['status']);
+		}
+
+		if (isset($fields['items']) && !empty($fields['items'])) {
+			// TODO: Save items to separate table
+			unset($fields['items']);
+		}
+
+		foreach ($fields as $field => $value) {
+			$this->wp->updatePostMeta($object->getId(), $field, esc_sql($value));
+		}
 	}
 
 	/**
@@ -115,6 +121,24 @@ class Order implements OrderServiceInterface
 	{
 		$order = $this->factory->create($id);
 		$this->save($order);
+	}
+
+	/**
+	 * Updates post title based on order number.
+	 *
+	 * @param $data array Data to save.
+	 * @param $post array Post data.
+	 * @return array
+	 */
+	public function updateTitle($data, $post)
+	{
+		if ($data['post_type'] === Types::ORDER) {
+			// TODO: Create order only single time (not twice, here and in savePost).
+			$order = $this->factory->create($post['ID']);
+			$data['post_title'] = $order->getTitle();
+		}
+
+		return $data;
 	}
 
 	/**

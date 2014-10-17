@@ -19,8 +19,7 @@
 		<?php endif; ?>
 	</label>
 	<div class="col-sm-9">
-		<textarea rows="<?php echo $rows; ?>" id="<?php echo $id; ?>" name="<?php echo $name; ?>"
-		          class="form-control <?php echo join(' ', $classes); ?>" value="<?php echo $value; ?>"<?php $disabled and print ' disabled'; ?>></textarea>
+		<textarea rows="<?php echo $rows; ?>" id="<?php echo $id; ?>" name="<?php echo $name; ?>" class="form-control <?php echo join(' ', $classes); ?>"<?php $disabled and print ' disabled'; ?>><?php echo $value; ?></textarea>
 		<?php if(!empty($description)): ?>
 			<span class="help-block"><?php echo $description; ?></span>
 		<?php endif; ?>

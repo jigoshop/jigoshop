@@ -12,7 +12,7 @@ class Guest extends Customer
 		return '';
 	}
 
-	public function setId()
+	public function setId($id)
 	{
 		throw new Exception(__('Guest customer cannot be updated!', 'jigoshop'));
 	}
@@ -41,4 +41,12 @@ class Guest extends Customer
 	{
 		return $this->getName();
 	}
+
+	public function getStateToSave()
+	{
+		return array(
+			'id' => '',
+		);
+	}
+
 }

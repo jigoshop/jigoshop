@@ -39,7 +39,7 @@ use Jigoshop\Entity\Order\Status;
 				'options' => $customers,
 			)); ?>
 			<?php echo Forms::textarea(array(
-				'name' => 'excerpt',
+				'name' => 'post_excerpt',
 				'label' => __("Customer's note", 'jigoshop'),
 				'value' => $order->getCustomerNote(),
 			)); ?>

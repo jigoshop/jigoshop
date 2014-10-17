@@ -4,16 +4,20 @@ namespace Jigoshop\Factory;
 
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\Order as Entity;
+use Jigoshop\Service\CustomerServiceInterface;
 use WPAL\Wordpress;
 
 class Order implements EntityFactoryInterface
 {
 	/** @var \WPAL\Wordpress */
 	private $wp;
+	/** @var CustomerServiceInterface */
+	private $customerService;
 
-	public function __construct(Wordpress $wp)
+	public function __construct(Wordpress $wp, CustomerServiceInterface $customerService)
 	{
 		$this->wp = $wp;
+		$this->customerService = $customerService;
 	}
 
 	/**
@@ -24,30 +28,32 @@ class Order implements EntityFactoryInterface
 	 */
 	public function create($id)
 	{
+		$date = new \DateTime();
+		if (isset($_POST['aa'])) {
+			$date->setDate($_POST['aa'], $_POST['mm'], $_POST['jj']);
+			$date->setTime($_POST['hh'], $_POST['mn'], $_POST['ss']);
+		}
+
 		$order = new Entity($this->wp);
 		$order->setId($id);
+		$order->setCreatedAt($date);
 
 		if (!empty($_POST)) {
-			$order->setCreatedAt(new \Date());
-			$order->setBillingAddress($this->createAddress($_POST['order']['billing']));
-			$order->setShippingAddress($this->createAddress($_POST['order']['shipping']));
-			echo '<pre>'; var_dump($_POST['order'], $order); exit;
+			$order->setNumber($id); // TODO: Support for continuous numeration and custom order numbers
+			$order->setUpdatedAt(new \DateTime());
+			$order->setCustomerNote($_POST['post_excerpt']);
+			if (isset($_POST['order']['billing'])) {
+				$order->setBillingAddress($this->createAddress($_POST['order']['billing']));
+			}
+			if (isset($_POST['order']['shipping'])) {
+				$order->setShippingAddress($this->createAddress($_POST['order']['shipping']));
+			}
 
-//			$order->setName($this->wp->sanitizeTitle($_POST['post_title']));
-//			$order->setDescription($this->wp->wpautop($this->wp->wptexturize($_POST['post_excerpt'])));
-//			$_POST['product']['categories'] = $this->getTerms($id, Types::PRODUCT_CATEGORY, $this->wp->getTerms(Types::PRODUCT_CATEGORY, array(
-//				'posts__in' => $_POST['tax_input']['product_category'],
-//			)));
-//			$_POST['product']['tags'] = $this->getTerms($id, Types::PRODUCT_TAG, $this->wp->getTerms(Types::PRODUCT_TAG, array(
-//				'posts__in' => $_POST['tax_input']['product_tag'],
-//			)));
-//
-//			if (!isset($_POST['product']['tax_classes'])) {
-//				$_POST['product']['tax_classes'] = array();
-//			}
-//
-//			$order->restoreState($_POST['product']);
-//			$order->markAsDirty($_POST['product']);
+			if (!empty($_POST['order']['customer'])) {
+				$order->setCustomer($this->customerService->find($_POST['order']['customer']));
+			}
+
+			// TODO: Items creation
 		}
 
 		return $order;
@@ -64,17 +70,20 @@ class Order implements EntityFactoryInterface
 		$order = new Entity($this->wp);
 		$state = array();
 
-//		if($post){
-//			$state = array_map(function ($item){
-//				return $item[0];
-//			}, $this->wp->getPostMeta($post->ID));
-//
-//			$state['id'] = $post->ID;
-//			$state['name'] = $post->post_title;
-//			$state['description'] = $this->wp->wpautop($this->wp->wptexturize($post->post_content));
-//
-//			$order->restoreState($state);
-//		}
+		if($post){
+			$state = array_map(function ($item){
+				return $item[0];
+			}, $this->wp->getPostMeta($post->ID));
+
+			$state['id'] = $post->ID;
+			$state['customer_note'] = $post->post_excerpt;
+			$state['status'] = $post->post_status;
+			$state['customer'] = $this->customerService->find($state['customer']);
+
+			// TODO: Items fetching
+
+			$order->restoreState($state);
+		}
 
 		return $this->wp->applyFilters('jigoshop\find\order', $order, $state);
 	}

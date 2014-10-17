@@ -29,7 +29,7 @@ class Order implements EntityInterface
 	/** @var Customer */
 	private $customer;
 	/** @var array */
-	private $items;
+	private $items = array();
 	/** @var Order\Address */
 	private $billingAddress;
 	/** @var Order\Address */
@@ -39,13 +39,15 @@ class Order implements EntityInterface
 	/** @var PaymentMethod */
 	private $payment;
 	/** @var float */
-	private $subtotal;
+	private $subtotal = 0.0;
 	/** @var float */
-	private $discount;
+	private $total = 0.0;
+	/** @var float */
+	private $discount = 0.0;
 	/** @var array */
-	private $tax;
+	private $tax = array();
 	/** @var string */
-	private $status;
+	private $status = Status::CREATED;
 	/** @var string */
 	private $customerNote;
 
@@ -174,6 +176,14 @@ class Order implements EntityInterface
 	}
 
 	/**
+	 * @param \DateTime $created_at Creation time.
+	 */
+	public function setCreatedAt($created_at)
+	{
+		$this->created_at = $created_at;
+	}
+
+	/**
 	 * @return \DateTime Time the order was updated at.
 	 */
 	public function getUpdatedAt()
@@ -182,13 +192,12 @@ class Order implements EntityInterface
 	}
 
 	/**
-	 * @param \DateTime $updated_at Last updated time
+	 * @param \DateTime $updated_at Last update time.
 	 */
 	public function setUpdatedAt($updated_at)
 	{
 		$this->updated_at = $updated_at;
 	}
-
 
 	/**
 	 * @return Customer The customer.
@@ -352,6 +361,22 @@ class Order implements EntityInterface
 	}
 
 	/**
+	 * @return float Total value of the cart.
+	 */
+	public function getTotal()
+	{
+		return $this->total;
+	}
+
+	/**
+	 * @param float $total New total value.
+	 */
+	public function setTotal($total)
+	{
+		$this->total = $total;
+	}
+
+	/**
 	 * @return array List of applied tax classes with it's values.
 	 */
 	public function getTax()
@@ -385,7 +410,23 @@ class Order implements EntityInterface
 	 */
 	public function getStateToSave()
 	{
-		// TODO: Implement getStateToSave() method.
+		return array(
+			'id' => $this->id,
+			'number' => $this->number,
+			'updated_at' => $this->updated_at->getTimestamp(),
+			'items' => $this->items, // TODO: Store items
+			'billing_address' => serialize($this->billingAddress),
+			'shipping_address' => serialize($this->shippingAddress),
+			'customer' => $this->customer->getId(),
+			'shipping' => $this->shipping ? $this->shipping->getState() : false,
+			'payment' => $this->payment ? $this->payment->getId() : false, // TODO: Maybe a state as for shipping methods?
+			'customer_note' => $this->customerNote,
+			'total' => $this->total,
+			'subtotal' => $this->subtotal,
+			'discount' => $this->discount,
+			'tax' => serialize($this->tax),
+			'status' => $this->status,
+		);
 	}
 
 	/**
@@ -393,6 +434,47 @@ class Order implements EntityInterface
 	 */
 	public function restoreState(array $state)
 	{
-		// TODO: Implement restoreState() method.
+		if (isset($state['number'])) {
+			$this->number = $state['number'];
+		}
+		if (isset($state['updated_at'])) {
+			$this->updated_at->setTimestamp($state['updated_at']);
+		}
+		if (isset($state['items'])) {
+			// TODO: Restore items
+		}
+		if (isset($state['billing_address'])) {
+			$this->billingAddress = unserialize($state['billing_address']);
+		}
+		if (isset($state['shipping_address'])) {
+			$this->shippingAddress = unserialize($state['shipping_address']);
+		}
+		if (isset($state['customer'])) {
+			$this->customer = $state['customer'];
+		}
+		if (isset($state['shipping'])) {
+			$this->shipping = $state['shipping'];
+		}
+		if (isset($state['payment'])) {
+			$this->payment = $state['payment'];
+		}
+		if (isset($state['customer_note'])) {
+			$this->customerNote = $state['customer_note'];
+		}
+		if (isset($state['total'])) {
+			$this->total = (float)$state['total'];
+		}
+		if (isset($state['subtotal'])) {
+			$this->subtotal = (float)$state['subtotal'];
+		}
+		if (isset($state['discount'])) {
+			$this->discount = (float)$state['discount'];
+		}
+		if (isset($state['tax'])) {
+			$this->tax = unserialize($state['tax']);
+		}
+		if (isset($state['status'])) {
+			$this->status = $state['status'];
+		}
 	}
 }
