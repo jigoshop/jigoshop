@@ -24,7 +24,7 @@ use Jigoshop\Entity\Order\Status;
 	<noscript>
 		<div class="alert alert-danger" role="alert"><?php _e('<strong>Warning</strong> Order panel will not work properly without JavaScript.', 'jigoshop'); ?></div>
 	</noscript>
-	<div class="tab-content">
+	<div class="tab-content form-horizontal">
 		<div class="tab-pane active" id="order">
 			<?php echo Forms::select(array(
 				'name' => 'post_status',

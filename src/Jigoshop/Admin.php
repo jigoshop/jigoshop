@@ -6,6 +6,8 @@ use Jigoshop\Admin\Dashboard;
 use Jigoshop\Admin\PageInterface;
 use Jigoshop\Admin\Settings;
 use Jigoshop\Core\Types;
+use Jigoshop\Helper\Scripts;
+use Jigoshop\Helper\Styles;
 use WPAL\Wordpress;
 
 /**
@@ -26,13 +28,16 @@ class Admin
 	);
 	private $dashboard;
 
-	public function __construct(Wordpress $wp, Dashboard $dashboard)
+	public function __construct(Wordpress $wp, Dashboard $dashboard, Styles $styles, Scripts $scripts)
 	{
 		$this->wp = $wp;
 		$this->dashboard = $dashboard;
 
 		$wp->addAction('admin_menu', array($this, 'beforeMenu'), 9);
 		$wp->addAction('admin_menu', array($this, 'afterMenu'), 50);
+		$wp->wpEnqueueScript('jquery');
+		$styles->add('jigoshop.admin', JIGOSHOP_URL.'/assets/css/admin.css');
+		$scripts->add('jigoshop.admin', JIGOSHOP_URL.'/assets/js/admin.js', array('jquery'));
 	}
 
 	/**

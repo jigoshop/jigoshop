@@ -12,6 +12,7 @@ use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
 use Jigoshop\Service\CustomerServiceInterface;
 use Jigoshop\Service\OrderServiceInterface;
+use Jigoshop\Service\ShippingServiceInterface;
 use Jigoshop\Service\TaxServiceInterface;
 use WPAL\Wordpress;
 
@@ -29,15 +30,18 @@ class Order implements Post
 	private $taxService;
 	/** @var CustomerServiceInterface */
 	private $customerService;
+	/** @var ShippingServiceInterface */
+	private $shippingService;
 
 	public function __construct(Wordpress $wp, Options $options, OrderServiceInterface $orderService, TaxServiceInterface $taxService, CustomerServiceInterface $customerService,
-		Styles $styles, Scripts $scripts)
+		ShippingServiceInterface $shippingService, Styles $styles, Scripts $scripts)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->orderService = $orderService;
 		$this->taxService = $taxService;
 		$this->customerService = $customerService;
+		$this->shippingService = $shippingService;
 
 		$wp->addFilter('post_row_actions', array($this, 'displayTitle'));
 		$wp->addFilter('post_updated_messages', array($this, 'updateMessages'));
@@ -113,7 +117,13 @@ class Order implements Post
 
 	public function totalsBox()
 	{
-		//
+		$post = $this->wp->getGlobalPost();
+		$order = $this->orderService->findForPost($post);
+
+		Render::output('admin/orders/totalsBox', array(
+			'order' => $order,
+			'shippingMethods' => array(),//$this->shippingService->getAvailable(),
+		));
 	}
 
 	public function actionsBox()
@@ -243,7 +253,6 @@ class Order implements Post
 
 	public function displayTitle($actions){
 		$post = $this->wp->getGlobalPost();
-		// TODO: Remember to save order title as "Order %d"
 
 		// Remove "Quick edit" as we won't use it.
 		unset($actions['inline hide-if-no-js']);

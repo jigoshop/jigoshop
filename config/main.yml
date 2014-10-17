@@ -82,6 +82,7 @@ services:
       - '@jigoshop.service.order'
       - '@jigoshop.service.tax'
       - '@jigoshop.service.customer'
+      - '@jigoshop.service.shipping'
       - '@jigoshop.helper.styles'
       - '@jigoshop.helper.scripts'
     tags:

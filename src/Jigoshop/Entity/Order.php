@@ -470,7 +470,7 @@ class Order implements EntityInterface
 		if (isset($state['discount'])) {
 			$this->discount = (float)$state['discount'];
 		}
-		if (isset($state['tax'])) {
+		if (isset($state['tax']) && !empty($state['payment'])) {
 			$this->tax = unserialize($state['tax']);
 		}
 		if (isset($state['status'])) {
