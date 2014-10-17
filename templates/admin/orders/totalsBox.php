@@ -16,11 +16,11 @@ use Jigoshop\Helper\Product;
 //			'value' => $order->getShipping() ? $order->getShipping()->getId() : false,
 //			'options' => $shippingMethods,
 //		)); ?>
-		<?php Forms::text(array(
+		<?php Forms::constant(array(
 			'name' => 'order[subtotal]',
-			'label' => sprintf(__('Subtotal (%s)', 'jigoshop'), Currency::symbol()),
+			'label' => __('Subtotal', 'jigoshop'),
 			'placeholder' => 0.0,
-			'value' => $order->getSubtotal()
+			'value' => Product::formatPrice($order->getSubtotal()),
 		)); ?>
 		<?php Forms::text(array(
 			'name' => 'order[discount]',
@@ -33,14 +33,14 @@ use Jigoshop\Helper\Product;
 				'name' => 'order[tax]['.$class.']',
 				'label' => $class,
 				'placeholder' => 0.0,
-				'value' => Product::formatPrice($value),
+				'value' => $value,
 			)); ?>
 		<?php endforeach; ?>
-		<?php Forms::text(array(
+		<?php Forms::constant(array(
 			'name' => 'order[total]',
-			'label' => sprintf(__('Total (%s)', 'jigoshop'), Currency::symbol()),
+			'label' => __('Total', 'jigoshop'),
 			'placeholder' => 0.0,
-			'value' => $order->getTotal()
+			'value' => Product::formatPrice($order->getTotal())
 		)); ?>
 	</div>
 </div>

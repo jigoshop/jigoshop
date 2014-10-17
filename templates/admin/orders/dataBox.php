@@ -10,7 +10,7 @@ use Jigoshop\Entity\Order\Status;
  */
 ?>
 <style type="text/css">
-	#titlediv, #minor-publishing { display:none }
+	#post-body-content, #minor-publishing { display:none }
 </style>
 <div class="panels jigoshop">
 	<input name="post_title" type="hidden" value="<?php echo $order->getTitle(); ?>" />
