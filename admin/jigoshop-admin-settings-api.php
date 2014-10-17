@@ -1172,21 +1172,26 @@ class Jigoshop_Options_Parser {
 
 				jQuery(document.body).on('click', '#jigoshop_tax_rates a.add', function() {
 					var size = jQuery('.tax_rate_rules tbody tr').size();
-					jQuery('<tr> \
+					jQuery('<tr class="tax_rate"> \
 							<td><a href="#" class="remove button">&times;</a></td> \
-							<td><select name="tax_classes[' + size + ']"> \
+							<td><select name="tax_classes[' + size + ']" > \
 								<option value="*"><?php _e('Standard Rate', 'jigoshop'); ?></option> \
 								<?php $tax_classes = $_tax->get_tax_classes(); if ( $tax_classes ) : foreach ( $tax_classes as $class ) : echo '<option value="' . sanitize_title($class) . '">' . $class . '</option>'; endforeach; endif; ?> \
 								</select></td> \
 							<td><input type="text" name="tax_label[' + size + ']" placeholder="<?php _e('Online Label', 'jigoshop'); ?>" size="10" /></td> \
 							<td><select name="tax_country[' + size + '][]" id="tax_country_' + size +'" multiple="multiple" style="width:220px;"> \
-									<?php jigoshop_countries::country_dropdown_options('', '', true); ?></select></td> \
+									<?php jigoshop_countries::country_dropdown_options('', '', true); ?></select> \
+								<button class="select_none button"><?php _e('None', 'jigoshop') ?></button> \
+								<button class="button select_all"><?php _e('All', 'jigoshop') ?></button> \
+								<button class="button select_us_states"><?php _e('US States', 'jigoshop') ?></button> \
+								<button class="button select_europe"><?php _e('EU States', 'jigoshop')?></button></td> \
 							<td><input type="text" name="tax_rate[' + size + ']" placeholder="<?php _e('Rate (%)', 'jigoshop'); ?>" size="6" /> \
 							<td><input type="checkbox" name="tax_shipping[' + size + ']" /></td> \
 							<td><input type="checkbox" name="tax_compound[' + size + ']" /></td> \
 							</tr>'
 					).appendTo('#jigoshop_tax_rates .tax_rate_rules tbody');
 					jQuery('#tax_country_' + size).select2();
+					jQuery('#tax_country_' + size).addClass("tax_select2");
 					return false;
 				});
 				jQuery(document.body).on('click', '#jigoshop_tax_rates a.remove', function(){
