@@ -8,7 +8,7 @@ use Jigoshop\Helper\Product;
  * @var $shippingMethods array List of available shipping methods.
  */
 ?>
-<div class="jigoshop">
+<div class="jigoshop jigoshop-totals">
 	<div class="form-horizontal">
 		<?php //Forms::select(array(
 //			'name' => 'order[shipping]',

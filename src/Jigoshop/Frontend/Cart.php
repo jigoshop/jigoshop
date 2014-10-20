@@ -56,9 +56,9 @@ class Cart
 
 	/**
 	 * @param string $id
-	 * @param string $data
+	 * @param array $data
 	 */
-	public function initializeFor($id, $data = '')
+	public function initializeFor($id, $data = array())
 	{
 		$this->id = $id;
 		$this->items = array();
@@ -191,6 +191,7 @@ class Cart
 
 	public function getRemoveUrl($key)
 	{
+		// TODO: Move this properly to different class
 		return add_query_arg(array('action' => 'remove-item', 'item' => $key));
 	}
 
@@ -228,6 +229,10 @@ class Cart
 		$this->items[$key]['quantity'] = $quantity;
 	}
 
+	/**
+	 * @param $key string Item key.
+	 * @return array Item data.
+	 */
 	public function getItem($key)
 	{
 		if (!isset($this->items[$key])) {
@@ -285,6 +290,10 @@ class Cart
 		return $this->tax;
 	}
 
+	/**
+	 * @param $taxClass string Tax class name.
+	 * @return string Label for selected tax class.
+	 */
 	public function getTaxLabel($taxClass)
 	{
 		return $this->taxService->getLabel($taxClass);

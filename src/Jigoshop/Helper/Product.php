@@ -3,9 +3,9 @@
 namespace Jigoshop\Helper;
 
 use Jigoshop\Core\Options;
+use Jigoshop\Entity\Product as ProductEntity;
 use Jigoshop\Entity\Product\Attributes\StockStatus;
 use Jigoshop\Entity\Product\Simple;
-use Jigoshop\Entity\Product as ProductEntity;
 
 class Product
 {
@@ -180,6 +180,15 @@ class Product
 	 */
 	public static function formatPrice($price)
 	{
-		return sprintf(Currency::format(), Currency::symbol(), Currency::code(), number_format($price, Currency::decimals(), Currency::decimalSeparator(), Currency::thousandsSeparator()));
+		return sprintf(Currency::format(), Currency::symbol(), Currency::code(), self::formatNumericPrice($price));
+	}
+
+	/**
+	 * @param $price float Price to format.
+	 * @return string Formatted price as numeric value.
+	 */
+	public static function formatNumericPrice($price)
+	{
+		return number_format($price, Currency::decimals(), Currency::decimalSeparator(), Currency::thousandsSeparator());
 	}
 }

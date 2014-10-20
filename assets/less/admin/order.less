@@ -1,9 +1,73 @@
+@import '../../bower/bootstrap/less/variables.less';
+@import '../../bower/bootstrap/less/mixins.less';
+@import '../../bower/bootstrap/less/glyphicons.less';
+
 .jigoshop {
+  @import '../../bower/bootstrap/less/grid.less';
+  @import '../../bower/bootstrap/less/forms.less';
+  @import '../../bower/bootstrap/less/tables.less';
+  @import '../../bower/bootstrap/less/buttons.less';
+  @import '../../bower/bootstrap/less/navs.less';
+  @import '../../bower/bootstrap/less/scaffolding.less';
+  @import '../../bower/bootstrap/less/utilities.less';
+  @import '../../bower/bootstrap/less/type.less';
+  @import '../../bower/bootstrap/less/close.less';
+
   textarea#excerpt {
     width: 100%;
   }
 
+  .nav-tabs {
+    li.hide {
+      display: none;
+    }
+    li {
+      a, &:hover a  {
+        text-decoration: none;
+      }
+    }
+  }
+  .form-group, .nav-tabs {
+    .clearfix();
+  }
+  .tab-content {
+    background: @body-bg;
+    border: 1px solid @nav-tabs-border-color;
+    border-top: 0;
+    padding: @padding-base-vertical @padding-base-horizontal;
+  }
+
   a:focus {
     box-shadow: none;
+  }
+  &.jigoshop-order {
+    .form-group {
+      margin: 0;
+    }
+    td.quantity, td.price, td.total {
+      width: 200px;
+
+      div {
+        display: inline;
+      }
+      input {
+        width: auto;
+      }
+    }
+    td.id {
+      width: 50px;
+    }
+    td.actions {
+      width: 30px;
+      vertical-align: middle;
+    }
+    td.sku {
+      width: 100px;
+    }
+  }
+  &.jigoshop-totals {
+    .form-group {
+      margin-bottom: 0;
+    }
   }
 }
