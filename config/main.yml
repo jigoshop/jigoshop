@@ -78,12 +78,5 @@ services:
     class: Jigoshop\Core\Types\Order
     arguments:
       - '@wpal'
-      - '@jigoshop.options'
-      - '@jigoshop.service.order'
-      - '@jigoshop.service.tax'
-      - '@jigoshop.service.customer'
-      - '@jigoshop.service.shipping'
-      - '@jigoshop.helper.styles'
-      - '@jigoshop.helper.scripts'
     tags:
       - { name: jigoshop.type.post }

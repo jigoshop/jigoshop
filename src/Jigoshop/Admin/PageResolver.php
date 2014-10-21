@@ -38,9 +38,14 @@ class PageResolver
 	public function getPage(Container $container)
 	{
 		$screen = $this->wp->getCurrentScreen();
+//		echo '<pre>'; var_dump($screen); exit;
 
-		if ($screen->post_type === Types::ORDER) {
+		if ($screen->post_type === Types::ORDER && $screen->id === 'edit-'.Types::ORDER) {
 			return $container->get('jigoshop.admin.page.orders');
+		}
+
+		if ($screen->post_type === Types::ORDER && $screen->id === Types::ORDER) {
+			return $container->get('jigoshop.admin.page.order');
 		}
 
 		return null;

@@ -12,3 +12,14 @@ services:
       - '@jigoshop.service.order'
       - '@jigoshop.helper.styles'
       - '@jigoshop.helper.scripts'
+  jigoshop.admin.page.order:
+    class: Jigoshop\Admin\Page\Order
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.service.order'
+      - '@jigoshop.service.tax'
+      - '@jigoshop.service.customer'
+      - '@jigoshop.service.shipping'
+      - '@jigoshop.helper.styles'
+      - '@jigoshop.helper.scripts'
