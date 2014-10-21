@@ -5,8 +5,8 @@ services:
     arguments:
       - '@wpal'
       - '@jigoshop.options'
-  jigoshop.page_resolver:
-    class: Jigoshop\Core\PageResolver
+  jigoshop.frontend.page_resolver:
+    class: Jigoshop\Frontend\PageResolver
     arguments:
       - '@wpal'
       - '@jigoshop.pages'

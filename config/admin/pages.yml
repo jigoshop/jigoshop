@@ -1,0 +1,14 @@
+parameters: ~
+services:
+  jigoshop.admin.page_resolver:
+    class: Jigoshop\Admin\PageResolver
+    arguments:
+      - '@wpal'
+  jigoshop.admin.page.orders:
+    class: Jigoshop\Admin\Page\Orders
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.service.order'
+      - '@jigoshop.helper.styles'
+      - '@jigoshop.helper.scripts'

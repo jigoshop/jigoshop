@@ -1,14 +1,15 @@
 <?php
 
-namespace Jigoshop\Core;
+namespace Jigoshop\Frontend;
 
+use Jigoshop\Core\Pages;
 use Symfony\Component\DependencyInjection\Container;
 use WPAL\Wordpress;
 
 /**
  * Factory that decides what current page is and provides proper page object.
  *
- * @package Jigoshop\Core
+ * @package Jigoshop\Frontend
  */
 class PageResolver
 {

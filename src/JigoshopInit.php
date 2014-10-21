@@ -39,6 +39,7 @@ class JigoshopInit
 			$builder->addCompilerPass(new Jigoshop\Admin\Settings\CompilerPass());
 			$loader = new YamlFileLoader($builder, new FileLocator(JIGOSHOP_DIR.'/config'));
 			$loader->load('admin.yml');
+			$loader->load('admin/pages.yml');
 			$loader->load('factories.yml');
 			$loader->load('helpers.yml');
 			$loader->load('main.yml');
@@ -116,11 +117,15 @@ class JigoshopInit
 		$this->container->get('jigoshop.assets');
 
 		if (is_admin()) {
+			/** @var \Jigoshop\Admin\PageResolver $resolver */
+			$resolver = $this->container->get('jigoshop.admin.page_resolver');
+			$resolver->resolve($this->container);
+
 			$this->container->get('jigoshop.admin');
 		}
 
-		/** @var \Jigoshop\Core\PageResolver $resolver */
-		$resolver = $this->container->get('jigoshop.page_resolver');
+		/** @var \Jigoshop\Frontend\PageResolver $resolver */
+		$resolver = $this->container->get('jigoshop.frontend.page_resolver');
 		$resolver->resolve($this->container);
 		$jigoshop->run($this->container);
 	}
