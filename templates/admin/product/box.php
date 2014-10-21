@@ -1,4 +1,7 @@
 <?php
+use Jigoshop\Helper\Forms;
+use Jigoshop\Helper\Render;
+
 /**
  * @var $product \Jigoshop\Entity\Product Product object.
  * @var $types array List of available types.
@@ -18,7 +21,7 @@ $isHidden = function($options) use ($product) {
 ?>
 <div class="jigoshop">
 	<div class="form-horizontal">
-		<?php \Jigoshop\Helper\Forms::select(array(
+		<?php Forms::select(array(
 			'id' => 'product-type',
 			'name' => 'product[type]',
 			'label' => __('Product type', 'jigoshop'),
@@ -35,7 +38,7 @@ $isHidden = function($options) use ($product) {
 		<div class="tab-content">
 			<?php foreach($tabs as $id => $environment): ?>
 			<div class="tab-pane fade<?php $id == $current_tab and print ' in active'; ?>" id="<?= $id; ?>">
-				<?php \Jigoshop\Helper\Render::output('admin/products/box/'.$id, $environment); ?>
+				<?php Render::output('admin/product/box/'.$id, $environment); ?>
 			</div>
 			<?php endforeach; ?>
 		</div>

@@ -28,4 +28,14 @@ services:
     arguments:
       - '@wpal'
       - '@jigoshop.options'
+      - '@jigoshop.post_type.product'
       - '@jigoshop.service.product'
+  jigoshop.admin.page.product:
+    class: Jigoshop\Admin\Page\Product
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.post_type.product'
+      - '@jigoshop.service.product'
+      - '@jigoshop.helper.styles'
+      - '@jigoshop.helper.scripts'

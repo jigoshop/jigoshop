@@ -75,12 +75,35 @@ class Product implements Post
 	}
 
 	/**
+	 * @return array
+	 */
+	public function getEnabledTypes()
+	{
+		return $this->enabledTypes;
+	}
+	/**
+	 * Finds and returns human-readable name of specified product type.
+	 *
+	 * @param $type string Name of the type.
+	 * @return string Human-readable name.
+	 */
+	public function getTypeName($type)
+	{
+		switch($type){
+			case Simple::TYPE:
+				return __('Simple', 'jigoshop');
+			default:
+				return $this->wp->applyFilters('jigoshop\product\type\name', $type);
+		}
+	}
+
+	/**
 	 * Finds and returns class name of specified product type.
 	 *
 	 * @param $type string Name of the type.
 	 * @return string Class name.
 	 */
-	private function getTypeClass($type)
+	public function getTypeClass($type)
 	{
 		switch($type){
 			case Simple::TYPE:

@@ -5,7 +5,6 @@ namespace Jigoshop\Admin\Page;
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\Product;
-use Jigoshop\Entity\Product\Simple;
 use Jigoshop\Helper\Product as ProductHelper;
 use Jigoshop\Helper\Render;
 use Jigoshop\Service\ProductServiceInterface;
@@ -19,14 +18,15 @@ class Products
 	private $options;
 	/** @var \Jigoshop\Service\ProductServiceInterface */
 	private $productService;
-	/** @var array */
-	private $enabledTypes = array();
+	/** @var Types\Product */
+	private $type;
 
-	public function __construct(Wordpress $wp, Options $options, ProductServiceInterface $productService)
+	public function __construct(Wordpress $wp, Options $options, Types\Product $type, ProductServiceInterface $productService)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->productService = $productService;
+		$this->type = $type;
 
 		$wp->addFilter(sprintf('manage_edit-%s_columns', Types::PRODUCT), array($this, 'columns'));
 		$wp->addAction(sprintf('manage_%s_posts_custom_column', Types::PRODUCT), array($this, 'displayColumn'), 2);
@@ -84,7 +84,7 @@ class Products
 				echo ProductHelper::getStock($product);
 				break;
 			case 'type':
-				echo $this->getTypeName($product->getType());
+				echo $this->type->getTypeName($product->getType());
 				break;
 			case 'sku':
 				echo $product->getSku();
@@ -150,9 +150,9 @@ class Products
 
 		// Get all active terms
 		$types = array();
-		foreach ($this->enabledTypes as $type) {
+		foreach ($this->type->getEnabledTypes() as $type) {
 			$types[$type] = array(
-				'label' => $this->getTypeName($type),
+				'label' => $this->type->getTypeName($type),
 				'count' => $this->getTypeCount($type),
 			);
 		}
@@ -162,23 +162,6 @@ class Products
 			'types' => $types,
 			'current' => $currentType
 		));
-	}
-
-
-	/**
-	 * Finds and returns human-readable name of specified product type.
-	 *
-	 * @param $type string Name of the type.
-	 * @return string Human-readable name.
-	 */
-	private function getTypeName($type)
-	{
-		switch($type){
-			case Simple::TYPE:
-				return __('Simple', 'jigoshop');
-			default:
-				return $this->wp->applyFilters('jigoshop\product\type\name', $type);
-		}
 	}
 
 	/**

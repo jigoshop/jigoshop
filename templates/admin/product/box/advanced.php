@@ -1,8 +1,6 @@
 <?php
 use Jigoshop\Admin\Helper\Forms;
 use Jigoshop\Entity\Product;
-use Jigoshop\Helper\Currency;
-use Jigoshop\Helper\Product as ProductHelper;
 
 /**
  * @var $product Product The product.

@@ -44,6 +44,10 @@ class PageResolver
 			return $container->get('jigoshop.admin.page.products');
 		}
 
+		if ($screen->post_type === Types::PRODUCT && $screen->id === Types::PRODUCT) {
+			return $container->get('jigoshop.admin.page.product');
+		}
+
 		if ($screen->post_type === Types::ORDER && $screen->id === 'edit-'.Types::ORDER) {
 			return $container->get('jigoshop.admin.page.orders');
 		}
