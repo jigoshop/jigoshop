@@ -23,3 +23,9 @@ services:
       - '@jigoshop.service.shipping'
       - '@jigoshop.helper.styles'
       - '@jigoshop.helper.scripts'
+  jigoshop.admin.page.products:
+    class: Jigoshop\Admin\Page\Products
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.service.product'

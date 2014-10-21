@@ -40,6 +40,10 @@ class PageResolver
 		$screen = $this->wp->getCurrentScreen();
 //		echo '<pre>'; var_dump($screen); exit;
 
+		if ($screen->post_type === Types::PRODUCT && $screen->id === 'edit-'.Types::PRODUCT) {
+			return $container->get('jigoshop.admin.page.products');
+		}
+
 		if ($screen->post_type === Types::ORDER && $screen->id === 'edit-'.Types::ORDER) {
 			return $container->get('jigoshop.admin.page.orders');
 		}
