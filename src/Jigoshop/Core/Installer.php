@@ -83,6 +83,35 @@ class Installer
 			) {$collate};
 		";
 		$wpdb->query($query);
+
+		$query = "
+			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}jigoshop_order_item (
+				id INT NOT NULL AUTO_INCREMENT,
+				order_id INT,
+				product_id INT,
+				product_type VARCHAR(255) NOT NULL,
+				title VARCHAR(255) NOT NULL,
+				price VARCHAR(255) NOT NULL,
+				quantity INT NOT NULL DEFAULT 1,
+				cost VARCHAR(255) NOT NULL,
+				PRIMARY KEY id (id),
+				FOREIGN KEY item_product (product_id) REFERENCES {$wpdb->posts} (ID) ON DELETE SET NULL,
+				FOREIGN KEY item_order (order_id) REFERENCES {$wpdb->posts} (ID) ON DELETE CASCADE,
+				UNIQUE KEY item_definition (order_id, product_id)
+			) {$collate};
+		";
+		$wpdb->query($query);
+//		$query = "
+//			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}jigoshop_order_item_meta (
+//				id INT NOT NULL AUTO_INCREMENT,
+//				item_id INT,
+//				meta_key VARCHAR(255) NOT NULL,
+//				meta_value VARCHAR(255) NOT NULL,
+//				PRIMARY KEY id (id),
+//				FOREIGN KEY order_item (item_id) REFERENCES {$wpdb->prefix}jigoshop_order_item (id) ON DELETE CASCADE
+//			) {$collate};
+//		";
+//		$wpdb->query($query);
 		/*
 			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}jigoshop_attribute (
 				id INT(9) NOT NULL AUTO_INCREMENT,
@@ -91,24 +120,6 @@ class Installer
 				attribute_type INT NOT NULL,
 				attribute_order INT NOT NULL,
 				PRIMARY KEY id (attribute_id)
-			) {$collate};
-			CREATE TABLE {$wpdb->prefix}jigoshop_order_item (
-				id bigint(20) NOT NULL auto_increment,
-				item_name longtext NOT NULL,
-				item_type varchar(200) NOT NULL DEFAULT '',
-				product_id bigint(20) NOT NULL,
-				order_id bigint(20) NOT NULL,
-				PRIMARY KEY (id),
-				KEY order_id (order_id)
-			) {$collate};
-			CREATE TABLE {$wpdb->prefix}jigoshop_order_item_meta (
-				id bigint(20) NOT NULL auto_increment,
-				order_item_id bigint(20) NOT NULL,
-				meta_key varchar(255) NULL,
-				meta_value longtext NULL,
-				PRIMARY KEY (id),
-				KEY order_item_id (order_item_id),
-				KEY meta_key (meta_key)
 			) {$collate};
 		 */
 		// TODO: Is attribute_meta table needed?

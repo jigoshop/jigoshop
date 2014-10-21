@@ -12,10 +12,28 @@ use Jigoshop\Entity\Product;
  */
 class Item
 {
+	/** @var int */
 	private $id;
+	/** @var string */
+	private $name;
+	/** @var int */
 	private $quantity;
+	/** @var float */
 	private $price;
+	/** @var float */
+	private $cost;
+	/** @var Product */
 	private $product;
+	/** @var string */
+	private $type;
+
+	/**
+	 * @return int
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
 
 	/**
 	 * @param int $id
@@ -26,11 +44,43 @@ class Item
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
+
+	/**
+	 * @param string $name
+	 */
+	public function setName($name)
+	{
+		$this->name = $name;
+	}
+
+	/**
 	 * @return int
 	 */
-	public function getId()
+	public function getQuantity()
 	{
-		return $this->id;
+		return $this->quantity;
+	}
+
+	/**
+	 * @param int $quantity
+	 */
+	public function setQuantity($quantity)
+	{
+		$this->quantity = $quantity;
+	}
+
+	/**
+	 * @return float
+	 */
+	public function getPrice()
+	{
+		return $this->price;
 	}
 
 	/**
@@ -44,9 +94,25 @@ class Item
 	/**
 	 * @return float
 	 */
-	public function getPrice()
+	public function getCost()
 	{
-		return $this->price;
+		return $this->cost;
+	}
+
+	/**
+	 * @param float $cost
+	 */
+	public function setCost($cost)
+	{
+		$this->cost = $cost;
+	}
+
+	/**
+	 * @return Product|null
+	 */
+	public function getProduct()
+	{
+		return $this->product;
 	}
 
 	/**
@@ -58,27 +124,18 @@ class Item
 	}
 
 	/**
-	 * @return Product
+	 * @return string
 	 */
-	public function getProduct()
+	public function getType()
 	{
-		return $this->product;
+		return $this->type;
 	}
 
 	/**
-	 * @param int $quantity
+	 * @param string $type
 	 */
-	public function setQuantity($quantity)
+	public function setType($type)
 	{
-		$this->quantity = $quantity;
+		$this->type = $type;
 	}
-
-	/**
-	 * @return int
-	 */
-	public function getQuantity()
-	{
-		return $this->quantity;
-	}
-
 }

@@ -2,9 +2,10 @@
 
 namespace Jigoshop\Entity;
 
+use Jigoshop\Core\Types;
 use Jigoshop\Entity\Customer\Guest;
+use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\Order\Status;
-use Jigoshop\Entity\Product\Purchasable;
 use Jigoshop\Payment\Method as PaymentMethod;
 use Jigoshop\Shipping\Method as ShippingMethod;
 use WPAL\Wordpress;
@@ -236,31 +237,14 @@ class Order implements EntityInterface
 	 */
 	public function getItems()
 	{
-		return array(
-			array(
-				'id' => 0,
-				'sku' => '',
-				'name' => 'Test',
-				'price' => 5.0,
-				'quantity' => 2,
-			),
-			array(
-				'id' => 5,
-				'sku' => 'VA-2',
-				'name' => 'Ulubiony',
-				'price' => 3.0,
-				'quantity' => 5,
-			),
-		);
 		return $this->items;
 	}
 
 	/**
-	 * @param Purchasable $item Item to add.
+	 * @param Item $item Item to add.
 	 */
-	public function addItem(Purchasable $item)
+	public function addItem(Item $item)
 	{
-		// TODO: Properly store items.
 		$this->items[] = $item;
 	}
 
