@@ -5,6 +5,7 @@ namespace Jigoshop\Factory;
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\Order as Entity;
 use Jigoshop\Service\CustomerServiceInterface;
+use Jigoshop\Service\ProductServiceInterface;
 use WPAL\Wordpress;
 
 class Order implements EntityFactoryInterface
@@ -13,11 +14,14 @@ class Order implements EntityFactoryInterface
 	private $wp;
 	/** @var CustomerServiceInterface */
 	private $customerService;
+	/** @var ProductServiceInterface */
+	private $productService;
 
-	public function __construct(Wordpress $wp, CustomerServiceInterface $customerService)
+	public function __construct(Wordpress $wp, CustomerServiceInterface $customerService, ProductServiceInterface $productService)
 	{
 		$this->wp = $wp;
 		$this->customerService = $customerService;
+		$this->productService = $productService;
 	}
 
 	/**
@@ -81,8 +85,11 @@ class Order implements EntityFactoryInterface
 			$state['customer_note'] = $post->post_excerpt;
 			$state['status'] = $post->post_status;
 			$state['customer'] = $this->customerService->find($state['customer']);
-
-			// TODO: Items fetching
+			// TODO: Think on lazy loading of items.
+			$state['items'] = $this->getItems($post->ID);
+			$state['product_subtotal'] = array_reduce($state['items'], function($value, $item){
+				return $value + $item->getCost();
+			}, 0.0);
 
 			$order->restoreState($state);
 		}
@@ -119,5 +126,36 @@ class Order implements EntityFactoryInterface
 		}
 
 		return $address;
+	}
+
+	private function formatOrderItem($data)
+	{
+		$item = new Entity\Item();
+		$item->setId($data['id']);
+		$item->setType($data['product_type']);
+		$item->setName($data['title']);
+		$item->setQuantity($data['quantity']);
+		$item->setPrice($data['price']);
+		$item->setCost($data['cost']);
+
+		$product = $this->productService->find($data['id']);
+		$item->setProduct($product);
+
+		return $item;
+	}
+
+	/**
+	 * @param $id int Order ID.
+	 * @return array List of items assigned to the order.
+	 */
+	private function getItems($id)
+	{
+		$wpdb = $this->wp->getWPDB();
+		$query = $wpdb->prepare("SELECT * FROM {$wpdb->prefix}jigoshop_order_item joi WHERE joi.order_id = %d", array($id));
+		$items = $wpdb->get_results($query, ARRAY_A);
+		$that = $this;
+		return array_map(function($item) use ($that){
+			return $that->formatOrderItem($item);
+		}, $items);
 	}
 }

@@ -87,8 +87,8 @@ class Installer
 		$query = "
 			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}jigoshop_order_item (
 				id INT NOT NULL AUTO_INCREMENT,
-				order_id INT,
-				product_id INT,
+				order_id BIGINT(20) UNSIGNED,
+				product_id BIGINT(20) UNSIGNED,
 				product_type VARCHAR(255) NOT NULL,
 				title VARCHAR(255) NOT NULL,
 				price VARCHAR(255) NOT NULL,

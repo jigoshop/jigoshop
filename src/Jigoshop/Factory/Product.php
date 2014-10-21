@@ -111,7 +111,10 @@ class Product implements EntityFactoryInterface
 			$state['description'] = $this->wp->wpautop($this->wp->wptexturize($post->post_content));
 			$state['categories'] = $this->getTerms($post->ID, Types::PRODUCT_CATEGORY);
 			$state['tags'] = $this->getTerms($post->ID, Types::PRODUCT_TAG);
-			$state['tax_classes'] = unserialize($state['tax_classes']);
+
+			if (isset($state['tax_classes'])) {
+				$state['tax_classes'] = unserialize($state['tax_classes']);
+			}
 
 			$product->restoreState($state);
 		}

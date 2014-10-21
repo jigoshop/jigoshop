@@ -23,14 +23,14 @@ use Jigoshop\Helper\Product;
 			</tr>
 			</thead>
 			<tbody>
-			<?php foreach($order->getItems() as $item): ?>
+			<?php foreach($order->getItems() as $item): /** @var $item \Jigoshop\Entity\Order\Item */ $id = $item->getId(); ?>
 			<tr>
-				<td class="id"><?php Forms::constant(array('name' => 'order[items]['.$item['id'].'][id]', 'value' => $item['id'])); ?></td>
-				<td class="sku"><?php Forms::constant(array('name' => 'order[items]['.$item['id'].'][sku]', 'value' => $item['sku'])); ?></td>
-				<td class="name"><?php Forms::constant(array('name' => 'order[items]['.$item['id'].'][name]', 'value' => $item['name'])); ?></td>
-				<td class="price"><?php Forms::text(array('name' => 'order[items]['.$item['id'].'][price]', 'value' => Product::formatNumericPrice($item['price']))); ?></td>
-				<td class="quantity"><?php Forms::text(array('name' => 'quantity['.$item['id'].']', 'value' => $item['quantity'])); ?></td>
-				<td class="total"><?php Forms::constant(array('name' => 'order[items]['.$item['id'].'][total]', 'value' => Product::formatPrice($item['price'] * $item['quantity']))); ?></td>
+				<td class="id"><?php Forms::constant(array('name' => 'order[items]['.$id.'][id]', 'value' => $id)); ?></td>
+				<td class="sku"><?php Forms::constant(array('name' => 'order[items]['.$id.'][sku]', 'value' => $item->getProduct()->getSku())); ?></td>
+				<td class="name"><?php Forms::constant(array('name' => 'order[items]['.$id.'][name]', 'value' => $item->getName())); ?></td>
+				<td class="price"><?php Forms::text(array('name' => 'order[items]['.$id.'][price]', 'value' => Product::formatNumericPrice($item->getPrice()))); ?></td>
+				<td class="quantity"><?php Forms::text(array('name' => 'quantity['.$id.']', 'value' => $item->getQuantity())); ?></td>
+				<td class="total"><?php Forms::constant(array('name' => 'order[items]['.$id.'][total]', 'value' => Product::formatPrice($item->getCost()))); ?></td>
 				<td class="actions">
 					<a href="" class="close"><span aria-hidden="true">&times;</span><span class="sr-only"><?php _e('Remove', 'jigoshop'); ?></span></a>
 				</td>
@@ -42,7 +42,7 @@ use Jigoshop\Helper\Product;
 				<td colspan="3"><?php Forms::text(array('name' => 'new_item', 'id' => 'new-item', 'placeholder' => __('Search for products...', 'jigoshop'))); ?></td>
 				<td><button class="btn btn-primary" id="add-item"><?php _e('Add item', 'jigoshop'); ?></button></td>
 				<td class="text-right"><strong><?php _e('Product subtotal:', 'jigoshop'); ?></strong></td>
-				<td id="product-subtotal"><?php echo Product::formatPrice($order->getSubtotal()); ?></td>
+				<td id="product-subtotal"><?php echo Product::formatPrice($order->getProductSubtotal()); ?></td>
 				<td></td>
 			</tr>
 			</tfoot>

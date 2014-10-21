@@ -40,6 +40,8 @@ class Order implements EntityInterface
 	/** @var PaymentMethod */
 	private $payment;
 	/** @var float */
+	private $productSubtotal;
+	/** @var float */
 	private $subtotal = 0.0;
 	/** @var float */
 	private $total = 0.0;
@@ -345,6 +347,22 @@ class Order implements EntityInterface
 	}
 
 	/**
+	 * @return float
+	 */
+	public function getProductSubtotal()
+	{
+		return $this->productSubtotal;
+	}
+
+	/**
+	 * @param float $productSubtotal
+	 */
+	public function setProductSubtotal($productSubtotal)
+	{
+		$this->productSubtotal = $productSubtotal;
+	}
+
+	/**
 	 * @return float Subtotal value of the cart.
 	 */
 	public function getSubtotal()
@@ -441,7 +459,7 @@ class Order implements EntityInterface
 			$this->updated_at->setTimestamp($state['updated_at']);
 		}
 		if (isset($state['items'])) {
-			// TODO: Restore items
+			$this->items = $state['items'];
 		}
 		if (isset($state['billing_address'])) {
 			$this->billingAddress = unserialize($state['billing_address']);
@@ -466,6 +484,9 @@ class Order implements EntityInterface
 		}
 		if (isset($state['subtotal'])) {
 			$this->subtotal = (float)$state['subtotal'];
+		}
+		if (isset($state['product_subtotal'])) {
+			$this->productSubtotal = (float)$state['product_subtotal'];
 		}
 		if (isset($state['discount'])) {
 			$this->discount = (float)$state['discount'];
