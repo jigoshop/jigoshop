@@ -37,25 +37,66 @@ class PageResolver
 
 	public function getPage(Container $container)
 	{
-		$screen = $this->wp->getCurrentScreen();
-//		echo '<pre>'; var_dump($screen); exit;
-
-		if ($screen->post_type === Types::PRODUCT && $screen->id === 'edit-'.Types::PRODUCT) {
+		if ($this->isProductsList()) {
 			return $container->get('jigoshop.admin.page.products');
 		}
 
-		if ($screen->post_type === Types::PRODUCT && $screen->id === Types::PRODUCT) {
+		if ($this->isProduct()) {
 			return $container->get('jigoshop.admin.page.product');
 		}
 
-		if ($screen->post_type === Types::ORDER && $screen->id === 'edit-'.Types::ORDER) {
+		if ($this->isOrdersList()) {
 			return $container->get('jigoshop.admin.page.orders');
 		}
 
-		if ($screen->post_type === Types::ORDER && $screen->id === Types::ORDER) {
+		if ($this->isOrder()) {
 			return $container->get('jigoshop.admin.page.order');
 		}
 
 		return null;
+	}
+
+	private function isProductsList()
+	{
+		$screen = $this->wp->getCurrentScreen();
+
+		if ($screen !== null) {
+			return $screen->post_type === Types::PRODUCT && $screen->id === 'edit-'.Types::PRODUCT;
+		}
+
+		return DOING_AJAX && strpos($_POST['action'], 'admin.products') !== false;
+	}
+
+	private function isProduct()
+	{
+		$screen = $this->wp->getCurrentScreen();
+
+		if ($screen !== null) {
+			return $screen->post_type === Types::PRODUCT && $screen->id === Types::PRODUCT;
+		}
+
+		return DOING_AJAX && strpos($_POST['action'], 'admin.product') !== false;
+	}
+
+	private function isOrdersList()
+	{
+		$screen = $this->wp->getCurrentScreen();
+
+		if ($screen !== null) {
+			return $screen->post_type === Types::ORDER && $screen->id === 'edit-'.Types::ORDER;
+		}
+
+		return DOING_AJAX && strpos($_POST['action'], 'admin.orders') !== false;
+	}
+
+	private function isOrder()
+	{
+		$screen = $this->wp->getCurrentScreen();
+
+		if ($screen !== null) {
+			return $screen->post_type === Types::ORDER && $screen->id === Types::ORDER;
+		}
+
+		return DOING_AJAX && strpos($_POST['action'], 'admin.order') !== false;
 	}
 }

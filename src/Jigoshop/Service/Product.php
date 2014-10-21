@@ -6,7 +6,6 @@ use Jigoshop\Core\Types;
 use Jigoshop\Entity\EntityInterface;
 use Jigoshop\Exception;
 use Jigoshop\Factory\Product as ProductFactory;
-use Jigoshop\Helper\Product as ProductHelper;
 use WPAL\Wordpress;
 
 /**
@@ -81,6 +80,22 @@ class Product implements ProductServiceInterface
 		$product = $this->factory->fetch($post);
 		// TODO: Restore state if needed
 		return $product;
+	}
+
+	/**
+	 * Finds items by trying to match their name.
+	 *
+	 * @param $name string Post name to match.
+	 * @return array List of matched products.
+	 */
+	public function findLike($name)
+	{
+		$query = new \WP_Query(array(
+			'post_type' => Types::PRODUCT,
+			's' => $name,
+		));
+
+		return $this->findByQuery($query);
 	}
 
 	/**

@@ -4,13 +4,13 @@ namespace Jigoshop\Admin\Page;
 
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
+use Jigoshop\Entity\Product;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
 use Jigoshop\Service\CustomerServiceInterface;
 use Jigoshop\Service\OrderServiceInterface;
-use Jigoshop\Service\ShippingServiceInterface;
-use Jigoshop\Service\TaxServiceInterface;
+use Jigoshop\Service\ProductServiceInterface;
 use WPAL\Wordpress;
 
 class Order
@@ -19,24 +19,21 @@ class Order
 	private $wp;
 	/** @var \Jigoshop\Core\Options */
 	private $options;
-	/** @var \Jigoshop\Service\OrderServiceInterface */
+	/** @var OrderServiceInterface */
 	private $orderService;
-	/** @var TaxServiceInterface */
-	private $taxService;
+	/** @var ProductServiceInterface */
+	private $productService;
 	/** @var CustomerServiceInterface */
 	private $customerService;
-	/** @var ShippingServiceInterface */
-	private $shippingService;
 
-	public function __construct(Wordpress $wp, Options $options, OrderServiceInterface $orderService, TaxServiceInterface $taxService, CustomerServiceInterface $customerService,
-		ShippingServiceInterface $shippingService, Styles $styles, Scripts $scripts)
+	public function __construct(Wordpress $wp, Options $options, OrderServiceInterface $orderService, ProductServiceInterface $productService,
+		CustomerServiceInterface $customerService, Styles $styles, Scripts $scripts)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->orderService = $orderService;
-		$this->taxService = $taxService;
+		$this->productService = $productService;
 		$this->customerService = $customerService;
-		$this->shippingService = $shippingService;
 
 		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $styles, $scripts){
 			if ($wp->getPostType() == Types::ORDER) {
@@ -50,7 +47,6 @@ class Order
 			}
 		});
 
-		$wp->addAction('wp_ajax_jigoshop.admin.find_product', array($this, 'findProduct'), 10, 0);
 		$wp->addAction('wp_ajax_jigoshop.admin.order.add_product', array($this, 'addProduct'), 10, 0);
 
 		$that = $this;
@@ -63,23 +59,6 @@ class Order
 			$wp->addMetaBox('jigoshop-order-actions', __('Order Actions', 'jigoshop'), array($that, 'actionsBox'), Types::ORDER, 'side', 'default');
 			$wp->removeMetaBox('commentstatusdiv', null, 'normal');
 		});
-	}
-
-	// TODO: Refactor the class, add page resolver with proper pages to get client related code from order type definition
-	public function findProduct()
-	{
-		$result = array(
-			'success' => true,
-			'results' => array(
-				array(
-					'id' => 1,
-					'text' => 'Test123',
-				),
-			),
-		);
-
-		echo json_encode($result);
-		exit;
 	}
 
 	public function addProduct()

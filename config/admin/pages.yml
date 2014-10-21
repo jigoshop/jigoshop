@@ -18,9 +18,8 @@ services:
       - '@wpal'
       - '@jigoshop.options'
       - '@jigoshop.service.order'
-      - '@jigoshop.service.tax'
+      - '@jigoshop.service.product'
       - '@jigoshop.service.customer'
-      - '@jigoshop.service.shipping'
       - '@jigoshop.helper.styles'
       - '@jigoshop.helper.scripts'
   jigoshop.admin.page.products:

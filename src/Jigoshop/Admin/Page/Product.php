@@ -28,6 +28,8 @@ class Product
 		$this->productService = $productService;
 		$this->type = $type;
 
+		$wp->addAction('wp_ajax_jigoshop.admin.product.find', array($this, 'findProduct'), 10, 0);
+
 		$that = $this;
 		$wp->addAction('add_meta_boxes_'.Types::PRODUCT, function() use ($wp, $that){
 			$wp->addMetaBox('jigoshop-product-data', __('Product Data', 'jigoshop'), array($that, 'box'), Types::PRODUCT, 'normal', 'high');
@@ -99,5 +101,24 @@ class Product
 			'tabs' => $tabs,
 			'current_tab' => 'general',
 		));
+	}
+
+	public function findProduct()
+	{
+		$products = $this->productService->findLike($_POST['product']);
+
+		$result = array(
+			'success' => true,
+			'results' => array_map(function($item){
+				/** @var $item Product */
+				return array(
+					'id' => $item->getId(),
+					'text' => $item->getName(),
+				);
+			}, $products),
+		);
+
+		echo json_encode($result);
+		exit;
 	}
 }

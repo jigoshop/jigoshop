@@ -16,7 +16,7 @@ class AdminOrder
         data: (term) ->
           return {
           product: term
-          action: 'jigoshop.admin.find_product'
+          action: 'jigoshop.admin.product.find'
           }
         results: (data) ->
           if data.success?

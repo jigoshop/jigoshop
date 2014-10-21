@@ -46,6 +46,14 @@ interface ProductServiceInterface extends ServiceInterface
 	public function findForState(array $state);
 
 	/**
+	 * Finds items by trying to match their name.
+	 *
+	 * @param $name string Post name to match.
+	 * @return array List of matched products.
+	 */
+	public function findLike($name);
+
+	/**
 	 * @return array List of products that are out of stock.
 	 */
 	public function findOutOfStock();

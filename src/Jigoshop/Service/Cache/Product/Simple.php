@@ -68,6 +68,17 @@ class Simple implements ProductServiceInterface
 	}
 
 	/**
+	 * Finds items by trying to match their name.
+	 *
+	 * @param $name string Post name to match.
+	 * @return array List of matched products.
+	 */
+	public function findLike($name)
+	{
+		return $this->service->findLike($name);
+	}
+
+	/**
 	 * Finds items specified using WordPress query.
 	 *
 	 * @param $query \WP_Query WordPress query.
