@@ -236,6 +236,22 @@ class Order implements EntityInterface
 	 */
 	public function getItems()
 	{
+		return array(
+			array(
+				'id' => 0,
+				'sku' => '',
+				'name' => 'Test',
+				'price' => 5.0,
+				'quantity' => 2,
+			),
+			array(
+				'id' => 5,
+				'sku' => 'VA-2',
+				'name' => 'Ulubiony',
+				'price' => 3.0,
+				'quantity' => 5,
+			),
+		);
 		return $this->items;
 	}
 

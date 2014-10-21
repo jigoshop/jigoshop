@@ -39,10 +39,10 @@ use Jigoshop\Helper\Product;
 			</tbody>
 			<tfoot>
 			<tr>
-				<td colspan="3"><?php Forms::text(array( 'name' => 'new_item', 'placeholder' => __('Search for products...', 'jigoshop'))); ?></td>
+				<td colspan="3"><?php Forms::text(array('name' => 'new_item', 'id' => 'new-item', 'placeholder' => __('Search for products...', 'jigoshop'))); ?></td>
 				<td><button class="btn btn-primary" id="add-item"><?php _e('Add item', 'jigoshop'); ?></button></td>
 				<td class="text-right"><strong><?php _e('Product subtotal:', 'jigoshop'); ?></strong></td>
-				<td><?php echo Product::formatPrice($order->getSubtotal()); ?></td>
+				<td id="product-subtotal"><?php echo Product::formatPrice($order->getSubtotal()); ?></td>
 				<td></td>
 			</tr>
 			</tfoot>

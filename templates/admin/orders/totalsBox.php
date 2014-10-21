@@ -18,6 +18,7 @@ use Jigoshop\Helper\Product;
 //		)); ?>
 		<?php Forms::constant(array(
 			'name' => 'order[subtotal]',
+			'id' => 'subtotal',
 			'label' => __('Subtotal', 'jigoshop'),
 			'placeholder' => 0.0,
 			'value' => Product::formatPrice($order->getSubtotal()),
@@ -38,6 +39,7 @@ use Jigoshop\Helper\Product;
 		<?php endforeach; ?>
 		<?php Forms::constant(array(
 			'name' => 'order[total]',
+			'id' => 'total',
 			'label' => __('Total', 'jigoshop'),
 			'placeholder' => 0.0,
 			'value' => Product::formatPrice($order->getTotal())

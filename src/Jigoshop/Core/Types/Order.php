@@ -55,9 +55,16 @@ class Order implements Post
 			if ($wp->getPostType() == Order::NAME) {
 				$styles->add('jigoshop.admin.order', JIGOSHOP_URL.'/assets/css/admin/order.css');
 				$styles->add('jigoshop.admin.orders', JIGOSHOP_URL.'/assets/css/admin/orders.css');
+				$scripts->add('jigoshop.admin.order', JIGOSHOP_URL.'/assets/js/admin/order.js');
 				$scripts->add('jigoshop.vendors', JIGOSHOP_URL.'/assets/js/vendors.min.js');
+				$scripts->localize('jigoshop.admin.order', 'jigoshop_admin_order', array(
+					'ajax' => admin_url('admin-ajax.php'),
+				));
 			}
 		});
+
+		$wp->addAction('wp_ajax_jigoshop.admin.find_product', array($this, 'findProduct'), 10, 0);
+		$wp->addAction('wp_ajax_jigoshop.admin.order.add_product', array($this, 'addProduct'), 10, 0);
 
 		$that = $this;
 		$wp->addAction('add_meta_boxes_'.self::NAME, function() use ($wp, $that){
@@ -69,6 +76,39 @@ class Order implements Post
 			$wp->addMetaBox('jigoshop-order-actions', __('Order Actions', 'jigoshop'), array($that, 'actionsBox'), Order::NAME, 'side', 'default');
 			$wp->removeMetaBox('commentstatusdiv', null, 'normal');
 		});
+	}
+
+	// TODO: Refactor the class, add page resolver with proper pages to get client related code from order type definition
+	public function findProduct()
+	{
+		$result = array(
+			'success' => true,
+			'results' => array(
+				array(
+					'id' => 1,
+					'text' => 'Test123',
+				),
+			),
+		);
+
+		echo json_encode($result);
+		exit;
+	}
+
+	public function addProduct()
+	{
+		$result = array(
+			'success' => true,
+			'html' => array(
+				'row' => '<tr><td>1</td><td></td><td>Test123</td><td><input type="text" value="1.00" /></td><td><input type="text" value="1" /></td><td>$1.00</td><td>x</td></tr>',
+				'product_subtotal' => '$26.00',
+				'subtotal' => '$26.00',
+				'total' => '$26.00',
+			),
+		);
+
+		echo json_encode($result);
+		exit;
 	}
 
 	// TODO: Think on better place to keep order displaying functions
