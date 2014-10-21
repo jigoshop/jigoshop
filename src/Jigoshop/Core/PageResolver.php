@@ -2,7 +2,6 @@
 
 namespace Jigoshop\Core;
 
-use Jigoshop\Frontend\Page;
 use Symfony\Component\DependencyInjection\Container;
 use WPAL\Wordpress;
 

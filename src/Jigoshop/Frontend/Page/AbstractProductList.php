@@ -6,7 +6,6 @@ use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Pages;
 use Jigoshop\Core\Types;
-use Jigoshop\Frontend\Page;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
@@ -14,7 +13,7 @@ use Jigoshop\Service\CartServiceInterface;
 use Jigoshop\Service\ProductServiceInterface;
 use WPAL\Wordpress;
 
-abstract class AbstractProductList implements Page
+abstract class AbstractProductList implements PageInterface
 {
 	/** @var \WPAL\Wordpress */
 	protected $wp;

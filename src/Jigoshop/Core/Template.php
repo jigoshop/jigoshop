@@ -4,7 +4,7 @@
 namespace Jigoshop\Core;
 
 use Jigoshop\Exception;
-use Jigoshop\Frontend\Page;
+use Jigoshop\Frontend\Page\PageInterface;
 use Jigoshop\Helper\Render;
 use WPAL\Wordpress;
 
@@ -21,7 +21,7 @@ class Template
 	private $options;
 	/** @var \Jigoshop\Core\Pages */
 	private $pages;
-	/** @var Page */
+	/** @var PageInterface */
 	private $page;
 
 	public function __construct(Wordpress $wp, Options $options, Pages $pages)
@@ -33,8 +33,9 @@ class Template
 
 	/**
 	 * Sets current page object.
+
 	 *
-	 * @param Page $page
+*@param PageInterface $page
 	 */
 	public function setPage($page)
 	{

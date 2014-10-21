@@ -1,13 +1,13 @@
 <?php
 
-namespace Jigoshop\Frontend;
+namespace Jigoshop\Frontend\Page;
 
 /**
  * Interface for templates and their actions.
  *
  * @package Jigoshop\Frontend
  */
-interface Page
+interface PageInterface
 {
 	/**
 	 * Executes actions associated with selected page.

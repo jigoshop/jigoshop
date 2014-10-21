@@ -7,7 +7,6 @@ use Jigoshop\Core\Options;
 use Jigoshop\Core\Pages;
 use Jigoshop\Core\Types;
 use Jigoshop\Exception;
-use Jigoshop\Frontend\Page;
 use Jigoshop\Helper\Product as ProductHelper;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
@@ -16,7 +15,7 @@ use Jigoshop\Service\CartServiceInterface;
 use Jigoshop\Service\ProductServiceInterface;
 use WPAL\Wordpress;
 
-class Product implements Page
+class Product implements PageInterface
 {
 	/** @var \WPAL\Wordpress */
 	private $wp;

@@ -7,7 +7,6 @@ use Jigoshop\Core\Options;
 use Jigoshop\Core\Pages;
 use Jigoshop\Core\Types;
 use Jigoshop\Exception;
-use Jigoshop\Frontend\Page;
 use Jigoshop\Helper\Country;
 use Jigoshop\Helper\Product;
 use Jigoshop\Helper\Render;
@@ -20,7 +19,7 @@ use Jigoshop\Service\ShippingServiceInterface;
 use Jigoshop\Shipping\Method;
 use WPAL\Wordpress;
 
-class Cart implements Page
+class Cart implements PageInterface
 {
 	/** @var \WPAL\Wordpress */
 	private $wp;
