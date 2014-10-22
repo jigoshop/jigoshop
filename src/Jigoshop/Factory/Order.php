@@ -32,21 +32,31 @@ class Order implements EntityFactoryInterface
 	 */
 	public function create($id)
 	{
+		$order = new Entity($this->wp);
+		$order->setId($id);
+
+		if (empty($_POST)) {
+			$post = $this->wp->getPost($id);
+
+			return $this->fetch($post);
+		}
+
 		$date = new \DateTime();
 		if (isset($_POST['aa'])) {
 			$date->setDate($_POST['aa'], $_POST['mm'], $_POST['jj']);
 			$date->setTime($_POST['hh'], $_POST['mn'], $_POST['ss']);
 		}
 
-		$order = new Entity($this->wp);
-		$order->setId($id);
 		$order->setCreatedAt($date);
-
-		if (!empty($_POST)) {
-			$order->setNumber($id); // TODO: Support for continuous numeration and custom order numbers
-			$order->setUpdatedAt(new \DateTime());
+		$order->setNumber($id); // TODO: Support for continuous numeration and custom order numbers
+		$order->setUpdatedAt(new \DateTime());
+		if (isset($_POST['post_excerpt'])) {
 			$order->setCustomerNote($_POST['post_excerpt']);
-			$order->setStatus($_POST['order']['status']);
+		}
+		if (isset($_POST['order'])) {
+			if (isset($_POST['order']['status'])) {
+				$order->setStatus($_POST['order']['status']);
+			}
 
 			if (isset($_POST['order']['billing'])) {
 				$order->setBillingAddress($this->createAddress($_POST['order']['billing']));
@@ -58,12 +68,12 @@ class Order implements EntityFactoryInterface
 			if (!empty($_POST['order']['customer'])) {
 				$order->setCustomer($this->customerService->find($_POST['order']['customer']));
 			}
+		}
 
-			// TODO: Think on lazy loading of items.
-			$items = $this->getItems($id);
-			foreach ($items as $item) {
-				$order->addItem($item);
-			}
+		// TODO: Think on lazy loading of items.
+		$items = $this->getItems($id);
+		foreach ($items as $item) {
+			$order->addItem($item);
 		}
 
 		return $order;

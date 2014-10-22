@@ -5,6 +5,7 @@ namespace Jigoshop\Service;
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\EntityInterface;
 use Jigoshop\Entity\Order\Item;
+use Jigoshop\Entity\Order\Status;
 use Jigoshop\Factory\Order as Factory;
 use WPAL\Wordpress;
 
@@ -145,8 +146,11 @@ class Order implements OrderServiceInterface
 	 */
 	public function savePost($id)
 	{
-		$order = $this->factory->create($id);
-		$this->save($order);
+		// Do not save order when trashing or restoring from trash
+		if (!isset($_GET['action'])) {
+			$order = $this->factory->create($id);
+			$this->save($order);
+		}
 	}
 
 	/**
@@ -159,10 +163,17 @@ class Order implements OrderServiceInterface
 	public function updateTitle($data, $post)
 	{
 		if ($data['post_type'] === Types::ORDER) {
-			// TODO: Create order only single time (not twice, here and in savePost).
-			$order = $this->factory->create($post['ID']);
-			$data['post_title'] = $order->getTitle();
-			$data['post_status'] = $_POST['post_status'] = $order->getStatus();
+			// Do not update when trashing or restoring from trash
+			if ($data['post_status'] !== 'trash') {
+				// TODO: Create order only single time (not twice, here and in savePost).
+				$order = $this->factory->create($post['ID']);
+				$data['post_title'] = $order->getTitle();
+				$data['post_status'] = $_POST['post_status'] = $order->getStatus();
+			}
+
+			if (isset($_GET['action']) && $_GET['action'] == 'untrash') {
+				$data['post_status'] = Status::CREATED;
+			}
 		}
 
 		return $data;

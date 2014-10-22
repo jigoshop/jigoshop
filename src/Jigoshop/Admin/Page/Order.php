@@ -54,8 +54,10 @@ class Order
 		$wp->addAction('wp_ajax_jigoshop.admin.order.remove_product', array($this, 'removeProduct'), 10, 0);
 
 		$that = $this;
-		$wp->addAction('add_meta_boxes_'.Types::ORDER, function() use ($wp, $that){
-			$wp->addMetaBox('jigoshop-order-data', __('Order Data', 'jigoshop'), array($that, 'dataBox'), Types::ORDER, 'normal', 'high');
+		$wp->addAction('add_meta_boxes_'.Types::ORDER, function() use ($wp, $orderService, $that){
+			$post = $wp->getGlobalPost();
+			$order = $orderService->findForPost($post);
+			$wp->addMetaBox('jigoshop-order-data', $order->getTitle(), array($that, 'dataBox'), Types::ORDER, 'normal', 'high');
 			$wp->addMetaBox('jigoshop-order-items', __('Order Items', 'jigoshop'), array($that, 'itemsBox'), Types::ORDER, 'normal', 'high');
 			$wp->addMetaBox('jigoshop-order-totals', __('Order Totals', 'jigoshop'), array($that, 'totalsBox'), Types::ORDER, 'normal', 'default');
 //			add_meta_box('jigoshop-order-attributes', __('Order Variation Attributes / Addons', 'jigoshop'), array($that, 'itemsBox'), Types::ORDER, 'side', 'default');
