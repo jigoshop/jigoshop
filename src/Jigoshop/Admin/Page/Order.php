@@ -51,6 +51,7 @@ class Order
 		});
 
 		$wp->addAction('wp_ajax_jigoshop.admin.order.add_product', array($this, 'addProduct'), 10, 0);
+		$wp->addAction('wp_ajax_jigoshop.admin.order.update_product', array($this, 'updateProduct'), 10, 0);
 		$wp->addAction('wp_ajax_jigoshop.admin.order.remove_product', array($this, 'removeProduct'), 10, 0);
 
 		$that = $this;
@@ -89,6 +90,41 @@ class Order
 				'total' => $order->getTotal(),
 				'html' => array(
 					'row' => $row,
+					'product_subtotal' => ProductHelper::formatPrice($order->getProductSubtotal()),
+					'subtotal' => ProductHelper::formatPrice($order->getSubtotal()),
+					'total' => ProductHelper::formatPrice($order->getTotal()),
+				),
+			);
+		} catch(Exception $e) {
+			$result = array(
+				'success' => false,
+				'error' => $e->getMessage(),
+			);
+		}
+
+		echo json_encode($result);
+		exit;
+	}
+
+	public function updateProduct()
+	{
+		// TODO: Add invalid data protection
+		try {
+			$order = $this->orderService->find($_POST['order']);
+			$item = $order->removeItem($_POST['product']);
+			$item->setQuantity((int)$_POST['quantity']);
+			$item->setPrice((float)$_POST['price']);
+			$order->addItem($item);
+			$this->orderService->save($order);
+
+			$result = array(
+				'success' => true,
+				'item_cost' => $item->getCost(),
+				'product_subtotal' => $order->getProductSubtotal(),
+				'subtotal' => $order->getSubtotal(),
+				'total' => $order->getTotal(),
+				'html' => array(
+					'item_cost' => ProductHelper::formatPrice($item->getCost()),
 					'product_subtotal' => ProductHelper::formatPrice($order->getProductSubtotal()),
 					'subtotal' => ProductHelper::formatPrice($order->getSubtotal()),
 					'total' => ProductHelper::formatPrice($order->getTotal()),

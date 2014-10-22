@@ -6,6 +6,7 @@ use Jigoshop\Core\Types;
 use Jigoshop\Entity\Customer\Guest;
 use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\Order\Status;
+use Jigoshop\Exception;
 use Jigoshop\Payment\Method as PaymentMethod;
 use Jigoshop\Shipping\Method as ShippingMethod;
 use WPAL\Wordpress;
@@ -255,6 +256,7 @@ class Order implements EntityInterface
 
 	/**
 	 * @param $item int Item ID to remove.
+	 * @return Item Removed item.
 	 */
 	public function removeItem($item)
 	{
@@ -265,6 +267,24 @@ class Order implements EntityInterface
 		$this->productSubtotal -= $item->getCost();
 		$this->subtotal -= $item->getCost();
 		$this->total -= $item->getCost();
+
+		return $item;
+	}
+
+	/**
+	 * Returns item of selected ID.
+	 *
+	 * @param $item int Item ID to fetch.
+	 * @return Item Order item.
+	 * @throws Exception When item is not found.
+	 */
+	public function getItem($item)
+	{
+		if (!isset($this->items[$item])) {
+			throw new Exception(sprintf(__('No item with ID %d in order %d', 'jigoshop'), $item, $this->id));
+		}
+
+		return $this->items[$item];
 	}
 
 	/**

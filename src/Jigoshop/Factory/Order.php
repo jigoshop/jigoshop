@@ -167,7 +167,7 @@ class Order implements EntityFactoryInterface
 	private function getItems($id)
 	{
 		$wpdb = $this->wp->getWPDB();
-		$query = $wpdb->prepare("SELECT * FROM {$wpdb->prefix}jigoshop_order_item joi WHERE joi.order_id = %d", array($id));
+		$query = $wpdb->prepare("SELECT * FROM {$wpdb->prefix}jigoshop_order_item joi WHERE joi.order_id = %d ORDER BY id", array($id));
 		$items = $wpdb->get_results($query, ARRAY_A);
 		$that = $this;
 		return array_map(function($item) use ($that){
