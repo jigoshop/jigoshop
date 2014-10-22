@@ -59,7 +59,11 @@ class Order implements EntityFactoryInterface
 				$order->setCustomer($this->customerService->find($_POST['order']['customer']));
 			}
 
-			// TODO: Items creation
+			// TODO: Think on lazy loading of items.
+			$items = $this->getItems($id);
+			foreach ($items as $item) {
+				$order->addItem($item);
+			}
 		}
 
 		return $order;
@@ -81,7 +85,7 @@ class Order implements EntityFactoryInterface
 				return $item[0];
 			}, $this->wp->getPostMeta($post->ID));
 
-			$state['id'] = $post->ID;
+			$order->setId($post->ID);
 			$state['customer_note'] = $post->post_excerpt;
 			$state['status'] = $post->post_status;
 			$state['customer'] = $this->customerService->find($state['customer']);
@@ -90,6 +94,9 @@ class Order implements EntityFactoryInterface
 			$state['product_subtotal'] = array_reduce($state['items'], function($value, $item){
 				return $value + $item->getCost();
 			}, 0.0);
+			// TODO: Properly calculate subtotal and total
+			$state['subtotal'] = $state['product_subtotal'];
+			$state['total'] = $state['product_subtotal'];
 
 			$order->restoreState($state);
 		}
@@ -136,7 +143,6 @@ class Order implements EntityFactoryInterface
 		$item->setName($data['title']);
 		$item->setQuantity($data['quantity']);
 		$item->setPrice($data['price']);
-		$item->setCost($data['cost']);
 
 		$product = $this->productService->find($data['id']);
 		$item->setProduct($product);

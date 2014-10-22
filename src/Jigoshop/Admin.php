@@ -36,8 +36,9 @@ class Admin
 		$wp->addAction('admin_menu', array($this, 'beforeMenu'), 9);
 		$wp->addAction('admin_menu', array($this, 'afterMenu'), 50);
 		$wp->wpEnqueueScript('jquery');
+		$scripts->add('jigoshop.vendors', JIGOSHOP_URL.'/assets/js/vendors.min.js', array('jquery'));
 		$styles->add('jigoshop.admin', JIGOSHOP_URL.'/assets/css/admin.css');
-		$scripts->add('jigoshop.admin', JIGOSHOP_URL.'/assets/js/admin.js', array('jquery'));
+		$scripts->add('jigoshop.admin', JIGOSHOP_URL.'/assets/js/admin.js', array('jquery', 'jigoshop.vendors'));
 	}
 
 	/**

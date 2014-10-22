@@ -20,8 +20,6 @@ class Item
 	private $quantity;
 	/** @var float */
 	private $price;
-	/** @var float */
-	private $cost;
 	/** @var Product */
 	private $product;
 	/** @var string */
@@ -96,15 +94,7 @@ class Item
 	 */
 	public function getCost()
 	{
-		return $this->cost;
-	}
-
-	/**
-	 * @param float $cost
-	 */
-	public function setCost($cost)
-	{
-		$this->cost = $cost;
+		return $this->price * $this->quantity;
 	}
 
 	/**

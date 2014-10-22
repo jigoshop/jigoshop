@@ -4,6 +4,7 @@ namespace Jigoshop\Service;
 
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\EntityInterface;
+use Jigoshop\Entity\Order\Item;
 use Jigoshop\Factory\Order as Factory;
 use WPAL\Wordpress;
 
@@ -103,7 +104,31 @@ class Order implements OrderServiceInterface
 		}
 
 		if (isset($fields['items']) && !empty($fields['items'])) {
-			// TODO: Save items to separate table
+			$wpdb = $this->wp->getWPDB();
+			$existing = array_map(function($item){
+				return $item->getId();
+			}, $fields['items']);
+			$this->removeAllExcept($object->getId(), $existing);
+
+			foreach ($fields['items'] as $item) {
+				/** @var $item Item */
+				$data = array(
+					'order_id' => $object->getId(),
+					'product_id' => $item->getProduct()->getId(),
+					'product_type' => $item->getType(),
+					'title' => $item->getName(),
+					'price' => $item->getPrice(),
+					'quantity' => $item->getQuantity(),
+					'cost' => $item->getCost(),
+				);
+
+				if ($item->getId() !== null) {
+					$wpdb->update($wpdb->prefix.'jigoshop_order_item', $data, array('id' => $item->getId()));
+				} else {
+					$wpdb->insert($wpdb->prefix.'jigoshop_order_item', $data);
+				}
+			}
+
 			unset($fields['items']);
 		}
 
@@ -228,5 +253,21 @@ class Order implements OrderServiceInterface
 	public function ordersFilter($when = '')
 	{
 		return $when.$this->wp->getWPDB()->prepare(' AND post_date < %s', date('Y-m-d', time() - 30 * 24 * 3600));
+	}
+
+	/**
+	 * @param $order int Order ID.
+	 * @param $ids array IDs to preserve.
+	 */
+	public function removeAllExcept($order, $ids)
+	{
+		$wpdb = $this->wp->getWPDB();
+		$ids = join(',', array_filter(array_map(function($item){ return (int)$item; }, $ids)));
+		// Support for removing all items
+		if (empty($ids)) {
+			$ids = '0';
+		}
+		$query = $wpdb->prepare("DELETE FROM {$wpdb->prefix}jigoshop_order_item WHERE id NOT IN ({$ids}) AND order_id = %d", array($order));
+		$wpdb->query($query);
 	}
 }

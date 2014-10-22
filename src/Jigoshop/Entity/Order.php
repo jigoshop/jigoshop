@@ -247,7 +247,24 @@ class Order implements EntityInterface
 	 */
 	public function addItem(Item $item)
 	{
-		$this->items[] = $item;
+		$this->items[$item->getId()] = $item;
+		$this->productSubtotal += $item->getCost();
+		$this->subtotal += $item->getCost();
+		$this->total += $item->getCost();
+	}
+
+	/**
+	 * @param $item int Item ID to remove.
+	 */
+	public function removeItem($item)
+	{
+		$item = $this->items[$item];
+		unset($this->items[$item->getId()]);
+
+		/** @var Item $itemId */
+		$this->productSubtotal -= $item->getCost();
+		$this->subtotal -= $item->getCost();
+		$this->total -= $item->getCost();
 	}
 
 	/**
@@ -459,7 +476,10 @@ class Order implements EntityInterface
 			$this->updated_at->setTimestamp($state['updated_at']);
 		}
 		if (isset($state['items'])) {
-			$this->items = $state['items'];
+			foreach ($state['items'] as $item) {
+				/** @var $item Item */
+				$this->items[$item->getId()] = $item;
+			}
 		}
 		if (isset($state['billing_address'])) {
 			$this->billingAddress = unserialize($state['billing_address']);

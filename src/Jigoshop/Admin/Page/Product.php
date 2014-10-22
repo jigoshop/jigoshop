@@ -105,6 +105,7 @@ class Product
 
 	public function findProduct()
 	{
+		// TODO: Add invalid data protection.
 		$products = $this->productService->findLike($_POST['product']);
 
 		$result = array(

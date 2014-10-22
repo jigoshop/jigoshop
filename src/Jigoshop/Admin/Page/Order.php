@@ -4,7 +4,10 @@ namespace Jigoshop\Admin\Page;
 
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
+use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\Product;
+use Jigoshop\Exception;
+use Jigoshop\Helper\Product as ProductHelper;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
@@ -48,6 +51,7 @@ class Order
 		});
 
 		$wp->addAction('wp_ajax_jigoshop.admin.order.add_product', array($this, 'addProduct'), 10, 0);
+		$wp->addAction('wp_ajax_jigoshop.admin.order.remove_product', array($this, 'removeProduct'), 10, 0);
 
 		$that = $this;
 		$wp->addAction('add_meta_boxes_'.Types::ORDER, function() use ($wp, $that){
@@ -63,15 +67,67 @@ class Order
 
 	public function addProduct()
 	{
-		$result = array(
-			'success' => true,
-			'html' => array(
-				'row' => '<tr><td>1</td><td></td><td>Test123</td><td><input type="text" value="1.00" /></td><td><input type="text" value="1" /></td><td>$1.00</td><td>x</td></tr>',
-				'product_subtotal' => '$26.00',
-				'subtotal' => '$26.00',
-				'total' => '$26.00',
-			),
-		);
+		// TODO: Add invalid data protection
+		try {
+			$order = $this->orderService->find($_POST['order']);
+			/** @var Product|Product\Purchasable $product */
+			$product = $this->productService->find($_POST['product']);
+			$item = $this->formatItem($product);
+			$order->addItem($item);
+			$this->orderService->save($order);
+
+			$row = Render::get('admin/order/item', array(
+				'item' => $item,
+			));
+
+			$result = array(
+				'success' => true,
+				'product_subtotal' => $order->getProductSubtotal(),
+				'subtotal' => $order->getSubtotal(),
+				'total' => $order->getTotal(),
+				'html' => array(
+					'row' => $row,
+					'product_subtotal' => ProductHelper::formatPrice($order->getProductSubtotal()),
+					'subtotal' => ProductHelper::formatPrice($order->getSubtotal()),
+					'total' => ProductHelper::formatPrice($order->getTotal()),
+				),
+			);
+		} catch(Exception $e) {
+			$result = array(
+				'success' => false,
+				'error' => $e->getMessage(),
+			);
+		}
+
+		echo json_encode($result);
+		exit;
+	}
+
+	public function removeProduct()
+	{
+		// TODO: Add invalid data protection
+		try {
+			$order = $this->orderService->find($_POST['order']);
+			$order->removeItem($_POST['product']);
+			$this->orderService->save($order);
+
+			$result = array(
+				'success' => true,
+				'product_subtotal' => $order->getProductSubtotal(),
+				'subtotal' => $order->getSubtotal(),
+				'total' => $order->getTotal(),
+				'html' => array(
+					'product_subtotal' => ProductHelper::formatPrice($order->getProductSubtotal()),
+					'subtotal' => ProductHelper::formatPrice($order->getSubtotal()),
+					'total' => ProductHelper::formatPrice($order->getTotal()),
+				),
+			);
+		} catch(Exception $e) {
+			$result = array(
+				'success' => false,
+				'error' => $e->getMessage(),
+			);
+		}
 
 		echo json_encode($result);
 		exit;
@@ -108,7 +164,7 @@ class Order
 		), $order);
 		$customers = $this->customerService->findAll();
 
-		Render::output('admin/orders/dataBox', array(
+		Render::output('admin/order/dataBox', array(
 			'order' => $order,
 			'billingFields' => $billingFields,
 			'shippingFields' => $shippingFields,
@@ -121,7 +177,7 @@ class Order
 		$post = $this->wp->getGlobalPost();
 		$order = $this->orderService->findForPost($post);
 
-		Render::output('admin/orders/itemsBox', array(
+		Render::output('admin/order/itemsBox', array(
 			'order' => $order,
 		));
 	}
@@ -131,7 +187,7 @@ class Order
 		$post = $this->wp->getGlobalPost();
 		$order = $this->orderService->findForPost($post);
 
-		Render::output('admin/orders/totalsBox', array(
+		Render::output('admin/order/totalsBox', array(
 			'order' => $order,
 			'shippingMethods' => array(),//$this->shippingService->getAvailable(),
 		));
@@ -140,5 +196,17 @@ class Order
 	public function actionsBox()
 	{
 		//
+	}
+
+	private function formatItem($product)
+	{
+		$item = new Item();
+		$item->setType($product->getType());
+		$item->setName($product->getName());
+		$item->setPrice($product->getPrice());
+		$item->setQuantity(1);
+		$item->setProduct($product);
+
+		return $item;
 	}
 }

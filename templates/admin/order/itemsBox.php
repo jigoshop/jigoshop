@@ -10,7 +10,7 @@ use Jigoshop\Helper\Product;
 ?>
 <div class="jigoshop jigoshop-order">
 	<div class="form-horizontal">
-		<table class="table table-striped">
+		<table class="table table-striped" data-order="<?php echo $order->getId(); ?>">
 			<thead>
 			<tr>
 				<th scope="col"><?php _e('ID', 'jigoshop'); ?></th>
@@ -23,18 +23,8 @@ use Jigoshop\Helper\Product;
 			</tr>
 			</thead>
 			<tbody>
-			<?php foreach($order->getItems() as $item): /** @var $item \Jigoshop\Entity\Order\Item */ $id = $item->getId(); ?>
-			<tr>
-				<td class="id"><?php Forms::constant(array('name' => 'order[items]['.$id.'][id]', 'value' => $id)); ?></td>
-				<td class="sku"><?php Forms::constant(array('name' => 'order[items]['.$id.'][sku]', 'value' => $item->getProduct()->getSku())); ?></td>
-				<td class="name"><?php Forms::constant(array('name' => 'order[items]['.$id.'][name]', 'value' => $item->getName())); ?></td>
-				<td class="price"><?php Forms::text(array('name' => 'order[items]['.$id.'][price]', 'value' => Product::formatNumericPrice($item->getPrice()))); ?></td>
-				<td class="quantity"><?php Forms::text(array('name' => 'quantity['.$id.']', 'value' => $item->getQuantity())); ?></td>
-				<td class="total"><?php Forms::constant(array('name' => 'order[items]['.$id.'][total]', 'value' => Product::formatPrice($item->getCost()))); ?></td>
-				<td class="actions">
-					<a href="" class="close"><span aria-hidden="true">&times;</span><span class="sr-only"><?php _e('Remove', 'jigoshop'); ?></span></a>
-				</td>
-			</tr>
+			<?php foreach($order->getItems() as $item): ?>
+				<?php \Jigoshop\Helper\Render::output('admin/order/item', array('item' => $item)); ?>
 			<?php endforeach; ?>
 			</tbody>
 			<tfoot>

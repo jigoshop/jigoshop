@@ -84,17 +84,17 @@ class Orders
 				echo OrderHelper::getUserLink($order->getCustomer());
 				break;
 			case 'billing_address':
-				Render::output('admin/orders/billing_address', array(
+				Render::output('admin/orders/billingAddress', array(
 					'order' => $order,
 				));
 				break;
 			case 'shipping_address':
-				Render::output('admin/orders/shipping_address', array(
+				Render::output('admin/orders/shippingAddress', array(
 					'order' => $order,
 				));
 				break;
 			case 'shipping_payment':
-				Render::output('admin/orders/shipping_payment', array(
+				Render::output('admin/orders/shippingPayment', array(
 					'order' => $order,
 				));
 				break;
