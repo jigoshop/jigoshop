@@ -144,7 +144,7 @@ class Order implements EntityFactoryInterface
 		$item->setQuantity($data['quantity']);
 		$item->setPrice($data['price']);
 
-		$product = $this->productService->find($data['id']);
+		$product = $this->productService->find($data['product_id']);
 		$item->setProduct($product);
 
 		return $item;

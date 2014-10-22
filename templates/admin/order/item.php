@@ -9,7 +9,7 @@ use Jigoshop\Helper\Product;
 $id = $item->getId();
 ?>
 <tr data-id="<?php echo $id; ?>">
-	<td class="id"><?php Forms::constant(array('name' => 'order[items]['.$id.'][id]', 'value' => $id)); ?></td>
+	<td class="id"><?php Forms::constant(array('name' => 'order[items]['.$id.'][id]', 'value' => $item->getProduct()->getId())); ?></td>
 	<td class="sku"><?php Forms::constant(array('name' => 'order[items]['.$id.'][sku]', 'value' => $item->getProduct()->getSku())); ?></td>
 	<td class="name"><?php Forms::constant(array('name' => 'order[items]['.$id.'][name]', 'value' => $item->getName())); ?></td>
 	<td class="price"><?php Forms::text(array('name' => 'order[items]['.$id.'][price]', 'value' => Product::formatNumericPrice($item->getPrice()))); ?></td>
