@@ -103,7 +103,7 @@ class Order implements OrderServiceInterface
 			unset($fields['customer_note'], $fields['status']);
 		}
 
-		if (isset($fields['items']) && !empty($fields['items'])) {
+		if (isset($fields['items'])) {
 			$wpdb = $this->wp->getWPDB();
 			$existing = array_map(function($item){
 				return $item->getId();
@@ -126,6 +126,7 @@ class Order implements OrderServiceInterface
 					$wpdb->update($wpdb->prefix.'jigoshop_order_item', $data, array('id' => $item->getId()));
 				} else {
 					$wpdb->insert($wpdb->prefix.'jigoshop_order_item', $data);
+					$item->setId($wpdb->insert_id);
 				}
 			}
 

@@ -38,6 +38,7 @@ class AdminOrder
         product: jQuery('#new-item').val()
         order: $parent.data('order')
     .done (data) ->
+      jQuery('#new-item').val('')
       if data.success?
         jQuery(data.html.row).appendTo($parent)
         jQuery('#product-subtotal', $parent).html(data.html.product_subtotal)
