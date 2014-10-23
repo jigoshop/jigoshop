@@ -157,8 +157,7 @@ class Order implements EntityFactoryInterface
 		$item->setName($data['title']);
 		$item->setQuantity($data['quantity']);
 		$item->setPrice($data['price']);
-		// TODO: Restore tax
-//		$item->setTax($data['tax']);
+		$item->setTax($data['tax']);
 
 		$product = $this->productService->find($data['product_id']);
 		$item->setProduct($product);
@@ -173,8 +172,36 @@ class Order implements EntityFactoryInterface
 	private function getItems($id)
 	{
 		$wpdb = $this->wp->getWPDB();
-		$query = $wpdb->prepare("SELECT * FROM {$wpdb->prefix}jigoshop_order_item joi WHERE joi.order_id = %d ORDER BY id", array($id));
-		$items = $wpdb->get_results($query, ARRAY_A);
+		$query = $wpdb->prepare("
+			SELECT * FROM {$wpdb->prefix}jigoshop_order_item joi
+			LEFT JOIN {$wpdb->prefix}jigoshop_order_item_meta joim ON joim.item_id = joi.id
+			WHERE joi.order_id = %d AND joim.meta_key LIKE %s
+			ORDER BY joi.id",
+			array($id, 'tax%'));
+		$results = $wpdb->get_results($query, ARRAY_A);
+		$items = array();
+
+		for ($i = 0, $endI = count($results); $i < $endI;) {
+			$item = array(
+				'id' => $results[$i]['item_id'],
+				'order_id' => $results[$i]['order_id'],
+				'product_id' => $results[$i]['product_id'],
+				'product_type' => $results[$i]['product_type'],
+				'title' => $results[$i]['title'],
+				'price' => $results[$i]['price'],
+				'quantity' => $results[$i]['quantity'],
+				'cost' => $results[$i]['cost'],
+				'tax' => array(),
+			);
+
+			while ($i < $endI && $results[$i]['item_id'] == $item['id']) {
+				$item['tax'][str_replace('tax_', '', $results[$i]['meta_key'])] = $results[$i]['meta_value'];
+				$i++;
+			}
+
+			$items[] = $item;
+		}
+
 		$that = $this;
 		return array_map(function($item) use ($that){
 			return $that->formatOrderItem($item);

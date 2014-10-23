@@ -85,6 +85,10 @@ class Tax implements TaxServiceInterface
 	{
 		$tax = array();
 
+		if ($customer === null) {
+			$customer = $this->customers->getCurrent();
+		}
+
 		foreach ($product->getTaxClasses() as $class) {
 			$tax[$class] = $this->get($product, $class, $customer);
 		}
@@ -192,17 +196,22 @@ class Tax implements TaxServiceInterface
 
 	/**
 	 * @param $taxClass string Tax class to get label for.
+	 * @param Customer|null $customer Customer to calculate taxes for.
 	 * @return string Tax class label
 	 * @throws Exception When tax class is not found.
 	 */
-	public function getLabel($taxClass)
+	public function getLabel($taxClass, $customer = null)
 	{
 		if (!in_array($taxClass, $this->taxClasses)) {
 			throw new Exception(sprintf(__('No tax class: %s', 'jigoshop'), $taxClass));
 		}
 
+		if ($customer === null) {
+			$customer = $this->customers->getCurrent();
+		}
+
 		if (!isset($this->taxes[$taxClass])) {
-			$this->taxes[$taxClass] = $this->fetch($taxClass, $this->customers->getCurrent());
+			$this->taxes[$taxClass] = $this->fetch($taxClass, $customer);
 		}
 
 		return sprintf('%s (%s%%)', $this->taxes[$taxClass]['label'], $this->taxes[$taxClass]['rate']);

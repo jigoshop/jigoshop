@@ -102,17 +102,17 @@ class Installer
 			) {$collate};
 		";
 		$wpdb->query($query);
-//		$query = "
-//			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}jigoshop_order_item_meta (
-//				id INT NOT NULL AUTO_INCREMENT,
-//				item_id INT,
-//				meta_key VARCHAR(255) NOT NULL,
-//				meta_value VARCHAR(255) NOT NULL,
-//				PRIMARY KEY id (id),
-//				FOREIGN KEY order_item (item_id) REFERENCES {$wpdb->prefix}jigoshop_order_item (id) ON DELETE CASCADE
-//			) {$collate};
-//		";
-//		$wpdb->query($query);
+		$query = "
+			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}jigoshop_order_item_meta (
+				id INT NOT NULL AUTO_INCREMENT,
+				item_id INT,
+				meta_key VARCHAR(255) NOT NULL,
+				meta_value VARCHAR(255) NOT NULL,
+				PRIMARY KEY id (id),
+				FOREIGN KEY order_item (item_id) REFERENCES {$wpdb->prefix}jigoshop_order_item (id) ON DELETE CASCADE
+			) {$collate};
+		";
+		$wpdb->query($query);
 		/*
 			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}jigoshop_attribute (
 				id INT(9) NOT NULL AUTO_INCREMENT,

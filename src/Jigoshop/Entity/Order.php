@@ -582,8 +582,7 @@ class Order implements EntityInterface, OrderInterface
 		}
 		if (isset($state['items'])) {
 			foreach ($state['items'] as $item) {
-				/** @var $item Item */
-				$this->items[$item->getId()] = $item;
+				$this->addItem($item);
 			}
 		}
 		if (isset($state['billing_address'])) {

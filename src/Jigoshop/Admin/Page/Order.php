@@ -305,11 +305,14 @@ class Order
 	{
 		$post = $this->wp->getGlobalPost();
 		$order = $this->orderService->findForPost($post);
+		// TODO: Properly get customer from order billing/shipping data
+		$c = new Customer();
+		$c->setCountry('PL');
 
 		$tax = array();
 		foreach ($order->getTax() as $class => $value) {
 			$tax[$class] = array(
-				'label' => $this->taxService->getLabel($class),
+				'label' => $this->taxService->getLabel($class, $c),
 				'value' => ProductHelper::formatPrice($value),
 			);
 		}

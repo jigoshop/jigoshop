@@ -132,7 +132,12 @@ class Order implements OrderServiceInterface
 				}
 
 				foreach ($item->getTax() as $class => $value) {
-					// TODO: Save each tax per class
+					$wpdb->replace($wpdb->prefix.'jigoshop_order_item_meta', array(
+						'id' => null, // TODO: Re-saving of tax values
+						'item_id' => $item->getId(),
+						'meta_key' => 'tax_'.$class,
+						'meta_value' => $value,
+					));
 				}
 			}
 
