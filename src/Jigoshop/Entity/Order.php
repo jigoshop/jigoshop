@@ -269,7 +269,6 @@ class Order implements EntityInterface, OrderInterface
 	public function removeItem($item)
 	{
 		$item = $this->items[$item];
-		unset($this->items[$item->getId()]);
 
 		/** @var Item $itemId */
 		$this->productSubtotal -= $item->getCost();
@@ -277,9 +276,10 @@ class Order implements EntityInterface, OrderInterface
 		$this->total -= $item->getCost();
 
 		foreach ($item->getTax() as $class => $tax) {
-			$this->tax[$class] -= $tax;
+			$this->tax[$class] -= $tax * $item->getQuantity();
 		}
 
+		unset($this->items[$item->getId()]);
 		return $item;
 	}
 

@@ -89,6 +89,7 @@ class Order
 			$order->addItem($item);
 			$this->orderService->save($order);
 
+			$customer = $this->customerService->fromOrder($order);
 			$row = Render::get('admin/order/item', array(
 				'item' => $item,
 			));
@@ -96,7 +97,7 @@ class Order
 			$tax = array();
 			foreach ($order->getTax() as $class => $value) {
 				$tax[$class] = array(
-					'label' => $this->taxService->getLabel($class),
+					'label' => $this->taxService->getLabel($class, $customer),
 					'value' => ProductHelper::formatPrice($value),
 				);
 			}
@@ -137,10 +138,11 @@ class Order
 			$order->addItem($item);
 			$this->orderService->save($order);
 
+			$customer = $this->customerService->fromOrder($order);
 			$tax = array();
 			foreach ($order->getTax() as $class => $value) {
 				$tax[$class] = array(
-					'label' => $this->taxService->getLabel($class),
+					'label' => $this->taxService->getLabel($class, $customer),
 					'value' => ProductHelper::formatPrice($value),
 				);
 			}
@@ -178,11 +180,12 @@ class Order
 			$order = $this->orderService->find($_POST['order']);
 			$order->removeItem($_POST['product']);
 			$this->orderService->save($order);
+			$customer = $this->customerService->fromOrder($order);
 
 			$tax = array();
 			foreach ($order->getTax() as $class => $value) {
 				$tax[$class] = array(
-					'label' => $this->taxService->getLabel($class),
+					'label' => $this->taxService->getLabel($class, $customer),
 					'value' => ProductHelper::formatPrice($value),
 				);
 			}
@@ -219,11 +222,12 @@ class Order
 			$shippingMethod = $this->shippingService->get($_POST['shipping_method']);
 			$order->setShippingMethod($shippingMethod);
 			$this->orderService->save($order);
+			$customer = $this->customerService->fromOrder($order);
 
 			$tax = array();
 			foreach ($order->getTax() as $class => $value) {
 				$tax[$class] = array(
-					'label' => $this->taxService->getLabel($class),
+					'label' => $this->taxService->getLabel($class, $customer),
 					'value' => ProductHelper::formatPrice($value),
 				);
 			}
@@ -305,14 +309,12 @@ class Order
 	{
 		$post = $this->wp->getGlobalPost();
 		$order = $this->orderService->findForPost($post);
-		// TODO: Properly get customer from order billing/shipping data
-		$c = new Customer();
-		$c->setCountry('PL');
+		$customer = $this->customerService->fromOrder($order);
 
 		$tax = array();
 		foreach ($order->getTax() as $class => $value) {
 			$tax[$class] = array(
-				'label' => $this->taxService->getLabel($class, $c),
+				'label' => $this->taxService->getLabel($class, $customer),
 				'value' => ProductHelper::formatPrice($value),
 			);
 		}
@@ -336,14 +338,13 @@ class Order
 	 */
 	private function formatItem($order, $product)
 	{
+		$customer = $this->customerService->fromOrder($order);
+
 		$item = new Item();
 		$item->setType($product->getType());
 		$item->setName($product->getName());
 		$item->setPrice($product->getPrice());
-		// TODO: Use billing or shipping address (based on option) as customer (for taxes)
-		$c = new Customer();
-		$c->setCountry('PL');
-		$item->setTax($this->taxService->getAll($product, 1, $c));//$order->getCustomer()));
+		$item->setTax($this->taxService->getAll($product, 1, $customer));
 		$item->setQuantity(1);
 		$item->setProduct($product);
 
