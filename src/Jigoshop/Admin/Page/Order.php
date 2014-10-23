@@ -343,7 +343,7 @@ class Order
 		// TODO: Use billing or shipping address (based on option) as customer (for taxes)
 		$c = new Customer();
 		$c->setCountry('PL');
-		$item->setTax($this->taxService->getAll($product, $c));//$order->getCustomer()));
+		$item->setTax($this->taxService->getAll($product, 1, $c));//$order->getCustomer()));
 		$item->setQuantity(1);
 		$item->setProduct($product);
 

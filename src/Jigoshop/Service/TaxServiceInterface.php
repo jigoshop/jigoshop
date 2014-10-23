@@ -28,9 +28,11 @@ interface TaxServiceInterface
 
 	/**
 	 * @param $product Product|Product\Purchasable Product to calculate tax for.
+	 * @param int $quantity Quantity of the product.
+	 * @param Customer|null $customer Customer to calculate taxes for.
 	 * @return array List of tax values per tax class.
 	 */
-	public function getAll(Product $product);
+	public function getAll(Product $product, $quantity = 1, $customer = null);
 
 	/**
 	 * @param Method $method Method to calculate tax for.

@@ -104,11 +104,10 @@ class Installer
 		$wpdb->query($query);
 		$query = "
 			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}jigoshop_order_item_meta (
-				id INT NOT NULL AUTO_INCREMENT,
 				item_id INT,
 				meta_key VARCHAR(255) NOT NULL,
 				meta_value VARCHAR(255) NOT NULL,
-				PRIMARY KEY id (id),
+				PRIMARY KEY id (item_id, meta_key),
 				FOREIGN KEY order_item (item_id) REFERENCES {$wpdb->prefix}jigoshop_order_item (id) ON DELETE CASCADE
 			) {$collate};
 		";

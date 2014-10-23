@@ -109,7 +109,7 @@ class Item
 	public function setTax($tax)
 	{
 		$this->tax = $tax;
-		$this->totalTax = array_reduce($tax, function($value, $item){ return $value + $item; }, 0.0);
+		$this->totalTax = array_reduce($tax, function($value, $item) { return $value + $item; }, 0.0);
 	}
 
 	/**

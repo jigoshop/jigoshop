@@ -258,7 +258,7 @@ class Order implements EntityInterface, OrderInterface
 		$this->total += $item->getCost();
 
 		foreach ($item->getTax() as $class => $tax) {
-			$this->tax[$class] += $tax;
+			$this->tax[$class] += $tax * $item->getQuantity();
 		}
 	}
 

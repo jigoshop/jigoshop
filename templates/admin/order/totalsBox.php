@@ -8,6 +8,7 @@ use Jigoshop\Helper\Product;
  * @var $tax array Tax data for the order.
  * @var $shippingMethods array List of available shipping methods.
  */
+$orderTax = $order->getTax();
 ?>
 <div class="jigoshop jigoshop-totals">
 	<div class="form-horizontal">
@@ -36,7 +37,7 @@ use Jigoshop\Helper\Product;
 				'label' => $option['label'],
 				'placeholder' => 0.0,
 				'value' => $option['value'],
-				'classes' => array($order->getTax()[$class] > 0 ? '' : 'not-active'),
+				'classes' => array($orderTax[$class] > 0 ? '' : 'not-active'),
 			)); ?>
 		<?php endforeach; ?>
 		<?php Forms::constant(array(
