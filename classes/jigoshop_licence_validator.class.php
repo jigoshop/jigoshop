@@ -55,9 +55,9 @@ class jigoshop_licence_validator
 		$this->plugin_url = $info['Url'];
 		$this->home_shop_url = $home_shop_url;
 
-		if (is_ssl()) {
+//		if (is_ssl()) { // TODO: It should be enabled with proper options (i.e. require secure connection).
 			$this->home_shop_url = str_replace('http://', 'https://', $this->home_shop_url);
-		}
+//		}
 		if ($this->home_shop_url[strlen($this->home_shop_url)-1] !== '/') {
 			$this->home_shop_url .= '/';
 		}
@@ -79,7 +79,7 @@ class jigoshop_licence_validator
 		}
 
 		// define the alternative API for updating checking
-		add_filter('site_transient_update_plugins', array($this, 'check_for_update'));
+		add_filter('pre_set_site_transient_update_plugins', array($this, 'check_for_update'));
 		add_action('in_plugin_update_message-'.$this->plugin_slug, array($this, 'in_plugin_update_message'), 10, 2);
 	}
 

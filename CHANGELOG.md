@@ -1,5 +1,7 @@
 ## Changelog
 
+* 1.12.3:
+    * Improved: Automatic plugin update mechanism uses as low HTTP requests as possible.
 * 1.12.2 - 2014-10-17:
     * Improved: Show plugin updates even when licence is not activated.
     * Improved: Checking for updates is now 5 times faster.
