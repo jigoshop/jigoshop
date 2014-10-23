@@ -5,6 +5,7 @@ use Jigoshop\Helper\Product;
 
 /**
  * @var $order \Jigoshop\Entity\Order The order.
+ * @var $tax array Tax data for the order.
  * @var $shippingMethods array List of available shipping methods.
  */
 ?>
@@ -13,7 +14,7 @@ use Jigoshop\Helper\Product;
 		<?php //Forms::select(array(
 //			'name' => 'order[shipping]',
 //			'label' => __('Shipping', 'jigoshop'),
-//			'value' => $order->getShipping() ? $order->getShipping()->getId() : false,
+//			'value' => $order->getShippingMethod() ? $order->getShippingMethod()->getId() : false,
 //			'options' => $shippingMethods,
 //		)); ?>
 		<?php Forms::constant(array(
@@ -29,12 +30,13 @@ use Jigoshop\Helper\Product;
 			'placeholder' => 0.0,
 			'value' => $order->getDiscount()
 		)); ?>
-		<?php foreach($order->getTax() as $class => $value): ?>
-			<?php Forms::text(array(
+		<?php foreach($tax as $class => $option): ?>
+			<?php Forms::constant(array(
 				'name' => 'order[tax]['.$class.']',
-				'label' => $class,
+				'label' => $option['label'],
 				'placeholder' => 0.0,
-				'value' => $value,
+				'value' => $option['value'],
+				'classes' => array($option['value'] > 0 ? '' : 'not-active'),
 			)); ?>
 		<?php endforeach; ?>
 		<?php Forms::constant(array(

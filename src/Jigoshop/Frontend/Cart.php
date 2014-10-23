@@ -3,6 +3,8 @@
 namespace Jigoshop\Frontend;
 
 use Jigoshop\Core\Options;
+use Jigoshop\Entity\Order\Item;
+use Jigoshop\Entity\OrderInterface;
 use Jigoshop\Entity\Product;
 use Jigoshop\Exception;
 use Jigoshop\Service\ProductServiceInterface;
@@ -11,7 +13,7 @@ use Jigoshop\Service\TaxServiceInterface;
 use Jigoshop\Shipping\Method;
 use WPAL\Wordpress;
 
-class Cart
+class Cart implements OrderInterface
 {
 	/** @var Wordpress */
 	private $wp;
@@ -120,12 +122,12 @@ class Cart
 	 *
 	 * If item is already present - increases it's quantity.
 	 *
-	 * @param Product|Product\Purchasable $product Product to add to cart.
-	 * @param $quantity int Quantity of products to add.
-	 * @throws Exception On error.
+	 * @param Item $item Item to add to cart.
 	 */
-	public function addItem(Product $product, $quantity)
+	public function addItem(Item $item)
 	{
+		$product = $item->getProduct();
+		$quantity = $item->getQuantity();
 		if ($product === null || $product->getId() === 0) {
 			throw new Exception(__('Product not found', 'jigoshop'));
 		}

@@ -3,6 +3,7 @@
 namespace Jigoshop\Shipping;
 
 use Jigoshop\Core\Options;
+use Jigoshop\Entity\OrderInterface;
 use Jigoshop\Frontend\Cart;
 use Jigoshop\Service\CustomerServiceInterface;
 
@@ -75,10 +76,10 @@ class FlatRate implements Method
 	}
 
 	/**
-	 * @param Cart $cart Cart to calculate shipping for.
-	 * @return float Calculated value of shipping for the cart.
+	 * @param OrderInterface $order Order to calculate shipping for.
+	 * @return float Calculated value of shipping for the order.
 	 */
-	public function calculate(Cart $cart)
+	public function calculate(OrderInterface $order)
 	{
 		$customer = $this->customerService->getCurrent();
 		// TODO: Implement calculate() method.

@@ -3,6 +3,7 @@
 namespace Jigoshop\Shipping;
 
 use Jigoshop\Core\Options;
+use Jigoshop\Entity\OrderInterface;
 use Jigoshop\Frontend\Cart;
 
 class FreeShipping implements Method
@@ -71,10 +72,10 @@ class FreeShipping implements Method
 	}
 
 	/**
-	 * @param Cart $cart Cart to calculate shipping for.
-	 * @return float Calculates value of shipping for the cart.
+	 * @param OrderInterface $order Order to calculate shipping for.
+	 * @return float Calculated value of shipping for the order.
 	 */
-	public function calculate(Cart $cart)
+	public function calculate(OrderInterface $order)
 	{
 		// TODO: Implement calculate() method.
 		return 0.0;

@@ -186,7 +186,7 @@ class Dashboard implements PageInterface
 			if (!in_array($order->getStatus(), array(Order\Status::REFUNDED, Order\Status::CANCELLED), true)) {
 				$day = strtotime(date('Y-m-d', $order->getCreatedAt()->getTimestamp()));
 				$orderCountsData[$day] += 1;
-				$orderAmountsData[$day] += $order->getSubtotal() + $order->getShipping();
+				$orderAmountsData[$day] += $order->getSubtotal() + $order->getShippingMethod();
 			}
 		}
 

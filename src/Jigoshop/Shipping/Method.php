@@ -2,6 +2,7 @@
 
 namespace Jigoshop\Shipping;
 
+use Jigoshop\Entity\OrderInterface;
 use Jigoshop\Frontend\Cart;
 
 /**
@@ -45,10 +46,10 @@ interface Method
 	public function validateOptions($settings);
 
 	/**
-	 * @param Cart $cart Cart to calculate shipping for.
-	 * @return float Calculates value of shipping for the cart.
+	 * @param OrderInterface $order Order to calculate shipping for.
+	 * @return float Calculates value of shipping for the order.
 	 */
-	public function calculate(Cart $cart);
+	public function calculate(OrderInterface $order);
 
 	/**
 	 * @return array Minimal state to fully identify shipping method.

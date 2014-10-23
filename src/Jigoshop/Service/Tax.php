@@ -50,17 +50,22 @@ class Tax implements TaxServiceInterface
 	/**
 	 * @param $product Product|Product\Purchasable Product to calculate tax for.
 	 * @param $taxClass string Tax class.
-	 * @throws Exception When tax class is not found.
+	 * @param Customer|null $customer Customer to calculate taxes for.
 	 * @return float Tax value for selected tax class.
 	 */
-	public function get(Product $product, $taxClass)
+	public function get(Product $product, $taxClass, $customer = null)
 	{
 		if (!in_array($taxClass, $this->taxClasses)) {
 			throw new Exception(sprintf('No tax class: %s', $taxClass));
 		}
 
+		if ($customer === null) {
+			$customer = $this->customers->getCurrent();
+		}
+
 		if (!isset($this->taxes[$taxClass])) {
-			$this->taxes[$taxClass] = $this->fetch($taxClass, $this->customers->getCurrent());
+			// TODO: Support for passed customer (for orders)
+			$this->taxes[$taxClass] = $this->fetch($taxClass, $customer);
 		}
 
 		// TODO: Support for compound taxes
@@ -69,6 +74,22 @@ class Tax implements TaxServiceInterface
 		}
 
 		return $this->taxes[$taxClass]['rate'] * $product->getPrice() / 100;
+	}
+
+	/**
+	 * @param $product Product|Product\Purchasable Product to calculate tax for.
+	 * @param Customer|null $customer Customer to calculate taxes for.
+	 * @return array List of tax values per tax class.
+	 */
+	public function getAll(Product $product, $customer = null)
+	{
+		$tax = array();
+
+		foreach ($product->getTaxClasses() as $class) {
+			$tax[$class] = $this->get($product, $class, $customer);
+		}
+
+		return $tax;
 	}
 
 	/**
@@ -96,6 +117,7 @@ class Tax implements TaxServiceInterface
 	 */
 	public function getShipping(Method $method, $price, $taxClass)
 	{
+		// TODO: Ability to specify customer
 		if (!in_array($taxClass, $this->taxClasses)) {
 			throw new Exception(sprintf('No tax class: %s', $taxClass));
 		}

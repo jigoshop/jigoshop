@@ -7,6 +7,8 @@ use Jigoshop\Entity\Product;
 /**
  * Order item.
  *
+ * TODO: Proper description in PhpDoc
+ *
  * @package Jigoshop\Entity\Order
  * @author Amadeusz Starzykiewicz
  */
@@ -17,9 +19,13 @@ class Item
 	/** @var string */
 	private $name;
 	/** @var int */
-	private $quantity;
+	private $quantity = 0;
 	/** @var float */
-	private $price;
+	private $price = 0.0;
+	/** @var array */
+	private $tax = array();
+	/** @var float */
+	private $totalTax = 0.0;
 	/** @var Product */
 	private $product;
 	/** @var string */
@@ -90,11 +96,36 @@ class Item
 	}
 
 	/**
+	 * @return array
+	 */
+	public function getTax()
+	{
+		return $this->tax;
+	}
+
+	/**
+	 * @param array $tax
+	 */
+	public function setTax($tax)
+	{
+		$this->tax = $tax;
+		$this->totalTax = array_reduce($tax, function($value, $item){ return $value + $item; }, 0.0);
+	}
+
+	/**
+	 * @return float
+	 */
+	public function getTotalTax()
+	{
+		return $this->totalTax;
+	}
+
+	/**
 	 * @return float
 	 */
 	public function getCost()
 	{
-		return $this->price * $this->quantity;
+		return ($this->price + $this->totalTax) * $this->quantity;
 	}
 
 	/**

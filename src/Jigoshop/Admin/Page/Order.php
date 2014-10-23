@@ -4,6 +4,7 @@ namespace Jigoshop\Admin\Page;
 
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
+use Jigoshop\Entity\Customer;
 use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\Product;
 use Jigoshop\Exception;
@@ -14,6 +15,8 @@ use Jigoshop\Helper\Styles;
 use Jigoshop\Service\CustomerServiceInterface;
 use Jigoshop\Service\OrderServiceInterface;
 use Jigoshop\Service\ProductServiceInterface;
+use Jigoshop\Service\ShippingServiceInterface;
+use Jigoshop\Service\TaxServiceInterface;
 use WPAL\Wordpress;
 
 class Order
@@ -28,15 +31,21 @@ class Order
 	private $productService;
 	/** @var CustomerServiceInterface */
 	private $customerService;
+	/** @var ShippingServiceInterface */
+	private $shippingService;
+	/** @var TaxServiceInterface */
+	private $taxService;
 
 	public function __construct(Wordpress $wp, Options $options, OrderServiceInterface $orderService, ProductServiceInterface $productService,
-		CustomerServiceInterface $customerService, Styles $styles, Scripts $scripts)
+		CustomerServiceInterface $customerService, ShippingServiceInterface $shippingService, TaxServiceInterface $taxService, Styles $styles, Scripts $scripts)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->orderService = $orderService;
 		$this->productService = $productService;
 		$this->customerService = $customerService;
+		$this->shippingService = $shippingService;
+		$this->taxService = $taxService;
 
 		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $styles, $scripts){
 			if ($wp->getPostType() == Types::ORDER) {
@@ -53,6 +62,7 @@ class Order
 		$wp->addAction('wp_ajax_jigoshop.admin.order.add_product', array($this, 'addProduct'), 10, 0);
 		$wp->addAction('wp_ajax_jigoshop.admin.order.update_product', array($this, 'updateProduct'), 10, 0);
 		$wp->addAction('wp_ajax_jigoshop.admin.order.remove_product', array($this, 'removeProduct'), 10, 0);
+		$wp->addAction('wp_ajax_jigoshop.admin.order.change_shipping_method', array($this, 'changeShippingMethod'), 10, 0);
 
 		$that = $this;
 		$wp->addAction('add_meta_boxes_'.Types::ORDER, function() use ($wp, $orderService, $that){
@@ -75,7 +85,7 @@ class Order
 			$order = $this->orderService->find($_POST['order']);
 			/** @var Product|Product\Purchasable $product */
 			$product = $this->productService->find($_POST['product']);
-			$item = $this->formatItem($product);
+			$item = $this->formatItem($order, $product);
 			$order->addItem($item);
 			$this->orderService->save($order);
 
@@ -83,16 +93,26 @@ class Order
 				'item' => $item,
 			));
 
+			$tax = array();
+			foreach ($order->getTax() as $class => $value) {
+				$tax[$class] = array(
+					'label' => $this->taxService->getLabel($class),
+					'value' => ProductHelper::formatPrice($value),
+				);
+			}
+
 			$result = array(
 				'success' => true,
 				'product_subtotal' => $order->getProductSubtotal(),
 				'subtotal' => $order->getSubtotal(),
 				'total' => $order->getTotal(),
+				'tax' => $order->getTax(),
 				'html' => array(
 					'row' => $row,
 					'product_subtotal' => ProductHelper::formatPrice($order->getProductSubtotal()),
 					'subtotal' => ProductHelper::formatPrice($order->getSubtotal()),
 					'total' => ProductHelper::formatPrice($order->getTotal()),
+					'tax' => $tax,
 				),
 			);
 		} catch(Exception $e) {
@@ -117,17 +137,27 @@ class Order
 			$order->addItem($item);
 			$this->orderService->save($order);
 
+			$tax = array();
+			foreach ($order->getTax() as $class => $value) {
+				$tax[$class] = array(
+					'label' => $this->taxService->getLabel($class),
+					'value' => ProductHelper::formatPrice($value),
+				);
+			}
+
 			$result = array(
 				'success' => true,
 				'item_cost' => $item->getCost(),
 				'product_subtotal' => $order->getProductSubtotal(),
 				'subtotal' => $order->getSubtotal(),
 				'total' => $order->getTotal(),
+				'tax' => $order->getTax(),
 				'html' => array(
 					'item_cost' => ProductHelper::formatPrice($item->getCost()),
 					'product_subtotal' => ProductHelper::formatPrice($order->getProductSubtotal()),
 					'subtotal' => ProductHelper::formatPrice($order->getSubtotal()),
 					'total' => ProductHelper::formatPrice($order->getTotal()),
+					'tax' => $tax,
 				),
 			);
 		} catch(Exception $e) {
@@ -149,15 +179,66 @@ class Order
 			$order->removeItem($_POST['product']);
 			$this->orderService->save($order);
 
+			$tax = array();
+			foreach ($order->getTax() as $class => $value) {
+				$tax[$class] = array(
+					'label' => $this->taxService->getLabel($class),
+					'value' => ProductHelper::formatPrice($value),
+				);
+			}
+
 			$result = array(
 				'success' => true,
 				'product_subtotal' => $order->getProductSubtotal(),
 				'subtotal' => $order->getSubtotal(),
 				'total' => $order->getTotal(),
+				'tax' => $order->getTax(),
 				'html' => array(
 					'product_subtotal' => ProductHelper::formatPrice($order->getProductSubtotal()),
 					'subtotal' => ProductHelper::formatPrice($order->getSubtotal()),
 					'total' => ProductHelper::formatPrice($order->getTotal()),
+					'tax' => $tax,
+				),
+			);
+		} catch(Exception $e) {
+			$result = array(
+				'success' => false,
+				'error' => $e->getMessage(),
+			);
+		}
+
+		echo json_encode($result);
+		exit;
+	}
+
+	public function changeShippingMethod()
+	{
+		// TODO: Add invalid data protection
+		try {
+			$order = $this->orderService->find($_POST['order']);
+			$shippingMethod = $this->shippingService->get($_POST['shipping_method']);
+			$order->setShippingMethod($shippingMethod);
+			$this->orderService->save($order);
+
+			$tax = array();
+			foreach ($order->getTax() as $class => $value) {
+				$tax[$class] = array(
+					'label' => $this->taxService->getLabel($class),
+					'value' => ProductHelper::formatPrice($value),
+				);
+			}
+
+			$result = array(
+				'success' => true,
+				'product_subtotal' => $order->getProductSubtotal(),
+				'subtotal' => $order->getSubtotal(),
+				'total' => $order->getTotal(),
+				'tax' => $order->getTax(),
+				'html' => array(
+					'product_subtotal' => ProductHelper::formatPrice($order->getProductSubtotal()),
+					'subtotal' => ProductHelper::formatPrice($order->getSubtotal()),
+					'total' => ProductHelper::formatPrice($order->getTotal()),
+					'tax' => $tax,
 				),
 			);
 		} catch(Exception $e) {
@@ -225,9 +306,18 @@ class Order
 		$post = $this->wp->getGlobalPost();
 		$order = $this->orderService->findForPost($post);
 
+		$tax = array();
+		foreach ($order->getTax() as $class => $value) {
+			$tax[$class] = array(
+				'label' => $this->taxService->getLabel($class),
+				'value' => ProductHelper::formatPrice($value),
+			);
+		}
+
 		Render::output('admin/order/totalsBox', array(
 			'order' => $order,
 			'shippingMethods' => array(),//$this->shippingService->getAvailable(),
+			'tax' => $tax,
 		));
 	}
 
@@ -236,12 +326,21 @@ class Order
 		//
 	}
 
-	private function formatItem($product)
+	/**
+	 * @param $order \Jigoshop\Entity\Order The order.
+	 * @param $product Product|Product\Purchasable The product to format.
+	 * @return Item Prepared item.
+	 */
+	private function formatItem($order, $product)
 	{
 		$item = new Item();
 		$item->setType($product->getType());
 		$item->setName($product->getName());
 		$item->setPrice($product->getPrice());
+		// TODO: Use billing or shipping address (based on option) as customer (for taxes)
+		$c = new Customer();
+		$c->setCountry('PL');
+		$item->setTax($this->taxService->getAll($product, $c));//$order->getCustomer()));
 		$item->setQuantity(1);
 		$item->setProduct($product);
 

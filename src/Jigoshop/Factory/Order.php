@@ -2,6 +2,7 @@
 
 namespace Jigoshop\Factory;
 
+use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\Order as Entity;
 use Jigoshop\Service\CustomerServiceInterface;
@@ -12,14 +13,17 @@ class Order implements EntityFactoryInterface
 {
 	/** @var \WPAL\Wordpress */
 	private $wp;
+	/** @var Options */
+	private $options;
 	/** @var CustomerServiceInterface */
 	private $customerService;
 	/** @var ProductServiceInterface */
 	private $productService;
 
-	public function __construct(Wordpress $wp, CustomerServiceInterface $customerService, ProductServiceInterface $productService)
+	public function __construct(Wordpress $wp, Options $options, CustomerServiceInterface $customerService, ProductServiceInterface $productService)
 	{
 		$this->wp = $wp;
+		$this->options = $options;
 		$this->customerService = $customerService;
 		$this->productService = $productService;
 	}
@@ -32,7 +36,7 @@ class Order implements EntityFactoryInterface
 	 */
 	public function create($id)
 	{
-		$order = new Entity($this->wp);
+		$order = new Entity($this->wp, $this->options->get('tax.classes'));
 		$order->setId($id);
 
 		if (empty($_POST)) {
@@ -87,7 +91,7 @@ class Order implements EntityFactoryInterface
 	 */
 	public function fetch($post)
 	{
-		$order = new Entity($this->wp);
+		$order = new Entity($this->wp, $this->options->get('tax.classes'));
 		$state = array();
 
 		if($post){
@@ -153,6 +157,8 @@ class Order implements EntityFactoryInterface
 		$item->setName($data['title']);
 		$item->setQuantity($data['quantity']);
 		$item->setPrice($data['price']);
+		// TODO: Restore tax
+//		$item->setTax($data['tax']);
 
 		$product = $this->productService->find($data['product_id']);
 		$item->setProduct($product);

@@ -18,7 +18,7 @@ use WPAL\Wordpress;
  * @package Jigoshop\Entity
  * @author Amadeusz Starzykiewicz
  */
-class Order implements EntityInterface
+class Order implements EntityInterface, OrderInterface
 {
 	/** @var int */
 	private $id;
@@ -58,7 +58,7 @@ class Order implements EntityInterface
 	/** @var \WPAL\Wordpress */
 	protected $wp;
 
-	public function __construct(Wordpress $wp)
+	public function __construct(Wordpress $wp, array $taxClasses)
 	{
 		$this->wp = $wp;
 
@@ -67,6 +67,10 @@ class Order implements EntityInterface
 		$this->shippingAddress = new Order\Address();
 		$this->created_at = new \DateTime();
 		$this->updated_at = new \DateTime();
+
+		foreach ($taxClasses as $class) {
+			$this->tax[$class['class']] = 0.0;
+		}
 	}
 
 	/**
@@ -252,6 +256,10 @@ class Order implements EntityInterface
 		$this->productSubtotal += $item->getCost();
 		$this->subtotal += $item->getCost();
 		$this->total += $item->getCost();
+
+		foreach ($item->getTax() as $class => $tax) {
+			$this->tax[$class] += $tax;
+		}
 	}
 
 	/**
@@ -267,6 +275,10 @@ class Order implements EntityInterface
 		$this->productSubtotal -= $item->getCost();
 		$this->subtotal -= $item->getCost();
 		$this->total -= $item->getCost();
+
+		foreach ($item->getTax() as $class => $tax) {
+			$this->tax[$class] -= $tax;
+		}
 
 		return $item;
 	}
@@ -306,17 +318,48 @@ class Order implements EntityInterface
 	/**
 	 * @return ShippingMethod Shipping method.
 	 */
-	public function getShipping()
+	public function getShippingMethod()
 	{
 		return $this->shipping;
 	}
 
 	/**
-	 * @param ShippingMethod $shipping Method used for shipping the order.
+	 * @param ShippingMethod $method Method used for shipping the order.
 	 */
-	public function setShipping($shipping)
+	public function setShippingMethod(ShippingMethod $method)
 	{
-		$this->shipping = $shipping;
+		// TODO: Improve this code (and refactor to abstract between cart and order = AbstractOrder)
+		if ($this->shipping !== null) {
+			$price = $this->shipping->calculate($this);
+			$this->subtotal -= $price;
+			$this->total -= $price + $this->taxService->calculateShipping($this->shipping, $price);
+			foreach ($this->shipping->getTaxClasses() as $class) {
+				$this->tax[$class] -= $this->taxService->getShipping($this->shipping, $price, $class);
+			}
+		}
+
+		$this->shipping = $method;
+		$price = $method->calculate($this);
+		$this->subtotal += $price;
+		$this->total += $price + $this->taxService->calculateShipping($method, $price);
+		foreach ($method->getTaxClasses() as $class) {
+			$this->tax[$class] += $this->taxService->getShipping($method, $price, $class);
+		}
+	}
+
+	/**
+	 * Checks whether given shipping method is set for current cart.
+	 *
+	 * @param $method Method Shipping method to check.
+	 * @return bool Is the method selected?
+	 */
+	public function hasShippingMethod($method)
+	{
+		if ($this->shipping !== null) {
+			return $this->shipping->getId() == $method->getId();
+		}
+
+		return false;
 	}
 
 	/**
@@ -440,24 +483,66 @@ class Order implements EntityInterface
 	}
 
 	/**
-	 * @return float Total tax of the order.
-	 */
-	public function getTotalTax()
-	{
-		$tax = 0.0;
-		foreach ($this->tax as $value) {
-			$tax += $value;
-		}
-
-		return $tax;
-	}
-
-	/**
 	 * @param array $tax Tax data array.
 	 */
 	public function setTax($tax)
 	{
 		$this->tax = $tax;
+	}
+
+	/**
+	 * Updates stored tax array with provided values.
+	 *
+	 * @param array $tax Tax divided by classes.
+	 */
+	public function updateTaxes(array $tax)
+	{
+		foreach ($tax as $class => $value) {
+			$this->tax[$class] += $value;
+		}
+	}
+
+	/**
+	 * @return float Total tax of the order.
+	 */
+	public function getTotalTax()
+	{
+		// TODO: Probably nice idea to keep it stored
+		return array_reduce($this->tax, function($value, $item){ return $value + $item; }, 0.0);
+	}
+
+	/**
+	 * Updates quantity of selected item by it's key.
+	 *
+	 * @param $key string Item key in the order.
+	 * @param $quantity int Quantity to set.
+	 * @throws Exception When product does not exists or quantity is not numeric.
+	 */
+	public function updateQuantity($key, $quantity)
+	{
+		if (!isset($this->items[$key])) {
+			throw new Exception(__('Item does not exists', 'jigoshop')); // TODO: Will be nice to get better error message
+		}
+
+		if (!is_numeric($quantity)) {
+			throw new Exception(__('Quantity has to be numeric value', 'jigoshop'));
+		}
+
+		if ($quantity <= 0) {
+			$this->removeItem($key);
+			return;
+		}
+
+		/** @var Item $item */
+		$item = $this->items[$key]; // TODO: Check if it needs reference
+		$difference = $quantity - $item->getQuantity();
+		$this->total += ($item->getPrice() + $item->getTax()) * $difference;
+		$this->subtotal += $item->getPrice() * $difference;
+		$this->productSubtotal += $item->getPrice() * $difference;
+		foreach ($item->getProduct()->getTaxClasses() as $class) {
+			$this->tax[$class] += $this->taxService->get($item->getProduct(), $class) * $difference;
+		}
+		$item->setQuantity($quantity);
 	}
 
 	/**
@@ -469,7 +554,7 @@ class Order implements EntityInterface
 			'id' => $this->id,
 			'number' => $this->number,
 			'updated_at' => $this->updated_at->getTimestamp(),
-			'items' => $this->items, // TODO: Store items
+			'items' => $this->items,
 			'billing_address' => serialize($this->billingAddress),
 			'shipping_address' => serialize($this->shippingAddress),
 			'customer' => $this->customer->getId(),

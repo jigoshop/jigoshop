@@ -32,6 +32,7 @@ services:
     class: Jigoshop\Factory\Order
     arguments:
       - '@wpal'
+      - '@jigoshop.options'
       - '@jigoshop.service.customer'
       - '@jigoshop.service.product'
   jigoshop.factory.customer:

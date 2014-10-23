@@ -115,10 +115,11 @@ class Order implements OrderServiceInterface
 				/** @var $item Item */
 				$data = array(
 					'order_id' => $object->getId(),
-					'product_id' => $item->getProduct()->getId(),
+					'product_id' => $item->getProduct()->getId(), // TODO: Bullet-proof to deleted products
 					'product_type' => $item->getType(),
 					'title' => $item->getName(),
 					'price' => $item->getPrice(),
+					'tax' => $item->getTotalTax(),
 					'quantity' => $item->getQuantity(),
 					'cost' => $item->getCost(),
 				);
@@ -128,6 +129,10 @@ class Order implements OrderServiceInterface
 				} else {
 					$wpdb->insert($wpdb->prefix.'jigoshop_order_item', $data);
 					$item->setId($wpdb->insert_id);
+				}
+
+				foreach ($item->getTax() as $class => $value) {
+					// TODO: Save each tax per class
 				}
 			}
 

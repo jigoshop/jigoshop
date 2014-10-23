@@ -27,6 +27,12 @@ interface TaxServiceInterface
 	public function get(Product $product, $taxClass);
 
 	/**
+	 * @param $product Product|Product\Purchasable Product to calculate tax for.
+	 * @return array List of tax values per tax class.
+	 */
+	public function getAll(Product $product);
+
+	/**
 	 * @param Method $method Method to calculate tax for.
 	 * @param $price float Price calculated for current cart.
 	 * @return float Overall tax value.
