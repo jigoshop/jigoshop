@@ -27,6 +27,10 @@ class AdminOrder
 
   newItemClick: (e) =>
     e.preventDefault()
+    value = jQuery('#new-item').val()
+    if value == ''
+      return false
+
     $parent = jQuery(e.target).closest('table')
 
     # TODO: Check if already added - if so - increase quantity only
@@ -36,7 +40,7 @@ class AdminOrder
       dataType: 'json'
       data:
         action: 'jigoshop.admin.order.add_product'
-        product: jQuery('#new-item').val()
+        product: value
         order: $parent.data('order')
     .done (data) ->
       jQuery('#new-item').val('')
