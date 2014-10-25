@@ -12,6 +12,7 @@
   @import '../../bower/bootstrap/less/utilities.less';
   @import '../../bower/bootstrap/less/type.less';
   @import '../../bower/bootstrap/less/close.less';
+  @import '../../bower/bootstrap/less/list-group.less';
 
   textarea#excerpt {
     width: 100%;
@@ -71,6 +72,15 @@
   &.jigoshop-totals {
     .form-group {
       margin-bottom: 0;
+    }
+    .list-group-item label {
+      margin: 0;
+
+      input {
+        vertical-align: bottom;
+        margin-top: 0;
+        margin-right: @padding-base-vertical;
+      }
     }
   }
 }

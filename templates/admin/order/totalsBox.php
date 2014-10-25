@@ -12,12 +12,24 @@ $orderTax = $order->getTax();
 ?>
 <div class="jigoshop jigoshop-totals">
 	<div class="form-horizontal">
-		<?php //Forms::select(array(
-//			'name' => 'order[shipping]',
-//			'label' => __('Shipping', 'jigoshop'),
-//			'value' => $order->getShippingMethod() ? $order->getShippingMethod()->getId() : false,
-//			'options' => $shippingMethods,
-//		)); ?>
+		<div class="form-group">
+			<label for="order_shipping" class="col-sm-2 control-label">
+				<?php echo __('Shipping', 'jigoshop'); ?>
+			</label>
+			<div class="col-sm-9">
+				<ul class="list-group">
+					<?php foreach($shippingMethods as $method): /** @var $method \Jigoshop\Shipping\Method */ ?>
+						<li class="list-group-item" id="shipping-<?php echo $method->getId(); ?>">
+							<label>
+								<input type="radio" name="order[shipping]" value="<?php echo $method->getId(); ?>" <?php echo Forms::checked($order->hasShippingMethod($method), true); ?> />
+								<?php echo $method->getName(); ?>
+							</label>
+							<span class="pull-right"><?php echo Product::formatPrice($method->calculate($order)); ?></span>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+			</div>
+		</div>
 		<?php Forms::constant(array(
 			'name' => 'order[subtotal]',
 			'id' => 'subtotal',

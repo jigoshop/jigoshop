@@ -300,7 +300,7 @@ class Order
 
 		Render::output('admin/order/totalsBox', array(
 			'order' => $order,
-			'shippingMethods' => array(),//$this->shippingService->getAvailable(),
+			'shippingMethods' => $this->shippingService->getAvailable(),
 			'tax' => $tax,
 		));
 	}
