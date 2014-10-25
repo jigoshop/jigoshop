@@ -99,8 +99,8 @@ class Orders
 				));
 				break;
 			case 'total':
-				// TODO: Add proper displaying
-				echo Product::formatPrice(0.0);
+				// TODO: Add proper displaying (subtotal, taxes, discounts and total table)
+				echo Product::formatPrice($order->getTotal());
 				break;
 		}
 	}

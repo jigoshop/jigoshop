@@ -108,9 +108,8 @@ class Order implements EntityFactoryInterface
 			$state['product_subtotal'] = array_reduce($state['items'], function($value, $item){
 				return $value + $item->getCost();
 			}, 0.0);
-			// TODO: Properly calculate subtotal and total
+			// TODO: Properly calculate subtotal
 			$state['subtotal'] = $state['product_subtotal'];
-			$state['total'] = $state['product_subtotal'];
 
 			$order->restoreState($state);
 		}
@@ -175,7 +174,7 @@ class Order implements EntityFactoryInterface
 		$query = $wpdb->prepare("
 			SELECT * FROM {$wpdb->prefix}jigoshop_order_item joi
 			LEFT JOIN {$wpdb->prefix}jigoshop_order_item_meta joim ON joim.item_id = joi.id
-			WHERE joi.order_id = %d AND joim.meta_key LIKE %s
+			WHERE joi.order_id = %d AND (joim.meta_key LIKE %s OR joim.meta_key IS NULL)
 			ORDER BY joi.id",
 			array($id, 'tax%'));
 		$results = $wpdb->get_results($query, ARRAY_A);

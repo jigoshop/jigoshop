@@ -274,6 +274,36 @@ class Forms
 	}
 
 	/**
+	 * Outputs field based on specified type.
+	 *
+	 * @param $type string Field type.
+	 * @param $field array Field definition.
+	 */
+	public static function field($type, $field)
+	{
+		switch ($type) {
+			case 'text':
+				self::text($field);
+				break;
+			case 'select':
+				self::select($field);
+				break;
+			case 'checkbox':
+				self::checkbox($field);
+				break;
+			case 'textarea':
+				self::textarea($field);
+				break;
+			case 'hidden':
+				self::hidden($field);
+				break;
+			case 'constant':
+				self::constant($field);
+				break;
+		}
+	}
+
+	/**
 	 * Prepares field name to be used as field ID.
 	 *
 	 * @param $name string Name to prepare.

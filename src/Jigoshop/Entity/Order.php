@@ -255,7 +255,7 @@ class Order implements EntityInterface, OrderInterface
 		$this->items[$item->getId()] = $item;
 		$this->productSubtotal += $item->getCost();
 		$this->subtotal += $item->getCost();
-		$this->total += $item->getCost();
+		$this->total += $item->getCost() + $item->getTotalTax();
 
 		foreach ($item->getTax() as $class => $tax) {
 			$this->tax[$class] += $tax * $item->getQuantity();
@@ -270,10 +270,10 @@ class Order implements EntityInterface, OrderInterface
 	{
 		$item = $this->items[$item];
 
-		/** @var Item $itemId */
+		/** @var Item $item */
 		$this->productSubtotal -= $item->getCost();
 		$this->subtotal -= $item->getCost();
-		$this->total -= $item->getCost();
+		$this->total -= $item->getCost() + $item->getTotalTax();
 
 		foreach ($item->getTax() as $class => $tax) {
 			$this->tax[$class] -= $tax * $item->getQuantity();
@@ -603,20 +603,20 @@ class Order implements EntityInterface, OrderInterface
 		if (isset($state['customer_note'])) {
 			$this->customerNote = $state['customer_note'];
 		}
-		if (isset($state['total'])) {
-			$this->total = (float)$state['total'];
+		if (isset($state['tax']) && !empty($state['payment'])) {
+			$this->tax = unserialize($state['tax']);
 		}
 		if (isset($state['subtotal'])) {
 			$this->subtotal = (float)$state['subtotal'];
 		}
-		if (isset($state['product_subtotal'])) {
+
+		$this->total = $this->subtotal + array_reduce($this->tax, function($value, $item){ return $value + $item; }, 0.0);
+
+			if (isset($state['product_subtotal'])) {
 			$this->productSubtotal = (float)$state['product_subtotal'];
 		}
 		if (isset($state['discount'])) {
 			$this->discount = (float)$state['discount'];
-		}
-		if (isset($state['tax']) && !empty($state['payment'])) {
-			$this->tax = unserialize($state['tax']);
 		}
 		if (isset($state['status'])) {
 			$this->status = $state['status'];

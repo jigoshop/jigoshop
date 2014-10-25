@@ -46,23 +46,23 @@ use Jigoshop\Entity\Order\Status;
 		</div>
 		<div class="tab-pane" id="billing-address">
 			<?php $address = $order->getBillingAddress(); ?>
-			<?php foreach($billingFields as $field => $label): ?>
-			<?php echo Forms::text(array(
-				'name' => "order[billing][{$field}]",
-				'label' => $label,
-				'value' => $address->get($field),
-			)); ?>
-			<?php endforeach; ?>
+			<?php
+			foreach ($billingFields as $field => $definition) {
+				$definition['name'] = "order[billing][{$field}]";
+				$definition['value'] = $address->get($field);
+				echo Forms::field($definition['type'], $definition);
+			}
+			?>
 		</div>
 		<div class="tab-pane" id="shipping-address">
 			<?php $address = $order->getShippingAddress(); ?>
-			<?php foreach($shippingFields as $field => $label): ?>
-				<?php echo Forms::text(array(
-					'name' => "order[shipping][{$field}]",
-					'label' => $label,
-					'value' => $address->get($field),
-				)); ?>
-			<?php endforeach; ?>
+			<?php
+			foreach ($shippingFields as $field => $definition) {
+				$definition['name'] = "order[shipping][{$field}]";
+				$definition['value'] = $address->get($field);
+				echo Forms::field($definition['type'], $definition);
+			}
+			?>
 		</div>
 	</div>
 </div>

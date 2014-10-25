@@ -1,6 +1,7 @@
 <?php
 namespace Jigoshop\Service;
 
+use Jigoshop\Entity\Customer;
 use Jigoshop\Entity\Product;
 use Jigoshop\Shipping\Method;
 

@@ -108,6 +108,7 @@ class Item
 	 */
 	public function setTax($tax)
 	{
+		$tax = array_filter($tax);
 		$this->tax = $tax;
 		$this->totalTax = array_reduce($tax, function($value, $item) { return $value + $item; }, 0.0);
 	}
@@ -117,7 +118,7 @@ class Item
 	 */
 	public function getTotalTax()
 	{
-		return $this->totalTax;
+		return $this->totalTax * $this->quantity;
 	}
 
 	/**
@@ -125,7 +126,7 @@ class Item
 	 */
 	public function getCost()
 	{
-		return ($this->price + $this->totalTax) * $this->quantity;
+		return $this->price * $this->quantity;
 	}
 
 	/**

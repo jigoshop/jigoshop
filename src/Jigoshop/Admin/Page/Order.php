@@ -8,6 +8,7 @@ use Jigoshop\Entity\Customer;
 use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\Product;
 use Jigoshop\Exception;
+use Jigoshop\Helper\Country;
 use Jigoshop\Helper\Product as ProductHelper;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
@@ -62,6 +63,7 @@ class Order
 		$wp->addAction('wp_ajax_jigoshop.admin.order.add_product', array($this, 'addProduct'), 10, 0);
 		$wp->addAction('wp_ajax_jigoshop.admin.order.update_product', array($this, 'updateProduct'), 10, 0);
 		$wp->addAction('wp_ajax_jigoshop.admin.order.remove_product', array($this, 'removeProduct'), 10, 0);
+		$wp->addAction('wp_ajax_jigoshop.admin.order.change_country', array($this, 'changeCountry'), 10, 0);
 		$wp->addAction('wp_ajax_jigoshop.admin.order.change_shipping_method', array($this, 'changeShippingMethod'), 10, 0);
 
 		$that = $this;
@@ -89,33 +91,12 @@ class Order
 			$order->addItem($item);
 			$this->orderService->save($order);
 
-			$customer = $this->customerService->fromOrder($order);
 			$row = Render::get('admin/order/item', array(
 				'item' => $item,
 			));
 
-			$tax = array();
-			foreach ($order->getTax() as $class => $value) {
-				$tax[$class] = array(
-					'label' => $this->taxService->getLabel($class, $customer),
-					'value' => ProductHelper::formatPrice($value),
-				);
-			}
-
-			$result = array(
-				'success' => true,
-				'product_subtotal' => $order->getProductSubtotal(),
-				'subtotal' => $order->getSubtotal(),
-				'total' => $order->getTotal(),
-				'tax' => $order->getTax(),
-				'html' => array(
-					'row' => $row,
-					'product_subtotal' => ProductHelper::formatPrice($order->getProductSubtotal()),
-					'subtotal' => ProductHelper::formatPrice($order->getSubtotal()),
-					'total' => ProductHelper::formatPrice($order->getTotal()),
-					'tax' => $tax,
-				),
-			);
+			$result = $this->getAjaxResponse($order);
+			$result['html']['row'] = $row;
 		} catch(Exception $e) {
 			$result = array(
 				'success' => false,
@@ -138,30 +119,9 @@ class Order
 			$order->addItem($item);
 			$this->orderService->save($order);
 
-			$customer = $this->customerService->fromOrder($order);
-			$tax = array();
-			foreach ($order->getTax() as $class => $value) {
-				$tax[$class] = array(
-					'label' => $this->taxService->getLabel($class, $customer),
-					'value' => ProductHelper::formatPrice($value),
-				);
-			}
-
-			$result = array(
-				'success' => true,
-				'item_cost' => $item->getCost(),
-				'product_subtotal' => $order->getProductSubtotal(),
-				'subtotal' => $order->getSubtotal(),
-				'total' => $order->getTotal(),
-				'tax' => $order->getTax(),
-				'html' => array(
-					'item_cost' => ProductHelper::formatPrice($item->getCost()),
-					'product_subtotal' => ProductHelper::formatPrice($order->getProductSubtotal()),
-					'subtotal' => ProductHelper::formatPrice($order->getSubtotal()),
-					'total' => ProductHelper::formatPrice($order->getTotal()),
-					'tax' => $tax,
-				),
-			);
+			$result = $this->getAjaxResponse($order);
+			$result['item_cost'] = $item->getCost();
+			$result['html']['item_cost'] = ProductHelper::formatPrice($item->getCost());
 		} catch(Exception $e) {
 			$result = array(
 				'success' => false,
@@ -180,29 +140,7 @@ class Order
 			$order = $this->orderService->find($_POST['order']);
 			$order->removeItem($_POST['product']);
 			$this->orderService->save($order);
-			$customer = $this->customerService->fromOrder($order);
-
-			$tax = array();
-			foreach ($order->getTax() as $class => $value) {
-				$tax[$class] = array(
-					'label' => $this->taxService->getLabel($class, $customer),
-					'value' => ProductHelper::formatPrice($value),
-				);
-			}
-
-			$result = array(
-				'success' => true,
-				'product_subtotal' => $order->getProductSubtotal(),
-				'subtotal' => $order->getSubtotal(),
-				'total' => $order->getTotal(),
-				'tax' => $order->getTax(),
-				'html' => array(
-					'product_subtotal' => ProductHelper::formatPrice($order->getProductSubtotal()),
-					'subtotal' => ProductHelper::formatPrice($order->getSubtotal()),
-					'total' => ProductHelper::formatPrice($order->getTotal()),
-					'tax' => $tax,
-				),
-			);
+			$result = $this->getAjaxResponse($order);
 		} catch(Exception $e) {
 			$result = array(
 				'success' => false,
@@ -222,29 +160,7 @@ class Order
 			$shippingMethod = $this->shippingService->get($_POST['shipping_method']);
 			$order->setShippingMethod($shippingMethod);
 			$this->orderService->save($order);
-			$customer = $this->customerService->fromOrder($order);
-
-			$tax = array();
-			foreach ($order->getTax() as $class => $value) {
-				$tax[$class] = array(
-					'label' => $this->taxService->getLabel($class, $customer),
-					'value' => ProductHelper::formatPrice($value),
-				);
-			}
-
-			$result = array(
-				'success' => true,
-				'product_subtotal' => $order->getProductSubtotal(),
-				'subtotal' => $order->getSubtotal(),
-				'total' => $order->getTotal(),
-				'tax' => $order->getTax(),
-				'html' => array(
-					'product_subtotal' => ProductHelper::formatPrice($order->getProductSubtotal()),
-					'subtotal' => ProductHelper::formatPrice($order->getSubtotal()),
-					'total' => ProductHelper::formatPrice($order->getTotal()),
-					'tax' => $tax,
-				),
-			);
+			$result = $this->getAjaxResponse($order);
 		} catch(Exception $e) {
 			$result = array(
 				'success' => false,
@@ -256,34 +172,97 @@ class Order
 		exit;
 	}
 
-	// TODO: Think on better place to keep order displaying functions
 	public function dataBox()
 	{
 		$post = $this->wp->getGlobalPost();
 		$order = $this->orderService->findForPost($post);
 		$billingFields = $this->wp->applyFilters('jigoshop\admin\order\billing_fields', array(
-			'company' => __('Company', 'jigoshop'),
-			'euvatno' => __('EU VAT Number', 'jigoshop'),
-			'first_name' => __('First Name', 'jigoshop'),
-			'last_name' => __('Last Name', 'jigoshop'),
-			'address' => __('Address', 'jigoshop'),
-			'city' => __('City', 'jigoshop'),
-			'postcode' => __('Postcode', 'jigoshop'),
-			'country' => __('Country', 'jigoshop'),
-			'state' => __('State/Province', 'jigoshop'),
-			'phone' => __('Phone', 'jigoshop'),
-			'email' => __('Email Address', 'jigoshop'),
+			'company' => array(
+				'label' => __('Company', 'jigoshop'),
+				'type' => 'text',
+			),
+			'euvatno' => array(
+				'label' => __('EU VAT Number', 'jigoshop'),
+				'type' => 'text',
+			),
+			'first_name' => array(
+				'label' => __('First Name', 'jigoshop'),
+				'type' => 'text',
+			),
+			'last_name' => array(
+				'label' => __('Last Name', 'jigoshop'),
+				'type' => 'text',
+			),
+			'address' => array(
+				'label' => __('Address', 'jigoshop'),
+				'type' => 'text',
+			),
+			'city' => array(
+				'label' => __('City', 'jigoshop'),
+				'type' => 'text',
+			),
+			'postcode' => array(
+				'label' => __('Postcode', 'jigoshop'),
+				'type' => 'text',
+			),
+			'country' => array(
+				'label' => __('Country', 'jigoshop'),
+				'type' => 'select',
+				'options' => Country::getAll(),
+			),
+			'state' => array(
+				'label' => __('State/Province', 'jigoshop'),
+				'type' => Country::hasStates($order->getBillingAddress()->getCountry()) ? 'select' : 'text',
+				'options' => Country::getStates($order->getBillingAddress()->getCountry()),
+			),
+			'phone' => array(
+				'label' => __('Phone', 'jigoshop'),
+				'type' => 'text',
+			),
+			'email' => array(
+				'label' => __('Email Address', 'jigoshop'),
+				'type' => 'text',
+			),
 		), $order);
 		$shippingFields = $this->wp->applyFilters('jigoshop\admin\order\shipping_fields', array(
-			'company' => __('Company', 'jigoshop'),
-			'first_name' => __('First Name', 'jigoshop'),
-			'last_name' => __('Last Name', 'jigoshop'),
-			'address' => __('Address', 'jigoshop'),
-			'city' => __('City', 'jigoshop'),
-			'postcode' => __('Postcode', 'jigoshop'),
-			'country' => __('Country', 'jigoshop'),
-			'state' => __('State/Province', 'jigoshop'),
-			'phone' => __('Phone', 'jigoshop'),
+			'company' => array(
+				'label' => __('Company', 'jigoshop'),
+				'type' => 'text',
+			),
+			'first_name' => array(
+				'label' => __('First Name', 'jigoshop'),
+				'type' => 'text',
+			),
+			'last_name' => array(
+				'label' => __('Last Name', 'jigoshop'),
+				'type' => 'text',
+			),
+			'address' => array(
+				'label' => __('Address', 'jigoshop'),
+				'type' => 'text',
+			),
+			'city' => array(
+				'label' => __('City', 'jigoshop'),
+				'type' => 'text',
+			),
+			'postcode' => array(
+				'label' => __('Postcode', 'jigoshop'),
+				'type' => 'text',
+			),
+			'country' => array(
+				'label' => __('Country', 'jigoshop'),
+				'type' => 'select',
+				'options' => Country::getAll(),
+			),
+			'state' => array(
+				'label' => __('State/Province', 'jigoshop'),
+				'type' => Country::hasStates($order->getShippingAddress()->getCountry()) ? 'select' : 'text',
+				'options' => Country::getStates($order->getShippingAddress()->getCountry()),
+			),
+			'phone' => array(
+				'label' => __('Phone', 'jigoshop'),
+				'type' => 'text',
+			),
 		), $order);
 		$customers = $this->customerService->findAll();
 
@@ -349,5 +328,32 @@ class Order
 		$item->setProduct($product);
 
 		return $item;
+	}
+
+	private function getAjaxResponse($order)
+	{
+		$customer = $this->customerService->fromOrder($order);
+
+		$tax = array();
+		foreach ($order->getTax() as $class => $value) {
+			$tax[$class] = array(
+				'label' => $this->taxService->getLabel($class, $customer),
+				'value' => ProductHelper::formatPrice($value),
+			);
+		}
+
+		return array(
+			'success' => true,
+			'product_subtotal' => $order->getProductSubtotal(),
+			'subtotal' => $order->getSubtotal(),
+			'total' => $order->getTotal(),
+			'tax' => $order->getTax(),
+			'html' => array(
+				'product_subtotal' => ProductHelper::formatPrice($order->getProductSubtotal()),
+				'subtotal' => ProductHelper::formatPrice($order->getSubtotal()),
+				'total' => ProductHelper::formatPrice($order->getTotal()),
+				'tax' => $tax,
+			),
+		);
 	}
 }
