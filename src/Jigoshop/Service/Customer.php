@@ -5,6 +5,7 @@ namespace Jigoshop\Service;
 use Jigoshop\Entity\Customer as Entity;
 use Jigoshop\Entity\EntityInterface;
 use Jigoshop\Entity\Order;
+use Jigoshop\Entity\OrderInterface;
 use Jigoshop\Exception;
 use Jigoshop\Factory\Customer as Factory;
 use WPAL\Wordpress;
@@ -73,17 +74,21 @@ class Customer implements CustomerServiceInterface
 	/**
 	 * Prepares and returns customer object for specified order.
 	 *
-	 * @param Order $order Order to fetch customer from.
+	 * @param OrderInterface $order Order to fetch customer from.
 	 * @return Entity
 	 */
-	public function fromOrder(Order $order)
+	public function fromOrder(OrderInterface $order)
 	{
-		// TODO: Decision about billing/shipping data to use
-		$address = $order->getBillingAddress();
-		$customer = new Entity();
-		$customer->setCountry($address->getCountry());
-		$customer->setState($address->getState());
-		$customer->setPostcode($address->getPostcode());
+		if ($order instanceof Order) {
+			// TODO: Decision about billing/shipping data to use
+			$address = $order->getBillingAddress();
+			$customer = new Entity();
+			$customer->setCountry($address->getCountry());
+			$customer->setState($address->getState());
+			$customer->setPostcode($address->getPostcode());
+		} else {
+			$customer = $this->getCurrent();
+		}
 
 		return $customer;
 	}

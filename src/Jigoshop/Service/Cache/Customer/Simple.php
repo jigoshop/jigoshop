@@ -4,6 +4,7 @@ namespace Jigoshop\Service\Cache\Customer;
 
 use Jigoshop\Entity\EntityInterface;
 use Jigoshop\Entity\Order;
+use Jigoshop\Entity\OrderInterface;
 use Jigoshop\Service\CustomerServiceInterface;
 use Jigoshop\Service\Entity;
 use Jigoshop\Service\Exception;
@@ -67,10 +68,10 @@ class Simple implements CustomerServiceInterface
 	/**
 	 * Prepares and returns customer object for specified order.
 	 *
-	 * @param Order $order Order to fetch customer from.
+	 * @param OrderInterface $order Order to fetch customer from.
 	 * @return Entity
 	 */
-	public function fromOrder(Order $order)
+	public function fromOrder(OrderInterface $order)
 	{
 		if (!isset($this->orders[$order->getId()])) {
 			$this->orders[$order->getId()] = $this->service->fromOrder($order);

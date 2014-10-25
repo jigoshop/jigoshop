@@ -144,7 +144,7 @@ class Order implements OrderServiceInterface
 		}
 
 		foreach ($fields as $field => $value) {
-			$this->wp->updatePostMeta($object->getId(), $field, esc_sql($value));
+			$this->wp->updatePostMeta($object->getId(), $field, esc_sql($value)); // TODO: Replace esc_sql() with WPAL
 		}
 	}
 

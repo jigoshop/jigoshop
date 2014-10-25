@@ -9,11 +9,31 @@ class AdminOrder
     jQuery('.jigoshop-order table').on 'click', 'a.remove', @removeItemClick
     jQuery('.jigoshop-order table').on 'change', '.price input, .quantity input', @updateItem
     jQuery('.jigoshop-data')
-#      .on 'click', 'input[type=radio]', @selectShipping
       .on 'change', "#order_#{@params.tax_field}_country", @updateTaxCountry
 #      .on 'change', "#order_#{@params.tax_field}_state", @updateTaxState.bind(@, '#state')
 #      .on 'change', '#noscript_state', @updateState.bind(@, '#noscript_state')
 #      .on 'change', "#order_#{@params.tax_field}_postcode", @updateTaxPostcode
+    jQuery('.jigoshop-totals')
+      .on 'click', 'input[type=radio]', @selectShipping
+
+  selectShipping: (e) =>
+    $parent = jQuery(e.target).closest('div.jigoshop')
+
+    jQuery.ajax(@params.ajax,
+      type: 'post'
+      dataType: 'json'
+      data:
+        action: 'jigoshop.admin.order.change_shipping_method'
+        order: $parent.data('order')
+        method: jQuery(e.target).val()
+    )
+    .done (result) =>
+      if result.success
+        @_updateTotals(result.html.total, result.html.subtotal)
+        @_updateTaxes(result.tax, result.html.tax)
+      else
+        # TODO: It would be nice to have kind of helper for error messages
+        alert result.error
 
   newItemSelect: =>
     jQuery('#new-item').select2

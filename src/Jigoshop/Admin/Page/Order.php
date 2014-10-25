@@ -6,6 +6,7 @@ use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\Customer;
 use Jigoshop\Entity\Order\Item;
+use Jigoshop\Entity\OrderInterface;
 use Jigoshop\Entity\Product;
 use Jigoshop\Exception;
 use Jigoshop\Helper\Country;
@@ -117,6 +118,7 @@ class Order
 			$item->setQuantity((int)$_POST['quantity']);
 			$item->setPrice((float)$_POST['price']);
 			$order->addItem($item);
+			// TODO: Update taxes accordingly to unit price
 			$this->orderService->save($order);
 
 			$result = $this->getAjaxResponse($order);
@@ -157,8 +159,9 @@ class Order
 		// TODO: Add invalid data protection
 		try {
 			$order = $this->orderService->find($_POST['order']);
-			$shippingMethod = $this->shippingService->get($_POST['shipping_method']);
-			$order->setShippingMethod($shippingMethod);
+			$shippingMethod = $this->shippingService->get($_POST['method']);
+			$customer = $this->customerService->fromOrder($order);
+			$order->setShippingMethod($shippingMethod, $this->taxService, $customer);
 			$this->orderService->save($order);
 			$result = $this->getAjaxResponse($order);
 		} catch(Exception $e) {
@@ -288,20 +291,11 @@ class Order
 	{
 		$post = $this->wp->getGlobalPost();
 		$order = $this->orderService->findForPost($post);
-		$customer = $this->customerService->fromOrder($order);
-
-		$tax = array();
-		foreach ($order->getTax() as $class => $value) {
-			$tax[$class] = array(
-				'label' => $this->taxService->getLabel($class, $customer),
-				'value' => ProductHelper::formatPrice($value),
-			);
-		}
 
 		Render::output('admin/order/totalsBox', array(
 			'order' => $order,
 			'shippingMethods' => $this->shippingService->getAvailable(),
-			'tax' => $tax,
+			'tax' => $this->getTaxes($order),
 		));
 	}
 
@@ -330,18 +324,12 @@ class Order
 		return $item;
 	}
 
+	/**
+	 * @param $order OrderInterface Order to get values from.
+	 * @return array Ajax response array.
+	 */
 	private function getAjaxResponse($order)
 	{
-		$customer = $this->customerService->fromOrder($order);
-
-		$tax = array();
-		foreach ($order->getTax() as $class => $value) {
-			$tax[$class] = array(
-				'label' => $this->taxService->getLabel($class, $customer),
-				'value' => ProductHelper::formatPrice($value),
-			);
-		}
-
 		return array(
 			'success' => true,
 			'product_subtotal' => $order->getProductSubtotal(),
@@ -352,8 +340,28 @@ class Order
 				'product_subtotal' => ProductHelper::formatPrice($order->getProductSubtotal()),
 				'subtotal' => ProductHelper::formatPrice($order->getSubtotal()),
 				'total' => ProductHelper::formatPrice($order->getTotal()),
-				'tax' => $tax,
+				'tax' => $this->getTaxes($order),
 			),
 		);
+	}
+
+	/**
+	 * @param $order OrderInterface Order to get taxes for.
+	 * @return array Taxes with labels array.
+	 */
+	private function getTaxes($order)
+	{
+		$customer = $this->customerService->fromOrder($order);
+
+		$tax = array();
+		$shippingTax = $order->getShippingTax();
+		foreach ($order->getTax() as $class => $value) {
+			$tax[$class] = array(
+				'label' => $this->taxService->getLabel($class, $customer),
+				'value' => ProductHelper::formatPrice($value + $shippingTax[$class]),
+			);
+		}
+
+		return $tax;
 	}
 }

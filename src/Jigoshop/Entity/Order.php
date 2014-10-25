@@ -8,6 +8,7 @@ use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\Order\Status;
 use Jigoshop\Exception;
 use Jigoshop\Payment\Method as PaymentMethod;
+use Jigoshop\Service\TaxServiceInterface;
 use Jigoshop\Shipping\Method as ShippingMethod;
 use WPAL\Wordpress;
 
@@ -50,6 +51,8 @@ class Order implements EntityInterface, OrderInterface
 	private $discount = 0.0;
 	/** @var array */
 	private $tax = array();
+	/** @var array */
+	private $shippingTax = array();
 	/** @var string */
 	private $status = Status::CREATED;
 	/** @var string */
@@ -70,6 +73,7 @@ class Order implements EntityInterface, OrderInterface
 
 		foreach ($taxClasses as $class) {
 			$this->tax[$class['class']] = 0.0;
+			$this->shippingTax[$class['class']] = 0.0;
 		}
 	}
 
@@ -325,25 +329,27 @@ class Order implements EntityInterface, OrderInterface
 
 	/**
 	 * @param ShippingMethod $method Method used for shipping the order.
+	 * @param TaxServiceInterface $taxService Tax service to calculate tax value of shipping.
+	 * @param Customer $customer Customer for tax calculation.
 	 */
-	public function setShippingMethod(ShippingMethod $method)
+	public function setShippingMethod(ShippingMethod $method, TaxServiceInterface $taxService, Customer $customer = null)
 	{
 		// TODO: Improve this code (and refactor to abstract between cart and order = AbstractOrder)
 		if ($this->shipping !== null) {
 			$price = $this->shipping->calculate($this);
 			$this->subtotal -= $price;
-			$this->total -= $price + $this->taxService->calculateShipping($this->shipping, $price);
+			$this->total -= $price + $taxService->calculateShipping($this->shipping, $price, $customer);
 			foreach ($this->shipping->getTaxClasses() as $class) {
-				$this->tax[$class] -= $this->taxService->getShipping($this->shipping, $price, $class);
+				$this->shippingTax[$class] -= $taxService->getShipping($this->shipping, $price, $class, $customer);
 			}
 		}
 
 		$this->shipping = $method;
 		$price = $method->calculate($this);
 		$this->subtotal += $price;
-		$this->total += $price + $this->taxService->calculateShipping($method, $price);
+		$this->total += $price + $taxService->calculateShipping($method, $price, $customer);
 		foreach ($method->getTaxClasses() as $class) {
-			$this->tax[$class] += $this->taxService->getShipping($method, $price, $class);
+			$this->shippingTax[$class] += $taxService->getShipping($method, $price, $class, $customer);
 		}
 	}
 
@@ -491,6 +497,22 @@ class Order implements EntityInterface, OrderInterface
 	}
 
 	/**
+	 * @return array List of applied tax classes for shipping with it's values.
+	 */
+	public function getShippingTax()
+	{
+		return $this->shippingTax;
+	}
+
+	/**
+	 * @param array $shippingTax Tax data array for shipping.
+	 */
+	public function setShippingTax($shippingTax)
+	{
+		$this->shippingTax = $shippingTax;
+	}
+
+	/**
 	 * Updates stored tax array with provided values.
 	 *
 	 * @param array $tax Tax divided by classes.
@@ -564,7 +586,7 @@ class Order implements EntityInterface, OrderInterface
 			'total' => $this->total,
 			'subtotal' => $this->subtotal,
 			'discount' => $this->discount,
-			'tax' => serialize($this->tax),
+			'shipping_tax' => $this->shippingTax,
 			'status' => $this->status,
 		);
 	}
@@ -603,21 +625,25 @@ class Order implements EntityInterface, OrderInterface
 		if (isset($state['customer_note'])) {
 			$this->customerNote = $state['customer_note'];
 		}
-		if (isset($state['tax']) && !empty($state['payment'])) {
-			$this->tax = unserialize($state['tax']);
+		if (isset($state['shipping_tax'])) {
+			$tax = unserialize($state['shipping_tax']);
+			foreach ($tax as $class => $value) {
+				$this->shippingTax[$class] += $value;
+			}
+		}
+		if (isset($state['product_subtotal'])) {
+			$this->productSubtotal = (float)$state['product_subtotal'];
 		}
 		if (isset($state['subtotal'])) {
 			$this->subtotal = (float)$state['subtotal'];
 		}
-
-		$this->total = $this->subtotal + array_reduce($this->tax, function($value, $item){ return $value + $item; }, 0.0);
-
-			if (isset($state['product_subtotal'])) {
-			$this->productSubtotal = (float)$state['product_subtotal'];
-		}
 		if (isset($state['discount'])) {
 			$this->discount = (float)$state['discount'];
 		}
+
+		$this->total = $this->subtotal + array_reduce($this->tax, function($value, $item){ return $value + $item; }, 0.0)
+			+ array_reduce($this->shippingTax, function($value, $item){ return $value + $item; }, 0.0) - $this->discount;
+
 		if (isset($state['status'])) {
 			$this->status = $state['status'];
 		}

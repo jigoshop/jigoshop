@@ -7,6 +7,7 @@ use Jigoshop\Core\Types;
 use Jigoshop\Entity\Order as Entity;
 use Jigoshop\Service\CustomerServiceInterface;
 use Jigoshop\Service\ProductServiceInterface;
+use Jigoshop\Service\ShippingServiceInterface;
 use WPAL\Wordpress;
 
 class Order implements EntityFactoryInterface
@@ -19,13 +20,17 @@ class Order implements EntityFactoryInterface
 	private $customerService;
 	/** @var ProductServiceInterface */
 	private $productService;
+	/** @var ShippingServiceInterface */
+	private $shippingService;
 
-	public function __construct(Wordpress $wp, Options $options, CustomerServiceInterface $customerService, ProductServiceInterface $productService)
+	public function __construct(Wordpress $wp, Options $options, CustomerServiceInterface $customerService, ProductServiceInterface $productService,
+		ShippingServiceInterface $shippingService)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->customerService = $customerService;
 		$this->productService = $productService;
+		$this->shippingService = $shippingService;
 	}
 
 	/**
@@ -108,8 +113,10 @@ class Order implements EntityFactoryInterface
 			$state['product_subtotal'] = array_reduce($state['items'], function($value, $item){
 				return $value + $item->getCost();
 			}, 0.0);
-			// TODO: Properly calculate subtotal
-			$state['subtotal'] = $state['product_subtotal'];
+			if ($state['shipping']) {
+				$state['shipping'] = $this->shippingService->findForState(unserialize($state['shipping']));
+			}
+			$state['subtotal'] = $state['subtotal'];
 
 			$order->restoreState($state);
 		}

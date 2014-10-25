@@ -35,6 +35,7 @@ services:
       - '@jigoshop.options'
       - '@jigoshop.service.customer'
       - '@jigoshop.service.product'
+      - '@jigoshop.service.shipping'
   jigoshop.factory.customer:
     class: Jigoshop\Factory\Customer
     arguments:

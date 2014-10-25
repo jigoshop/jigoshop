@@ -3,6 +3,7 @@ namespace Jigoshop\Entity;
 
 use Jigoshop\Entity\Order\Item;
 use Jigoshop\Exception;
+use Jigoshop\Service\TaxServiceInterface;
 use Jigoshop\Shipping\Method;
 
 interface OrderInterface
@@ -78,8 +79,10 @@ interface OrderInterface
 	 * Sets shipping method and updates cart totals to reflect it's price.
 	 *
 	 * @param Method $method New shipping method.
+	 * @param TaxServiceInterface $taxService Tax service to calculate tax value of shipping.
+	 * @param Customer $customer Customer for tax calculation.
 	 */
-	public function setShippingMethod(Method $method);
+	public function setShippingMethod(Method $method, TaxServiceInterface $taxService, Customer $customer = null);
 
 	/**
 	 * Checks whether given shipping method is set for current cart.

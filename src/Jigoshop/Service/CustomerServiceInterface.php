@@ -4,6 +4,7 @@ namespace Jigoshop\Service;
 use Jigoshop\Entity\Customer;
 use Jigoshop\Entity\EntityInterface;
 use Jigoshop\Entity\Order;
+use Jigoshop\Entity\OrderInterface;
 
 
 /**
@@ -38,10 +39,10 @@ interface CustomerServiceInterface extends ServiceInterface
 	/**
 	 * Prepares and returns customer object for specified order.
 	 *
-	 * @param Order $order Order to fetch customer from.
-	 * @return Entity
+	 * @param OrderInterface $order Order to fetch customer from.
+	 * @return \Jigoshop\Entity\Customer
 	 */
-	public function fromOrder(Order $order);
+	public function fromOrder(OrderInterface $order);
 
 	/**
 	 * Saves product to database.

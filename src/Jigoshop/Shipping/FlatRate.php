@@ -4,7 +4,6 @@ namespace Jigoshop\Shipping;
 
 use Jigoshop\Core\Options;
 use Jigoshop\Entity\OrderInterface;
-use Jigoshop\Frontend\Cart;
 use Jigoshop\Service\CustomerServiceInterface;
 
 class FlatRate implements Method
@@ -81,7 +80,7 @@ class FlatRate implements Method
 	 */
 	public function calculate(OrderInterface $order)
 	{
-		$customer = $this->customerService->getCurrent();
+		$customer = $this->customerService->fromOrder($order);
 		// TODO: Implement calculate() method.
 		if ($customer->getCountry() == 'US') {
 			if ($customer->getState() == 'AK') {

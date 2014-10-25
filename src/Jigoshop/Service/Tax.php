@@ -100,13 +100,14 @@ class Tax implements TaxServiceInterface
 	/**
 	 * @param Method $method Method to calculate tax for.
 	 * @param $price float Price calculated for current cart.
+	 * @param Customer $customer Customer to fetch shipping for.
 	 * @return float Overall tax value.
 	 */
-	public function calculateShipping(Method $method, $price)
+	public function calculateShipping(Method $method, $price, Customer $customer = null)
 	{
 		$tax = 0.0;
 		foreach ($method->getTaxClasses() as $taxClass) {
-			$tax += $this->getShipping($method, $price, $taxClass);
+			$tax += $this->getShipping($method, $price, $taxClass, $customer);
 		}
 
 		// TODO: Support for compound taxes
@@ -118,17 +119,22 @@ class Tax implements TaxServiceInterface
 	 * @param Method $method Method to calculate tax for.
 	 * @param $price float Price calculated for current cart.
 	 * @param $taxClass string Tax class.
+	 * @param Customer $customer Customer to fetch shipping for.
 	 * @return float Tax value for selected tax class.
 	 */
-	public function getShipping(Method $method, $price, $taxClass)
+	public function getShipping(Method $method, $price, $taxClass, Customer $customer = null)
 	{
 		// TODO: Ability to specify customer
 		if (!in_array($taxClass, $this->taxClasses)) {
 			throw new Exception(sprintf('No tax class: %s', $taxClass));
 		}
 
+		if ($customer === null) {
+			$customer = $this->customers->getCurrent();
+		}
+
 		if (!isset($this->taxes[$taxClass])) {
-			$this->taxes[$taxClass] = $this->fetch($taxClass, $this->customers->getCurrent());
+			$this->taxes[$taxClass] = $this->fetch($taxClass, $customer);
 		}
 
 		// TODO: Support for compound taxes

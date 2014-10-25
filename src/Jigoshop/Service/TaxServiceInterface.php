@@ -38,17 +38,19 @@ interface TaxServiceInterface
 	/**
 	 * @param Method $method Method to calculate tax for.
 	 * @param $price float Price calculated for current cart.
+	 * @param Customer $customer Customer to fetch shipping for.
 	 * @return float Overall tax value.
 	 */
-	public function calculateShipping(Method $method, $price);
+	public function calculateShipping(Method $method, $price, Customer $customer = null);
 
 	/**
 	 * @param Method $method Method to calculate tax for.
 	 * @param $price float Price calculated for current cart.
 	 * @param $taxClass string Tax class.
+	 * @param Customer $customer Customer to fetch shipping for.
 	 * @return float Tax value for selected tax class.
 	 */
-	public function getShipping(Method $method, $price, $taxClass);
+	public function getShipping(Method $method, $price, $taxClass, Customer $customer = null);
 
 	/**
 	 * @return array List of available tax classes.
