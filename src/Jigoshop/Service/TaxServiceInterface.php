@@ -14,26 +14,26 @@ use Jigoshop\Shipping\Method;
 interface TaxServiceInterface
 {
 	/**
-	 * @param $product Product|Product\Purchasable Product to calculate tax for.
+	 * @param $product Product\Taxable|Product\Purchasable Product to calculate tax for.
 	 * @return float Overall tax value.
 	 */
-	public function calculate(Product $product);
+	public function calculate(Product\Taxable $product);
 
 	/**
-	 * @param $product Product|Product\Purchasable Product to calculate tax for.
+	 * @param $product Product\Purchasable Product to calculate tax for.
 	 * @param $taxClass string Tax class.
 	 * @throws Exception When tax class is not found.
 	 * @return float Tax value for selected tax class.
 	 */
-	public function get(Product $product, $taxClass);
+	public function get(Product\Purchasable $product, $taxClass);
 
 	/**
-	 * @param $product Product|Product\Purchasable Product to calculate tax for.
+	 * @param $product Product\Taxable|Product\Purchasable Product to calculate tax for.
 	 * @param int $quantity Quantity of the product.
 	 * @param Customer|null $customer Customer to calculate taxes for.
 	 * @return array List of tax values per tax class.
 	 */
-	public function getAll(Product $product, $quantity = 1, $customer = null);
+	public function getAll(Product\Taxable $product, $quantity = 1, $customer = null);
 
 	/**
 	 * @param Method $method Method to calculate tax for.

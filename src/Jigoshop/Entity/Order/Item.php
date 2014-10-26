@@ -12,7 +12,7 @@ use Jigoshop\Entity\Product;
  * @package Jigoshop\Entity\Order
  * @author Amadeusz Starzykiewicz
  */
-class Item
+class Item implements Product\Purchasable, Product\Taxable
 {
 	/** @var int */
 	private $id;
@@ -159,5 +159,13 @@ class Item
 	public function setType($type)
 	{
 		$this->type = $type;
+	}
+
+	/**
+	 * @return array List of applicable tax classes.
+	 */
+	public function getTaxClasses()
+	{
+		return array_keys($this->tax);
 	}
 }

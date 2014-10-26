@@ -32,10 +32,10 @@ class Tax implements TaxServiceInterface
 	}
 
 	/**
-	 * @param $product Product|Product\Purchasable Product to calculate tax for.
+	 * @param Product\Taxable|Product\Purchasable $product Product to calculate tax for.
 	 * @return float Overall tax value.
 	 */
-	public function calculate(Product $product)
+	public function calculate(Product\Taxable $product)
 	{
 		$tax = 0.0;
 		foreach ($product->getTaxClasses() as $taxClass) {
@@ -48,12 +48,12 @@ class Tax implements TaxServiceInterface
 	}
 
 	/**
-	 * @param $product Product|Product\Purchasable Product to calculate tax for.
+	 * @param $product Product\Purchasable Product to calculate tax for.
 	 * @param $taxClass string Tax class.
 	 * @param Customer|null $customer Customer to calculate taxes for.
 	 * @return float Tax value for selected tax class.
 	 */
-	public function get(Product $product, $taxClass, $customer = null)
+	public function get(Product\Purchasable $product, $taxClass, $customer = null)
 	{
 		if (!in_array($taxClass, $this->taxClasses)) {
 			throw new Exception(sprintf('No tax class: %s', $taxClass));
@@ -77,12 +77,12 @@ class Tax implements TaxServiceInterface
 	}
 
 	/**
-	 * @param $product Product|Product\Purchasable Product to calculate tax for.
+	 * @param $product Product\Taxable|Product\Purchasable Product to calculate tax for.
 	 * @param int $quantity Quantity of the product.
 	 * @param Customer|null $customer Customer to calculate taxes for.
 	 * @return array List of tax values per tax class.
 	 */
-	public function getAll(Product $product, $quantity = 1, $customer = null)
+	public function getAll(Product\Taxable $product, $quantity = 1, $customer = null)
 	{
 		$tax = array();
 
@@ -108,6 +108,7 @@ class Tax implements TaxServiceInterface
 		$tax = 0.0;
 		foreach ($method->getTaxClasses() as $taxClass) {
 			$tax += $this->getShipping($method, $price, $taxClass, $customer);
+
 		}
 
 		// TODO: Support for compound taxes

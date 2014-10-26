@@ -4,6 +4,7 @@ namespace Jigoshop\Entity;
 
 use Jigoshop\Entity\Product\Attributes\Size;
 use Jigoshop\Entity\Product\Attributes\StockStatus;
+use Jigoshop\Entity\Product\Taxable;
 use WPAL\Wordpress;
 
 /**
@@ -12,7 +13,7 @@ use WPAL\Wordpress;
  * @package Jigoshop\Entity
  * @author Amadeusz Starzykiewicz
  */
-abstract class Product implements EntityInterface
+abstract class Product implements EntityInterface, Taxable
 {
 	const VISIBILITY_CATALOG = 1;
 	const VISIBILITY_SEARCH = 2;
