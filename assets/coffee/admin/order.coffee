@@ -5,11 +5,15 @@ class AdminOrder
 
   constructor: (@params) ->
     @newItemSelect()
+    @_prepareStateField("#order_billing_state")
+    @_prepareStateField("#order_shipping_state")
+
     jQuery('#add-item').on 'click', @newItemClick
     jQuery('.jigoshop-order table').on 'click', 'a.remove', @removeItemClick
     jQuery('.jigoshop-order table').on 'change', '.price input, .quantity input', @updateItem
     jQuery('.jigoshop-data')
-      .on 'change', "#order_#{@params.tax_field}_country", @updateTaxCountry
+      .on 'change', "#order_billing_country", @updateCountry
+      .on 'change', "#order_shipping_country", @updateCountry
 #      .on 'change', "#order_#{@params.tax_field}_state", @updateTaxState.bind(@, '#state')
 #      .on 'change', '#noscript_state', @updateState.bind(@, '#noscript_state')
 #      .on 'change', "#order_#{@params.tax_field}_postcode", @updateTaxPostcode
@@ -73,8 +77,7 @@ class AdminOrder
       if data.success?
         jQuery(data.html.row).appendTo($parent)
         jQuery('#product-subtotal', $parent).html(data.html.product_subtotal)
-        jQuery('#subtotal').html(data.html.subtotal)
-        jQuery('#total').html(data.html.total)
+        @_updateTotals(data.html.total, data.html.subtotal)
         @_updateTaxes(data.tax, data.html.tax)
 
   updateItem: (e) =>
@@ -119,9 +122,43 @@ class AdminOrder
         @_updateTaxes(data.tax, data.html.tax)
         @_updateTotals(data.html.total, data.html.subtotal)
 
+  updateCountry: (e) =>
+    $target = jQuery(e.target)
+
+    jQuery.ajax(@params.ajax,
+      type: 'post'
+      dataType: 'json'
+      data:
+        action: 'jigoshop.admin.order.change_country'
+        value: $target.val()
+        order: $target.closest('.jigoshop').data('order')
+    )
+    .done (result) =>
+      if result.success
+        @_updateTotals(result.html.total, result.html.subtotal)
+        @_updateShipping(result.shipping, result.html.shipping)
+
+        fieldClass = "#order_#{@params.tax_field}_country"
+        if $target.attr('id') == fieldClass
+          @_updateTaxes(result.tax, result.html.tax)
+
+        $field = jQuery('#' + $target.attr('id').replace(/_country/, '_state'))
+
+        if result.has_states
+          data = []
+          for own state, label of result.states
+            data.push
+              id: state
+              text: label
+          $field.select2
+            data: data
+        else
+          $field.select2('destroy').val('')
+
   _updateTaxes: (taxes, html) ->
     for own taxClass, tax of html
-      $tax = jQuery(".order_tax_#{taxClass}_field")
+      fieldClass = ".order_tax_#{taxClass}_field"
+      $tax = jQuery(fieldClass)
       jQuery("label", $tax).html(tax.label)
       jQuery("p", $tax).html(tax.value).show()
       if taxes[taxClass] > 0
@@ -133,29 +170,31 @@ class AdminOrder
     jQuery('#subtotal').html(subtotal)
     jQuery('#total').html(total)
 
-  updateTaxCountry: (e) =>
-    jQuery.ajax(@params.ajax,
-      type: 'post'
-      dataType: 'json'
-      data:
-        action: 'jigoshop.admin.order.change_country'
-        value: jQuery(e.target).val()
-    )
-    .done (result) =>
-      if result.success == true
-        @_updateTotals(result.html.total, result.html.subtotal)
-#        @_updateTaxes(result.tax, result.html.tax)
+  _updateShipping: (shipping, html) ->
+    for own shippingClass, value of html
+      $method = jQuery("#shipping-#{shippingClass}")
+      jQuery('span', $method).html(value)
+      if shipping[shippingClass] != -1
+        $method.show()
+      else
+        $method.hide()
 
-        if result.has_states
-          data = []
-          for own state, label of result.states
-            data.push
-              id: state
-              text: label
-          jQuery("#order_#{@params.tax_field}_state").select2
-            data: data
-        else
-          jQuery("#order_#{@params.tax_field}_state").attr('type', 'text').select2('destroy').val('')
+  _prepareStateField: (id) ->
+    $field = jQuery()
+    $replacement = jQuery(document.createElement('input'))
+      .attr('type', 'text')
+      .attr('id', $field.attr('id'))
+      .attr('name', $field.attr('name'))
+      .attr('class', $field.attr('class'))
+      .val($field.val())
+    data = []
+    jQuery('option', $field).each ->
+      data.push
+        id: jQuery(this).val()
+        text: jQuery(this).html()
+    $field.replaceWith($replacement)
+    $replacement.select2
+      data: data
 
 #  updateState: (field) =>
 #    @_updateShippingField('jigoshop_cart_change_state', jQuery(field).val())
@@ -164,7 +203,6 @@ class AdminOrder
 #    @_updateShippingField('jigoshop_cart_change_postcode', jQuery('#postcode').val())
 #
 #  _updateShippingField: (action, value) =>
-#    @block()
 #    jQuery.ajax(@params.ajax,
 #      type: 'post'
 #      dataType: 'json'
@@ -178,7 +216,6 @@ class AdminOrder
 #        @_updateTotals(result.html.total, result.html.subtotal)
 #        @_updateTaxes(result.tax, result.html.tax)
 #        @_updateShipping(result.shipping, result.html.shipping)
-#      @unblock()
 
 jQuery ->
   new AdminOrder(jigoshop_admin_order)

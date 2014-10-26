@@ -114,7 +114,11 @@ class Order implements EntityFactoryInterface
 				return $value + $item->getCost();
 			}, 0.0);
 			if ($state['shipping']) {
-				$state['shipping'] = $this->shippingService->findForState(unserialize($state['shipping']));
+				$shipping = unserialize($state['shipping']);
+				$state['shipping'] = array(
+					'method' => $this->shippingService->findForState($shipping['method']),
+					'price' => $shipping['price'],
+				);
 			}
 			$state['subtotal'] = $state['subtotal'];
 

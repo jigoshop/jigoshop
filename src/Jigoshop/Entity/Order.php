@@ -38,7 +38,7 @@ class Order implements EntityInterface, OrderInterface
 	/** @var Order\Address */
 	private $shippingAddress;
 	/** @var ShippingMethod */
-	private $shipping;
+	private $shippingMethod;
 	/** @var PaymentMethod */
 	private $payment;
 	/** @var float */
@@ -53,6 +53,8 @@ class Order implements EntityInterface, OrderInterface
 	private $tax = array();
 	/** @var array */
 	private $shippingTax = array();
+	/** @var float */
+	private $shippingPrice = 0.0;
 	/** @var string */
 	private $status = Status::CREATED;
 	/** @var string */
@@ -252,6 +254,35 @@ class Order implements EntityInterface, OrderInterface
 	}
 
 	/**
+	 * Removes all items, shipping method and associated taxes from the order.
+	 */
+	public function removeItems()
+	{
+		$this->removeShippingMethod();
+		$this->items = array();
+		$this->productSubtotal = 0.0;
+		$this->subtotal = 0.0;
+		$this->total = 0.0;
+		$this->tax = array_map(function() { return 0.0; }, $this->tax);
+	}
+
+	/**
+	 * Returns item of selected ID.
+	 *
+	 * @param $item int Item ID to fetch.
+	 * @return Item Order item.
+	 * @throws Exception When item is not found.
+	 */
+	public function getItem($item)
+	{
+		if (!isset($this->items[$item])) {
+			throw new Exception(sprintf(__('No item with ID %d in order %d', 'jigoshop'), $item, $this->id));
+		}
+
+		return $this->items[$item];
+	}
+
+	/**
 	 * @param Item $item Item to add.
 	 */
 	public function addItem(Item $item)
@@ -288,22 +319,6 @@ class Order implements EntityInterface, OrderInterface
 	}
 
 	/**
-	 * Returns item of selected ID.
-	 *
-	 * @param $item int Item ID to fetch.
-	 * @return Item Order item.
-	 * @throws Exception When item is not found.
-	 */
-	public function getItem($item)
-	{
-		if (!isset($this->items[$item])) {
-			throw new Exception(sprintf(__('No item with ID %d in order %d', 'jigoshop'), $item, $this->id));
-		}
-
-		return $this->items[$item];
-	}
-
-	/**
 	 * @return PaymentMethod Payment gateway object.
 	 */
 	public function getPayment()
@@ -324,7 +339,7 @@ class Order implements EntityInterface, OrderInterface
 	 */
 	public function getShippingMethod()
 	{
-		return $this->shipping;
+		return $this->shippingMethod;
 	}
 
 	/**
@@ -334,23 +349,29 @@ class Order implements EntityInterface, OrderInterface
 	 */
 	public function setShippingMethod(ShippingMethod $method, TaxServiceInterface $taxService, Customer $customer = null)
 	{
-		// TODO: Improve this code (and refactor to abstract between cart and order = AbstractOrder)
-		if ($this->shipping !== null) {
-			$price = $this->shipping->calculate($this);
-			$this->subtotal -= $price;
-			$this->total -= $price + $taxService->calculateShipping($this->shipping, $price, $customer);
-			foreach ($this->shipping->getTaxClasses() as $class) {
-				$this->shippingTax[$class] -= $taxService->getShipping($this->shipping, $price, $class, $customer);
-			}
-		}
+		// TODO: Refactor to abstract between cart and order = AbstractOrder
+		$this->removeShippingMethod();
 
-		$this->shipping = $method;
-		$price = $method->calculate($this);
-		$this->subtotal += $price;
-		$this->total += $price + $taxService->calculateShipping($method, $price, $customer);
+		$this->shippingMethod = $method;
+		$this->shippingPrice = $method->calculate($this);
+		$this->subtotal += $this->shippingPrice;
+		$this->total += $this->shippingPrice + $taxService->calculateShipping($method, $this->shippingPrice, $customer);
 		foreach ($method->getTaxClasses() as $class) {
-			$this->shippingTax[$class] += $taxService->getShipping($method, $price, $class, $customer);
+			$this->shippingTax[$class] += $taxService->getShipping($method, $this->shippingPrice, $class, $customer);
 		}
+	}
+
+	/**
+	 * Removes shipping method and associated taxes from the order.
+	 */
+	public function removeShippingMethod()
+	{
+		$this->subtotal -= $this->shippingPrice;
+		$this->total -= $this->shippingPrice + array_reduce($this->shippingTax, function($value, $item){ return $value + $item; }, 0.0);
+
+		$this->shippingMethod = null;
+		$this->shippingPrice = 0.0;
+		$this->shippingTax = array_map(function() { return 0.0; }, $this->shippingTax);
 	}
 
 	/**
@@ -361,8 +382,8 @@ class Order implements EntityInterface, OrderInterface
 	 */
 	public function hasShippingMethod($method)
 	{
-		if ($this->shipping !== null) {
-			return $this->shipping->getId() == $method->getId();
+		if ($this->shippingMethod != null) {
+			return $this->shippingMethod->getId() == $method->getId();
 		}
 
 		return false;
@@ -580,7 +601,10 @@ class Order implements EntityInterface, OrderInterface
 			'billing_address' => serialize($this->billingAddress),
 			'shipping_address' => serialize($this->shippingAddress),
 			'customer' => $this->customer->getId(),
-			'shipping' => $this->shipping ? $this->shipping->getState() : false,
+			'shipping' => array(
+				'method' => $this->shippingMethod ? $this->shippingMethod->getState() : false,
+				'price' => $this->shippingPrice,
+			),
 			'payment' => $this->payment ? $this->payment->getId() : false, // TODO: Maybe a state as for shipping methods?
 			'customer_note' => $this->customerNote,
 			'total' => $this->total,
@@ -613,11 +637,13 @@ class Order implements EntityInterface, OrderInterface
 		if (isset($state['shipping_address'])) {
 			$this->shippingAddress = unserialize($state['shipping_address']);
 		}
+		// TODO: Properly keep Customer here! Instead of fromOrder() method in Customer service
 		if (isset($state['customer'])) {
 			$this->customer = $state['customer'];
 		}
 		if (isset($state['shipping']) && !empty($state['shipping'])) {
-			$this->shipping = $state['shipping'];
+			$this->shippingMethod = $state['shipping']['method'];
+			$this->shippingPrice = $state['shipping']['price'];
 		}
 		if (isset($state['payment']) && !empty($state['payment'])) {
 			$this->payment = $state['payment'];

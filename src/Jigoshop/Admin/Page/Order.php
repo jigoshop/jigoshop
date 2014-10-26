@@ -19,6 +19,7 @@ use Jigoshop\Service\OrderServiceInterface;
 use Jigoshop\Service\ProductServiceInterface;
 use Jigoshop\Service\ShippingServiceInterface;
 use Jigoshop\Service\TaxServiceInterface;
+use Jigoshop\Shipping\Method;
 use WPAL\Wordpress;
 
 class Order
@@ -57,6 +58,7 @@ class Order
 				$scripts->add('jigoshop.vendors', JIGOSHOP_URL.'/assets/js/vendors.min.js');
 				$scripts->localize('jigoshop.admin.order', 'jigoshop_admin_order', array(
 					'ajax' => admin_url('admin-ajax.php'),
+					'tax_field' => 'billing',
 				));
 			}
 		});
@@ -168,6 +170,51 @@ class Order
 			$order->setShippingMethod($shippingMethod, $this->taxService, $customer);
 			$this->orderService->save($order);
 			$result = $this->getAjaxResponse($order);
+		} catch(Exception $e) {
+			$result = array(
+				'success' => false,
+				'error' => $e->getMessage(),
+			);
+		}
+
+		echo json_encode($result);
+		exit;
+	}
+
+	public function changeCountry()
+	{
+		// TODO: Add invalid data protection
+		try {
+			$order = $this->orderService->find($_POST['order']);
+			$order->getBillingAddress()->setCountry($_POST['value']);
+			$customer = $this->customerService->fromOrder($order);
+
+			// Recalculate values
+			$items = $order->getItems();
+			$method = $order->getShippingMethod();
+			$order->removeItems();
+
+			foreach ($items as $item) {
+				/** @var $item Item */
+				$item->setTax($this->taxService->getAll($item, 1, $customer));
+				$order->addItem($item);
+			}
+
+			$order->setShippingMethod($method, $this->taxService, $customer);
+
+			$this->orderService->save($order);
+
+			$shipping = array();
+			foreach ($this->shippingService->getEnabled() as $method) {
+				/** @var $method Method */
+				$shipping[$method->getId()] = $method->calculate($order);
+			}
+
+			$result = $this->getAjaxResponse($order);
+			$result['has_states'] = Country::hasStates($customer->getCountry());
+			$result['states'] = Country::getStates($customer->getCountry());
+			$result['shipping'] = $shipping;
+			$result['html']['shipping'] = array_map(function($item){ return ProductHelper::formatPrice($item); }, $shipping);
 		} catch(Exception $e) {
 			$result = array(
 				'success' => false,
