@@ -114,11 +114,14 @@ class Order
 		// TODO: Add invalid data protection
 		try {
 			$order = $this->orderService->find($_POST['order']);
+			$customer = $this->customerService->fromOrder($order);
+
 			$item = $order->removeItem($_POST['product']);
 			$item->setQuantity((int)$_POST['quantity']);
 			$item->setPrice((float)$_POST['price']);
+			$item->setTax($this->taxService->getAll($item, 1, $customer));
+
 			$order->addItem($item);
-			// TODO: Update taxes accordingly to unit price
 			$this->orderService->save($order);
 
 			$result = $this->getAjaxResponse($order);
