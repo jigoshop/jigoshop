@@ -34,7 +34,7 @@ class Settings implements PageInterface
 		$this->options = $options;
 		$wp->addAction('current_screen', array($this, 'register'));
 		if ($wp->isAdmin()) {
-//			$styles->add('jigoshop.admin.settings', JIGOSHOP_URL.'/assets/css/admin/settings.css'); // TODO: Add ability to properly load on required pages
+			$styles->add('jigoshop.admin.settings', JIGOSHOP_URL.'/assets/css/admin/settings.css'); // TODO: Add ability to properly load on required pages
 		}
 	}
 

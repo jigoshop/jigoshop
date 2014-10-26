@@ -6,6 +6,7 @@ use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Pages;
 use Jigoshop\Core\Types;
+use Jigoshop\Entity\Order\Item;
 use Jigoshop\Exception;
 use Jigoshop\Helper\Product as ProductHelper;
 use Jigoshop\Helper\Render;
@@ -53,10 +54,11 @@ class Product implements PageInterface
 		if (isset($_POST['action']) && $_POST['action'] == 'add-to-cart') {
 			$post = $this->wp->getGlobalPost();
 			$product = $this->productService->findForPost($post);
+			$item = $this->formatItem($product);
 			$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
 
 			try {
-				$cart->addItem($product, (int)$_POST['quantity']);
+				$cart->addItem($item);
 				$this->cartService->save($cart);
 
 				$url = false;
@@ -147,5 +149,23 @@ class Product implements PageInterface
 			'product' => $product,
 			'currentTab' => $currentTab,
 		));
+	}
+
+
+	/**
+	 * @param $product \Jigoshop\Entity\Product|\Jigoshop\Entity\Product\Purchasable The product to format.
+	 * @return Item Prepared item.
+	 */
+	private function formatItem($product)
+	{
+
+		$item = new Item();
+		$item->setType($product->getType());
+		$item->setName($product->getName());
+		$item->setPrice($product->getPrice());
+		$item->setQuantity((int)$_POST['quantity']);
+		$item->setProduct($product);
+
+		return $item;
 	}
 }

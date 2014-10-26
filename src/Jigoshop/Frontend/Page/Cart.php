@@ -6,6 +6,7 @@ use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Pages;
 use Jigoshop\Core\Types;
+use Jigoshop\Entity\Customer;
 use Jigoshop\Exception;
 use Jigoshop\Helper\Country;
 use Jigoshop\Helper\Product;
@@ -16,6 +17,7 @@ use Jigoshop\Service\CartServiceInterface;
 use Jigoshop\Service\CustomerServiceInterface;
 use Jigoshop\Service\ProductServiceInterface;
 use Jigoshop\Service\ShippingServiceInterface;
+use Jigoshop\Service\TaxServiceInterface;
 use Jigoshop\Shipping\Method;
 use WPAL\Wordpress;
 
@@ -35,9 +37,11 @@ class Cart implements PageInterface
 	private $customerService;
 	/** @var ShippingServiceInterface */
 	private $shippingService;
+	/** @var TaxServiceInterface */
+	private $taxService;
 
 	public function __construct(Wordpress $wp, Options $options, Messages $messages, CartServiceInterface $cartService, ProductServiceInterface $productService,
-		CustomerServiceInterface $customerService, ShippingServiceInterface $shippingService, Styles $styles, Scripts $scripts)
+		CustomerServiceInterface $customerService, ShippingServiceInterface $shippingService, TaxServiceInterface $taxService, Styles $styles, Scripts $scripts)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
@@ -46,6 +50,7 @@ class Cart implements PageInterface
 		$this->productService = $productService;
 		$this->customerService = $customerService;
 		$this->shippingService = $shippingService;
+		$this->taxService = $taxService;
 
 		$styles->add('jigoshop.shop', JIGOSHOP_URL.'/assets/css/shop.css');
 		$styles->add('jigoshop.shop.cart', JIGOSHOP_URL.'/assets/css/shop/cart.css');
@@ -82,6 +87,7 @@ class Cart implements PageInterface
 	{
 		$customer = $this->customerService->getCurrent();
 		$customer->setCountry($_POST['value']);
+		$this->customerService->save($customer);
 		$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
 
 		$response = $this->getAjaxLocationResponse($customer, $cart);
@@ -95,11 +101,11 @@ class Cart implements PageInterface
 	 *
 	 * Prepares and returns array of updated data for location change requests.
 	 *
-	 * @param \Jigoshop\Entity\Customer $customer The customer (for location).
+	 * @param Customer $customer The customer (for location).
 	 * @param \Jigoshop\Frontend\Cart $cart Current cart.
 	 * @return array
 	 */
-	private function getAjaxLocationResponse(\Jigoshop\Entity\Customer $customer, \Jigoshop\Frontend\Cart $cart)
+	private function getAjaxLocationResponse(Customer $customer, \Jigoshop\Frontend\Cart $cart)
 	{
 		$shipping = array();
 		foreach ($this->shippingService->getEnabled() as $method) {
@@ -160,6 +166,7 @@ class Cart implements PageInterface
 	{
 		$customer = $this->customerService->getCurrent();
 		$customer->setState($_POST['value']);
+		$this->customerService->save($customer);
 		$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
 
 		$response = $this->getAjaxLocationResponse($customer, $cart);
@@ -175,6 +182,7 @@ class Cart implements PageInterface
 	{
 		$customer = $this->customerService->getCurrent();
 		$customer->setPostcode($_POST['value']);
+		$this->customerService->save($customer);
 		$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
 
 		$response = $this->getAjaxLocationResponse($customer, $cart);
@@ -191,7 +199,7 @@ class Cart implements PageInterface
 		try {
 			$method = $this->shippingService->get($_POST['method']);
 			$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
-			$cart->setShippingMethod($method);
+			$cart->setShippingMethod($method, $this->taxService);
 			$this->cartService->save($cart);
 
 			$response = $this->getAjaxCartResponse($cart);
@@ -211,18 +219,20 @@ class Cart implements PageInterface
 	 */
 	public function ajaxUpdateItem()
 	{
+		$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
+
 		try {
-			$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
 			$cart->updateQuantity($_POST['item'], (int)$_POST['quantity']);
 			$item = $cart->getItem($_POST['item']);
-			$price = $this->options->get('general.price_tax') == 'with_tax' ? $item['price'] + $item['tax'] : $item['price'];
+			// TODO: Support for "Prices includes tax"
+			$price = $this->options->get('general.price_tax') == 'with_tax' ? $item->getPrice() + $item->getTotalTax() / $item->getQuantity() : $item->getPrice();
 
 			$response = $this->getAjaxCartResponse($cart);
 			// Add some additional fields
 			$response['item_price'] = $price;
-			$response['item_subtotal'] = $price * $item['quantity'];
+			$response['item_subtotal'] = $price * $item->getQuantity();
 			$response['html']['item_price'] = Product::formatPrice($price);
-			$response['html']['item_subtotal'] = Product::formatPrice($price * $item['quantity']);
+			$response['html']['item_subtotal'] = Product::formatPrice($price * $item->getQuantity());
 		} catch(Exception $e) {
 			if ($cart->isEmpty()) {
 				$response = array(
@@ -261,7 +271,7 @@ class Cart implements PageInterface
 						}
 						// Select shipping method
 						$method = $this->shippingService->get($_POST['shipping-method']);
-						$cart->setShippingMethod($method);
+						$cart->setShippingMethod($method, $this->taxService);
 
 						$this->cartService->save($cart);
 						$this->wp->wpRedirect($this->wp->getPermalink($this->options->getPageId(Pages::CHECKOUT)));
@@ -300,7 +310,7 @@ class Cart implements PageInterface
 		}
 	}
 
-	private function updateCustomer(\Jigoshop\Entity\Customer $customer)
+	private function updateCustomer(Customer $customer)
 	{
 		$customer->setCountry($_POST['country']);
 		$customer->setState($_POST['state']);

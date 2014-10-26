@@ -108,7 +108,6 @@ class Item implements Product\Purchasable, Product\Taxable
 	 */
 	public function setTax($tax)
 	{
-		$tax = array_filter($tax);
 		$this->tax = $tax;
 		$this->totalTax = array_reduce($tax, function($value, $item) { return $value + $item; }, 0.0);
 	}
@@ -126,6 +125,7 @@ class Item implements Product\Purchasable, Product\Taxable
 	 */
 	public function getCost()
 	{
+		// TODO: Support for "Price includes tax"
 		return $this->price * $this->quantity;
 	}
 

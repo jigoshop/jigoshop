@@ -3,6 +3,7 @@
 namespace Jigoshop\Frontend;
 
 use Jigoshop\Core\Options;
+use Jigoshop\Entity\Customer;
 use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\OrderInterface;
 use Jigoshop\Entity\Product;
@@ -74,36 +75,36 @@ class Cart implements OrderInterface
 			$this->id = $data['id'];
 			$items = unserialize($data['items']);
 			if (isset($data['shipping_method'])) {
-				$this->setShippingMethod($this->shippingService->findForState($data['shipping_method']));
+				$this->setShippingMethod($this->shippingService->findForState($data['shipping_method']), $this->taxService);
 			}
 			$taxIncludedInPrice = $this->options->get('tax.included');
 
 			if (is_array($items)) {
-				foreach ($items as $item) {
-					$product = $this->productService->findForState($item['item']);
+				foreach ($items as $itemData) {
+					$item = new Item();
+					$product = $this->productService->findForState($itemData['product']);
+					$item->setProduct($product);
+					$item->setQuantity($itemData['quantity']);
+					$item->setPrice($product->getPrice());
+					$item->setName($product->getName());
+					$item->setTax($this->taxService->getAll($product));
 
-					foreach ($product->getTaxClasses() as $class) {
-						$this->tax[$class] += $this->taxService->get($product, $class) * $item['quantity'];
+					foreach ($item->getTax() as $class => $value) {
+						$this->tax[$class] += $value * $item->getQuantity();
 					}
 
 					$key = $this->getItemKey($product);
-					$price = $product->getPrice();
-					$tax = $this->taxService->calculate($product);
 
-					if ($taxIncludedInPrice) {
-						$price -= $tax;
-					}
+					// TODO: Add support for "Price included in tax"
+//					if ($taxIncludedInPrice) {
+//						$price -= $tax;
+//					}
 
-					$this->subtotal += $price * $item['quantity'];
-					$this->productSubtotal += $price * $item['quantity'];
-					$this->total += ($price + $tax) * $item['quantity'];
+					$this->subtotal += $item->getCost();
+					$this->productSubtotal += $item->getCost();
+					$this->total += $item->getCost() + $item->getTotalTax();
 
-					$this->items[$key] = array(
-						'item' => $product,
-						'quantity' => $item['quantity'],
-						'price' => $price,
-						'tax' => $tax,
-					);
+					$this->items[$key] = $item;
 				}
 			}
 		}
@@ -128,6 +129,7 @@ class Cart implements OrderInterface
 	{
 		$product = $item->getProduct();
 		$quantity = $item->getQuantity();
+
 		if ($product === null || $product->getId() === 0) {
 			throw new Exception(__('Product not found', 'jigoshop'));
 		}
@@ -142,28 +144,28 @@ class Cart implements OrderInterface
 
 		$key = $this->getItemKey($product);
 		if (isset($this->items[$key])) {
-			$this->items[$key]['quantity'] += $quantity;
+			/** @var Item $itemInCart */
+			$itemInCart = $this->items[$key];
+			$itemInCart->setQuantity($itemInCart->getQuantity() + $item->getQuantity());
 		} else {
-			foreach ($product->getTaxClasses() as $class) {
-				$this->tax[$class] += $this->taxService->get($product, $class) * $quantity;
+			$item->setTax($this->taxService->getAll($product));
+
+			foreach ($item->getTax() as $class => $value) {
+				$this->tax[$class] += $value * $quantity;
 			}
 
-			$tax = $this->taxService->calculate($product);
-			$price = $product->getPrice();
-			if ($this->options->get('tax.included')) {
-				$price -= $tax;
-			}
+			$tax = $this->taxService->calculate($item);
+			$price = $item->getPrice();
+			// TODO: Support for "Price includes tax"
+//			if ($this->options->get('tax.included')) {
+//				$price -= $tax;
+//			}
 
 			$this->total += $quantity * ($price + $tax);
 			$this->subtotal += $quantity * $price;
 			$this->productSubtotal += $quantity * $price;
 
-			$this->items[$key] = array(
-				'item' => $product,
-				'price' => $price,
-				'tax' => $tax,
-				'quantity' => $quantity,
-			);
+			$this->items[$key] = $item;
 		}
 	}
 
@@ -171,24 +173,26 @@ class Cart implements OrderInterface
 	 * Removes item from cart.
 	 *
 	 * @param string $key Item id to remove from cart.
-	 * @return bool Is item removed?
+	 * @return Item|bool Removed item or null if not found.
 	 */
 	public function removeItem($key)
 	{
 		if (isset($this->items[$key])) {
-			/** @var Product $product */
-			$product = $this->items[$key]['item'];
-			$this->total -= ($this->items[$key]['price'] + $this->items[$key]['tax']) * $this->items[$key]['quantity'];
-			$this->subtotal -= $this->items[$key]['price'] * $this->items[$key]['quantity'];
-			$this->productSubtotal -= $this->items[$key]['price'] * $this->items[$key]['quantity'];
-			foreach ($product->getTaxClasses() as $class) {
-				$this->tax[$class] -= $this->taxService->get($product, $class) * $this->items[$key]['quantity'];
+			// TODO: Support for "Price includes tax"
+			/** @var Item $item */
+			$item = $this->items[$key];
+			$this->total -= $item->getCost() + $item->getTotalTax();
+			$this->subtotal -= $item->getCost();
+			$this->productSubtotal -= $item->getCost();
+			foreach ($item->getTaxClasses() as $class) {
+				$this->tax[$class] -= $this->taxService->get($item, $class) * $item->getQuantity();
 			}
 
 			unset($this->items[$key]);
+			return $item;
 		}
 
-		return true;
+		return null;
 	}
 
 	public function getRemoveUrl($key)
@@ -214,26 +218,19 @@ class Cart implements OrderInterface
 			throw new Exception(__('Quantity has to be numeric value', 'jigoshop'));
 		}
 
+		$item = $this->removeItem($key);
+
 		if ($quantity <= 0) {
-			$this->removeItem($key);
 			return;
 		}
 
-		/** @var Product $product */
-		$product = $this->items[$key]['item'];
-		$difference = $quantity - $this->items[$key]['quantity'];
-		$this->total += ($this->items[$key]['price'] + $this->items[$key]['tax']) * $difference;
-		$this->subtotal += $this->items[$key]['price'] * $difference;
-		$this->productSubtotal += $this->items[$key]['price'] * $difference;
-		foreach ($product->getTaxClasses() as $class) {
-			$this->tax[$class] += $this->taxService->get($product, $class) * $difference;
-		}
-		$this->items[$key]['quantity'] = $quantity;
+		$item->setQuantity($quantity);
+		$this->addItem($item);
 	}
 
 	/**
 	 * @param $key string Item key.
-	 * @return array Item data.
+	 * @return Item Item data.
 	 */
 	public function getItem($key)
 	{
@@ -313,25 +310,27 @@ class Cart implements OrderInterface
 	 * Sets shipping method and updates cart totals to reflect it's price.
 	 *
 	 * @param Method $method New shipping method.
+	 * @param TaxServiceInterface $taxService Tax service to calculate tax value of shipping.
+	 * @param Customer $customer Customer for tax calculation.
 	 */
-	public function setShippingMethod(Method $method)
+	public function setShippingMethod(Method $method, TaxServiceInterface $taxService, Customer $customer = null)
 	{
 		// TODO: Improve this part of code.
 		if ($this->shippingMethod !== null) {
 			$price = $this->shippingMethod->calculate($this);
 			$this->subtotal -= $price;
-			$this->total -= $price + $this->taxService->calculateShipping($this->shippingMethod, $price);
+			$this->total -= $price + $taxService->calculateShipping($this->shippingMethod, $price);
 			foreach ($this->shippingMethod->getTaxClasses() as $class) {
-				$this->tax[$class] -= $this->taxService->getShipping($this->shippingMethod, $price, $class);
+				$this->tax[$class] -= $taxService->getShipping($this->shippingMethod, $price, $class);
 			}
 		}
 
 		$this->shippingMethod = $method;
 		$price = $method->calculate($this);
 		$this->subtotal += $price;
-		$this->total += $price + $this->taxService->calculateShipping($method, $price);
+		$this->total += $price + $taxService->calculateShipping($method, $price);
 		foreach ($method->getTaxClasses() as $class) {
-			$this->tax[$class] += $this->taxService->getShipping($method, $price, $class);
+			$this->tax[$class] += $taxService->getShipping($method, $price, $class);
 		}
 	}
 
@@ -346,11 +345,10 @@ class Cart implements OrderInterface
 			'id' => $this->id,
 			'shipping_method' => $this->shippingMethod !== null ? $this->shippingMethod->getState() : null,
 			'items' => serialize(array_map(function($item){
-				/** @var $product Product */
-				$product = $item['item'];
+				/** @var $item Item */
 				return array(
-					'item' => $product->getState(),
-					'quantity' => $item['quantity'],
+					'product' => $item->getProduct()->getState(),
+					'quantity' => $item->getQuantity(),
 				);
 			}, $this->items)),
 		);

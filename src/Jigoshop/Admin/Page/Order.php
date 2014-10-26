@@ -112,6 +112,7 @@ class Order
 	public function updateProduct()
 	{
 		// TODO: Add invalid data protection
+		// TODO: Support for <= 0 quantity
 		try {
 			$order = $this->orderService->find($_POST['order']);
 			$customer = $this->customerService->fromOrder($order);
@@ -319,6 +320,7 @@ class Order
 		$item = new Item();
 		$item->setType($product->getType());
 		$item->setName($product->getName());
+		// TODO: Item price should ALWAYS be without taxes.
 		$item->setPrice($product->getPrice());
 		$item->setTax($this->taxService->getAll($product, 1, $customer));
 		$item->setQuantity(1);

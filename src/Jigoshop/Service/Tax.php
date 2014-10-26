@@ -94,7 +94,7 @@ class Tax implements TaxServiceInterface
 			$tax[$class] = $this->get($product, $class, $customer) * $quantity;
 		}
 
-		return $tax;
+		return array_filter($tax);
 	}
 
 	/**
