@@ -4,7 +4,7 @@ License: GNU General Public License v3
 Tags: 2checkout, 2co, affiliate, authorize, cart, checkout, commerce, coupons, e-commerce,ecommerce, gifts, moneybookers, online, online shop, online store, paypal, paypal advanced,Paypal Express, paypal pro, physical, reports, sagepay, sales, sell, shipping, shop,shopping, stock, stock control, store, tax, virtual, weights, widgets, wordpress ecommerce, wp e-commerce, woocommerce
 Requires at least: 3.8
 Tested up to: 4.0
-Stable tag: 1.12.2
+Stable tag: 1.12.3
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -119,6 +119,8 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 
 == Changelog ==
 
+= 1.12.3 - 2014-10-27 =
+* Improved: Automatic plugin update mechanism uses as low HTTP requests as possible.
 = 1.12.2 - 2014-10-17 =
 * Improved: Show plugin updates even when licence is not activated.
 * Improved: Checking for updates is now 5 times faster.
