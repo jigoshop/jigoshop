@@ -180,7 +180,7 @@ class AdminOrder
         $method.hide()
 
   _prepareStateField: (id) ->
-    $field = jQuery()
+    $field = jQuery(id)
     $replacement = jQuery(document.createElement('input'))
       .attr('type', 'text')
       .attr('id', $field.attr('id'))

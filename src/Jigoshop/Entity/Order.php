@@ -641,7 +641,7 @@ class Order implements EntityInterface, OrderInterface
 		if (isset($state['customer'])) {
 			$this->customer = $state['customer'];
 		}
-		if (isset($state['shipping']) && !empty($state['shipping'])) {
+		if (isset($state['shipping']) && is_array($state['shipping'])) {
 			$this->shippingMethod = $state['shipping']['method'];
 			$this->shippingPrice = $state['shipping']['price'];
 		}

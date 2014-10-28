@@ -200,7 +200,9 @@ class Order
 				$order->addItem($item);
 			}
 
-			$order->setShippingMethod($method, $this->taxService, $customer);
+			if ($method !== null) {
+				$order->setShippingMethod($method, $this->taxService, $customer);
+			}
 
 			$this->orderService->save($order);
 
