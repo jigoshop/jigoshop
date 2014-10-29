@@ -59,7 +59,10 @@ class Address implements \Serializable
 	 */
 	public function setCountry($country)
 	{
-		$this->country = $country;
+		if ($country != $this->country) {
+			$this->country = $country;
+			$this->setState('');
+		}
 	}
 
 	/**
