@@ -19,7 +19,7 @@ class Cart
       .on 'change', '#postcode', @updatePostcode
 
   block: =>
-    jQuery('#content').block
+    jQuery('#cart > button').block
       message: '<img src="' + @params.assets + '/images/loading.gif" alt="' + @params.i18n.loading + '" />'
       css:
         padding: '20px'
@@ -30,7 +30,7 @@ class Cart
         opacity: 0.01
 
   unblock: ->
-    jQuery('#content').unblock()
+    jQuery('#cart > button').unblock()
 
   changeDestination: (e) ->
     e.preventDefault()

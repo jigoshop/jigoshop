@@ -379,4 +379,12 @@ class Cart implements OrderInterface
 
 		return false;
 	}
+
+	/**
+	 * @return array List of applied tax classes for shipping with it's values.
+	 */
+	public function getShippingTax()
+	{
+		return array();
+	}
 }
