@@ -80,7 +80,7 @@ class FlatRate implements Method
 	 */
 	public function calculate(OrderInterface $order)
 	{
-		$customer = $this->customerService->fromOrder($order);
+		$customer = $this->customerService->getShipping($order);
 		// TODO: Implement calculate() method.
 		if ($customer->getCountry() == 'US') {
 			if ($customer->getState() == 'AK') {

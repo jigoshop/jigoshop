@@ -71,6 +71,11 @@ interface OrderInterface
 	public function getTax();
 
 	/**
+	 * @return array List of applied tax classes for shipping with it's values.
+	 */
+	public function getShippingTax();
+
+	/**
 	 * @return Method Currently selected shipping method.
 	 */
 	public function getShippingMethod();

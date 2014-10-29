@@ -4,9 +4,11 @@ use Jigoshop\Entity\Order\Status;
 
 /**
  * @var $order \Jigoshop\Entity\Order The order to display.
+ * @var $billingOnly boolean Whether to display only billing fields.
  * @var $billingFields array List of billing fields to display.
  * @var $shippingFields array List of shipping fields to display.
  * @var $customers array List of available customers.
+ * @var $shippingTax boolean Whether taxes are based on shipping country.
  */
 ?>
 <style type="text/css">
@@ -18,7 +20,9 @@ use Jigoshop\Entity\Order\Status;
 	<ul class="nav nav-tabs nav-justified" role="tablist">
 		<li class="active"><a href="#order" role="tab" data-toggle="tab"><?php _e('Order', 'jigoshop'); ?></a></li>
 		<li><a href="#billing-address" role="tab" data-toggle="tab"><?php _e('Billing address', 'jigoshop'); ?></a></li>
+		<?php if(!$billingOnly): ?>
 		<li><a href="#shipping-address" role="tab" data-toggle="tab"><?php _e('Shipping address', 'jigoshop'); ?></a></li>
+		<?php endif; ?>
 		<!-- TODO: Maybe a filter to show/hide insignificant data? -->
 	</ul>
 	<noscript>
@@ -54,6 +58,7 @@ use Jigoshop\Entity\Order\Status;
 			}
 			?>
 		</div>
+		<?php if(!$billingOnly): ?>
 		<div class="tab-pane" id="shipping-address">
 			<?php $address = $order->getShippingAddress(); ?>
 			<?php
@@ -64,5 +69,6 @@ use Jigoshop\Entity\Order\Status;
 			}
 			?>
 		</div>
+		<?php endif; ?>
 	</div>
 </div>

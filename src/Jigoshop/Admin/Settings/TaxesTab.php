@@ -98,6 +98,12 @@ class TaxesTab implements TabInterface
 						'type' => 'checkbox',
 						'value' => $this->options['included'],
 					),
+					array(
+						'name' => '[shipping]',
+						'title' => __('Taxes based on shipping country?', 'jigoshop'),
+						'type' => 'checkbox',
+						'value' => $this->options['shipping'],
+					),
 				),
 			),
 			array(
@@ -160,6 +166,7 @@ class TaxesTab implements TabInterface
 	{
 		$settings['before_coupons'] = $settings['before_coupons'] == 'on';
 		$settings['included'] = $settings['included'] == 'on';
+		$settings['shipping'] = $settings['shipping'] == 'on';
 		$classes = $settings['classes'];
 		$settings['classes'] = array();
 		foreach ($classes['class'] as $key => $class) {

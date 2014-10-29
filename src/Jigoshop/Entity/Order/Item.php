@@ -3,6 +3,7 @@
 namespace Jigoshop\Entity\Order;
 
 use Jigoshop\Entity\Product;
+use Jigoshop\Exception;
 
 /**
  * Order item.
@@ -76,6 +77,10 @@ class Item implements Product\Purchasable, Product\Taxable
 	 */
 	public function setQuantity($quantity)
 	{
+		if ($quantity < 0) {
+			throw new Exception(__('Item quantity cannot be below 0', 'jigoshop'));
+		}
+
 		$this->quantity = $quantity;
 	}
 

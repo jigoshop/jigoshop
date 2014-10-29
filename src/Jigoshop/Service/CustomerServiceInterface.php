@@ -39,10 +39,18 @@ interface CustomerServiceInterface extends ServiceInterface
 	/**
 	 * Prepares and returns customer object for specified order.
 	 *
-	 * @param OrderInterface $order Order to fetch customer from.
+	 * @param OrderInterface $order Order to fetch shipping customer from.
 	 * @return \Jigoshop\Entity\Customer
 	 */
-	public function fromOrder(OrderInterface $order);
+	public function getShipping(OrderInterface $order);
+
+	/**
+	 * Prepares and returns customer object for specified order.
+	 *
+	 * @param OrderInterface $order Order to fetch tax customer from.
+	 * @return \Jigoshop\Entity\Customer
+	 */
+	public function getTax(OrderInterface $order);
 
 	/**
 	 * Saves product to database.

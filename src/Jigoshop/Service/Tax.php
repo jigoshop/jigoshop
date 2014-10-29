@@ -19,7 +19,6 @@ class Tax implements TaxServiceInterface
 	/** @var \Jigoshop\Service\CustomerServiceInterface */
 	private $customers;
 	private $taxIncludedInPrice;
-	private $taxes = array();
 	private $taxClasses = array();
 	private $rules;
 
@@ -63,17 +62,14 @@ class Tax implements TaxServiceInterface
 			$customer = $this->customers->getCurrent();
 		}
 
-		if (!isset($this->taxes[$taxClass])) {
-			// TODO: Support for passed customer (for orders)
-			$this->taxes[$taxClass] = $this->fetch($taxClass, $customer);
-		}
+		$definition = $this->fetch($taxClass, $customer);
 
 		// TODO: Support for compound taxes
 		if ($this->taxIncludedInPrice) {
-			return $product->getPrice() * (1 - 1 / (100 + $this->taxes[$taxClass]['rate']) * 100);
+			return $product->getPrice() * (1 - 1 / (100 + $definition['rate']) * 100);
 		}
 
-		return $this->taxes[$taxClass]['rate'] * $product->getPrice() / 100;
+		return $definition['rate'] * $product->getPrice() / 100;
 	}
 
 	/**
@@ -108,7 +104,6 @@ class Tax implements TaxServiceInterface
 		$tax = 0.0;
 		foreach ($method->getTaxClasses() as $taxClass) {
 			$tax += $this->getShipping($method, $price, $taxClass, $customer);
-
 		}
 
 		// TODO: Support for compound taxes
@@ -134,16 +129,14 @@ class Tax implements TaxServiceInterface
 			$customer = $this->customers->getCurrent();
 		}
 
-		if (!isset($this->taxes[$taxClass])) {
-			$this->taxes[$taxClass] = $this->fetch($taxClass, $customer);
-		}
+		$definition = $this->fetch($taxClass, $customer);
 
 		// TODO: Support for compound taxes
 		if ($this->taxIncludedInPrice) {
-			return $price * (1 - 1 / (100 + $this->taxes[$taxClass]['rate']) * 100);
+			return $price * (1 - 1 / (100 + $definition['rate']) * 100);
 		}
 
-		return $this->taxes[$taxClass]['rate'] * $price / 100;
+		return $definition['rate'] * $price / 100;
 	}
 
 	/**
@@ -218,11 +211,9 @@ class Tax implements TaxServiceInterface
 			$customer = $this->customers->getCurrent();
 		}
 
-		if (!isset($this->taxes[$taxClass])) {
-			$this->taxes[$taxClass] = $this->fetch($taxClass, $customer);
-		}
+		$definition = $this->fetch($taxClass, $customer);
 
-		return sprintf('%s (%s%%)', $this->taxes[$taxClass]['label'], $this->taxes[$taxClass]['rate']);
+		return sprintf('%s (%s%%)', $definition['label'], $definition['rate']);
 	}
 
 	/**

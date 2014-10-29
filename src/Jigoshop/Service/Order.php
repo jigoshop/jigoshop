@@ -115,7 +115,7 @@ class Order implements OrderServiceInterface
 				/** @var $item Item */
 				$data = array(
 					'order_id' => $object->getId(),
-					'product_id' => $item->getProduct()->getId(), // TODO: Bullet-proof to deleted products
+					'product_id' => $item->getProduct() ? $item->getProduct()->getId() : null,
 					'product_type' => $item->getType(),
 					'title' => $item->getName(),
 					'price' => $item->getPrice(),

@@ -15,7 +15,8 @@ class Simple implements CustomerServiceInterface
 	private $service;
 	private $current;
 	private $customers = array();
-	private $orders = array();
+	private $ordersTax = array();
+	private $ordersShipping = array();
 	private $fetchedAll = false;
 
 	public function __construct(CustomerServiceInterface $service)
@@ -68,16 +69,31 @@ class Simple implements CustomerServiceInterface
 	/**
 	 * Prepares and returns customer object for specified order.
 	 *
-	 * @param OrderInterface $order Order to fetch customer from.
+	 * @param OrderInterface $order Order to fetch shipping customer from.
 	 * @return Entity
 	 */
-	public function fromOrder(OrderInterface $order)
+	public function getShipping(OrderInterface $order)
 	{
-		if (!isset($this->orders[$order->getId()])) {
-			$this->orders[$order->getId()] = $this->service->fromOrder($order);
+		if (!isset($this->ordersShipping[$order->getId()])) {
+			$this->ordersShipping[$order->getId()] = $this->service->getShipping($order);
 		}
 
-		return $this->orders[$order->getId()];
+		return $this->ordersShipping[$order->getId()];
+	}
+
+	/**
+	 * Prepares and returns customer object for specified order.
+	 *
+	 * @param OrderInterface $order Order to fetch tax customer from.
+	 * @return Entity
+	 */
+	public function getTax(OrderInterface $order)
+	{
+		if (!isset($this->ordersTax[$order->getId()])) {
+			$this->ordersTax[$order->getId()] = $this->service->getTax($order);
+		}
+
+		return $this->ordersTax[$order->getId()];
 	}
 
 	/**

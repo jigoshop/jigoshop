@@ -29,7 +29,7 @@ class CustomerService
 	 */
 	public function getService()
 	{
-		$service = new Service($this->wp, $this->factory);
+		$service = new Service($this->wp, $this->factory, $this->options);
 
 		switch ($this->options->get('cache_mechanism')) {
 			// TODO: Add caching mechanisms

@@ -61,6 +61,7 @@ class Options
 		'tax' => array(
 			'before_coupons' => false,
 			'included' => false,
+			'shipping' => false,
 			'classes' => array(
 				array('label' => 'Standard', 'class' => 'standard'),
 			),

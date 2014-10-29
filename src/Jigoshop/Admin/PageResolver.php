@@ -64,7 +64,7 @@ class PageResolver
 			return $screen->post_type === Types::PRODUCT && $screen->id === 'edit-'.Types::PRODUCT;
 		}
 
-		return DOING_AJAX && strpos($_POST['action'], 'admin.products') !== false;
+		return DOING_AJAX && isset($_POST['action']) && strpos($_POST['action'], 'admin.products') !== false;
 	}
 
 	private function isProduct()
@@ -75,7 +75,7 @@ class PageResolver
 			return $screen->post_type === Types::PRODUCT && $screen->id === Types::PRODUCT;
 		}
 
-		return DOING_AJAX && strpos($_POST['action'], 'admin.product') !== false;
+		return DOING_AJAX && isset($_POST['action']) && strpos($_POST['action'], 'admin.product') !== false;
 	}
 
 	private function isOrdersList()
@@ -86,7 +86,7 @@ class PageResolver
 			return $screen->post_type === Types::ORDER && $screen->id === 'edit-'.Types::ORDER;
 		}
 
-		return DOING_AJAX && strpos($_POST['action'], 'admin.orders') !== false;
+		return DOING_AJAX && isset($_POST['action']) && strpos($_POST['action'], 'admin.orders') !== false;
 	}
 
 	private function isOrder()
@@ -97,6 +97,6 @@ class PageResolver
 			return $screen->post_type === Types::ORDER && $screen->id === Types::ORDER;
 		}
 
-		return DOING_AJAX && strpos($_POST['action'], 'admin.order') !== false;
+		return DOING_AJAX && isset($_POST['action']) && strpos($_POST['action'], 'admin.order') !== false;
 	}
 }

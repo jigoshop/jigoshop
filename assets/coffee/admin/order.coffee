@@ -1,7 +1,8 @@
 class AdminOrder
   params:
     ajax: ''
-    tax_field: 'billing' # TODO: Properly load taxing field (billing or shipping)
+    tax_shipping: false
+    ship_to_billing: false
 
   constructor: (@params) ->
     @newItemSelect()
@@ -17,6 +18,7 @@ class AdminOrder
 #      .on 'change', "#order_#{@params.tax_field}_state", @updateTaxState.bind(@, '#state')
 #      .on 'change', '#noscript_state', @updateState.bind(@, '#noscript_state')
 #      .on 'change', "#order_#{@params.tax_field}_postcode", @updateTaxPostcode
+
     jQuery('.jigoshop-totals')
       .on 'click', 'input[type=radio]', @selectShipping
 
@@ -63,8 +65,13 @@ class AdminOrder
       return false
 
     $parent = jQuery(e.target).closest('table')
+    $existing = jQuery("tr[data-product=#{value}]", $parent)
 
-    # TODO: Check if already added - if so - increase quantity only
+    if $existing.length > 0
+      $quantity = jQuery('.quantity input', $existing)
+      $quantity.val(parseInt($quantity.val()) + 1).trigger('change')
+      return
+
     jQuery.ajax
       url: @params.ajax
       type: 'post'
@@ -96,8 +103,11 @@ class AdminOrder
         price: jQuery('.price input', $row).val()
         quantity: jQuery('.quantity input', $row).val()
     .done (data) =>
-      if data.success?
-        jQuery('.total p', $row).html(data.html.item_cost)
+      if data.success
+        if data.item_cost > 0
+          jQuery('.total p', $row).html(data.html.item_cost)
+        else
+          $row.remove()
         jQuery('#product-subtotal', $parent).html(data.html.product_subtotal)
         @_updateTotals(data.html.total, data.html.subtotal)
         @_updateTaxes(data.tax, data.html.tax)
@@ -124,6 +134,9 @@ class AdminOrder
 
   updateCountry: (e) =>
     $target = jQuery(e.target)
+    $parent = $target.closest('.jigoshop')
+    id = $target.attr('id')
+    type = id.replace(/order_/, '').replace(/_country/, '')
 
     jQuery.ajax(@params.ajax,
       type: 'post'
@@ -131,18 +144,17 @@ class AdminOrder
       data:
         action: 'jigoshop.admin.order.change_country'
         value: $target.val()
-        order: $target.closest('.jigoshop').data('order')
+        order: $parent.data('order')
+        type: type
     )
     .done (result) =>
       if result.success
         @_updateTotals(result.html.total, result.html.subtotal)
+        @_updateTaxes(result.tax, result.html.tax)
         @_updateShipping(result.shipping, result.html.shipping)
 
-        fieldClass = "#order_#{@params.tax_field}_country"
-        if $target.attr('id') == fieldClass
-          @_updateTaxes(result.tax, result.html.tax)
-
-        $field = jQuery('#' + $target.attr('id').replace(/_country/, '_state'))
+        fieldId = "#order_#{type}_state"
+        $field = jQuery(fieldId)
 
         if result.has_states
           data = []
@@ -181,6 +193,8 @@ class AdminOrder
 
   _prepareStateField: (id) ->
     $field = jQuery(id)
+    if !$field.is('select')
+      return
     $replacement = jQuery(document.createElement('input'))
       .attr('type', 'text')
       .attr('id', $field.attr('id'))

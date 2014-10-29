@@ -357,7 +357,7 @@ class Order implements EntityInterface, OrderInterface
 		$this->subtotal += $this->shippingPrice;
 		$this->total += $this->shippingPrice + $taxService->calculateShipping($method, $this->shippingPrice, $customer);
 		foreach ($method->getTaxClasses() as $class) {
-			$this->shippingTax[$class] += $taxService->getShipping($method, $this->shippingPrice, $class, $customer);
+			$this->shippingTax[$class] = $taxService->getShipping($method, $this->shippingPrice, $class, $customer);
 		}
 	}
 
@@ -577,12 +577,13 @@ class Order implements EntityInterface, OrderInterface
 		}
 
 		/** @var Item $item */
-		$item = $this->items[$key]; // TODO: Check if it needs reference
+		$item = $this->items[$key];
 		$difference = $quantity - $item->getQuantity();
 		$this->total += ($item->getPrice() + $item->getTax()) * $difference;
 		$this->subtotal += $item->getPrice() * $difference;
 		$this->productSubtotal += $item->getPrice() * $difference;
 		foreach ($item->getProduct()->getTaxClasses() as $class) {
+			// TODO: Pass tax service as well
 			$this->tax[$class] += $this->taxService->get($item->getProduct(), $class) * $difference;
 		}
 		$item->setQuantity($quantity);

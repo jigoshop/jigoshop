@@ -50,7 +50,7 @@ class Order
 		$this->shippingService = $shippingService;
 		$this->taxService = $taxService;
 
-		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $styles, $scripts){
+		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $options, $styles, $scripts){
 			if ($wp->getPostType() == Types::ORDER) {
 				$styles->add('jigoshop.admin.order', JIGOSHOP_URL.'/assets/css/admin/order.css');
 				$styles->add('jigoshop.vendors', JIGOSHOP_URL.'/assets/css/vendors.min.css');
@@ -58,7 +58,8 @@ class Order
 				$scripts->add('jigoshop.vendors', JIGOSHOP_URL.'/assets/js/vendors.min.js');
 				$scripts->localize('jigoshop.admin.order', 'jigoshop_admin_order', array(
 					'ajax' => admin_url('admin-ajax.php'),
-					'tax_field' => 'billing',
+					'tax_shipping' => $options->get('tax.shipping'),
+					'ship_to_billing' => $options->get('shipping.only_to_billing'),
 				));
 			}
 		});
@@ -117,14 +118,17 @@ class Order
 		// TODO: Support for <= 0 quantity
 		try {
 			$order = $this->orderService->find($_POST['order']);
-			$customer = $this->customerService->fromOrder($order);
+			$customer = $this->customerService->getTax($order);
 
 			$item = $order->removeItem($_POST['product']);
 			$item->setQuantity((int)$_POST['quantity']);
 			$item->setPrice((float)$_POST['price']);
-			$item->setTax($this->taxService->getAll($item, 1, $customer));
 
-			$order->addItem($item);
+			if ($item->getQuantity() > 0) {
+				$item->setTax($this->taxService->getAll($item, 1, $customer));
+				$order->addItem($item);
+			}
+
 			$this->orderService->save($order);
 
 			$result = $this->getAjaxResponse($order);
@@ -166,8 +170,9 @@ class Order
 		try {
 			$order = $this->orderService->find($_POST['order']);
 			$shippingMethod = $this->shippingService->get($_POST['method']);
-			$customer = $this->customerService->fromOrder($order);
+			$customer = $this->customerService->getShipping($order);
 			$order->setShippingMethod($shippingMethod, $this->taxService, $customer);
+			$order = $this->rebuildOrder($order);
 			$this->orderService->save($order);
 			$result = $this->getAjaxResponse($order);
 		} catch(Exception $e) {
@@ -186,24 +191,17 @@ class Order
 		// TODO: Add invalid data protection
 		try {
 			$order = $this->orderService->find($_POST['order']);
-			$order->getBillingAddress()->setCountry($_POST['value']);
-			$customer = $this->customerService->fromOrder($order);
-
-			// Recalculate values
-			$items = $order->getItems();
-			$method = $order->getShippingMethod();
-			$order->removeItems();
-
-			foreach ($items as $item) {
-				/** @var $item Item */
-				$item->setTax($this->taxService->getAll($item, 1, $customer));
-				$order->addItem($item);
+			switch ($_POST['type']) {
+				case 'shipping':
+					$address = $order->getShippingAddress();
+					break;
+				case 'billing':
+				default:
+					$address = $order->getBillingAddress();
 			}
 
-			if ($method !== null) {
-				$order->setShippingMethod($method, $this->taxService, $customer);
-			}
-
+			$address->setCountry($_POST['value']);
+			$order = $this->rebuildOrder($order);
 			$this->orderService->save($order);
 
 			$shipping = array();
@@ -213,8 +211,8 @@ class Order
 			}
 
 			$result = $this->getAjaxResponse($order);
-			$result['has_states'] = Country::hasStates($customer->getCountry());
-			$result['states'] = Country::getStates($customer->getCountry());
+			$result['has_states'] = Country::hasStates($address->getCountry());
+			$result['states'] = Country::getStates($address->getCountry());
 			$result['shipping'] = $shipping;
 			$result['html']['shipping'] = array_map(function($item){ return ProductHelper::formatPrice($item); }, $shipping);
 		} catch(Exception $e) {
@@ -232,6 +230,7 @@ class Order
 	{
 		$post = $this->wp->getGlobalPost();
 		$order = $this->orderService->findForPost($post);
+		$billingOnly = $this->options->get('shipping.only_to_billing');
 		$billingFields = $this->wp->applyFilters('jigoshop\admin\order\billing_fields', array(
 			'company' => array(
 				'label' => __('Company', 'jigoshop'),
@@ -326,7 +325,8 @@ class Order
 			'order' => $order,
 			'billingFields' => $billingFields,
 			'shippingFields' => $shippingFields,
-			'customers' => $customers
+			'customers' => $customers,
+			'billingOnly' => $billingOnly,
 		));
 	}
 
@@ -364,7 +364,7 @@ class Order
 	 */
 	private function formatItem($order, $product)
 	{
-		$customer = $this->customerService->fromOrder($order);
+		$customer = $this->customerService->getTax($order);
 
 		$item = new Item();
 		$item->setType($product->getType());
@@ -384,12 +384,19 @@ class Order
 	 */
 	private function getAjaxResponse($order)
 	{
+		$tax = $order->getTax();
+		$shippingTax = $order->getShippingTax();
+
+		foreach ($order->getTax() as $class => $value) {
+			$tax[$class] = $value + $shippingTax[$class];
+		}
+
 		return array(
 			'success' => true,
 			'product_subtotal' => $order->getProductSubtotal(),
 			'subtotal' => $order->getSubtotal(),
 			'total' => $order->getTotal(),
-			'tax' => $order->getTax(),
+			'tax' => $tax,
 			'html' => array(
 				'product_subtotal' => ProductHelper::formatPrice($order->getProductSubtotal()),
 				'subtotal' => ProductHelper::formatPrice($order->getSubtotal()),
@@ -405,17 +412,43 @@ class Order
 	 */
 	private function getTaxes($order)
 	{
-		$customer = $this->customerService->fromOrder($order);
+		$customer = $this->customerService->getTax($order);
 
-		$tax = array();
+		$result = array();
 		$shippingTax = $order->getShippingTax();
 		foreach ($order->getTax() as $class => $value) {
-			$tax[$class] = array(
+			$result[$class] = array(
 				'label' => $this->taxService->getLabel($class, $customer),
 				'value' => ProductHelper::formatPrice($value + $shippingTax[$class]),
 			);
 		}
 
-		return $tax;
+		return $result;
+	}
+
+	/**
+	 * @param $order \Jigoshop\Entity\Order The order.
+	 * @return \Jigoshop\Entity\Order Updated order.
+	 */
+	private function rebuildOrder($order)
+	{
+		$customer = $this->customerService->getTax($order);
+
+		// Recalculate values
+		$items = $order->getItems();
+		$method = $order->getShippingMethod();
+		$order->removeItems();
+
+		foreach ($items as $item) {
+			/** @var $item Item */
+			$item->setTax($this->taxService->getAll($item, 1, $customer));
+			$order->addItem($item);
+		}
+
+		if ($method !== null) {
+			$order->setShippingMethod($method, $this->taxService, $customer);
+		}
+
+		return $order;
 	}
 }

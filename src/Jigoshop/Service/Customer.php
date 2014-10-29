@@ -2,6 +2,7 @@
 
 namespace Jigoshop\Service;
 
+use Jigoshop\Core\Options;
 use Jigoshop\Entity\Customer as Entity;
 use Jigoshop\Entity\EntityInterface;
 use Jigoshop\Entity\Order;
@@ -21,11 +22,14 @@ class Customer implements CustomerServiceInterface
 	private $wp;
 	/** @var Factory */
 	private $factory;
+	/** @var Options */
+	private $options;
 
-	public function __construct(Wordpress $wp, Factory $factory)
+	public function __construct(Wordpress $wp, Factory $factory, Options $options)
 	{
 		$this->wp = $wp;
 		$this->factory = $factory;
+		$this->options = $options;
 	}
 
 	/**
@@ -74,14 +78,44 @@ class Customer implements CustomerServiceInterface
 	/**
 	 * Prepares and returns customer object for specified order.
 	 *
-	 * @param OrderInterface $order Order to fetch customer from.
-	 * @return Entity
+	 * @param OrderInterface $order Order to fetch shipping customer from.
+	 * @return \Jigoshop\Entity\Customer
 	 */
-	public function fromOrder(OrderInterface $order)
+	public function getShipping(OrderInterface $order)
 	{
 		if ($order instanceof Order) {
-			// TODO: Decision about billing/shipping data to use
-			$address = $order->getBillingAddress();
+			if ($this->options->get('shipping.only_to_billing')) {
+				$address = $order->getBillingAddress();
+			} else {
+				$address = $order->getShippingAddress();
+			}
+
+			$customer = new Entity();
+			$customer->setCountry($address->getCountry());
+			$customer->setState($address->getState());
+			$customer->setPostcode($address->getPostcode());
+		} else {
+			$customer = $this->getCurrent();
+		}
+
+		return $customer;
+	}
+
+	/**
+	 * Prepares and returns customer object for specified order.
+	 *
+	 * @param OrderInterface $order Order to fetch tax customer from.
+	 * @return \Jigoshop\Entity\Customer
+	 */
+	public function getTax(OrderInterface $order)
+	{
+		if ($order instanceof Order) {
+			if ($this->options->get('tax.shipping')) {
+				$address = $order->getShippingAddress();
+			} else {
+				$address = $order->getBillingAddress();
+			}
+
 			$customer = new Entity();
 			$customer->setCountry($address->getCountry());
 			$customer->setState($address->getState());
