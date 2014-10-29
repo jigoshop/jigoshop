@@ -73,6 +73,10 @@ class Options
 			'always_show_shipping' => false,
 			'flat_rate' => array(
 				'enabled' => false,
+				'title' => 'Flat rate',
+				'type' => 'per_order',
+				'cost' => 0,
+				'fee' => 0
 			),
 		),
 	);
@@ -184,7 +188,7 @@ class Options
 	{
 		$options = (array)$this->wp->getOption(self::NAME);
 		foreach($this->defaults as $key => $value){
-			$options[$key] = array_merge($value, isset($options[$key]) ? $options[$key] : array());
+			$options[$key] = array_replace_recursive($value, isset($options[$key]) ? $options[$key] : array());
 		}
 		$this->options = array_merge($this->defaults, $options);
 	}
