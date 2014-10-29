@@ -267,6 +267,9 @@ class Pages
 		if (strpos($currentScreen->id, 'jigoshop') !== false) {
 			return $currentScreen->id;
 		}
+		if (strpos($currentScreen->base, 'jigoshop_page') !== false) {
+			return $currentScreen->base;
+		}
 
 		return false;
 	}

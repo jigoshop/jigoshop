@@ -115,7 +115,6 @@ class Order
 	public function updateProduct()
 	{
 		// TODO: Add invalid data protection
-		// TODO: Support for <= 0 quantity
 		try {
 			$order = $this->orderService->find($_POST['order']);
 			$customer = $this->customerService->getTax($order);

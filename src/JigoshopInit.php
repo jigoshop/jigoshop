@@ -112,9 +112,8 @@ class JigoshopInit
 		// Initialize post types and roles
 		$this->container->get('jigoshop.types');
 		$this->container->get('jigoshop.roles');
-		// Initialize Cron and Assets
+		// Initialize Cron
 		$this->container->get('jigoshop.cron');
-		$this->container->get('jigoshop.assets');
 
 		if (is_admin()) {
 			/** @var \Jigoshop\Admin\PageResolver $resolver */

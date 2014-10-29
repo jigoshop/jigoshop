@@ -8,6 +8,7 @@ use Jigoshop\Admin\Settings\OwnerTab;
 use Jigoshop\Admin\Settings\TabInterface;
 use Jigoshop\Core\Options;
 use Jigoshop\Helper\Render;
+use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
 use WPAL\Wordpress;
 
@@ -25,17 +26,22 @@ class Settings implements PageInterface
 	private $wp;
 	/** @var Options */
 	private $options;
+	/** @var Styles */
+	private $styles;
+	/** @var Scripts */
+	private $scripts;
 	private $tabs = array();
 	private $currentTab;
 
-	public function __construct(Wordpress $wp, Options $options, Styles $styles)
+	public function __construct(Wordpress $wp, Options $options, Styles $styles, Scripts $scripts)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
+		$this->styles = $styles;
+		$this->scripts = $scripts;
+
 		$wp->addAction('current_screen', array($this, 'register'));
-		if ($wp->isAdmin()) {
-			$styles->add('jigoshop.admin.settings', JIGOSHOP_URL.'/assets/css/admin/settings.css'); // TODO: Add ability to properly load on required pages
-		}
+		$wp->addAction('admin_enqueue_scripts', array($this, 'assets'));
 	}
 
 	/**
@@ -77,6 +83,26 @@ class Settings implements PageInterface
 	public function getMenuSlug()
 	{
 		return self::NAME;
+	}
+
+	/**
+	 * Add assets for settings.
+	 */
+	public function assets()
+	{
+		// Weed out all admin pages except the Jigoshop Settings page hits
+		if (!in_array($this->wp->getPageNow(), array('admin.php', 'options.php'))) {
+			return;
+		}
+
+		$screen = $this->wp->getCurrentScreen();
+		if (!in_array($screen->base, array('jigoshop_page_'.self::NAME, 'options'))) {
+			return;
+		}
+
+		$this->styles->add('jigoshop.admin.settings', JIGOSHOP_URL.'/assets/css/admin/settings.css');
+		$this->scripts->add('jigoshop.helpers', JIGOSHOP_URL.'/assets/js/helpers.js');
+		$this->scripts->add('jigoshop.admin.settings', JIGOSHOP_URL.'/assets/js/admin/settings.js', array('jquery', 'jigoshop.helpers', 'jigoshop.vendors'));
 	}
 
 	/**

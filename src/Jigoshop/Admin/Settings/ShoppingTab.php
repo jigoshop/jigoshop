@@ -5,6 +5,7 @@ namespace Jigoshop\Admin\Settings;
 use Jigoshop\Core\Options;
 use Jigoshop\Helper\Country;
 use Jigoshop\Helper\Scripts;
+use WPAL\Wordpress;
 
 /**
  * Shopping tab definition.
@@ -18,10 +19,14 @@ class ShoppingTab implements TabInterface
 	/** @var array */
 	private $options;
 
-	public function __construct(Options $options, Scripts $scripts)
+	public function __construct(Wordpress $wp, Options $options, Scripts $scripts)
 	{
 		$this->options = $options->get(self::SLUG);
-		$scripts->add('jigoshop.admin.shopping', JIGOSHOP_URL.'/assets/js/admin/settings/shopping.js', array('jquery'));
+		$wp->addAction('admin_enqueue_scripts', function() use ($scripts){
+			if (isset($_GET['tab']) && $_GET['tab'] == ShoppingTab::SLUG) {
+				$scripts->add('jigoshop.admin.shopping', JIGOSHOP_URL.'/assets/js/admin/settings/shopping.js', array('jquery'), array('page' => 'jigoshop_page_jigoshop_settings'));
+			}
+		});
 	}
 
 	/**

@@ -8,6 +8,7 @@ use Jigoshop\Helper\Country;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Service\TaxServiceInterface;
+use WPAL\Wordpress;
 
 /**
  * Taxes tab definition.
@@ -23,41 +24,48 @@ class TaxesTab implements TabInterface
 	/** @var TaxServiceInterface */
 	private $taxService;
 
-	public function __construct(Options $options, TaxServiceInterface $taxService, Scripts $scripts)
+	public function __construct(Wordpress $wp, Options $options, TaxServiceInterface $taxService, Scripts $scripts)
 	{
 		$this->options = $options->get(self::SLUG);
 		$this->taxService = $taxService;
+		$options = $this->options;
 
-		$classes = array();
-		foreach ($this->options['classes'] as $class) {
-			$classes[$class['class']] = $class['label'];
-		}
-
-		$states = array();
-		foreach (Country::getAllStates() as $country => $stateList) {
-			$states[$country] = array(
-				array('id' => '', 'text' => _x('All states', 'admin_taxing', 'jigoshop')),
-			);
-			foreach ($stateList as $code => $state) {
-				$states[$country][] = array('id' => $code, 'text' => $state);
+		$wp->addAction('admin_enqueue_scripts', function() use ($scripts, $options){
+			if (!isset($_GET['tab']) || $_GET['tab'] != TaxesTab::SLUG) {
+				return;
 			}
-		}
 
-		$countries = array_merge(
-			array('' => __('All countries', 'jigoshop')),
-			Country::getAll()
-		);
+			$classes = array();
+			foreach ($options['classes'] as $class) {
+				$classes[$class['class']] = $class['label'];
+			}
 
-		$scripts->add('jigoshop.admin.taxes', JIGOSHOP_URL.'/assets/js/admin/settings/taxes.js', array('jquery'), array('page' => 'jigoshop_page_jigoshop_settings'));
-		$scripts->localize('jigoshop.admin.taxes', 'jigoshop_admin_taxes', array(
-			'new_class' => Render::get('admin/settings/tax/class', array('class' => array('label' => '', 'class' => ''))),
-			'new_rule' => Render::get('admin/settings/tax/rule', array(
-				'rule' => array('id' => 0, 'label' => '', 'class' => '', 'rate' => '', 'country' => '', 'states' => array(), 'postcodes' => array()),
-				'classes' => $classes,
-				'countries' => $countries,
-			)),
-			'states' => $states,
-		));
+			$states = array();
+			foreach (Country::getAllStates() as $country => $stateList) {
+				$states[$country] = array(
+					array('id' => '', 'text' => _x('All states', 'admin_taxing', 'jigoshop')),
+				);
+				foreach ($stateList as $code => $state) {
+					$states[$country][] = array('id' => $code, 'text' => $state);
+				}
+			}
+
+			$countries = array_merge(
+				array('' => __('All countries', 'jigoshop')),
+				Country::getAll()
+			);
+
+			$scripts->add('jigoshop.admin.taxes', JIGOSHOP_URL.'/assets/js/admin/settings/taxes.js', array('jquery'), array('page' => 'jigoshop_page_jigoshop_settings'));
+			$scripts->localize('jigoshop.admin.taxes', 'jigoshop_admin_taxes', array(
+				'new_class' => Render::get('admin/settings/tax/class', array('class' => array('label' => '', 'class' => ''))),
+				'new_rule' => Render::get('admin/settings/tax/rule', array(
+					'rule' => array('id' => 0, 'label' => '', 'class' => '', 'rate' => '', 'country' => '', 'states' => array(), 'postcodes' => array()),
+					'classes' => $classes,
+					'countries' => $countries,
+				)),
+				'states' => $states,
+			));
+		});
 	}
 
 	/**

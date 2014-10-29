@@ -129,4 +129,6 @@ class Simple implements CustomerServiceInterface
 	{
 		// TODO: Implement findByQuery() method.
 	}
+
+
 }

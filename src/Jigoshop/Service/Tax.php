@@ -148,6 +148,7 @@ class Tax implements TaxServiceInterface
 	 */
 	protected function fetch($taxClass, Customer $customer)
 	{
+		// TODO: Remember downloaded data for each customer separately
 		// TODO: Probably it will be good idea to update getRules() call to fetch and format only proper rules for the customer
 		$rules = array_filter($this->getRules(), function($item) use ($taxClass, $customer) {
 			return $item['class'] == $taxClass &&

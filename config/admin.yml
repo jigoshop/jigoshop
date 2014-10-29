@@ -27,6 +27,7 @@ services:
       - '@wpal'
       - '@jigoshop.options'
       - '@jigoshop.helper.styles'
+      - '@jigoshop.helper.scripts'
     tags:
       - { name: jigoshop.admin.page }
   jigoshop.admin.settings.general:
@@ -38,6 +39,7 @@ services:
   jigoshop.admin.settings.shopping:
     class: Jigoshop\Admin\Settings\ShoppingTab
     arguments:
+      - '@wpal'
       - '@jigoshop.options'
       - '@jigoshop.helper.scripts'
     tags:
@@ -45,6 +47,7 @@ services:
   jigoshop.admin.settings.taxes:
     class: Jigoshop\Admin\Settings\TaxesTab
     arguments:
+      - '@wpal'
       - '@jigoshop.options'
       - '@jigoshop.service.tax'
       - '@jigoshop.helper.scripts'

@@ -19,6 +19,8 @@ use WPAL\Wordpress;
  */
 class Dashboard implements PageInterface
 {
+	const NAME = 'jigoshop';
+
 	/** @var Wordpress */
 	private $wp;
 	/** @var \Jigoshop\Service\OrderServiceInterface */
@@ -34,7 +36,9 @@ class Dashboard implements PageInterface
 		$this->options = $options;
 		$this->orderService = $orderService;
 		$this->productService = $productService;
-		$styles->add('jigoshop.admin.dashboard', JIGOSHOP_URL.'/assets/css/admin/dashboard.css'); // TODO: Add ability to properly load on required pages
+		$this->styles = $styles;
+
+		$wp->addAction('admin_enqueue_scripts', array($this, 'assets'));
 	}
 
 	/** @return string Title of page. */
@@ -58,7 +62,7 @@ class Dashboard implements PageInterface
 	/** @return string Menu slug. */
 	public function getMenuSlug()
 	{
-		return 'jigoshop';
+		return self::NAME;
 	}
 
 	/** Displays the page. */
@@ -82,6 +86,24 @@ class Dashboard implements PageInterface
 		Render::output('admin/dashboard', array(
 			'submenu' => $submenu,
 		));
+	}
+
+	/**
+	 * Add assets for dashboard.
+	 */
+	public function assets()
+	{
+		// Weed out all admin pages except the Jigoshop Settings page hits
+		if (!in_array($this->wp->getPageNow(), array('admin.php', 'options.php'))) {
+			return;
+		}
+
+		$screen = $this->wp->getCurrentScreen();
+		if (!in_array($screen->base, array('toplevel_page_'.self::NAME, 'options'))) {
+			return;
+		}
+
+		$this->styles->add('jigoshop.admin.dashboard', JIGOSHOP_URL.'/assets/css/admin/dashboard.css');
 	}
 
 	/**

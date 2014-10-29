@@ -39,8 +39,7 @@ class Product
 			if ($wp->getPostType() == Types::PRODUCT) {
 				// TODO: Change settings.css into something strictly product-related
 				$styles->add('jigoshop.admin.product', JIGOSHOP_URL.'/assets/css/admin/settings.css');
-				$styles->add('jigoshop.vendors', JIGOSHOP_URL.'/assets/css/vendors.min.css');
-				$scripts->add('jigoshop.vendors', JIGOSHOP_URL.'/assets/js/vendors.min.js');
+				$scripts->add('jigoshop.admin.product', JIGOSHOP_URL.'/assets/js/admin/product.js');
 			}
 		});
 	}
