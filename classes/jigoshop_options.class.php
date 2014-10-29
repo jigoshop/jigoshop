@@ -1202,6 +1202,39 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 				),
 			),
 			array(
+				'name' => __('Enable Brand field', 'jigoshop'),
+				'desc' => '',
+				'tip' => __('This attribute is recommended for Austria, Belgium, Canada, Denmark, India, Mexico, Norway, Poland, Russia, Sweden and Turkey.', 'jigoshop'),
+				'id' => 'jigoshop_enable_brand',
+				'type' => 'checkbox',
+				'choices' => array(
+					'no' => __('No', 'jigoshop'),
+					'yes' => __('Yes', 'jigoshop'),
+				),
+			),
+			array(
+				'name' => __('Enable GTIN field', 'jigoshop'),
+				'desc' => 'Global Trade Item Number',
+				'tip' => __('', 'jigoshop'),
+				'id' => 'jigoshop_enable_gtin',
+				'type' => 'checkbox',
+				'choices' => array(
+					'no' => __('No', 'jigoshop'),
+					'yes' => __('Yes', 'jigoshop'),
+				),
+			),
+			array(
+				'name' => __('Enable MPN field', 'jigoshop'),
+				'desc' => '',
+				'tip' => __('Manufacturer Part Number', 'jigoshop'),
+				'id' => 'jigoshop_enable_mpn',
+				'type' => 'checkbox',
+				'choices' => array(
+					'no' => __('No', 'jigoshop'),
+					'yes' => __('Yes', 'jigoshop'),
+				),
+			),
+			array(
 				'name' => __('Enable weight field', 'jigoshop'),
 				'desc' => '',
 				'tip' => '',

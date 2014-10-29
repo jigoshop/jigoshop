@@ -1,5 +1,7 @@
 ## Changelog
 
+* 1.12.4
+    * New: Brand, GTIN, MPN fields for product.
 * 1.12.3 - 2014-10-27:
     * Improved: Automatic plugin update mechanism uses as low HTTP requests as possible.
 * 1.12.2 - 2014-10-17:
