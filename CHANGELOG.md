@@ -6,6 +6,7 @@
     * Fix: Disappearing items from cart after login.
     * New: Brand, GTIN, MPN fields for product.
     * New: Shortcode product_tag.
+    * Improved: Disabled options in select now are hidden.
 * 1.12 - 2014-09-30:
     * New: User fields in user's profile.
     * New: Support for disabled elements in admin settings.
