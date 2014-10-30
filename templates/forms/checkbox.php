@@ -10,9 +10,10 @@ use Jigoshop\Helper\Forms;
  * @var $disabled bool Is field disabled?
  * @var $tip string Tip to show to the user.
  * @var $description string Field description.
+ * @var $hidden boolean Whether the field is hidden.
  */
 ?>
-<div class="form-group <?php echo $id; ?>_field">
+<div class="form-group <?php echo $id; ?>_field<?php $hidden and print ' not-active'; ?>">
 	<label for="<?php echo $id; ?>" class="col-sm-2 control-label">
 		<?php echo $label; ?>
 		<?php if(!empty($tip)): ?>

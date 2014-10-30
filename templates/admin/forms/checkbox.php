@@ -12,7 +12,7 @@ use Jigoshop\Admin\Helper\Forms;
  */
 $hasLabel = !empty($label);
 ?>
-<div class="form-group <?php echo $id; ?>_field">
+<div class="form-group <?php echo $id; ?>_field <?php echo join(' ', $classes); ?><?php $hidden and print ' not-active'; ?>">
 	<?php if($hasLabel): ?>
 	<label for="<?php echo $id; ?>" class="col-sm-2 control-label">
 		<?php echo $label; ?>

@@ -80,6 +80,7 @@ class Forms
 			'description' => false,
 			'tip' => false,
 			'options' => array(),
+			'hidden' => false,
 		);
 		$field = wp_parse_args($field, $defaults);
 
@@ -116,6 +117,7 @@ class Forms
 			'description' => false,
 			'tip' => false,
 			'options' => array(),
+			'hidden' => false,
 		);
 		$field = wp_parse_args($field, $defaults);
 
@@ -157,6 +159,7 @@ class Forms
 			'description' => false,
 			'tip' => false,
 			'options' => array(),
+			'hidden' => false,
 		);
 		$field = wp_parse_args($field, $defaults);
 
@@ -192,6 +195,7 @@ class Forms
 			'description' => false,
 			'tip' => false,
 			'options' => array(),
+			'hidden' => false,
 		);
 		$field = wp_parse_args($field, $defaults);
 
@@ -223,6 +227,7 @@ class Forms
 			'placeholder' => '',
 			'classes' => array(),
 			'options' => array(),
+			'hidden' => false,
 		);
 		$field = wp_parse_args($field, $defaults);
 
@@ -259,6 +264,7 @@ class Forms
 			'description' => false,
 			'tip' => false,
 			'options' => array(),
+			'hidden' => false,
 		);
 		$field = wp_parse_args($field, $defaults);
 
