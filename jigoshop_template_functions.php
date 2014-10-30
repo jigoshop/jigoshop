@@ -338,9 +338,6 @@ if (!function_exists('jigoshop_template_single_meta')) {
 		if ($jigoshop_options->get('jigoshop_enable_sku')=='yes' && !empty($_product->sku)) :
 			echo '<div class="sku">'.__('SKU','jigoshop').': ' . $_product->sku . '</div>';
 		endif;
-		if ($jigoshop_options->get('jigoshop_enable_sku')=='yes' && !empty($_product->sku)) :
-			echo '<div class="sku">'.__('SKU','jigoshop').': ' . $_product->sku . '</div>';
-		endif;
 		if ($jigoshop_options->get('jigoshop_enable_brand')=='yes' && !empty($_product->brand)) :
 			echo '<div class="brand">'.__('Brand','jigoshop').': ' . $_product->brand . '</div>';
 		endif;
