@@ -3,13 +3,15 @@ services:
   jigoshop.shipping.flat_rate:
     class: Jigoshop\Shipping\FlatRate
     arguments:
+      - '@wpal'
       - '@jigoshop.options'
       - '@jigoshop.service.customer'
+      - '@jigoshop.helper.scripts'
     tags:
-      - { name: jigoshop.shipping.required_method }
+      - { name: jigoshop.shipping.method }
   jigoshop.shipping.free_shipping:
     class: Jigoshop\Shipping\FreeShipping
     arguments:
       - '@jigoshop.options'
     tags:
-      - { name: jigoshop.shipping.required_method }
+      - { name: jigoshop.shipping.method }

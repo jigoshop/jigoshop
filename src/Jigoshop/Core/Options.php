@@ -76,7 +76,9 @@ class Options
 				'title' => 'Flat rate',
 				'type' => 'per_order',
 				'cost' => 0,
-				'fee' => 0
+				'fee' => 0,
+				'available_for' => 'all',
+				'countries' => array(),
 			),
 		),
 	);

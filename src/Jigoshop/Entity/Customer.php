@@ -7,6 +7,8 @@ use Jigoshop\Helper\Country;
 /**
  * Customer entity.
  *
+ * TODO: Add shipping and taxing addresses (instead of getTax() and getShipping() methods in service)
+ *
  * @package Jigoshop\Entity
  */
 class Customer implements EntityInterface

@@ -41,7 +41,17 @@ class Core
 	 */
 	public function run(\JigoshopContainer $container)
 	{
-		// TODO: Build enabled shipping methods
+//		if($container->has('jigoshop.service.shipping')){
+//			$service = $container->get('jigoshop.service.shipping');
+//
+//			// TODO: Build enabled shipping methods
+//			$methods = $container->get('jigoshop.shipping.method');
+//			var_dump($methods); exit;
+//			foreach($methods as $id => $attributes){
+////				$service->addMethod();
+//			}
+//		}
+
 		// TODO: Build required extensions
 		$this->wp->addFilter('template_include', array($this->template, 'process'));
 		$this->wp->addFilter('template_redirect', array($this->template, 'redirect'));

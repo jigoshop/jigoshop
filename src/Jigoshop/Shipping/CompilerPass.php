@@ -28,7 +28,7 @@ class CompilerPass implements CompilerPassInterface
 
 		$definition = $container->getDefinition('jigoshop.service.shipping');
 
-		$methods = $container->findTaggedServiceIds('jigoshop.shipping.required_method');
+		$methods = $container->findTaggedServiceIds('jigoshop.shipping.method');
 		foreach($methods as $id => $attributes){
 			$definition->addMethodCall('addMethod', array(new Reference($id)));
 		}
