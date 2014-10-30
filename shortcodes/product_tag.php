@@ -2,14 +2,15 @@
 function jigoshop_product_tag( $attributes ) {
 
 	global $paged;
-		$attributes = shortcode_atts( array(
-		'tag'            => '',
-		'per_page'        => get_option('jigoshop_catalog_per_page'),
-		'columns' 	      => get_option('jigoshop_catalog_columns'),
-		'orderby'	      => get_option('jigoshop_catalog_sort_orderby'),
-		'order'		      => get_option('jigoshop_catalog_sort_direction'),
-		'pagination'      => false,
-		'tax_operator'    => 'IN'
+	$jigoshop_options = Jigoshop_Base::get_options();
+	$attributes = shortcode_atts( array(
+		'tag'		=> '',
+		'per_page'	=> $jigoshop_options->get('jigoshop_catalog_per_page'),
+		'columns'	=> $jigoshop_options->get('jigoshop_catalog_columns'),
+		'orderby'	=> $jigoshop_options->get('jigoshop_catalog_sort_orderby'),
+		'order'		=> $jigoshop_options->get('jigoshop_catalog_sort_direction'),
+		'pagination'	=> false,
+		'tax_operator'	=> 'IN'
 	), $attributes);
 
 	if(isset($_REQUEST['tag'])){
