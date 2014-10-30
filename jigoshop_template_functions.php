@@ -338,7 +338,18 @@ if (!function_exists('jigoshop_template_single_meta')) {
 		if ($jigoshop_options->get('jigoshop_enable_sku')=='yes' && !empty($_product->sku)) :
 			echo '<div class="sku">'.__('SKU','jigoshop').': ' . $_product->sku . '</div>';
 		endif;
-
+		if ($jigoshop_options->get('jigoshop_enable_sku')=='yes' && !empty($_product->sku)) :
+			echo '<div class="sku">'.__('SKU','jigoshop').': ' . $_product->sku . '</div>';
+		endif;
+		if ($jigoshop_options->get('jigoshop_enable_brand')=='yes' && !empty($_product->brand)) :
+			echo '<div class="brand">'.__('Brand','jigoshop').': ' . $_product->brand . '</div>';
+		endif;
+		if ($jigoshop_options->get('jigoshop_enable_gtin')=='yes' && !empty($_product->gtin)) :
+			echo '<div class="gtin">'.__('GTIN','jigoshop').': ' . $_product->gtin . '</div>';
+		endif;
+		if ($jigoshop_options->get('jigoshop_enable_mpn')=='yes' && !empty($_product->mpn)) :
+			echo '<div class="mpn">'.__('MPN','jigoshop').': ' . $_product->mpn . '</div>';
+		endif;
 		echo $_product->get_categories( ', ', ' <div class="posted_in">' . __( 'Posted in ', 'jigoshop' ) . '', '.</div>');
 		echo $_product->get_tags( ', ', ' <div class="tagged_as">' . __( 'Tagged as ', 'jigoshop' ) . '', '.</div>');
 		echo '</div>';
