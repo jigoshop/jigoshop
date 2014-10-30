@@ -26,10 +26,6 @@ class Settings implements PageInterface
 	private $wp;
 	/** @var Options */
 	private $options;
-	/** @var Styles */
-	private $styles;
-	/** @var Scripts */
-	private $scripts;
 	private $tabs = array();
 	private $currentTab;
 
@@ -37,11 +33,23 @@ class Settings implements PageInterface
 	{
 		$this->wp = $wp;
 		$this->options = $options;
-		$this->styles = $styles;
-		$this->scripts = $scripts;
 
 		$wp->addAction('current_screen', array($this, 'register'));
-		$wp->addAction('admin_enqueue_scripts', array($this, 'assets'));
+		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $styles, $scripts) {
+			// Weed out all admin pages except the Jigoshop Settings page hits
+			if (!in_array($wp->getPageNow(), array('admin.php', 'options.php'))) {
+				return;
+			}
+
+			$screen = $wp->getCurrentScreen();
+			if (!in_array($screen->base, array('jigoshop_page_'.Settings::NAME, 'options'))) {
+				return;
+			}
+
+			$styles->add('jigoshop.admin.settings', JIGOSHOP_URL.'/assets/css/admin/settings.css');
+			$scripts->add('jigoshop.helpers', JIGOSHOP_URL.'/assets/js/helpers.js');
+			$scripts->add('jigoshop.admin.settings', JIGOSHOP_URL.'/assets/js/admin/settings.js', array('jquery', 'jigoshop.helpers', 'jigoshop.vendors'));
+		});
 	}
 
 	/**
@@ -83,26 +91,6 @@ class Settings implements PageInterface
 	public function getMenuSlug()
 	{
 		return self::NAME;
-	}
-
-	/**
-	 * Add assets for settings.
-	 */
-	public function assets()
-	{
-		// Weed out all admin pages except the Jigoshop Settings page hits
-		if (!in_array($this->wp->getPageNow(), array('admin.php', 'options.php'))) {
-			return;
-		}
-
-		$screen = $this->wp->getCurrentScreen();
-		if (!in_array($screen->base, array('jigoshop_page_'.self::NAME, 'options'))) {
-			return;
-		}
-
-		$this->styles->add('jigoshop.admin.settings', JIGOSHOP_URL.'/assets/css/admin/settings.css');
-		$this->scripts->add('jigoshop.helpers', JIGOSHOP_URL.'/assets/js/helpers.js');
-		$this->scripts->add('jigoshop.admin.settings', JIGOSHOP_URL.'/assets/js/admin/settings.js', array('jquery', 'jigoshop.helpers', 'jigoshop.vendors'));
 	}
 
 	/**

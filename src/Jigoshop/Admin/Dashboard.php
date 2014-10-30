@@ -36,9 +36,20 @@ class Dashboard implements PageInterface
 		$this->options = $options;
 		$this->orderService = $orderService;
 		$this->productService = $productService;
-		$this->styles = $styles;
 
-		$wp->addAction('admin_enqueue_scripts', array($this, 'assets'));
+		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $styles) {
+			// Weed out all admin pages except the Jigoshop Settings page hits
+			if (!in_array($wp->getPageNow(), array('admin.php', 'options.php'))) {
+				return;
+			}
+
+			$screen = $wp->getCurrentScreen();
+			if (!in_array($screen->base, array('toplevel_page_'.Dashboard::NAME, 'options'))) {
+				return;
+			}
+
+			$styles->add('jigoshop.admin.dashboard', JIGOSHOP_URL.'/assets/css/admin/dashboard.css');
+		});
 	}
 
 	/** @return string Title of page. */
@@ -86,24 +97,6 @@ class Dashboard implements PageInterface
 		Render::output('admin/dashboard', array(
 			'submenu' => $submenu,
 		));
-	}
-
-	/**
-	 * Add assets for dashboard.
-	 */
-	public function assets()
-	{
-		// Weed out all admin pages except the Jigoshop Settings page hits
-		if (!in_array($this->wp->getPageNow(), array('admin.php', 'options.php'))) {
-			return;
-		}
-
-		$screen = $this->wp->getCurrentScreen();
-		if (!in_array($screen->base, array('toplevel_page_'.self::NAME, 'options'))) {
-			return;
-		}
-
-		$this->styles->add('jigoshop.admin.dashboard', JIGOSHOP_URL.'/assets/css/admin/dashboard.css');
 	}
 
 	/**
