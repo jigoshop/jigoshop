@@ -24,6 +24,9 @@ class jigoshop_product extends Jigoshop_Base {
 	public $exists;       // : jigoshop_cart.class.php on line 66
 	public $product_type; // : jigoshop_template_functions.php on line 271
 	public $sku;          // : jigoshop_template_functions.php on line 246
+	public $brand;
+	public $gtin;
+	public $mpn;
 
 	public $data;         // jigoshop_tax.class.php on line 186
 	public $post;         // for get_title()
@@ -102,6 +105,9 @@ class jigoshop_product extends Jigoshop_Base {
 		$this->tax_class             = isset($meta['tax_class'][0]) ? $meta['tax_class'][0] : null;
 
 		$this->sku                   = isset($meta['sku'][0]) ? $meta['sku'][0] : $this->ID;
+		$this->brand                 = isset($meta['brand'][0]) ? $meta['brand'][0] : null;
+		$this->gtin                  = isset($meta['gtin'][0]) ? $meta['gtin'][0] : null;
+		$this->mpn                   = isset($meta['mpn'][0]) ? $meta['mpn'][0] : null;
 		$this->visibility            = isset($meta['visibility'][0]) ? $meta['visibility'][0] : null;
 		$this->featured              = isset($meta['featured'][0]) ? $meta['featured'][0] : null;
 
