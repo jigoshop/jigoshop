@@ -489,7 +489,7 @@ class jigoshop_product extends Jigoshop_Base {
 				$notice['availability'] = __('Available for order', 'jigoshop');
 			} else if(self::get_options()->get('jigoshop_show_stock') == 'yes' && !$this->has_child() && $this->stock > 0){
 				// Check if we want user to get how many items is available
-				$notice['availability'] .= ' &ndash; '.$this->stock.' '.__(' available', 'jigoshop');
+				$notice['availability'] .= ': '.$this->stock.' '.__(' available', 'jigoshop');
 			}
 		} else {
 			$notice['availability'] = __('Out of Stock', 'jigoshop');
