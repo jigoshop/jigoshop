@@ -2,6 +2,8 @@
 
 namespace Jigoshop\Payment;
 
+use Jigoshop\Entity\Order;
+
 /**
  * Payment method interface.
  *
@@ -45,7 +47,7 @@ interface Method
 	public function render();
 
 	/**
-	 * @param mixed $order Order to process payment for.
+	 * @param Order $order Order to process payment for.
 	 * @return bool Is processing successful?
 	 */
 	public function process($order);
