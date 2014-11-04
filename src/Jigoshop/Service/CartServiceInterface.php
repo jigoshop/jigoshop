@@ -14,13 +14,20 @@ interface CartServiceInterface
 {
 	/**
 	 * Find and fetches saved cart.
-	 *
 	 * If cart is not found - returns new empty one.
 	 *
 	 * @param $id string Id of cart to fetch.
 	 * @return Cart Prepared cart instance.
 	 */
 	public function get($id);
+
+	/**
+	 * Find and fetches cart for current user.
+	 * If cart is not found - returns new empty one.
+	 *
+	 * @return Cart Prepared cart instance.
+	 */
+	public function getCurrent();
 
 	/**
 	 * Saves cart for current user.
@@ -38,7 +45,6 @@ interface CartServiceInterface
 
 	/**
 	 * Returns cart ID for current user.
-	 *
 	 * If the user is logged in - returns his ID so his cart will be properly loaded.
 	 * Otherwise generates random string based on available user data to preserve it's cart.
 	 *

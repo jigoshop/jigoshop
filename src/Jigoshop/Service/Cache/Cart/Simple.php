@@ -34,6 +34,23 @@ class Simple implements CartServiceInterface
 	}
 
 	/**
+	 * Find and fetches cart for current user.
+	 * If cart is not found - returns new empty one.
+	 *
+	 * @return Cart Prepared cart instance.
+	 */
+	public function getCurrent()
+	{
+		$id = $this->getCartIdForCurrentUser();
+
+		if (!isset($this->objects[$id])) {
+			$this->objects[$id] = $this->service->get($id);
+		}
+
+		return $this->objects[$id];
+	}
+
+	/**
 	 * Saves cart for current user.
 	 *
 	 * @param Cart $cart Cart to save.

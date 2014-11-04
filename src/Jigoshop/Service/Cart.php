@@ -49,6 +49,17 @@ class Cart implements CartServiceInterface
 	}
 
 	/**
+	 * Find and fetches cart for current user.
+	 * If cart is not found - returns new empty one.
+	 *
+	 * @return CartContainer Prepared cart instance.
+	 */
+	public function getCurrent()
+	{
+		return $this->get($this->getCartIdForCurrentUser());
+	}
+
+	/**
 	 * Saves cart for current user.
 	 *
 	 * @param CartContainer $cart Cart to save.

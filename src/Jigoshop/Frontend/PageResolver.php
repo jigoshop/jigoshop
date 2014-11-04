@@ -45,6 +45,10 @@ class PageResolver
 			return null;
 		}
 
+		if ($this->pages->isCheckout()) {
+			return $container->get('jigoshop.page.checkout');
+		}
+
 		if ($this->pages->isCart()) {
 			return $container->get('jigoshop.page.cart');
 		}

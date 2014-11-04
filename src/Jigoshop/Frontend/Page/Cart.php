@@ -88,7 +88,7 @@ class Cart implements PageInterface
 		$customer = $this->customerService->getCurrent();
 		$customer->setCountry($_POST['value']);
 		$this->customerService->save($customer);
-		$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
+		$cart = $this->cartService->getCurrent();
 
 		$response = $this->getAjaxLocationResponse($customer, $cart);
 
@@ -167,7 +167,7 @@ class Cart implements PageInterface
 		$customer = $this->customerService->getCurrent();
 		$customer->setState($_POST['value']);
 		$this->customerService->save($customer);
-		$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
+		$cart = $this->cartService->getCurrent();
 
 		$response = $this->getAjaxLocationResponse($customer, $cart);
 
@@ -183,7 +183,7 @@ class Cart implements PageInterface
 		$customer = $this->customerService->getCurrent();
 		$customer->setPostcode($_POST['value']);
 		$this->customerService->save($customer);
-		$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
+		$cart = $this->cartService->getCurrent();
 
 		$response = $this->getAjaxLocationResponse($customer, $cart);
 
@@ -198,7 +198,7 @@ class Cart implements PageInterface
 	{
 		try {
 			$method = $this->shippingService->get($_POST['method']);
-			$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
+			$cart = $this->cartService->getCurrent();
 			$cart->setShippingMethod($method, $this->taxService);
 			$this->cartService->save($cart);
 
@@ -219,7 +219,7 @@ class Cart implements PageInterface
 	 */
 	public function ajaxUpdateItem()
 	{
-		$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
+		$cart = $this->cartService->getCurrent();
 
 		try {
 			$cart->updateQuantity($_POST['item'], (int)$_POST['quantity']);
@@ -261,7 +261,7 @@ class Cart implements PageInterface
 					break;
 				case 'checkout':
 					try {
-						$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
+						$cart = $this->cartService->getCurrent();
 						// Update quantities
 						$this->updateQuantities($cart);
 						// Update customer (if needed)
@@ -282,7 +282,7 @@ class Cart implements PageInterface
 				case 'update-cart':
 					if (isset($_POST['cart']) && is_array($_POST['cart'])) {
 						try {
-							$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
+							$cart = $this->cartService->getCurrent();
 							$this->updateQuantities($cart);
 							$this->cartService->save($cart);
 							$this->messages->addNotice(__('Successfully updated the cart.', 'jigoshop'));
@@ -294,7 +294,7 @@ class Cart implements PageInterface
 		}
 
 		if (isset($_GET['action']) && isset($_GET['item']) && $_GET['action'] === 'remove-item' && is_numeric($_GET['item'])) {
-			$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
+			$cart = $this->cartService->getCurrent();
 			$cart->removeItem((int)$_GET['item']);
 			$this->cartService->save($cart);
 			$this->messages->addNotice(__('Successfully removed item from cart.', 'jigoshop'), false);
@@ -319,7 +319,7 @@ class Cart implements PageInterface
 
 	public function render()
 	{
-		$cart = $this->cartService->get($this->cartService->getCartIdForCurrentUser());
+		$cart = $this->cartService->getCurrent();
 		$content = $this->wp->getPostField('post_content', $this->options->getPageId(Pages::CART));
 
 		return Render::get('shop/cart', array(
