@@ -358,7 +358,7 @@ class jigoshop_order extends Jigoshop_Base
 		foreach ($this->items as $item) {
 			$_product = $this->get_product_from_item($item);
 			$return .= $item['qty'].' x '.html_entity_decode(apply_filters('jigoshop_order_product_title', $item['name'], $_product), ENT_QUOTES, 'UTF-8');
-			if ($show_sku) {
+			if ($show_sku && self::get_options()->get('jigoshop_enable_sku') == 'yes') {
 				$return .= ' (#'.$_product->sku.')';
 			}
 			if ($use_inc_tax && $item['cost_inc_tax'] >= 0) {
