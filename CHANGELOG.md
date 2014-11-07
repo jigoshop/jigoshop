@@ -8,6 +8,7 @@
     * New: Shortcode product_tag.
     * Improved: Disabled options in select now are hidden.
     * Improved: Stock status shows ':' instead of dash.
+    * Improved: Sku variable is no longer showing in emails when sku is disabled.
 * 1.12 - 2014-09-30:
     * New: User fields in user's profile.
     * New: Support for disabled elements in admin settings.
