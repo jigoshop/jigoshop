@@ -20,7 +20,7 @@
  * Description:         Jigoshop, a WordPress eCommerce plugin that works.
  * Author:              Jigoshop
  * Author URI:          http://www.jigoshop.com
- * Version:             1.12.3
+ * Version:             1.12.4
  * Requires at least:   3.8
  * Tested up to:        4.0
  * Text Domain:         jigoshop
@@ -38,7 +38,7 @@
  */
 
 if (!defined('JIGOSHOP_VERSION')) {
-	define('JIGOSHOP_VERSION', '1.12.3');
+	define('JIGOSHOP_VERSION', '1.12.4');
 }
 if (!defined('JIGOSHOP_DB_VERSION')) {
 	define('JIGOSHOP_DB_VERSION', 1409050);
@@ -572,6 +572,29 @@ function jigoshop_add_style($handle, $src, array $dependencies = array(), array 
 			$version = isset($options['version']) ? $options['version'] : false;
 			$media = isset($options['media']) ? $options['media'] : 'all';
 			wp_enqueue_style($handle, $src, $dependencies, $version, $media);
+		}
+	}
+}
+
+/**
+ * Removes style from enqueued list.
+ * Calls filter `jigoshop_remove_style`. If the filter returns empty value the style is omitted.
+ * Available options:
+ *   * page - list of pages to use the style
+ * Options could be extended by plugins.
+ *
+ * @param string $handle Handle name.
+ * @param array $options List of options.
+ */
+function jigoshop_remove_style($handle, array $options = array())
+{
+	$page = isset($options['page']) ? (array)$options['page'] : array('all');
+
+	if (is_jigoshop_page($page)) {
+		$handle = apply_filters('jigoshop_remove_style', $handle, $options);
+
+		if (!empty($handle)) {
+			wp_deregister_style($handle);
 		}
 	}
 }

@@ -1,5 +1,7 @@
 ## Changelog
 
+* 1.12.4 - 2014-11-10:
+    * Improved: `jigoshop_remove_style()` with support in JWOS.
 * 1.12.3 - 2014-10-27:
     * Improved: Automatic plugin update mechanism uses as low HTTP requests as possible.
 * 1.12.2 - 2014-10-17:
