@@ -41,8 +41,6 @@ interface Method
 
 	/**
 	 * Renders method fields and data in Checkout page.
-	 *
-	 * @return string HTML to display.
 	 */
 	public function render();
 

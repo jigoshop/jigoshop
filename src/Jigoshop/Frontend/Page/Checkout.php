@@ -10,6 +10,7 @@ use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
 use Jigoshop\Service\CartServiceInterface;
 use Jigoshop\Service\CustomerServiceInterface;
+use Jigoshop\Service\PaymentServiceInterface;
 use Jigoshop\Service\ShippingServiceInterface;
 use Jigoshop\Service\TaxServiceInterface;
 use WPAL\Wordpress;
@@ -28,11 +29,13 @@ class Checkout implements PageInterface
 	private $customerService;
 	/** @var ShippingServiceInterface */
 	private $shippingService;
+	/** @var PaymentServiceInterface */
+	private $paymentService;
 	/** @var TaxServiceInterface */
 	private $taxService;
 
 	public function __construct(Wordpress $wp, Options $options, Messages $messages, CartServiceInterface $cartService,	CustomerServiceInterface $customerService,
-		ShippingServiceInterface $shippingService, TaxServiceInterface $taxService, Styles $styles, Scripts $scripts)
+		ShippingServiceInterface $shippingService, PaymentServiceInterface $paymentService, TaxServiceInterface $taxService, Styles $styles, Scripts $scripts)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
@@ -40,6 +43,7 @@ class Checkout implements PageInterface
 		$this->cartService = $cartService;
 		$this->customerService = $customerService;
 		$this->shippingService = $shippingService;
+		$this->paymentService = $paymentService;
 		$this->taxService = $taxService;
 
 		$styles->add('jigoshop', JIGOSHOP_URL.'/assets/css/shop.css');
@@ -80,7 +84,7 @@ class Checkout implements PageInterface
 			'cart' => $cart,
 			'messages' => $this->messages,
 			'shippingMethods' => $this->shippingService->getEnabled(),
-			'paymentMethods' => array(),
+			'paymentMethods' => $this->paymentService->getEnabled(),
 			'billingFields' => array(
 				array(
 					'type' => 'text',

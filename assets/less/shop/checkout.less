@@ -10,6 +10,7 @@
   @import '../../bower/bootstrap/less/panels.less';
   @import '../../bower/bootstrap/less/tables.less';
   @import '../../bower/bootstrap/less/type.less';
+  @import '../../bower/bootstrap/less/wells.less';
 
   form {
     margin: 0 15px;
@@ -45,6 +46,17 @@
 
     textarea.form-control {
       height: auto;
+    }
+
+    #payment-methods .well.well-sm {
+      margin: @padding-base-horizontal/2 0;
+      display: none;
+    }
+  }
+
+  #shipping-address {
+    h4 {
+      padding: 0 @padding-large-horizontal;
     }
   }
 }

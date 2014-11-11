@@ -39,18 +39,14 @@ $showWithTax = true;
 				'value' => false,
 				'size' => 9
 			)); ?>
-			<div class="row not-active" id="shipping-address">
+			<div class="row clearfix not-active" id="shipping-address">
+				<h4><?php _e('Shipping address', 'jigoshop'); ?></h4>
 				<?php foreach($shippingFields as $field): ?>
 					<div class="col-md-<?php echo $field['columnSize']; ?>">
 						<?php Forms::field($field['type'], $field); ?>
 					</div>
 				<?php endforeach; ?>
 			</div>
-			<?php Forms::textarea(array(
-				'label' => __('Additional note', 'jigoshop'),
-				'name' => 'order[note]',
-				'rows' => 3,
-			)); ?>
 		</div>
 	</div>
 	<div class="panel panel-success">
@@ -93,6 +89,19 @@ $showWithTax = true;
 			</tr>
 			</tfoot>
 		</table>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title"><?php _e('Additional order notes', 'jigoshop'); ?></h3>
+		</div>
+		<div class="panel-body">
+			<?php Forms::textarea(array(
+				'label' => '',
+				'name' => 'order[note]',
+				'rows' => 3,
+				'size' => 12,
+			)); ?>
+		</div>
 	</div>
 	<div class="panel panel-primary" id="totals">
 		<div class="panel-heading">
@@ -145,12 +154,22 @@ $showWithTax = true;
 						<input type="radio" name="payment-method" value="<?php echo $method->getId(); ?>" />
 						<?php echo $method->getName(); ?>
 					</label>
+					<div class="well well-sm">
+						<?php $method->render(); ?>
+					</div>
 				</li>
 			<?php endforeach; ?>
 		</ul>
+		<noscript>
+			<style type="text/css">
+				.jigoshop form #payment-methods .well.well-sm {
+					display: block;
+				}
+			</style>
+		</noscript>
 	</div>
 	<?php endif; ?>
 	<a class="btn btn-default" href="<?php echo $cartUrl; ?>"><?php _e('Back to cart', 'jigoshop'); ?></a>
-	<button class="btn btn-primary pull-right clearfix" type="submit"><?php _e('Place order', 'jigoshop'); ?></button>
+	<button class="btn btn-success pull-right clearfix" type="submit"><?php _e('Purchase', 'jigoshop'); ?></button>
 </form>
 

@@ -6,9 +6,9 @@ use Jigoshop\Core\Options;
 use Jigoshop\Entity\Order;
 use WPAL\Wordpress;
 
-class Cheque implements Method
+class OnDelivery implements Method
 {
-	const ID = 'cheque';
+	const ID = 'on_delivery';
 
 	/** @var Wordpress */
 	private $wp;
@@ -34,7 +34,7 @@ class Cheque implements Method
 	 */
 	public function getName()
 	{
-		return __('Cheque', 'jigoshop');
+		return __('On delivery', 'jigoshop');
 	}
 
 	/**
@@ -79,11 +79,7 @@ class Cheque implements Method
 	 */
 	public function render()
 	{
-		echo '<p>Test description</p>';
-//		Forms::text(array(
-//			'name' => 'test',
-//			'label' => 'Card number',
-//		));
+		echo '<p>Second description</p>';
 		// TODO: Implement render() method.
 	}
 
@@ -93,7 +89,7 @@ class Cheque implements Method
 	 */
 	public function process($order)
 	{
-		$order->updateStatus(Order\Status::ON_HOLD, __('Waiting for cheque to arrive.', 'jigoshop'));
+		$order->updateStatus(Order\Status::PROCESSING, __('Payment on delivery.', 'jigoshop'));
 		return true;
 	}
 }
