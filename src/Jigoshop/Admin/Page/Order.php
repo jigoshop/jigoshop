@@ -57,7 +57,7 @@ class Order
 				$scripts->add('jigoshop.admin.order', JIGOSHOP_URL.'/assets/js/admin/order.js');
 				$scripts->add('jigoshop.vendors', JIGOSHOP_URL.'/assets/js/vendors.min.js');
 				$scripts->localize('jigoshop.admin.order', 'jigoshop_admin_order', array(
-					'ajax' => admin_url('admin-ajax.php'),
+					'ajax' => $wp->getAjaxUrl(),
 					'tax_shipping' => $options->get('tax.shipping'),
 					'ship_to_billing' => $options->get('shipping.only_to_billing'),
 				));

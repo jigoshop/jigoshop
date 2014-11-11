@@ -63,3 +63,15 @@ services:
       - '@jigoshop.service.tax'
       - '@jigoshop.helper.styles'
       - '@jigoshop.helper.scripts'
+  jigoshop.page.checkout:
+    class: Jigoshop\Frontend\Page\Checkout
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.messages'
+      - '@jigoshop.service.cart'
+      - '@jigoshop.service.customer'
+      - '@jigoshop.service.shipping'
+      - '@jigoshop.service.tax'
+      - '@jigoshop.helper.styles'
+      - '@jigoshop.helper.scripts'

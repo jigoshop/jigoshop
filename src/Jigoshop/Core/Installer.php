@@ -138,7 +138,7 @@ class Installer
 		$data = array(
 			'post_status' => 'publish',
 			'post_type' => 'page',
-			'post_author' => get_current_user_id(),
+			'post_author' => $this->wp->getCurrentUserId(),
 			'post_name' => '',
 			'post_content' => '',
 			'comment_status' => 'closed',
@@ -150,10 +150,9 @@ class Installer
 		$this->_createPage(Pages::CART, array_merge($data, array(
 			'page_title' => __('Cart', 'jigoshop'),
 		)));
-//		$this->_createPage(Pages::CHECKOUT, array_merge($data, array(
-//			'page_title' => __('My account', 'jigoshop'),
-//			'post_content' => '[jigoshop_checkout]',
-//		)));
+		$this->_createPage(Pages::CHECKOUT, array_merge($data, array(
+			'page_title' => __('Checkout', 'jigoshop'),
+		)));
 //		$this->_createPage(Pages::ACCOUNT, array_merge($data, array(
 //			'page_title' => __('My account', 'jigoshop'),
 //			'post_content' => '[jigoshop_my_account]',

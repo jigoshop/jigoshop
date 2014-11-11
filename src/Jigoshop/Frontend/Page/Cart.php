@@ -61,7 +61,7 @@ class Cart implements PageInterface
 		$scripts->add('jigoshop-vendors', JIGOSHOP_URL.'/assets/js/vendors.min.js');
 		$scripts->add('jquery-blockui', '//cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.66.0-2013.10.09/jquery.blockUI.min.js');
 		$scripts->localize('jigoshop.shop.cart', 'jigoshop', array(
-			'ajax' => admin_url('admin-ajax.php', 'jigoshop'),
+			'ajax' => $wp->getAjaxUrl(),
 			'assets' => JIGOSHOP_URL.'/assets',
 			'i18n' => array(
 				'loading' => __('Loading...', 'jigoshop'),
@@ -270,8 +270,10 @@ class Cart implements PageInterface
 							$this->updateCustomer($customer);
 						}
 						// Select shipping method
-						$method = $this->shippingService->get($_POST['shipping-method']);
-						$cart->setShippingMethod($method, $this->taxService);
+						if (isset($_POST['shipping-method'])) {
+							$method = $this->shippingService->get($_POST['shipping-method']);
+							$cart->setShippingMethod($method, $this->taxService);
+						}
 
 						$this->cartService->save($cart);
 						$this->wp->wpRedirect($this->wp->getPermalink($this->options->getPageId(Pages::CHECKOUT)));

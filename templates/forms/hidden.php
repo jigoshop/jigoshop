@@ -8,6 +8,6 @@
  * @var $value mixed Current value.
  */
 ?>
-<div class="form-group <?php echo $id; ?>_field">
+<div class="form-group <?php echo $id; ?>_field clearfix">
 	<input type="hidden" id="<?php echo $id; ?>" name="<?php echo $name; ?>" class="form-control <?php echo join(' ', $classes); ?>" placeholder="<?php echo $placeholder; ?>" value="<?php echo $value; ?>" />
 </div>

@@ -1,0 +1,50 @@
+@import '../../bower/bootstrap/less/variables.less';
+@import '../../bower/bootstrap/less/mixins.less';
+
+.jigoshop {
+  @import '../../bower/bootstrap/less/scaffolding.less';
+  @import '../../bower/bootstrap/less/buttons.less';
+  @import '../../bower/bootstrap/less/grid.less';
+  @import '../../bower/bootstrap/less/forms.less';
+  @import '../../bower/bootstrap/less/list-group.less';
+  @import '../../bower/bootstrap/less/panels.less';
+  @import '../../bower/bootstrap/less/tables.less';
+  @import '../../bower/bootstrap/less/type.less';
+
+  form {
+    margin: 0 15px;
+
+    table, th, td {
+      border: 0;
+    }
+
+    .list-group {
+      margin-left: 0;
+      margin-bottom: 8px;
+    }
+    .list-group-item label {
+      margin: 0;
+
+      input {
+        vertical-align: sub;
+        margin-right: @padding-base-vertical;
+      }
+    }
+    #totals th {
+      text-align: right;
+      width: 20%;
+    }
+
+    > .ship_to_billing_field {
+      .clearfix();
+    }
+
+    button {
+      text-transform: none;
+    }
+
+    textarea.form-control {
+      height: auto;
+    }
+  }
+}

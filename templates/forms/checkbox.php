@@ -11,16 +11,17 @@ use Jigoshop\Helper\Forms;
  * @var $tip string Tip to show to the user.
  * @var $description string Field description.
  * @var $hidden boolean Whether the field is hidden.
+ * @var $size int Size of form widget.
  */
 ?>
-<div class="form-group <?php echo $id; ?>_field<?php $hidden and print ' not-active'; ?>">
-	<label for="<?php echo $id; ?>" class="col-sm-2 control-label">
+<div class="form-group <?php echo $id; ?>_field clearfix<?php $hidden and print ' not-active'; ?>">
+	<label for="<?php echo $id; ?>" class="col-sm-<?php echo 12 - $size; ?> control-label">
 		<?php echo $label; ?>
 		<?php if(!empty($tip)): ?>
 			<a href="#" data-toggle="tooltip" class="badge" data-placement="top" title="<?php echo $tip; ?>">?</a>
 		<?php endif; ?>
 	</label>
-	<div class="col-sm-9 checkbox-inline">
+	<div class="col-sm-<?php echo $size; ?> checkbox-inline">
 		<input type="hidden" name="<?php echo $name; ?>" value="off" />
 		<input type="checkbox" id="<?php echo $id; ?>" name="<?php echo $name; ?>" class="<?php echo join(' ', $classes); ?>" <?php echo Forms::checked($value, true); ?> value="on"<?php $disabled and print ' disabled'; ?> />
 		<?php if(!empty($description)): ?>
