@@ -61,6 +61,13 @@ services:
       - '@jigoshop.helper.scripts'
     tags:
       - { name: jigoshop.admin.settings.tab }
+  jigoshop.admin.settings.payment:
+    class: Jigoshop\Admin\Settings\PaymentTab
+    arguments:
+      - '@jigoshop.options'
+      - '@jigoshop.service.payment'
+    tags:
+      - { name: jigoshop.admin.settings.tab }
   jigoshop.admin.system_info:
     class: Jigoshop\Admin\SystemInfo
     arguments:
