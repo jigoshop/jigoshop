@@ -169,7 +169,7 @@ class Order
 		try {
 			$order = $this->orderService->find($_POST['order']);
 			$shippingMethod = $this->shippingService->get($_POST['method']);
-			$customer = $this->customerService->getShipping($order);
+//			$customer = $this->customerService->getShipping($order);
 			$order->setShippingMethod($shippingMethod, $this->taxService, $customer);
 			$order = $this->rebuildOrder($order);
 			$this->orderService->save($order);
@@ -192,16 +192,16 @@ class Order
 			$order = $this->orderService->find($_POST['order']);
 			switch ($_POST['type']) {
 				case 'shipping':
-					$address = $order->getShippingAddress();
+					$address = $order->getCustomer()->getShippingAddress();
 					break;
 				case 'billing':
 				default:
-					$address = $order->getBillingAddress();
+					$address = $order->getCustomer()->getBillingAddress();
 			}
 
 			$address->setCountry($_POST['value']);
 			$order = $this->rebuildOrder($order);
-			$this->orderService->save($order);
+			$this->orderService->save($order); // TODO: CHECK
 
 			$shipping = array();
 			foreach ($this->shippingService->getEnabled() as $method) {
@@ -266,8 +266,8 @@ class Order
 			),
 			'state' => array(
 				'label' => __('State/Province', 'jigoshop'),
-				'type' => Country::hasStates($order->getBillingAddress()->getCountry()) ? 'select' : 'text',
-				'options' => Country::getStates($order->getBillingAddress()->getCountry()),
+				'type' => Country::hasStates($order->getCustomer()->getBillingAddress()->getCountry()) ? 'select' : 'text',
+				'options' => Country::getStates($order->getCustomer()->getBillingAddress()->getCountry()),
 			),
 			'phone' => array(
 				'label' => __('Phone', 'jigoshop'),
@@ -310,8 +310,8 @@ class Order
 			),
 			'state' => array(
 				'label' => __('State/Province', 'jigoshop'),
-				'type' => Country::hasStates($order->getShippingAddress()->getCountry()) ? 'select' : 'text',
-				'options' => Country::getStates($order->getShippingAddress()->getCountry()),
+				'type' => Country::hasStates($order->getCustomer()->getShippingAddress()->getCountry()) ? 'select' : 'text',
+				'options' => Country::getStates($order->getCustomer()->getShippingAddress()->getCountry()),
 			),
 			'phone' => array(
 				'label' => __('Phone', 'jigoshop'),

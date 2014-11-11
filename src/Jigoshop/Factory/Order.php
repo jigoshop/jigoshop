@@ -4,6 +4,8 @@ namespace Jigoshop\Factory;
 
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
+use Jigoshop\Entity\Customer\Address;
+use Jigoshop\Entity\Customer\CompanyAddress;
 use Jigoshop\Entity\Order as Entity;
 use Jigoshop\Service\CustomerServiceInterface;
 use Jigoshop\Service\ProductServiceInterface;
@@ -67,16 +69,17 @@ class Order implements EntityFactoryInterface
 				$order->setStatus($_POST['order']['status']);
 			}
 
-			if (isset($_POST['order']['billing'])) {
-				$order->setBillingAddress($this->createAddress($_POST['order']['billing']));
-			}
-			if (isset($_POST['order']['shipping'])) {
-				$order->setShippingAddress($this->createAddress($_POST['order']['shipping']));
-			}
-
 			if (!empty($_POST['order']['customer'])) {
 				$order->setCustomer($this->customerService->find($_POST['order']['customer']));
 			}
+
+			// TODO: Do we need to restore billing and shipping addresses?
+//			if (isset($_POST['order']['billing'])) {
+//				$order->getCustomer()->setBillingAddress($this->createAddress($_POST['order']['billing']));
+//			}
+//			if (isset($_POST['order']['shipping'])) {
+//				$order->getCustomer()->setShippingAddress($this->createAddress($_POST['order']['shipping']));
+//			}
 		}
 
 		// TODO: Think on lazy loading of items.
@@ -133,13 +136,13 @@ class Order implements EntityFactoryInterface
 	private function createAddress($data)
 	{
 		if (!empty($data['company'])) {
-			$address = new Entity\CompanyAddress();
+			$address = new CompanyAddress();
 			$address->setCompany($data['company']);
 			if (isset($data['euvatno'])) {
 				$address->setVatNumber($data['euvatno']);
 			}
 		} else {
-			$address = new Entity\Address();
+			$address = new Address();
 		}
 
 		$address->setFirstName($data['first_name']);

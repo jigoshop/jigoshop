@@ -85,9 +85,8 @@ interface OrderInterface
 	 *
 	 * @param Method $method New shipping method.
 	 * @param TaxServiceInterface $taxService Tax service to calculate tax value of shipping.
-	 * @param Customer $customer Customer for tax calculation.
 	 */
-	public function setShippingMethod(Method $method, TaxServiceInterface $taxService, Customer $customer = null);
+	public function setShippingMethod(Method $method, TaxServiceInterface $taxService);
 
 	/**
 	 * Checks whether given shipping method is set for current cart.

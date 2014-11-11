@@ -1,13 +1,13 @@
 <?php
 
-namespace Jigoshop\Entity\Order;
+namespace Jigoshop\Entity\Customer;
 
 use Jigoshop\Helper\Country;
 
 /**
  * Address of company customer.
  *
- * @package Jigoshop\Entity\Order
+ * @package Jigoshop\Entity\Customer
  * @author Amadeusz Starzykiewicz
  */
 class CompanyAddress extends Address

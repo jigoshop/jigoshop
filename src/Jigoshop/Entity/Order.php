@@ -33,10 +33,6 @@ class Order implements EntityInterface, OrderInterface
 	private $customer;
 	/** @var array */
 	private $items = array();
-	/** @var Order\Address */
-	private $billingAddress;
-	/** @var Order\Address */
-	private $shippingAddress;
 	/** @var ShippingMethod */
 	private $shippingMethod;
 	/** @var PaymentMethod */
@@ -68,8 +64,6 @@ class Order implements EntityInterface, OrderInterface
 		$this->wp = $wp;
 
 		$this->customer = new Guest();
-		$this->billingAddress = new Order\Address();
-		$this->shippingAddress = new Order\Address();
 		$this->created_at = new \DateTime();
 		$this->updated_at = new \DateTime();
 
@@ -147,38 +141,6 @@ class Order implements EntityInterface, OrderInterface
 	public function setNumber($number)
 	{
 		$this->number = $number;
-	}
-
-	/**
-	 * @return Order\Address Billing address.
-	 */
-	public function getBillingAddress()
-	{
-		return $this->billingAddress;
-	}
-
-	/**
-	 * @param Order\Address $billingAddress
-	 */
-	public function setBillingAddress($billingAddress)
-	{
-		$this->billingAddress = $billingAddress;
-	}
-
-	/**
-	 * @return Order\Address Shipping address.
-	 */
-	public function getShippingAddress()
-	{
-		return $this->shippingAddress;
-	}
-
-	/**
-	 * @param Order\Address $shippingAddress
-	 */
-	public function setShippingAddress($shippingAddress)
-	{
-		$this->shippingAddress = $shippingAddress;
 	}
 
 	/**
@@ -345,9 +307,8 @@ class Order implements EntityInterface, OrderInterface
 	/**
 	 * @param ShippingMethod $method Method used for shipping the order.
 	 * @param TaxServiceInterface $taxService Tax service to calculate tax value of shipping.
-	 * @param Customer $customer Customer for tax calculation.
 	 */
-	public function setShippingMethod(ShippingMethod $method, TaxServiceInterface $taxService, Customer $customer = null)
+	public function setShippingMethod(ShippingMethod $method, TaxServiceInterface $taxService)
 	{
 		// TODO: Refactor to abstract between cart and order = AbstractOrder
 		$this->removeShippingMethod();
@@ -355,9 +316,9 @@ class Order implements EntityInterface, OrderInterface
 		$this->shippingMethod = $method;
 		$this->shippingPrice = $method->calculate($this);
 		$this->subtotal += $this->shippingPrice;
-		$this->total += $this->shippingPrice + $taxService->calculateShipping($method, $this->shippingPrice, $customer);
+		$this->total += $this->shippingPrice + $taxService->calculateShipping($method, $this->shippingPrice, $this->customer);
 		foreach ($method->getTaxClasses() as $class) {
-			$this->shippingTax[$class] = $taxService->getShipping($method, $this->shippingPrice, $class, $customer);
+			$this->shippingTax[$class] = $taxService->getShipping($method, $this->shippingPrice, $class, $this->customer);
 		}
 	}
 

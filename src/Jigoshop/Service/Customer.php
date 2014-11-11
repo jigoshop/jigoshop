@@ -85,11 +85,12 @@ class Customer implements CustomerServiceInterface
 	{
 		if ($order instanceof Order) {
 			if ($this->options->get('shipping.only_to_billing')) {
-				$address = $order->getBillingAddress();
+				$address = $order->getCustomer()->getBillingAddress();
 			} else {
-				$address = $order->getShippingAddress();
+				$address = $order->getCustomer()->getShippingAddress();
 			}
 
+			// TODO: Get rid of this and use order customer properly
 			$customer = new Entity();
 			$customer->setCountry($address->getCountry());
 			$customer->setState($address->getState());
@@ -111,9 +112,9 @@ class Customer implements CustomerServiceInterface
 	{
 		if ($order instanceof Order) {
 			if ($this->options->get('tax.shipping')) {
-				$address = $order->getShippingAddress();
+				$address = $order->getCustomer()->getShippingAddress();
 			} else {
-				$address = $order->getBillingAddress();
+				$address = $order->getCustomer()->getBillingAddress();
 			}
 
 			$customer = new Entity();

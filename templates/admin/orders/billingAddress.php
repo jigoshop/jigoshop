@@ -3,7 +3,7 @@
  * @var $order \Jigoshop\Entity\Order The order.
  */
 
-$address = $order->getBillingAddress();
+$address = $order->getCustomer()->getBillingAddress();
 ?>
 <address>
 	<?php echo $address; ?>

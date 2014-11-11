@@ -65,7 +65,8 @@ class Checkout implements PageInterface
 			$this->wp->redirectTo($this->options->getPageId(Pages::SHOP));
 		}
 
-		// TODO: Implement action() method.
+		// TODO: Check if everything is set
+		// TODO: Implement placing an order
 	}
 
 	/**
@@ -77,6 +78,8 @@ class Checkout implements PageInterface
 	{
 		$content = $this->wp->getPostField('post_content', $this->options->getPageId(Pages::CHECKOUT));
 		$cart = $this->cartService->getCurrent();
+
+		// TODO: Get billing and shipping fields and filter them
 
 		return Render::get('shop/checkout', array(
 			'cartUrl' => $this->wp->getPermalink($this->options->getPageId(Pages::CART)),

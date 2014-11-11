@@ -1,13 +1,13 @@
 <?php
 
-namespace Jigoshop\Entity\Order;
+namespace Jigoshop\Entity\Customer;
 
 use Jigoshop\Helper\Country;
 
 /**
  * Address of the customer.
  *
- * @package Jigoshop\Entity\Order
+ * @package Jigoshop\Entity\Customer
  * @author Amadeusz Starzykiewicz
  */
 class Address implements \Serializable
@@ -250,6 +250,17 @@ class Address implements \Serializable
 		}
 
 		return $result;
+	}
+
+	public function getLocation()
+	{
+		// TODO: Write documentation about changing customer location string
+		return trim(sprintf(
+			_x('%1$s, %2$s', 'customer', 'jigoshop'),
+			Country::getName($this->getCountry()),
+			Country::hasStates($this->getCountry()) ? Country::getStateName($this->getCountry(), $this->getState()) : $this->getState(),
+			$this->getPostcode()
+		), ' ,');
 	}
 
 	/**

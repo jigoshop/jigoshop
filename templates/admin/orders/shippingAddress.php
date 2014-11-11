@@ -4,7 +4,7 @@
  * @var $order \Jigoshop\Entity\Order The order.
  */
 
-$address = $order->getShippingAddress();
+$address = $order->getCustomer()->getShippingAddress();
 ?>
 <address>
 	<?php echo $address; ?>

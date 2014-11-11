@@ -62,7 +62,7 @@ class Tax implements TaxServiceInterface
 			$customer = $this->customers->getCurrent();
 		}
 
-		$definition = $this->fetch($taxClass, $customer);
+		$definition = $this->fetch($taxClass, $customer->getTaxAddress());
 
 		// TODO: Support for compound taxes
 		if ($this->taxIncludedInPrice) {
@@ -129,7 +129,7 @@ class Tax implements TaxServiceInterface
 			$customer = $this->customers->getCurrent();
 		}
 
-		$definition = $this->fetch($taxClass, $customer);
+		$definition = $this->fetch($taxClass, $customer->getShippingAddress());
 
 		// TODO: Support for compound taxes
 		if ($this->taxIncludedInPrice) {
@@ -143,18 +143,18 @@ class Tax implements TaxServiceInterface
 	 * Finds and returns available tax definitions for selected parameters.
 	 *
 	 * @param $taxClass string Tax class.
-	 * @param $customer \Jigoshop\Entity\Customer Customer to fetch data for.
+	 * @param $address \Jigoshop\Entity\Customer\Address Address to fetch data for.
 	 * @return array Tax definition.
 	 */
-	protected function fetch($taxClass, Customer $customer)
+	protected function fetch($taxClass, Customer\Address $address)
 	{
 		// TODO: Remember downloaded data for each customer separately
 		// TODO: Probably it will be good idea to update getRules() call to fetch and format only proper rules for the customer
-		$rules = array_filter($this->getRules(), function($item) use ($taxClass, $customer) {
+		$rules = array_filter($this->getRules(), function($item) use ($taxClass, $address) {
 			return $item['class'] == $taxClass &&
-				(empty($item['country']) || $item['country'] == $customer->getCountry()) &&
-				(empty($item['states']) || in_array($customer->getState(), $item['states'])) &&
-				(empty($item['postcodes']) || in_array($customer->getPostcode(), $item['postcodes']))
+				(empty($item['country']) || $item['country'] == $address->getCountry()) &&
+				(empty($item['states']) || in_array($address->getState(), $item['states'])) &&
+				(empty($item['postcodes']) || in_array($address->getPostcode(), $item['postcodes']))
 			;
 		});
 
@@ -212,7 +212,7 @@ class Tax implements TaxServiceInterface
 			$customer = $this->customers->getCurrent();
 		}
 
-		$definition = $this->fetch($taxClass, $customer);
+		$definition = $this->fetch($taxClass, $customer->getBillingAddress()); // TODO: Properly fetch name based on all available addresses?
 
 		return sprintf('%s (%s%%)', $definition['label'], $definition['rate']);
 	}

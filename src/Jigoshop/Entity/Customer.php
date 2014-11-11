@@ -2,12 +2,11 @@
 
 namespace Jigoshop\Entity;
 
-use Jigoshop\Helper\Country;
-
 /**
  * Customer entity.
  *
- * TODO: Add shipping and taxing addresses (instead of getTax() and getShipping() methods in service)
+ * TODO: Maybe we can use Customer class in Order to avoid duplicating it?
+ * TODO: Probably it would be nice to store customer data in separate table and link to it in Order then
  *
  * @package Jigoshop\Entity
  */
@@ -17,10 +16,18 @@ class Customer implements EntityInterface
 	private $login;
 	private $email;
 	private $name;
+	private $taxAddress = 'billing';
 
-	private $country;
-	private $state;
-	private $postcode;
+	/** @var Customer\Address */
+	private $billingAddress;
+	/** @var Customer\Address */
+	private $shippingAddress;
+
+	public function __construct()
+	{
+		$this->billingAddress = new Customer\Address();
+		$this->shippingAddress = new Customer\Address();
+	}
 
 	public function getId()
 	{
@@ -86,65 +93,47 @@ class Customer implements EntityInterface
 	}
 
 	/**
-	 * @return string Country code.
+	 * @return Customer\Address
 	 */
-	public function getCountry()
+	public function getBillingAddress()
 	{
-		return $this->country;
+		return $this->billingAddress;
 	}
 
 	/**
-	 * @param string $country New country code for current customer.
+	 * @param Customer\Address $billingAddress
 	 */
-	public function setCountry($country)
+	public function setBillingAddress($billingAddress)
 	{
-		if ($this->country != $country) {
-			$this->country = $country;
-			$this->setState(''); // On country change - also clear state.
+		$this->billingAddress = $billingAddress;
+	}
+
+	/**
+	 * @return Customer\Address
+	 */
+	public function getShippingAddress()
+	{
+		return $this->shippingAddress;
+	}
+
+	/**
+	 * @return Customer\Address
+	 */
+	public function getTaxAddress()
+	{
+		if ($this->taxAddress === 'billing') {
+			return $this->billingAddress;
 		}
+
+		return $this->shippingAddress;
 	}
 
 	/**
-	 * @return string State code or name.
+	 * @param Customer\Address $shippingAddress
 	 */
-	public function getState()
+	public function setShippingAddress($shippingAddress)
 	{
-		return $this->state;
-	}
-
-	/**
-	 * @param string $state New state name or code.
-	 */
-	public function setState($state)
-	{
-		$this->state = $state;
-	}
-
-	/**
-	 * @return string Postcode.
-	 */
-	public function getPostcode()
-	{
-		return $this->postcode;
-	}
-
-	/**
-	 * @param string $postcode New postcode.
-	 */
-	public function setPostcode($postcode)
-	{
-		$this->postcode = $postcode;
-	}
-
-	public function getLocation()
-	{
-		// TODO: Write documentation about changing customer location string
-		return trim(sprintf(
-			_x('%1$s, %2$s', 'customer', 'jigoshop'),
-			Country::getName($this->getCountry()),
-			Country::hasStates($this->getCountry()) ? Country::getStateName($this->getCountry(), $this->getState()) : $this->getState(),
-			$this->getPostcode()
-		), ' ,');
+		$this->shippingAddress = $shippingAddress;
 	}
 
 	public function __toString()
@@ -162,9 +151,8 @@ class Customer implements EntityInterface
 			'login' => $this->login,
 			'email' => $this->email,
 			'name' => $this->name,
-			'country' => $this->country,
-			'state' => $this->state,
-			'postcode' => $this->postcode,
+			'billing' => $this->billingAddress,
+			'shipping' => $this->shippingAddress,
 		);
 	}
 
@@ -186,14 +174,11 @@ class Customer implements EntityInterface
 			$this->name = $state['name'];
 		}
 
-		if (isset($state['country'])) {
-			$this->setCountry($state['country']);
+		if (isset($state['billing'])) {
+			$this->setBillingAddress(unserialize($state['billing']));
 		}
-		if (isset($state['state'])) {
-			$this->setState($state['state']);
-		}
-		if (isset($state['postcode'])) {
-			$this->setPostcode($state['postcode']);
+		if (isset($state['shipping'])) {
+			$this->setShippingAddress(unserialize($state['shipping']));
 		}
 	}
 }

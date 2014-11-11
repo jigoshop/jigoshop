@@ -49,7 +49,7 @@ use Jigoshop\Entity\Order\Status;
 			)); ?>
 		</div>
 		<div class="tab-pane" id="billing-address">
-			<?php $address = $order->getBillingAddress(); ?>
+			<?php $address = $order->getCustomer()->getBillingAddress(); ?>
 			<?php
 			foreach ($billingFields as $field => $definition) {
 				$definition['name'] = "order[billing][{$field}]";
@@ -60,7 +60,7 @@ use Jigoshop\Entity\Order\Status;
 		</div>
 		<?php if(!$billingOnly): ?>
 		<div class="tab-pane" id="shipping-address">
-			<?php $address = $order->getShippingAddress(); ?>
+			<?php $address = $order->getCustomer()->getShippingAddress(); ?>
 			<?php
 			foreach ($shippingFields as $field => $definition) {
 				$definition['name'] = "order[shipping][{$field}]";

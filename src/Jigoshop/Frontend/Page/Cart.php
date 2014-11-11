@@ -86,7 +86,7 @@ class Cart implements PageInterface
 	public function ajaxChangeCountry()
 	{
 		$customer = $this->customerService->getCurrent();
-		$customer->setCountry($_POST['value']);
+		$customer->getShippingAddress()->setCountry($_POST['value']);
 		$this->customerService->save($customer);
 		$cart = $this->cartService->getCurrent();
 
@@ -115,10 +115,10 @@ class Cart implements PageInterface
 
 		$response = $this->getAjaxCartResponse($cart);
 		// Add some additional fields
-		$response['has_states'] = Country::hasStates($customer->getCountry());
-		$response['states'] = Country::getStates($customer->getCountry());
+		$response['has_states'] = Country::hasStates($customer->getShippingAddress()->getCountry());
+		$response['states'] = Country::getStates($customer->getShippingAddress()->getCountry());
 		$response['shipping'] = $shipping;
-		$response['html']['estimation'] = $customer->getLocation();
+		$response['html']['estimation'] = $customer->getShippingAddress()->getLocation();
 		$response['html']['shipping'] = array_map(function($item){ return Product::formatPrice($item); }, $shipping);
 
 		return $response;
@@ -165,7 +165,7 @@ class Cart implements PageInterface
 	public function ajaxChangeState()
 	{
 		$customer = $this->customerService->getCurrent();
-		$customer->setState($_POST['value']);
+		$customer->getShippingAddress()->setState($_POST['value']);
 		$this->customerService->save($customer);
 		$cart = $this->cartService->getCurrent();
 
@@ -181,7 +181,7 @@ class Cart implements PageInterface
 	public function ajaxChangePostcode()
 	{
 		$customer = $this->customerService->getCurrent();
-		$customer->setPostcode($_POST['value']);
+		$customer->getShippingAddress()->setPostcode($_POST['value']);
 		$this->customerService->save($customer);
 		$cart = $this->cartService->getCurrent();
 
@@ -276,7 +276,7 @@ class Cart implements PageInterface
 						}
 
 						$this->cartService->save($cart);
-						$this->wp->wpRedirect($this->wp->getPermalink($this->options->getPageId(Pages::CHECKOUT)));
+						$this->wp->redirectTo($this->options->getPageId(Pages::CHECKOUT));
 					} catch(Exception $e) {
 						$this->messages->addError(sprintf(__('Error occurred while updating cart: %s', 'jigoshop'), $e->getMessage()));
 					}
@@ -314,9 +314,10 @@ class Cart implements PageInterface
 
 	private function updateCustomer(Customer $customer)
 	{
-		$customer->setCountry($_POST['country']);
-		$customer->setState($_POST['state']);
-		$customer->setPostcode($_POST['postcode']);
+		$address = $customer->getShippingAddress();
+		$address->setCountry($_POST['country']);
+		$address->setState($_POST['state']);
+		$address->setPostcode($_POST['postcode']);
 	}
 
 	public function render()

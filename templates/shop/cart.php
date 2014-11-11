@@ -78,7 +78,7 @@ use Jigoshop\Helper\Render;
 						<tr id="shipping-calculator">
 							<th scope="row">
 								<?php _e('Shipping', 'jigoshop'); ?>
-								<p class="small text-muted"><?php echo sprintf(__('Estimated for:<br/><span>%s</span>', 'jigoshop'), $customer->getLocation()); ?></p>
+								<p class="small text-muted"><?php echo sprintf(__('Estimated for:<br/><span>%s</span>', 'jigoshop'), $customer->getShippingAddress()->getLocation()); ?></p>
 							</th>
 							<td>
 								<noscript>
@@ -112,31 +112,31 @@ use Jigoshop\Helper\Render;
 									<div class="panel-body">
 										<?php \Jigoshop\Helper\Forms::select(array(
 											'name' => 'country',
-											'value' => $customer->getCountry(),
+											'value' => $customer->getShippingAddress()->getCountry(),
 											'options' => Country::getAll(), // TODO: Work on restricted selling locations
 										)); ?>
 										<?php \Jigoshop\Helper\Forms::hidden(array(
 											'id' => 'state',
 											'name' => 'state',
-											'value' => $customer->getState(),
+											'value' => $customer->getShippingAddress()->getState(),
 										)); ?>
-										<?php if ($customer->getCountry() && Country::hasStates($customer->getCountry())): ?>
+										<?php if ($customer->getShippingAddress()->getCountry() && Country::hasStates($customer->getShippingAddress()->getCountry())): ?>
 											<?php \Jigoshop\Helper\Forms::select(array(
 												'id' => 'noscript_state',
 												'name' => 'state',
-												'value' => $customer->getState(),
-												'options' => Country::getStates($customer->getCountry()),
+												'value' => $customer->getShippingAddress()->getState(),
+												'options' => Country::getStates($customer->getShippingAddress()->getCountry()),
 											)); ?>
 										<?php else: ?>
 											<?php \Jigoshop\Helper\Forms::text(array(
 												'id' => 'noscript_state',
 												'name' => 'state',
-												'value' => $customer->getState(),
+												'value' => $customer->getShippingAddress()->getState(),
 											)); ?>
 										<?php endif; ?>
 										<?php \Jigoshop\Helper\Forms::text(array(
 											'name' => 'postcode',
-											'value' => $customer->getPostcode(),
+											'value' => $customer->getShippingAddress()->getPostcode(),
 											'placeholder' => __('Postcode', 'jigoshop'),
 										)); ?>
 									</div>
