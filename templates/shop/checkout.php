@@ -24,8 +24,8 @@ $showWithTax = true;
 		<div class="panel-heading">
 			<h3 class="panel-title"><?php _e('Your address', 'jigoshop'); ?></h3>
 		</div>
-		<div class="panel-body clearfix">
-			<div class="row" id="billing-address">
+		<div class="panel-body">
+			<div class="row" id="billing-address clearfix">
 				<?php foreach($billingFields as $field): ?>
 				<div class="col-md-<?php echo $field['columnSize']; ?>">
 					<?php Forms::field($field['type'], $field); ?>
@@ -135,9 +135,9 @@ $showWithTax = true;
 						<td><?php echo Product::formatPrice($tax); ?></td>
 					</tr>
 				<?php endforeach; ?>
-				<tr id="cart-total">
+				<tr id="cart-total" class="info">
 					<th scope="row"><?php _e('Total', 'jigoshop'); ?></th>
-					<td><?php echo Product::formatPrice($cart->getTotal()); ?></td>
+					<td><strong><?php echo Product::formatPrice($cart->getTotal()); ?></strong></td>
 				</tr>
 			</tbody>
 		</table>

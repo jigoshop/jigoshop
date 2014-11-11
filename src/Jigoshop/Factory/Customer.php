@@ -59,6 +59,8 @@ class Customer implements EntityFactoryInterface
 		$customer = new Entity();
 		$state = array();
 
+		// TODO: Fetching customer (if not logged in) data from session
+
 		if($user){
 			$state = array();
 			$meta = $this->wp->getUserMeta($user->ID);
