@@ -60,9 +60,14 @@ class Customer implements EntityFactoryInterface
 		$state = array();
 
 		if($user){
-			$state = array_map(function ($item){
-				return $item[0];
-			}, $this->wp->getUserMeta($user->ID));
+			$state = array();
+			$meta = $this->wp->getUserMeta($user->ID);
+
+			if (is_array($meta)) {
+				$state = array_map(function ($item){
+					return $item[0];
+				}, $meta);
+			}
 
 			$state['id'] = $user->ID;
 			$state['login'] = $user->get('login');
