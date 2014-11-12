@@ -117,14 +117,13 @@ class Order
 		// TODO: Add invalid data protection
 		try {
 			$order = $this->orderService->find($_POST['order']);
-			$customer = $this->customerService->getTax($order);
 
 			$item = $order->removeItem($_POST['product']);
 			$item->setQuantity((int)$_POST['quantity']);
 			$item->setPrice((float)$_POST['price']);
 
 			if ($item->getQuantity() > 0) {
-				$item->setTax($this->taxService->getAll($item, 1, $customer));
+				$item->setTax($this->taxService->getAll($item, 1, $order->getCustomer()));
 				$order->addItem($item);
 			}
 
@@ -169,8 +168,7 @@ class Order
 		try {
 			$order = $this->orderService->find($_POST['order']);
 			$shippingMethod = $this->shippingService->get($_POST['method']);
-//			$customer = $this->customerService->getShipping($order);
-			$order->setShippingMethod($shippingMethod, $this->taxService, $customer);
+			$order->setShippingMethod($shippingMethod, $this->taxService);
 			$order = $this->rebuildOrder($order);
 			$this->orderService->save($order);
 			$result = $this->getAjaxResponse($order);
@@ -363,14 +361,12 @@ class Order
 	 */
 	private function formatItem($order, $product)
 	{
-		$customer = $this->customerService->getTax($order);
-
 		$item = new Item();
 		$item->setType($product->getType());
 		$item->setName($product->getName());
 		// TODO: Item price should ALWAYS be without taxes.
 		$item->setPrice($product->getPrice());
-		$item->setTax($this->taxService->getAll($product, 1, $customer));
+		$item->setTax($this->taxService->getAll($product, 1, $order->getCustomer()));
 		$item->setQuantity(1);
 		$item->setProduct($product);
 
@@ -411,13 +407,11 @@ class Order
 	 */
 	private function getTaxes($order)
 	{
-		$customer = $this->customerService->getTax($order);
-
 		$result = array();
 		$shippingTax = $order->getShippingTax();
 		foreach ($order->getTax() as $class => $value) {
 			$result[$class] = array(
-				'label' => $this->taxService->getLabel($class, $customer),
+				'label' => $this->taxService->getLabel($class, $order->getCustomer()),
 				'value' => ProductHelper::formatPrice($value + $shippingTax[$class]),
 			);
 		}
@@ -431,8 +425,6 @@ class Order
 	 */
 	private function rebuildOrder($order)
 	{
-		$customer = $this->customerService->getTax($order);
-
 		// Recalculate values
 		$items = $order->getItems();
 		$method = $order->getShippingMethod();
@@ -440,12 +432,12 @@ class Order
 
 		foreach ($items as $item) {
 			/** @var $item Item */
-			$item->setTax($this->taxService->getAll($item, 1, $customer));
+			$item->setTax($this->taxService->getAll($item, 1, $order->getCustomer()));
 			$order->addItem($item);
 		}
 
 		if ($method !== null) {
-			$order->setShippingMethod($method, $this->taxService, $customer);
+			$order->setShippingMethod($method, $this->taxService);
 		}
 
 		return $order;

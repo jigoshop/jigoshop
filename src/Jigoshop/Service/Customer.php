@@ -6,7 +6,6 @@ use Jigoshop\Core\Options;
 use Jigoshop\Entity\Customer as Entity;
 use Jigoshop\Entity\EntityInterface;
 use Jigoshop\Entity\Order;
-use Jigoshop\Entity\OrderInterface;
 use Jigoshop\Exception;
 use Jigoshop\Factory\Customer as Factory;
 use WPAL\Wordpress;
@@ -73,59 +72,6 @@ class Customer implements CustomerServiceInterface
 		}
 
 		return $customers;
-	}
-
-	/**
-	 * Prepares and returns customer object for specified order.
-	 *
-	 * @param OrderInterface $order Order to fetch shipping customer from.
-	 * @return \Jigoshop\Entity\Customer
-	 */
-	public function getShipping(OrderInterface $order)
-	{
-		if ($order instanceof Order) {
-			if ($this->options->get('shipping.only_to_billing')) {
-				$address = $order->getCustomer()->getBillingAddress();
-			} else {
-				$address = $order->getCustomer()->getShippingAddress();
-			}
-
-			// TODO: Get rid of this and use order customer properly
-			$customer = new Entity();
-			$customer->setCountry($address->getCountry());
-			$customer->setState($address->getState());
-			$customer->setPostcode($address->getPostcode());
-		} else {
-			$customer = $this->getCurrent();
-		}
-
-		return $customer;
-	}
-
-	/**
-	 * Prepares and returns customer object for specified order.
-	 *
-	 * @param OrderInterface $order Order to fetch tax customer from.
-	 * @return \Jigoshop\Entity\Customer
-	 */
-	public function getTax(OrderInterface $order)
-	{
-		if ($order instanceof Order) {
-			if ($this->options->get('tax.shipping')) {
-				$address = $order->getCustomer()->getShippingAddress();
-			} else {
-				$address = $order->getCustomer()->getBillingAddress();
-			}
-
-			$customer = new Entity();
-			$customer->setCountry($address->getCountry());
-			$customer->setState($address->getState());
-			$customer->setPostcode($address->getPostcode());
-		} else {
-			$customer = $this->getCurrent();
-		}
-
-		return $customer;
 	}
 
 	/**

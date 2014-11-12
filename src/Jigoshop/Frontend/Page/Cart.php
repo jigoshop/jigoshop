@@ -87,6 +87,9 @@ class Cart implements PageInterface
 	{
 		$customer = $this->customerService->getCurrent();
 		$customer->getShippingAddress()->setCountry($_POST['value']);
+		if ($customer->getBillingAddress()->isEmpty()) {
+			$customer->getBillingAddress()->setCountry($_POST['value']);
+		}
 		$this->customerService->save($customer);
 		$cart = $this->cartService->getCurrent();
 
@@ -114,11 +117,12 @@ class Cart implements PageInterface
 		}
 
 		$response = $this->getAjaxCartResponse($cart);
+		$address = $customer->getShippingAddress();
 		// Add some additional fields
-		$response['has_states'] = Country::hasStates($customer->getShippingAddress()->getCountry());
-		$response['states'] = Country::getStates($customer->getShippingAddress()->getCountry());
+		$response['has_states'] = Country::hasStates($address->getCountry());
+		$response['states'] = Country::getStates($address->getCountry());
 		$response['shipping'] = $shipping;
-		$response['html']['estimation'] = $customer->getShippingAddress()->getLocation();
+		$response['html']['estimation'] = $address->getLocation();
 		$response['html']['shipping'] = array_map(function($item){ return Product::formatPrice($item); }, $shipping);
 
 		return $response;
@@ -166,6 +170,9 @@ class Cart implements PageInterface
 	{
 		$customer = $this->customerService->getCurrent();
 		$customer->getShippingAddress()->setState($_POST['value']);
+		if ($customer->getBillingAddress()->isEmpty()) {
+			$customer->getBillingAddress()->setState($_POST['value']);
+		}
 		$this->customerService->save($customer);
 		$cart = $this->cartService->getCurrent();
 
@@ -182,6 +189,9 @@ class Cart implements PageInterface
 	{
 		$customer = $this->customerService->getCurrent();
 		$customer->getShippingAddress()->setPostcode($_POST['value']);
+		if ($customer->getBillingAddress()->isEmpty()) {
+			$customer->getBillingAddress()->setPostcode($_POST['value']);
+		}
 		$this->customerService->save($customer);
 		$cart = $this->cartService->getCurrent();
 
@@ -280,7 +290,6 @@ class Cart implements PageInterface
 					} catch(Exception $e) {
 						$this->messages->addError(sprintf(__('Error occurred while updating cart: %s', 'jigoshop'), $e->getMessage()));
 					}
-					exit;
 				case 'update-cart':
 					if (isset($_POST['cart']) && is_array($_POST['cart'])) {
 						try {
@@ -318,6 +327,13 @@ class Cart implements PageInterface
 		$address->setCountry($_POST['country']);
 		$address->setState($_POST['state']);
 		$address->setPostcode($_POST['postcode']);
+
+		$address = $customer->getBillingAddress();
+		if ($address->isEmpty()) {
+			$address->setCountry($_POST['country']);
+			$address->setState($_POST['state']);
+			$address->setPostcode($_POST['postcode']);
+		}
 	}
 
 	public function render()

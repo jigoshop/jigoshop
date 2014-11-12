@@ -43,14 +43,14 @@ class Order implements EntityFactoryInterface
 	 */
 	public function create($id)
 	{
-		$order = new Entity($this->wp, $this->options->get('tax.classes'));
-		$order->setId($id);
-
 		if (empty($_POST)) {
 			$post = $this->wp->getPost($id);
 
 			return $this->fetch($post);
 		}
+
+		$order = new Entity($this->wp, $this->options->get('tax.classes'));
+		$order->setId($id);
 
 		$date = new \DateTime();
 		if (isset($_POST['aa'])) {
@@ -73,13 +73,12 @@ class Order implements EntityFactoryInterface
 				$order->setCustomer($this->customerService->find($_POST['order']['customer']));
 			}
 
-			// TODO: Do we need to restore billing and shipping addresses?
-//			if (isset($_POST['order']['billing'])) {
-//				$order->getCustomer()->setBillingAddress($this->createAddress($_POST['order']['billing']));
-//			}
-//			if (isset($_POST['order']['shipping'])) {
-//				$order->getCustomer()->setShippingAddress($this->createAddress($_POST['order']['shipping']));
-//			}
+			if (isset($_POST['order']['billing'])) {
+				$order->getCustomer()->setBillingAddress($this->createAddress($_POST['order']['billing']));
+			}
+			if (isset($_POST['order']['shipping'])) {
+				$order->getCustomer()->setShippingAddress($this->createAddress($_POST['order']['shipping']));
+			}
 		}
 
 		// TODO: Think on lazy loading of items.
@@ -110,10 +109,12 @@ class Order implements EntityFactoryInterface
 			$order->setId($post->ID);
 			$state['customer_note'] = $post->post_excerpt;
 			$state['status'] = $post->post_status;
-			$state['customer'] = $this->customerService->find($state['customer']);
+			// Customer must be unserialized twice "thanks" to WordPress second serialization.
+			$state['customer'] = unserialize(unserialize($state['customer']));
 			// TODO: Think on lazy loading of items.
 			$state['items'] = $this->getItems($post->ID);
 			$state['product_subtotal'] = array_reduce($state['items'], function($value, $item){
+				/** @var $item Entity\Item */
 				return $value + $item->getCost();
 			}, 0.0);
 			if ($state['shipping']) {
@@ -125,7 +126,7 @@ class Order implements EntityFactoryInterface
 					);
 				}
 			}
-			$state['subtotal'] = $state['subtotal'];
+			$state['subtotal'] = (float)$state['subtotal'];
 
 			$order->restoreState($state);
 		}

@@ -14,6 +14,11 @@ interface OrderInterface
 	public function getId();
 
 	/**
+	 * @return Customer The customer.
+	 */
+	public function getCustomer();
+
+	/**
 	 * Adds item to the order
 	 * .
 	 * If item is already present - increases it's quantity.

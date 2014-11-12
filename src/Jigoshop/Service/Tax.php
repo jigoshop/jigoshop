@@ -75,10 +75,10 @@ class Tax implements TaxServiceInterface
 	/**
 	 * @param $product Product\Taxable|Product\Purchasable Product to calculate tax for.
 	 * @param int $quantity Quantity of the product.
-	 * @param Customer|null $customer Customer to calculate taxes for.
+	 * @param Customer|null $customer Address to calculate taxes for.
 	 * @return array List of tax values per tax class.
 	 */
-	public function getAll(Product\Taxable $product, $quantity = 1, $customer = null)
+	public function getAll(Product\Taxable $product, $quantity = 1, Customer $customer = null)
 	{
 		$tax = array();
 

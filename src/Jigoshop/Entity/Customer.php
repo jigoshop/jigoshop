@@ -2,6 +2,8 @@
 
 namespace Jigoshop\Entity;
 
+use Jigoshop\Exception;
+
 /**
  * Customer entity.
  *
@@ -114,6 +116,20 @@ class Customer implements EntityInterface
 	public function getShippingAddress()
 	{
 		return $this->shippingAddress;
+	}
+
+	/**
+	 * Selects which address is to be used as tax address.
+	 *
+	 * @param $address string Name of address to be used as tax address.
+	 */
+	public function selectTaxAddress($address)
+	{
+		if (!in_array($address, array('billing', 'shipping'))) {
+			throw new Exception(sprintf(__('Unknown address type: "%s".', 'jigoshop'), $address));
+		}
+
+		$this->taxAddress = $address;
 	}
 
 	/**

@@ -24,6 +24,7 @@ class ProductList extends AbstractProductList
 	{
 		if (isset($_GET['page_id']) && $_GET['page_id'] == $this->options->getPageId(Pages::SHOP)) {
 			$this->wp->wpSafeRedirect($this->wp->getPostTypeArchiveLink(Types::PRODUCT));
+			exit;
 		}
 
 		parent::action();

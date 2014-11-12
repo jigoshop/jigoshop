@@ -28,12 +28,8 @@ services:
     class: Jigoshop\Service\Cart
     arguments:
       - '@wpal'
-      - '@jigoshop.cart'
-  jigoshop.cart:
-    class: Jigoshop\Frontend\Cart
-    arguments:
-      - '@wpal'
       - '@jigoshop.options'
       - '@jigoshop.service.product'
       - '@jigoshop.service.tax'
       - '@jigoshop.service.shipping'
+      - '@jigoshop.service.customer'

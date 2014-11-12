@@ -9,6 +9,7 @@ use Jigoshop\Entity\Order\Status;
 use Jigoshop\Exception;
 use Jigoshop\Payment\Method as PaymentMethod;
 use Jigoshop\Service\TaxServiceInterface;
+use Jigoshop\Shipping\Method;
 use Jigoshop\Shipping\Method as ShippingMethod;
 use WPAL\Wordpress;
 
@@ -560,9 +561,7 @@ class Order implements EntityInterface, OrderInterface
 			'number' => $this->number,
 			'updated_at' => $this->updated_at->getTimestamp(),
 			'items' => $this->items,
-			'billing_address' => serialize($this->billingAddress),
-			'shipping_address' => serialize($this->shippingAddress),
-			'customer' => $this->customer->getId(),
+			'customer' => serialize($this->customer),
 			'shipping' => array(
 				'method' => $this->shippingMethod ? $this->shippingMethod->getState() : false,
 				'price' => $this->shippingPrice,
@@ -593,13 +592,6 @@ class Order implements EntityInterface, OrderInterface
 				$this->addItem($item);
 			}
 		}
-		if (isset($state['billing_address'])) {
-			$this->billingAddress = unserialize($state['billing_address']);
-		}
-		if (isset($state['shipping_address'])) {
-			$this->shippingAddress = unserialize($state['shipping_address']);
-		}
-		// TODO: Properly keep Customer here! Instead of fromOrder() method in Customer service
 		if (isset($state['customer'])) {
 			$this->customer = $state['customer'];
 		}

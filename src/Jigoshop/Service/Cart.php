@@ -2,6 +2,7 @@
 
 namespace Jigoshop\Service;
 
+use Jigoshop\Core\Options;
 use Jigoshop\Frontend\Cart as CartContainer;
 use WPAL\Wordpress;
 
@@ -17,10 +18,12 @@ class Cart implements CartServiceInterface
 	/** @var CartContainer */
 	private $cart;
 
-	public function __construct(Wordpress $wp, CartContainer $cart)
+	public function __construct(Wordpress $wp, Options $options, ProductServiceInterface $productService, TaxServiceInterface $taxService, ShippingServiceInterface $shippingService,
+		CustomerServiceInterface $customerService)
 	{
 		$this->wp = $wp;
-		$this->cart = $cart;
+		$this->cart = new CartContainer($wp, $options, $productService, $taxService, $shippingService);
+		$this->cart->setCustomer($customerService->getCurrent());
 
 		if (!isset($_SESSION[self::CART])) {
 			$_SESSION[self::CART] = array();

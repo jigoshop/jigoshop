@@ -4,7 +4,6 @@ namespace Jigoshop\Service\Cache\Customer;
 
 use Jigoshop\Entity\EntityInterface;
 use Jigoshop\Entity\Order;
-use Jigoshop\Entity\OrderInterface;
 use Jigoshop\Service\CustomerServiceInterface;
 use Jigoshop\Service\Entity;
 use Jigoshop\Service\Exception;
@@ -15,8 +14,6 @@ class Simple implements CustomerServiceInterface
 	private $service;
 	private $current;
 	private $customers = array();
-	private $ordersTax = array();
-	private $ordersShipping = array();
 	private $fetchedAll = false;
 
 	public function __construct(CustomerServiceInterface $service)
@@ -67,36 +64,6 @@ class Simple implements CustomerServiceInterface
 	}
 
 	/**
-	 * Prepares and returns customer object for specified order.
-	 *
-	 * @param OrderInterface $order Order to fetch shipping customer from.
-	 * @return Entity
-	 */
-	public function getShipping(OrderInterface $order)
-	{
-		if (!isset($this->ordersShipping[$order->getId()])) {
-			$this->ordersShipping[$order->getId()] = $this->service->getShipping($order);
-		}
-
-		return $this->ordersShipping[$order->getId()];
-	}
-
-	/**
-	 * Prepares and returns customer object for specified order.
-	 *
-	 * @param OrderInterface $order Order to fetch tax customer from.
-	 * @return Entity
-	 */
-	public function getTax(OrderInterface $order)
-	{
-		if (!isset($this->ordersTax[$order->getId()])) {
-			$this->ordersTax[$order->getId()] = $this->service->getTax($order);
-		}
-
-		return $this->ordersTax[$order->getId()];
-	}
-
-	/**
 	 * Saves product to database.
 	 *
 	 * @param EntityInterface $object Customer to save.
@@ -129,6 +96,4 @@ class Simple implements CustomerServiceInterface
 	{
 		// TODO: Implement findByQuery() method.
 	}
-
-
 }

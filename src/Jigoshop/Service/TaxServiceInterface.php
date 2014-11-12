@@ -33,7 +33,7 @@ interface TaxServiceInterface
 	 * @param Customer|null $customer Customer to calculate taxes for.
 	 * @return array List of tax values per tax class.
 	 */
-	public function getAll(Product\Taxable $product, $quantity = 1, $customer = null);
+	public function getAll(Product\Taxable $product, $quantity = 1, Customer $customer = null);
 
 	/**
 	 * @param Method $method Method to calculate tax for.
@@ -59,10 +59,11 @@ interface TaxServiceInterface
 
 	/**
 	 * @param $taxClass string Tax class to get label for.
+	 * @param Customer|null $customer Customer to calculate taxes for.
 	 * @return string Tax class label
 	 * @throws Exception When tax class is not found.
 	 */
-	public function getLabel($taxClass);
+	public function getLabel($taxClass, $customer = null);
 
 	/**
 	 * Fetches and returns properly formatted list of tax rules.

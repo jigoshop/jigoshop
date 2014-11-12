@@ -229,6 +229,16 @@ class Address implements \Serializable
 	}
 
 	/**
+	 * Checks whether the address lacks location.
+	 *
+	 * @return bool Is address empty?
+	 */
+	public function isEmpty()
+	{
+		return $this->country === null && $this->state === null && $this->postcode === null;
+	}
+
+	/**
 	 * @return string String representation of the whole address.
 	 */
 	public function __toString()

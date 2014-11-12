@@ -33,6 +33,8 @@ class Cart implements OrderInterface
 	private $tax = array();
 	/** @var Method */
 	private $shippingMethod;
+	/** @var Customer */
+	private $customer;
 	private $total = 0.0;
 	private $subtotal = 0.0;
 	private $productSubtotal = 0.0;
@@ -73,6 +75,12 @@ class Cart implements OrderInterface
 
 		if (!empty($data)) {
 			$this->id = $data['id'];
+
+			if (isset($data['customer'])) {
+				$customer = unserialize($data['customer']);
+				$this->setCustomer($customer);
+			}
+
 			$items = unserialize($data['items']);
 			if (isset($data['shipping_method'])) {
 				$this->setShippingMethod($this->shippingService->findForState($data['shipping_method']), $this->taxService);
@@ -386,5 +394,21 @@ class Cart implements OrderInterface
 	public function getShippingTax()
 	{
 		return array();
+	}
+
+	/**
+	 * @return Customer The customer.
+	 */
+	public function getCustomer()
+	{
+		return $this->customer;
+	}
+
+	/**
+	 * @param Customer $customer
+	 */
+	public function setCustomer($customer)
+	{
+		$this->customer = $customer;
 	}
 }

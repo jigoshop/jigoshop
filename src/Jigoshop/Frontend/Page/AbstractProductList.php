@@ -55,7 +55,6 @@ abstract class AbstractProductList implements PageInterface
 				$cart->addItem($item);
 				$this->cartService->save($cart);
 
-
 				$url = false;
 				$button = '';
 				switch ($this->options->get('shopping.redirect_add_to_cart')) {
@@ -77,6 +76,7 @@ abstract class AbstractProductList implements PageInterface
 				if ($url !== false) {
 					$this->messages->preserveMessages();
 					$this->wp->wpRedirect($url);
+					exit;
 				}
 			} catch(Exception $e) {
 				// TODO: Could be improved with `NotEnoughStockException` and others
@@ -104,7 +104,6 @@ abstract class AbstractProductList implements PageInterface
 	 */
 	private function formatItem($product)
 	{
-
 		$item = new Item();
 		$item->setType($product->getType());
 		$item->setName($product->getName());
