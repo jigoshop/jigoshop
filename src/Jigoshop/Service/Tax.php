@@ -129,7 +129,7 @@ class Tax implements TaxServiceInterface
 			$customer = $this->customers->getCurrent();
 		}
 
-		$definition = $this->fetch($taxClass, $customer->getShippingAddress());
+		$definition = $this->fetch($taxClass, $customer->getTaxAddress());
 
 		// TODO: Support for compound taxes
 		if ($this->taxIncludedInPrice) {
@@ -212,7 +212,7 @@ class Tax implements TaxServiceInterface
 			$customer = $this->customers->getCurrent();
 		}
 
-		$definition = $this->fetch($taxClass, $customer->getBillingAddress()); // TODO: Properly fetch name based on all available addresses?
+		$definition = $this->fetch($taxClass, $customer->getTaxAddress()); // TODO: Properly fetch name based on all available addresses?
 
 		return sprintf('%s (%s%%)', $definition['label'], $definition['rate']);
 	}
