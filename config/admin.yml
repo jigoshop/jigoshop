@@ -26,6 +26,7 @@ services:
     arguments:
       - '@wpal'
       - '@jigoshop.options'
+      - '@jigoshop.messages'
       - '@jigoshop.helper.styles'
       - '@jigoshop.helper.scripts'
     tags:

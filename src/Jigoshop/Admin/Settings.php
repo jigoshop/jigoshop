@@ -6,6 +6,7 @@ use Jigoshop\Admin\Helper\Forms;
 use Jigoshop\Admin\Settings\GeneralTab;
 use Jigoshop\Admin\Settings\OwnerTab;
 use Jigoshop\Admin\Settings\TabInterface;
+use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
@@ -26,13 +27,16 @@ class Settings implements PageInterface
 	private $wp;
 	/** @var Options */
 	private $options;
+	/** @var Messages */
+	private $messages;
 	private $tabs = array();
 	private $currentTab;
 
-	public function __construct(Wordpress $wp, Options $options, Styles $styles, Scripts $scripts)
+	public function __construct(Wordpress $wp, Options $options, Messages $messages, Styles $styles, Scripts $scripts)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
+		$this->messages = $messages;
 
 		$wp->addAction('current_screen', array($this, 'register'));
 		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $styles, $scripts) {
@@ -152,6 +156,7 @@ class Settings implements PageInterface
 		Render::output('admin/settings', array(
 			'tabs' => $this->tabs,
 			'current_tab' => $this->getCurrentTab(),
+			'messages' => $this->messages,
 		));
 	}
 
