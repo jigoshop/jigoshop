@@ -34,7 +34,7 @@ class Cheque implements Method
 	 */
 	public function getName()
 	{
-		return __('Cheque', 'jigoshop');
+		return $this->wp->isAdmin() ? __('Cheque', 'jigoshop') : $this->options['title'];
 	}
 
 	/**
@@ -57,7 +57,19 @@ class Cheque implements Method
 				'type' => 'checkbox',
 				'value' => $this->options['enabled'],
 			),
-			// TODO: Other options
+			array(
+				'name' => sprintf('[%s][title]', self::ID),
+				'title' => __('Title', 'jigoshop'),
+				'type' => 'text',
+				'value' => $this->options['title'],
+			),
+			array(
+				'name' => sprintf('[%s][description]', self::ID),
+				'title' => __('Description', 'jigoshop'),
+				'tip' => sprintf(__('Allowed HTML tags are: %s', 'jigoshop'), '<p>, <a>, <strong>, <em>, <b>, <i>'),
+				'type' => 'text',
+				'value' => $this->options['description'],
+			),
 		);
 	}
 
@@ -70,6 +82,8 @@ class Cheque implements Method
 	public function validateOptions($settings)
 	{
 		$settings['enabled'] = $settings['enabled'] == 'on';
+		$settings['title'] = trim(htmlspecialchars(strip_tags($settings['title'])));
+		$settings['description'] = trim(htmlspecialchars(strip_tags($settings['description'], '<p><a><strong><em><b><i>')));
 
 		return $settings;
 	}
@@ -79,12 +93,7 @@ class Cheque implements Method
 	 */
 	public function render()
 	{
-		echo '<p>Test description</p>';
-//		Forms::text(array(
-//			'name' => 'test',
-//			'label' => 'Card number',
-//		));
-		// TODO: Implement render() method.
+		echo $this->options['description'];
 	}
 
 	/**

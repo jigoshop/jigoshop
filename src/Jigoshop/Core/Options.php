@@ -81,6 +81,16 @@ class Options
 				'countries' => array(),
 			),
 		),
+		'payment' => array(
+			'cheque' => array(
+				'enabled' => false,
+				'title' => 'Cheque',
+				'description' => 'Pay with cheque sent to shop prior to dispatching your order.',
+			),
+			'on_delivery' => array(
+				'enabled' => false,
+			),
+		)
 	);
 	private $options = array();
 	private $dirty = false;

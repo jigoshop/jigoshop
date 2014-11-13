@@ -14,7 +14,6 @@ use Jigoshop\Helper\Render;
  * @var $cartUrl string URL to cart.
  * @var $billingFields array Fields to display as billing fields.
  */
-$showWithTax = true;
 ?>
 <h1><?php _e('Checkout', 'jigoshop'); ?></h1>
 <?php Render::output('shop/messages', array('messages' => $messages)); ?>
@@ -170,6 +169,6 @@ $showWithTax = true;
 	</div>
 	<?php endif; ?>
 	<a class="btn btn-default" href="<?php echo $cartUrl; ?>"><?php _e('Back to cart', 'jigoshop'); ?></a>
-	<button class="btn btn-success pull-right clearfix" type="submit"><?php _e('Purchase', 'jigoshop'); ?></button>
+	<button class="btn btn-success pull-right clearfix" name="action" value="purchase" type="submit"><?php _e('Purchase', 'jigoshop'); ?></button>
 </form>
 

@@ -96,6 +96,7 @@ class Checkout implements PageInterface
 			'paymentMethods' => $this->paymentService->getEnabled(),
 			'billingFields' => $billingFields,
 			'shippingFields' => $shippingFields,
+			'showWithTax' => $this->options->get('general.price_tax') == 'with_tax',
 		));
 	}
 
