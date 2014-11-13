@@ -161,7 +161,7 @@ use Jigoshop\Helper\Render;
 		</ul>
 		<noscript>
 			<style type="text/css">
-				.jigoshop form #payment-methods .well.well-sm {
+				.jigoshop form #payment-methods li > div {
 					display: block;
 				}
 			</style>

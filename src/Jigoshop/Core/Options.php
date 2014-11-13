@@ -89,6 +89,8 @@ class Options
 			),
 			'on_delivery' => array(
 				'enabled' => false,
+				'title' => 'On delivery',
+				'description' => 'Pay when your order arrives at your doorstep!',
 			),
 		)
 	);

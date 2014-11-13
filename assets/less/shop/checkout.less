@@ -48,9 +48,13 @@
       height: auto;
     }
 
-    #payment-methods .well.well-sm {
+    #payment-methods li > div {
       margin: @padding-base-horizontal/2 0;
       display: none;
+
+      &.well {
+        min-height: 0;
+      }
     }
   }
 
