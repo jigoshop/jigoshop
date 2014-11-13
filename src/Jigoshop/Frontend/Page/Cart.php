@@ -285,10 +285,18 @@ class Cart implements PageInterface
 							$customer = $this->customerService->getCurrent();
 							$this->updateCustomer($customer);
 						}
-						// Select shipping method
+
+
 						if (isset($_POST['shipping-method'])) {
+							// Select shipping method
 							$method = $this->shippingService->get($_POST['shipping-method']);
 							$cart->setShippingMethod($method, $this->taxService);
+						}
+
+						if ($cart->getShippingMethod() && !$cart->getShippingMethod()->isEnabled()) {
+							$this->messages->addError(__('Please select shipping method.', 'jigoshop'));
+
+							return;
 						}
 
 						$this->cartService->save($cart);
