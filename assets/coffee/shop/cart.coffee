@@ -143,6 +143,7 @@ class Cart
         jQuery('#product-subtotal > td').html(result.html.product_subtotal)
         @_updateTotals(result.html.total, result.html.subtotal)
         @_updateTaxes(result.tax, result.html.tax)
+        @_updateShipping(result.shipping, result.html.shipping)
       @unblock()
 
   _updateTotals: (total, subtotal) ->
@@ -150,13 +151,16 @@ class Cart
     jQuery('#cart-subtotal > td').html(subtotal)
 
   _updateShipping: (shipping, html) ->
-    for own shippingClass, value of html
+    for own shippingClass, value of shipping
       $method = jQuery("#shipping-#{shippingClass}")
-      jQuery('span', $method).html(value)
-      if shipping[shippingClass] != -1
-        $method.show()
+      if $method.length > 0
+        if value > -1
+          jQuery('span', $method).html(html[shippingClass].price)
+        else
+          $method.slideUp -> jQuery(this).remove()
       else
-        $method.hide()
+        $item = jQuery(html[shippingClass].html)
+        $item.hide().appendTo(jQuery('#shipping-methods')).slideDown()
 
   _updateTaxes: (taxes, html) ->
     for own taxClass, tax of html

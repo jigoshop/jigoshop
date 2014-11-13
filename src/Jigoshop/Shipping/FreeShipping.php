@@ -46,8 +46,9 @@ class FreeShipping implements Method
 	 */
 	public function isEnabled()
 	{
-		// TODO: Implement isEnabled() method.
-		return $this->options['enabled'];
+		$cart = $this->cartService->getCurrent();
+
+		return $this->options['enabled'] && $cart->getProductSubtotal() >= $this->options['minimum'];
 	}
 
 	/**
@@ -103,7 +104,6 @@ class FreeShipping implements Method
 	 */
 	public function calculate(OrderInterface $order)
 	{
-		// TODO: Implement calculate() method.
 		return 0.0;
 	}
 

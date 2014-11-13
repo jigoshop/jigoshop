@@ -110,20 +110,12 @@ class Cart implements PageInterface
 	 */
 	private function getAjaxLocationResponse(Customer $customer, \Jigoshop\Frontend\Cart $cart)
 	{
-		$shipping = array();
-		foreach ($this->shippingService->getEnabled() as $method) {
-			/** @var $method Method */
-			$shipping[$method->getId()] = $method->calculate($cart);
-		}
-
 		$response = $this->getAjaxCartResponse($cart);
 		$address = $customer->getShippingAddress();
 		// Add some additional fields
 		$response['has_states'] = Country::hasStates($address->getCountry());
 		$response['states'] = Country::getStates($address->getCountry());
-		$response['shipping'] = $shipping;
 		$response['html']['estimation'] = $address->getLocation();
-		$response['html']['shipping'] = array_map(function($item){ return Product::formatPrice($item); }, $shipping);
 
 		return $response;
 	}
@@ -146,13 +138,26 @@ class Cart implements PageInterface
 			);
 		}
 
+		$shipping = array();
+		foreach ($this->shippingService->getAvailable() as $method) {
+			/** @var $method Method */
+			$shipping[$method->getId()] = $method->isEnabled() ? $method->calculate($cart) : -1;
+		}
+
 		$response = array(
 			'success' => true,
+			'shipping' => $shipping,
 			'subtotal' => $cart->getSubtotal(),
 			'product_subtotal' => $cart->getProductSubtotal(),
 			'tax' => $cart->getTax(),
 			'total' => $cart->getTotal(),
 			'html' => array(
+				'shipping' => array_map(function($item) use ($cart) {
+					return array(
+						'price' => Product::formatPrice($item->calculate($cart)),
+						'html' => Render::get('shop/cart/shipping/method', array('method' => $item, 'cart' => $cart)),
+					);
+				}, $this->shippingService->getEnabled()),
 				'subtotal' => Product::formatPrice($cart->getSubtotal()),
 				'product_subtotal' => Product::formatPrice($cart->getProductSubtotal()),
 				'tax' => $tax,
@@ -234,6 +239,7 @@ class Cart implements PageInterface
 		try {
 			$cart->updateQuantity($_POST['item'], (int)$_POST['quantity']);
 			$item = $cart->getItem($_POST['item']);
+			$this->cartService->save($cart);
 			// TODO: Support for "Prices includes tax"
 			$price = $this->options->get('general.price_tax') == 'with_tax' ? $item->getPrice() + $item->getTotalTax() / $item->getQuantity() : $item->getPrice();
 
