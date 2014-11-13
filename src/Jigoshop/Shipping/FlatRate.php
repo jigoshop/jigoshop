@@ -3,6 +3,7 @@
 namespace Jigoshop\Shipping;
 
 use Jigoshop\Admin\Settings;
+use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\OrderInterface;
@@ -19,6 +20,8 @@ class FlatRate implements Method
 	private $wp;
 	/** @var array */
 	private $options;
+	/** @var Messages */
+	private $messages;
 	/** @var CustomerServiceInterface */
 	private $customerService;
 	/** @var array */
@@ -26,10 +29,11 @@ class FlatRate implements Method
 	/** @var array */
 	private $availability;
 
-	public function __construct(Wordpress $wp, Options $options, CustomerServiceInterface $customerService, Scripts $scripts)
+	public function __construct(Wordpress $wp, Options $options, Messages $messages, CustomerServiceInterface $customerService, Scripts $scripts)
 	{
 		$this->wp = $wp;
 		$this->options = $options->get('shipping.'.self::NAME);
+		$this->messages = $messages;
 		$this->customerService = $customerService;
 		$this->types = array(
 			'per_order' => __('Per order', 'jigoshop'),
@@ -156,10 +160,38 @@ class FlatRate implements Method
 	public function validateOptions($settings)
 	{
 		$settings['enabled'] = $settings['enabled'] == 'on';
-		$settings['type'] = in_array($settings['type'], array_keys($this->types)) ? $settings['type'] : 'per_order';
-		$settings['cost'] = (float)$settings['cost'];
-		$settings['fee'] = (float)$settings['fee'];
-		$settings['available_for'] = in_array($settings['available_for'], array_keys($this->availability)) ? $settings['available_for'] : 'all';
+
+		if (!in_array($settings['type'], array_keys($this->types))) {
+			$settings['type'] = $this->options['type'];
+			$this->messages->addWarning(__('Type is invalid - value is left unchanged.', 'jigoshop'));
+		}
+
+		if (!is_numeric($settings['cost'])) {
+			$settings['cost'] = $this->options['cost'];
+			$this->messages->addWarning(__('Cost was invalid - value is left unchanged.', 'jigoshop'));
+		}
+		if ($settings['cost'] >= 0) {
+			$settings['cost'] = (float)$settings['cost'];
+		} else {
+			$settings['cost'] = $this->options['cost'];
+			$this->messages->addWarning(__('Cost was below 0 - value is left unchanged.', 'jigoshop'));
+		}
+
+		if (!is_numeric($settings['fee'])) {
+			$settings['fee'] = $this->options['fee'];
+			$this->messages->addWarning(__('Fee was invalid - value is left unchanged.', 'jigoshop'));
+		}
+		if ($settings['fee'] >= 0) {
+			$settings['fee'] = (float)$settings['fee'];
+		} else {
+			$settings['fee'] = $this->options['fee'];
+			$this->messages->addWarning(__('Fee was below 0 - value is left unchanged.', 'jigoshop'));
+		}
+
+		if (!in_array($settings['available_for'], array_keys($this->availability))) {
+			$settings['available_for'] = $this->options['available_for'];
+			$this->messages->addWarning(__('Availability is invalid - value is left unchanged.', 'jigoshop'));
+		}
 
 		if ($settings['available_for'] === 'specific') {
 			$settings['countries'] = array_filter($settings['countries'], function($item){

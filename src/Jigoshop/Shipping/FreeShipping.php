@@ -2,9 +2,10 @@
 
 namespace Jigoshop\Shipping;
 
+use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
 use Jigoshop\Entity\OrderInterface;
-use Jigoshop\Frontend\Cart;
+use Jigoshop\Service\CartServiceInterface;
 
 class FreeShipping implements Method
 {
@@ -12,10 +13,16 @@ class FreeShipping implements Method
 
 	/** @var array */
 	private $options;
+	/** @var CartServiceInterface */
+	private $cartService;
+	/** @var Messages */
+	private $messages;
 
-	public function __construct(Options $options)
+	public function __construct(Options $options, CartServiceInterface $cartService, Messages $messages)
 	{
 		$this->options = $options->get('shipping.'.self::NAME);
+		$this->cartService = $cartService;
+		$this->messages = $messages;
 	}
 
 	/**
@@ -55,6 +62,13 @@ class FreeShipping implements Method
 				'type' => 'checkbox',
 				'value' => $this->options['enabled'],
 			),
+			array(
+				'name' => sprintf('[%s][minimum]', self::NAME),
+				'title' => __('Minimum cart value', 'jigoshop'),
+				'description' => __('Minimum cart value from Free Shipping option should be available.', 'jigoshop'),
+				'type' => 'text',
+				'value' => $this->options['minimum'],
+			),
 		);
 	}
 
@@ -67,6 +81,18 @@ class FreeShipping implements Method
 	public function validateOptions($settings)
 	{
 		$settings['enabled'] = $settings['enabled'] == 'on';
+
+		if (!is_numeric($settings['minimum'])) {
+			$settings['minimum'] = $this->options['minimum'];
+			$this->messages->addWarning(__('Minimum cart value was invalid - value is left unchanged.', 'jigoshop'));
+		}
+
+		if ($settings['minimum'] >= 0) {
+			$settings['minimum'] = (int)$settings['minimum'];
+		} else {
+			$settings['minimum'] = $this->options['minimum'];
+			$this->messages->addWarning(__('Minimum cart value was below 0 - value is left unchanged.', 'jigoshop'));
+		}
 
 		return $settings;
 	}

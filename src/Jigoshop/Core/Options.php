@@ -80,6 +80,10 @@ class Options
 				'available_for' => 'all',
 				'countries' => array(),
 			),
+			'free_shipping' => array(
+				'enabled' => false,
+				'minimum' => 0,
+			),
 		),
 		'payment' => array(
 			'cheque' => array(

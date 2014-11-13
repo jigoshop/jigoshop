@@ -5,6 +5,7 @@ services:
     arguments:
       - '@wpal'
       - '@jigoshop.options'
+      - '@jigoshop.messages'
       - '@jigoshop.service.customer'
       - '@jigoshop.helper.scripts'
     tags:
@@ -13,5 +14,7 @@ services:
     class: Jigoshop\Shipping\FreeShipping
     arguments:
       - '@jigoshop.options'
+      - '@jigoshop.service.cart'
+      - '@jigoshop.messages'
     tags:
       - { name: jigoshop.shipping.method }
