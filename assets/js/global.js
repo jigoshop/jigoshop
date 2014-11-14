@@ -147,8 +147,10 @@ jQuery(function($) {
 		}
 		if(!variation.in_stock){
 			$('.single_variation').slideDown();
-		} else {
+		} else if(!variation.no_price) {
 			$('.variations_button, .single_variation').slideDown();
+		} else {
+			$('.single_variation').slideDown();
 		}
 	}
 
