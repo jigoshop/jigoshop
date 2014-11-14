@@ -39,5 +39,9 @@ services:
       - { name: jigoshop.admin.page }
   jigoshop.admin.product.attributes:
     class: Jigoshop\Admin\Product\Attributes
+    arguments:
+      - '@wpal'
+      - '@jigoshop.messages'
+      - '@jigoshop.helper.styles'
     tags:
       - { name: jigoshop.admin.page }

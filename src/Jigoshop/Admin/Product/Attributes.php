@@ -3,6 +3,10 @@
 namespace Jigoshop\Admin\Product;
 
 use Jigoshop\Admin\PageInterface;
+use Jigoshop\Core\Messages;
+use Jigoshop\Helper\Render;
+use Jigoshop\Helper\Styles;
+use WPAL\Wordpress;
 
 /**
  * Product attributes admin page.
@@ -12,6 +16,32 @@ use Jigoshop\Admin\PageInterface;
  */
 class Attributes implements PageInterface
 {
+	const NAME = 'jigoshop_product_attributes';
+
+	/** @var Wordpress */
+	private $wp;
+	/** @var Messages */
+	private $messages;
+
+	public function __construct(Wordpress $wp, Messages $messages, Styles $styles)
+	{
+		$this->wp = $wp;
+		$this->messages = $messages;
+
+		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $styles) {
+			// Weed out all admin pages except the Jigoshop Settings page hits
+			if (!in_array($wp->getPageNow(), array('edit.php'))) {
+				return;
+			}
+
+			$screen = $wp->getCurrentScreen();
+			if (!in_array($screen->base, array('product_page_'.Attributes::NAME))) {
+				return;
+			}
+
+			$styles->add('jigoshop.admin.settings', JIGOSHOP_URL.'/assets/css/admin/settings.css');
+		});
+	}
 	/**
 	 * @return string Title of page.
 	 */
@@ -39,7 +69,7 @@ class Attributes implements PageInterface
 	 */
 	public function getMenuSlug()
 	{
-		return 'jigoshop_product_attributes';
+		return self::NAME;
 	}
 
 	/**
@@ -47,6 +77,9 @@ class Attributes implements PageInterface
 	 */
 	public function display()
 	{
-		// TODO: Implement display() method.
+		Render::output('admin/product_attributes', array(
+			'messages' => $this->messages,
+			'attributes' => array(),
+		));
 	}
 }
