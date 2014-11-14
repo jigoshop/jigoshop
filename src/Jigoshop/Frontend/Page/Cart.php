@@ -294,12 +294,12 @@ class Cart implements PageInterface
 						}
 
 						if ($cart->getShippingMethod() && !$cart->getShippingMethod()->isEnabled()) {
-							$this->messages->addError(__('Please select shipping method.', 'jigoshop'));
-
-							return;
+							$cart->removeShippingMethod();
+							$this->messages->addWarning(__('Previous shipping method is unavailable. Please select different one.', 'jigoshop'));
 						}
 
 						$this->cartService->save($cart);
+						$this->messages->preserveMessages();
 						$this->wp->redirectTo($this->options->getPageId(Pages::CHECKOUT));
 					} catch(Exception $e) {
 						$this->messages->addError(sprintf(__('Error occurred while updating cart: %s', 'jigoshop'), $e->getMessage()));

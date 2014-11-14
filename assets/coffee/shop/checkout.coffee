@@ -10,6 +10,8 @@ class Checkout
     jQuery('#payment-methods').on 'change', 'li input[type=radio]', ->
       jQuery('#payment-methods li > div').slideUp()
       jQuery('div', jQuery(this).closest('li')).slideDown()
+    jQuery('#shipping-calculator')
+      .on 'click', 'input[type=radio]', @selectShipping
 
     # TODO: Copy shipping changing etc. here from Cart
     # TODO: Refactor Cart and Checkout (for sure) to create one place for many shared parameters and functions
@@ -83,7 +85,7 @@ class Checkout
       @unblock()
 
   _updateTotals: (total, subtotal) ->
-    jQuery('#cart-total > td').html(total)
+    jQuery('#cart-total > td > strong').html(total)
     jQuery('#cart-subtotal > td').html(subtotal)
 
   _updateShipping: (shipping, html) ->

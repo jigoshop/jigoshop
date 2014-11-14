@@ -31,6 +31,10 @@ class Cart implements OrderInterface
 	private $id;
 	private $items = array();
 	private $tax = array();
+	/** @var array */
+	private $shippingTax = array();
+	/** @var float */
+	private $shippingPrice = 0.0;
 	/** @var Method */
 	private $shippingMethod;
 	/** @var Customer */
@@ -56,6 +60,7 @@ class Cart implements OrderInterface
 
 		foreach ($this->options->get('tax.classes') as $class) {
 			$this->tax[$class['class']] = 0.0;
+			$this->shippingTax[$class['class']] = 0.0;
 		}
 	}
 
@@ -70,7 +75,9 @@ class Cart implements OrderInterface
 		$this->total = 0.0;
 		$this->subtotal = 0.0;
 		$this->productSubtotal = 0.0;
+		$this->shippingPrice = 0.0;
 		$this->tax = array_map(function(){ return 0.0; }, $this->tax);
+		$this->shippingTax = array_map(function(){ return 0.0; }, $this->shippingTax);
 		$this->shippingMethod = null;
 
 		if (!empty($data)) {
@@ -319,27 +326,36 @@ class Cart implements OrderInterface
 	 *
 	 * @param Method $method New shipping method.
 	 * @param TaxServiceInterface $taxService Tax service to calculate tax value of shipping.
-	 * @param Customer $customer Customer for tax calculation.
 	 */
-	public function setShippingMethod(Method $method, TaxServiceInterface $taxService, Customer $customer = null)
+	public function setShippingMethod(Method $method, TaxServiceInterface $taxService)
 	{
-		// TODO: Improve this part of code.
-		if ($this->shippingMethod !== null) {
-			$price = $this->shippingMethod->calculate($this);
-			$this->subtotal -= $price;
-			$this->total -= $price + $taxService->calculateShipping($this->shippingMethod, $price);
-			foreach ($this->shippingMethod->getTaxClasses() as $class) {
-				$this->tax[$class] -= $taxService->getShipping($this->shippingMethod, $price, $class);
-			}
-		}
+		// TODO: Refactor to abstract between cart and order = AbstractOrder
+		$this->removeShippingMethod();
 
 		$this->shippingMethod = $method;
-		$price = $method->calculate($this);
-		$this->subtotal += $price;
-		$this->total += $price + $taxService->calculateShipping($method, $price);
+		$this->shippingPrice = $method->calculate($this);
+		$this->subtotal += $this->shippingPrice;
+		$this->total += $this->shippingPrice + $taxService->calculateShipping($method, $this->shippingPrice, $this->customer);
 		foreach ($method->getTaxClasses() as $class) {
-			$this->tax[$class] += $taxService->getShipping($method, $price, $class);
+			$this->shippingTax[$class] = $taxService->getShipping($method, $this->shippingPrice, $class, $this->customer);
+			$this->tax[$class] += $this->shippingTax[$class];
 		}
+	}
+
+	/**
+	 * Removes shipping method and associated taxes from the order.
+	 */
+	public function removeShippingMethod()
+	{
+		$this->subtotal -= $this->shippingPrice;
+		$this->total -= $this->shippingPrice + array_reduce($this->shippingTax, function($value, $item){ return $value + $item; }, 0.0);
+
+		$this->shippingMethod = null;
+		$this->shippingPrice = 0.0;
+		foreach ($this->shippingTax as $class => $value) {
+			$this->tax[$class] -= $value;
+		}
+		$this->shippingTax = array_map(function() { return 0.0; }, $this->shippingTax);
 	}
 
 	/**

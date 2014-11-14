@@ -115,13 +115,7 @@ use Jigoshop\Helper\Render;
 					<td>
 						<ul class="list-group">
 							<?php foreach($shippingMethods as $method): /** @var $method \Jigoshop\Shipping\Method */ ?>
-								<li class="list-group-item" id="shipping-<?php echo $method->getId(); ?>">
-									<label>
-										<input type="radio" name="jigoshop_order[shipping_method]" value="<?php echo $method->getId(); ?>" <?php echo Forms::checked($cart->hasShippingMethod($method), true); ?> />
-										<?php echo $method->getName(); ?>
-									</label>
-									<span class="pull-right"><?php echo Product::formatPrice($method->calculate($cart)); ?></span>
-								</li>
+								<?php Render::output('shop/cart/shipping/method', array('method' => $method, 'cart' => $cart)); ?>
 							<?php endforeach; ?>
 						</ul>
 					</td>
