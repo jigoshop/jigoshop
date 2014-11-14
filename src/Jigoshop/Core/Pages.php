@@ -134,7 +134,8 @@ class Pages
 	{
 		if (!isset($this->cache[self::CHECKOUT])) {
 			$page = $this->options->getPageId(self::CHECKOUT);
-			$this->cache[self::CHECKOUT] = $page !== false && $this->wp->isPage($page); // || is_page(jigoshop_get_page_id('pay'))
+			$this->cache[self::CHECKOUT] = $page !== false && $this->wp->isPage($page);
+			$this->cache[self::CHECKOUT] |= $this->isAjax() && strpos($_REQUEST['action'], 'checkout') !== false;
 		}
 
 		return $this->cache[self::CHECKOUT];

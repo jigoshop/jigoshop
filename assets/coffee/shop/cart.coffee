@@ -158,7 +158,7 @@ class Cart
           jQuery('span', $method).html(html[shippingClass].price)
         else
           $method.slideUp -> jQuery(this).remove()
-      else
+      else if html[shippingClass]?
         $item = jQuery(html[shippingClass].html)
         $item.hide().appendTo(jQuery('#shipping-methods')).slideDown()
 

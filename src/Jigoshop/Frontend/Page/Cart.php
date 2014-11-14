@@ -86,10 +86,12 @@ class Cart implements PageInterface
 	public function ajaxChangeCountry()
 	{
 		$customer = $this->customerService->getCurrent();
+
 		$customer->getShippingAddress()->setCountry($_POST['value']);
 		if ($customer->getBillingAddress()->isEmpty()) {
 			$customer->getBillingAddress()->setCountry($_POST['value']);
 		}
+
 		$this->customerService->save($customer);
 		$cart = $this->cartService->getCurrent();
 

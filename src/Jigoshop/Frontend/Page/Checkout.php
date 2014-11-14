@@ -5,12 +5,15 @@ namespace Jigoshop\Frontend\Page;
 use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Pages;
+use Jigoshop\Entity\Customer;
 use Jigoshop\Entity\Customer\Address;
 use Jigoshop\Entity\Customer\CompanyAddress;
 use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\OrderInterface;
 use Jigoshop\Exception;
+use Jigoshop\Frontend\Cart;
 use Jigoshop\Helper\Country;
+use Jigoshop\Helper\Product;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
@@ -61,9 +64,117 @@ class Checkout implements PageInterface
 		$styles->add('jigoshop.vendors', JIGOSHOP_URL.'/assets/css/vendors.min.css');
 		$scripts->add('jigoshop.vendors', JIGOSHOP_URL.'/assets/js/vendors.min.js', array('jquery'));
 		$scripts->add('jigoshop.checkout', JIGOSHOP_URL.'/assets/js/shop/checkout.js', array('jquery', 'jigoshop.vendors'));
+		$scripts->add('jquery-blockui', '//cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.66.0-2013.10.09/jquery.blockUI.min.js');
 		$scripts->localize('jigoshop.checkout', 'jigoshop_checkout', array(
 			'ajax' => $this->wp->getAjaxUrl(),
+			'assets' => JIGOSHOP_URL.'/assets',
+			'i18n' => array(
+				'loading' => __('Loading...', 'jigoshop'),
+			),
 		));
+
+		$wp->addAction('wp_ajax_jigoshop_checkout_change_country', array($this, 'ajaxChangeCountry'));
+		$wp->addAction('wp_ajax_nopriv_jigoshop_checkout_change_country', array($this, 'ajaxChangeCountry'));
+	}
+
+	/**
+	 * Ajax action for changing country.
+	 */
+	public function ajaxChangeCountry()
+	{
+		$customer = $this->customerService->getCurrent();
+
+		switch ($_POST['field']) {
+			case 'shipping':
+				$customer->getShippingAddress()->setCountry($_POST['value']);
+				if ($customer->getBillingAddress()->isEmpty()) {
+					$customer->getBillingAddress()->setCountry($_POST['value']);
+				}
+				break;
+			case 'billing':
+				$customer->getBillingAddress()->setCountry($_POST['value']);
+				if ($_POST['differentShipping'] === 'false') {
+					$customer->getShippingAddress()->setCountry($_POST['value']);
+				}
+				break;
+		}
+
+		$this->customerService->save($customer);
+		$cart = $this->cartService->getCurrent();
+
+		$response = $this->getAjaxLocationResponse($customer, $cart);
+
+		echo json_encode($response);
+		exit;
+	}
+
+	/**
+	 * Abstraction for location update response.
+	 *
+	 * Prepares and returns array of updated data for location change requests.
+	 *
+	 * @param Customer $customer The customer (for location).
+	 * @param Cart $cart Current cart.
+	 * @return array
+	 */
+	private function getAjaxLocationResponse(Customer $customer, Cart $cart)
+	{
+		$response = $this->getAjaxCartResponse($cart);
+		$address = $customer->getShippingAddress();
+		// Add some additional fields
+		$response['has_states'] = Country::hasStates($address->getCountry());
+		$response['states'] = Country::getStates($address->getCountry());
+		$response['html']['estimation'] = $address->getLocation();
+
+		return $response;
+	}
+
+	/**
+	 * Abstraction for cart update response.
+	 *
+	 * Prepares and returns response array for cart update requests.
+	 *
+	 * @param Cart $cart Current cart.
+	 * @return array
+	 */
+	private function getAjaxCartResponse(Cart $cart)
+	{
+		$tax = array();
+		foreach ($cart->getTax() as $class => $value) {
+			$tax[$class] = array(
+				'label' => $cart->getTaxLabel($class),
+				'value' => Product::formatPrice($value),
+			);
+		}
+
+		$shipping = array();
+		foreach ($this->shippingService->getAvailable() as $method) {
+			/** @var $method Method */
+			$shipping[$method->getId()] = $method->isEnabled() ? $method->calculate($cart) : -1;
+		}
+
+		$response = array(
+			'success' => true,
+			'shipping' => $shipping,
+			'subtotal' => $cart->getSubtotal(),
+			'product_subtotal' => $cart->getProductSubtotal(),
+			'tax' => $cart->getTax(),
+			'total' => $cart->getTotal(),
+			'html' => array(
+				'shipping' => array_map(function($item) use ($cart) {
+					return array(
+						'price' => Product::formatPrice($item->calculate($cart)),
+						'html' => Render::get('shop/cart/shipping/method', array('method' => $item, 'cart' => $cart)),
+					);
+				}, $this->shippingService->getEnabled()),
+				'subtotal' => Product::formatPrice($cart->getSubtotal()),
+				'product_subtotal' => Product::formatPrice($cart->getProductSubtotal()),
+				'tax' => $tax,
+				'total' => Product::formatPrice($cart->getTotal()),
+			),
+		);
+
+		return $response;
 	}
 	/**
 	 * Executes actions associated with selected page.

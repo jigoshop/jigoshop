@@ -19,7 +19,7 @@ use Jigoshop\Helper\Render;
 <h1><?php _e('Checkout', 'jigoshop'); ?></h1>
 <?php Render::output('shop/messages', array('messages' => $messages)); ?>
 <?php echo wpautop(wptexturize($content)); ?>
-<form action="" role="form" method="post">
+<form action="" role="form" method="post" id="checkout">
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			<h3 class="panel-title"><?php _e('Your address', 'jigoshop'); ?></h3>
@@ -113,7 +113,7 @@ use Jigoshop\Helper\Render;
 				<tr id="shipping-calculator">
 					<th scope="row"><?php _e('Shipping', 'jigoshop'); ?></th>
 					<td>
-						<ul class="list-group">
+						<ul class="list-group" id="shipping-methods">
 							<?php foreach($shippingMethods as $method): /** @var $method \Jigoshop\Shipping\Method */ ?>
 								<?php Render::output('shop/cart/shipping/method', array('method' => $method, 'cart' => $cart)); ?>
 							<?php endforeach; ?>
