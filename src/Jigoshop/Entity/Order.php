@@ -9,8 +9,8 @@ use Jigoshop\Entity\Order\Status;
 use Jigoshop\Exception;
 use Jigoshop\Payment\Method as PaymentMethod;
 use Jigoshop\Service\TaxServiceInterface;
-use Jigoshop\Shipping\Method as ShippingMethod;
 use Jigoshop\Shipping\Method;
+use Jigoshop\Shipping\Method as ShippingMethod;
 use WPAL\Wordpress;
 
 /**
@@ -37,7 +37,7 @@ class Order implements EntityInterface, OrderInterface
 	/** @var ShippingMethod */
 	private $shippingMethod;
 	/** @var PaymentMethod */
-	private $payment;
+	private $paymentMethod;
 	/** @var float */
 	private $productSubtotal;
 	/** @var float */
@@ -297,15 +297,15 @@ class Order implements EntityInterface, OrderInterface
 	 */
 	public function getPaymentMethod()
 	{
-		return $this->payment;
+		return $this->paymentMethod;
 	}
 
 	/**
 	 * @param PaymentMethod $payment Method used to pay.
 	 */
-	public function setPayment($payment)
+	public function setPaymentMethod($payment)
 	{
-		$this->payment = $payment;
+		$this->paymentMethod = $payment;
 	}
 
 	/**
@@ -577,7 +577,7 @@ class Order implements EntityInterface, OrderInterface
 				'method' => $this->shippingMethod ? $this->shippingMethod->getState() : false,
 				'price' => $this->shippingPrice,
 			),
-			'payment' => $this->payment ? $this->payment->getId() : false, // TODO: Maybe a state as for shipping methods?
+			'payment' => $this->paymentMethod ? $this->paymentMethod->getId() : false, // TODO: Maybe a state as for shipping methods?
 			'customer_note' => $this->customerNote,
 			'total' => $this->total,
 			'subtotal' => $this->subtotal,
@@ -611,7 +611,7 @@ class Order implements EntityInterface, OrderInterface
 			$this->shippingPrice = $state['shipping']['price'];
 		}
 		if (isset($state['payment']) && !empty($state['payment'])) {
-			$this->payment = $state['payment'];
+			$this->paymentMethod = $state['payment'];
 		}
 		if (isset($state['customer_note'])) {
 			$this->customerNote = $state['customer_note'];

@@ -289,9 +289,9 @@ class Cart implements PageInterface
 						}
 
 
-						if (isset($_POST['shipping-method'])) {
+						if (isset($_POST['jigoshop_order']['shipping_method'])) {
 							// Select shipping method
-							$method = $this->shippingService->get($_POST['shipping-method']);
+							$method = $this->shippingService->get($_POST['jigoshop_order']['shipping_method']);
 							$cart->setShippingMethod($method, $this->taxService);
 						}
 

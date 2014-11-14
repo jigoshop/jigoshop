@@ -56,4 +56,22 @@ class Status
 
 		return self::$statuses;
 	}
+
+	/**
+	 * Returns status name.
+	 *
+	 * If name is not found - returns given identifier.
+	 *
+	 * @param $status string Status identifier.
+	 * @return string Status name.
+	 */
+	public static function getName($status)
+	{
+		if (!self::exists($status)) {
+			return $status;
+		}
+
+		$statuses = self::getStatuses();
+		return $statuses[$status];
+	}
 }

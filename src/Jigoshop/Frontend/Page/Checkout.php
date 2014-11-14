@@ -261,6 +261,7 @@ class Checkout implements PageInterface
 		if (isset($_POST['action']) && $_POST['action'] == 'purchase') {
 			try {
 				$order = $this->orderService->createFromCart($cart);
+				$this->customerService->save($order->getCustomer());
 
 				$shipping = $order->getShippingMethod();
 				if ($this->isShippingRequired($order) && (!$shipping || !$shipping->isEnabled())) {
@@ -273,8 +274,6 @@ class Checkout implements PageInterface
 					throw new Exception(__('Payment is required for this order. Please select payment method.', 'jigoshop'));
 				}
 
-				var_dump('ok'); exit;
-
 				$this->orderService->save($order);
 
 				if ($isPaymentRequired && !$payment->process($order)) {
@@ -283,7 +282,8 @@ class Checkout implements PageInterface
 
 				// Redirect to thank you page
 				$url = $this->wp->getPermalink($this->options->getPageId(Pages::THANK_YOU));
-				$url = $this->wp->addQueryArgs(array('order' => $order->getId()), $url);
+				$this->cartService->remove($cart);
+				$url = $this->wp->addQueryArgs(array('order' => $order->getId()), $url); // TODO: Add randomly generated key to prevent data leakage
 				$this->wp->wpRedirect($url);
 				exit;
 			} catch(Exception $e) {

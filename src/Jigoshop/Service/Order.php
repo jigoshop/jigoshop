@@ -94,8 +94,10 @@ class Order implements OrderServiceInterface
 		}
 
 		if (!$object->getId()) {
+			$object->setNumber($this->getNextOrderNumber());
 			$post = $this->wp->wpInsertPost(array(
 				'post_type' => Types::ORDER,
+				'post_title' => $object->getTitle(),
 			));
 
 			if (!is_int($post) || $post === 0) {
@@ -106,7 +108,7 @@ class Order implements OrderServiceInterface
 		}
 
 		if (!$object->getNumber()) {
-			$object->setNumber($object->getId()); // TODO: Support for continuous numeration and custom order numbers
+			$object->setNumber($this->getNextOrderNumber());
 		}
 
 		$fields = $object->getStateToSave();
@@ -204,7 +206,9 @@ class Order implements OrderServiceInterface
 			if ($data['post_status'] !== 'trash') {
 				// TODO: Create order only single time (not twice, here and in savePost).
 				$order = $this->factory->create($post['ID']);
-				$data['post_title'] = $order->getTitle();
+				if (empty($data['post_title'])) {
+					$data['post_title'] = $order->getTitle();
+				}
 				$data['post_status'] = $_POST['post_status'] = $order->getStatus();
 			}
 
@@ -318,5 +322,11 @@ class Order implements OrderServiceInterface
 		}
 		$query = $wpdb->prepare("DELETE FROM {$wpdb->prefix}jigoshop_order_item WHERE id NOT IN ({$ids}) AND order_id = %d", array($order));
 		$wpdb->query($query);
+	}
+
+	private function getNextOrderNumber()
+	{
+		$wpdb = $this->wp->getWPDB();
+		return $wpdb->get_var($wpdb->prepare("SELECT MAX(ID)+1 FROM {$wpdb->posts} WHERE post_type = %s", array(Types::ORDER)));
 	}
 }

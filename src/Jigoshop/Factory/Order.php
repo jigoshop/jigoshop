@@ -134,6 +134,9 @@ class Order implements EntityFactoryInterface
 					);
 				}
 			}
+			if ($state['payment']) {
+				$state['payment'] = $this->paymentService->get($state['payment']);
+			}
 			$state['subtotal'] = (float)$state['subtotal'];
 
 			$order->restoreState($state);
@@ -189,7 +192,7 @@ class Order implements EntityFactoryInterface
 
 		if (isset($_POST['jigoshop_order']['payment_method'])) {
 			$payment = $this->paymentService->get($_POST['jigoshop_order']['payment_method']);
-			$order->setPayment($payment);
+			$order->setPaymentMethod($payment);
 		}
 
 		if (isset($_POST['jigoshop_order']['shipping_method'])) {
