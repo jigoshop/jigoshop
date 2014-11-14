@@ -879,7 +879,9 @@ class jigoshop_product extends Jigoshop_Base {
 				if ( $child->is_in_stock() ) {
 					if ( $child->is_on_sale() ) $onsale = true; // signal at least one child is on sale
 					// store product id for later, get regular or sale price if available
-					$array[$child_ID] = $child->get_price();
+					if( $child->get_price() != null ) {
+						$array[$child_ID] = $child->get_price();
+					}
 				}
 			}
 			asort( $array );	// cheapest price first
