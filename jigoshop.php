@@ -156,6 +156,7 @@ include_once('classes/jigoshop_tax.class.php');
 include_once('classes/jigoshop_shipping.class.php');
 include_once('classes/jigoshop_coupons.class.php');
 include_once('classes/jigoshop_licence_validator.class.php');
+include_once('classes/jigoshop_emails.class.php');
 
 include_once('gateways/gateways.class.php');
 include_once('gateways/gateway.class.php');
@@ -243,7 +244,8 @@ function jigoshop_admin_toolbar() {
 	$manage_orders = current_user_can('manage_jigoshop_orders');
 	$manage_jigoshop = current_user_can('manage_jigoshop');
 	$view_reports = current_user_can('view_jigoshop_reports');
-
+	$manege_emails = current_user_can('manage_jigoshop_emails');
+	
 	if (!is_admin() && ($manage_jigoshop || $manage_products || $manage_orders || $view_reports)) {
 		$wp_admin_bar->add_node(array(
 			'id' => 'jigoshop',
@@ -288,6 +290,15 @@ function jigoshop_admin_toolbar() {
 				'title' => __('Settings', 'jigoshop'),
 				'parent' => 'jigoshop',
 				'href' => admin_url('admin.php?page=jigoshop_settings'),
+			));
+		}
+		
+		if($manege_emails) {
+			$wp_admin_bar->add_node(array(
+				'id' => 'jigoshop_emils',
+				'title' => __('Emails', 'jigoshop'),
+				'parent' => 'jigoshop',
+				'href' => admin_url('admin.php?page=jigoshop_emails'),
 			));
 		}
 	}
@@ -376,10 +387,11 @@ function jigoshop_get_core_capabilities()
 		'view_jigoshop_reports',
 		'manage_jigoshop_orders',
 		'manage_jigoshop_coupons',
-		'manage_jigoshop_products'
+		'manage_jigoshop_products',
+		'manage_jigoshop_emails'
 	);
 
-	$capability_types = array('product', 'shop_order', 'shop_coupon');
+	$capability_types = array('product', 'shop_order', 'shop_coupon', 'shop_email');
 	foreach ($capability_types as $capability_type) {
 		$capabilities[$capability_type] = array(
 			// Post type
@@ -904,7 +916,7 @@ function jigoshop_is_admin_page()
 {
 	global $current_screen;
 
-	if ($current_screen->post_type == 'product' || $current_screen->post_type == 'shop_order' || $current_screen->post_type == 'shop_coupon') {
+	if ($current_screen->post_type == 'product' || $current_screen->post_type == 'shop_order' || $current_screen->post_type == 'shop_coupon' || $current_screen->post_type == 'shop_email') {
 		return $current_screen->post_type;
 	}
 
