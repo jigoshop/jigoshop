@@ -9,6 +9,7 @@ use Jigoshop\Entity\Customer\CompanyAddress;
 use Jigoshop\Entity\Order as Entity;
 use Jigoshop\Exception;
 use Jigoshop\Frontend\Cart;
+use Jigoshop\Helper\Country;
 use Jigoshop\Service\CustomerServiceInterface;
 use Jigoshop\Service\PaymentServiceInterface;
 use Jigoshop\Service\ProductServiceInterface;
@@ -148,18 +149,37 @@ class Order implements EntityFactoryInterface
 		$address = $this->createAddress($_POST['jigoshop_order']['billing']);
 		$customer->setBillingAddress($address);
 
-		if (!$address->isValid() || $address->getEmail() == null || $address->getPhone() == null) {
-			throw new Exception(__('Billing address is not valid.', 'jigoshop'));
+		$billingErrors = $this->validateAddress($address);
+
+		if ($address->getEmail() == null || $address->getPhone() == null) {
+			if ($address->getEmail() == null) {
+				$billingErrors[] = __('Email address is empty.', 'jigoshop');
+			}
+			if ($address->getPhone() == null) {
+				$billingErrors[] = __('Phone is empty.', 'jigoshop');
+			}
+		}
+
+		if (filter_var($address->getEmail(), FILTER_VALIDATE_EMAIL) === false) {
+			$billingErrors[] = __('Email address is invalid.', 'jigoshop');
 		}
 
 		if ($_POST['jigoshop_order']['different_shipping'] == 'on') {
 			$address = $this->createAddress($_POST['jigoshop_order']['shipping']);
+			$shippingErrors = $this->validateAddress($address);
 		}
 
 		$customer->setShippingAddress($address);
 
-		if (!$address->isValid()) {
-			throw new Exception(__('Shipping address is not valid.', 'jigoshop'));
+		$error = '';
+		if (!empty($billingErrors)) {
+			$error .= $this->prepareAddressError(__('Billing address is not valid.', 'jigoshop'), $billingErrors);
+		}
+		if (!empty($shippingErrors)) {
+			$error .= $this->prepareAddressError(__('Shipping address is not valid.', 'jigoshop'), $shippingErrors);
+		}
+		if (!empty($error)) {
+			throw new Exception($error);
 		}
 
 		$order = new Entity($this->wp, $this->options->get('tax.classes'));
@@ -274,8 +294,43 @@ class Order implements EntityFactoryInterface
 		}, $items);
 	}
 
-	private function getNewOrderNumber()
+	private function validateAddress($address)
 	{
+		$errors = array();
 
+		if (!$address->isValid()) {
+			if ($address->getFirstName() == null) {
+				$errors[] = __('First name is empty.', 'jigoshop');
+			}
+			if ($address->getLastName() == null) {
+				$errors[] = __('Last name is empty.', 'jigoshop');
+			}
+			if ($address->getAddress() == null) {
+				$errors[] = __('Address is empty.', 'jigoshop');
+			}
+			if ($address->getCountry() == null) {
+				$errors[] = __('Country is not selected.', 'jigoshop');
+			}
+			if ($address->getState() == null) {
+				$errors[] = __('State or province is not selected.', 'jigoshop');
+			}
+			if ($address->getPostcode() == null) {
+				$errors[] = __('Postcode is empty.', 'jigoshop');
+			}
+		}
+
+		if (!Country::exists($address->getCountry())) {
+			$errors[] = sprintf(__('Country "%s" does not exist.', 'jigoshop'), $address->getCountry());
+		}
+		if (Country::hasStates($address->getCountry()) && !Country::hasState($address->getCountry(), $address->getState())) {
+			$errors[] = sprintf(__('Country "%s" does not have state "%s".', 'jigoshop'), $address->getCountry(), $address->getState());
+		}
+
+		return $errors;
+	}
+
+	private function prepareAddressError($message, $errors)
+	{
+		return $message.'<ul><li>'.join('</li><li>', $errors).'</li></ul>';
 	}
 }
