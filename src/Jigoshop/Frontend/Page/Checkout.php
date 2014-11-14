@@ -7,12 +7,16 @@ use Jigoshop\Core\Options;
 use Jigoshop\Core\Pages;
 use Jigoshop\Entity\Customer\Address;
 use Jigoshop\Entity\Customer\CompanyAddress;
+use Jigoshop\Entity\Order\Item;
+use Jigoshop\Entity\OrderInterface;
+use Jigoshop\Exception;
 use Jigoshop\Helper\Country;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
 use Jigoshop\Service\CartServiceInterface;
 use Jigoshop\Service\CustomerServiceInterface;
+use Jigoshop\Service\OrderServiceInterface;
 use Jigoshop\Service\PaymentServiceInterface;
 use Jigoshop\Service\ShippingServiceInterface;
 use Jigoshop\Service\TaxServiceInterface;
@@ -36,9 +40,11 @@ class Checkout implements PageInterface
 	private $paymentService;
 	/** @var TaxServiceInterface */
 	private $taxService;
+	/** @var OrderServiceInterface */
+	private $orderService;
 
 	public function __construct(Wordpress $wp, Options $options, Messages $messages, CartServiceInterface $cartService,	CustomerServiceInterface $customerService,
-		ShippingServiceInterface $shippingService, PaymentServiceInterface $paymentService, TaxServiceInterface $taxService, Styles $styles, Scripts $scripts)
+		ShippingServiceInterface $shippingService, PaymentServiceInterface $paymentService, TaxServiceInterface $taxService, OrderServiceInterface $orderService, Styles $styles, Scripts $scripts)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
@@ -48,6 +54,7 @@ class Checkout implements PageInterface
 		$this->shippingService = $shippingService;
 		$this->paymentService = $paymentService;
 		$this->taxService = $taxService;
+		$this->orderService = $orderService;
 
 		$styles->add('jigoshop', JIGOSHOP_URL.'/assets/css/shop.css');
 		$styles->add('jigoshop.checkout', JIGOSHOP_URL.'/assets/css/shop/checkout.css');
@@ -70,8 +77,38 @@ class Checkout implements PageInterface
 			$this->wp->redirectTo($this->options->getPageId(Pages::SHOP));
 		}
 
-		// TODO: Check if everything is set
-		// TODO: Implement placing an order
+		if (isset($_POST['action']) && $_POST['action'] == 'purchase') {
+			try {
+				$order = $this->orderService->createFromCart($cart);
+
+				$shipping = $order->getShippingMethod();
+				if ($this->isShippingRequired($order) && (!$shipping || !$shipping->isEnabled())) {
+					throw new Exception(__('Shipping is required for this order. Please select shipping method.', 'jigoshop'));
+				}
+
+				$payment = $order->getPaymentMethod();
+				$isPaymentRequired = $this->isPaymentRequired($order);
+				if ($isPaymentRequired && (!$payment || !$payment->isEnabled())) {
+					throw new Exception(__('Payment is required for this order. Please select payment method.', 'jigoshop'));
+				}
+
+				var_dump('ok'); exit;
+
+				$this->orderService->save($order);
+
+				if ($isPaymentRequired && !$payment->process($order)) {
+					throw new Exception(__('Payment failed. Please try again.', 'jigoshop'));
+				}
+
+				// Redirect to thank you page
+				$url = $this->wp->getPermalink($this->options->getPageId(Pages::THANK_YOU));
+				$url = $this->wp->addQueryArgs(array('order' => $order->getId()), $url);
+				$this->wp->wpRedirect($url);
+				exit;
+			} catch(Exception $e) {
+				$this->messages->addError($e->getMessage());
+			}
+		}
 	}
 
 	/**
@@ -97,6 +134,7 @@ class Checkout implements PageInterface
 			'billingFields' => $billingFields,
 			'shippingFields' => $shippingFields,
 			'showWithTax' => $this->options->get('general.price_tax') == 'with_tax',
+			'differentShipping' => isset($_POST['jigoshop_order']) ? $_POST['jigoshop_order']['different_shipping'] == 'on' : false, // TODO: Fetch whether user want different shipping by default
 		));
 	}
 
@@ -106,7 +144,7 @@ class Checkout implements PageInterface
 			array(
 				'type' => 'text',
 				'label' => __('First name', 'jigoshop'),
-				'name' => 'order[billing][first_name]',
+				'name' => 'jigoshop_order[billing][first_name]',
 				'value' => $address->getFirstName(),
 				'size' => 9,
 				'columnSize' => 6,
@@ -114,7 +152,7 @@ class Checkout implements PageInterface
 			array(
 				'type' => 'text',
 				'label' => __('Last name', 'jigoshop'),
-				'name' => 'order[billing][last_name]',
+				'name' => 'jigoshop_order[billing][last_name]',
 				'value' => $address->getLastName(),
 				'size' => 9,
 				'columnSize' => 6,
@@ -122,7 +160,7 @@ class Checkout implements PageInterface
 			array(
 				'type' => 'text',
 				'label' => __('Company', 'jigoshop'),
-				'name' => 'order[billing][company]',
+				'name' => 'jigoshop_order[billing][company]',
 				'value' => $address instanceof CompanyAddress ? $address->getCompany() : '',
 				'size' => 9,
 				'columnSize' => 6,
@@ -130,7 +168,7 @@ class Checkout implements PageInterface
 			array(
 				'type' => 'text',
 				'label' => __('EU VAT number', 'jigoshop'),
-				'name' => 'order[billing][eu_vat]',
+				'name' => 'jigoshop_order[billing][eu_vat]',
 				'value' => $address instanceof CompanyAddress ? $address->getEuVat() : '',
 				'size' => 9,
 				'columnSize' => 6,
@@ -138,7 +176,7 @@ class Checkout implements PageInterface
 			array(
 				'type' => 'text',
 				'label' => __('Address', 'jigoshop'),
-				'name' => 'order[billing][address]',
+				'name' => 'jigoshop_order[billing][address]',
 				'value' => $address->getAddress(),
 				'size' => 10,
 				'columnSize' => 12,
@@ -146,7 +184,7 @@ class Checkout implements PageInterface
 			array(
 				'type' => 'select',
 				'label' => __('Country', 'jigoshop'),
-				'name' => 'order[billing][country]',
+				'name' => 'jigoshop_order[billing][country]',
 				'options' => Country::getAll(),
 				'value' => $address->getCountry(),
 				'size' => 9,
@@ -155,7 +193,7 @@ class Checkout implements PageInterface
 			array(
 				'type' => Country::hasStates($address->getCountry()) ? 'select' : 'text',
 				'label' => __('State/Province', 'jigoshop'),
-				'name' => 'order[billing][state]',
+				'name' => 'jigoshop_order[billing][state]',
 				'options' => Country::getStates($address->getCountry()),
 				'value' => $address->getState(),
 				'size' => 9,
@@ -164,7 +202,7 @@ class Checkout implements PageInterface
 			array(
 				'type' => 'text',
 				'label' => __('City', 'jigoshop'),
-				'name' => 'order[billing][city]',
+				'name' => 'jigoshop_order[billing][city]',
 				'value' => $address->getCity(),
 				'size' => 9,
 				'columnSize' => 6,
@@ -172,7 +210,7 @@ class Checkout implements PageInterface
 			array(
 				'type' => 'text',
 				'label' => __('Postcode', 'jigoshop'),
-				'name' => 'order[billing][postcode]',
+				'name' => 'jigoshop_order[billing][postcode]',
 				'value' => $address->getPostcode(),
 				'size' => 9,
 				'columnSize' => 6,
@@ -180,7 +218,7 @@ class Checkout implements PageInterface
 			array(
 				'type' => 'text',
 				'label' => __('Phone', 'jigoshop'),
-				'name' => 'order[billing][phone]',
+				'name' => 'jigoshop_order[billing][phone]',
 				'value' => $address->getPhone(),
 				'size' => 9,
 				'columnSize' => 6,
@@ -188,7 +226,7 @@ class Checkout implements PageInterface
 			array(
 				'type' => 'text',
 				'label' => __('Email', 'jigoshop'),
-				'name' => 'order[billing][email]',
+				'name' => 'jigoshop_order[billing][email]',
 				'value' => $address->getEmail(),
 				'size' => 9,
 				'columnSize' => 6,
@@ -202,7 +240,7 @@ class Checkout implements PageInterface
 			array(
 				'type' => 'text',
 				'label' => __('First name', 'jigoshop'),
-				'name' => 'order[shipping][first_name]',
+				'name' => 'jigoshop_order[shipping][first_name]',
 				'value' => $address->getFirstName(),
 				'size' => 9,
 				'columnSize' => 6,
@@ -210,7 +248,7 @@ class Checkout implements PageInterface
 			array(
 				'type' => 'text',
 				'label' => __('Last name', 'jigoshop'),
-				'name' => 'order[shipping][last_name]',
+				'name' => 'jigoshop_order[shipping][last_name]',
 				'value' => $address->getLastName(),
 				'size' => 9,
 				'columnSize' => 6,
@@ -218,7 +256,7 @@ class Checkout implements PageInterface
 			array(
 				'type' => 'text',
 				'label' => __('Company', 'jigoshop'),
-				'name' => 'order[shipping][company]',
+				'name' => 'jigoshop_order[shipping][company]',
 				'value' => $address instanceof CompanyAddress ? $address->getCompany() : '',
 				'size' => 9,
 				'columnSize' => 6,
@@ -226,7 +264,7 @@ class Checkout implements PageInterface
 			array(
 				'type' => 'text',
 				'label' => __('Address', 'jigoshop'),
-				'name' => 'order[shipping][address]',
+				'name' => 'jigoshop_order[shipping][address]',
 				'value' => $address->getAddress(),
 				'size' => 10,
 				'columnSize' => 12,
@@ -234,7 +272,7 @@ class Checkout implements PageInterface
 			array(
 				'type' => 'select',
 				'label' => __('Country', 'jigoshop'),
-				'name' => 'order[shipping][country]',
+				'name' => 'jigoshop_order[shipping][country]',
 				'options' => Country::getAll(),
 				'value' => $address->getCountry(),
 				'size' => 9,
@@ -243,7 +281,7 @@ class Checkout implements PageInterface
 			array(
 				'type' => Country::hasStates($address->getCountry()) ? 'select' : 'text',
 				'label' => __('State/Province', 'jigoshop'),
-				'name' => 'order[shipping][state]',
+				'name' => 'jigoshop_order[shipping][state]',
 				'options' => Country::getStates($address->getCountry()),
 				'value' => $address->getState(),
 				'size' => 9,
@@ -252,7 +290,7 @@ class Checkout implements PageInterface
 			array(
 				'type' => 'text',
 				'label' => __('City', 'jigoshop'),
-				'name' => 'order[shipping][city]',
+				'name' => 'jigoshop_order[shipping][city]',
 				'value' => $address->getCity(),
 				'size' => 9,
 				'columnSize' => 6,
@@ -260,11 +298,36 @@ class Checkout implements PageInterface
 			array(
 				'type' => 'text',
 				'label' => __('Postcode', 'jigoshop'),
-				'name' => 'order[shipping][postcode]',
+				'name' => 'jigoshop_order[shipping][postcode]',
 				'value' => $address->getPostcode(),
 				'size' => 9,
 				'columnSize' => 6,
 			),
 		);
+	}
+
+	/**
+	 * @param $order OrderInterface The order.
+	 * @return bool
+	 */
+	private function isPaymentRequired($order)
+	{
+		return $order->getTotal() > 0;
+	}
+
+	/**
+	 * @param $order OrderInterface The order.
+	 * @return bool
+	 */
+	private function isShippingRequired($order)
+	{
+		foreach ($order->getItems() as $item) {
+			/** @var $item Item */
+			if ($item->isShippable()) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

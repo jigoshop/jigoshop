@@ -7,9 +7,13 @@ use Jigoshop\Core\Types;
 use Jigoshop\Entity\Customer\Address;
 use Jigoshop\Entity\Customer\CompanyAddress;
 use Jigoshop\Entity\Order as Entity;
+use Jigoshop\Exception;
+use Jigoshop\Frontend\Cart;
 use Jigoshop\Service\CustomerServiceInterface;
+use Jigoshop\Service\PaymentServiceInterface;
 use Jigoshop\Service\ProductServiceInterface;
 use Jigoshop\Service\ShippingServiceInterface;
+use Jigoshop\Service\TaxServiceInterface;
 use WPAL\Wordpress;
 
 class Order implements EntityFactoryInterface
@@ -24,15 +28,19 @@ class Order implements EntityFactoryInterface
 	private $productService;
 	/** @var ShippingServiceInterface */
 	private $shippingService;
+	/** @var PaymentServiceInterface */
+	private $paymentService;
 
 	public function __construct(Wordpress $wp, Options $options, CustomerServiceInterface $customerService, ProductServiceInterface $productService,
-		ShippingServiceInterface $shippingService)
+		ShippingServiceInterface $shippingService, PaymentServiceInterface $paymentService, TaxServiceInterface $taxService)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->customerService = $customerService;
 		$this->productService = $productService;
 		$this->shippingService = $shippingService;
+		$this->paymentService = $paymentService;
+		$this->taxService = $taxService;
 	}
 
 	/**
@@ -59,7 +67,6 @@ class Order implements EntityFactoryInterface
 		}
 
 		$order->setCreatedAt($date);
-		$order->setNumber($id); // TODO: Support for continuous numeration and custom order numbers
 		$order->setUpdatedAt(new \DateTime());
 		if (isset($_POST['post_excerpt'])) {
 			$order->setCustomerNote($_POST['post_excerpt']);
@@ -132,6 +139,49 @@ class Order implements EntityFactoryInterface
 		}
 
 		return $this->wp->applyFilters('jigoshop\find\order', $order, $state);
+	}
+
+	public function fromCart(Cart $cart)
+	{
+		$customer = $cart->getCustomer();
+		$customer->selectTaxAddress($this->options->get('taxes.shipping') ? 'shipping' : 'billing');
+		$address = $this->createAddress($_POST['jigoshop_order']['billing']);
+		$customer->setBillingAddress($address);
+
+		if (!$address->isValid() || $address->getEmail() == null || $address->getPhone() == null) {
+			throw new Exception(__('Billing address is not valid.', 'jigoshop'));
+		}
+
+		if ($_POST['jigoshop_order']['different_shipping'] == 'on') {
+			$address = $this->createAddress($_POST['jigoshop_order']['shipping']);
+		}
+
+		$customer->setShippingAddress($address);
+
+		if (!$address->isValid()) {
+			throw new Exception(__('Shipping address is not valid.', 'jigoshop'));
+		}
+
+		$order = new Entity($this->wp, $this->options->get('tax.classes'));
+		$order->setCustomer($customer);
+		$order->setCustomerNote(trim(htmlspecialchars(strip_tags($_POST['jigoshop_order']['note']))));
+		$order->setStatus(Entity\Status::CREATED);
+
+		if (isset($_POST['jigoshop_order']['payment_method'])) {
+			$payment = $this->paymentService->get($_POST['jigoshop_order']['payment_method']);
+			$order->setPayment($payment);
+		}
+
+		if (isset($_POST['jigoshop_order']['shipping_method'])) {
+			$shipping = $this->shippingService->get($_POST['jigoshop_order']['shipping_method']);
+			$order->setShippingMethod($shipping, $this->taxService);
+		}
+
+		foreach ($cart->getItems() as $item) {
+			$order->addItem($item);
+		}
+
+		return $order;
 	}
 
 	private function createAddress($data)
@@ -222,5 +272,10 @@ class Order implements EntityFactoryInterface
 		return array_map(function($item) use ($that){
 			return $that->formatOrderItem($item);
 		}, $items);
+	}
+
+	private function getNewOrderNumber()
+	{
+
 	}
 }

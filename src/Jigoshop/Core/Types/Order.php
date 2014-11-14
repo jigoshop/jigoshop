@@ -55,7 +55,7 @@ class Order implements Post
 			'map_meta_cap' => true,
 			'hierarchical' => false,
 			'rewrite' => false,
-			'query_var' => true,
+			'query_var' => false,
 			'supports' => array('title', 'comments'),
 			'has_archive' => false,
 			'menu_position' => 58,

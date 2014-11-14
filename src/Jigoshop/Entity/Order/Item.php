@@ -27,7 +27,7 @@ class Item implements Product\Purchasable, Product\Taxable
 	private $tax = array();
 	/** @var float */
 	private $totalTax = 0.0;
-	/** @var Product */
+	/** @var Product|Product\Purchasable */
 	private $product;
 	/** @var string */
 	private $type;
@@ -172,5 +172,15 @@ class Item implements Product\Purchasable, Product\Taxable
 	public function getTaxClasses()
 	{
 		return array_keys($this->tax);
+	}
+
+	/**
+	 * Checks whether the product requires shipping.
+	 *
+	 * @return bool Whether the product requires shipping.
+	 */
+	public function isShippable()
+	{
+		return $this->product->isShippable();
 	}
 }

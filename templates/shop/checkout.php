@@ -13,6 +13,7 @@ use Jigoshop\Helper\Render;
  * @var $showWithTax bool Whether to show product price with or without tax.
  * @var $cartUrl string URL to cart.
  * @var $billingFields array Fields to display as billing fields.
+ * @var $differentShipping boolean Whether to use different shipping address.
  */
 ?>
 <h1><?php _e('Checkout', 'jigoshop'); ?></h1>
@@ -27,18 +28,19 @@ use Jigoshop\Helper\Render;
 			<div class="row" id="billing-address clearfix">
 				<?php foreach($billingFields as $field): ?>
 				<div class="col-md-<?php echo $field['columnSize']; ?>">
+					<!-- TODO: Proper form validation - maybe it's good idea to use Symfony component? -->
 					<?php Forms::field($field['type'], $field); ?>
 				</div>
 				<?php endforeach; ?>
 			</div>
 			<?php Forms::checkbox(array(
 				'label' => __('Different shipping address', 'jigoshop'),
-				'name' => 'order[different_shipping]',
+				'name' => 'jigoshop_order[different_shipping]',
 				'id' => 'different_shipping',
-				'value' => false,
+				'value' => $differentShipping,
 				'size' => 9
 			)); ?>
-			<div class="row clearfix not-active" id="shipping-address">
+			<div class="row clearfix<?php !$differentShipping and print ' not-active'; ?>" id="shipping-address">
 				<h4><?php _e('Shipping address', 'jigoshop'); ?></h4>
 				<?php foreach($shippingFields as $field): ?>
 					<div class="col-md-<?php echo $field['columnSize']; ?>">
@@ -96,7 +98,7 @@ use Jigoshop\Helper\Render;
 		<div class="panel-body">
 			<?php Forms::textarea(array(
 				'label' => '',
-				'name' => 'order[note]',
+				'name' => 'jigoshop_order[note]',
 				'rows' => 3,
 				'size' => 12,
 			)); ?>
@@ -115,7 +117,7 @@ use Jigoshop\Helper\Render;
 							<?php foreach($shippingMethods as $method): /** @var $method \Jigoshop\Shipping\Method */ ?>
 								<li class="list-group-item" id="shipping-<?php echo $method->getId(); ?>">
 									<label>
-										<input type="radio" name="shipping-method" value="<?php echo $method->getId(); ?>" <?php echo Forms::checked($cart->hasShippingMethod($method), true); ?> />
+										<input type="radio" name="jigoshop_order[shipping_method]" value="<?php echo $method->getId(); ?>" <?php echo Forms::checked($cart->hasShippingMethod($method), true); ?> />
 										<?php echo $method->getName(); ?>
 									</label>
 									<span class="pull-right"><?php echo Product::formatPrice($method->calculate($cart)); ?></span>
@@ -150,7 +152,7 @@ use Jigoshop\Helper\Render;
 			<?php foreach($paymentMethods as $method): /** @var $method \Jigoshop\Payment\Method */ ?>
 				<li class="list-group-item" id="payment-<?php echo $method->getId(); ?>">
 					<label>
-						<input type="radio" name="payment-method" value="<?php echo $method->getId(); ?>" />
+						<input type="radio" name="jigoshop_order[payment_method]" value="<?php echo $method->getId(); ?>" />
 						<?php echo $method->getName(); ?>
 					</label>
 					<div class="well well-sm">

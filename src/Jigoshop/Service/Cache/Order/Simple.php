@@ -4,6 +4,7 @@ namespace Jigoshop\Service\Cache\Order;
 
 use Jigoshop\Entity\EntityInterface;
 use Jigoshop\Entity\Order;
+use Jigoshop\Frontend\Cart;
 use Jigoshop\Service\OrderServiceInterface;
 
 /**
@@ -82,6 +83,17 @@ class Simple implements OrderServiceInterface
 		$this->queries = array();
 		$this->objects[$object->getId()] = $object;
 		$this->service->save($object);
+	}
+
+	/**
+	 * Prepares order based on cart.
+	 *
+	 * @param Cart $cart Cart to fetch data from.
+	 * @return Order Prepared order.
+	 */
+	public function createFromCart(Cart $cart)
+	{
+		return $this->service->createFromCart($cart);
 	}
 
 	/**

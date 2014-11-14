@@ -166,4 +166,14 @@ class Simple extends Product implements Purchasable
 			'id' => $this->getId(),
 		);
 	}
+
+	/**
+	 * Checks whether the product requires shipping.
+	 *
+	 * @return bool Whether the product requires shipping.
+	 */
+	public function isShippable()
+	{
+		return true;
+	}
 }

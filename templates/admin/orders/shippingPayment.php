@@ -3,7 +3,7 @@
  * @var $order \Jigoshop\Entity\Order The order.
  */
 $hasShipping = $order->getShippingMethod() !== null;
-$hasPayment = $order->getPayment() !== null;
+$hasPayment = $order->getPaymentMethod() !== null;
 ?>
 <?php if($hasPayment || $hasShipping): ?>
 <dl>
@@ -13,7 +13,7 @@ $hasPayment = $order->getPayment() !== null;
 	<?php endif; ?>
 	<?php if($hasPayment): ?>
 	<dd class="payment"><?php _e('Payment', 'jigoshop'); ?></dd>
-	<dt class="payment"><?php echo $order->getPayment()->getName(); ?></dt>
+	<dt class="payment"><?php echo $order->getPaymentMethod()->getName(); ?></dt>
 	<?php endif; ?>
 </dl>
 <?php endif; ?>

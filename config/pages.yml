@@ -74,5 +74,6 @@ services:
       - '@jigoshop.service.shipping'
       - '@jigoshop.service.payment'
       - '@jigoshop.service.tax'
+      - '@jigoshop.service.order'
       - '@jigoshop.helper.styles'
       - '@jigoshop.helper.scripts'

@@ -76,7 +76,7 @@ class JigoshopInit
 	public function init()
 	{
 		// Override default translations with custom .mo's found in wp-content/languages/jigoshop first.
-		load_textdomain('jigoshop', WP_LANG_DIR.'/jigoshop/jigoshop-'.get_locale().'.mo');
+		load_textdomain('jigoshop', WP_LANG_DIR.'/jigoshop/'.get_locale().'.mo');
 		load_plugin_textdomain('jigoshop', false, JIGOSHOP_DIR.'/languages/');
 
 		// Add links in Plugins page

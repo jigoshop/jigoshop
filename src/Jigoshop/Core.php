@@ -56,39 +56,4 @@ class Core
 		$this->wp->addFilter('template_include', array($this->template, 'process'));
 		$this->wp->addFilter('template_redirect', array($this->template, 'redirect'));
 	}
-
-	/**
-	 * @return \WPAL\Wordpress WordPress abstraction instance.
-	 */
-	public function getWordpress()
-	{
-		return $this->wp;
-	}
-
-	/**
-	 * @return Options Options holder.
-	 * @since 2.0
-	 */
-	public function getOptions()
-	{
-		return $this->options;
-	}
-
-	/**
-	 * @return Messages Messages container.
-	 * @since 2.0
-	 */
-	public function getMessages()
-	{
-		return $this->messages;
-	}
-
-	/**
-	 * @return Pages Helper for checking Jigoshop pages.
-	 * @since 2.0
-	 */
-	public function getPages()
-	{
-		return $this->pages;
-	}
 }

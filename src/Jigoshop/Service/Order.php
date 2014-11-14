@@ -7,6 +7,7 @@ use Jigoshop\Entity\EntityInterface;
 use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\Order\Status;
 use Jigoshop\Factory\Order as Factory;
+use Jigoshop\Frontend\Cart;
 use WPAL\Wordpress;
 
 /**
@@ -92,6 +93,22 @@ class Order implements OrderServiceInterface
 			throw new Exception('Trying to save not an order!');
 		}
 
+		if (!$object->getId()) {
+			$post = $this->wp->wpInsertPost(array(
+				'post_type' => Types::ORDER,
+			));
+
+			if (!is_int($post) || $post === 0) {
+				throw new Exception(__('Unable to save order. Please try again.', 'jigoshop'));
+			}
+
+			$object->setId($post);
+		}
+
+		if (!$object->getNumber()) {
+			$object->setNumber($object->getId()); // TODO: Support for continuous numeration and custom order numbers
+		}
+
 		$fields = $object->getStateToSave();
 
 		/** @var \Jigoshop\Entity\Order $object */
@@ -146,6 +163,17 @@ class Order implements OrderServiceInterface
 		foreach ($fields as $field => $value) {
 			$this->wp->updatePostMeta($object->getId(), $field, esc_sql($value)); // TODO: Replace esc_sql() with WPAL
 		}
+	}
+
+	/**
+	 * Prepares order based on cart.
+	 *
+	 * @param Cart $cart Cart to fetch data from.
+	 * @return Order Prepared order.
+	 */
+	public function createFromCart(Cart $cart)
+	{
+		return $this->factory->fromCart($cart);
 	}
 
 	/**
