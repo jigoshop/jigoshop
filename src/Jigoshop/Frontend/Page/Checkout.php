@@ -75,6 +75,10 @@ class Checkout implements PageInterface
 
 		$wp->addAction('wp_ajax_jigoshop_checkout_change_country', array($this, 'ajaxChangeCountry'));
 		$wp->addAction('wp_ajax_nopriv_jigoshop_checkout_change_country', array($this, 'ajaxChangeCountry'));
+		$wp->addAction('wp_ajax_jigoshop_checkout_change_state', array($this, 'ajaxChangeState'));
+		$wp->addAction('wp_ajax_nopriv_jigoshop_checkout_change_state', array($this, 'ajaxChangeState'));
+		$wp->addAction('wp_ajax_jigoshop_checkout_change_postcode', array($this, 'ajaxChangePostcode'));
+		$wp->addAction('wp_ajax_nopriv_jigoshop_checkout_change_postcode', array($this, 'ajaxChangePostcode'));
 	}
 
 	/**
@@ -101,6 +105,7 @@ class Checkout implements PageInterface
 
 		$this->customerService->save($customer);
 		$cart = $this->cartService->getCurrent();
+		$cart->setCustomer($customer);
 
 		$response = $this->getAjaxLocationResponse($customer, $cart);
 
@@ -176,6 +181,71 @@ class Checkout implements PageInterface
 
 		return $response;
 	}
+
+	/**
+	 * Ajax action for changing state.
+	 */
+	public function ajaxChangeState()
+	{
+		$customer = $this->customerService->getCurrent();
+
+		switch ($_POST['field']) {
+			case 'shipping':
+				$customer->getShippingAddress()->setState($_POST['value']);
+				if ($customer->getBillingAddress()->isEmpty()) {
+					$customer->getBillingAddress()->setState($_POST['value']);
+				}
+				break;
+			case 'billing':
+				$customer->getBillingAddress()->setState($_POST['value']);
+				if ($_POST['differentShipping'] === 'false') {
+					$customer->getShippingAddress()->setState($_POST['value']);
+				}
+				break;
+		}
+
+		$this->customerService->save($customer);
+		$cart = $this->cartService->getCurrent();
+		$cart->setCustomer($customer);
+
+		$response = $this->getAjaxLocationResponse($customer, $cart);
+
+		echo json_encode($response);
+		exit;
+	}
+
+	/**
+	 * Ajax action for changing postcode.
+	 */
+	public function ajaxChangePostcode()
+	{
+		$customer = $this->customerService->getCurrent();
+
+		switch ($_POST['field']) {
+			case 'shipping':
+				$customer->getShippingAddress()->setPostcode($_POST['value']);
+				if ($customer->getBillingAddress()->isEmpty()) {
+					$customer->getBillingAddress()->setPostcode($_POST['value']);
+				}
+				break;
+			case 'billing':
+				$customer->getBillingAddress()->setPostcode($_POST['value']);
+				if ($_POST['differentShipping'] === 'false') {
+					$customer->getShippingAddress()->setPostcode($_POST['value']);
+				}
+				break;
+		}
+
+		$this->customerService->save($customer);
+		$cart = $this->cartService->getCurrent();
+		$cart->setCustomer($customer);
+
+		$response = $this->getAjaxLocationResponse($customer, $cart);
+
+		echo json_encode($response);
+		exit;
+	}
+
 	/**
 	 * Executes actions associated with selected page.
 	 */

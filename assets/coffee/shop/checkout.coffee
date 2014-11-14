@@ -6,6 +6,9 @@ class Checkout
       loading: 'Loading...'
 
   constructor: (@params) ->
+    @_prepareStateField("#jigoshop_order_billing_state")
+    @_prepareStateField("#jigoshop_order_shipping_state")
+
     jQuery('#different_shipping').on 'change', ->
       jQuery('#shipping-address').slideToggle()
       if (jQuery(this).is(':checked'))
@@ -21,6 +24,10 @@ class Checkout
       @updateCountry('billing', event)
     jQuery('#jigoshop_order_shipping_country').on 'change', (event) =>
       @updateCountry('shipping', event)
+    jQuery('#jigoshop_order_billing_state').on 'change', @updateState.bind(@, 'billing')
+    jQuery('#jigoshop_order_shipping_state').on 'change', @updateState.bind(@, 'shipping')
+    jQuery('#jigoshop_order_billing_postcode').on 'change', @updatePostcode.bind(@, 'billing')
+    jQuery('#jigoshop_order_shipping_postcode').on 'change', @updatePostcode.bind(@, 'shipping')
 
     # TODO: Copy shipping changing etc. here from Cart
     # TODO: Refactor Cart and Checkout (for sure) to create one place for many shared parameters and functions
@@ -37,6 +44,25 @@ class Checkout
 
   unblock: ->
     jQuery('#checkout > button').unblock()
+
+  _prepareStateField: (id) ->
+    $field = jQuery(id)
+    if !$field.is('select')
+      return
+    $replacement = jQuery(document.createElement('input'))
+    .attr('type', 'text')
+    .attr('id', $field.attr('id'))
+    .attr('name', $field.attr('name'))
+    .attr('class', $field.attr('class'))
+    .val($field.val())
+    data = []
+    jQuery('option', $field).each ->
+      data.push
+        id: jQuery(this).val()
+        text: jQuery(this).html()
+    $field.replaceWith($replacement)
+    $replacement.select2
+      data: data
 
   selectShipping: =>
     jQuery.ajax(@params.ajax,
@@ -86,23 +112,26 @@ class Checkout
       @unblock()
 
   updateState: (field) =>
-    @_updateShippingField('jigoshop_cart_change_state', jQuery(field).val())
+    fieldClass = "#jigoshop_order_#{field}_state"
+    @_updateShippingField('jigoshop_checkout_change_state', field, jQuery(fieldClass).val())
 
-  updatePostcode: =>
-    @_updateShippingField('jigoshop_cart_change_postcode', jQuery('#postcode').val())
+  updatePostcode: (field) =>
+    fieldClass = "#jigoshop_order_#{field}_postcode"
+    @_updateShippingField('jigoshop_checkout_change_postcode', field, jQuery(fieldClass).val())
 
-  _updateShippingField: (action, value) =>
+  _updateShippingField: (action, field, value) =>
     @block()
     jQuery.ajax(@params.ajax,
       type: 'post'
       dataType: 'json'
       data:
         action: action
+        field: field
+        differentShipping: jQuery('#different_shipping').is(':checked')
         value: value
     )
     .done (result) =>
       if result.success == true
-        jQuery('#shipping-calculator th p > span').html(result.html.estimation)
         @_updateTotals(result.html.total, result.html.subtotal)
         @_updateTaxes(result.tax, result.html.tax)
         @_updateShipping(result.shipping, result.html.shipping)
