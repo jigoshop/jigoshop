@@ -796,6 +796,28 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 				'id' => 'jigoshop_error_disappear_time',
 				'type' => 'natural',
 			),
+			array('name' => __('Email Details', 'jigoshop'), 'type' => 'title', 'desc' => ''),
+			array(
+				'name' => __('Jigoshop email address', 'jigoshop'),
+				'desc' => '',
+				'tip' => __('The email address used to send all Jigoshop related emails, such as order confirmations and notices.  This may be different than your Company email address on "Shop Tab -> Invoicing".', 'jigoshop'),
+				'id' => 'jigoshop_email',
+				'type' => 'email',
+			),
+			array(
+				'name' => __('Email from name', 'jigoshop'),
+				'desc' => '',
+				'tip' => __('', 'jigoshop'),
+				'id' => 'jigoshop_email_from_name',
+				'type' => 'text',
+			),
+			array(
+				'name' => __('Email footer', 'jigoshop'),
+				'desc' => '',
+				'tip' => __('The email footer used in all jigoshop emails.', 'jigoshop'),
+				'id' => 'jigoshop_email_footer',
+				'type' => 'textarea',
+			),
 			array('name' => __('Checkout page', 'jigoshop'), 'type' => 'title', 'desc' => ''),
 			array(
 				'name' => __('Validate postal/zip codes', 'jigoshop'),
