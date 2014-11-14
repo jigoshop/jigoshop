@@ -432,11 +432,15 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 
 			// Set variation meta data
 			$meta['regular_price'] = jigoshop_sanitize_num($meta['regular_price']);
-			if (!is_numeric($meta['regular_price'])) {
+			if (!empty($meta['regular_price']) && !is_numeric($meta['regular_price'])) {
 				add_filter('redirect_post_location', function ($location){
 					return add_query_arg('jigoshop_message', 'invalid_variation_price', $location);
 				});
 				$meta['regular_price'] = 0.0;
+			}
+
+			if(empty($meta['regular_price'])){
+					$meta['regular_price'] = null;
 			}
 
 			update_post_meta($ID, 'sku', $meta['sku']);
