@@ -23,6 +23,7 @@ include('write-panels/product-types/variable.php');
 include('write-panels/order-data.php');
 include('write-panels/order-data-save.php');
 include('write-panels/coupon-data.php');
+include('write-panels/email-data.php');
 
 /**
  * Init the meta boxes
@@ -49,6 +50,8 @@ function jigoshop_meta_boxes()
 	remove_meta_box('slugdiv', 'shop_order', 'normal');
 
 	add_meta_box('jigoshop-coupon-data', __('Coupon Data', 'jigoshop'), 'jigoshop_coupon_data_box', 'shop_coupon', 'normal', 'high');
+	add_meta_box('jigoshop-email-data', __('Email Data', 'jigoshop'), 'jigoshop_email_data_box', 'shop_email', 'side', 'default');
+	add_meta_box('jigoshop-email-variable', __('Email Variables', 'jigoshop'), 'jigoshop_email_variable_box', 'shop_email', 'normal', 'default');
 
 	remove_meta_box('commentstatusdiv', 'shop_coupon', 'normal');
 	remove_meta_box('slugdiv', 'shop_coupon', 'normal');
@@ -87,7 +90,7 @@ function jigoshop_meta_boxes_save($post_id, $post)
 	if (!current_user_can('edit_post', $post_id)) {
 		return $post_id;
 	}
-	if ($post->post_type != 'product' && $post->post_type != 'shop_order' && $post->post_type != 'shop_coupon') {
+	if ($post->post_type != 'product' && $post->post_type != 'shop_order' && $post->post_type != 'shop_coupon' && $post->post_type != 'shop_email') {
 		return $post_id;
 	}
 
@@ -191,7 +194,7 @@ function jigoshop_write_panel_scripts()
 	$options = Jigoshop_Base::get_options();
 	$post_type = jigoshop_get_current_post_type();
 
-	if ($post_type !== 'product' && $post_type !== 'shop_order' && $post_type !== 'shop_coupon') {
+	if ($post_type !== 'product' && $post_type !== 'shop_order' && $post_type !== 'shop_coupon' && $post_type !== 'shop_email') {
 		return;
 	}
 
