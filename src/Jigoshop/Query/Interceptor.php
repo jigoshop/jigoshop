@@ -24,6 +24,7 @@ class Interceptor
 
 	public function run()
 	{
+		$this->wp->addRewriteEndpoint('checkout-pay', EP_ROOT | EP_PAGES);
 		$this->wp->addFilter('request', array($this, 'intercept'));
 	}
 
