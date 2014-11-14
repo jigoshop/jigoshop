@@ -537,6 +537,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 					'a_width'          => $a_width,
 					'a_height'         => $a_height,
 					'same_prices'      => $_product->variations_priced_the_same(),
+					'no_price'         => $variation->get_price() == null ? true : false,
                 );
             }
         }
