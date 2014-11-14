@@ -18,6 +18,7 @@ class Pages
 	const SHOP = 'shop';
 	const CART = 'cart';
 	const CHECKOUT = 'checkout';
+	const THANK_YOU = 'checkout_thank_you';
 	const PRODUCT = 'product';
 	const PRODUCT_CATEGORY = 'product_category';
 	const PRODUCT_LIST = 'product_list';

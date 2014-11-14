@@ -153,13 +153,11 @@ class Installer
 		$this->_createPage(Pages::CHECKOUT, array_merge($data, array(
 			'page_title' => __('Checkout', 'jigoshop'),
 		)));
+		$this->_createPage(Pages::THANK_YOU, array_merge($data, array(
+			'page_title' => __('Checkout - thank you', 'jigoshop'),
+		)));
 //		$this->_createPage(Pages::ACCOUNT, array_merge($data, array(
 //			'page_title' => __('My account', 'jigoshop'),
-//			'post_content' => '[jigoshop_my_account]',
-//		)));
-//		$this->_createPage(Pages::ORDER_TRACKING, array_merge($data, array(
-//			'page_title' => __('Track your order', 'jigoshop'),
-//			'post_content' => '[jigoshop_order_tracking]',
 //		)));
 	}
 
