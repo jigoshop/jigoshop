@@ -23,4 +23,12 @@ class Text extends Attribute
 	{
 		$this->value = $value;
 	}
+
+	/**
+	 * @return string Value of attribute to be printed.
+	 */
+	public function printValue()
+	{
+		return $this->value;
+	}
 }

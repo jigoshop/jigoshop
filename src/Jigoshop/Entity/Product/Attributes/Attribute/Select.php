@@ -23,4 +23,14 @@ class Select extends Attribute
 	{
 		$this->value = $value;
 	}
+
+	/**
+	 * @return string Value of attribute to be printed.
+	 */
+	public function printValue()
+	{
+		/** @var Option $option */
+		$option = $this->options[$this->value];
+		return $option->getLabel();
+	}
 }

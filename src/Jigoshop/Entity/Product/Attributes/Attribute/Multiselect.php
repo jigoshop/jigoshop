@@ -23,4 +23,17 @@ class Multiselect extends Attribute
 	{
 		$this->value = array_filter(explode('|', $value));
 	}
+
+	/**
+	 * @return string Value of attribute to be printed.
+	 */
+	public function printValue()
+	{
+		$options = $this->options;
+		return join(', ', array_map(function($value) use ($options){
+			/** @var Option $option */
+			$option = $options[$value];
+			return $option->getLabel();
+		}, $this->value));
+	}
 }

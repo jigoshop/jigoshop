@@ -21,7 +21,7 @@ abstract class Attribute
 	private $local;
 	private $slug;
 	private $label;
-	private $options = array();
+	protected $options = array();
 	protected $value;
 
 	/**
@@ -160,4 +160,9 @@ abstract class Attribute
 	 * @param mixed $value New value for attribute.
 	 */
 	abstract public function setValue($value);
+
+	/**
+	 * @return string Value of attribute to be printed.
+	 */
+	abstract public function printValue();
 }

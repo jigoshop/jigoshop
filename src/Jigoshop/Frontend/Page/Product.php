@@ -41,10 +41,11 @@ class Product implements PageInterface
 		$styles->add('jigoshop.shop', JIGOSHOP_URL.'/assets/css/shop.css');
 		$styles->add('jigoshop.shop.product', JIGOSHOP_URL.'/assets/css/shop/product.css');
 		$styles->add('jigoshop.vendors', JIGOSHOP_URL.'/assets/css/vendors.min.css');
-		$scripts->add('jigoshop.shop.product', JIGOSHOP_URL.'/assets/js/shop/product.js');
 		$scripts->add('jigoshop.vendors', JIGOSHOP_URL.'/assets/js/vendors.min.js');
+		$scripts->add('jigoshop.shop.product', JIGOSHOP_URL.'/assets/js/shop/product.js', array('jquery', 'jigoshop.vendors'));
 		$this->wp->addAction('jigoshop\product\before_summary', array($this, 'productImages'), 10, 1);
 		$this->wp->addAction('jigoshop\product\after_summary', array($this, 'productTabs'), 10, 1);
+		$this->wp->addAction('jigoshop\product\tab_panels', array($this, 'productAttributes'), 10, 2);
 		$this->wp->addAction('jigoshop\product\tab_panels', array($this, 'productDescription'), 10, 2);
 	}
 
@@ -127,6 +128,9 @@ class Product implements PageInterface
 	public function productTabs($product)
 	{
 		$tabs = array();
+		if ($product->getAttributes()) {
+			$tabs['attributes'] = __('Additional information', 'jigoshop');
+		}
 		if ($product->getDescription()) {
 			$tabs['description'] = __('Description', 'jigoshop');
 		}
@@ -135,7 +139,19 @@ class Product implements PageInterface
 		Render::output('shop/product/tabs', array(
 			'product' => $product,
 			'tabs' => $tabs,
-			'currentTab' => 'description',
+			'currentTab' => 'attributes',
+		));
+	}
+
+	/**
+	 * @param $currentTab string Current tab name.
+	 * @param $product \Jigoshop\Entity\Product Shown product.
+	 */
+	public function productAttributes($currentTab, $product)
+	{
+		Render::output('shop/product/attributes', array(
+			'product' => $product,
+			'currentTab' => $currentTab,
 		));
 	}
 
