@@ -4,6 +4,7 @@ namespace Jigoshop\Service;
 
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\EntityInterface;
+use Jigoshop\Entity\Product\Attributes\Attribute;
 use Jigoshop\Exception;
 use Jigoshop\Factory\Product as ProductFactory;
 use WPAL\Wordpress;
@@ -261,5 +262,58 @@ class Product implements ProductServiceInterface
 		}
 
 		return $thumbnails;
+	}
+
+	/**
+	 * Finds and returns list of available attributes.
+	 *
+	 * @return array List of available product attributes
+	 */
+	public function findAllAttributes()
+	{
+		$wpdb = $this->wp->getWPDB();
+		$query = "
+		SELECT a.id, a.slug, a.label, a.type, ao.value AS option_value, ao.label as option_label
+		FROM {$wpdb->prefix}jigoshop_attribute a
+			LEFT JOIN {$wpdb->prefix}jigoshop_attribute_option ao ON a.id = ao.attribute_id
+			WHERE a.is_local = 0
+		";
+		$results = $wpdb->get_results($query, ARRAY_A);
+		$attributes = array();
+
+		for ($i = 0, $endI = count($results); $i < $endI;) {
+			$attribute = array(
+				'id' => $results[$i]['id'],
+				'slug' => $results[$i]['slug'],
+				'label' => $results[$i]['label'],
+				'type' => $results[$i]['type'],
+				'options' => array(),
+			);
+
+			while ($i < $endI && $results[$i]['id'] == $attribute['id']) {
+				$attribute['options'][$results[$i]['option_value']] = $results[$i]['option_label'];
+				$i++;
+			}
+
+			$attributes[] = $attribute;
+		}
+
+		return $attributes;
+	}
+
+	public function saveAttribute(Attribute $attribute)
+	{
+		// TODO: Implement
+	}
+
+	/**
+	 * Finds and returns list of attributes associated with selected product by it's ID.
+	 *
+	 * @param $productId int Product ID.
+	 * @return array List of attributes attached to selected product.
+	 */
+	public function getAttributes($productId)
+	{
+		// TODO: Implement getAttributes() method.
 	}
 }

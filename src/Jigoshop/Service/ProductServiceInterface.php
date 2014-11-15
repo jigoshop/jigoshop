@@ -69,4 +69,19 @@ interface ProductServiceInterface extends ServiceInterface
 	 * @return array List of thumbnails attached to the product.
 	 */
 	public function getThumbnails(Product $product);
+
+	/**
+	 * Finds and returns list of available attributes.
+	 *
+	 * @return array List of available product attributes
+	 */
+	public function findAllAttributes();
+
+	/**
+	 * Finds and returns list of attributes associated with selected product by it's ID.
+	 *
+	 * @param $productId int Product ID.
+	 * @return array List of attributes attached to selected product.
+	 */
+	public function getAttributes($productId);
 }

@@ -42,6 +42,8 @@ services:
     arguments:
       - '@wpal'
       - '@jigoshop.messages'
+      - '@jigoshop.service.product'
       - '@jigoshop.helper.styles'
+      - '@jigoshop.helper.scripts'
     tags:
       - { name: jigoshop.admin.page }

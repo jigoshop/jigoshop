@@ -159,4 +159,27 @@ class Simple implements ProductServiceInterface
 
 		return $this->states[$key];
 	}
+
+	/**
+	 * Finds and returns list of available attributes.
+	 *
+	 * @return array List of available product attributes
+	 */
+	public function findAllAttributes()
+	{
+		// TODO: Implement findAllAttributes() method.
+		return $this->service->findAllAttributes();
+	}
+
+	/**
+	 * Finds and returns list of attributes associated with selected product by it's ID.
+	 *
+	 * @param $productId int Product ID.
+	 * @return array List of attributes attached to selected product.
+	 */
+	public function getAttributes($productId)
+	{
+		// TODO: Implement getAttributes() method.
+		return $this->service->getAttributes($productId);
+	}
 }
