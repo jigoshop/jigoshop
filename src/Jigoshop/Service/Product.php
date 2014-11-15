@@ -350,8 +350,8 @@ class Product implements ProductServiceInterface
 		if ($attribute->getId()) {
 			$wpdb->update($wpdb->prefix.'jigoshop_attribute', $data, array('id' => $attribute->getId()));
 		} else {
-			$id = $wpdb->insert($wpdb->prefix.'jigoshop_attribute', $data);
-			$attribute->setId($id);
+			$wpdb->insert($wpdb->prefix.'jigoshop_attribute', $data);
+			$attribute->setId($wpdb->insert_id);
 		}
 
 		foreach ($attribute->getOptions() as $option) {
@@ -365,9 +365,21 @@ class Product implements ProductServiceInterface
 				$wpdb->update($wpdb->prefix.'jigoshop_attribute_option', $data, array('id' => $option->getId()));
 			} else {
 				$wpdb->insert($wpdb->prefix.'jigoshop_attribute_option', $data);
+				$option->setId($wpdb->insert_id);
 			}
 		}
 
 		return $attribute;
+	}
+
+	/**
+	 * Removes attribute from database.
+	 *
+	 * @param int $id Attribute ID.
+	 */
+	public function removeAttribute($id)
+	{
+		$wpdb = $this->wp->getWPDB();
+		$wpdb->delete($wpdb->prefix.'jigoshop_attribute', array('id' => $id));
 	}
 }

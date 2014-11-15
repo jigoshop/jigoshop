@@ -1,8 +1,10 @@
 delay = (time, callback) -> setTimeout callback, time
-addMessage = (type, message) ->
+addMessage = (type, message, ms) ->
   $alert = jQuery(document.createElement('div')).attr('class', "alert alert-#{type}").html(message).hide()
   $alert.appendTo(jQuery('#messages'))
   $alert.slideDown()
-  delay 2000, ->
+  offsets = $alert.offset()
+  window.scrollTo(offsets.top, offsets.left)
+  delay ms, ->
     $alert.slideUp ->
       $alert.remove()

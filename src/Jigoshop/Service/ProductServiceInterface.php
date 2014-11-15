@@ -103,4 +103,11 @@ interface ProductServiceInterface extends ServiceInterface
 	 * @return \Jigoshop\Entity\Product\Attributes\Attribute Saved attribute.
 	 */
 	public function saveAttribute(Attribute $attribute);
+
+	/**
+	 * Removes attribute from database.
+	 *
+	 * @param int $id Attribute ID.
+	 */
+	public function removeAttribute($id);
 }

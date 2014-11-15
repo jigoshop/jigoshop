@@ -208,4 +208,15 @@ class Simple implements ProductServiceInterface
 		// TODO: Implement saveAttribute() method.
 		return $this->service->saveAttribute($attribute);
 	}
+
+	/**
+	 * Removes attribute from database.
+	 *
+	 * @param int $id Attribute ID.
+	 */
+	public function removeAttribute($id)
+	{
+		// TODO: Implement removeAttribute() method.
+		return $this->service->removeAttribute($id);
+	}
 }
