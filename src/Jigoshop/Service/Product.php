@@ -139,12 +139,12 @@ class Product implements ProductServiceInterface
 		}
 
 		if (isset($fields['attributes'])) {
-			foreach ($fields['attributes']['removed'] as $key) {
-				$this->removeProductAttribute($object, $key);
-			}
+			$this->_removeAllProductAttributesExcept($object->getId(), array_map(function($item){
+				return $item->getId();
+			}, $fields['attributes']));
 
-			foreach ($fields['attributes']['new'] as $key => $attribute) {
-				$this->saveProductAttribute($object, $key, $attribute);
+			foreach ($fields['attributes'] as $attribute) {
+				$this->_saveProductAttribute($object, $attribute);
 			}
 
 			unset($fields['attributes']);
@@ -153,6 +153,44 @@ class Product implements ProductServiceInterface
 		foreach ($fields as $field => $value) {
 			$this->wp->updatePostMeta($object->getId(), $field, $value);
 		}
+	}
+
+	/**
+	 * @param $productId int Product ID.
+	 * @param $ids array List of existing attribute IDs.
+	 */
+	private function _removeAllProductAttributesExcept($productId, $ids)
+	{
+		$wpdb = $this->wp->getWPDB();
+		$ids = join(',', array_filter(array_map(function($item){ return (int)$item; }, $ids)));
+		// Support for removing all items
+		if (empty($ids)) {
+			$ids = '0';
+		}
+		$query = $wpdb->prepare("DELETE FROM {$wpdb->prefix}jigoshop_product_attribute WHERE attribute_id NOT IN ({$ids}) AND product_id = %d", array($productId));
+		$wpdb->query($query);
+	}
+
+	/**
+	 * @param $object \Jigoshop\Entity\Product
+	 * @param $attribute Attribute
+	 */
+	private function _saveProductAttribute($object, $attribute)
+	{
+		$wpdb = $this->wp->getWPDB();
+
+		$value = $attribute->getValue();
+		if (is_array($value)) {
+			$value = join('|', $value);
+		}
+
+		$data = array(
+			'product_id' => $object->getId(),
+			'attribute_id' => $attribute->getId(),
+			'value' => $value,
+		);
+
+		$wpdb->replace($wpdb->prefix.'jigoshop_product_attribute', $data);
 	}
 
 	/**
@@ -210,16 +248,6 @@ class Product implements ProductServiceInterface
 		));
 
 		return $this->findByQuery($query);
-	}
-
-	private function removeProductAttribute($object, $key)
-	{
-		// TODO: Real remove of the attribute
-	}
-
-	private function saveProductAttribute($object, $key, $attribute)
-	{
-		// TODO: Real save of the attribute
 	}
 
 	/**

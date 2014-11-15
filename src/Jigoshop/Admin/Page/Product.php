@@ -5,6 +5,7 @@ namespace Jigoshop\Admin\Page;
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\Product\Attributes\Attribute;
+use Jigoshop\Exception;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
@@ -29,7 +30,8 @@ class Product
 		$this->productService = $productService;
 		$this->type = $type;
 
-		$wp->addAction('wp_ajax_jigoshop.admin.product.find', array($this, 'findProduct'), 10, 0);
+		$wp->addAction('wp_ajax_jigoshop.admin.product.find', array($this, 'ajaxFindProduct'), 10, 0);
+		$wp->addAction('wp_ajax_jigoshop.admin.product.save_attribute', array($this, 'ajaxSaveAttribute'), 10, 0);
 
 		$that = $this;
 		$wp->addAction('add_meta_boxes_'.Types::PRODUCT, function() use ($wp, $that){
@@ -38,9 +40,12 @@ class Product
 		});
 		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $styles, $scripts){
 			if ($wp->getPostType() == Types::PRODUCT) {
-				// TODO: Change settings.css into something strictly product-related
 				$styles->add('jigoshop.admin.product', JIGOSHOP_URL.'/assets/css/admin/product.css');
-				$scripts->add('jigoshop.admin.product', JIGOSHOP_URL.'/assets/js/admin/product.js');
+				$scripts->add('jigoshop.helpers', JIGOSHOP_URL.'/assets/js/helpers.js');
+				$scripts->add('jigoshop.admin.product', JIGOSHOP_URL.'/assets/js/admin/product.js', array('jquery', 'jigoshop.helpers'));
+				$scripts->localize('jigoshop.admin.product', 'jigoshop_admin_product', array(
+					'ajax' => $wp->getAjaxUrl(),
+				));
 			}
 		});
 	}
@@ -114,7 +119,59 @@ class Product
 		));
 	}
 
-	public function findProduct()
+	public function ajaxSaveAttribute()
+	{
+		try {
+			if (!isset($_POST['product_id']) || empty($_POST['product_id'])) {
+				throw new Exception(__('Product was not specified.', 'jigoshop'));
+			}
+			if (!is_numeric($_POST['product_id'])) {
+				throw new Exception(__('Invalid product ID.', 'jigoshop'));
+			}
+			if (!isset($_POST['attribute_id']) || empty($_POST['attribute_id'])) {
+				throw new Exception(__('Attribute was not specified.', 'jigoshop'));
+			}
+			if (!is_numeric($_POST['attribute_id'])) {
+				throw new Exception(__('Invalid attribute ID.', 'jigoshop'));
+			}
+
+			$product = $this->productService->find((int)$_POST['product_id']);
+
+			if (!$product->getId()) {
+				throw new Exception(__('Product does not exists.', 'jigoshop'));
+			}
+
+			if ($product->hasAttribute((int)$_POST['attribute_id'])) {
+				$attribute = $product->removeAttribute((int)$_POST['attribute_id']);
+			} else {
+				$attribute = $this->productService->getAttribute((int)$_POST['attribute_id']);
+			}
+
+			if ($attribute === null) {
+				throw new Exception(__('Attribute does not exists.', 'jigoshop'));
+			}
+
+			if (isset($_POST['value'])) {
+				$attribute->setValue(trim(htmlspecialchars(strip_tags($_POST['value']))));
+			}
+
+			$product->addAttribute($attribute);
+			$this->productService->save($product);
+			echo json_encode(array(
+				'success' => true,
+				'html' => Render::get('admin/product/box/attributes/attribute', array('attribute' => $attribute)),
+			));
+		} catch(Exception $e) {
+			echo json_encode(array(
+				'success' => false,
+				'error' => $e->getMessage(),
+			));
+		}
+
+		exit;
+	}
+
+	public function ajaxFindProduct()
 	{
 		// TODO: Add invalid data protection.
 		$products = $this->productService->findLike($_POST['product']);

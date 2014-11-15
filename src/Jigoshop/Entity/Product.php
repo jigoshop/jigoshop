@@ -38,10 +38,6 @@ abstract class Product implements EntityInterface, Taxable
 	private $attributes;
 
 	protected $dirtyFields = array();
-	protected $dirtyAttributes = array(
-		'new' => array(),
-		'removed' => array(),
-	);
 
 	/** @var \WPAL\Wordpress */
 	protected $wp;
@@ -267,17 +263,10 @@ abstract class Product implements EntityInterface, Taxable
 	 */
 	public function addAttribute(Product\Attributes\Attribute $attribute)
 	{
-		$key = $this->_findAttribute($attribute->getName());
-
-		if ($key === false) {
-			$key = count($this->attributes);
-		}
-
 		$attribute = $this->wp->applyFilters('jigoshop\product\add_attribute', $attribute, $this);
 
 		if ($attribute !== false) {
-			$this->attributes[$key] = $attribute;
-			$this->dirtyAttributes['new'][$key] = $attribute;
+			$this->attributes[$attribute->getId()] = $attribute;
 		}
 	}
 
@@ -285,39 +274,49 @@ abstract class Product implements EntityInterface, Taxable
 	 * Removes attribute from the product.
 	 * Calls `jigoshop\product\delete_attribute` filter before removing. If filter returns false - attribute is not removed.
 	 *
-	 * @param Product\Attributes\Attribute|string $attribute Attribute to remove.
+	 * @param Product\Attributes\Attribute|int $attribute Attribute to remove.
+	 * @return \Jigoshop\Entity\Product\Attributes\Attribute|null Removed attribute or null.
 	 */
 	public function deleteAttribute($attribute)
 	{
 		if ($attribute instanceof Product\Attributes\Attribute) {
-			$attribute = $attribute->getName();
+			$attribute = $attribute->getId();
 		}
 
-		$key = $this->_findAttribute($attribute);
-		$key = $this->wp->applyFilters('jigoshop\product\delete_attribute', $key, $attribute, $this);
+		$key = $this->wp->applyFilters('jigoshop\product\delete_attribute', $attribute, $this);
 
 		if ($key !== false) {
+			$attribute = $this->attributes[$key];
 			unset($this->attributes[$key]);
-			$this->dirtyAttributes['removed'][] = $key;
+			return $attribute;
 		}
+
+		return null;
+	}
+
+	/**
+	 * @param int $id Attribute ID.
+	 * @return bool Attribute exists?
+	 */
+	public function hasAttribute($id)
+	{
+		return isset($this->attributes[$id]);
 	}
 
 	/**
 	 * Returns attribute of the product.
 	 * If attribute is not found - returns {@code null}.
 	 *
-	 * @param $name string Attribute name.
+	 * @param $id int Attribute ID.
 	 * @return Product\Attributes\Attribute|null Attribute found or null.
 	 */
-	public function getAttribute($name)
+	public function getAttribute($id)
 	{
-		$key = $this->_findAttribute($name);
-
-		if ($key !== false) {
-			return $this->attributes[$key];
+		if (!isset($this->attributes[$id])) {
+			return null;
 		}
 
-		return null;
+		return $this->attributes[$id];
 	}
 
 	/**
@@ -381,7 +380,7 @@ abstract class Product implements EntityInterface, Taxable
 	{
 		return array_search($attribute, array_map(function ($item){
 			/** @var $item \Jigoshop\Entity\Product\Attributes\Attribute */
-			return $item->getName();
+			return $item->getId();
 		}, $this->attributes));
 	}
 
@@ -417,7 +416,7 @@ abstract class Product implements EntityInterface, Taxable
 
 		$toSave['size'] = $this->size;
 		$toSave['stock'] = $this->stock;
-		$toSave['attributes'] = $this->dirtyAttributes;
+		$toSave['attributes'] = $this->attributes;
 
 		return $toSave;
 	}
@@ -493,13 +492,6 @@ abstract class Product implements EntityInterface, Taxable
 	 */
 	public function markAsDirty(array $state)
 	{
-		if (isset($state['attributes'])) {
-			$this->dirtyAttributes = array(
-				'new' => array_keys($state['attributes']),
-			);
-			unset($state['attributes']);
-		}
-
 		$this->dirtyFields[] = 'size';
 		$this->dirtyFields[] = 'stock';
 		$this->dirtyFields = array_merge($this->dirtyFields, array_keys($state));

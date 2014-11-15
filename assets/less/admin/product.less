@@ -9,10 +9,14 @@
   @import '../../bower/bootstrap/less/buttons.less';
   @import '../../bower/bootstrap/less/navs.less';
   @import '../../bower/bootstrap/less/badges.less';
+  @import '../../bower/bootstrap/less/panels.less';
   @import '../../bower/bootstrap/less/tooltip.less';
   @import '../../bower/bootstrap/less/utilities.less';
   @import '../../bower/bootstrap/less/type.less';
 
+  .panel-heading button {
+    margin-top: -@padding-large-horizontal/2;
+  }
   .form-group, .nav-tabs {
     .clearfix();
   }
@@ -29,10 +33,15 @@
   .schedule.hide {
     display: none;
   }
-  #attributes .form-group {
+  #attributes > .form-group {
     display: inline-block;
     width: 70%;
   }
+
+  textarea.form-control {
+    height: auto;
+  }
+
   .form-group {
     margin: 0;
 

@@ -78,12 +78,4 @@ class Option
 	{
 		$this->attribute = $attribute;
 	}
-
-	/**
-	 * @return mixed Previous value for identification.
-	 */
-	public function getPreviousValue()
-	{
-		return $this->previousValue;
-	}
 }

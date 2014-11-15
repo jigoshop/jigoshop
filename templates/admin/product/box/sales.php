@@ -24,7 +24,7 @@ if($product->isType(Product\Simple::TYPE)){
 		'name' => 'product[sales][enabled]',
 		'id' => 'sales-enabled',
 		'label' => __('Put product on sale?', 'jigoshop'),
-		'value' => $enabled,
+		'checked' => $enabled,
 	));
 	?>
 </fieldset>

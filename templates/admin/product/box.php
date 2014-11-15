@@ -19,7 +19,7 @@ $isHidden = function($options) use ($product) {
 	return $options['visible'] !== true && !in_array($product->getType(), $options['visible']);
 };
 ?>
-<div class="jigoshop">
+<div class="jigoshop" data-id="<?php echo $product->getId(); ?>">
 	<div class="form-horizontal">
 		<?php Forms::select(array(
 			'id' => 'product-type',

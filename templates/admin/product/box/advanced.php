@@ -13,7 +13,7 @@ use Jigoshop\Entity\Product;
 		'name' => 'product[is_taxable]',
 		'id' => 'is_taxable',
 		'label' => __('Is taxable?', 'jigoshop'),
-		'value' => $product->isTaxable(),
+		'checked' => $product->isTaxable(),
 	));
 	Forms::select(array(
 		'name' => 'product[tax_classes]',

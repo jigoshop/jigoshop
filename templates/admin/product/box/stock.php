@@ -13,7 +13,7 @@ use Jigoshop\Entity\Product\Attributes\StockStatus;
 		'name' => 'product[stock][manage]',
 		'id' => 'stock-manage',
 		'label' => __('Manage stock?', 'jigoshop'),
-		'value' => $product->getStock()->getManage(),
+		'checked' => $product->getStock()->getManage(),
 	));
 	Forms::select(array(
 		'name' => 'product[stock][status]',

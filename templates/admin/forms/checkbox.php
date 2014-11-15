@@ -7,6 +7,7 @@ use Jigoshop\Admin\Helper\Forms;
  * @var $name string Field name.
  * @var $classes array List of classes to add to the field.
  * @var $value mixed Current value.
+ * @var $checked boolean Whether checkbox is checked.
  * @var $tip string Tip to show to the user.
  * @var $description string Field description.
  */
@@ -25,7 +26,7 @@ $hasLabel = !empty($label);
 	<?php endif; ?>
 	<div class="checkbox-inline<?php echo ' col-sm-'.($size-1); ?>">
 		<input type="hidden" name="<?php echo $name; ?>" value="off" />
-		<input type="checkbox" id="<?php echo $id; ?>" name="<?php echo $name; ?>" class="<?php echo join(' ', $classes); ?>" <?php echo Forms::checked($value, true); ?> value="on" />
+		<input type="checkbox" id="<?php echo $id; ?>" name="<?php echo $name; ?>" class="<?php echo join(' ', $classes); ?>" <?php echo Forms::checked($checked, true); ?> value="<?php echo $value; ?>" />
 		<?php if(!empty($description)): ?>
 			<span class="help"><?php echo $description; ?></span>
 		<?php endif; ?>

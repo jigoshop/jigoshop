@@ -203,7 +203,7 @@ class Product implements EntityFactoryInterface
 	{
 		$wpdb = $this->wp->getWPDB();
 		$query = $wpdb->prepare("
-		SELECT a.id, a.slug, a.label, a.type, ao.id AS option_id, ao.value AS option_value, ao.label as option_label, pa.value
+		SELECT a.id, a.is_local, a.slug, a.label, a.type, ao.id AS option_id, ao.value AS option_value, ao.label as option_label, pa.value
 		FROM {$wpdb->prefix}jigoshop_attribute a
 			LEFT JOIN {$wpdb->prefix}jigoshop_attribute_option ao ON a.id = ao.attribute_id
 			LEFT JOIN {$wpdb->prefix}jigoshop_product_attribute pa ON pa.attribute_id = a.id
@@ -219,7 +219,11 @@ class Product implements EntityFactoryInterface
 			$attribute->setLabel($results[$i]['label']);
 			$attribute->setType((int)$results[$i]['type']);
 			$attribute->setLocal((bool)$results[$i]['is_local']);
-			$attribute->setValue($results[$i]['value']);
+			$value = explode('|', $results[$i]['value']);
+			if (count($value) == 1) {
+				$value = $value[0];
+			}
+			$attribute->setValue($value);
 
 			while ($i < $endI && $results[$i]['id'] == $attribute->getId()) {
 				if ($results[$i]['option_id'] !== null) {

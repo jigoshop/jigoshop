@@ -37,7 +37,7 @@ use Jigoshop\Helper\Render;
 				'label' => __('Different shipping address', 'jigoshop'),
 				'name' => 'jigoshop_order[different_shipping]',
 				'id' => 'different_shipping',
-				'value' => $differentShipping,
+				'checked' => $differentShipping,
 				'size' => 9
 			)); ?>
 			<div class="row clearfix<?php !$differentShipping and print ' not-active'; ?>" id="shipping-address">

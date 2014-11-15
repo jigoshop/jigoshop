@@ -165,6 +165,11 @@ class Attribute
 	 */
 	public function getValue()
 	{
+		// TODO: Maybe we should keep array and just always join values ion save?
+		if ($this->type == Attribute::MULTISELECT) {
+			return explode('|', $this->value);
+		}
+
 		return $this->value;
 	}
 
@@ -173,6 +178,10 @@ class Attribute
 	 */
 	public function setValue($value)
 	{
+		if ($this->type == Attribute::MULTISELECT && is_array($value)) {
+			$value = join('|', $value);
+		}
+
 		$this->value = $value;
 	}
 }

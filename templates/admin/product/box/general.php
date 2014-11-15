@@ -63,7 +63,7 @@ use Jigoshop\Helper\Product as ProductHelper;
 	Forms::checkbox(array(
 		'name' => 'product[featured]',
 		'label' => __('Featured?', 'jigoshop'),
-		'value' => $product->isFeatured(),
+		'checked' => $product->isFeatured(),
 		'description' => __('Enable this option to feature this product', 'jigoshop'),
 	));
 	?>
