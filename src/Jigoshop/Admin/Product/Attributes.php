@@ -53,6 +53,7 @@ class Attributes implements PageInterface
 				'i18n' => array(
 					'saved' => __('Changes saved.', 'jigoshop'),
 					'removed' => __('Attribute has been successfully removed.', 'jigoshop'),
+					'option_removed' => __('Attribute option has been successfully removed.', 'jigoshop'),
 					'confirm_remove' => __('Are you sure?', 'jigoshop'),
 				),
 			));
@@ -61,6 +62,7 @@ class Attributes implements PageInterface
 		$wp->addAction('wp_ajax_jigoshop.admin.product_attributes.save', array($this, 'ajaxSaveAttribute'));
 		$wp->addAction('wp_ajax_jigoshop.admin.product_attributes.remove', array($this, 'ajaxRemoveAttribute'));
 		$wp->addAction('wp_ajax_jigoshop.admin.product_attributes.save_option', array($this, 'ajaxSaveAttributeOption'));
+		$wp->addAction('wp_ajax_jigoshop.admin.product_attributes.remove_option', array($this, 'ajaxRemoveAttributeOption'));
 	}
 
 	public function ajaxSaveAttribute()
@@ -172,6 +174,34 @@ class Attributes implements PageInterface
 		echo json_encode(array(
 			'success' => true,
 			'html' => Render::get('admin/product_attributes/option', array('id' => $attribute->getId(), 'option_id' => $option->getId(), 'option' => $option)),
+		));
+		exit;
+	}
+
+	public function ajaxRemoveAttributeOption()
+	{
+		$errors = array();
+		if (!isset($_POST['attribute_id']) || !is_numeric($_POST['attribute_id'])) {
+			$errors[] = __('Respective attribute is not set.', 'jigoshop');
+		}
+		if (!isset($_POST['id']) || empty($_POST['id'])) {
+			$errors[] = __('Option does not exist.', 'jigoshop');
+		}
+
+		if (!empty($errors)) {
+			echo json_encode(array(
+				'success' => false,
+				'error' => join('<br/>', $errors),
+			));
+			exit;
+		}
+
+		$attribute = $this->productService->getAttribute((int)$_POST['attribute_id']);
+		$attribute->removeOption($_POST['id']);
+		$this->productService->saveAttribute($attribute);
+
+		echo json_encode(array(
+			'success' => true,
 		));
 		exit;
 	}

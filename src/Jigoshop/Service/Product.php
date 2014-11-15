@@ -354,6 +354,10 @@ class Product implements ProductServiceInterface
 			$attribute->setId($wpdb->insert_id);
 		}
 
+		$this->removeAllAttributesExcept(array_map(function($item){
+			return $item->getId();
+		}, $attribute->getOptions()));
+
 		foreach ($attribute->getOptions() as $option) {
 			/** @var $option Attribute\Option */
 			$data = array(
@@ -370,6 +374,21 @@ class Product implements ProductServiceInterface
 		}
 
 		return $attribute;
+	}
+
+	/**
+	 * @param $ids array IDs to preserve.
+	 */
+	private function removeAllAttributesExcept($ids)
+	{
+		$wpdb = $this->wp->getWPDB();
+		$ids = join(',', array_filter(array_map(function($item){ return (int)$item; }, $ids)));
+		// Support for removing all items
+		if (empty($ids)) {
+			$ids = '0';
+		}
+		$query = "DELETE FROM {$wpdb->prefix}jigoshop_attribute_option WHERE id NOT IN ({$ids})";
+		$wpdb->query($query);
 	}
 
 	/**

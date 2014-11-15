@@ -4,6 +4,7 @@ class AdminProductAttributes
     i18n:
       saved: ''
       removed: ''
+      option_removed: ''
       confirm_remove: ''
 
   constructor: (@params) ->
@@ -12,8 +13,9 @@ class AdminProductAttributes
       .on 'click', '.remove-attribute', @removeAttribute
       .on 'change', '.attribute input, .attribute select', @updateAttribute
       .on 'click', '.configure-attribute, .options button', @configureAttribute
+      .on 'click', '.remove-attribute-option', @removeAttributeOption
       .on 'click', '.add-option', @addAttributeOption
-      .on 'change', '.options input', @updateAttributeOption
+      .on 'change', '.options tbody input', @updateAttributeOption
     @$newLabel = jQuery('#attribute-label')
     @$newSlug = jQuery('#attribute-slug')
     @$newType = jQuery('#attribute-type')
@@ -113,6 +115,23 @@ class AdminProductAttributes
         addMessage('success', @params.i18n.saved, 2000)
       else
         addMessage('danger', data.error, 6000)
+  removeAttributeOption: (event) =>
+    if confirm(@params.i18n.confirm_remove)
+      $parent = jQuery(event.target).closest('tr')
+      jQuery.ajax
+        url: @params.ajax
+        type: 'post'
+        dataType: 'json'
+        data:
+          action: 'jigoshop.admin.product_attributes.remove_option'
+          id: $parent.data('id')
+          attribute_id: $parent.closest('tr.options').data('id')
+      .done (data) =>
+        if data.success? and data.success
+          $parent.remove()
+          addMessage('success', @params.i18n.option_removed, 2000)
+        else
+          addMessage('danger', data.error, 6000)
 
 jQuery ->
   new AdminProductAttributes(jigoshop_admin_product_attributes)
