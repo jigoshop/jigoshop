@@ -359,6 +359,17 @@ class Product implements ProductServiceInterface
 	}
 
 	/**
+	 * Creates new attribute for selected type.
+	 *
+	 * @param int $type Attribute type.
+	 * @return Attribute
+	 */
+	public function createAttribute($type)
+	{
+		return $this->factory->createAttribute($type);
+	}
+
+	/**
 	 * Saves attribute to database.
 	 *
 	 * @param Attribute $attribute Attribute to save.

@@ -175,7 +175,6 @@ class Product implements EntityFactoryInterface
 		$attribute->setId((int)$results[$i]['id']);
 		$attribute->setSlug($results[$i]['slug']);
 		$attribute->setLabel($results[$i]['label']);
-		$attribute->setType((int)$results[$i]['type']);
 		$attribute->setLocal((bool)$results[$i]['is_local']);
 
 		while ($i < $endI && $results[$i]['id'] == $attribute->getId()) {
@@ -240,7 +239,7 @@ class Product implements EntityFactoryInterface
 
 	/**
 	 * Creates new attribute object based on type.
-	 * 
+	 *
 	 * @param $type int Attribute type.
 	 * @return Attribute\Multiselect|Attribute\Select|Attribute\Text
 	 */

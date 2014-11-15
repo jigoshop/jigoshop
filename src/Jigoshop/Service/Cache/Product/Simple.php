@@ -198,6 +198,17 @@ class Simple implements ProductServiceInterface
 	}
 
 	/**
+	 * Creates new attribute for selected type.
+	 *
+	 * @param int $type Attribute type.
+	 * @return Attribute
+	 */
+	public function createAttribute($type)
+	{
+		return $this->service->createAttribute($type);
+	}
+
+	/**
 	 * Saves attribute to database.
 	 *
 	 * @param Product\Attributes\Attribute $attribute Attribute to save.

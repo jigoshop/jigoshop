@@ -3,10 +3,13 @@ class AdminProduct
     ajax: ''
     i18n:
       saved: ''
+      confirm_remove: ''
+      attribute_removed: ''
 
   constructor: (@params) ->
     jQuery('#add-attribute').on 'click', @addAttribute
     jQuery('#product-attributes').on 'change', 'input, select', @updateAttribute
+    jQuery('#product-attributes').on 'click', '.remove-attribute', @removeAttribute
 
     jQuery('.jigoshop_product_data a').on 'click', (e) ->
       e.preventDefault()
@@ -78,7 +81,23 @@ class AdminProduct
         addMessage('success', @params.i18n.saved, 2000)
       else
         addMessage('danger', data.error, 6000)
-
+  removeAttribute: (event) =>
+    if confirm(@params.i18n.confirm_remove)
+      $parent = jQuery(event.target).closest('div.panel')
+      jQuery.ajax
+        url: @params.ajax
+        type: 'post'
+        dataType: 'json'
+        data:
+          action: 'jigoshop.admin.product.remove_attribute'
+          product_id: $parent.closest('.jigoshop').data('id')
+          attribute_id: $parent.data('id')
+      .done (data) =>
+        if data.success? and data.success
+          $parent.slideUp -> $parent.remove()
+          addMessage('success', @params.i18n.attribute_removed, 2000)
+        else
+          addMessage('danger', data.error, 6000)
 
 jQuery ->
   new AdminProduct(jigoshop_admin_product)

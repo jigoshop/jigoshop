@@ -32,6 +32,7 @@ class Product
 
 		$wp->addAction('wp_ajax_jigoshop.admin.product.find', array($this, 'ajaxFindProduct'), 10, 0);
 		$wp->addAction('wp_ajax_jigoshop.admin.product.save_attribute', array($this, 'ajaxSaveAttribute'), 10, 0);
+		$wp->addAction('wp_ajax_jigoshop.admin.product.remove_attribute', array($this, 'ajaxRemoveAttribute'), 10, 0);
 
 		$that = $this;
 		$wp->addAction('add_meta_boxes_'.Types::PRODUCT, function() use ($wp, $that){
@@ -47,6 +48,8 @@ class Product
 					'ajax' => $wp->getAjaxUrl(),
 					'i18n' => array(
 						'saved' => __('Changes saved.', 'jigoshop'),
+						'attribute_removed' => __('Attribute successfully removed.', 'jigoshop'),
+						'confirm_remove' => __('Are you sure?', 'jigoshop'),
 					)
 				));
 			}
@@ -163,6 +166,43 @@ class Product
 			echo json_encode(array(
 				'success' => true,
 				'html' => Render::get('admin/product/box/attributes/attribute', array('attribute' => $attribute)),
+			));
+		} catch(Exception $e) {
+			echo json_encode(array(
+				'success' => false,
+				'error' => $e->getMessage(),
+			));
+		}
+
+		exit;
+	}
+
+	public function ajaxRemoveAttribute()
+	{
+		try {
+			if (!isset($_POST['product_id']) || empty($_POST['product_id'])) {
+				throw new Exception(__('Product was not specified.', 'jigoshop'));
+			}
+			if (!is_numeric($_POST['product_id'])) {
+				throw new Exception(__('Invalid product ID.', 'jigoshop'));
+			}
+			if (!isset($_POST['attribute_id']) || empty($_POST['attribute_id'])) {
+				throw new Exception(__('Attribute was not specified.', 'jigoshop'));
+			}
+			if (!is_numeric($_POST['attribute_id'])) {
+				throw new Exception(__('Invalid attribute ID.', 'jigoshop'));
+			}
+
+			$product = $this->productService->find((int)$_POST['product_id']);
+
+			if (!$product->getId()) {
+				throw new Exception(__('Product does not exists.', 'jigoshop'));
+			}
+
+			$product->removeAttribute((int)$_POST['attribute_id']);
+			$this->productService->save($product);
+			echo json_encode(array(
+				'success' => true,
 			));
 		} catch(Exception $e) {
 			echo json_encode(array(

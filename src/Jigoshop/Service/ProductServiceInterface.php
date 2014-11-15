@@ -97,6 +97,14 @@ interface ProductServiceInterface extends ServiceInterface
 	public function getAttribute($id);
 
 	/**
+	 * Creates new attribute for selected type.
+	 *
+	 * @param int $type Attribute type.
+	 * @return Attribute
+	 */
+	public function createAttribute($type);
+
+	/**
 	 * Saves attribute to database.
 	 *
 	 * @param Attribute $attribute Attribute to save.

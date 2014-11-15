@@ -86,11 +86,10 @@ class Attributes implements PageInterface
 		if (isset($_POST['id']) && is_numeric($_POST['id'])) {
 			$attribute = $this->productService->getAttribute((int)$_POST['id']);
 		} else {
-			$attribute = new Attribute();
+			$attribute = $this->productService->createAttribute((int)$_POST['type']);
 		}
 
 		$attribute->setLabel(trim(htmlspecialchars(strip_tags($_POST['label']))));
-		$attribute->setType((int)$_POST['type']);
 
 		if (isset($_POST['slug']) && !empty($_POST['slug'])) {
 			$attribute->setSlug(trim(htmlspecialchars(strip_tags($_POST['slug']))));
