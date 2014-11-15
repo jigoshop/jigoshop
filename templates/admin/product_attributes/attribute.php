@@ -13,18 +13,21 @@ use Jigoshop\Helper\Render;
 	<td>
 		<?php Forms::text(array(
 			'name' => 'attributes['.$id.'][label]',
+			'classes' => array('attribute-label'),
 			'value' => $attribute->getLabel(),
 		)); ?>
 	</td>
 	<td>
 		<?php Forms::text(array(
 			'name' => 'attributes['.$id.'][slug]',
+			'classes' => array('attribute-slug'),
 			'value' => $attribute->getSlug(),
 		)); ?>
 	</td>
 	<td>
 		<?php Forms::select(array(
 			'name' => 'attributes['.$id.'][type]',
+			'classes' => array('attribute-type'),
 			'value' => $attribute->getType(),
 			'options' => $types,
 		)); ?>
@@ -55,8 +58,8 @@ use Jigoshop\Helper\Render;
 				</tr>
 				</thead>
 				<tbody>
-				<?php foreach($attribute->getOptions() as $option_id => $option): ?>
-					<?php Render::output('admin/product_attributes/option', array('id' => $id, 'option_id' => $option_id, 'option' => $option)); ?>
+				<?php foreach($attribute->getOptions() as $option): ?>
+					<?php Render::output('admin/product_attributes/option', array('id' => $id, 'option_id' => $option->getId(), 'option' => $option)); ?>
 				<?php endforeach; ?>
 				</tbody>
 				<tfoot>

@@ -24,7 +24,7 @@ $hasLabel = !empty($label);
 	</label>
 	<?php endif; ?>
 	<div class="<?php $hasLabel and print 'col-sm-9'; ?>">
-		<select id="<?php echo $id; ?>" name="<?php echo $name; ?>" class="form-control" placeholder="<?php echo $placeholder; ?>"<?php $multiple and print ' multiple="multiple"'; ?>>
+		<select id="<?php echo $id; ?>" name="<?php echo $name; ?>" class="form-control <?php echo join(' ', $classes); ?>" placeholder="<?php echo $placeholder; ?>"<?php $multiple and print ' multiple="multiple"'; ?>>
 			<?php foreach($options as $option => $item): ?>
 				<?php if(is_array($item)): ?>
 					<optgroup label="<?php echo $option; ?>">

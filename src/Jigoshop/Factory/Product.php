@@ -163,7 +163,7 @@ class Product implements EntityFactoryInterface
 			WHERE a.id = %d
 		", array($id));
 
-		$results = $wpdb->get_results($query);
+		$results = $wpdb->get_results($query, ARRAY_A);
 
 		if (count($results) == 0) {
 			return null;

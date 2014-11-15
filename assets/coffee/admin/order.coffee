@@ -34,7 +34,7 @@ class AdminOrder
         method: jQuery(e.target).val()
     )
     .done (result) =>
-      if result.success
+      if result.success? and result.success
         @_updateTotals(result.html.total, result.html.subtotal)
         @_updateTaxes(result.tax, result.html.tax)
       else
@@ -81,7 +81,7 @@ class AdminOrder
         product: value
         order: $parent.data('order')
     .done (data) =>
-      if data.success?
+      if data.success? and data.success
         jQuery(data.html.row).appendTo($parent)
         jQuery('#product-subtotal', $parent).html(data.html.product_subtotal)
         @_updateTotals(data.html.total, data.html.subtotal)
@@ -103,7 +103,7 @@ class AdminOrder
         price: jQuery('.price input', $row).val()
         quantity: jQuery('.quantity input', $row).val()
     .done (data) =>
-      if data.success
+      if data.success? and data.success
         if data.item_cost > 0
           jQuery('.total p', $row).html(data.html.item_cost)
         else
@@ -126,7 +126,7 @@ class AdminOrder
         product: $row.data('id')
         order: $parent.data('order')
     .done (data) =>
-      if data.success?
+      if data.success? and data.success
         $row.remove()
         jQuery('#product-subtotal', $parent).html(data.html.product_subtotal)
         @_updateTaxes(data.tax, data.html.tax)
@@ -148,7 +148,7 @@ class AdminOrder
         type: type
     )
     .done (result) =>
-      if result.success
+      if result.success? and result.success
         @_updateTotals(result.html.total, result.html.subtotal)
         @_updateTaxes(result.tax, result.html.tax)
         @_updateShipping(result.shipping, result.html.shipping)

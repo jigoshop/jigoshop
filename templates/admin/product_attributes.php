@@ -19,7 +19,7 @@ use Jigoshop\Helper\Render;
 	</noscript>
 	<div class="tab-content">
 		<form role="form" method="POST">
-			<table class="table table-condensed">
+			<table class="table table-condensed" id="product-attributes">
 				<thead>
 					<tr>
 						<th scope="col"><?php _e('Label', 'jigoshop'); ?></th>
@@ -29,8 +29,8 @@ use Jigoshop\Helper\Render;
 					</tr>
 				</thead>
 				<tbody>
-					<?php foreach($attributes as $id => $attribute): ?>
-						<?php Render::output('admin/product_attributes/attribute', array('attribute' => $attribute, 'id' => $id, 'types' => $types)); ?>
+					<?php foreach($attributes as $attribute): ?>
+						<?php Render::output('admin/product_attributes/attribute', array('attribute' => $attribute, 'id' => $attribute->getId(), 'types' => $types)); ?>
 					<?php endforeach; ?>
 				</tbody>
 				<tfoot>

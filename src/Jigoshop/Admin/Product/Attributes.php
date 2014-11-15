@@ -46,9 +46,13 @@ class Attributes implements PageInterface
 			}
 
 			$styles->add('jigoshop.admin.product_attributes', JIGOSHOP_URL.'/assets/css/admin/product_attributes.css');
-			$scripts->add('jigoshop.admin.product_attributes', JIGOSHOP_URL.'/assets/js/admin/product_attributes.js', array('jquery'));
+			$scripts->add('jigoshop.helpers', JIGOSHOP_URL.'/assets/js/helpers.js', array('jquery'));
+			$scripts->add('jigoshop.admin.product_attributes', JIGOSHOP_URL.'/assets/js/admin/product_attributes.js', array('jquery', 'jigoshop.helpers'));
 			$scripts->localize('jigoshop.admin.product_attributes', 'jigoshop_admin_product_attributes', array(
 				'ajax' => $wp->getAjaxUrl(),
+				'i18n' => array(
+					'saved' => '<strong>OK</strong> Attribute saved.',
+				)
 			));
 		});
 
