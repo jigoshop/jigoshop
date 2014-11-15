@@ -4,6 +4,7 @@ namespace Jigoshop\Admin\Page;
 
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
+use Jigoshop\Entity\Product\Attributes\Attribute;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
@@ -38,7 +39,7 @@ class Product
 		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $styles, $scripts){
 			if ($wp->getPostType() == Types::PRODUCT) {
 				// TODO: Change settings.css into something strictly product-related
-				$styles->add('jigoshop.admin.product', JIGOSHOP_URL.'/assets/css/admin/settings.css');
+				$styles->add('jigoshop.admin.product', JIGOSHOP_URL.'/assets/css/admin/product.css');
 				$scripts->add('jigoshop.admin.product', JIGOSHOP_URL.'/assets/js/admin/product.js');
 			}
 		});
@@ -64,12 +65,20 @@ class Product
 			'advanced' => array('label' => __('Advanced', 'jigoshop'), 'visible' => true),
 			'stock' => array('label' => __('Stock', 'jigoshop'), 'visible' => true),
 			'sales' => array('label' => __('Sales', 'jigoshop'), 'visible' => array('simple')),
+			'attributes' => array('label' => __('Attributes', 'jigoshop'), 'visible' => true),
 //			'inventory' => __('Inventory', 'jigoshop'),
-//			'attributes' => __('Attributes', 'jigoshop'),
 		));
 		$taxClasses = array();
 		foreach ($this->options->get('tax.classes') as $class) {
 			$taxClasses[$class['class']] = $class['label'];
+		}
+
+		$attributes = array(
+			'' => '',
+		);
+		foreach($this->productService->findAllAttributes() as $attribute) {
+			/** @var $attribute Attribute */
+			$attributes[$attribute->getId()] = $attribute->getLabel();
 		}
 
 		$tabs = $this->wp->applyFilters('jigoshop\admin\product\tabs', array(
@@ -86,8 +95,11 @@ class Product
 				'product' => $product,
 				'taxClasses' => $taxClasses,
 			),
-//			'inventory' => array(),
-//			'attributes' => array(),
+			'attributes' => array(
+				'product' => $product,
+				'availableAttributes' => $attributes,
+				'attributes' => $this->productService->getAttributes($product->getId()),
+			),
 		));
 
 //		add_action('admin_footer', 'jigoshop_meta_scripts');

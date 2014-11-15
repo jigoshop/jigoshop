@@ -16,14 +16,14 @@ $hasLabel = !empty($label);
 ?>
 <div class="form-group <?php echo $id; ?>_field <?php echo join(' ', $classes); ?><?php $hidden and print ' not-active'; ?>">
 	<?php if($hasLabel): ?>
-	<label for="<?php echo $id; ?>" class="col-sm-2 control-label">
+	<label for="<?php echo $id; ?>" class="col-sm-<?php echo 12 - $size; ?> control-label">
 		<?php echo $label; ?>
 		<?php if(!empty($tip)): ?>
 			<a href="#" data-toggle="tooltip" class="badge" data-placement="top" title="<?php echo $tip; ?>">?</a>
 		<?php endif; ?>
 	</label>
 	<?php endif; ?>
-	<div class="<?php $hasLabel and print 'col-sm-9'; ?>">
+	<div class="<?php echo 'col-sm-'.($size-1); ?>">
 		<select id="<?php echo $id; ?>" name="<?php echo $name; ?>" class="form-control <?php echo join(' ', $classes); ?>" placeholder="<?php echo $placeholder; ?>"<?php $multiple and print ' multiple="multiple"'; ?>>
 			<?php foreach($options as $option => $item): ?>
 				<?php if(is_array($item)): ?>

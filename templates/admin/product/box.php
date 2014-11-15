@@ -1,5 +1,5 @@
 <?php
-use Jigoshop\Helper\Forms;
+use Jigoshop\Admin\Helper\Forms;
 use Jigoshop\Helper\Render;
 
 /**
@@ -27,6 +27,7 @@ $isHidden = function($options) use ($product) {
 			'label' => __('Product type', 'jigoshop'),
 			'options' => $types,
 			'value' => $product->getType(),
+			'size' => 10,
 		)); ?>
 		<ul class="jigoshop_product_data nav nav-tabs" role="tablist">
 			<?php foreach ($menu as $id => $options): ?>

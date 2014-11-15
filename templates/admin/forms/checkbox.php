@@ -14,7 +14,7 @@ $hasLabel = !empty($label);
 ?>
 <div class="form-group <?php echo $id; ?>_field <?php echo join(' ', $classes); ?><?php $hidden and print ' not-active'; ?>">
 	<?php if($hasLabel): ?>
-	<label for="<?php echo $id; ?>" class="col-sm-2 control-label">
+	<label for="<?php echo $id; ?>" class="col-sm-<?php echo 12 - $size; ?> control-label">
 		<?php echo $label; ?>
 		<?php if(!empty($tip)): ?>
 			<a href="#" data-toggle="tooltip" class="badge" data-placement="top" title="<?php echo $tip; ?>">?</a>
@@ -23,7 +23,7 @@ $hasLabel = !empty($label);
 	<?php elseif(!empty($tip)): ?>
 		<a href="#" data-toggle="tooltip" class="badge" data-placement="top" title="<?php echo $tip; ?>">?</a>
 	<?php endif; ?>
-	<div class="checkbox-inline<?php $hasLabel and print ' col-sm-9'; ?>">
+	<div class="checkbox-inline<?php echo ' col-sm-'.($size-1); ?>">
 		<input type="hidden" name="<?php echo $name; ?>" value="off" />
 		<input type="checkbox" id="<?php echo $id; ?>" name="<?php echo $name; ?>" class="<?php echo join(' ', $classes); ?>" <?php echo Forms::checked($value, true); ?> value="on" />
 		<?php if(!empty($description)): ?>
