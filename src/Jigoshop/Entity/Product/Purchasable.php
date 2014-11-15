@@ -17,11 +17,4 @@ interface Purchasable
 	 * @return float Current product price
 	 */
 	public function getPrice();
-
-	/**
-	 * Checks whether the product requires shipping.
-	 *
-	 * @return bool Whether the product requires shipping.
-	 */
-	public function isShippable();
 }

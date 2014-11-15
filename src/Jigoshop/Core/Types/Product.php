@@ -5,6 +5,7 @@ namespace Jigoshop\Core\Types;
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\Product\Simple;
+use Jigoshop\Entity\Product\Variable;
 use Jigoshop\Service\ProductServiceInterface;
 use WPAL\Wordpress;
 
@@ -92,6 +93,8 @@ class Product implements Post
 		switch($type){
 			case Simple::TYPE:
 				return __('Simple', 'jigoshop');
+			case Variable::TYPE:
+				return __('Variable', 'jigoshop');
 			default:
 				return $this->wp->applyFilters('jigoshop\product\type\name', $type);
 		}
@@ -108,6 +111,8 @@ class Product implements Post
 		switch($type){
 			case Simple::TYPE:
 				return 'Jigoshop\Entity\Product\Simple';
+			case Variable::TYPE:
+				return 'Jigoshop\Entity\Product\Variable';
 			default:
 				return $this->wp->applyFilters('jigoshop\product\type\class', $type);
 		}

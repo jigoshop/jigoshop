@@ -32,7 +32,7 @@ $isHidden = function($options) use ($product) {
 		)); ?>
 		<ul class="jigoshop_product_data nav nav-tabs" role="tablist">
 			<?php foreach ($menu as $id => $options): ?>
-			<li class="<?= $id; ?><?php $id == $current_tab and print ' active'; ?><?php $isHidden($options) and print ' hide' ?>">
+			<li class="<?= $id; ?><?php $id == $current_tab and print ' active'; ?><?php $isHidden($options) and print ' not-active' ?>">
 				<a href="#<?= $id; ?>" data-toggle="tab"><?= $options['label']; ?></a>
 			</li>
 			<?php endforeach; ?>

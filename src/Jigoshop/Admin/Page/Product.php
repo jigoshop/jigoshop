@@ -5,6 +5,8 @@ namespace Jigoshop\Admin\Page;
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\Product\Attributes\Attribute;
+use Jigoshop\Entity\Product\Simple;
+use Jigoshop\Entity\Product\Variable;
 use Jigoshop\Exception;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
@@ -22,6 +24,8 @@ class Product
 	private $productService;
 	/** @var Types\Product */
 	private $type;
+	/** @var array */
+	private $menu;
 
 	public function __construct(Wordpress $wp, Options $options, Types\Product $type, ProductServiceInterface $productService, Styles $styles, Scripts $scripts)
 	{
@@ -39,7 +43,18 @@ class Product
 			$wp->addMetaBox('jigoshop-product-data', __('Product Data', 'jigoshop'), array($that, 'box'), Types::PRODUCT, 'normal', 'high');
 			$wp->removeMetaBox('commentstatusdiv', null, 'normal');
 		});
-		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $styles, $scripts){
+
+
+		$this->menu = $menu = $this->wp->applyFilters('jigoshop\admin\product\menu', array(
+			'general' => array('label' => __('General', 'jigoshop'), 'visible' => true),
+			'advanced' => array('label' => __('Advanced', 'jigoshop'), 'visible' => true),
+			'attributes' => array('label' => __('Attributes', 'jigoshop'), 'visible' => true),
+			'variations' => array('label' => __('Variations', 'jigoshop'), 'visible' => array(Variable::TYPE)),
+			'stock' => array('label' => __('Stock', 'jigoshop'), 'visible' => true),
+			'sales' => array('label' => __('Sales', 'jigoshop'), 'visible' => array(Simple::TYPE, Variable::TYPE)),
+		));
+
+		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $menu, $styles, $scripts){
 			if ($wp->getPostType() == Types::PRODUCT) {
 				$styles->add('jigoshop.admin.product', JIGOSHOP_URL.'/assets/css/admin/product.css');
 				$scripts->add('jigoshop.helpers', JIGOSHOP_URL.'/assets/js/helpers.js');
@@ -50,7 +65,8 @@ class Product
 						'saved' => __('Changes saved.', 'jigoshop'),
 						'attribute_removed' => __('Attribute successfully removed.', 'jigoshop'),
 						'confirm_remove' => __('Are you sure?', 'jigoshop'),
-					)
+					),
+					'menu' => array_map(function($item){ return $item['visible']; }, $menu),
 				));
 			}
 		});
@@ -74,10 +90,10 @@ class Product
 		$menu = $this->wp->applyFilters('jigoshop\admin\product\menu', array(
 			'general' => array('label' => __('General', 'jigoshop'), 'visible' => true),
 			'advanced' => array('label' => __('Advanced', 'jigoshop'), 'visible' => true),
-			'stock' => array('label' => __('Stock', 'jigoshop'), 'visible' => true),
-			'sales' => array('label' => __('Sales', 'jigoshop'), 'visible' => array('simple')),
 			'attributes' => array('label' => __('Attributes', 'jigoshop'), 'visible' => true),
-//			'inventory' => __('Inventory', 'jigoshop'),
+			'variations' => array('label' => __('Variations', 'jigoshop'), 'visible' => array(Variable::TYPE)),
+			'stock' => array('label' => __('Stock', 'jigoshop'), 'visible' => true),
+			'sales' => array('label' => __('Sales', 'jigoshop'), 'visible' => array(Simple::TYPE, Variable::TYPE)),
 		));
 		$taxClasses = array();
 		foreach ($this->options->get('tax.classes') as $class) {
@@ -96,12 +112,6 @@ class Product
 			'general' => array(
 				'product' => $product,
 			),
-			'stock' => array(
-				'product' => $product,
-			),
-			'sales' => array(
-				'product' => $product,
-			),
 			'advanced' => array(
 				'product' => $product,
 				'taxClasses' => $taxClasses,
@@ -110,6 +120,15 @@ class Product
 				'product' => $product,
 				'availableAttributes' => $attributes,
 				'attributes' => $this->productService->getAttributes($product->getId()),
+			),
+			'variations' => array(
+				'product' => $product,
+			),
+			'stock' => array(
+				'product' => $product,
+			),
+			'sales' => array(
+				'product' => $product,
 			),
 		));
 

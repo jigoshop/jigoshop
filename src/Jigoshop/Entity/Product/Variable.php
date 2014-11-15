@@ -6,11 +6,11 @@ use Jigoshop\Entity\Product;
 use Jigoshop\Entity\Product\Attributes\Sales;
 use WPAL\Wordpress;
 
-class Simple extends Product implements Purchasable, Shippable, Saleable
+class Variable extends Product implements Shippable, Saleable
 {
-	const TYPE = 'simple';
+	const TYPE = 'variable';
 
-	private $regularPrice = 0.0;
+	private $variations = array();
 	/** @var Sales */
 	private $sales;
 
@@ -26,35 +26,6 @@ class Simple extends Product implements Purchasable, Shippable, Saleable
 	public function getType()
 	{
 		return self::TYPE;
-	}
-
-	/**
-	 * Returns real product price.
-	 * Applies `jigoshop\product\get_price` filter to allow plugins to modify the price.
-	 *
-	 * @return float Current product price.
-	 */
-	public function getPrice()
-	{
-		// TODO: Improve code to calculate price single time only
-		return $this->wp->applyFilters('jigoshop\product\get_price', $this->calculatePrice(), $this);
-	}
-
-	/**
-	 * @return float Regular product price.
-	 */
-	public function getRegularPrice()
-	{
-		return $this->regularPrice;
-	}
-
-	/**
-	 * @param float $regularPrice New regular product price.
-	 */
-	public function setRegularPrice($regularPrice)
-	{
-		$this->regularPrice = $regularPrice;
-		$this->dirtyFields[] = 'regularPrice';
 	}
 
 	/**
@@ -81,26 +52,6 @@ class Simple extends Product implements Purchasable, Shippable, Saleable
 		}
 	}
 
-	private function calculatePrice()
-	{
-		$price = $this->regularPrice;
-
-		if ($this->sales !== null && $this->sales->isEnabled()) {
-			if (strpos($this->sales->getPrice(), '%') !== false) {
-				$discount = trim($this->sales->getPrice(), '%');
-				$sale = $this->regularPrice * (1 - $discount / 100);
-			} else {
-				$sale = $this->regularPrice - $this->sales->getPrice();
-			}
-
-			if ($sale < $price) {
-				$price = $sale;
-			}
-		}
-
-		return $price;
-	}
-
 	/**
 	 * @return array List of fields to update with according values.
 	 */
@@ -110,9 +61,9 @@ class Simple extends Product implements Purchasable, Shippable, Saleable
 
 		foreach ($this->dirtyFields as $field) {
 			switch ($field) {
-				case 'regular_price':
-					$toSave['regular_price'] = $this->regularPrice;
-					break;
+//				case 'regular_price':
+//					$toSave['regular_price'] = $this->regularPrice;
+//					break;
 			}
 		}
 
@@ -127,10 +78,6 @@ class Simple extends Product implements Purchasable, Shippable, Saleable
 	public function restoreState(array $state)
 	{
 		parent::restoreState($state);
-
-		if (isset($state['regular_price'])) {
-			$this->regularPrice = (float)$state['regular_price'];
-		}
 
 		if (isset($state['sales']) && !empty($state['sales'])) {
 			if (is_array($state['sales'])) {
@@ -174,6 +121,9 @@ class Simple extends Product implements Purchasable, Shippable, Saleable
 	 */
 	public function isShippable()
 	{
-		return true;
+		return array_reduce($this->variations, function($value, $item){
+			/** @var $item Shippable */
+			return $value & $item->isShippable();
+		}, true);
 	}
 }

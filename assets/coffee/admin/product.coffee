@@ -5,11 +5,13 @@ class AdminProduct
       saved: ''
       confirm_remove: ''
       attribute_removed: ''
+    menu: {}
 
   constructor: (@params) ->
     jQuery('#add-attribute').on 'click', @addAttribute
     jQuery('#product-attributes').on 'change', 'input, select', @updateAttribute
     jQuery('#product-attributes').on 'click', '.remove-attribute', @removeAttribute
+    jQuery('#product-type').on 'change', @changeProductType
 
     jQuery('.jigoshop_product_data a').on 'click', (e) ->
       e.preventDefault()
@@ -37,6 +39,15 @@ class AdminProduct
     jQuery('#sales-to').datepicker
       todayBtn: 'linked'
       autoclose: true
+
+  changeProductType: (event) =>
+    type = jQuery(event.target).val()
+    jQuery('.jigoshop_product_data li').hide()
+    jQuery('.tab-content .tab-pane').hide()
+    for own tab, visibility of @params.menu
+      if visibility == true or type in visibility
+        jQuery('.jigoshop_product_data li.' + tab).show()
+        jQuery('.tab-content #' + tab).show()
 
   addAttribute: (event) =>
     event.preventDefault()

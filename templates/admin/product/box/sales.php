@@ -10,8 +10,8 @@ $price = '';
 $from = time();
 $to = time();
 
-if($product->isType(Product\Simple::TYPE)){
-	/** @var Product\Simple $product */
+if ($product instanceof Product\Saleable) {
+	/** @var Product\Saleable $product */
 	$enabled = $product->getSales()->isEnabled();
 	$price = $product->getSales()->getPrice();
 	$from = $product->getSales()->getFrom()->format('m/d/Y');
