@@ -13,6 +13,7 @@ class AdminProductAttributes
       .on 'change', '.attribute input, .attribute select', @updateAttribute
       .on 'click', '.configure-attribute, .options button', @configureAttribute
       .on 'click', '.add-option', @addAttributeOption
+      .on 'change', '.options input', @updateAttributeOption
     @$newLabel = jQuery('#attribute-label')
     @$newSlug = jQuery('#attribute-slug')
     @$newType = jQuery('#attribute-type')
@@ -92,6 +93,24 @@ class AdminProductAttributes
         $label.val('')
         $value.val('')
         jQuery(data.html).appendTo($container)
+      else
+        addMessage('danger', data.error, 6000)
+  updateAttributeOption: (event) =>
+    $parent = jQuery(event.target).closest('tr')
+    jQuery.ajax
+      url: @params.ajax
+      type: 'post'
+      dataType: 'json'
+      data:
+        action: 'jigoshop.admin.product_attributes.save_option'
+        id: $parent.data('id')
+        attribute_id: $parent.closest('tr.options').data('id')
+        label: jQuery('input.option-label', $parent).val()
+        value: jQuery('input.option-value', $parent).val()
+    .done (data) =>
+      if data.success? and data.success
+        $parent.replaceWith(data.html)
+        addMessage('success', @params.i18n.saved, 2000)
       else
         addMessage('danger', data.error, 6000)
 
