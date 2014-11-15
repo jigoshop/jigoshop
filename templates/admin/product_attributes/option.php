@@ -11,12 +11,14 @@ use Jigoshop\Admin\Helper\Forms;
 	<td>
 		<?php Forms::text(array(
 			'name' => 'attributes['.$id.'][options]['.$option_id.'][label]',
+			'classes' => array('option-label'),
 			'value' => $option->getLabel(),
 		)); ?>
 	</td>
 	<td>
 		<?php Forms::text(array(
 			'name' => 'attributes['.$id.'][options]['.$option_id.'][value]',
+			'classes' => array('option-value'),
 			'value' => $option->getValue(),
 		)); ?>
 	</td>

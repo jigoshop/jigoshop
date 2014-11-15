@@ -112,7 +112,20 @@ class Attribute
 	 */
 	public function addOption(Attribute\Option $option)
 	{
-		$this->options[] = $option;
+		$this->options[$option->getId()] = $option;
+	}
+
+	/**
+	 * Removes option from the attribute.
+	 *
+	 * @param int $id Option ID to remove.
+	 * @return Option Removed option.
+	 */
+	public function removeOption($id)
+	{
+		$option = $this->options[$id];
+		unset($this->options[$id]);
+		return $option;
 	}
 
 	/**

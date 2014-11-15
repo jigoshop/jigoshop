@@ -141,9 +141,6 @@ class Attributes implements PageInterface
 		if (!isset($_POST['label']) || empty($_POST['label'])) {
 			$errors[] = __('Option label is not set.', 'jigoshop');
 		}
-		if (!isset($_POST['value']) || empty($_POST['value'])) {
-			$errors[] = __('Option value is not set.', 'jigoshop');
-		}
 
 		if (!empty($errors)) {
 			echo json_encode(array(
@@ -158,12 +155,18 @@ class Attributes implements PageInterface
 			$option = $attribute->removeOption($_POST['id']);
 		} else {
 			$option = new Attribute\Option();
+			$option->setAttribute($attribute);
 		}
 
 		$option->setLabel(trim(htmlspecialchars(strip_tags($_POST['label']))));
-		$option->setValue(trim(htmlspecialchars(strip_tags($_POST['value']))));
-		$attribute->addOption($option);
 
+		if (isset($_POST['slug']) && !empty($_POST['slug'])) {
+			$option->setValue(trim(htmlspecialchars(strip_tags($_POST['value']))));
+		} else {
+			$option->setValue($this->wp->sanitizeTitle($option->getLabel()));
+		}
+
+		$attribute->addOption($option);
 		$this->productService->saveAttribute($attribute);
 
 		echo json_encode(array(

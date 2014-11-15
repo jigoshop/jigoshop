@@ -9,7 +9,7 @@ use Jigoshop\Helper\Render;
  * @var $types array List of available attribute types.
  */
 ?>
-<tr data-id="<?php echo $id; ?>">
+<tr class="attribute" data-id="<?php echo $id; ?>">
 	<td>
 		<?php Forms::text(array(
 			'name' => 'attributes['.$id.'][label]',
@@ -67,19 +67,19 @@ use Jigoshop\Helper\Render;
 					<td>
 						<?php Forms::text(array(
 							'name' => 'option_label',
-							'id' => 'option-label',
+							'classes' => array('new-option-label'),
 							'placeholder' => __('New option label', 'jigoshop'),
 						)); ?>
 					</td>
 					<td>
 						<?php Forms::text(array(
 							'name' => 'option_value',
-							'id' => 'option-value',
+							'classes' => array('new-option-value'),
 							'placeholder' => __('New option value', 'jigoshop'),
 						)); ?>
 					</td>
 					<td>
-						<button type="button" class="btn btn-default" id="add-option"><span class="glyphicon glyphicon-plus"></span> <?php _e('Add', 'jigoshop'); ?></button>
+						<button type="button" class="btn btn-default add-option"><span class="glyphicon glyphicon-plus"></span> <?php _e('Add', 'jigoshop'); ?></button>
 					</td>
 				</tr>
 				</tfoot>

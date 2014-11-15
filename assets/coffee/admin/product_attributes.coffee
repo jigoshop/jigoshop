@@ -10,7 +10,9 @@ class AdminProductAttributes
     jQuery('#add-attribute').on 'click', @addAttribute
     jQuery('table#product-attributes > tbody')
       .on 'click', '.remove-attribute', @removeAttribute
-      .on 'change', 'input, select', @updateAttribute
+      .on 'change', '.attribute input, .attribute select', @updateAttribute
+      .on 'click', '.configure-attribute, .options button', @configureAttribute
+      .on 'click', '.add-option', @addAttributeOption
     @$newLabel = jQuery('#attribute-label')
     @$newSlug = jQuery('#attribute-slug')
     @$newType = jQuery('#attribute-type')
@@ -68,6 +70,30 @@ class AdminProductAttributes
           addMessage('success', @params.i18n.removed, 2000)
         else
           addMessage('danger', data.error, 6000)
+  configureAttribute: (event) ->
+    $parent = jQuery(event.target).closest('tr')
+    $options = jQuery('tr.options[data-id=' + $parent.data('id') + ']').toggle()
+  addAttributeOption: (event) =>
+    $parent = jQuery(event.target).closest('tr.options')
+    $container = jQuery('tbody', $parent)
+    $label = jQuery('input.new-option-label', $parent)
+    $value = jQuery('input.new-option-value', $parent)
+    jQuery.ajax
+      url: @params.ajax
+      type: 'post'
+      dataType: 'json'
+      data:
+        action: 'jigoshop.admin.product_attributes.save_option'
+        attribute_id: $parent.data('id')
+        label: $label.val()
+        value: $value.val()
+    .done (data) ->
+      if data.success? and data.success
+        $label.val('')
+        $value.val('')
+        jQuery(data.html).appendTo($container)
+      else
+        addMessage('danger', data.error, 6000)
 
 jQuery ->
   new AdminProductAttributes(jigoshop_admin_product_attributes)

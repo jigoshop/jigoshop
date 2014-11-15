@@ -301,7 +301,7 @@ class Product implements ProductServiceInterface
 				$i++;
 			}
 
-			$attributes[] = $attribute;
+			$attributes[$attribute->getId()] = $attribute;
 		}
 
 		return $attributes;

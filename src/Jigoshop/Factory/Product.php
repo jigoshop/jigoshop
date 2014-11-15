@@ -180,11 +180,13 @@ class Product implements EntityFactoryInterface
 
 		while ($i < $endI && $results[$i]['id'] == $attribute->getId()) {
 			$option = new Attribute\Option();
-			$option->setId($results[$i]['option_id']);
-			$option->setLabel($results[$i]['option_label']);
-			$option->setValue($results[$i]['option_value']);
-			$option->setAttribute($attribute);
-			$attribute->addOption($option);
+			if ($results[$i]['option_id'] !== null) {
+				$option->setId($results[$i]['option_id']);
+				$option->setLabel($results[$i]['option_label']);
+				$option->setValue($results[$i]['option_value']);
+				$option->setAttribute($attribute);
+				$attribute->addOption($option);
+			}
 			$i++;
 		}
 
@@ -220,16 +222,18 @@ class Product implements EntityFactoryInterface
 			$attribute->setValue($results[$i]['value']);
 
 			while ($i < $endI && $results[$i]['id'] == $attribute->getId()) {
-				$option = new Attribute\Option();
-				$option->setId($results[$i]['option_id']);
-				$option->setLabel($results[$i]['option_label']);
-				$option->setValue($results[$i]['option_value']);
-				$option->setAttribute($attribute);
-				$attribute->addOption($option);
+				if ($results[$i]['option_id'] !== null) {
+					$option = new Attribute\Option();
+					$option->setId($results[$i]['option_id']);
+					$option->setLabel($results[$i]['option_label']);
+					$option->setValue($results[$i]['option_value']);
+					$option->setAttribute($attribute);
+					$attribute->addOption($option);
+				}
 				$i++;
 			}
 
-			$attributes[] = $attribute;
+			$attributes[$attribute->getId()] = $attribute;
 		}
 
 		return $attributes;
