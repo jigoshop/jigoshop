@@ -4,6 +4,7 @@ namespace Jigoshop\Service\Cache\Product;
 
 use Jigoshop\Entity\EntityInterface;
 use Jigoshop\Entity\Product;
+use Jigoshop\Service\Attribute;
 use Jigoshop\Service\ProductServiceInterface;
 
 /**
@@ -181,5 +182,30 @@ class Simple implements ProductServiceInterface
 	{
 		// TODO: Implement getAttributes() method.
 		return $this->service->getAttributes($productId);
+	}
+
+	/**
+	 * Finds attribute for selected ID.
+	 * If attribute is not found - returns null.
+	 *
+	 * @param int $id Attribute ID.
+	 * @return Attribute
+	 */
+	public function getAttribute($id)
+	{
+		// TODO: Implement getAttribute() method.
+		return $this->service->getAttribute($id);
+	}
+
+	/**
+	 * Saves attribute to database.
+	 *
+	 * @param Product\Attributes\Attribute $attribute Attribute to save.
+	 * @return \Jigoshop\Entity\Product\Attributes\Attribute Saved attribute.
+	 */
+	public function saveAttribute(Product\Attributes\Attribute $attribute)
+	{
+		// TODO: Implement saveAttribute() method.
+		return $this->service->saveAttribute($attribute);
 	}
 }

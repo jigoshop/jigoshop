@@ -52,34 +52,95 @@ class Attributes implements PageInterface
 			));
 		});
 
-		$wp->addAction('wp_ajax_jigoshop.admin.product_attributes.add_attribute', array($this, 'ajaxAddAttribute'));
+		$wp->addAction('wp_ajax_jigoshop.admin.product_attributes.save', array($this, 'ajaxSave'));
+		$wp->addAction('wp_ajax_jigoshop.admin.product_attributes.save_option', array($this, 'ajaxSaveOption'));
 	}
 
-	public function ajaxAddAttribute()
+	public function ajaxSave()
 	{
+		$errors = array();
 		if (!isset($_POST['label']) || empty($_POST['label'])) {
+			$errors[] = __('Attribute label is not set.', 'jigoshop');
+		}
+		if (!isset($_POST['type']) || !in_array($_POST['type'], array_keys(Attribute::getTypes()))) {
+			$errors[] = __('Attribute type is not valid.', 'jigoshop');
+		}
+
+		if (!empty($errors)) {
 			echo json_encode(array(
 				'success' => false,
-				'error' => __('Attribute label is not set.', 'jigoshop'),
-			));
-			exit;
-		}
-		if (!isset($_POST['slug'])) {
-			$_POST['slug'] = null;
-		}
-		if (!isset($_POST['type']) || !in_array($_POST['type'], array('multiselect', 'select', 'text'))) {
-			echo json_encode(array(
-				'success' => false,
-				'error' => __('Attribute type is not valid.', 'jigoshop'),
+				'error' => join('<br/>', $errors),
 			));
 			exit;
 		}
 
-		$this->productService->addAttribute(
-			trim(htmlspecialchars(strip_tags($_POST['label']))),
-			trim(htmlspecialchars(strip_tags($_POST['slug']))),
-			trim(htmlspecialchars(strip_tags($_POST['type'])))
-		);
+		if (isset($_POST['id']) && is_numeric($_POST['id'])) {
+			$attribute = $this->productService->getAttribute((int)$_POST['id']);
+		} else {
+			$attribute = new Attribute();
+		}
+
+		$attribute->setLabel(trim(htmlspecialchars(strip_tags($_POST['label']))));
+		$attribute->setType((int)$_POST['type']);
+
+		if (isset($_POST['slug']) && !empty($_POST['slug'])) {
+			$attribute->setSlug(trim(htmlspecialchars(strip_tags($_POST['slug']))));
+		} else {
+			$attribute->setSlug($this->wp->sanitizeTitle($attribute->getLabel()));
+		}
+
+		$this->productService->saveAttribute($attribute);
+
+		echo json_encode(array(
+			'success' => true,
+			'html' => Render::get('admin/product_attributes/attribute', array(
+				'id' => $attribute->getId(),
+				'attribute' => $attribute,
+				'types' => Attribute::getTypes(),
+			)),
+		));
+		exit;
+	}
+
+	public function ajaxSaveOption()
+	{
+		$errors = array();
+		if (!isset($_POST['attribute_id']) || !is_numeric($_POST['attribute_id'])) {
+			$errors[] = __('Respective attribute is not set.', 'jigoshop');
+		}
+		if (!isset($_POST['label']) || empty($_POST['label'])) {
+			$errors[] = __('Option label is not set.', 'jigoshop');
+		}
+		if (!isset($_POST['value']) || empty($_POST['value'])) {
+			$errors[] = __('Option value is not set.', 'jigoshop');
+		}
+
+		if (!empty($errors)) {
+			echo json_encode(array(
+				'success' => false,
+				'error' => join('<br/>', $errors),
+			));
+			exit;
+		}
+
+		$attribute = $this->productService->getAttribute((int)$_POST['attribute_id']);
+		if (isset($_POST['id'])) {
+			$option = $attribute->removeOption($_POST['id']);
+		} else {
+			$option = new Attribute\Option();
+		}
+
+		$option->setLabel(trim(htmlspecialchars(strip_tags($_POST['label']))));
+		$option->setValue(trim(htmlspecialchars(strip_tags($_POST['value']))));
+		$attribute->addOption($option);
+
+		$this->productService->saveAttribute($attribute);
+
+		echo json_encode(array(
+			'success' => true,
+			'html' => Render::get('admin/product_attributes/option', array('id' => $attribute->getId(), 'option_id' => $option->getId(), 'option' => $option)),
+		));
+		exit;
 	}
 
 	/**

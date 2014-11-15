@@ -273,7 +273,7 @@ class Product implements ProductServiceInterface
 	{
 		$wpdb = $this->wp->getWPDB();
 		$query = "
-		SELECT a.id, a.slug, a.label, a.type, ao.value AS option_value, ao.label as option_label
+		SELECT a.id, a.is_local, a.slug, a.label, a.type, ao.id AS option_id, ao.value AS option_value, ao.label as option_label
 		FROM {$wpdb->prefix}jigoshop_attribute a
 			LEFT JOIN {$wpdb->prefix}jigoshop_attribute_option ao ON a.id = ao.attribute_id
 			WHERE a.is_local = 0
@@ -282,16 +282,22 @@ class Product implements ProductServiceInterface
 		$attributes = array();
 
 		for ($i = 0, $endI = count($results); $i < $endI;) {
-			$attribute = array(
-				'id' => $results[$i]['id'],
-				'slug' => $results[$i]['slug'],
-				'label' => $results[$i]['label'],
-				'type' => $results[$i]['type'],
-				'options' => array(),
-			);
+			$attribute = new Attribute();
+			$attribute->setId((int)$results[$i]['id']);
+			$attribute->setSlug($results[$i]['slug']);
+			$attribute->setLabel($results[$i]['label']);
+			$attribute->setType((int)$results[$i]['type']);
+			$attribute->setLocal((bool)$results[$i]['is_local']);
 
-			while ($i < $endI && $results[$i]['id'] == $attribute['id']) {
-				$attribute['options'][$results[$i]['option_value']] = $results[$i]['option_label'];
+			while ($i < $endI && $results[$i]['id'] == $attribute->getId()) {
+				if ($results[$i]['option_id'] !== null) {
+					$option = new Attribute\Option();
+					$option->setId($results[$i]['option_id']);
+					$option->setLabel($results[$i]['option_label']);
+					$option->setValue($results[$i]['option_value']);
+					$option->setAttribute($attribute);
+					$attribute->addOption($option);
+				}
 				$i++;
 			}
 
@@ -299,11 +305,6 @@ class Product implements ProductServiceInterface
 		}
 
 		return $attributes;
-	}
-
-	public function saveAttribute(Attribute $attribute)
-	{
-		// TODO: Implement
 	}
 
 	/**
@@ -314,6 +315,59 @@ class Product implements ProductServiceInterface
 	 */
 	public function getAttributes($productId)
 	{
-		// TODO: Implement getAttributes() method.
+		return $this->factory->getAttributes($productId);
+	}
+
+	/**
+	 * Finds attribute for selected ID.
+	 *
+	 * If attribute is not found - returns null.
+	 *
+	 * @param int $id Attribute ID.
+	 * @return Attribute
+	 */
+	public function getAttribute($id)
+	{
+		return $this->factory->getAttribute($id);
+	}
+
+	/**
+	 * Saves attribute to database.
+	 *
+	 * @param Attribute $attribute Attribute to save.
+	 * @return \Jigoshop\Entity\Product\Attributes\Attribute Saved attribute.
+	 */
+	public function saveAttribute(Attribute $attribute)
+	{
+		$wpdb = $this->wp->getWPDB();
+		$data = array(
+			'label' => $attribute->getLabel(),
+			'slug' => $attribute->getSlug(),
+			'type' => $attribute->getType(),
+			'is_local' => $attribute->isLocal(),
+		);
+
+		if ($attribute->getId()) {
+			$wpdb->update($wpdb->prefix.'jigoshop_attribute', $data, array('id' => $attribute->getId()));
+		} else {
+			$id = $wpdb->insert($wpdb->prefix.'jigoshop_attribute', $data);
+			$attribute->setId($id);
+		}
+
+		foreach ($attribute->getOptions() as $option) {
+			/** @var $option Attribute\Option */
+			$data = array(
+				'attribute_id' => $option->getAttribute()->getId(),
+				'label' => $option->getLabel(),
+				'value' => $option->getValue(),
+			);
+			if ($option->getId()) {
+				$wpdb->update($wpdb->prefix.'jigoshop_attribute_option', $data, array('id' => $option->getId()));
+			} else {
+				$wpdb->insert($wpdb->prefix.'jigoshop_attribute_option', $data);
+			}
+		}
+
+		return $attribute;
 	}
 }

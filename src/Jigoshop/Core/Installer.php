@@ -124,10 +124,12 @@ class Installer
 		$wpdb->query($query);
 		$query = "
 			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}jigoshop_attribute_option (
+				id INT(9) NOT NULL AUTO_INCREMENT,
 				attribute_id INT(9),
 				label VARCHAR(255) NOT NULL,
 				value VARCHAR(255) NOT NULL,
-				PRIMARY KEY id (attribute_id, value),
+				PRIMARY KEY id (id),
+				UNIQUE KEY attribute_value (attribute_id, value),
 				FOREIGN KEY product_attribute (attribute_id) REFERENCES {$wpdb->prefix}jigoshop_attribute (id) ON DELETE CASCADE
 			) {$collate};
 		";

@@ -3,6 +3,7 @@
 namespace Jigoshop\Service;
 
 use Jigoshop\Entity\Product;
+use Jigoshop\Entity\Product\Attributes\Attribute;
 
 /**
  * Products service interface.
@@ -84,4 +85,22 @@ interface ProductServiceInterface extends ServiceInterface
 	 * @return array List of attributes attached to selected product.
 	 */
 	public function getAttributes($productId);
+
+	/**
+	 * Finds attribute for selected ID.
+	 *
+	 * If attribute is not found - returns null.
+	 *
+	 * @param int $id Attribute ID.
+	 * @return Attribute
+	 */
+	public function getAttribute($id);
+
+	/**
+	 * Saves attribute to database.
+	 *
+	 * @param Attribute $attribute Attribute to save.
+	 * @return \Jigoshop\Entity\Product\Attributes\Attribute Saved attribute.
+	 */
+	public function saveAttribute(Attribute $attribute);
 }

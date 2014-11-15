@@ -2,6 +2,8 @@
 
 namespace Jigoshop\Entity\Product\Attributes;
 
+use Jigoshop\Entity\Product\Attributes\Attribute\Option;
+
 /**
  * Product's attribute.
  *
@@ -10,9 +12,9 @@ namespace Jigoshop\Entity\Product\Attributes;
  */
 class Attribute
 {
-	const MULTISELECT = 'multiselect';
-	const SELECT = 'select';
-	const TEXT = 'text';
+	const MULTISELECT = 0;
+	const SELECT = 1;
+	const TEXT = 2;
 	private static $types;
 
 	private $id;
@@ -101,6 +103,16 @@ class Attribute
 	public function setOptions($options)
 	{
 		$this->options = $options;
+	}
+
+	/**
+	 * Adds option to the attribute.
+	 *
+	 * @param Option $option Option to add.
+	 */
+	public function addOption(Attribute\Option $option)
+	{
+		$this->options[] = $option;
 	}
 
 	/**

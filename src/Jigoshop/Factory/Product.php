@@ -3,6 +3,7 @@
 namespace Jigoshop\Factory;
 
 use Jigoshop\Core\Types;
+use Jigoshop\Entity\Product\Attributes\Attribute;
 use Jigoshop\Entity\Product\Simple;
 use Jigoshop\Exception;
 use WPAL\Wordpress;
@@ -144,9 +145,93 @@ class Product implements EntityFactoryInterface
 		}, $items);
 	}
 
-	private function getAttributes($id)
+	/**
+	 * Fetches attribute for selected ID.
+	 *
+	 * If attribute is not found - returns null.
+	 *
+	 * @param int $id Attribute ID.
+	 * @return Attribute
+	 */
+	public function getAttribute($id)
 	{
-		// TODO: Real fetch of product attributes and restoring state
-		return array();
+		$wpdb = $this->wp->getWPDB();
+		$query = $wpdb->prepare("
+		SELECT a.id, a.is_local, a.slug, a.label, a.type, ao.id AS option_id, ao.value AS option_value, ao.label as option_label
+		FROM {$wpdb->prefix}jigoshop_attribute a
+			LEFT JOIN {$wpdb->prefix}jigoshop_attribute_option ao ON a.id = ao.attribute_id
+			WHERE a.id = %d
+		", array($id));
+
+		$results = $wpdb->get_results($query);
+
+		if (count($results) == 0) {
+			return null;
+		}
+
+		$i = 0;
+		$endI = count($results);
+		$attribute = new Attribute();
+		$attribute->setId((int)$results[$i]['id']);
+		$attribute->setSlug($results[$i]['slug']);
+		$attribute->setLabel($results[$i]['label']);
+		$attribute->setType((int)$results[$i]['type']);
+		$attribute->setLocal((bool)$results[$i]['is_local']);
+
+		while ($i < $endI && $results[$i]['id'] == $attribute->getId()) {
+			$option = new Attribute\Option();
+			$option->setId($results[$i]['option_id']);
+			$option->setLabel($results[$i]['option_label']);
+			$option->setValue($results[$i]['option_value']);
+			$option->setAttribute($attribute);
+			$attribute->addOption($option);
+			$i++;
+		}
+
+		return $attribute;
+	}
+
+	/**
+	 * Finds and returns list of attributes associated with selected product by it's ID.
+	 *
+	 * @param $productId int Product ID.
+	 * @return array List of attributes attached to selected product.
+	 */
+	public function getAttributes($productId)
+	{
+		$wpdb = $this->wp->getWPDB();
+		$query = $wpdb->prepare("
+		SELECT a.id, a.slug, a.label, a.type, ao.id AS option_id, ao.value AS option_value, ao.label as option_label, pa.value
+		FROM {$wpdb->prefix}jigoshop_attribute a
+			LEFT JOIN {$wpdb->prefix}jigoshop_attribute_option ao ON a.id = ao.attribute_id
+			LEFT JOIN {$wpdb->prefix}jigoshop_product_attribute pa ON pa.attribute_id = a.id
+			WHERE pa.product_id = %d
+		", array($productId));
+		$results = $wpdb->get_results($query, ARRAY_A);
+		$attributes = array();
+
+		for ($i = 0, $endI = count($results); $i < $endI;) {
+			$attribute = new Attribute();
+			$attribute->setId((int)$results[$i]['id']);
+			$attribute->setSlug($results[$i]['slug']);
+			$attribute->setLabel($results[$i]['label']);
+			$attribute->setType((int)$results[$i]['type']);
+			$attribute->setLocal((bool)$results[$i]['is_local']);
+			$attribute->setValue($results[$i]['value']);
+
+			while ($i < $endI && $results[$i]['id'] == $attribute->getId()) {
+				$option = new Attribute\Option();
+				$option->setId($results[$i]['option_id']);
+				$option->setLabel($results[$i]['option_label']);
+				$option->setValue($results[$i]['option_value']);
+				$option->setAttribute($attribute);
+				$attribute->addOption($option);
+				$i++;
+			}
+
+			$attributes[] = $attribute;
+		}
+
+		return $attributes;
 	}
 }

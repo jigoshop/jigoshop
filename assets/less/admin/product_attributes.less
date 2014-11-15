@@ -21,4 +21,16 @@
     border-top: 0;
     padding: @padding-base-vertical @padding-base-horizontal;
   }
+
+  table.table > tbody > tr {
+    vertical-align: middle;
+
+    > td {
+      vertical-align: middle;
+
+      .form-group {
+        margin: 0;
+      }
+    }
+  }
 }
