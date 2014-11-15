@@ -277,7 +277,7 @@ abstract class Product implements EntityInterface, Taxable
 	 * @param Product\Attributes\Attribute|int $attribute Attribute to remove.
 	 * @return \Jigoshop\Entity\Product\Attributes\Attribute|null Removed attribute or null.
 	 */
-	public function deleteAttribute($attribute)
+	public function removeAttribute($attribute)
 	{
 		if ($attribute instanceof Product\Attributes\Attribute) {
 			$attribute = $attribute->getId();

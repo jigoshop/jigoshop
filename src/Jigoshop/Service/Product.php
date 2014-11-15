@@ -310,11 +310,10 @@ class Product implements ProductServiceInterface
 		$attributes = array();
 
 		for ($i = 0, $endI = count($results); $i < $endI;) {
-			$attribute = new Attribute();
+			$attribute = $this->factory->createAttribute($results[$i]['type']);
 			$attribute->setId((int)$results[$i]['id']);
 			$attribute->setSlug($results[$i]['slug']);
 			$attribute->setLabel($results[$i]['label']);
-			$attribute->setType((int)$results[$i]['type']);
 			$attribute->setLocal((bool)$results[$i]['is_local']);
 
 			while ($i < $endI && $results[$i]['id'] == $attribute->getId()) {

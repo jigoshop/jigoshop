@@ -2,7 +2,10 @@
 
 namespace Jigoshop\Entity\Product\Attributes;
 
+use Jigoshop\Entity\Product\Attributes\Attribute\Multiselect;
 use Jigoshop\Entity\Product\Attributes\Attribute\Option;
+use Jigoshop\Entity\Product\Attributes\Attribute\Select;
+use Jigoshop\Entity\Product\Attributes\Attribute\Text;
 
 /**
  * Product's attribute.
@@ -10,20 +13,16 @@ use Jigoshop\Entity\Product\Attributes\Attribute\Option;
  * @package Jigoshop\Entity\Product\Attributes
  * @author Amadeusz Starzykiewicz
  */
-class Attribute
+abstract class Attribute
 {
-	const MULTISELECT = 0;
-	const SELECT = 1;
-	const TEXT = 2;
 	private static $types;
 
 	private $id;
 	private $local;
 	private $slug;
 	private $label;
-	private $type;
 	private $options = array();
-	private $value;
+	protected $value;
 
 	/**
 	 * @return array List of available types with its labels.
@@ -32,9 +31,9 @@ class Attribute
 	{
 		if (self::$types === null) {
 			self::$types = array(
-				self::MULTISELECT => __('Multiselect', 'jigoshop'),
-				self::SELECT => __('Select', 'jigoshop'),
-				self::TEXT => __('Text', 'jigoshop'),
+				Multiselect::TYPE => __('Multiselect', 'jigoshop'),
+				Select::TYPE => __('Select', 'jigoshop'),
+				Text::TYPE => __('Text', 'jigoshop'),
 			);
 		}
 
@@ -145,43 +144,20 @@ class Attribute
 	}
 
 	/**
-	 * @return int Type of attribute.
-	 */
-	public function getType()
-	{
-		return $this->type;
-	}
-
-	/**
-	 * @param int $type New attribute type.
-	 */
-	public function setType($type)
-	{
-		$this->type = $type;
-	}
-
-	/**
 	 * @return mixed Attribute value.
 	 */
 	public function getValue()
 	{
-		// TODO: Maybe we should keep array and just always join values ion save?
-		if ($this->type == Attribute::MULTISELECT) {
-			return explode('|', $this->value);
-		}
-
 		return $this->value;
 	}
 
 	/**
+	 * @return int Type of attribute.
+	 */
+	abstract public function getType();
+
+	/**
 	 * @param mixed $value New value for attribute.
 	 */
-	public function setValue($value)
-	{
-		if ($this->type == Attribute::MULTISELECT && is_array($value)) {
-			$value = join('|', $value);
-		}
-
-		$this->value = $value;
-	}
+	abstract public function setValue($value);
 }

@@ -20,6 +20,7 @@ $isHidden = function($options) use ($product) {
 };
 ?>
 <div class="jigoshop" data-id="<?php echo $product->getId(); ?>">
+	<div id="messages"></div>
 	<div class="form-horizontal">
 		<?php Forms::select(array(
 			'id' => 'product-type',

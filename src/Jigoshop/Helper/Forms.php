@@ -75,6 +75,7 @@ class Forms
 			'name' => null,
 			'label' => null,
 			'value' => 'on',
+			'multiple' => false,
 			'checked' => false,
 			'disabled' => false,
 			'classes' => array(),
@@ -92,6 +93,10 @@ class Forms
 
 		if (empty($field['id'])) {
 			$field['id'] = self::prepareIdFromName($field['name']);
+		}
+
+		if ($field['multiple']) {
+			$field['name'] .= '[]';
 		}
 
 		Render::output(static::$checkboxTemplate, $field);

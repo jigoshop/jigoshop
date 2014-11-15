@@ -6,7 +6,7 @@ use Jigoshop\Entity\Product\Attributes\Attribute;
  * @var $attribute Attribute Attribute to display.
  */
 ?>
-<div class="panel panel-default">
+<div class="panel panel-default" data-id="<?php echo $attribute->getId(); ?>">
 	<div class="panel-heading">
 		<h5 class="panel-title">
 			<?php echo $attribute->getLabel(); ?>
@@ -14,38 +14,39 @@ use Jigoshop\Entity\Product\Attributes\Attribute;
 		</h5>
 	</div>
 	<?php switch($attribute->getType()) {
-		case Attribute::MULTISELECT:
+		case Attribute\Multiselect::TYPE:
 			?>
 			<ul class="list-group">
 				<?php foreach($attribute->getOptions() as $option): /** @var $option Attribute\Option */?>
 					<li class="list-group-item"><?php Forms::checkbox(array(
-							'name' => 'product[attributes]['.$attribute->getId().'][options]['.$option->getId().']',
+							'name' => 'product[attributes]['.$attribute->getId().'][options]',
+							'id' => 'product_attributes_'.$attribute->getId().'_option_'.$option->getId(),
+							'classes' => array('attribute-'.$attribute->getId()),
 							'label' => $option->getLabel(),
-							'value' => $option->getValue(),
-							'checked' => in_array($option->getValue(), $attribute->getValue()),
+							'value' => $option->getId(),
+							'multiple' => true,
+							'checked' => in_array($option->getId(), $attribute->getValue()),
 						)); ?></li>
 				<?php endforeach; ?>
 			</ul>
 			<?php
 			break;
-		case Attribute::SELECT:
-			?>
-			<ul class="list-group">
-				<?php foreach($attribute->getOptions() as $option): /** @var $option Attribute\Option */?>
-					<li class="list-group-item"><?php Forms::checkbox(array( // TODO: Change into radio buttons
-							'name' => 'product[attributes]['.$attribute->getId().']',
-							'label' => $option->getLabel(),
-							'value' => $option->getValue(),
-							'checked' => $option->getValue() == $attribute->getValue(),
-						)); ?></li>
-				<?php endforeach; ?>
-			</ul>
-			<?php
-			break;
-		case Attribute::TEXT:
+		case Attribute\Select::TYPE:
 			?><div class="panel-body"><?php
-			Forms::textarea(array(
+			Forms::select(array(
 				'name' => 'product[attributes]['.$attribute->getId().']',
+				'classes' => array('attribute-'.$attribute->getId()),
+				'value' => $attribute->getValue(),
+				'options' => array_map(function($item){ return $item->getLabel(); }, $attribute->getOptions()),
+				'size' => 12,
+			));
+			?></div><?php
+			break;
+		case Attribute\Text::TYPE:
+			?><div class="panel-body"><?php
+			Forms::text(array(
+				'name' => 'product[attributes]['.$attribute->getId().']',
+				'classes' => array('attribute-'.$attribute->getId()),
 				'value' => $attribute->getValue(),
 				'size' => 12,
 			));

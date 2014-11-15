@@ -45,6 +45,9 @@ class Product
 				$scripts->add('jigoshop.admin.product', JIGOSHOP_URL.'/assets/js/admin/product.js', array('jquery', 'jigoshop.helpers'));
 				$scripts->localize('jigoshop.admin.product', 'jigoshop_admin_product', array(
 					'ajax' => $wp->getAjaxUrl(),
+					'i18n' => array(
+						'saved' => __('Changes saved.', 'jigoshop'),
+					)
 				));
 			}
 		});

@@ -1,10 +1,12 @@
 class AdminProduct
   params:
     ajax: ''
+    i18n:
+      saved: ''
 
   constructor: (@params) ->
     jQuery('#add-attribute').on 'click', @addAttribute
-#    jQuery('#product-attributes').on 'change', 'input, textarea', => @updateAttribute
+    jQuery('#product-attributes').on 'change', 'input, select', @updateAttribute
 
     jQuery('.jigoshop_product_data a').on 'click', (e) ->
       e.preventDefault()
@@ -51,6 +53,17 @@ class AdminProduct
         addMessage('danger', data.error, 6000)
   updateAttribute: (event) =>
     $parent = jQuery('#product-attributes')
+    $item = jQuery(event.target)
+    if $item.is('input[type=checkbox]')
+      items = jQuery('input[type=checkbox].' + $item.attr('class') + ':checked').toArray()
+      item = items.reduce(
+        (value, current) ->
+          current.value + '|' + value
+        ''
+      )
+    else
+      item = $item.val()
+
     jQuery.ajax
       url: @params.ajax
       type: 'post'
@@ -58,11 +71,11 @@ class AdminProduct
       data:
         action: 'jigoshop.admin.product.save_attribute'
         product_id: $parent.closest('.jigoshop').data('id')
-        attribute_id: jQuery('#new-attribute').val()
-        value: jQuery(event.target).val()
-    .done (data) ->
+        attribute_id: $item.closest('div.panel').data('id')
+        value: item
+    .done (data) =>
       if data.success? and data.success
-        jQuery(data.html).hide().appendTo($parent).slideDown()
+        addMessage('success', @params.i18n.saved, 2000)
       else
         addMessage('danger', data.error, 6000)
 

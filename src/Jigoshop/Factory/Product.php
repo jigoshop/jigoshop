@@ -171,7 +171,7 @@ class Product implements EntityFactoryInterface
 
 		$i = 0;
 		$endI = count($results);
-		$attribute = new Attribute();
+		$attribute = $this->createAttribute($results[$i]['type']);
 		$attribute->setId((int)$results[$i]['id']);
 		$attribute->setSlug($results[$i]['slug']);
 		$attribute->setLabel($results[$i]['label']);
@@ -213,17 +213,12 @@ class Product implements EntityFactoryInterface
 		$attributes = array();
 
 		for ($i = 0, $endI = count($results); $i < $endI;) {
-			$attribute = new Attribute();
+			$attribute = $this->createAttribute($results[$i]['type']);
 			$attribute->setId((int)$results[$i]['id']);
 			$attribute->setSlug($results[$i]['slug']);
 			$attribute->setLabel($results[$i]['label']);
-			$attribute->setType((int)$results[$i]['type']);
 			$attribute->setLocal((bool)$results[$i]['is_local']);
-			$value = explode('|', $results[$i]['value']);
-			if (count($value) == 1) {
-				$value = $value[0];
-			}
-			$attribute->setValue($value);
+			$attribute->setValue($results[$i]['value']);
 
 			while ($i < $endI && $results[$i]['id'] == $attribute->getId()) {
 				if ($results[$i]['option_id'] !== null) {
@@ -241,5 +236,23 @@ class Product implements EntityFactoryInterface
 		}
 
 		return $attributes;
+	}
+
+	/**
+	 * Creates new attribute object based on type.
+	 * 
+	 * @param $type int Attribute type.
+	 * @return Attribute\Multiselect|Attribute\Select|Attribute\Text
+	 */
+	public function createAttribute($type)
+	{
+		switch ($type) {
+			case Attribute\Multiselect::TYPE:
+				return new Attribute\Multiselect();
+			case Attribute\Select::TYPE:
+				return new Attribute\Select();
+			case Attribute\Text::TYPE:
+				return new Attribute\Text();
+		}
 	}
 }

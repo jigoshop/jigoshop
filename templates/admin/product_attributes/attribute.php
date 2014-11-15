@@ -33,13 +33,13 @@ use Jigoshop\Helper\Render;
 		)); ?>
 	</td>
 	<td>
-		<?php if ($attribute->getType() == Attribute::MULTISELECT): ?>
+		<?php if ($attribute->getType() != Attribute::TEXT): ?>
 		<button type="button" class="configure-attribute btn btn-default"><?php _e('Configure', 'jigoshop'); ?></button>
 		<?php endif; ?>
 		<button type="button" class="remove-attribute btn btn-default" title="<?php _e('Remove', 'jigoshop'); ?>"><span class="glyphicon glyphicon-remove"></span></button>
 	</td>
 </tr>
-<?php if ($attribute->getType() == Attribute::MULTISELECT): ?>
+<?php if ($attribute->getType() != Attribute::TEXT): ?>
 <tr class="options not-active" data-id="<?php echo $id; ?>">
 	<td colspan="4">
 		<div class="panel panel-default">
