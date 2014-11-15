@@ -43,11 +43,10 @@ class AdminProduct
   changeProductType: (event) =>
     type = jQuery(event.target).val()
     jQuery('.jigoshop_product_data li').hide()
-    jQuery('.tab-content .tab-pane').hide()
     for own tab, visibility of @params.menu
       if visibility == true or type in visibility
         jQuery('.jigoshop_product_data li.' + tab).show()
-        jQuery('.tab-content #' + tab).show()
+    jQuery('.jigoshop_product_data li:first a').tab('show')
 
   addAttribute: (event) =>
     event.preventDefault()
