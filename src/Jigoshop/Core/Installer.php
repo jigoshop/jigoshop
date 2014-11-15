@@ -31,7 +31,7 @@ class Installer
 
 	public function install()
 	{
-		$db = false;//$this->wp->getOption('jigoshop_database_version');
+		$db = false;//$this->wp->getOption('jigoshop_database_version'); // TODO: Restore checking DB version.
 
 		if ($db === false) {
 			$this->_createTables();
@@ -39,10 +39,8 @@ class Installer
 			$this->cron->clear();
 		}
 
-		// TODO: Remove flush_rewrite_rules() call in order to make Jigoshop testable
-		flush_rewrite_rules(false);
-		// TODO: Remove update_site_option() call in order to make Jigoshop testable
-		update_site_option('jigoshop_database_version', self::DB_VERSION);
+		$this->wp->flushRewriteRules(false);
+		$this->wp->updateSiteOption('jigoshop_database_version', self::DB_VERSION);
 	}
 
 	private function _createTables()
@@ -112,24 +110,39 @@ class Installer
 			) {$collate};
 		";
 		$wpdb->query($query);
-		/*
+
+		$query = "
 			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}jigoshop_attribute (
 				id INT(9) NOT NULL AUTO_INCREMENT,
-				attribute_name VARCHAR(255) NOT NULL,
-				attribute_label LONGTEXT NULL,
-				attribute_type INT NOT NULL,
-				attribute_order INT NOT NULL,
-				PRIMARY KEY id (attribute_id)
+				is_local INT UNSIGNED DEFAULT 1,
+				slug VARCHAR(255) NOT NULL,
+				label VARCHAR(255) NOT NULL,
+				type INT NOT NULL,
+				PRIMARY KEY id (id)
 			) {$collate};
-		 */
-		// TODO: Is attribute_meta table needed?
-//		$sql = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}jigoshop_termmeta (
-//			meta_id BIGINT(20) NOT NULL AUTO_INCREMENT,
-//			jigoshop_term_id BIGINT(20) NOT NULL,
-//			meta_key VARCHAR(255) NULL,
-//			meta_value LONGTEXT NULL,
-//			PRIMARY KEY id (meta_id)
-//		) {$collate}";
+		";
+		$wpdb->query($query);
+		$query = "
+			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}jigoshop_attribute_option (
+				attribute_id INT(9),
+				label VARCHAR(255) NOT NULL,
+				value VARCHAR(255) NOT NULL,
+				PRIMARY KEY id (attribute_id, value),
+				FOREIGN KEY product_attribute (attribute_id) REFERENCES {$wpdb->prefix}jigoshop_attribute (id) ON DELETE CASCADE
+			) {$collate};
+		";
+		$wpdb->query($query);
+		$query = "
+			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}jigoshop_product_attribute (
+				product_id BIGINT UNSIGNED NOT NULL,
+				attribute_id INT(9) NOT NULL,
+				value VARCHAR(255) NOT NULL,
+				PRIMARY KEY id (product_id, attribute_id),
+				FOREIGN KEY attribute (attribute_id) REFERENCES {$wpdb->prefix}jigoshop_attribute (id) ON DELETE CASCADE,
+				FOREIGN KEY product (product_id) REFERENCES {$wpdb->posts} (ID) ON DELETE CASCADE
+			) {$collate};
+		";
+		$wpdb->query($query);
 	}
 
 	private function _createPages()
@@ -169,8 +182,7 @@ class Installer
 
 		if (!$page_id) {
 			$data['post_name'] = $slug;
-			// TODO: Remove wp_insert_post() call in order to make Jigoshop testable
-			$page_id = wp_insert_post($data);
+			$page_id = $this->wp->wpInsertPost($data);
 		}
 
 		$this->options->setPageId($slug, $page_id);

@@ -4,55 +4,150 @@ namespace Jigoshop\Entity\Product\Attributes;
 
 /**
  * Product's attribute.
- * TODO: Implement
  *
  * @package Jigoshop\Entity\Product\Attributes
  * @author Amadeusz Starzykiewicz
  */
-class Attribute implements \Serializable
+class Attribute
 {
-	private $name;
+	const MULTISELECT = 'multiselect';
+	const SELECT = 'select';
+	const TEXT = 'text';
+	private static $types;
+
+	private $id;
+	private $local;
+	private $slug;
 	private $label;
+	private $type;
+	private $options = array();
 	private $value;
 
 	/**
-	 * @return string Attribute name.
+	 * @return array List of available types with its labels.
 	 */
-	public function getName()
+	public static function getTypes()
 	{
-		return $this->name;
-	}
-
-	/**
-	 * String representation of object.
-	 *
-	 * @link http://php.net/manual/en/serializable.serialize.php
-	 * @return string the string representation of the object or null
-	 */
-	public function serialize()
-	{
-		if (empty($this->name)) {
-			return '';
+		if (self::$types === null) {
+			self::$types = array(
+				self::MULTISELECT => __('Multiselect', 'jigoshop'),
+				self::SELECT => __('Select', 'jigoshop'),
+				self::TEXT => __('Text', 'jigoshop'),
+			);
 		}
 
-		return serialize(array(
-			'name' => $this->name,
-			'label' => $this->label,
-			'value' => $this->value,
-		));
+		return self::$types;
 	}
 
 	/**
-	 * Constructs the object.
-	 *
-	 * @link http://php.net/manual/en/serializable.unserialize.php
-	 * @param string $serialized The string representation of the object.
+	 * @return int Attribute ID.
 	 */
-	public function unserialize($serialized)
+	public function getId()
 	{
-		$data = unserialize($serialized);
-		$this->name = $data['name'];
-		$this->label = $data['label'];
-		$this->value = $data['value'];
+		return $this->id;
+	}
+
+	/**
+	 * @param int $id New ID for attribute.
+	 */
+	public function setId($id)
+	{
+		$this->id = $id;
+	}
+
+	/**
+	 * @return boolean Is attribute local for a product?
+	 */
+	public function isLocal()
+	{
+		return $this->local;
+	}
+
+	/**
+	 * @param boolean $isLocal Is attribute local for a product?
+	 */
+	public function setLocal($isLocal)
+	{
+		$this->local = $isLocal;
+	}
+
+	/**
+	 * @return string Product human-readable name.
+	 */
+	public function getLabel()
+	{
+		return $this->label;
+	}
+
+	/**
+	 * @param string $label New label for attribute.
+	 */
+	public function setLabel($label)
+	{
+		$this->label = $label;
+	}
+
+	/**
+	 * @return array List of available options for attribute.
+	 */
+	public function getOptions()
+	{
+		return $this->options;
+	}
+
+	/**
+	 * @param array $options Mew set of available options.
+	 */
+	public function setOptions($options)
+	{
+		$this->options = $options;
+	}
+
+	/**
+	 * @return string Simplified name for URL purposes.
+	 */
+	public function getSlug()
+	{
+		return $this->slug;
+	}
+
+	/**
+	 * @param string $slug New slug.
+	 */
+	public function setSlug($slug)
+	{
+		$this->slug = $slug;
+	}
+
+	/**
+	 * @return int Type of attribute.
+	 */
+	public function getType()
+	{
+		return $this->type;
+	}
+
+	/**
+	 * @param int $type New attribute type.
+	 */
+	public function setType($type)
+	{
+		$this->type = $type;
+	}
+
+	/**
+	 * @return mixed Attribute value.
+	 */
+	public function getValue()
+	{
+		return $this->value;
+	}
+
+	/**
+	 * @param mixed $value New value for attribute.
+	 */
+	public function setValue($value)
+	{
+		$this->value = $value;
 	}
 }
