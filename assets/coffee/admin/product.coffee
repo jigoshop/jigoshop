@@ -9,8 +9,9 @@ class AdminProduct
 
   constructor: (@params) ->
     jQuery('#add-attribute').on 'click', @addAttribute
-    jQuery('#product-attributes').on 'change', 'input, select', @updateAttribute
-    jQuery('#product-attributes').on 'click', '.remove-attribute', @removeAttribute
+    jQuery('#product-attributes')
+      .on 'change', 'input, select', @updateAttribute
+      .on 'click', '.remove-attribute', @removeAttribute
     jQuery('#product-type').on 'change', @changeProductType
 
     jQuery('.jigoshop_product_data a').on 'click', (e) ->
@@ -84,7 +85,7 @@ class AdminProduct
       data:
         action: 'jigoshop.admin.product.save_attribute'
         product_id: $parent.closest('.jigoshop').data('id')
-        attribute_id: $item.closest('div.panel').data('id')
+        attribute_id: $item.closest('li').data('id')
         value: item
     .done (data) =>
       if data.success? and data.success
@@ -93,7 +94,7 @@ class AdminProduct
         addMessage('danger', data.error, 6000)
   removeAttribute: (event) =>
     if confirm(@params.i18n.confirm_remove)
-      $parent = jQuery(event.target).closest('div.panel')
+      $parent = jQuery(event.target).closest('li')
       jQuery.ajax
         url: @params.ajax
         type: 'post'

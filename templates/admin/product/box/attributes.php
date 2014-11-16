@@ -17,9 +17,9 @@ use Jigoshop\Helper\Render;
 	'value' => false,
 )); ?>
 <button type="button" class="btn btn-default pull-right" id="add-attribute"><span class="glyphicon glyphicon-plus"></span> <?php _e('Add', 'jigoshop'); ?></button>
-<div id="product-attributes">
+<ul id="product-attributes" class="list-group">
 	<?php foreach($attributes as $attribute): /** @var $attribute \Jigoshop\Entity\Product\Attributes\Attribute */?>
 		<?php Render::output('admin/product/box/attributes/attribute', array('attribute' => $attribute)); ?>
 	<?php endforeach; ?>
-</div>
+</ul>
 <?php do_action('jigoshop\product\tabs\attributes'); ?>
