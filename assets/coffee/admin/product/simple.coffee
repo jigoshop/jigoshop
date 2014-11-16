@@ -1,4 +1,4 @@
-class AdminProductVariable
+class AdminProductSimple
   params:
     ajax: ''
 
@@ -7,8 +7,8 @@ class AdminProductVariable
 
   removeParameters: (event) ->
     $item = jQuery(event.target)
-    if $item.val() == 'variable'
-      jQuery('.product_regular_price_field').slideUp()
+    if $item.val() == 'simple'
+      jQuery('.product_regular_price_field').slideDown()
 
 jQuery ->
-  new AdminProductVariable(jigoshop_admin_product_variable)
+  new AdminProductSimple(jigoshop_admin_product_simple)

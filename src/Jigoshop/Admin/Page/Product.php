@@ -69,6 +69,8 @@ class Product
 					),
 					'menu' => array_map(function($item){ return $item['visible']; }, $menu),
 				));
+
+				$wp->doAction('jigoshop\admin\product\assets', $wp, $styles, $scripts);
 			}
 		});
 	}
