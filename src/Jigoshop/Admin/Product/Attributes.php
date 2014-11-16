@@ -4,7 +4,7 @@ namespace Jigoshop\Admin\Product;
 
 use Jigoshop\Admin\PageInterface;
 use Jigoshop\Core\Messages;
-use Jigoshop\Entity\Product\Attributes\Attribute;
+use Jigoshop\Entity\Product\Attribute;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;

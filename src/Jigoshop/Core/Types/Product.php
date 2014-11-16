@@ -112,6 +112,7 @@ class Product implements Post
 			case Simple::TYPE:
 				return 'Jigoshop\Entity\Product\Simple';
 			case Variable::TYPE:
+				$this->wp->addAction('jigoshop\admin\product_attribute\add', '\Jigoshop\Entity\Product\Variable::addProductAttribute');
 				return 'Jigoshop\Entity\Product\Variable';
 			default:
 				return $this->wp->applyFilters('jigoshop\product\type\class', $type);

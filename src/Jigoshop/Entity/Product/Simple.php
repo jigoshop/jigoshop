@@ -3,7 +3,6 @@
 namespace Jigoshop\Entity\Product;
 
 use Jigoshop\Entity\Product;
-use Jigoshop\Entity\Product\Attributes\Sales;
 use WPAL\Wordpress;
 
 class Simple extends Product implements Purchasable, Shippable, Saleable
@@ -11,13 +10,13 @@ class Simple extends Product implements Purchasable, Shippable, Saleable
 	const TYPE = 'simple';
 
 	private $regularPrice = 0.0;
-	/** @var Sales */
+	/** @var Attributes\Sales */
 	private $sales;
 
 	public function __construct(Wordpress $wp)
 	{
 		parent::__construct($wp);
-		$this->sales = new Sales();
+		$this->sales = new Attributes\Sales();
 	}
 
 	/**
@@ -58,7 +57,7 @@ class Simple extends Product implements Purchasable, Shippable, Saleable
 	}
 
 	/**
-	 * @return Sales Current product sales data.
+	 * @return Attributes\Sales Current product sales data.
 	 */
 	public function getSales()
 	{
@@ -69,9 +68,9 @@ class Simple extends Product implements Purchasable, Shippable, Saleable
 	 * Sets product sales.
 	 * Applies `jigoshop\product\set_sales` filter to allow plugins to modify sales data. When filter returns false sales are not modified at all.
 	 *
-	 * @param Sales $sales Product sales data.
+	 * @param Attributes\Sales $sales Product sales data.
 	 */
-	public function setSales(Sales $sales)
+	public function setSales(Attributes\Sales $sales)
 	{
 		$sales = $this->wp->applyFilters('jigoshop\product\set_sales', $sales, $this);
 

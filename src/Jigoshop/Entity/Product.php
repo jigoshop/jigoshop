@@ -2,9 +2,6 @@
 
 namespace Jigoshop\Entity;
 
-use Jigoshop\Entity\Product\Attributes\Size;
-use Jigoshop\Entity\Product\Attributes\StockStatus;
-use Jigoshop\Entity\Product\Taxable;
 use WPAL\Wordpress;
 
 /**
@@ -13,7 +10,7 @@ use WPAL\Wordpress;
  * @package Jigoshop\Entity
  * @author Amadeusz Starzykiewicz
  */
-abstract class Product implements EntityInterface, Taxable
+abstract class Product implements EntityInterface, Product\Taxable
 {
 	const VISIBILITY_CATALOG = 1;
 	const VISIBILITY_SEARCH = 2;
@@ -28,9 +25,9 @@ abstract class Product implements EntityInterface, Taxable
 	private $sku;
 	private $taxable;
 	private $taxClasses = array();
-	/** @var Size */
+	/** @var Product\Attributes\Size */
 	private $size;
-	/** @var StockStatus */
+	/** @var Product\Attributes\StockStatus */
 	private $stock;
 
 	private $visibility = self::VISIBILITY_PUBLIC;
@@ -45,8 +42,8 @@ abstract class Product implements EntityInterface, Taxable
 	public function __construct(Wordpress $wp)
 	{
 		$this->wp = $wp;
-		$this->size = new Size();
-		$this->stock = new StockStatus();
+		$this->size = new Product\Attributes\Size();
+		$this->stock = new Product\Attributes\StockStatus();
 	}
 
 	/**
@@ -210,9 +207,9 @@ abstract class Product implements EntityInterface, Taxable
 	 * Sets product size.
 	 * Applies `jigoshop\product\set_size` filter to allow plugins to modify size data. When filter returns false size is not modified at all.
 	 *
-	 * @param Size $size New product size.
+	 * @param Product\Attributes\Size $size New product size.
 	 */
-	public function setSize(Size $size)
+	public function setSize(Product\Attributes\Size $size)
 	{
 		$size = $this->wp->applyFilters('jigoshop\product\set_size', $size, $this);
 
@@ -223,7 +220,7 @@ abstract class Product implements EntityInterface, Taxable
 	}
 
 	/**
-	 * @return Size Product size.
+	 * @return Product\Attributes\Size Product size.
 	 */
 	public function getSize()
 	{
@@ -234,9 +231,9 @@ abstract class Product implements EntityInterface, Taxable
 	 * Sets product stock.
 	 * Applies `jigoshop\product\set_stock` filter to allow plugins to modify stock data. When filter returns false stock is not modified at all.
 	 *
-	 * @param StockStatus $stock New product stock status.
+	 * @param Product\Attributes\StockStatus $stock New product stock status.
 	 */
-	public function setStock(StockStatus $stock)
+	public function setStock(Product\Attributes\StockStatus $stock)
 	{
 		$stock = $this->wp->applyFilters('jigoshop\product\set_stock', $stock, $this);
 
@@ -247,7 +244,7 @@ abstract class Product implements EntityInterface, Taxable
 	}
 
 	/**
-	 * @return StockStatus Current stock status.
+	 * @return Product\Attributes\StockStatus Current stock status.
 	 */
 	public function getStock()
 	{
@@ -259,9 +256,9 @@ abstract class Product implements EntityInterface, Taxable
 	 * If attribute already exists - it is replaced.
 	 * Calls `jigoshop\product\add_attribute` filter before adding. If filter returns false - attribute is not added.
 	 *
-	 * @param \Jigoshop\Entity\Product\Attributes\Attribute $attribute New attribute for product.
+	 * @param Product\Attribute $attribute New attribute for product.
 	 */
-	public function addAttribute(Product\Attributes\Attribute $attribute)
+	public function addAttribute(Product\Attribute $attribute)
 	{
 		$attribute = $this->wp->applyFilters('jigoshop\product\add_attribute', $attribute, $this);
 
@@ -274,12 +271,12 @@ abstract class Product implements EntityInterface, Taxable
 	 * Removes attribute from the product.
 	 * Calls `jigoshop\product\delete_attribute` filter before removing. If filter returns false - attribute is not removed.
 	 *
-	 * @param Product\Attributes\Attribute|int $attribute Attribute to remove.
-	 * @return \Jigoshop\Entity\Product\Attributes\Attribute|null Removed attribute or null.
+	 * @param Product\Attribute|int $attribute Attribute to remove.
+	 * @return Product\Attribute|null Removed attribute or null.
 	 */
 	public function removeAttribute($attribute)
 	{
-		if ($attribute instanceof Product\Attributes\Attribute) {
+		if ($attribute instanceof Product\Attribute) {
 			$attribute = $attribute->getId();
 		}
 
@@ -308,7 +305,7 @@ abstract class Product implements EntityInterface, Taxable
 	 * If attribute is not found - returns {@code null}.
 	 *
 	 * @param $id int Attribute ID.
-	 * @return Product\Attributes\Attribute|null Attribute found or null.
+	 * @return Product\Attribute|null Attribute found or null.
 	 */
 	public function getAttribute($id)
 	{
@@ -325,6 +322,17 @@ abstract class Product implements EntityInterface, Taxable
 	public function getAttributes()
 	{
 		return $this->attributes;
+	}
+
+	/**
+	 * @return array List of product attributes.
+	 */
+	public function getVisibleAttributes()
+	{
+		return array_filter($this->attributes, function($item){
+			/** @var $item Product\Attribute */
+			return $item->isVisible();
+		});
 	}
 
 	/**
@@ -379,7 +387,7 @@ abstract class Product implements EntityInterface, Taxable
 	protected function _findAttribute($attribute)
 	{
 		return array_search($attribute, array_map(function ($item){
-			/** @var $item \Jigoshop\Entity\Product\Attributes\Attribute */
+			/** @var $item \Jigoshop\Entity\Product\Attribute */
 			return $item->getId();
 		}, $this->attributes));
 	}

@@ -145,6 +145,19 @@ class Installer
 			) {$collate};
 		";
 		$wpdb->query($query);
+		$query = "
+			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}jigoshop_product_attribute_meta (
+				id INT(9) NOT NULL AUTO_INCREMENT,
+				product_id BIGINT UNSIGNED NOT NULL,
+				attribute_id INT(9) NOT NULL,
+				meta_key VARCHAR(255) NOT NULL,
+				meta_value VARCHAR(255) NOT NULL,
+				PRIMARY KEY id (id),
+				FOREIGN KEY product_attribute (product_id, attribute_id) REFERENCES {$wpdb->prefix}jigoshop_product_attribute (product_id, attribute_id) ON DELETE CASCADE
+			) {$collate};
+		";
+//		var_dump($wpdb->query($query), $wpdb->last_error); exit;
+		$wpdb->query($query);
 	}
 
 	private function _createPages()

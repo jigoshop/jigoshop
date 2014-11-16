@@ -2,7 +2,7 @@
 
 namespace Jigoshop\Entity\Product;
 
-use Jigoshop\Entity\Product\Attributes\Sales;
+use Jigoshop\Entity\Product\Sales;
 
 /**
  * Interface for items with ability to be on sale.
@@ -16,7 +16,7 @@ interface Saleable
 	/**
 	 * Definition for sale.
 	 *
-	 * @return Sales Current product sales data.
+	 * @return Attributes\Sales Current product sales data.
 	 */
 	public function getSales();
 }

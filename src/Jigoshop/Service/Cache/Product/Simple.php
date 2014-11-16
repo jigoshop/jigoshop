@@ -146,8 +146,14 @@ class Simple implements ProductServiceInterface
 
 	/**
 	 * Finds item specified by state.
-	 *
-	 * @param array $state State of the product to be found.
+
+
+
+
+
+
+*
+*@param array $state State of the product to be found.
 	 * @return Product|Product\Purchasable Item found.
 	 */
 	public function findForState(array $state)
@@ -210,11 +216,23 @@ class Simple implements ProductServiceInterface
 
 	/**
 	 * Saves attribute to database.
-	 *
-	 * @param Product\Attributes\Attribute $attribute Attribute to save.
-	 * @return \Jigoshop\Entity\Product\Attributes\Attribute Saved attribute.
+
+
+
+
+
+
+
+
+
+
+
+
+*
+*@param Product\Attribute $attribute Attribute to save.
+	 * @return \Jigoshop\Entity\Product\Attribute Saved attribute.
 	 */
-	public function saveAttribute(Product\Attributes\Attribute $attribute)
+	public function saveAttribute(Product\Attribute $attribute)
 	{
 		// TODO: Implement saveAttribute() method.
 		return $this->service->saveAttribute($attribute);

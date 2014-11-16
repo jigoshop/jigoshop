@@ -4,7 +4,6 @@ namespace Jigoshop\Helper;
 
 use Jigoshop\Core\Options;
 use Jigoshop\Entity\Product as ProductEntity;
-use Jigoshop\Entity\Product\Attributes\StockStatus;
 use Jigoshop\Entity\Product\Simple;
 
 class Product
@@ -73,7 +72,7 @@ class Product
 		switch($product->getType()){
 			case Simple::TYPE:
 				/** @var $product Simple */
-				$status = $product->getStock()->getStatus() == StockStatus::IN_STOCK ?
+				$status = $product->getStock()->getStatus() == ProductEntity\Attributes\StockStatus::IN_STOCK ?
 					_x('In stock', 'product', 'jigoshop') :
 					'<strong class="attention">'._x('Out of stock', 'product', 'jigoshop').'</strong>';
 				return sprintf(_x('%s <strong>(%d available)</strong>', 'product', 'jigoshop'), $status, $product->getStock()->getStock());

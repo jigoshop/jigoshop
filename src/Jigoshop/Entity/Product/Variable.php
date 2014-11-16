@@ -3,7 +3,7 @@
 namespace Jigoshop\Entity\Product;
 
 use Jigoshop\Entity\Product;
-use Jigoshop\Entity\Product\Attributes\Sales;
+use Jigoshop\Entity\Product\Attribute;
 use WPAL\Wordpress;
 
 class Variable extends Product implements Shippable, Saleable
@@ -11,13 +11,25 @@ class Variable extends Product implements Shippable, Saleable
 	const TYPE = 'variable';
 
 	private $variations = array();
-	/** @var Sales */
+	/** @var Attributes\Sales */
 	private $sales;
 
 	public function __construct(Wordpress $wp)
 	{
 		parent::__construct($wp);
-		$this->sales = new Sales();
+		$this->sales = new Attributes\Sales();
+	}
+
+	/**
+	 * @param Attribute $attribute
+	 */
+	public static function addProductAttribute($attribute)
+	{
+		if ($attribute instanceof Attribute\Variable) {
+			if (isset($_POST['options']) && isset($_POST['options']['is_variable'])) {
+				$attribute->setVariable($_POST['options']['is_variable'] === 'true');
+			}
+		}
 	}
 
 	/**
@@ -29,7 +41,7 @@ class Variable extends Product implements Shippable, Saleable
 	}
 
 	/**
-	 * @return Sales Current product sales data.
+	 * @return Attributes\Sales Current product sales data.
 	 */
 	public function getSales()
 	{
@@ -40,9 +52,9 @@ class Variable extends Product implements Shippable, Saleable
 	 * Sets product sales.
 	 * Applies `jigoshop\product\set_sales` filter to allow plugins to modify sales data. When filter returns false sales are not modified at all.
 	 *
-	 * @param Sales $sales Product sales data.
+	 * @param Attributes\Sales $sales Product sales data.
 	 */
-	public function setSales(Sales $sales)
+	public function setSales(Attributes\Sales $sales)
 	{
 		$sales = $this->wp->applyFilters('jigoshop\product\set_sales', $sales, $this);
 
@@ -50,6 +62,17 @@ class Variable extends Product implements Shippable, Saleable
 			$this->sales = $sales;
 			$this->dirtyFields[] = 'sales';
 		}
+	}
+
+	/**
+	 * @return array List of variable attributes.
+	 */
+	public function getVariableAttributes()
+	{
+		return array_filter($this->getAttributes(), function($item){
+			/** @var $item Product\Attribute\Variable */
+			return $item instanceof Product\Attribute\Variable && $item->isVariable();
+		});
 	}
 
 	/**

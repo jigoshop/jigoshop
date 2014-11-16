@@ -3,7 +3,7 @@
 namespace Jigoshop\Factory;
 
 use Jigoshop\Core\Types;
-use Jigoshop\Entity\Product\Attributes\Attribute;
+use Jigoshop\Entity\Product\Attribute;
 use Jigoshop\Entity\Product\Simple;
 use Jigoshop\Exception;
 use WPAL\Wordpress;
@@ -157,7 +157,8 @@ class Product implements EntityFactoryInterface
 	{
 		$wpdb = $this->wp->getWPDB();
 		$query = $wpdb->prepare("
-		SELECT a.id, a.is_local, a.slug, a.label, a.type, ao.id AS option_id, ao.value AS option_value, ao.label as option_label
+		SELECT a.id, a.is_local, a.slug, a.label, a.type,
+			ao.id AS option_id, ao.value AS option_value, ao.label as option_label
 		FROM {$wpdb->prefix}jigoshop_attribute a
 			LEFT JOIN {$wpdb->prefix}jigoshop_attribute_option ao ON a.id = ao.attribute_id
 			WHERE a.id = %d
@@ -178,14 +179,15 @@ class Product implements EntityFactoryInterface
 		$attribute->setLocal((bool)$results[$i]['is_local']);
 
 		while ($i < $endI && $results[$i]['id'] == $attribute->getId()) {
-			$option = new Attribute\Option();
 			if ($results[$i]['option_id'] !== null) {
+				$option = new Attribute\Option();
 				$option->setId($results[$i]['option_id']);
 				$option->setLabel($results[$i]['option_label']);
 				$option->setValue($results[$i]['option_value']);
 				$option->setAttribute($attribute);
 				$attribute->addOption($option);
 			}
+
 			$i++;
 		}
 
@@ -202,10 +204,13 @@ class Product implements EntityFactoryInterface
 	{
 		$wpdb = $this->wp->getWPDB();
 		$query = $wpdb->prepare("
-		SELECT a.id, a.is_local, a.slug, a.label, a.type, ao.id AS option_id, ao.value AS option_value, ao.label as option_label, pa.value
+		SELECT a.id, a.is_local, a.slug, a.label, a.type, pa.value,
+			ao.id AS option_id, ao.value AS option_value, ao.label as option_label,
+			pam.id AS meta_id, pam.meta_key, pam.meta_value
 		FROM {$wpdb->prefix}jigoshop_attribute a
 			LEFT JOIN {$wpdb->prefix}jigoshop_attribute_option ao ON a.id = ao.attribute_id
 			LEFT JOIN {$wpdb->prefix}jigoshop_product_attribute pa ON pa.attribute_id = a.id
+			LEFT JOIN {$wpdb->prefix}jigoshop_product_attribute_meta pam ON pa.attribute_id = pam.attribute_id AND pa.product_id = pam.product_id
 			WHERE pa.product_id = %d
 		", array($productId));
 		$results = $wpdb->get_results($query, ARRAY_A);
@@ -218,19 +223,37 @@ class Product implements EntityFactoryInterface
 			$attribute->setLabel($results[$i]['label']);
 			$attribute->setLocal((bool)$results[$i]['is_local']);
 			$attribute->setValue($results[$i]['value']);
+			$fields = array();
 
 			while ($i < $endI && $results[$i]['id'] == $attribute->getId()) {
+				$option = new Attribute\Option();
 				if ($results[$i]['option_id'] !== null) {
-					$option = new Attribute\Option();
 					$option->setId($results[$i]['option_id']);
 					$option->setLabel($results[$i]['option_label']);
 					$option->setValue($results[$i]['option_value']);
 					$option->setAttribute($attribute);
 					$attribute->addOption($option);
 				}
-				$i++;
+
+				if (empty($fields)) {
+					while ($i < $endI && $results[$i]['id'] == $attribute->getId() && $results[$i]['option_id'] == $option->getId()) {
+						if ($results[$i]['meta_id'] !== null) {
+							$field = new Attribute\Field();
+							$field->setId($results[$i]['meta_id']);
+							$field->setKey($results[$i]['meta_key']);
+							$field->setValue($results[$i]['meta_value']);
+							$field->setAttribute($attribute);
+							$fields[$results[$i]['meta_key']] = $field;
+						}
+
+						$i++;
+					}
+				} else {
+					$i++;
+				}
 			}
 
+			$attribute->restoreFields($fields);
 			$attributes[$attribute->getId()] = $attribute;
 		}
 

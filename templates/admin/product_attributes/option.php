@@ -2,7 +2,7 @@
 use Jigoshop\Admin\Helper\Forms;
 
 /**
- * @var $option \Jigoshop\Entity\Product\Attributes\Attribute\Option Option to display.
+ * @var $option \Jigoshop\Entity\Product\Attribute\Option Option to display.
  * @var $id int ID of the attribute.
  * @var $option_id int ID of the option.
  */

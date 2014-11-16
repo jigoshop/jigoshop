@@ -3,7 +3,7 @@
 namespace Jigoshop\Service;
 
 use Jigoshop\Entity\Product;
-use Jigoshop\Entity\Product\Attributes\Attribute;
+use Jigoshop\Entity\Product\Attribute;
 
 /**
  * Products service interface.
@@ -40,8 +40,14 @@ interface ProductServiceInterface extends ServiceInterface
 
 	/**
 	 * Finds item specified by state.
-	 *
-	 * @param array $state State of the product to be found.
+
+
+
+
+
+
+*
+*@param array $state State of the product to be found.
 	 * @return Product|Product\Purchasable Item found.
 	 */
 	public function findForState(array $state);
@@ -106,9 +112,15 @@ interface ProductServiceInterface extends ServiceInterface
 
 	/**
 	 * Saves attribute to database.
-	 *
-	 * @param Attribute $attribute Attribute to save.
-	 * @return \Jigoshop\Entity\Product\Attributes\Attribute Saved attribute.
+
+
+
+
+
+
+*
+*@param Attribute $attribute Attribute to save.
+	 * @return \Jigoshop\Entity\Product\Attribute Saved attribute.
 	 */
 	public function saveAttribute(Attribute $attribute);
 

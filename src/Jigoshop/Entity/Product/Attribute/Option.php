@@ -1,8 +1,8 @@
 <?php
 
-namespace Jigoshop\Entity\Product\Attributes\Attribute;
+namespace Jigoshop\Entity\Product\Attribute;
 
-use Jigoshop\Entity\Product\Attributes\Attribute;
+use Jigoshop\Entity\Product\Attribute;
 
 class Option
 {

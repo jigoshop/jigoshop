@@ -1,11 +1,11 @@
 <?php
 
-namespace Jigoshop\Entity\Product\Attributes;
+namespace Jigoshop\Entity\Product;
 
-use Jigoshop\Entity\Product\Attributes\Attribute\Multiselect;
-use Jigoshop\Entity\Product\Attributes\Attribute\Option;
-use Jigoshop\Entity\Product\Attributes\Attribute\Select;
-use Jigoshop\Entity\Product\Attributes\Attribute\Text;
+use Jigoshop\Entity\Product\Attribute\Multiselect;
+use Jigoshop\Entity\Product\Attribute\Option;
+use Jigoshop\Entity\Product\Attribute\Select;
+use Jigoshop\Entity\Product\Attribute\Text;
 
 /**
  * Product's attribute.
@@ -17,12 +17,25 @@ abstract class Attribute
 {
 	private static $types;
 
+	/** @var int */
 	private $id;
+	/** @var bool */
 	private $local;
+	/** @var string */
 	private $slug;
+	/** @var string */
 	private $label;
+	/** @var bool */
+	private $visible;
+	/** @var array */
 	protected $options = array();
+	/** @var mixed */
 	protected $value;
+
+	public function __construct()
+	{
+		$this->visible = new Attribute\Field('is_visible', true);
+	}
 
 	/**
 	 * @return array List of available types with its labels.
@@ -149,6 +162,46 @@ abstract class Attribute
 	public function getValue()
 	{
 		return $this->value;
+	}
+
+	/**
+	 * @param boolean $visible Is attribute visible on product page?
+	 */
+	public function setVisible($visible)
+	{
+		$this->visible->setValue($visible);
+	}
+
+	/**
+	 * @return bool Whether attribute is visible on product page.
+	 */
+	public function isVisible()
+	{
+		return (bool)$this->visible->getValue();
+	}
+
+	/**
+	 * Returns list of custom fields to save.
+	 *
+	 * @return array List of custom fields to save.
+	 */
+	public function getFieldsToSave()
+	{
+		return array(
+			$this->visible,
+		);
+	}
+
+	/**
+	 * Restores custom fields for the attribute.
+	 *
+	 * @param array $data Data to restore.
+	 */
+	public function restoreFields($data)
+	{
+		if (isset($data['is_visible'])) {
+			$this->visible = $data['is_visible'];
+		}
 	}
 
 	/**

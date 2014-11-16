@@ -1,12 +1,12 @@
 <?php
 
-namespace Jigoshop\Entity\Product\Attributes\Attribute;
+namespace Jigoshop\Entity\Product\Attribute;
 
-use Jigoshop\Entity\Product\Attributes\Attribute;
+use Jigoshop\Entity\Product\Attribute;
 
-class Select extends Attribute
+class Text extends Attribute
 {
-	const TYPE = 1;
+	const TYPE = 2;
 
 	/**
 	 * @return int Type of attribute.
@@ -29,8 +29,6 @@ class Select extends Attribute
 	 */
 	public function printValue()
 	{
-		/** @var Option $option */
-		$option = $this->options[$this->value];
-		return $option->getLabel();
+		return $this->value;
 	}
 }

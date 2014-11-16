@@ -25,7 +25,7 @@ $hasLabel = !empty($label);
 	<?php elseif(!empty($tip)): ?>
 		<a href="#" data-toggle="tooltip" class="badge" data-placement="top" title="<?php echo $tip; ?>">?</a>
 	<?php endif; ?>
-	<div class="checkbox-inline<?php echo ' col-sm-'.($size-1); ?>">
+	<div class="checkbox-inline">
 		<?php if(!$multiple): ?>
 			<input type="hidden" name="<?php echo $name; ?>" value="off" />
 		<?php endif; ?>

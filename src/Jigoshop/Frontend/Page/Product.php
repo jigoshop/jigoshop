@@ -128,18 +128,19 @@ class Product implements PageInterface
 	public function productTabs($product)
 	{
 		$tabs = array();
-		if ($product->getAttributes()) {
+		if ($product->getVisibleAttributes()) {
 			$tabs['attributes'] = __('Additional information', 'jigoshop');
 		}
 		if ($product->getDescription()) {
 			$tabs['description'] = __('Description', 'jigoshop');
 		}
 		$tabs = $this->wp->applyFilters('jigoshop\product\tabs', $tabs);
+		$availableTabs = array_keys($tabs);
 
 		Render::output('shop/product/tabs', array(
 			'product' => $product,
 			'tabs' => $tabs,
-			'currentTab' => 'attributes',
+			'currentTab' => reset($availableTabs),
 		));
 	}
 
@@ -174,7 +175,6 @@ class Product implements PageInterface
 	 */
 	private function formatItem($product)
 	{
-
 		$item = new Item();
 		$item->setType($product->getType());
 		$item->setName($product->getName());

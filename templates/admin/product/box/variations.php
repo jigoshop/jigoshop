@@ -13,9 +13,9 @@
 //	'value' => false,
 //)); ?>
 <button type="button" class="btn btn-default pull-right" id="add-variation"><span class="glyphicon glyphicon-plus"></span> <?php _e('Add', 'jigoshop'); ?></button>
-<div id="product-variations">
-<!--	--><?php //foreach($attributes as $attribute): /** @var $attribute \Jigoshop\Entity\Product\Attributes\Attribute */?>
-<!--		--><?php //Render::output('admin/product/box/attributes/attribute', array('attribute' => $attribute)); ?>
-<!--	--><?php //endforeach; ?>
-</div>
+<ul id="product-variations" class="list-group">
+	<?php foreach($variations as $variation): /** @var $variation \Jigoshop\Entity\Product */?>
+		<?php Render::output('admin/product/box/variations/variation', array('variation' => $variation)); ?>
+	<?php endforeach; ?>
+</ul>
 <?php do_action('jigoshop\product\tabs\variations'); ?>

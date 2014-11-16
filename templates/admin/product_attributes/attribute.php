@@ -1,6 +1,6 @@
 <?php
 use Jigoshop\Admin\Helper\Forms;
-use Jigoshop\Entity\Product\Attributes\Attribute;
+use Jigoshop\Entity\Product\Attribute;
 use Jigoshop\Helper\Render;
 
 /**
@@ -33,13 +33,13 @@ use Jigoshop\Helper\Render;
 		)); ?>
 	</td>
 	<td>
-		<?php if ($attribute->getType() != Attribute::TEXT): ?>
+		<?php if ($attribute->getType() != Attribute\Text::TYPE): ?>
 		<button type="button" class="configure-attribute btn btn-default"><?php _e('Configure', 'jigoshop'); ?></button>
 		<?php endif; ?>
 		<button type="button" class="remove-attribute btn btn-default" title="<?php _e('Remove', 'jigoshop'); ?>"><span class="glyphicon glyphicon-remove"></span></button>
 	</td>
 </tr>
-<?php if ($attribute->getType() != Attribute::TEXT): ?>
+<?php if ($attribute->getType() != Attribute\Text::TYPE): ?>
 <tr class="options not-active" data-id="<?php echo $id; ?>">
 	<td colspan="4">
 		<div class="panel panel-default">

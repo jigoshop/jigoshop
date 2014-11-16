@@ -66,17 +66,31 @@ class AdminProduct
       else
         addMessage('danger', data.error, 6000)
   updateAttribute: (event) =>
-    $parent = jQuery('#product-attributes')
-    $item = jQuery(event.target)
-    if $item.is('input[type=checkbox]')
-      items = jQuery('input[type=checkbox].' + $item.attr('class') + ':checked').toArray()
+    $container = jQuery('#product-attributes')
+    $parent = jQuery(event.target).closest('li.list-group-item')
+
+    items = jQuery('.values input[type=checkbox]:checked', $parent).toArray()
+    if items.length
       item = items.reduce(
         (value, current) ->
           current.value + '|' + value
         ''
       )
     else
-      item = $item.val()
+      item = jQuery('.values select', $parent).val()
+      if item == undefined
+        item = jQuery('.values input', $parent).val()
+
+    getOptionValue = (current) ->
+      if current.type == 'checkbox' or current.type == 'radio'
+        return current.checked
+      return current.value
+
+    options = {}
+    optionsData = jQuery('.options input.attribute-options', $parent).toArray()
+    for option in optionsData
+      results = /(?:^|\s)product\[attributes]\[\d]\[(.*?)](?:\s|$)/g.exec(option.name)
+      options[results[1]] = getOptionValue(option)
 
     jQuery.ajax
       url: @params.ajax
@@ -84,9 +98,10 @@ class AdminProduct
       dataType: 'json'
       data:
         action: 'jigoshop.admin.product.save_attribute'
-        product_id: $parent.closest('.jigoshop').data('id')
-        attribute_id: $item.closest('li').data('id')
+        product_id: $container.closest('.jigoshop').data('id')
+        attribute_id: $parent.data('id')
         value: item
+        options: options
     .done (data) =>
       if data.success? and data.success
         addMessage('success', @params.i18n.saved, 2000)

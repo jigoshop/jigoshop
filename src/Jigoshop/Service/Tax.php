@@ -3,7 +3,7 @@
 namespace Jigoshop\Service;
 
 use Jigoshop\Entity\Customer;
-use Jigoshop\Entity\Product;
+use Jigoshop\Entity\Product\Attributes;
 use Jigoshop\Shipping\Method;
 use WPAL\Wordpress;
 
@@ -31,10 +31,10 @@ class Tax implements TaxServiceInterface
 	}
 
 	/**
-	 * @param Product\Taxable|Product\Purchasable $product Product to calculate tax for.
+	 * @param Attributes\Taxable|Attributes\Purchasable $product Product to calculate tax for.
 	 * @return float Overall tax value.
 	 */
-	public function calculate(Product\Taxable $product)
+	public function calculate(Attributes\Taxable $product)
 	{
 		$tax = 0.0;
 		foreach ($product->getTaxClasses() as $taxClass) {
@@ -47,12 +47,12 @@ class Tax implements TaxServiceInterface
 	}
 
 	/**
-	 * @param $product Product\Purchasable Product to calculate tax for.
+	 * @param $product Attributes\Purchasable Product to calculate tax for.
 	 * @param $taxClass string Tax class.
 	 * @param Customer|null $customer Customer to calculate taxes for.
 	 * @return float Tax value for selected tax class.
 	 */
-	public function get(Product\Purchasable $product, $taxClass, $customer = null)
+	public function get(Attributes\Purchasable $product, $taxClass, $customer = null)
 	{
 		if (!in_array($taxClass, $this->taxClasses)) {
 			throw new Exception(sprintf('No tax class: %s', $taxClass));
@@ -73,12 +73,12 @@ class Tax implements TaxServiceInterface
 	}
 
 	/**
-	 * @param $product Product\Taxable|Product\Purchasable Product to calculate tax for.
+	 * @param $product Attributes\Taxable|Attributes\Purchasable Product to calculate tax for.
 	 * @param int $quantity Quantity of the product.
 	 * @param Customer|null $customer Address to calculate taxes for.
 	 * @return array List of tax values per tax class.
 	 */
-	public function getAll(Product\Taxable $product, $quantity = 1, Customer $customer = null)
+	public function getAll(Attributes\Taxable $product, $quantity = 1, Customer $customer = null)
 	{
 		$tax = array();
 

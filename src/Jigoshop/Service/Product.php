@@ -4,7 +4,7 @@ namespace Jigoshop\Service;
 
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\EntityInterface;
-use Jigoshop\Entity\Product\Attributes\Attribute;
+use Jigoshop\Entity\Product\Attribute;
 use Jigoshop\Exception;
 use Jigoshop\Factory\Product as ProductFactory;
 use WPAL\Wordpress;
@@ -190,7 +190,28 @@ class Product implements ProductServiceInterface
 			'value' => $value,
 		);
 
-		$wpdb->replace($wpdb->prefix.'jigoshop_product_attribute', $data);
+		$wpdb->update($wpdb->prefix.'jigoshop_product_attribute', $data, array(
+			'product_id' => $object->getId(),
+			'attribute_id' => $attribute->getId(),
+		));
+
+		foreach ($attribute->getFieldsToSave() as $field) {
+			/** @var $field Attribute\Field */
+			$data = array(
+				'product_id' => $object->getId(),
+				'attribute_id' => $attribute->getId(),
+				'meta_key' => $field->getKey(),
+				'meta_value' => esc_sql($field->getValue()),
+			);
+			if ($field->getId()) {
+				$wpdb->update($wpdb->prefix.'jigoshop_product_attribute_meta', $data, array(
+					'id' => $field->getId(),
+				));
+			} else {
+				$wpdb->insert($wpdb->prefix.'jigoshop_product_attribute_meta', $data);
+				$field->setId($wpdb->insert_id);
+			}
+		}
 	}
 
 	/**
@@ -301,7 +322,8 @@ class Product implements ProductServiceInterface
 	{
 		$wpdb = $this->wp->getWPDB();
 		$query = "
-		SELECT a.id, a.is_local, a.slug, a.label, a.type, ao.id AS option_id, ao.value AS option_value, ao.label as option_label
+		SELECT a.id, a.is_local, a.slug, a.label, a.type,
+			ao.id AS option_id, ao.value AS option_value, ao.label as option_label
 		FROM {$wpdb->prefix}jigoshop_attribute a
 			LEFT JOIN {$wpdb->prefix}jigoshop_attribute_option ao ON a.id = ao.attribute_id
 			WHERE a.is_local = 0
@@ -325,6 +347,7 @@ class Product implements ProductServiceInterface
 					$option->setAttribute($attribute);
 					$attribute->addOption($option);
 				}
+
 				$i++;
 			}
 
@@ -373,7 +396,7 @@ class Product implements ProductServiceInterface
 	 * Saves attribute to database.
 	 *
 	 * @param Attribute $attribute Attribute to save.
-	 * @return \Jigoshop\Entity\Product\Attributes\Attribute Saved attribute.
+	 * @return \Jigoshop\Entity\Product\Attribute Saved attribute.
 	 */
 	public function saveAttribute(Attribute $attribute)
 	{
@@ -391,6 +414,8 @@ class Product implements ProductServiceInterface
 			$wpdb->insert($wpdb->prefix.'jigoshop_attribute', $data);
 			$attribute->setId($wpdb->insert_id);
 		}
+
+		$this->wp->doAction('jigoshop\attribute\save', $attribute);
 
 		$this->removeAllAttributesExcept($attribute->getId(), array_map(function($item){
 			return $item->getId();

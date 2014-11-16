@@ -1,7 +1,6 @@
 <?php
 use Jigoshop\Admin\Helper\Forms;
 use Jigoshop\Entity\Product;
-use Jigoshop\Entity\Product\Attributes\StockStatus;
 
 /**
  * @var $product Product The product.
@@ -21,8 +20,8 @@ use Jigoshop\Entity\Product\Attributes\StockStatus;
 		'label' => __('Status', 'jigoshop'),
 		'value' => $product->getStock()->getStatus(),
 		'options' => array(
-			StockStatus::IN_STOCK => __('In stock', 'jigoshop'),
-			StockStatus::OUT_STOCK => __('Out of stock', 'jigoshop'),
+			Product\Attributes\StockStatus::IN_STOCK => __('In stock', 'jigoshop'),
+			Product\Attributes\StockStatus::OUT_STOCK => __('Out of stock', 'jigoshop'),
 		),
 		'classes' => array($product->getStock()->getManage() ? 'not-active' : ''),
 	));

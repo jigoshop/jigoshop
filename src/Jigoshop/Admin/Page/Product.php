@@ -4,7 +4,7 @@ namespace Jigoshop\Admin\Page;
 
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
-use Jigoshop\Entity\Product\Attributes\Attribute;
+use Jigoshop\Entity\Product\Attribute;
 use Jigoshop\Entity\Product\Simple;
 use Jigoshop\Entity\Product\Variable;
 use Jigoshop\Exception;
@@ -180,6 +180,12 @@ class Product
 			if (isset($_POST['value'])) {
 				$attribute->setValue(trim(htmlspecialchars(strip_tags($_POST['value']))));
 			}
+
+			if (isset($_POST['options']) && isset($_POST['options']['display'])) {
+				$attribute->setVisible($_POST['options']['display'] === 'true');
+			}
+
+			$this->wp->doAction('jigoshop\admin\product_attribute\add', $attribute);
 
 			$product->addAttribute($attribute);
 			$this->productService->save($product);
