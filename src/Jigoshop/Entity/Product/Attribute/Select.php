@@ -8,6 +8,11 @@ class Select extends Attribute
 {
 	const TYPE = 1;
 
+	public function __construct($exists = false)
+	{
+		parent::__construct($exists);
+	}
+
 	/**
 	 * @return int Type of attribute.
 	 */

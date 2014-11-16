@@ -175,4 +175,13 @@ class Simple extends Product implements Purchasable, Shippable, Saleable
 	{
 		return true;
 	}
+
+	/**
+	 * Initializes product type with custom actions.
+	 *
+	 * @param Wordpress $wp Wordpress Abstraction Layer
+	 */
+	public static function initialize(Wordpress $wp)
+	{
+	}
 }

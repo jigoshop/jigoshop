@@ -20,6 +20,17 @@ class Variable extends Product implements Shippable, Saleable
 		$this->sales = new Attributes\Sales();
 	}
 
+
+	/**
+	 * Initializes product type with custom actions.
+	 *
+	 * @param Wordpress $wp Wordpress Abstraction Layer
+	 */
+	public static function initialize(Wordpress $wp)
+	{
+		$wp->addAction('jigoshop\admin\product_attribute\add', __CLASS__.'::addProductAttribute');
+	}
+
 	/**
 	 * @param Attribute $attribute
 	 */
@@ -148,5 +159,13 @@ class Variable extends Product implements Shippable, Saleable
 			/** @var $item Shippable */
 			return $value & $item->isShippable();
 		}, true);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getVariations()
+	{
+		return $this->variations;
 	}
 }

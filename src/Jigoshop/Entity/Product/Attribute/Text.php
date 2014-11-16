@@ -8,6 +8,11 @@ class Text extends Attribute
 {
 	const TYPE = 2;
 
+	public function __construct($exists = false)
+	{
+		parent::__construct($exists);
+	}
+
 	/**
 	 * @return int Type of attribute.
 	 */

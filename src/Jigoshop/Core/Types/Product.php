@@ -24,8 +24,12 @@ class Product implements Post
 
 		$this->enabledTypes = $options->getEnabledProductTypes();
 		foreach ($this->enabledTypes as $type) {
-			$productService->addType($type, $this->getTypeClass($type));
+			$class = $this->getTypeClass($type);
+			$productService->addType($type, $class);
+			$wp->addAction('jigoshop\product\type\init', $class.'::initialize');
 		}
+
+		$wp->doAction('jigoshop\product\type\init', $wp);
 	}
 
 	public function getName()
@@ -112,7 +116,6 @@ class Product implements Post
 			case Simple::TYPE:
 				return 'Jigoshop\Entity\Product\Simple';
 			case Variable::TYPE:
-				$this->wp->addAction('jigoshop\admin\product_attribute\add', '\Jigoshop\Entity\Product\Variable::addProductAttribute');
 				return 'Jigoshop\Entity\Product\Variable';
 			default:
 				return $this->wp->applyFilters('jigoshop\product\type\class', $type);

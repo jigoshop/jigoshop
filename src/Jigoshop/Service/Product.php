@@ -190,10 +190,14 @@ class Product implements ProductServiceInterface
 			'value' => $value,
 		);
 
-		$wpdb->update($wpdb->prefix.'jigoshop_product_attribute', $data, array(
-			'product_id' => $object->getId(),
-			'attribute_id' => $attribute->getId(),
-		));
+		if ($attribute->exists()) {
+			$wpdb->update($wpdb->prefix.'jigoshop_product_attribute', $data, array(
+				'product_id' => $object->getId(),
+				'attribute_id' => $attribute->getId(),
+			));
+		} else {
+			$wpdb->insert($wpdb->prefix.'jigoshop_product_attribute', $data);
+		}
 
 		foreach ($attribute->getFieldsToSave() as $field) {
 			/** @var $field Attribute\Field */

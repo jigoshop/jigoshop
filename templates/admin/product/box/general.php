@@ -10,11 +10,14 @@ use Jigoshop\Helper\Product as ProductHelper;
 ?>
 <fieldset>
 	<?php
-	Forms::text(array(
-		'name' => 'product[regular_price]',
-		'label' => __('Price', 'jigoshop').' ('.Currency::symbol().')',
-		'value' => $product->getRegularPrice(),
-	));
+	if ($product instanceof Product\Simple) {
+		Forms::text(array(
+			'name' => 'product[regular_price]',
+			'label' => __('Price', 'jigoshop').' ('.Currency::symbol().')',
+			'classes' => array('product-simple'),
+			'value' => $product->getRegularPrice(),
+		));
+	}
 	Forms::text(array(
 		'name' => 'product[sku]',
 		'label' => __('SKU', 'jigoshop'),

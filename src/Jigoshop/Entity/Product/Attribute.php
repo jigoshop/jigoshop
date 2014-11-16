@@ -15,6 +15,8 @@ use Jigoshop\Entity\Product\Attribute\Text;
  */
 abstract class Attribute
 {
+	const PRODUCT_ATTRIBUTE_EXISTS = true;
+
 	private static $types;
 
 	/** @var int */
@@ -27,15 +29,12 @@ abstract class Attribute
 	private $label;
 	/** @var bool */
 	private $visible;
+	/** @var bool */
+	private $exists;
 	/** @var array */
 	protected $options = array();
 	/** @var mixed */
 	protected $value;
-
-	public function __construct()
-	{
-		$this->visible = new Attribute\Field('is_visible', true);
-	}
 
 	/**
 	 * @return array List of available types with its labels.
@@ -51,6 +50,20 @@ abstract class Attribute
 		}
 
 		return self::$types;
+	}
+
+	public function __construct($exists = false)
+	{
+		$this->exists = $exists;
+		$this->visible = new Attribute\Field('is_visible', true);
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function exists()
+	{
+		return $this->exists;
 	}
 
 	/**

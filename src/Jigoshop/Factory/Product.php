@@ -78,6 +78,8 @@ class Product implements EntityFactoryInterface
 				$_POST['product']['tax_classes'] = array();
 			}
 
+			unset($_POST['product']['attributes']);
+
 			$product->restoreState($_POST['product']);
 			$product->markAsDirty($_POST['product']);
 		}
@@ -217,7 +219,7 @@ class Product implements EntityFactoryInterface
 		$attributes = array();
 
 		for ($i = 0, $endI = count($results); $i < $endI;) {
-			$attribute = $this->createAttribute($results[$i]['type']);
+			$attribute = $this->createAttribute($results[$i]['type'], Attribute::PRODUCT_ATTRIBUTE_EXISTS);
 			$attribute->setId((int)$results[$i]['id']);
 			$attribute->setSlug($results[$i]['slug']);
 			$attribute->setLabel($results[$i]['label']);
@@ -264,17 +266,18 @@ class Product implements EntityFactoryInterface
 	 * Creates new attribute object based on type.
 	 *
 	 * @param $type int Attribute type.
+	 * @param bool $exists Is attribute loaded from DB.
 	 * @return Attribute\Multiselect|Attribute\Select|Attribute\Text
 	 */
-	public function createAttribute($type)
+	public function createAttribute($type, $exists = false)
 	{
 		switch ($type) {
 			case Attribute\Multiselect::TYPE:
-				return new Attribute\Multiselect();
+				return new Attribute\Multiselect($exists);
 			case Attribute\Select::TYPE:
-				return new Attribute\Select();
+				return new Attribute\Select($exists);
 			case Attribute\Text::TYPE:
-				return new Attribute\Text();
+				return new Attribute\Text($exists);
 		}
 	}
 }
