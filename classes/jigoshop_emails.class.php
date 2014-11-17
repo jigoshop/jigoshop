@@ -21,7 +21,6 @@ class jigoshop_emails extends Jigoshop_Base
 		foreach ($hooks as $hook) {
 			$allowed_templates[$hook][] = $post_id;
 		}
-			print_r($allowed_templates);
 		self::get_options()->set('jigoshop_emails', $allowed_templates);
 	}
 
