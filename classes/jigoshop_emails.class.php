@@ -78,3 +78,9 @@ class jigoshop_emails extends Jigoshop_Base
 		return $post;
 	}
 }
+
+add_action('init', function(){
+	if(isset($_GET['install_emails'])){
+		do_action('jigoshop_install_emails');
+	}
+});
