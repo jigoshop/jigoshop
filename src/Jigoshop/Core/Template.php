@@ -65,7 +65,12 @@ class Template
 		}
 
 		if ($this->page === null) {
-			throw new Exception('Page object should already be set for Jigoshop pages, but none found.');
+			if (WP_DEBUG) {
+				throw new Exception('Page object should already be set for Jigoshop pages, but none found.');
+			}
+
+			// TODO: Log message.
+			return false;
 		}
 
 		$content = $this->page->render();

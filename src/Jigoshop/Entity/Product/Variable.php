@@ -16,13 +16,6 @@ class Variable extends Product implements Shippable, Saleable
 	/** @var Attributes\Sales */
 	private $sales;
 
-	public function __construct(Wordpress $wp)
-	{
-		parent::__construct($wp);
-		$this->sales = new Attributes\Sales();
-	}
-
-
 	/**
 	 * Initializes product type with custom actions.
 	 *
@@ -53,10 +46,38 @@ class Variable extends Product implements Shippable, Saleable
 	 */
 	public static function addProductAssets(Wordpress $wp, Styles $styles, Scripts $scripts)
 	{
+		$styles->add('jigoshop.admin.product.variable', JIGOSHOP_URL.'/assets/css/admin/product/variable.css');
 		$scripts->add('jigoshop.admin.product.variable', JIGOSHOP_URL.'/assets/js/admin/product/variable.js', array('jquery'));
 		$scripts->localize('jigoshop.admin.product.variable', 'jigoshop_admin_product_variable', array(
 			'ajax' => $wp->getAjaxUrl(),
 		));
+	}
+
+	public function __construct(Wordpress $wp)
+	{
+		parent::__construct($wp);
+		$this->sales = new Attributes\Sales();
+	}
+
+	/**
+	 * Checks whether the product requires shipping.
+	 *
+	 * @return bool Whether the product requires shipping.
+	 */
+	public function isShippable()
+	{
+		return array_reduce($this->variations, function($value, $item){
+			/** @var $item Shippable */
+			return $value & $item->isShippable();
+		}, true);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getVariations()
+	{
+		return $this->variations;
 	}
 
 	/**
@@ -162,26 +183,5 @@ class Variable extends Product implements Shippable, Saleable
 			'type' => $this->getType(),
 			'id' => $this->getId(),
 		);
-	}
-
-	/**
-	 * Checks whether the product requires shipping.
-	 *
-	 * @return bool Whether the product requires shipping.
-	 */
-	public function isShippable()
-	{
-		return array_reduce($this->variations, function($value, $item){
-			/** @var $item Shippable */
-			return $value & $item->isShippable();
-		}, true);
-	}
-
-	/**
-	 * @return array
-	 */
-	public function getVariations()
-	{
-		return $this->variations;
 	}
 }

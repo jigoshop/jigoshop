@@ -15,6 +15,29 @@ class Simple extends Product implements Purchasable, Shippable, Saleable
 	/** @var Attributes\Sales */
 	private $sales;
 
+	/**
+	 * Initializes product type with custom actions.
+	 *
+	 * @param Wordpress $wp Wordpress Abstraction Layer
+	 */
+	public static function initialize(Wordpress $wp)
+	{
+		$wp->addAction('jigoshop\admin\product\assets', __CLASS__.'::addProductAssets', 10, 3);
+	}
+
+	/**
+	 * @param Wordpress $wp
+	 * @param Styles $styles
+	 * @param Scripts $scripts
+	 */
+	public static function addProductAssets(Wordpress $wp, Styles $styles, Scripts $scripts)
+	{
+		$scripts->add('jigoshop.admin.product.simple', JIGOSHOP_URL.'/assets/js/admin/product/simple.js', array('jquery'));
+		$scripts->localize('jigoshop.admin.product.simple', 'jigoshop_admin_product_simple', array(
+			'ajax' => $wp->getAjaxUrl(),
+		));
+	}
+
 	public function __construct(Wordpress $wp)
 	{
 		parent::__construct($wp);
@@ -176,28 +199,5 @@ class Simple extends Product implements Purchasable, Shippable, Saleable
 	public function isShippable()
 	{
 		return true;
-	}
-
-	/**
-	 * Initializes product type with custom actions.
-	 *
-	 * @param Wordpress $wp Wordpress Abstraction Layer
-	 */
-	public static function initialize(Wordpress $wp)
-	{
-		$wp->addAction('jigoshop\admin\product\assets', __CLASS__.'::addProductAssets', 10, 3);
-	}
-
-	/**
-	 * @param Wordpress $wp
-	 * @param Styles $styles
-	 * @param Scripts $scripts
-	 */
-	public static function addProductAssets(Wordpress $wp, Styles $styles, Scripts $scripts)
-	{
-		$scripts->add('jigoshop.admin.product.simple', JIGOSHOP_URL.'/assets/js/admin/product/simple.js', array('jquery'));
-		$scripts->localize('jigoshop.admin.product.simple', 'jigoshop_admin_product_simple', array(
-			'ajax' => $wp->getAjaxUrl(),
-		));
 	}
 }

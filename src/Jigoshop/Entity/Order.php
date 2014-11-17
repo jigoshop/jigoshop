@@ -9,8 +9,8 @@ use Jigoshop\Entity\Order\Status;
 use Jigoshop\Exception;
 use Jigoshop\Payment\Method as PaymentMethod;
 use Jigoshop\Service\TaxServiceInterface;
-use Jigoshop\Shipping\Method;
 use Jigoshop\Shipping\Method as ShippingMethod;
+use Jigoshop\Shipping\Method;
 use WPAL\Wordpress;
 
 /**
@@ -239,7 +239,12 @@ class Order implements EntityInterface, OrderInterface
 	public function getItem($item)
 	{
 		if (!isset($this->items[$item])) {
-			throw new Exception(sprintf(__('No item with ID %d in order %d', 'jigoshop'), $item, $this->id));
+			if (WP_DEBUG) {
+				throw new Exception(sprintf(__('No item with ID %d in order %d', 'jigoshop'), $item, $this->id));
+			}
+
+			// TODO: Log message.
+			return null;
 		}
 
 		return $this->items[$item];

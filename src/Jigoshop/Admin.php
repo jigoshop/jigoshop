@@ -60,7 +60,12 @@ class Admin
 	{
 		$parent = $page->getParent();
 		if (!isset($this->pages[$parent])) {
-			throw new Exception(sprintf('Trying to add page to invalid parent (%s). Available ones are: %s', $parent, join(', ', array_keys($this->pages))));
+			if (WP_DEGUG) {
+				throw new Exception(sprintf('Trying to add page to invalid parent (%s). Available ones are: %s', $parent, join(', ', array_keys($this->pages))));
+			}
+
+			// TODO: Log message.
+			return;
 		}
 
 		$this->pages[$parent][] = $page;

@@ -113,7 +113,12 @@ class Customer implements CustomerServiceInterface
 	public function findForPost($post)
 	{
 		// TODO: Think on implementing this function either way.
-		throw new Exception('Customer service do not support fetching for post - users are not stored this way.');
+		if (WP_DEBUG) {
+			throw new Exception('Customer service do not support fetching for post - users are not stored this way.');
+		}
+
+		// TODO: Log message.
+		return null;
 	}
 
 	/**
@@ -125,6 +130,11 @@ class Customer implements CustomerServiceInterface
 	public function findByQuery($query)
 	{
 		// TODO: Think on implementing this function either way.
-		throw new Exception('Customer service do not support fetching by query - users are not stored like posts.');
+		if (WP_DEBUG) {
+			throw new Exception('Customer service do not support fetching by query - users are not stored like posts.');
+		}
+
+		// TODO: Log message.
+		return null;
 	}
 }

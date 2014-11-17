@@ -14,7 +14,10 @@ class Guest extends Customer
 
 	public function setId($id)
 	{
-		throw new Exception(__('Guest customer cannot be updated!', 'jigoshop'));
+		// TODO: Log message.
+		if (WP_DEBUG) {
+			throw new Exception(__('Guest customer cannot be updated!', 'jigoshop'));
+		}
 	}
 
 	public function getLogin()
@@ -24,7 +27,10 @@ class Guest extends Customer
 
 	public function setLogin($login)
 	{
-		throw new Exception(__('Guest customer cannot be updated!', 'jigoshop'));
+		// TODO: Log message.
+		if (WP_DEBUG) {
+			throw new Exception(__('Guest customer cannot be updated!', 'jigoshop'));
+		}
 	}
 
 	public function getName()
@@ -34,7 +40,10 @@ class Guest extends Customer
 
 	public function setName($name)
 	{
-		throw new Exception(__('Guest customer cannot be updated!', 'jigoshop'));
+		// TODO: Log message.
+		if (WP_DEBUG) {
+			throw new Exception(__('Guest customer cannot be updated!', 'jigoshop'));
+		}
 	}
 
 	public function __toString()

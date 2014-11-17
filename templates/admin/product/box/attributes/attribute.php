@@ -1,5 +1,6 @@
 <?php
 use Jigoshop\Admin\Helper\Forms;
+use Jigoshop\Admin\Helper\Product;
 use Jigoshop\Entity\Product\Attribute;
 
 /**
@@ -56,7 +57,7 @@ use Jigoshop\Entity\Product\Attribute;
 							'name' => 'product[attributes]['.$attribute->getId().']',
 							'classes' => array('attribute-'.$attribute->getId()),
 							'value' => $attribute->getValue(),
-							'options' => array_map(function($item){ return $item->getLabel(); }, $attribute->getOptions()),
+							'options' => Product::getSelectOption($attribute->getOptions()),
 							'size' => 12,
 						)); ?>
 					</div><?php

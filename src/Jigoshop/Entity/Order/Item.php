@@ -74,10 +74,12 @@ class Item implements Product\Purchasable, Product\Taxable
 
 	/**
 	 * @param int $quantity
+	 * @throws Exception When quantity is invalid.
 	 */
 	public function setQuantity($quantity)
 	{
 		if ($quantity < 0) {
+			// TODO: Log message.
 			throw new Exception(__('Item quantity cannot be below 0', 'jigoshop'));
 		}
 

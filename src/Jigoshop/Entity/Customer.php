@@ -126,7 +126,12 @@ class Customer implements EntityInterface
 	public function selectTaxAddress($address)
 	{
 		if (!in_array($address, array('billing', 'shipping'))) {
-			throw new Exception(sprintf(__('Unknown address type: "%s".', 'jigoshop'), $address));
+			if (WP_DEBUG) {
+				throw new Exception(sprintf(__('Unknown address type: "%s".', 'jigoshop'), $address));
+			}
+
+			// TODO: Log message.
+			return;
 		}
 
 		$this->taxAddress = $address;

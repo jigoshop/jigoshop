@@ -34,7 +34,7 @@ class Payment implements PaymentServiceInterface
 	public function get($id)
 	{
 		if (!isset($this->methods[$id])) {
-			throw new Exception(sprintf(__('Method "%s" does not exists', 'jigoshop'), $id));
+			throw new Exception(sprintf(__('Payment gateway "%s" does not exists', 'jigoshop'), $id));
 		}
 
 		return $this->methods[$id];

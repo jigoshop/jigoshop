@@ -131,6 +131,8 @@ class Product implements ProductServiceInterface
 			throw new Exception('Trying to save not a product!');
 		}
 
+		// TODO: Support for transactions!
+
 		$fields = $object->getStateToSave();
 
 		if (isset($fields['id']) || isset($fields['name']) || isset($fields['description'])) {

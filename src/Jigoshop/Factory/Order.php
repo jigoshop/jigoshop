@@ -145,6 +145,11 @@ class Order implements EntityFactoryInterface
 		return $this->wp->applyFilters('jigoshop\find\order', $order, $state);
 	}
 
+	/**
+	 * @param Cart $cart Cart to get data from.
+	 * @return Entity Order instance.
+	 * @throws Exception When errors occurred.
+	 */
 	public function fromCart(Cart $cart)
 	{
 		$customer = $cart->getCustomer();

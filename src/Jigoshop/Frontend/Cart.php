@@ -139,6 +139,7 @@ class Cart implements OrderInterface
 	 * If item is already present - increases it's quantity.
 	 *
 	 * @param Item $item Item to add to cart.
+	 * @throw Exception On any error.
 	 */
 	public function addItem(Item $item)
 	{
@@ -246,6 +247,7 @@ class Cart implements OrderInterface
 	/**
 	 * @param $key string Item key.
 	 * @return Item Item data.
+	 * @throws Exception When item does not exists.
 	 */
 	public function getItem($key)
 	{

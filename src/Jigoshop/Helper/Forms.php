@@ -88,7 +88,12 @@ class Forms
 		$field = wp_parse_args($field, $defaults);
 
 		if (empty($field['name'])) {
-			throw new Exception('Field "%s" must have a name!', serialize($field));
+			if (WP_DEBUG) {
+				throw new Exception('Field "%s" must have a name!', serialize($field));
+			}
+
+			// TODO: Log message.
+			return;
 		}
 
 		if (empty($field['id'])) {
@@ -130,7 +135,12 @@ class Forms
 		$field = wp_parse_args($field, $defaults);
 
 		if (empty($field['name'])) {
-			throw new Exception('Field "%s" must have a name!', serialize($field));
+			if (WP_DEBUG) {
+				throw new Exception(sprintf('Field "%s" must have a name!', serialize($field)));
+			}
+
+			// TODO: Log message.
+			return;
 		}
 
 		if (empty($field['id'])) {
@@ -173,7 +183,12 @@ class Forms
 		$field = wp_parse_args($field, $defaults);
 
 		if (empty($field['name'])) {
-			throw new Exception(sprintf('Field "%s" must have a name!', serialize($field)));
+			if (WP_DEBUG) {
+				throw new Exception(sprintf('Field "%s" must have a name!', serialize($field)));
+			}
+
+			// TODO: Log message.
+			return;
 		}
 
 		if (empty($field['id'])) {
@@ -210,7 +225,12 @@ class Forms
 		$field = wp_parse_args($field, $defaults);
 
 		if (empty($field['name'])) {
-			throw new Exception(sprintf('Field "%s" must have a name!', serialize($field)));
+			if (WP_DEBUG) {
+				throw new Exception(sprintf('Field "%s" must have a name!', serialize($field)));
+			}
+
+			// TODO: Log message.
+			return;
 		}
 
 		if (empty($field['id'])) {
@@ -241,7 +261,12 @@ class Forms
 		$field = wp_parse_args($field, $defaults);
 
 		if (empty($field['name'])) {
-			throw new Exception(sprintf('Field "%s" must have a name!', serialize($field)));
+			if (WP_DEBUG) {
+				throw new Exception(sprintf('Field "%s" must have a name!', serialize($field)));
+			}
+
+			// TODO: Log message.
+			return;
 		}
 
 		if (empty($field['id'])) {
@@ -279,7 +304,12 @@ class Forms
 		$field = wp_parse_args($field, $defaults);
 
 		if (empty($field['name'])) {
-			throw new Exception(sprintf('Field "%s" must have a name!', serialize($field)));
+			if (WP_DEBUG) {
+				throw new Exception(sprintf('Field "%s" must have a name!', serialize($field)));
+			}
+
+			// TODO: Log message.
+			return;
 		}
 
 		if (empty($field['id'])) {
