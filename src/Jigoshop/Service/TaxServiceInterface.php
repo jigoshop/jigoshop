@@ -3,6 +3,8 @@ namespace Jigoshop\Service;
 
 use Jigoshop\Entity\Customer;
 use Jigoshop\Entity\Product\Attributes;
+use Jigoshop\Entity\Product\Purchasable;
+use Jigoshop\Entity\Product\Taxable;
 use Jigoshop\Shipping\Method;
 
 
@@ -14,26 +16,26 @@ use Jigoshop\Shipping\Method;
 interface TaxServiceInterface
 {
 	/**
-	 * @param $product Attributes\Taxable|Attributes\Purchasable Product to calculate tax for.
+	 * @param $product Taxable|Purchasable Product to calculate tax for.
 	 * @return float Overall tax value.
 	 */
-	public function calculate(Attributes\Taxable $product);
+	public function calculate(Taxable $product);
 
 	/**
-	 * @param $product Attributes\Purchasable Product to calculate tax for.
+	 * @param $product Purchasable Product to calculate tax for.
 	 * @param $taxClass string Tax class.
 	 * @throws Exception When tax class is not found.
 	 * @return float Tax value for selected tax class.
 	 */
-	public function get(Attributes\Purchasable $product, $taxClass);
+	public function get(Purchasable $product, $taxClass);
 
 	/**
-	 * @param $product Attributes\Taxable|Attributes\Purchasable Product to calculate tax for.
+	 * @param $product Taxable|Purchasable Product to calculate tax for.
 	 * @param int $quantity Quantity of the product.
 	 * @param Customer|null $customer Customer to calculate taxes for.
 	 * @return array List of tax values per tax class.
 	 */
-	public function getAll(Attributes\Taxable $product, $quantity = 1, Customer $customer = null);
+	public function getAll(Taxable $product, $quantity = 1, Customer $customer = null);
 
 	/**
 	 * @param Method $method Method to calculate tax for.
