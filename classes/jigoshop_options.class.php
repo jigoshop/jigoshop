@@ -818,6 +818,15 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 				'id' => 'jigoshop_email_footer',
 				'type' => 'textarea',
 			),
+			array(
+				'name' => __('Generate default emails', 'jigoshop'),
+				'desc' => '',
+				'tip' => '',
+				'id' => 'jigoshop_email_generete_defaults',
+				'type' => 'user_defined',
+				'display' => function(){ return '<button type="button" onClick="parent.location=\'admin.php?page=jigoshop_settings&install_emails=1\'">'.__('Generate Defaults', 'jigoshop').'</button>'; }
+
+			),
 			array('name' => __('Checkout page', 'jigoshop'), 'type' => 'title', 'desc' => ''),
 			array(
 				'name' => __('Validate postal/zip codes', 'jigoshop'),
