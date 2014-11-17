@@ -298,7 +298,7 @@ function jigoshop_admin_toolbar() {
 				'id' => 'jigoshop_emils',
 				'title' => __('Emails', 'jigoshop'),
 				'parent' => 'jigoshop',
-				'href' => admin_url('admin.php?page=jigoshop_emails'),
+				'href' => admin_url('edit.php?post_type=shop_email'),
 			));
 		}
 	}
