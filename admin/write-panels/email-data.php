@@ -58,7 +58,9 @@ function jigoshop_email_data_box($post)
 		</div>
 	</div>
 <?php
-}function jigoshop_email_variable_box($post)
+}
+
+function jigoshop_email_variable_box($post)
 {
 	?>
 	<div id="coupon_options" class="panel jigoshop_options_panel">
@@ -73,7 +75,7 @@ function jigoshop_email_data_box($post)
 
 						$keys = array_keys($registered_mails[$selected[0]]['accepted_args']);
 
-						if ($selected[1]) {
+						if (count($selected) > 1) {
 							foreach ($selected as $hook) {
 								$keys = array_intersect(array_keys($registered_mails[$hook]['accepted_args']), $keys);
 							}
@@ -142,3 +144,5 @@ add_action('init', function (){
 		exit;
 	}
 }, 11);
+
+
