@@ -10,7 +10,7 @@ use WPAL\Wordpress;
 
 class Core
 {
-	const VERSION = '2.0';
+	const VERSION = '2.0-dev';
 
 	/** @var \Jigoshop\Core\Options */
 	private $options;

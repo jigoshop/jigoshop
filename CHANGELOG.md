@@ -1,5 +1,4 @@
 ## Changelog
 
-* 2.0-ALPHA:
+* 2.0-dev:
     * Full rewrite of core
-    * Compatiblity API with Jigoshop 1.x
