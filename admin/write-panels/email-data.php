@@ -87,8 +87,8 @@ function jigoshop_process_shop_email_meta($post_id, $post)
 	jigoshop_emails::set_actions($post_id, isset($_POST['jigoshop_email_actions']) ? $_POST['jigoshop_email_actions'] : '');
 }
 
-add_action('wp_ajax_update_variable_list',        'update_variable_list');
-add_action('wp_ajax_nopriv_update_variable_list', 'update_variable_list');
+add_action('wp_ajax_update_variable_list', function() { update_variable_list(); exit;});
+add_action('wp_ajax_nopriv_update_variable_list', function() { update_variable_list(); exit;});
 
 function update_variable_list($post = ''){
 	?><div id="avalible_arguments">
