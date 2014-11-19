@@ -91,7 +91,7 @@ class Checkout implements PageInterface
 		switch ($_POST['field']) {
 			case 'shipping':
 				$customer->getShippingAddress()->setCountry($_POST['value']);
-				if ($customer->getBillingAddress()->isEmpty()) {
+				if ($customer->getBillingAddress()->getCountry() == null) {
 					$customer->getBillingAddress()->setCountry($_POST['value']);
 				}
 				break;
@@ -192,7 +192,7 @@ class Checkout implements PageInterface
 		switch ($_POST['field']) {
 			case 'shipping':
 				$customer->getShippingAddress()->setState($_POST['value']);
-				if ($customer->getBillingAddress()->isEmpty()) {
+				if ($customer->getBillingAddress()->getState() == null) {
 					$customer->getBillingAddress()->setState($_POST['value']);
 				}
 				break;
@@ -224,7 +224,7 @@ class Checkout implements PageInterface
 		switch ($_POST['field']) {
 			case 'shipping':
 				$customer->getShippingAddress()->setPostcode($_POST['value']);
-				if ($customer->getBillingAddress()->isEmpty()) {
+				if ($customer->getBillingAddress()->getPostcode() == null) {
 					$customer->getBillingAddress()->setPostcode($_POST['value']);
 				}
 				break;

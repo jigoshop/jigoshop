@@ -229,23 +229,13 @@ class Address implements \Serializable
 	}
 
 	/**
-	 * Checks whether the address lacks location.
-	 *
-	 * @return bool Is address empty?
-	 */
-	public function isEmpty()
-	{
-		return $this->country == null && $this->state == null && $this->postcode == null;
-	}
-
-	/**
 	 * Checks whether the address is valid (has all required fields filled).
 	 *
 	 * @return bool Is address valid?
 	 */
 	public function isValid()
 	{
-		return $this->firstName != null && $this->lastName != null && $this->address != null && !$this->isEmpty();
+		return $this->firstName != null && $this->lastName != null && $this->address != null && $this->country != null && $this->state != null && $this->postcode != null;
 	}
 
 	/**

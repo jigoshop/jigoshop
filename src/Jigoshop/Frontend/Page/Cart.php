@@ -88,7 +88,7 @@ class Cart implements PageInterface
 		$customer = $this->customerService->getCurrent();
 
 		$customer->getShippingAddress()->setCountry($_POST['value']);
-		if ($customer->getBillingAddress()->isEmpty()) {
+		if ($customer->getBillingAddress()->getCountry() == null) {
 			$customer->getBillingAddress()->setCountry($_POST['value']);
 		}
 
@@ -177,7 +177,7 @@ class Cart implements PageInterface
 	{
 		$customer = $this->customerService->getCurrent();
 		$customer->getShippingAddress()->setState($_POST['value']);
-		if ($customer->getBillingAddress()->isEmpty()) {
+		if ($customer->getBillingAddress()->getState() == null) {
 			$customer->getBillingAddress()->setState($_POST['value']);
 		}
 		$this->customerService->save($customer);
@@ -196,7 +196,7 @@ class Cart implements PageInterface
 	{
 		$customer = $this->customerService->getCurrent();
 		$customer->getShippingAddress()->setPostcode($_POST['value']);
-		if ($customer->getBillingAddress()->isEmpty()) {
+		if ($customer->getBillingAddress()->getPostcode() == null) {
 			$customer->getBillingAddress()->setPostcode($_POST['value']);
 		}
 		$this->customerService->save($customer);
@@ -345,9 +345,13 @@ class Cart implements PageInterface
 		$address->setPostcode($_POST['postcode']);
 
 		$address = $customer->getBillingAddress();
-		if ($address->isEmpty()) {
+		if ($address->getCountry() == null) {
 			$address->setCountry($_POST['country']);
+		}
+		if ($address->getState() == null) {
 			$address->setState($_POST['state']);
+		}
+		if ($address->getPostcode() == null) {
 			$address->setPostcode($_POST['postcode']);
 		}
 	}
