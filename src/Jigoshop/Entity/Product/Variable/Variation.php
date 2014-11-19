@@ -51,18 +51,31 @@ class Variation
 	}
 
 	/**
+	 * @param Attribute $attribute
+	 */
+	public function addAttribute($attribute)
+	{
+		$this->attributes[$attribute->getAttribute()->getId()] = $attribute;
+	}
+
+	/**
+	 * @param $id int Attribute ID.
+	 * @return Attribute Variation attribute.
+	 */
+	public function getAttribute($id)
+	{
+		if (!isset($this->attributes[$id])) {
+			return null;
+		}
+
+		return $this->attributes[$id];
+	}
+
+	/**
 	 * @return array
 	 */
 	public function getAttributes()
 	{
 		return $this->attributes;
-	}
-
-	/**
-	 * @param Attribute $attribute
-	 */
-	public function addAttribute($attribute)
-	{
-		$this->attributes[] = $attribute;
 	}
 }

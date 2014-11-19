@@ -31,7 +31,7 @@ class Product implements EntityFactoryInterface
 		if (isset($this->types[$type])) {
 			// TODO: Log message.
 			if (WP_DEBUG) {
-				throw new Exception(sprintf('Product of type %s already exists.'), $type);
+				throw new Exception(sprintf('Product of type "%s" already exists.'), $type);
 			}
 
 			return;
@@ -51,7 +51,7 @@ class Product implements EntityFactoryInterface
 	{
 		if (!isset($this->types[$type])) {
 			if (WP_DEBUG) {
-				throw new Exception(sprintf('Product type %s does not exists.', $type));
+				throw new Exception(sprintf('Product type "%s" does not exists.', $type));
 			}
 
 			// TODO: Log message.

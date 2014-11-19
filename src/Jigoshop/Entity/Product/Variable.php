@@ -61,11 +61,12 @@ class Variable extends Product implements Shippable, Saleable
 	}
 
 	/**
-	 * @return array
+	 * @param int $id Variation ID.
+	 * @return bool Variation exists?
 	 */
-	public function getVariations()
+	public function hasVariation($id)
 	{
-		return $this->variations;
+		return isset($this->variations[$id]);
 	}
 
 	/**
@@ -78,6 +79,14 @@ class Variable extends Product implements Shippable, Saleable
 		if (!isset($this->variations[$id])) {
 			return null;
 		}
+		return $this->variations;
+	}
+
+	/**
+	 * @return array List of all assigned variations.
+	 */
+	public function getVariations()
+	{
 		return $this->variations;
 	}
 

@@ -142,6 +142,7 @@ class Product implements ProductServiceInterface
 
 		if (isset($fields['attributes'])) {
 			$this->_removeAllProductAttributesExcept($object->getId(), array_map(function($item){
+				/** @var $item Attribute */
 				return $item->getId();
 			}, $fields['attributes']));
 
@@ -155,6 +156,8 @@ class Product implements ProductServiceInterface
 		foreach ($fields as $field => $value) {
 			$this->wp->updatePostMeta($object->getId(), $field, $value);
 		}
+
+		$this->wp->doAction('jigoshop\service\product\save', $object);
 	}
 
 	/**
@@ -199,6 +202,7 @@ class Product implements ProductServiceInterface
 			));
 		} else {
 			$wpdb->insert($wpdb->prefix.'jigoshop_product_attribute', $data);
+			// TODO: Set attribute to EXISTS
 		}
 
 		foreach ($attribute->getFieldsToSave() as $field) {
@@ -424,6 +428,7 @@ class Product implements ProductServiceInterface
 		$this->wp->doAction('jigoshop\attribute\save', $attribute);
 
 		$this->removeAllAttributesExcept($attribute->getId(), array_map(function($item){
+			/** @var $item Attribute\Option */
 			return $item->getId();
 		}, $attribute->getOptions()));
 

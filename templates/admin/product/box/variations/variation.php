@@ -15,7 +15,7 @@ use Jigoshop\Entity\Product\Attribute;
 			<?php Forms::select(array(
 				'name' => 'product[variation]['.$variation->getId().'][attribute]['.$attribute->getId().']',
 				'placeholder' => $attribute->getLabel(),
-				'value' => $attribute->getValue(),
+				'value' => $variation->getAttribute($attribute->getId())->getValue(),
 				'options' => Product::getSelectOption($attribute->getOptions()),
 				'size' => 12,
 			)); ?>

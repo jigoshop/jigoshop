@@ -25,7 +25,7 @@ class Product implements Post
 		$types = $options->getEnabledProductTypes();
 		foreach ($types as $typeClass) {
 			/** @var Types\Product\Type $type */
-			$type = new $typeClass();
+			$type = new $typeClass($wp, $options, $productService);
 
 			if (!($type instanceof Types\Product\Type)) {
 				if (WP_DEBUG) {
