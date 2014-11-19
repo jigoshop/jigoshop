@@ -157,6 +157,18 @@ class Customer implements EntityInterface
 		$this->shippingAddress = $shippingAddress;
 	}
 
+	/**
+	 * Checks whether billing and shipping addresses have the same country, state and postcode
+	 * .
+	 * @return bool Shipping and billing address matches?
+	 */
+	public function hasMatchingAddresses()
+	{
+		return $this->billingAddress->getCountry() == $this->shippingAddress->getCountry() &&
+			$this->billingAddress->getState() == $this->shippingAddress->getState() &&
+			$this->billingAddress->getPostcode() == $this->shippingAddress->getPostcode();
+	}
+
 	public function __toString()
 	{
 		return sprintf('%s (%s)', $this->getName(), $this->getEmail());

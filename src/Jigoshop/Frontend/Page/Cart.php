@@ -87,10 +87,10 @@ class Cart implements PageInterface
 	{
 		$customer = $this->customerService->getCurrent();
 
-		$customer->getShippingAddress()->setCountry($_POST['value']);
-		if ($customer->getBillingAddress()->getCountry() == null) {
+		if ($customer->hasMatchingAddresses()) {
 			$customer->getBillingAddress()->setCountry($_POST['value']);
 		}
+		$customer->getShippingAddress()->setCountry($_POST['value']);
 
 		$this->customerService->save($customer);
 		$cart = $this->cartService->getCurrent();
@@ -176,10 +176,10 @@ class Cart implements PageInterface
 	public function ajaxChangeState()
 	{
 		$customer = $this->customerService->getCurrent();
-		$customer->getShippingAddress()->setState($_POST['value']);
-		if ($customer->getBillingAddress()->getState() == null) {
+		if ($customer->hasMatchingAddresses()) {
 			$customer->getBillingAddress()->setState($_POST['value']);
 		}
+		$customer->getShippingAddress()->setState($_POST['value']);
 		$this->customerService->save($customer);
 		$cart = $this->cartService->getCurrent();
 
@@ -195,10 +195,10 @@ class Cart implements PageInterface
 	public function ajaxChangePostcode()
 	{
 		$customer = $this->customerService->getCurrent();
-		$customer->getShippingAddress()->setPostcode($_POST['value']);
-		if ($customer->getBillingAddress()->getPostcode() == null) {
+		if ($customer->hasMatchingAddresses()) {
 			$customer->getBillingAddress()->setPostcode($_POST['value']);
 		}
+		$customer->getShippingAddress()->setPostcode($_POST['value']);
 		$this->customerService->save($customer);
 		$cart = $this->cartService->getCurrent();
 
@@ -340,20 +340,17 @@ class Cart implements PageInterface
 	private function updateCustomer(Customer $customer)
 	{
 		$address = $customer->getShippingAddress();
+
+		if ($customer->hasMatchingAddresses()) {
+			$billingAddress = $customer->getBillingAddress();
+			$billingAddress->setCountry($_POST['country']);
+			$billingAddress->setState($_POST['state']);
+			$billingAddress->setPostcode($_POST['postcode']);
+		}
+
 		$address->setCountry($_POST['country']);
 		$address->setState($_POST['state']);
 		$address->setPostcode($_POST['postcode']);
-
-		$address = $customer->getBillingAddress();
-		if ($address->getCountry() == null) {
-			$address->setCountry($_POST['country']);
-		}
-		if ($address->getState() == null) {
-			$address->setState($_POST['state']);
-		}
-		if ($address->getPostcode() == null) {
-			$address->setPostcode($_POST['postcode']);
-		}
 	}
 
 	public function render()
