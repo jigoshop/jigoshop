@@ -283,7 +283,7 @@ class Checkout implements PageInterface
 				// Redirect to thank you page
 				$url = $this->wp->getPermalink($this->options->getPageId(Pages::THANK_YOU));
 				$this->cartService->remove($cart);
-				$url = $this->wp->addQueryArgs(array('order' => $order->getId()), $url); // TODO: Add randomly generated key to prevent data leakage
+				$url = $this->wp->addQueryArg(array('order' => $order->getId()), $url); // TODO: Add randomly generated key to prevent data leakage
 				$this->wp->wpRedirect($url);
 				exit;
 			} catch(Exception $e) {
