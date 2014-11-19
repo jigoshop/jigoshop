@@ -3,6 +3,7 @@
 namespace Jigoshop\Core;
 
 use Jigoshop\Entity\Product\Simple;
+use Jigoshop\Entity\Product\Variable;
 use WPAL\Wordpress;
 
 /**
@@ -239,6 +240,6 @@ class Options
 	public function getEnabledProductTypes()
 	{
 		// TODO: Add product types to extensions tab
-		return $this->wp->applyFilters('jigoshop\product\types', $this->get('enabled_product_types', array(Simple::TYPE)));
+		return $this->wp->applyFilters('jigoshop\product\types', $this->get('enabled_product_types', array(Simple::TYPE, Variable::TYPE)));
 	}
 }

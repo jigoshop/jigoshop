@@ -9,7 +9,7 @@ class TaxSettings
     jQuery('#add-tax-rule').on('click', @addNewRule)
     jQuery('#tax-rules')
       .on('click', 'button.remove-tax-rule', @removeItem)
-      .on('change', '.tax-rule-country', @updateStateField)
+      .on('change', 'select.tax-rule-country', @updateStateField)
     @updateFields()
 
   removeItem: ->
@@ -22,7 +22,7 @@ class TaxSettings
 
   addNewRule: =>
     $item = jQuery(@params.new_rule)
-    jQuery('.tax-rule-postcodes', $item).select2
+    jQuery('input.tax-rule-postcodes', $item).select2
       tags: []
       tokenSeparators: [',']
       multiple: true
@@ -32,16 +32,17 @@ class TaxSettings
 
   updateStateField: (event) =>
     $parent = jQuery(event.target).closest('tr')
-    $states = jQuery('.tax-rule-states', $parent)
-    $country = jQuery('option:selected', jQuery(event.target)).val()
-    if @params.states[$country]?
-      @_attachSelectField($states, @params.states[$country])
+    $states = jQuery('input.tax-rule-states', $parent)
+    $country = jQuery('select.tax-rule-country', $parent)
+    country = $country.val()
+    if @params.states[country]?
+      @_attachSelectField($states, @params.states[country])
     else
       @_attachTextField($states)
 
   updateFields: ->
-    jQuery('.tax-rule-country').change()
-    jQuery('.tax-rule-postcodes').select2
+    jQuery('select.tax-rule-country').change()
+    jQuery('input.tax-rule-postcodes').select2
       tags: []
       tokenSeparators: [',']
       multiple: true
@@ -52,9 +53,7 @@ class TaxSettings
   ###
   _attachSelectField: ($field, states) ->
     $field.select2
-      data:
-        results: states
-        text: 'text'
+      data: states
       multiple: true
       initSelection: (element, callback) ->
         data = []

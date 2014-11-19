@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "dependencies": {
     "bootstrap": "3.2.*",
-    "select2": "~3.5.1",
+    "select2": "3.5.*",
     "bootstrap-datepicker": "~1.3.0",
 	  "jquery-colorbox": "1.5.*"
   },

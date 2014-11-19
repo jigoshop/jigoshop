@@ -1,11 +1,8 @@
 jQuery ($) ->
   $('tr > td .hidden').closest('tr').hide()
-  $('#show_message').on 'change', ->
-    if $(this).is(':checked')
-      $('#custom_message').removeClass('hidden').closest('tr').show()
-    else
-      $('#custom_message').addClass('hidden').closest('tr').hide()
-  .change()
+  $('#show_message').on 'change', -> $('#custom_message').closest('tr').toggle()
+  $('#custom_message').show().closest('div.form-group').show()
+
   delay 3000,  -> $('.settings-error.updated').slideUp ->
     $(this).remove()
   delay 3000,  -> $('.alert-success').slideUp ->

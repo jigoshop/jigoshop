@@ -170,22 +170,23 @@ class Installer
 			'post_name' => '',
 			'post_content' => '',
 			'comment_status' => 'closed',
+			'ping_status' => false,
 		);
 
 		$this->_createPage(Pages::SHOP, array_merge($data, array(
-			'page_title' => __('Shop', 'jigoshop'),
+			'post_title' => __('Shop', 'jigoshop'),
 		)));
 		$this->_createPage(Pages::CART, array_merge($data, array(
-			'page_title' => __('Cart', 'jigoshop'),
+			'post_title' => __('Cart', 'jigoshop'),
 		)));
 		$this->_createPage(Pages::CHECKOUT, array_merge($data, array(
-			'page_title' => __('Checkout', 'jigoshop'),
+			'post_title' => __('Checkout', 'jigoshop'),
 		)));
 		$this->_createPage(Pages::THANK_YOU, array_merge($data, array(
-			'page_title' => __('Checkout - thank you', 'jigoshop'),
+			'post_title' => __('Checkout - thank you', 'jigoshop'),
 		)));
 //		$this->_createPage(Pages::ACCOUNT, array_merge($data, array(
-//			'page_title' => __('My account', 'jigoshop'),
+//			'post_title' => __('My account', 'jigoshop'),
 //		)));
 	}
 
