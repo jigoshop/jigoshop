@@ -158,6 +158,7 @@ class Installer
 		";
 //		var_dump($wpdb->query($query), $wpdb->last_error); exit;
 		$wpdb->query($query);
+		$wpdb->show_errors();
 	}
 
 	private function _createPages()

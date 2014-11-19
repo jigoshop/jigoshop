@@ -34,10 +34,50 @@ class Variable extends Product implements Shippable, Saleable
 	}
 
 	/**
+	 * @param Variable\Variation $variation Variation to add.
+	 */
+	public function addVariation(Product\Variable\Variation $variation)
+	{
+		$this->variations[$variation->getId()] = $variation;
+	}
+
+	/**
+	 * Returns variation instance for selected ID.
+	 * If ID is not found - returns null.
+	 *
+	 * @param $id int Variation ID.
+	 * @return Product\Variable\Variation Variation found.
+	 */
+	public function removeVariation($id)
+	{
+		if (!isset($this->variations[$id])) {
+			return null;
+		}
+
+		$variation = $this->variations[$id];
+		unset($this->variations[$id]);
+
+		return $variation;
+	}
+
+	/**
 	 * @return array
 	 */
 	public function getVariations()
 	{
+		return $this->variations;
+	}
+
+	/**
+	 * @param $id int Variation ID.
+	 *
+	 * @return Product\Variable\Variation
+	 */
+	public function getVariation($id)
+	{
+		if (!isset($this->variations[$id])) {
+			return null;
+		}
 		return $this->variations;
 	}
 
