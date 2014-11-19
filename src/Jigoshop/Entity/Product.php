@@ -519,11 +519,4 @@ abstract class Product implements EntityInterface, Product\Taxable
 	 * @return array Minimal state to identify the product.
 	 */
 	public abstract function getState();
-
-	/**
-	 * Initializes product type with custom actions.
-	 *
-	 * @param Wordpress $wp Wordpress Abstraction Layer
-	 */
-	public abstract static function initialize(Wordpress $wp);
 }

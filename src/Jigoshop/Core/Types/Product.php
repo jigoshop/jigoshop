@@ -6,6 +6,7 @@ use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\Product\Simple;
 use Jigoshop\Entity\Product\Variable;
+use Jigoshop\Exception;
 use Jigoshop\Service\ProductServiceInterface;
 use WPAL\Wordpress;
 
@@ -22,11 +23,23 @@ class Product implements Post
 	{
 		$this->wp = $wp;
 
-		$this->enabledTypes = $options->getEnabledProductTypes();
-		foreach ($this->enabledTypes as $type) {
-			$class = $this->getTypeClass($type);
-			$productService->addType($type, $class);
-			$wp->addAction('jigoshop\product\type\init', $class.'::initialize');
+		$types = $options->getEnabledProductTypes();
+		foreach ($types as $typeClass) {
+			/** @var Types\Product\Type $type */
+			$type = new $typeClass();
+
+			if (!($type instanceof Types\Product\Type)) {
+				if (WP_DEBUG) {
+					throw new Exception(sprintf(__('Invalid type definition! Offending class: "%s".', 'jigoshop'), $typeClass));
+				}
+
+				// TODO: Log error
+				continue;
+			}
+
+			$this->enabledTypes[] = $type;
+			$productService->addType($type->getId(), $type->getClass());
+			$wp->addAction('jigoshop\product\type\init', array($type, 'initialize'));
 		}
 
 		$wp->doAction('jigoshop\product\type\init', $wp);
@@ -105,20 +118,17 @@ class Product implements Post
 	}
 
 	/**
-	 * Finds and returns class name of specified product type.
+	 * Finds and returns type instance of specified product type.
 	 *
 	 * @param $type string Name of the type.
-	 * @return string Class name.
+	 * @return Types\Product\Type Type instance.
 	 */
-	public function getTypeClass($type)
+	public function getType($type)
 	{
-		switch($type){
-			case Simple::TYPE:
-				return 'Jigoshop\Entity\Product\Simple';
-			case Variable::TYPE:
-				return 'Jigoshop\Entity\Product\Variable';
-			default:
-				return $this->wp->applyFilters('jigoshop\product\type\class', $type);
+		if (!isset($this->enabledTypes[$type])) {
+			throw new Exception(sprintf(__('Unknown type: "%s".', 'jigoshop'), $type));
 		}
+
+		return $this->enabledTypes[$type];
 	}
 }

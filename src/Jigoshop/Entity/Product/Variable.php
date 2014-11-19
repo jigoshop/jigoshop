@@ -4,8 +4,6 @@ namespace Jigoshop\Entity\Product;
 
 use Jigoshop\Entity\Product;
 use Jigoshop\Entity\Product\Attribute;
-use Jigoshop\Helper\Scripts;
-use Jigoshop\Helper\Styles;
 use WPAL\Wordpress;
 
 class Variable extends Product implements Shippable, Saleable
@@ -15,43 +13,6 @@ class Variable extends Product implements Shippable, Saleable
 	private $variations = array();
 	/** @var Attributes\Sales */
 	private $sales;
-
-	/**
-	 * Initializes product type with custom actions.
-	 *
-	 * @param Wordpress $wp Wordpress Abstraction Layer
-	 */
-	public static function initialize(Wordpress $wp)
-	{
-		$wp->addAction('jigoshop\admin\product_attribute\add', __CLASS__.'::addProductAttribute');
-		$wp->addAction('jigoshop\admin\product\assets', __CLASS__.'::addProductAssets', 10, 3);
-	}
-
-	/**
-	 * @param Attribute $attribute
-	 */
-	public static function addProductAttribute($attribute)
-	{
-		if ($attribute instanceof Attribute\Variable) {
-			if (isset($_POST['options']) && isset($_POST['options']['is_variable'])) {
-				$attribute->setVariable($_POST['options']['is_variable'] === 'true');
-			}
-		}
-	}
-
-	/**
-	 * @param Wordpress $wp
-	 * @param Styles $styles
-	 * @param Scripts $scripts
-	 */
-	public static function addProductAssets(Wordpress $wp, Styles $styles, Scripts $scripts)
-	{
-		$styles->add('jigoshop.admin.product.variable', JIGOSHOP_URL.'/assets/css/admin/product/variable.css');
-		$scripts->add('jigoshop.admin.product.variable', JIGOSHOP_URL.'/assets/js/admin/product/variable.js', array('jquery'));
-		$scripts->localize('jigoshop.admin.product.variable', 'jigoshop_admin_product_variable', array(
-			'ajax' => $wp->getAjaxUrl(),
-		));
-	}
 
 	public function __construct(Wordpress $wp)
 	{

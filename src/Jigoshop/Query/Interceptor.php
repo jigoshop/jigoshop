@@ -102,6 +102,7 @@ class Interceptor
 
 	private function getProductListQuery($request)
 	{
+		// TODO: Think how we are able to "select" Shop in menu.
 		$options = $this->options->get('shopping');
 		return array(
 			'post_type' => Types::PRODUCT,

@@ -87,7 +87,8 @@ class Product
 		$types = array();
 
 		foreach ($this->type->getEnabledTypes() as $type) {
-			$types[$type] = $this->type->getTypeName($type);
+			/** @var $type Types\Product\Type */
+			$types[$type->getId()] = $type->getName();
 		}
 
 		$menu = $this->wp->applyFilters('jigoshop\admin\product\menu', array(

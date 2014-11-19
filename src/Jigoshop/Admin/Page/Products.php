@@ -84,7 +84,7 @@ class Products
 				echo ProductHelper::getStock($product);
 				break;
 			case 'type':
-				echo $this->type->getTypeName($product->getType());
+				echo $this->type->getType($product->getType())->getName();
 				break;
 			case 'sku':
 				echo $product->getSku();
@@ -151,8 +151,9 @@ class Products
 		// Get all active terms
 		$types = array();
 		foreach ($this->type->getEnabledTypes() as $type) {
-			$types[$type] = array(
-				'label' => $this->type->getTypeName($type),
+			/** @var $type Types\Product\Type */
+			$types[$type->getId()] = array(
+				'label' => $type->getName(),
 				'count' => $this->getTypeCount($type),
 			);
 		}
@@ -167,7 +168,7 @@ class Products
 	/**
 	 * Finds and returns number of products of specified type.
 	 *
-	 * @param $type string Name of the type.
+	 * @param $type Types\Product\Type Type class.
 	 * @return int Count of the products.
 	 */
 	private function getTypeCount($type)

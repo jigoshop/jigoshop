@@ -2,8 +2,6 @@
 
 namespace Jigoshop\Core;
 
-use Jigoshop\Entity\Product\Simple;
-use Jigoshop\Entity\Product\Variable;
 use WPAL\Wordpress;
 
 /**
@@ -26,8 +24,6 @@ class Options
 //		'disable_css' => 'no',
 //		'disable_prettyphoto' => 'no',
 //		'load_frontend_css' => 'yes',
-//		'complete_processing_orders' => 'no',
-//		'reset_pending_orders' => 'no',
 		'general' => array(
 			'country' => 'GB',
 			'email' => '',
@@ -240,6 +236,9 @@ class Options
 	public function getEnabledProductTypes()
 	{
 		// TODO: Add product types to extensions tab
-		return $this->wp->applyFilters('jigoshop\product\types', $this->get('enabled_product_types', array(Simple::TYPE, Variable::TYPE)));
+		return $this->wp->applyFilters('jigoshop\product\types', $this->get('enabled_product_types', array(
+			'Jigoshop\Core\Types\Product\Simple',
+			'Jigoshop\Core\Types\Product\Variable',
+		)));
 	}
 }
