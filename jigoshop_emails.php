@@ -13,18 +13,20 @@
  * @license             GNU General Public License v3
  */
 
-jigoshop_emails::register_mail('admin_order_status_pending_to_processing', __('Order Pending to Processing for admin'), get_order_email_arguments_description());
-jigoshop_emails::register_mail('admin_order_status_pending_to_completed', __('Order Pending to Completed for admin'), get_order_email_arguments_description());
-jigoshop_emails::register_mail('admin_order_status_pending_to_on-hold', __('Order Pending to On-Hold for admin'), get_order_email_arguments_description());
-jigoshop_emails::register_mail('customer_order_status_pending_to_on-hold', __('Order Pending to On-Hold for customer'), get_order_email_arguments_description());
-jigoshop_emails::register_mail('customer_order_status_pending_to_processing', __('Order Pending to Processing for customer'), get_order_email_arguments_description());
-jigoshop_emails::register_mail('customer_order_status_on-hold_to_processing', __('Order On-Hold to Processing for customer'), get_order_email_arguments_description());
-jigoshop_emails::register_mail('customer_order_status_completed', __('Order Completed for customer'), get_order_email_arguments_description());
-jigoshop_emails::register_mail('customer_order_status_refunded', __('Order Refunded for customer'), get_order_email_arguments_description());
-jigoshop_emails::register_mail('low_stock_notification', __('Low Stock Notification'), get_stock_email_arguments_description());
-jigoshop_emails::register_mail('no_stock_notification', __('No Stock Notification'), get_stock_email_arguments_description());
-jigoshop_emails::register_mail('product_on_backorder_notification', __('Backorder Notification'), array_merge(get_stock_email_arguments_description(), get_order_email_arguments_description(), array('amount' => __('Amount', 'jigoshop'))));
-jigoshop_emails::register_mail('send_customer_invoice', __('Send Customer Invoice'), get_order_email_arguments_description());
+add_action('init', function(){
+	jigoshop_emails::register_mail('admin_order_status_pending_to_processing', __('Order Pending to Processing for admin'), get_order_email_arguments_description());
+	jigoshop_emails::register_mail('admin_order_status_pending_to_completed', __('Order Pending to Completed for admin'), get_order_email_arguments_description());
+	jigoshop_emails::register_mail('admin_order_status_pending_to_on-hold', __('Order Pending to On-Hold for admin'), get_order_email_arguments_description());
+	jigoshop_emails::register_mail('customer_order_status_pending_to_on-hold', __('Order Pending to On-Hold for customer'), get_order_email_arguments_description());
+	jigoshop_emails::register_mail('customer_order_status_pending_to_processing', __('Order Pending to Processing for customer'), get_order_email_arguments_description());
+	jigoshop_emails::register_mail('customer_order_status_on-hold_to_processing', __('Order On-Hold to Processing for customer'), get_order_email_arguments_description());
+	jigoshop_emails::register_mail('customer_order_status_completed', __('Order Completed for customer'), get_order_email_arguments_description());
+	jigoshop_emails::register_mail('customer_order_status_refunded', __('Order Refunded for customer'), get_order_email_arguments_description());
+	jigoshop_emails::register_mail('low_stock_notification', __('Low Stock Notification'), get_stock_email_arguments_description());
+	jigoshop_emails::register_mail('no_stock_notification', __('No Stock Notification'), get_stock_email_arguments_description());
+	jigoshop_emails::register_mail('product_on_backorder_notification', __('Backorder Notification'), array_merge(get_stock_email_arguments_description(), get_order_email_arguments_description(), array('amount' => __('Amount', 'jigoshop'))));
+	jigoshop_emails::register_mail('send_customer_invoice', __('Send Customer Invoice'), get_order_email_arguments_description());
+}, 999);
 
 add_action('order_status_pending_to_processing', function ($order_id){
 	$options = Jigoshop_Base::get_options();
@@ -115,7 +117,7 @@ function get_order_email_arguments($order_id)
 		'shipping_city' => $order->shipping_city,
 		'shipping_country' => jigoshop_countries::get_country($order->shipping_country),
 		'shipping_state' => strlen($order->shipping_state) == 2 ? jigoshop_countries::get_state($order->shipping_country, $order->shipping_state) : $order->shipping_state,
-	));
+	),$order_id);
 }
 
 function get_order_email_arguments_description()
