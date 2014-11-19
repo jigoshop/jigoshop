@@ -176,20 +176,6 @@ class Settings implements PageInterface
 
 	protected function validateField(array $field)
 	{
-		$defaults = array(
-			'id' => null,
-			'title' => '',
-			'name' => '',
-			'type' => '',
-			'description' => '',
-			'tip' => '',
-			'value' => '',
-			'options' => array(),
-			'classes' => array(),
-		);
-
-		$field = $this->wp->wpParseArgs($field, $defaults);
-
 		if($field['id'] === null){
 			$field['id'] = Forms::prepareIdFromName($field['name']);
 		}

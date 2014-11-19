@@ -67,7 +67,6 @@ class GeneralTab implements TabInterface
 						'id' => 'show_message',
 						'title' => __('Display custom message?', 'jigoshop'),
 						'type' => 'checkbox',
-						'value' => 'on',
 						'checked' => $this->options['show_message'],
 						'tip' => __('Add custom message on top of each page of your website.', 'jigoshop'),
 					),

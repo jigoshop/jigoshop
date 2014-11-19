@@ -103,7 +103,7 @@ class FlatRate implements Method
 				'name' => sprintf('[%s][enabled]', self::NAME),
 				'title' => __('Is enabled?', 'jigoshop'),
 				'type' => 'checkbox',
-				'value' => $this->options['enabled'],
+				'checked' => $this->options['enabled'],
 			),
 			array(
 				'name' => sprintf('[%s][title]', self::NAME),

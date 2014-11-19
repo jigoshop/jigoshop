@@ -315,6 +315,7 @@ class Checkout implements PageInterface
 			'billingFields' => $billingFields,
 			'shippingFields' => $shippingFields,
 			'showWithTax' => $this->options->get('general.price_tax') == 'with_tax',
+			'alwaysShowShipping' => $this->options->get('shipping.always_show_shipping'),
 			'differentShipping' => isset($_POST['jigoshop_order']) ? $_POST['jigoshop_order']['different_shipping'] == 'on' : false, // TODO: Fetch whether user want different shipping by default
 		));
 	}

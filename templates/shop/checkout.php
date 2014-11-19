@@ -11,6 +11,7 @@ use Jigoshop\Helper\Render;
  * @var $shippingMethods array List of available shipping methods.
  * @var $paymentMethods array List of available payment methods.
  * @var $showWithTax bool Whether to show product price with or without tax.
+ * @var $alwaysShowShipping bool Whether to always show shipping fields.
  * @var $cartUrl string URL to cart.
  * @var $billingFields array Fields to display as billing fields.
  * @var $differentShipping boolean Whether to use different shipping address.
@@ -33,6 +34,7 @@ use Jigoshop\Helper\Render;
 				</div>
 				<?php endforeach; ?>
 			</div>
+			<?php if (!$alwaysShowShipping): ?>
 			<?php Forms::checkbox(array(
 				'label' => __('Different shipping address', 'jigoshop'),
 				'name' => 'jigoshop_order[different_shipping]',
@@ -40,7 +42,8 @@ use Jigoshop\Helper\Render;
 				'checked' => $differentShipping,
 				'size' => 9
 			)); ?>
-			<div class="row clearfix<?php !$differentShipping and print ' not-active'; ?>" id="shipping-address">
+			<?php endif; ?>
+			<div class="row clearfix<?php !$differentShipping && !$alwaysShowShipping and print ' not-active'; ?>" id="shipping-address">
 				<h4><?php _e('Shipping address', 'jigoshop'); ?></h4>
 				<?php foreach($shippingFields as $field): ?>
 					<div class="col-md-<?php echo $field['columnSize']; ?>">

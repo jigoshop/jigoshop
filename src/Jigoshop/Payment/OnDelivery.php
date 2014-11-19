@@ -55,7 +55,7 @@ class OnDelivery implements Method
 				'name' => sprintf('[%s][enabled]', self::ID),
 				'title' => __('Is enabled?', 'jigoshop'),
 				'type' => 'checkbox',
-				'value' => $this->options['enabled'],
+				'checked' => $this->options['enabled'],
 			),
 			array(
 				'name' => sprintf('[%s][title]', self::ID),
