@@ -69,10 +69,10 @@ class jigoshop_emails extends Jigoshop_Base
 			$post->post_title = str_replace('['.$key.']', $value, $post->post_title);
 			if(empty($value)){
 				$post->post_content = preg_replace('#\['.$key.'\](.*?)\[\/'.$key.'\]#si', '', $post->post_content);
-				$post->post_content = preg_replace('#\['.$key.'\]#si', '', $post->post_content);
+				$post->post_content = str_replace('['.$key.']', '', $post->post_content);
 			} else {
-				$post->post_content = preg_replace('#\['.$key.'\](.*?)\[value\](.*?)\[\/'.$key.'\]#si', '$1'.$value.'$2', $post->post_content);
-				$post->post_content = preg_replace('#\['.$key.'\]#si', $value, $post->post_content);
+				$post->post_content = preg_replace('#\['.$key.'\](.*?)\[value\](.*?)\[\/'.$key.'\]#si', '$1'.'['.$key.']'.'$2', $post->post_content);
+				$post->post_content = str_replace('['.$key.']', $value, $post->post_content);
 			}
 		}
 		return $post;
