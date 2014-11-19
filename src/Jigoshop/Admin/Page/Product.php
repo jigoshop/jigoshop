@@ -49,9 +49,8 @@ class Product
 			'general' => array('label' => __('General', 'jigoshop'), 'visible' => true),
 			'advanced' => array('label' => __('Advanced', 'jigoshop'), 'visible' => true),
 			'attributes' => array('label' => __('Attributes', 'jigoshop'), 'visible' => true),
-			'variations' => array('label' => __('Variations', 'jigoshop'), 'visible' => array(Variable::TYPE)),
 			'stock' => array('label' => __('Stock', 'jigoshop'), 'visible' => true),
-			'sales' => array('label' => __('Sales', 'jigoshop'), 'visible' => array(Simple::TYPE, Variable::TYPE)),
+			'sales' => array('label' => __('Sales', 'jigoshop'), 'visible' => array(Simple::TYPE)),
 		));
 
 		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $menu, $styles, $scripts){
@@ -91,14 +90,6 @@ class Product
 			$types[$type->getId()] = $type->getName();
 		}
 
-		$menu = $this->wp->applyFilters('jigoshop\admin\product\menu', array(
-			'general' => array('label' => __('General', 'jigoshop'), 'visible' => true),
-			'advanced' => array('label' => __('Advanced', 'jigoshop'), 'visible' => true),
-			'attributes' => array('label' => __('Attributes', 'jigoshop'), 'visible' => true),
-			'variations' => array('label' => __('Variations', 'jigoshop'), 'visible' => array(Variable::TYPE)),
-			'stock' => array('label' => __('Stock', 'jigoshop'), 'visible' => true),
-			'sales' => array('label' => __('Sales', 'jigoshop'), 'visible' => array(Simple::TYPE, Variable::TYPE)),
-		));
 		$taxClasses = array();
 		foreach ($this->options->get('tax.classes') as $class) {
 			$taxClasses[$class['class']] = $class['label'];
@@ -142,7 +133,7 @@ class Product
 		Render::output('admin/product/box', array(
 			'product' => $product,
 			'types' => $types,
-			'menu' => $menu,
+			'menu' => $this->menu,
 			'tabs' => $tabs,
 			'current_tab' => 'general',
 		));

@@ -2,6 +2,8 @@
 
 namespace Jigoshop\Core\Types\Product;
 
+use Jigoshop\Admin\Helper\Forms;
+use Jigoshop\Entity\Product\Attribute;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
 use WPAL\Wordpress;
@@ -48,8 +50,43 @@ class Variable implements Type
 	{
 		$wp->addAction('jigoshop\admin\product_attribute\add', array($this, 'addAttributes'));
 		$wp->addAction('jigoshop\admin\product\assets', array($this, 'addAssets'), 10, 3);
+		$wp->addAction('jigoshop\admin\product\attribute\options', array($this, 'addVariableAttributeOptions'));
+		$wp->addFilter('jigoshop\admin\product\menu', array($this, 'addProductMenu'));
 
 		$this->_createTables($wp);
+	}
+
+	/**
+	 * Adds variable options to attribute field.
+	 *
+	 * @param Attribute $attribute Attribute.
+	 */
+	public function addVariableAttributeOptions(Attribute $attribute)
+	{
+		if ($attribute instanceof Attribute\Variable) {
+			Forms::checkbox(array(
+				'name' => 'product[attributes]['.$attribute->getId().'][is_variable]',
+				'id' => 'product_attributes_'.$attribute->getId().'_variable',
+				'classes' => array('attribute-options'),
+				'label' => __('Is for variations?', 'jigoshop'),
+				'checked' => $attribute->isVariable(),
+				'size' => 6,
+				// TODO: Visibility based on current product - if not variable should be hidden
+			));
+		}
+	}
+
+	/**
+	 * Updates product menu.
+	 *
+	 * @param $menu array
+	 * @return array
+	 */
+	public function addProductMenu($menu)
+	{
+		$menu['variations'] = array('label' => __('Variations', 'jigoshop'), 'visible' => array(\Jigoshop\Entity\Product\Variable::TYPE));
+		$menu['sales']['visible'][] = \Jigoshop\Entity\Product\Variable::TYPE;
+		return $menu;
 	}
 
 	/**

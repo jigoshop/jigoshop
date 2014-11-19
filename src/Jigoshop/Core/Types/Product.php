@@ -4,7 +4,6 @@ namespace Jigoshop\Core\Types;
 
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
-use Jigoshop\Entity\Product\Simple;
 use Jigoshop\Entity\Product\Variable;
 use Jigoshop\Exception;
 use Jigoshop\Service\ProductServiceInterface;
@@ -98,23 +97,6 @@ class Product implements Post
 	public function getEnabledTypes()
 	{
 		return $this->enabledTypes;
-	}
-	/**
-	 * Finds and returns human-readable name of specified product type.
-	 *
-	 * @param $type string Name of the type.
-	 * @return string Human-readable name.
-	 */
-	public function getTypeName($type)
-	{
-		switch($type){
-			case Simple::TYPE:
-				return __('Simple', 'jigoshop');
-			case Variable::TYPE:
-				return __('Variable', 'jigoshop');
-			default:
-				return $this->wp->applyFilters('jigoshop\product\type\name', $type);
-		}
 	}
 
 	/**

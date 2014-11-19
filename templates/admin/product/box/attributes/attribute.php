@@ -23,16 +23,7 @@ use Jigoshop\Entity\Product\Attribute;
 				'checked' => $attribute->isVisible(),
 				'size' => 6,
 			)); ?>
-			<?php if ($attribute instanceof Attribute\Variable): ?>
-				<?php Forms::checkbox(array(
-					'name' => 'product[attributes]['.$attribute->getId().'][is_variable]',
-					'id' => 'product_attributes_'.$attribute->getId().'_variable',
-					'classes' => array('attribute-options'),
-					'label' => __('Is for variations?', 'jigoshop'),
-					'checked' => $attribute->isVariable(),
-					'size' => 6,
-				)); ?>
-			<?php endif; ?>
+			<?php do_action('jigoshop\admin\product\attribute\options', $attribute); ?>
 		</div>
 		<div class="col-md-7 values">
 			<h5><?php _e('Values', 'jigoshop'); ?></h5>
