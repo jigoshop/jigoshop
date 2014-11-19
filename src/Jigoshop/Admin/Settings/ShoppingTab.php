@@ -24,7 +24,7 @@ class ShoppingTab implements TabInterface
 		$this->options = $options->get(self::SLUG);
 		$wp->addAction('admin_enqueue_scripts', function() use ($scripts){
 			if (isset($_GET['tab']) && $_GET['tab'] == ShoppingTab::SLUG) {
-				$scripts->add('jigoshop.admin.shopping', JIGOSHOP_URL.'/assets/js/admin/settings/shopping.js', array('jquery'), array('page' => 'jigoshop_page_jigoshop_settings'));
+				$scripts->add('jigoshop.admin.settings.shopping', JIGOSHOP_URL.'/assets/js/admin/settings/shopping.js', array('jquery'), array('page' => 'jigoshop_page_jigoshop_settings'));
 			}
 		});
 	}

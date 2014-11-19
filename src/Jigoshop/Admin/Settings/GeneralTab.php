@@ -5,6 +5,8 @@ namespace Jigoshop\Admin\Settings;
 use Jigoshop\Core\Options;
 use Jigoshop\Helper\Country;
 use Jigoshop\Helper\Currency;
+use Jigoshop\Helper\Scripts;
+use WPAL\Wordpress;
 
 /**
  * General tab definition.
@@ -18,9 +20,14 @@ class GeneralTab implements TabInterface
 	/** @var array */
 	private $options;
 
-	public function __construct(Options $options)
+	public function __construct(Wordpress $wp, Options $options, Scripts $scripts)
 	{
 		$this->options = $options->get(self::SLUG);
+		$wp->addAction('admin_enqueue_scripts', function() use ($scripts){
+			if (!isset($_GET['tab']) || $_GET['tab'] == GeneralTab::SLUG) {
+				$scripts->add('jigoshop.admin.settings.general', JIGOSHOP_URL.'/assets/js/admin/settings/general.js', array('jquery'), array('page' => 'jigoshop_page_jigoshop_settings'));
+			}
+		});
 	}
 
 	/**

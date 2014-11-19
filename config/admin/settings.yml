@@ -3,7 +3,9 @@ services:
   jigoshop.admin.settings.general:
     class: Jigoshop\Admin\Settings\GeneralTab
     arguments:
+      - '@wpal'
       - '@jigoshop.options'
+      - '@jigoshop.helper.scripts'
     tags:
       - { name: jigoshop.admin.settings.tab }
   jigoshop.admin.settings.shopping:
