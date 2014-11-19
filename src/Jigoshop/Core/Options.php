@@ -44,7 +44,6 @@ class Options
 			'currency_decimals' => 2,
 			'currency_thousand_separator' => ',',
 			'currency_decimal_separator' => '.',
-			'price_tax' => 'with_tax',
 		),
 		'shopping' => array(
 			'catalog_per_page' => 12,
@@ -62,6 +61,7 @@ class Options
 		'tax' => array(
 			'before_coupons' => false,
 			'included' => false,
+			'price_tax' => 'with_tax',
 			'shipping' => false,
 			'classes' => array(
 				array('label' => 'Standard', 'class' => 'standard'),

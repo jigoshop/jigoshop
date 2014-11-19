@@ -243,7 +243,7 @@ class Cart implements PageInterface
 			$item = $cart->getItem($_POST['item']);
 			$this->cartService->save($cart);
 			// TODO: Support for "Prices includes tax"
-			$price = $this->options->get('general.price_tax') == 'with_tax' ? $item->getPrice() + $item->getTotalTax() / $item->getQuantity() : $item->getPrice();
+			$price = $this->options->get('tax.price_tax') == 'with_tax' ? $item->getPrice() + $item->getTotalTax() / $item->getQuantity() : $item->getPrice();
 
 			$response = $this->getAjaxCartResponse($cart);
 			// Add some additional fields
@@ -366,7 +366,7 @@ class Cart implements PageInterface
 			'customer' => $this->customerService->getCurrent(),
 			'shippingMethods' => $this->shippingService->getEnabled(),
 			'shopUrl' => $this->wp->getPermalink($this->options->getPageId(Pages::SHOP)),
-			'showWithTax' => $this->options->get('general.price_tax') == 'with_tax',
+			'showWithTax' => $this->options->get('tax.price_tax') == 'with_tax',
 			'showShippingCalculator' => $this->options->get('shipping.calculator'),
 		));
 	}

@@ -123,16 +123,6 @@ class GeneralTab implements TabInterface
 						'type' => 'text',
 						'value' => $this->options['currency_decimal_separator'],
 					),
-					array(
-						'name' => '[price_tax]',
-						'title' => __('Show prices in cart', 'jigoshop'),
-						'type' => 'select',
-						'value' => $this->options['price_tax'],
-						'options' => array(
-							'with_tax' => __('With tax', 'jigoshop'),
-							'without_tax' => __('Without tax', 'jigoshop'),
-						)
-					),
 				),
 			),
 			array(
