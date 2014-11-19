@@ -162,7 +162,14 @@ function get_order_email_arguments_description()
 
 function get_stock_email_arguments($product)
 {
+	$options = Jigoshop_Base::get_options();
 	return array(
+		'shop_name' => $options->get('jigoshop_company_name'),
+		'shop_address_1' => $options->get('jigoshop_address_1'),
+		'shop_address_2' => $options->get('jigoshop_address_2'),
+		'shop_tax_number' => $options->get('jigoshop_tax_number'),
+		'shop_phone' => $options->get('jigoshop_company_phone'),
+		'shop_email' => $options->get('jigoshop_company_email'),
 		'product_id' => $product->id,
 		'product_name' => $product->get_title(),
 		'sku' => $product->sku,
@@ -172,6 +179,12 @@ function get_stock_email_arguments($product)
 function get_stock_email_arguments_description()
 {
 	return array(
+		'shop_name' => __('Shop Name', 'jigoshop'),
+		'shop_address_1' => __('Shop Address part 1', 'jigoshop'),
+		'shop_address_2' => __('Shop Address part 2', 'jigoshop'),
+		'shop_tax_number' => __('Shop TaxNumber', 'jigoshop'),
+		'shop_phone' => __('Shop_Phone', 'jigoshop'),
+		'shop_email' => __('Shop Email', 'jigoshop'),
 		'product_id' => __('Product ID', 'jigoshop'),
 		'product_name' => __('Product Name', 'jigoshop'),
 		'sku' => __('SKU', 'jigoshop'),
@@ -224,7 +237,7 @@ function install_emails()
 		[billing_first_name] [billing_last_name]
 		[billing_address_1], [billing_address_2], [billing_city]
 		[billing_state], [billing_country], [billing_postcode]
-		
+
 		------------------------------<wbr />------------------------------<wbr />--------------------
 		SHIPPING ADDRESS
 		------------------------------<wbr />------------------------------<wbr />--------------------
@@ -270,7 +283,7 @@ function install_emails()
 			case 'send_customer_invoice' :
 				$post_title = 'Send customer invoice';
 				$title = 'Invoice for Order: [order_number]';
-				$message = 'Your order has been refunded. Your order\'s details are below:<br/>'.$invoice;
+				$message = $invoice;
 				break;
 			case 'low_stock_notification' :
 				$post_title = 'Low stock notification';

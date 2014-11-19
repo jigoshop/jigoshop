@@ -99,7 +99,7 @@ function update_variable_list($post = ''){
 			$registered_mails = jigoshop_emails::get_mail_list();
 			if (!empty($selected[0]) && !empty($registered_mails[$selected[0]])) {
 				$keys = array_keys($registered_mails[$selected[0]]['accepted_args']);
-				if ($selected[1]) {
+				if (count($selected) > 1) {
 					foreach ($selected as $hook) {
 						$keys = array_intersect(array_keys($registered_mails[$hook]['accepted_args']), $keys);
 					}
