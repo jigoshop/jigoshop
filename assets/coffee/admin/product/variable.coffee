@@ -8,7 +8,9 @@ class AdminProductVariable
   constructor: (@params) ->
     jQuery('#product-type').on 'change', @removeParameters
     jQuery('#add-variation').on 'click', @addVariation
-    jQuery('#product-variations').on 'click', '.remove-variation', @removeVariation
+    jQuery('#product-variations')
+      .on 'click', '.remove-variation', @removeVariation
+      .on 'change', 'select.variation-attribute', @updateVariation
 
   removeParameters: (event) ->
     $item = jQuery(event.target)
@@ -27,6 +29,35 @@ class AdminProductVariable
     .done (data) ->
       if data.success? and data.success
         jQuery(data.html).hide().appendTo($parent).slideDown()
+      else
+        addMessage('danger', data.error, 6000)
+  updateVariation: (event) =>
+    $container = jQuery('#product-variations')
+    $parent = jQuery(event.target).closest('li.list-group-item')
+
+    getOptionValue = (current) ->
+      if current.type == 'checkbox' or current.type == 'radio'
+        return current.checked
+      return current.value
+
+    attributes = {}
+    attributesData = jQuery('select.variation-attribute', $parent).toArray()
+    for option in attributesData
+      results = /(?:^|\s)product\[variation]\[\d]\[attribute]\[(.*?)](?:\s|$)/g.exec(option.name)
+      attributes[results[1]] = getOptionValue(option)
+
+    jQuery.ajax
+      url: @params.ajax
+      type: 'post'
+      dataType: 'json'
+      data:
+        action: 'jigoshop.admin.product.save_variation'
+        product_id: $container.closest('.jigoshop').data('id')
+        variation_id: $parent.data('id')
+        attributes: attributes
+    .done (data) =>
+      if data.success? and data.success
+        addMessage('success', @params.i18n.saved, 2000)
       else
         addMessage('danger', data.error, 6000)
   removeVariation: (event) =>

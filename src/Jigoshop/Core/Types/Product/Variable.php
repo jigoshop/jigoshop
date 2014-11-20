@@ -160,7 +160,7 @@ class Variable implements Type
 				throw new Exception(__('Invalid variation ID.', 'jigoshop'));
 			}
 
-			if (!isset($_POST['attributes']) || is_array($_POST['attributes'])) {
+			if (!isset($_POST['attributes']) || !is_array($_POST['attributes'])) {
 				throw new Exception(__('Attribute values are not specified.', 'jigoshop'));
 			}
 
@@ -361,6 +361,7 @@ class Variable implements Type
 			'i18n' => array(
 				'confirm_remove' => __('Are you sure?', 'jigoshop'),
 				'variation_removed' => __('Variation successfully removed.', 'jigoshop'),
+				'saved' => __('Variation saved.', 'jigoshop'),
 			),
 		));
 	}

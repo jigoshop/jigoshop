@@ -14,6 +14,7 @@ use Jigoshop\Entity\Product\Attribute;
 		<?php foreach($attributes as $attribute): /** @var $attribute Attribute */?>
 			<?php Forms::select(array(
 				'name' => 'product[variation]['.$variation->getId().'][attribute]['.$attribute->getId().']',
+				'classes' => array('variation-attribute'),
 				'placeholder' => $attribute->getLabel(),
 				'value' => $variation->getAttribute($attribute->getId())->getValue(),
 				'options' => Product::getSelectOption($attribute->getOptions(), sprintf(__('Any of %s', 'jigoshop'), $attribute->getLabel())),
