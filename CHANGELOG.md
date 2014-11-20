@@ -3,7 +3,6 @@
 * 1.13:
     * New: Ability to select whether to show prices with or without tax in cart.
     * New: Ability to select user when creating new order manually in admin panel.
-    * Fix: Disappearing items from cart after login.
     * New: Brand, GTIN, MPN fields for product.
     * New: Shortcode product_tag.
     * Improved: Disabled options in select now are hidden.
@@ -11,6 +10,7 @@
     * Improved: Sku variable is no longer showing in emails when sku is disabled.
     * Improved: Shop administrator is able to not set price for variables.
     * Improved: Shop emails are now customizable.
+    * Fix: Disappearing items from cart after login.
 * 1.12.4 - 2014-11-10:
     * Improved: `jigoshop_remove_style()` with support in JWOS.
 * 1.12.3 - 2014-10-27:
