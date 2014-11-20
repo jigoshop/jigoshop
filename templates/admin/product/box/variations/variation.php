@@ -16,7 +16,7 @@ use Jigoshop\Entity\Product\Attribute;
 				'name' => 'product[variation]['.$variation->getId().'][attribute]['.$attribute->getId().']',
 				'placeholder' => $attribute->getLabel(),
 				'value' => $variation->getAttribute($attribute->getId())->getValue(),
-				'options' => Product::getSelectOption($attribute->getOptions()),
+				'options' => Product::getSelectOption($attribute->getOptions(), sprintf(__('Any of %s', 'jigoshop'), $attribute->getLabel())),
 				'size' => 12,
 			)); ?>
 		<?php endforeach; ?>

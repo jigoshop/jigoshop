@@ -108,6 +108,7 @@ class AdminProduct
       else
         addMessage('danger', data.error, 6000)
   removeAttribute: (event) =>
+    event.preventDefault()
     if confirm(@params.i18n.confirm_remove)
       $parent = jQuery(event.target).closest('li')
       jQuery.ajax

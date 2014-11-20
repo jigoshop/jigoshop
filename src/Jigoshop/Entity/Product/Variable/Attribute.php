@@ -16,7 +16,7 @@ class Attribute
 	/** @var \Jigoshop\Entity\Product\Attribute */
 	private $attribute;
 	/** @var mixed */
-	private $value;
+	private $value = 0;
 	/** @var bool */
 	private $exists;
 

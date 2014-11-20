@@ -227,7 +227,7 @@ class Variable implements Type
 				throw new Exception(__('Product does not exists.', 'jigoshop'));
 			}
 
-			$product->removeAttribute((int)$_POST['variation_id']);
+			$product->removeVariation((int)$_POST['variation_id']);
 			$this->productService->save($product);
 			echo json_encode(array(
 				'success' => true,
@@ -246,6 +246,10 @@ class Variable implements Type
 	{
 		if ($object instanceof \Jigoshop\Entity\Product\Variable) {
 			$wpdb = $this->wp->getWPDB();
+			$this->removeAllVariationsExcept($object->getId(), array_map(function($item){
+				/** @var Variation $item */
+				return $item->getId();
+			}, $object->getVariations()));
 
 			foreach ($object->getVariations() as $variation) {
 				/** @var Variation $variation */
@@ -280,6 +284,22 @@ class Variable implements Type
 				}
 			}
 		}
+	}
+
+	/**
+	 * @param $productId int ID of parent product.
+	 * @param $ids array IDs to preserve.
+	 */
+	private function removeAllVariationsExcept($productId, $ids)
+	{
+		$wpdb = $this->wp->getWPDB();
+		$ids = join(',', array_filter(array_map(function($item){ return (int)$item; }, $ids)));
+		// Support for removing all items
+		if (empty($ids)) {
+			$ids = '0';
+		}
+		$query = $wpdb->prepare("DELETE FROM {$wpdb->prefix}jigoshop_product_variation WHERE id NOT IN ({$ids}) AND product_id = %d", array($productId));
+		$wpdb->query($query);
 	}
 
 	/**
@@ -338,6 +358,10 @@ class Variable implements Type
 		$scripts->add('jigoshop.admin.product.variable', JIGOSHOP_URL.'/assets/js/admin/product/variable.js', array('jquery'));
 		$scripts->localize('jigoshop.admin.product.variable', 'jigoshop_admin_product_variable', array(
 			'ajax' => $wp->getAjaxUrl(),
+			'i18n' => array(
+				'confirm_remove' => __('Are you sure?', 'jigoshop'),
+				'variation_removed' => __('Variation successfully removed.', 'jigoshop'),
+			),
 		));
 	}
 
