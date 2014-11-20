@@ -9,8 +9,8 @@ use Jigoshop\Entity\Order\Status;
 use Jigoshop\Exception;
 use Jigoshop\Payment\Method as PaymentMethod;
 use Jigoshop\Service\TaxServiceInterface;
-use Jigoshop\Shipping\Method as ShippingMethod;
 use Jigoshop\Shipping\Method;
+use Jigoshop\Shipping\Method as ShippingMethod;
 use WPAL\Wordpress;
 
 /**
@@ -405,8 +405,8 @@ class Order implements EntityInterface, OrderInterface
 //					update_post_meta($this->id, 'completed_date', current_time('timestamp'));
 //					foreach ($this->items as $item) {
 //						/** @var \Jigoshop\Entity\Order\Item $item */
-//						$sales = get_post_meta($item->getProduct()->getId(), 'quantity_sold', true) + $item->getQuantity();
-//						update_post_meta($item->getProduct()->getId(), 'quantity_sold', $sales);
+//						$sales = get_post_meta($item->getParent()->getId(), 'quantity_sold', true) + $item->getQuantity();
+//						update_post_meta($item->getParent()->getId(), 'quantity_sold', $sales);
 //					}
 				}
 

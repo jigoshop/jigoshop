@@ -2,6 +2,7 @@
 
 namespace Jigoshop\Entity\Product\Variable;
 
+use Jigoshop\Entity\Product;
 use Jigoshop\Entity\Product\Variable;
 
 /**
@@ -14,6 +15,8 @@ class Variation
 	/** @var int */
 	private $id;
 	/** @var Variable */
+	private $parent;
+	/** @var Product|Product\Purchasable */
 	private $product;
 	/** @var array */
 	private $attributes = array();
@@ -35,7 +38,36 @@ class Variation
 	}
 
 	/**
+	 * TODO: Speed improvements.
+	 * @return string Variation title.
+	 */
+	public function getTitle()
+	{
+		// TODO: Title changing description in docs
+		return sprintf(_x('%s (%s)', 'product_variation', 'jigoshop'), $this->parent->getName(), join(', ', array_map(function($item){
+			/** @var $item Attribute */
+			return sprintf(_x('%s: %s', 'product_variation', 'jigoshop'), $item->getAttribute()->getLabel(), $item->getValue());
+		}, $this->attributes)));
+	}
+
+	/**
 	 * @return Variable
+	 */
+	public function getParent()
+	{
+		return $this->parent;
+	}
+
+	/**
+	 * @param Variable $parent
+	 */
+	public function setParent($parent)
+	{
+		$this->parent = $parent;
+	}
+
+	/**
+	 * @return Product|Product\Purchasable
 	 */
 	public function getProduct()
 	{
@@ -43,7 +75,7 @@ class Variation
 	}
 
 	/**
-	 * @param Variable $product
+	 * @param Product|Product\Purchasable $product
 	 */
 	public function setProduct($product)
 	{
@@ -56,6 +88,15 @@ class Variation
 	public function addAttribute($attribute)
 	{
 		$this->attributes[$attribute->getAttribute()->getId()] = $attribute;
+	}
+
+	/**
+	 * @param $id int Attribute ID.
+	 * @return bool Whether variation already has this attribute.
+	 */
+	public function hasAttribute($id)
+	{
+		return isset($this->attributes[$id]);
 	}
 
 	/**

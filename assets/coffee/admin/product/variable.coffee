@@ -10,6 +10,10 @@ class AdminProductVariable
     jQuery('#add-variation').on 'click', @addVariation
     jQuery('#product-variations')
       .on 'click', '.remove-variation', @removeVariation
+      .on 'click', '.show-variation', (event) ->
+        $item = jQuery(event.target)
+        jQuery('.list-group-item-text', $item.closest('li')).slideToggle ->
+          jQuery('span', $item).toggleClass('glyphicon-collapse-down').toggleClass('glyphicon-collapse-up')
       .on 'change', 'select.variation-attribute', @updateVariation
 
   removeParameters: (event) ->

@@ -116,16 +116,13 @@ class Product
 				'availableAttributes' => $attributes,
 				'attributes' => $this->productService->getAttributes($product->getId()),
 			),
-			'variations' => array(
-				'product' => $product,
-			),
 			'stock' => array(
 				'product' => $product,
 			),
 			'sales' => array(
 				'product' => $product,
 			),
-		));
+		), $product);
 
 //		add_action('admin_footer', 'jigoshop_meta_scripts');
 //		wp_nonce_field('jigoshop_save_data', 'jigoshop_meta_nonce');
@@ -179,7 +176,7 @@ class Product
 				$attribute->setVisible($_POST['options']['display'] === 'true');
 			}
 
-			$this->wp->doAction('jigoshop\admin\product_attribute\add', $attribute);
+			$this->wp->doAction('jigoshop\admin\product_attribute\add', $attribute, $product);
 
 			$product->addAttribute($attribute);
 			$this->productService->save($product);

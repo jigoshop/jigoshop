@@ -43,8 +43,9 @@ class Simple implements Type
 	 * Initializes product type.
 	 *
 	 * @param Wordpress $wp WordPress Abstraction Layer
+	 * @param array $enabledTypes List of all available types.
 	 */
-	public function initialize(Wordpress $wp)
+	public function initialize(Wordpress $wp, array $enabledTypes)
 	{
 		$wp->addAction('jigoshop\admin\product\assets', array($this, 'addAssets'), 10, 3);
 	}

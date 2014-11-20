@@ -4,13 +4,16 @@ use Jigoshop\Admin\Helper\Product;
 use Jigoshop\Entity\Product\Attribute;
 
 /**
- * @var $variation \Jigoshop\Entity\Product Product to display.
- * @var $attributes array List of attributes for variation
+ * @var $variation \Jigoshop\Entity\Product\Variable\Variation Variation to display.
+ * @var $attributes array List of attributes for variation.
+ * @var $allowedSubtypes array List of types allowed as variations.
  */
+$product = $variation->getProduct();
 ?>
 <li class="list-group-item" data-id="<?php echo $variation->getId(); ?>">
 	<h4 class="list-group-item-heading">
 		<button type="button" class="remove-variation btn btn-default pull-right" title="<?php _e('Remove', 'jigoshop'); ?>"><span class="glyphicon glyphicon-remove"></span></button>
+		<button type="button" class="show-variation btn btn-default pull-right" title="<?php _e('Show', 'jigoshop'); ?>"><span class="glyphicon glyphicon-collapse-down"></span></button>
 		<?php foreach($attributes as $attribute): /** @var $attribute Attribute */?>
 			<?php Forms::select(array(
 				'name' => 'product[variation]['.$variation->getId().'][attribute]['.$attribute->getId().']',
@@ -23,7 +26,32 @@ use Jigoshop\Entity\Product\Attribute;
 		<?php endforeach; ?>
 	</h4>
 	<div class="list-group-item-text clearfix">
-		<div class="col-md-5"></div>
-		<div class="col-md-6"></div>
+		<?php Forms::select(array(
+			'name' => 'product[variation]['.$variation->getId().'][product][type]',
+			'label' => __('Type', 'jigoshop'),
+			'value' => $product->getType(),
+			'options' => $allowedSubtypes,
+		)); ?>
+		<?php Forms::text(array(
+			'name' => 'product[variation]['.$variation->getId().'][product][price]',
+			'label' => __('Price', 'jigoshop'),
+			'value' => $product->getPrice(),
+		)); ?>
+		<?php Forms::text(array(
+			'name' => 'product[variation]['.$variation->getId().'][product][sku]',
+			'label' => __('SKU', 'jigoshop'),
+			'value' => $product->getSku(),
+			'placeholder' => $variation->getParent()->getId().' - '.$variation->getId(),
+		)); ?>
+		<?php Forms::text(array(
+			'name' => 'product[variation]['.$variation->getId().'][product][stock][stock]',
+			'label' => __('Stock', 'jigoshop'),
+			'value' => $product->getStock()->getStock(),
+		)); ?>
+		<?php Forms::text(array(
+			'name' => 'product[variation]['.$variation->getId().'][product][sales][price]',
+			'label' => __('Sale price', 'jigoshop'),
+			'value' => $product->getSales()->getPrice(),
+		)); ?>
 	</div>
 </li>

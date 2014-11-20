@@ -3,8 +3,14 @@
 
 .jigoshop {
   #product-variations {
-    .form-group {
+    h4 > .form-group {
       width: percentage((1 / 6));
+      display: inline-block;
+      margin-right: @padding-base-vertical/2;
+    }
+
+    .list-group-item-text {
+      display: none;
     }
   }
 }

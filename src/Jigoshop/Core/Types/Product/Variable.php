@@ -5,6 +5,7 @@ namespace Jigoshop\Core\Types\Product;
 use Jigoshop\Admin\Helper\Forms;
 use Jigoshop\Core\Options;
 use Jigoshop\Entity\EntityInterface;
+use Jigoshop\Entity\Product;
 use Jigoshop\Entity\Product\Attribute;
 use Jigoshop\Entity\Product\Variable\Attribute as VariableAttribute;
 use Jigoshop\Entity\Product\Variable\Variation;
@@ -15,12 +16,24 @@ use Jigoshop\Helper\Styles;
 use Jigoshop\Service\ProductServiceInterface;
 use WPAL\Wordpress;
 
+/**
+ * Variable product type definition.
+ *
+ * TODO: Extract Service\Product\Variable
+ * TODO: Extract Factory\Product\Variable
+ *
+ * @package Jigoshop\Core\Types\Product
+ */
 class Variable implements Type
 {
+	const TYPE = 'product_variation';
+
 	/** @var Wordpress */
 	private $wp;
 	/** @var ProductServiceInterface */
 	private $productService;
+	/** @var array */
+	private $allowedSubtypes = array();
 
 	public function __construct(Wordpress $wp, Options $options, ProductServiceInterface $productService)
 	{
@@ -35,7 +48,7 @@ class Variable implements Type
 	 */
 	public function getId()
 	{
-		return \Jigoshop\Entity\Product\Variable::TYPE;
+		return Product\Variable::TYPE;
 	}
 
 	/**
@@ -60,30 +73,49 @@ class Variable implements Type
 	}
 
 	/**
+	 * @return array
+	 */
+	public function getAllowedSubtypes()
+	{
+		return $this->allowedSubtypes;
+	}
+
+	/**
 	 * Initializes product type.
 	 *
 	 * @param Wordpress $wp WordPress Abstraction Layer
+	 * @param array $enabledTypes List of all available types.
 	 */
-	public function initialize(Wordpress $wp)
+	public function initialize(Wordpress $wp, array $enabledTypes)
 	{
 		$wp->addAction('jigoshop\service\product\save', array($this, 'save'));
 		$wp->addFilter('jigoshop\find\product', array($this, 'fetch'));
 
-		$wp->addAction('jigoshop\admin\product_attribute\add', array($this, 'addAttributes'));
+		$wp->addAction('jigoshop\admin\product_attribute\add', array($this, 'addAttributes'), 10, 2);
 		$wp->addAction('jigoshop\admin\product\assets', array($this, 'addAssets'), 10, 3);
 		$wp->addAction('jigoshop\admin\product\attribute\options', array($this, 'addVariableAttributeOptions'));
 		$wp->addFilter('jigoshop\admin\product\menu', array($this, 'addProductMenu'));
+		$wp->addFilter('jigoshop\admin\product\tabs', array($this, 'addProductTab'), 10, 2);
 
 		$wp->addAction('wp_ajax_jigoshop.admin.product.add_variation', array($this, 'ajaxAddVariation'), 10, 0);
 		$wp->addAction('wp_ajax_jigoshop.admin.product.save_variation', array($this, 'ajaxSaveVariation'), 10, 0);
 		$wp->addAction('wp_ajax_jigoshop.admin.product.remove_variation', array($this, 'ajaxRemoveVariation'), 10, 0);
 
-		$this->_createTables($wp);
+		$allowedSubtypes = $wp->applyFilters('jigoshop\core\types\variable\subtypes', array(
+			Product\Simple::TYPE,
+		));
+		$this->allowedSubtypes = array_filter($enabledTypes, function($type) use ($allowedSubtypes){
+			/** @var $type Type */
+			return in_array($type->getId(), $allowedSubtypes);
+		});
+
+		// TODO: Move this to Installer class (somehow).
+		$this->createTables();
 	}
 
 	public function fetch($product)
 	{
-		if ($product instanceof \Jigoshop\Entity\Product\Variable) {
+		if ($product instanceof Product\Variable) {
 			foreach ($this->getVariations($product) as $variation) {
 				$product->addVariation($variation);
 			}
@@ -92,159 +124,9 @@ class Variable implements Type
 		return $product;
 	}
 
-	public function ajaxAddVariation()
-	{
-		try {
-			if (!isset($_POST['product_id']) || empty($_POST['product_id'])) {
-				throw new Exception(__('Product was not specified.', 'jigoshop'));
-			}
-			if (!is_numeric($_POST['product_id'])) {
-				throw new Exception(__('Invalid product ID.', 'jigoshop'));
-			}
-
-			$product = $this->productService->find((int)$_POST['product_id']);
-
-			if (!$product->getId()) {
-				throw new Exception(__('Product does not exists.', 'jigoshop'));
-			}
-
-			if (!($product instanceof \Jigoshop\Entity\Product\Variable)) {
-				throw new Exception(__('Product is not variable - unable to add variation.', 'jigoshop'));
-			}
-
-			$variation = new Variation();
-			$variation->setProduct($product);
-
-			foreach ($product->getVariableAttributes() as $attribute) {
-				$variationAttribute = new VariableAttribute();
-				$variationAttribute->setAttribute($attribute);
-				$variationAttribute->setVariation($variation);
-				$variation->addAttribute($variationAttribute);
-			}
-
-			$this->wp->doAction('jigoshop\admin\product_variation\add', $variation);
-
-			$product->addVariation($variation);
-			$this->productService->save($product);
-
-			echo json_encode(array(
-				'success' => true,
-				'html' => Render::get('admin/product/box/variations/variation', array(
-					'variation' => $variation,
-					'attributes' => $product->getVariableAttributes(),
-				)),
-			));
-		} catch(Exception $e) {
-			echo json_encode(array(
-				'success' => false,
-				'error' => $e->getMessage(),
-			));
-		}
-
-		exit;
-	}
-
-	public function ajaxSaveVariation()
-	{
-		try {
-			if (!isset($_POST['product_id']) || empty($_POST['product_id'])) {
-				throw new Exception(__('Product was not specified.', 'jigoshop'));
-			}
-			if (!is_numeric($_POST['product_id'])) {
-				throw new Exception(__('Invalid product ID.', 'jigoshop'));
-			}
-			if (!isset($_POST['variation_id']) || empty($_POST['variation_id'])) {
-				throw new Exception(__('Variation was not specified.', 'jigoshop'));
-			}
-			if (!is_numeric($_POST['variation_id'])) {
-				throw new Exception(__('Invalid variation ID.', 'jigoshop'));
-			}
-
-			if (!isset($_POST['attributes']) || !is_array($_POST['attributes'])) {
-				throw new Exception(__('Attribute values are not specified.', 'jigoshop'));
-			}
-
-			$product = $this->productService->find((int)$_POST['product_id']);
-
-			if (!$product->getId()) {
-				throw new Exception(__('Product does not exists.', 'jigoshop'));
-			}
-
-			if (!($product instanceof \Jigoshop\Entity\Product\Variable)) {
-				throw new Exception(__('Product is not variable - unable to add variation.', 'jigoshop'));
-			}
-
-			if (!$product->hasVariation((int)$_POST['variation_id'])) {
-				throw new Exception(__('Variation does not exists.', 'jigoshop'));
-			}
-
-			$variation = $product->removeVariation((int)$_POST['variation_id']);
-			foreach ($_POST['attributes'] as $attribute => $value) {
-				$variation->getAttribute($attribute)->setValue(trim(htmlspecialchars(strip_tags($value))));
-			}
-
-			$this->wp->doAction('jigoshop\admin\product_variation\save', $variation);
-
-			$product->addVariation($variation);
-			$this->productService->save($product);
-
-			echo json_encode(array(
-				'success' => true,
-				'html' => Render::get('admin/product/box/variations/variation', array(
-					'variation' => $variation,
-					'attributes' => $product->getVariableAttributes(),
-				)),
-			));
-		} catch(Exception $e) {
-			echo json_encode(array(
-				'success' => false,
-				'error' => $e->getMessage(),
-			));
-		}
-
-		exit;
-	}
-
-	public function ajaxRemoveVariation()
-	{
-		try {
-			if (!isset($_POST['product_id']) || empty($_POST['product_id'])) {
-				throw new Exception(__('Product was not specified.', 'jigoshop'));
-			}
-			if (!is_numeric($_POST['product_id'])) {
-				throw new Exception(__('Invalid product ID.', 'jigoshop'));
-			}
-			if (!isset($_POST['variation_id']) || empty($_POST['variation_id'])) {
-				throw new Exception(__('Variation was not specified.', 'jigoshop'));
-			}
-			if (!is_numeric($_POST['variation_id'])) {
-				throw new Exception(__('Invalid variation ID.', 'jigoshop'));
-			}
-
-			$product = $this->productService->find((int)$_POST['product_id']);
-
-			if (!$product->getId()) {
-				throw new Exception(__('Product does not exists.', 'jigoshop'));
-			}
-
-			$product->removeVariation((int)$_POST['variation_id']);
-			$this->productService->save($product);
-			echo json_encode(array(
-				'success' => true,
-			));
-		} catch(Exception $e) {
-			echo json_encode(array(
-				'success' => false,
-				'error' => $e->getMessage(),
-			));
-		}
-
-		exit;
-	}
-
 	public function save(EntityInterface $object)
 	{
-		if ($object instanceof \Jigoshop\Entity\Product\Variable) {
+		if ($object instanceof Product\Variable) {
 			$wpdb = $this->wp->getWPDB();
 			$this->removeAllVariationsExcept($object->getId(), array_map(function($item){
 				/** @var Variation $item */
@@ -254,6 +136,7 @@ class Variable implements Type
 			foreach ($object->getVariations() as $variation) {
 				/** @var Variation $variation */
 				$data = array(
+					'parent_id' => $variation->getParent()->getId(),
 					'product_id' => $variation->getProduct()->getId(),
 				);
 
@@ -265,7 +148,7 @@ class Variable implements Type
 				}
 
 				foreach ($variation->getAttributes() as $attribute) {
-					/** @var \Jigoshop\Entity\Product\Variable\Attribute $attribute */
+					/** @var VariableAttribute $attribute */
 					$data = array(
 						'variation_id' => $variation->getId(),
 						'attribute_id' => $attribute->getAttribute()->getId(),
@@ -305,11 +188,12 @@ class Variable implements Type
 	/**
 	 * Adds variable options to attribute field.
 	 *
-	 * @param Attribute $attribute Attribute.
+	 * @param Attribute|Attribute\Variable $attribute Attribute.
 	 */
 	public function addVariableAttributeOptions(Attribute $attribute)
 	{
 		if ($attribute instanceof Attribute\Variable) {
+			/** @var $attribute Attribute|Attribute\Variable */
 			Forms::checkbox(array(
 				'name' => 'product[attributes]['.$attribute->getId().'][is_variable]',
 				'id' => 'product_attributes_'.$attribute->getId().'_variable',
@@ -330,19 +214,56 @@ class Variable implements Type
 	 */
 	public function addProductMenu($menu)
 	{
-		$menu['variations'] = array('label' => __('Variations', 'jigoshop'), 'visible' => array(\Jigoshop\Entity\Product\Variable::TYPE));
-		$menu['sales']['visible'][] = \Jigoshop\Entity\Product\Variable::TYPE;
+		$menu['variations'] = array('label' => __('Variations', 'jigoshop'), 'visible' => array(Product\Variable::TYPE));
+		$menu['sales']['visible'][] = Product\Variable::TYPE;
 		return $menu;
 	}
 
 	/**
-	 * @param Attribute $attribute
+	 * Updates product tabs.
+	 *
+	 * @param $tabs array
+	 * @param $product Product
+	 * @return array
 	 */
-	public function addAttributes($attribute)
+	public function addProductTab($tabs, $product)
 	{
-		if ($attribute instanceof Attribute\Variable) {
+		$types = array();
+		foreach ($this->allowedSubtypes as $type) {
+			/** @var $type Type */
+			$types[$type->getId()] = $type->getName();
+		}
+
+		$tabs['variations'] = array(
+			'product' => $product,
+			'allowedSubtypes' => $types,
+		);
+		return $tabs;
+	}
+
+	/**
+	 * @param Attribute $attribute
+	 * @param Product $product
+	 */
+	public function addAttributes($attribute, $product)
+	{
+		if ($attribute instanceof Attribute\Variable && $product instanceof Product\Variable) {
+			/** @var $attribute Attribute|Attribute\Variable */
+			/** @var $product Product|Product\Variable */
 			if (isset($_POST['options']) && isset($_POST['options']['is_variable'])) {
 				$attribute->setVariable($_POST['options']['is_variable'] === 'true');
+			}
+
+			if ($attribute->isVariable()) {
+				foreach ($product->getVariations() as $variation) {
+					/** @var $variation Variation */
+					if (!$variation->hasAttribute($attribute->getId())) {
+						$variableAttribute = new VariableAttribute();
+						$variableAttribute->setAttribute($attribute);
+						$variableAttribute->setVariation($variation);
+						$variation->addAttribute($variableAttribute);
+					}
+				}
 			}
 		}
 	}
@@ -366,9 +287,9 @@ class Variable implements Type
 		));
 	}
 
-	private function _createTables(Wordpress $wp)
+	private function createTables()
 	{
-		$wpdb = $wp->getWPDB();
+		$wpdb = $this->wp->getWPDB();
 		$wpdb->hide_errors();
 
 		$collate = '';
@@ -384,8 +305,10 @@ class Variable implements Type
 		$query = "
 			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}jigoshop_product_variation (
 				id INT(9) NOT NULL AUTO_INCREMENT,
+				parent_id BIGINT UNSIGNED NOT NULL,
 				product_id BIGINT UNSIGNED NOT NULL,
 				PRIMARY KEY id (id),
+				FOREIGN KEY parent (parent_id) REFERENCES {$wpdb->posts} (ID) ON DELETE CASCADE,
 				FOREIGN KEY product (product_id) REFERENCES {$wpdb->posts} (ID) ON DELETE CASCADE
 			) {$collate};
 		";
@@ -401,12 +324,11 @@ class Variable implements Type
 			) {$collate};
 		";
 		$wpdb->query($query);
-//		var_dump($wpdb->query($query), $wpdb->last_error); exit;
 		$wpdb->show_errors();
 	}
 
 	/**
-	 * @param $product \Jigoshop\Entity\Product\Variable Product to fetch variations for.
+	 * @param $product Product\Variable Product to fetch variations for.
 	 * @return array List of variations.
 	 */
 	private function getVariations($product)
@@ -415,7 +337,7 @@ class Variable implements Type
 		$query = $wpdb->prepare("
 			SELECT * FROM {$wpdb->prefix}jigoshop_product_variation pv
 				LEFT JOIN {$wpdb->prefix}jigoshop_product_variation_attribute pva ON pv.id = pva.variation_id
-				WHERE pv.product_id = %d
+				WHERE pv.parent_id = %d
 		", array($product->getId()));
 		$results = $wpdb->get_results($query, ARRAY_A);
 		$variations = array();
@@ -423,7 +345,8 @@ class Variable implements Type
 		for ($i = 0, $endI = count($results); $i < $endI;) {
 			$variation = new Variation();
 			$variation->setId((int)$results[$i]['id']);
-			$variation->setProduct($product);
+			$variation->setParent($product);
+			$variation->setProduct($this->productService->find($results[$i]['product_id'])); // TODO: Maybe some kind of fetching together?
 
 			while ($i < $endI && $results[$i]['id'] == $variation->getId()) {
 				if ($results[$i]['attribute_id'] !== null) {
@@ -441,5 +364,187 @@ class Variable implements Type
 		}
 
 		return $variations;
+	}
+
+	public function ajaxAddVariation()
+	{
+		try {
+			if (!isset($_POST['product_id']) || empty($_POST['product_id'])) {
+				throw new Exception(__('Product was not specified.', 'jigoshop'));
+			}
+			if (!is_numeric($_POST['product_id'])) {
+				throw new Exception(__('Invalid product ID.', 'jigoshop'));
+			}
+
+			$product = $this->productService->find((int)$_POST['product_id']);
+
+			if (!$product->getId()) {
+				throw new Exception(__('Product does not exists.', 'jigoshop'));
+			}
+
+			if (!($product instanceof Product\Variable)) {
+				throw new Exception(__('Product is not variable - unable to add variation.', 'jigoshop'));
+			}
+
+			$variation = new Variation();
+			$variation->setParent($product);
+
+			foreach ($product->getVariableAttributes() as $attribute) {
+				$variationAttribute = new VariableAttribute();
+				$variationAttribute->setAttribute($attribute);
+				$variationAttribute->setVariation($variation);
+				$variation->addAttribute($variationAttribute);
+			}
+
+			$variableId = $this->createVariablePost($variation);
+			$variableProduct = $this->productService->find($variableId);
+			$variableProduct->setVisibility(Product::VISIBILITY_NONE);
+			$variableProduct->setTaxable($product->isTaxable());
+			$variableProduct->setTaxClasses($product->getTaxClasses());
+			$this->productService->save($variableProduct);
+			$variation->setProduct($variableProduct);
+
+			$this->wp->doAction('jigoshop\admin\product_variation\add', $variation);
+
+			$product->addVariation($variation);
+			$this->productService->save($product);
+
+			echo json_encode(array(
+				'success' => true,
+				'html' => Render::get('admin/product/box/variations/variation', array(
+					'variation' => $variation,
+					'attributes' => $product->getVariableAttributes(),
+					'allowedSubtypes' => $this->allowedSubtypes,
+				)),
+			));
+		} catch(Exception $e) {
+			echo json_encode(array(
+				'success' => false,
+				'error' => $e->getMessage(),
+			));
+		}
+
+		exit;
+	}
+
+	public function ajaxSaveVariation()
+	{
+		try {
+			if (!isset($_POST['product_id']) || empty($_POST['product_id'])) {
+				throw new Exception(__('Product was not specified.', 'jigoshop'));
+			}
+			if (!is_numeric($_POST['product_id'])) {
+				throw new Exception(__('Invalid product ID.', 'jigoshop'));
+			}
+			if (!isset($_POST['variation_id']) || empty($_POST['variation_id'])) {
+				throw new Exception(__('Variation was not specified.', 'jigoshop'));
+			}
+			if (!is_numeric($_POST['variation_id'])) {
+				throw new Exception(__('Invalid variation ID.', 'jigoshop'));
+			}
+
+			if (!isset($_POST['attributes']) || !is_array($_POST['attributes'])) {
+				throw new Exception(__('Attribute values are not specified.', 'jigoshop'));
+			}
+
+			$product = $this->productService->find((int)$_POST['product_id']);
+
+			if (!$product->getId()) {
+				throw new Exception(__('Product does not exists.', 'jigoshop'));
+			}
+
+			if (!($product instanceof Product\Variable)) {
+				throw new Exception(__('Product is not variable - unable to add variation.', 'jigoshop'));
+			}
+
+			if (!$product->hasVariation((int)$_POST['variation_id'])) {
+				throw new Exception(__('Variation does not exists.', 'jigoshop'));
+			}
+
+			$variation = $product->removeVariation((int)$_POST['variation_id']);
+			foreach ($_POST['attributes'] as $attribute => $value) {
+				$variation->getAttribute($attribute)->setValue(trim(htmlspecialchars(strip_tags($value))));
+			}
+
+			$this->wp->doAction('jigoshop\admin\product_variation\save', $variation);
+
+			$product->addVariation($variation);
+			$this->productService->save($product);
+
+			echo json_encode(array(
+				'success' => true,
+				'html' => Render::get('admin/product/box/variations/variation', array(
+					'variation' => $variation,
+					'attributes' => $product->getVariableAttributes(),
+					'allowedSubtypes' => $this->allowedSubtypes,
+				)),
+			));
+		} catch(Exception $e) {
+			echo json_encode(array(
+				'success' => false,
+				'error' => $e->getMessage(),
+			));
+		}
+
+		exit;
+	}
+
+	public function ajaxRemoveVariation()
+	{
+		try {
+			if (!isset($_POST['product_id']) || empty($_POST['product_id'])) {
+				throw new Exception(__('Product was not specified.', 'jigoshop'));
+			}
+			if (!is_numeric($_POST['product_id'])) {
+				throw new Exception(__('Invalid product ID.', 'jigoshop'));
+			}
+			if (!isset($_POST['variation_id']) || empty($_POST['variation_id'])) {
+				throw new Exception(__('Variation was not specified.', 'jigoshop'));
+			}
+			if (!is_numeric($_POST['variation_id'])) {
+				throw new Exception(__('Invalid variation ID.', 'jigoshop'));
+			}
+
+			$product = $this->productService->find((int)$_POST['product_id']);
+
+			if (!$product->getId()) {
+				throw new Exception(__('Product does not exists.', 'jigoshop'));
+			}
+
+			if (!($product instanceof Product\Variable)) {
+				throw new Exception(__('Product is not variable - unable to add variation.', 'jigoshop'));
+			}
+
+			$product->removeVariation((int)$_POST['variation_id']);
+			$this->productService->save($product);
+			echo json_encode(array(
+				'success' => true,
+			));
+		} catch(Exception $e) {
+			echo json_encode(array(
+				'success' => false,
+				'error' => $e->getMessage(),
+			));
+		}
+
+		exit;
+	}
+
+	/**
+	 * @param $variation Variation
+	 * @return int
+	 */
+	private function createVariablePost($variation)
+	{
+		$wpdb = $this->wp->getWPDB();
+		$wpdb->insert($wpdb->posts, array(
+			'post_title' => $variation->getTitle(),
+			'post_type' => self::TYPE,
+			'post_parent' => $variation->getParent()->getId(),
+			'comment_status' => 'closed',
+			'ping_status' => 'closed',
+		));
+
+		return $wpdb->insert_id;
 	}
 }

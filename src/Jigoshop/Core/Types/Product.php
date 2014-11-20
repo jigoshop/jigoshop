@@ -36,12 +36,12 @@ class Product implements Post
 				continue;
 			}
 
-			$this->enabledTypes[] = $type;
+			$this->enabledTypes[$type->getId()] = $type;
 			$productService->addType($type->getId(), $type->getClass());
-			$wp->addAction('jigoshop\product\type\init', array($type, 'initialize'));
+			$wp->addAction('jigoshop\product\type\init', array($type, 'initialize'), 10, 2);
 		}
 
-		$wp->doAction('jigoshop\product\type\init', $wp);
+		$wp->doAction('jigoshop\product\type\init', $wp, $this->enabledTypes);
 	}
 
 	public function getName()
