@@ -706,6 +706,18 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 				),
 			),
 			array(
+				'name' => __('Cart status after login', 'jigoshop'),
+				'desc' => __('Current cart <b>always</b> will be loaded if customer logs in checkout page.', 'jigoshop'),
+				'tip' => __("Define what should happen with shopping cart if customer added items to shopping cart as guest and than he logs in to your shop.", 'jigoshop'),
+				'id' => 'jigoshop_cart_after_login',
+				'type' => 'select',
+				'choices' => array(
+					'load_saved' => __('Load saved cart', 'jigoshop'),
+					'load_current' => __('Load current cart', 'jigoshop'),
+					'merge' => __('Merge saved and current carts', 'jigoshop'),
+				)
+			),
+			array(
 				'name' => __('Reset pending Orders', 'jigoshop'),
 				'desc' => __("Change all 'Pending' Orders older than one month to 'On Hold'", 'jigoshop'),
 				'tip' => __("For customers that have not completed the Checkout process or haven't paid for an Order after a period of time, this will reset the Order to On Hold allowing the Shop owner to take action.  WARNING: For the first use on an existing Shop this setting <em>can</em> generate a <strong>lot</strong> of email!", 'jigoshop'),
@@ -783,6 +795,37 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 				'desc' => __('How long error is displayed before disappearing (in ms). Set to 0 to keep it displayed.', 'jigoshop'),
 				'id' => 'jigoshop_error_disappear_time',
 				'type' => 'natural',
+			),
+			array('name' => __('Email Details', 'jigoshop'), 'type' => 'title', 'desc' => ''),
+			array(
+				'name' => __('Jigoshop email address', 'jigoshop'),
+				'desc' => '',
+				'tip' => __('The email address used to send all Jigoshop related emails, such as order confirmations and notices.  This may be different than your Company email address on "Shop Tab -> Invoicing".', 'jigoshop'),
+				'id' => 'jigoshop_email',
+				'type' => 'email',
+			),
+			array(
+				'name' => __('Email from name', 'jigoshop'),
+				'desc' => '',
+				'tip' => __('', 'jigoshop'),
+				'id' => 'jigoshop_email_from_name',
+				'type' => 'text',
+			),
+			array(
+				'name' => __('Email footer', 'jigoshop'),
+				'desc' => '',
+				'tip' => __('The email footer used in all jigoshop emails.', 'jigoshop'),
+				'id' => 'jigoshop_email_footer',
+				'type' => 'textarea',
+			),
+			array(
+				'name' => __('Generate default emails', 'jigoshop'),
+				'desc' => '',
+				'tip' => '',
+				'id' => 'jigoshop_email_generete_defaults',
+				'type' => 'user_defined',
+				'display' => function(){ return '<button type="button" onClick="parent.location=\'admin.php?page=jigoshop_settings&install_emails=1\'">'.__('Generate Defaults', 'jigoshop').'</button>'; }
+
 			),
 			array('name' => __('Checkout page', 'jigoshop'), 'type' => 'title', 'desc' => ''),
 			array(
@@ -1036,6 +1079,17 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 				),
 			),
 			array('name' => __('Pricing Options', 'jigoshop'), 'type' => 'title', 'desc' => ''),
+			array(
+				'name' => __('Show prices with tax', 'jigoshop'),
+				'desc' => __("This controls the display of the product price in cart and checkout page.", 'jigoshop'),
+				'tip' => '',
+				'id' => 'jigoshop_show_prices_with_tax',
+				'type' => 'checkbox',
+				'choices' => array(
+					'no' => __('No', 'jigoshop'),
+					'yes' => __('Yes', 'jigoshop'),
+				),
+			),
 			array(
 				'name' => __('Currency display', 'jigoshop'),
 				'desc' => __("This controls the display of the currency symbol and currency code.", 'jigoshop'),

@@ -145,6 +145,30 @@ function jigoshop_product_data_box() {
 					);
 					echo Jigoshop_Forms::input( $args );
 				}
+				//Brand
+				if ( Jigoshop_Base::get_options()->get('jigoshop_enable_brand') !== 'no' ) {
+					$args = array(
+						'id'            => 'brand',
+						'label'         => __('Brand','jigoshop'),
+					);
+					echo Jigoshop_Forms::input( $args );
+				}
+				//GTIN
+				if ( Jigoshop_Base::get_options()->get('jigoshop_enable_gtin ') !== 'no' ) {
+					$args = array(
+						'id'            => 'gtin',
+						'label'         => __('GTIN ','jigoshop'),
+					);
+					echo Jigoshop_Forms::input( $args );
+				}
+				//MPN
+				if ( Jigoshop_Base::get_options()->get('jigoshop_enable_mpn') !== 'no' ) {
+					$args = array(
+						'id'            => 'mpn',
+						'label'         => __('MPN','jigoshop'),
+					);
+					echo Jigoshop_Forms::input( $args );
+				}
 			?>
 			</fieldset>
 

@@ -23,6 +23,7 @@ include('write-panels/product-types/variable.php');
 include('write-panels/order-data.php');
 include('write-panels/order-data-save.php');
 include('write-panels/coupon-data.php');
+include('write-panels/email-data.php');
 
 /**
  * Init the meta boxes
@@ -49,6 +50,8 @@ function jigoshop_meta_boxes()
 	remove_meta_box('slugdiv', 'shop_order', 'normal');
 
 	add_meta_box('jigoshop-coupon-data', __('Coupon Data', 'jigoshop'), 'jigoshop_coupon_data_box', 'shop_coupon', 'normal', 'high');
+	add_meta_box('jigoshop-email-data', __('Email Data', 'jigoshop'), 'jigoshop_email_data_box', 'shop_email', 'side', 'default');
+	add_meta_box('jigoshop-email-variable', __('Email Variables', 'jigoshop'), 'jigoshop_email_variable_box', 'shop_email', 'normal', 'default');
 
 	remove_meta_box('commentstatusdiv', 'shop_coupon', 'normal');
 	remove_meta_box('slugdiv', 'shop_coupon', 'normal');
@@ -87,7 +90,7 @@ function jigoshop_meta_boxes_save($post_id, $post)
 	if (!current_user_can('edit_post', $post_id)) {
 		return $post_id;
 	}
-	if ($post->post_type != 'product' && $post->post_type != 'shop_order' && $post->post_type != 'shop_coupon') {
+	if ($post->post_type != 'product' && $post->post_type != 'shop_order' && $post->post_type != 'shop_coupon' && $post->post_type != 'shop_email') {
 		return $post_id;
 	}
 
@@ -191,7 +194,7 @@ function jigoshop_write_panel_scripts()
 	$options = Jigoshop_Base::get_options();
 	$post_type = jigoshop_get_current_post_type();
 
-	if ($post_type !== 'product' && $post_type !== 'shop_order' && $post_type !== 'shop_coupon') {
+	if ($post_type !== 'product' && $post_type !== 'shop_order' && $post_type !== 'shop_coupon' && $post_type !== 'shop_email') {
 		return;
 	}
 
@@ -229,6 +232,49 @@ function jigoshop_write_panel_scripts()
 	jigoshop_localize_script('jigoshop-writepanel', 'jigoshop_params', $params);
 }
 add_action('admin_enqueue_scripts', 'jigoshop_write_panel_scripts');
+
+/**
+ * User Address
+ *
+ * Shows JSON encoded array with user billing and shipping address.
+ *
+ * @since        1.13
+ */
+function jigoshop_get_user_address_data()
+{
+	if (isset($_GET['load_address']) && is_numeric($_GET['load_address'])) {
+		$defaults = array(
+			'billing_first_name' => '',
+			'billing_last_name' => '',
+			'billing_company' => '',
+			'billing_address_1' => '',
+			'billing_address_2' => '',
+			'billing_city' => '',
+			'billing_state' => '',
+			'billing_postcode' => '',
+			'billing_country' => '',
+			'billing_phone' => '',
+			'billing_email' => '',
+			'shipping_first_name' => '',
+			'shipping_last_name' => '',
+			'shipping_company' => '',
+			'shipping_address_1' => '',
+			'shipping_address_2' => '',
+			'shipping_city' => '',
+			'shipping_state' => '',
+			'shipping_postcode' => '',
+			'shipping_country' => '',
+		);
+
+		$data = array_map(function($arg) {
+			return $arg[0];
+		}, wp_parse_args(get_user_meta($_GET['load_address'], '', true), $defaults));
+
+		echo json_encode($data);
+		exit;
+	}
+}
+add_action('init', 'jigoshop_get_user_address_data');
 
 /**
  * Meta scripts

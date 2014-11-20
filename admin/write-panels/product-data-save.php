@@ -96,6 +96,24 @@ class jigoshop_product_meta
 				? update_post_meta($post_id, 'sku', $_POST['sku'])
 				: delete_post_meta($post_id, 'sku');
 		}
+		// Process the Brand
+		if (Jigoshop_Base::get_options()->get('jigoshop_enable_brand') !== 'no') {
+			($this->is_unique_sku($post_id, $_POST['brand']))
+				? update_post_meta($post_id, 'brand', $_POST['brand'])
+				: delete_post_meta($post_id, 'brand');
+		}
+		// Process the GTIN
+		if (Jigoshop_Base::get_options()->get('jigoshop_enable_gtin') !== 'no') {
+			($this->is_unique_sku($post_id, $_POST['gtin']))
+				? update_post_meta($post_id, 'gtin', $_POST['gtin'])
+				: delete_post_meta($post_id, 'gtin');
+		}
+		// Process the MPN
+		if (Jigoshop_Base::get_options()->get('jigoshop_enable_mpn') !== 'no') {
+			($this->is_unique_sku($post_id, $_POST['mpn']))
+				? update_post_meta($post_id, 'mpn', $_POST['mpn'])
+				: delete_post_meta($post_id, 'mpn');
+		}
 
 		// Process the attributes
 		update_post_meta($post_id, 'product_attributes', $this->process_attributes($_POST, $post_id));
