@@ -1,6 +1,6 @@
 ## Changelog
 
-* 1.13.1:
+* 1.13.1 - 2014-11-21:
     * Fix: Warnings in email module. 
     * Fix: Email templates now installs properly after jigoshop activation.
 * 1.13 - 2014-11-21:
