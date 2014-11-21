@@ -31,12 +31,17 @@ class JigoshopInit
 		$cache = new ConfigCache($file, $is_debug);
 
 		if (!$cache->isFresh()) {
+			$diDefinition = new \Symfony\Component\DependencyInjection\Definition();
+			$diDefinition->setSynthetic(true);
+
 			$builder = new ContainerBuilder();
+			$builder->setDefinition('di', $diDefinition);
 			$builder->addCompilerPass(new Jigoshop\Core\Types\CompilerPass());
 			$builder->addCompilerPass(new Jigoshop\Payment\CompilerPass());
 			$builder->addCompilerPass(new Jigoshop\Shipping\CompilerPass());
 			$builder->addCompilerPass(new Jigoshop\Admin\CompilerPass());
 			$builder->addCompilerPass(new Jigoshop\Admin\Settings\CompilerPass());
+
 			$loader = new YamlFileLoader($builder, new FileLocator(JIGOSHOP_DIR.'/config'));
 			$loader->load('admin.yml');
 			$loader->load('admin/settings.yml');
@@ -63,6 +68,7 @@ class JigoshopInit
 		require_once($file);
 		/** @noinspection PhpUndefinedClassInspection */
 		$this->container = new JigoshopContainer();
+		$this->container->set('di', $this->container);
 
 		add_filter('admin_footer_text', array($this, 'footer'));
 		add_action('admin_bar_menu', array($this, 'toolbar'), 35);

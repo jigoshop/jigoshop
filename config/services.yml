@@ -33,3 +33,8 @@ services:
       - '@jigoshop.service.tax'
       - '@jigoshop.service.shipping'
       - '@jigoshop.service.customer'
+  jigoshop.service.product.variable:
+    class: Jigoshop\Service\Product\Variable
+    arguments:
+      - '@wpal'
+      - '@jigoshop.service.product'

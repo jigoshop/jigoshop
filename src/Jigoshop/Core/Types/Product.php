@@ -18,14 +18,14 @@ class Product implements Post
 	/** @var array */
 	private $enabledTypes = array();
 
-	public function __construct(Wordpress $wp, Options $options, ProductServiceInterface $productService)
+	public function __construct(\JigoshopContainer $di, Wordpress $wp, Options $options, ProductServiceInterface $productService)
 	{
 		$this->wp = $wp;
 
 		$types = $options->getEnabledProductTypes();
 		foreach ($types as $typeClass) {
 			/** @var Types\Product\Type $type */
-			$type = new $typeClass($wp, $options, $productService);
+			$type = $di->get($typeClass);
 
 			if (!($type instanceof Types\Product\Type)) {
 				if (WP_DEBUG) {

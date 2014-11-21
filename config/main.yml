@@ -60,6 +60,7 @@ services:
   jigoshop.post_type.product:
     class: Jigoshop\Core\Types\Product
     arguments:
+      - '@di'
       - '@wpal'
       - '@jigoshop.options'
       - '@jigoshop.service.product'
@@ -79,3 +80,14 @@ services:
       - '@wpal'
     tags:
       - { name: jigoshop.type.post }
+  jigoshop.product_type.simple:
+    class: Jigoshop\Core\Types\Product\Simple
+    arguments:
+      - '@wpal'
+  jigoshop.product_type.variable:
+    class: Jigoshop\Core\Types\Product\Variable
+    arguments:
+      - '@wpal'
+      - '@jigoshop.service.product'
+      - '@jigoshop.service.product.variable'
+      - '@jigoshop.factory.product.variable'

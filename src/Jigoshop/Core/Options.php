@@ -237,8 +237,8 @@ class Options
 	{
 		// TODO: Add product types to extensions tab
 		return $this->wp->applyFilters('jigoshop\product\types', $this->get('enabled_product_types', array(
-			'Jigoshop\Core\Types\Product\Simple',
-			'Jigoshop\Core\Types\Product\Variable',
+			'jigoshop.product_type.simple',
+			'jigoshop.product_type.variable',
 		)));
 	}
 }
