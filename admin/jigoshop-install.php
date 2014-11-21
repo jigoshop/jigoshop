@@ -44,14 +44,14 @@ function install_jigoshop( $network_wide = false ) {
 
 function _install_jigoshop(){
 	jigoshop_populate_options();
+	jigoshop_create_emails();
 
 	if(!get_option('jigoshop_db_version')){
 
 		jigoshop_tables_install(); /* we need tables installed first to eliminate installation errors */
 
 		jigoshop_create_pages();
-		jigoshop_create_emails();
-
+		
 		jigoshop_post_type();
 		jigoshop_default_taxonomies();
 

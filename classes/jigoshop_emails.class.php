@@ -12,11 +12,13 @@ class jigoshop_emails extends Jigoshop_Base
 	public static function set_actions($post_id, $hooks)
 	{
 		$allowed_templates = self::get_options()->get('jigoshop_emails');
-		$allowed_templates = array_map(function ($arg) use ($post_id){
-			return array_filter($arg, function ($arg_2) use ($post_id){
-				return $arg_2 != $post_id;
-			});
-		}, $allowed_templates);
+		if(isset($allowed_templates) && is_array($allowed_templates)) {
+			$allowed_templates = array_map(function ($arg) use ($post_id){
+				return array_filter($arg, function ($arg_2) use ($post_id){
+					return $arg_2 != $post_id;
+				});
+			}, $allowed_templates);
+		}
 
 		foreach ($hooks as $hook) {
 			$allowed_templates[$hook][] = $post_id;
