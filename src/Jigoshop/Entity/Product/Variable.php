@@ -91,6 +91,28 @@ class Variable extends Product implements Shippable, Saleable
 	}
 
 	/**
+	 * @return float Minimum price of all variations.
+	 */
+	public function getLowestPrice()
+	{
+		return min(array_map(function($item){
+			/** @var $item Product\Variable\Variation */
+			return $item->getProduct()->getPrice();
+		}, $this->variations));
+	}
+
+	/**
+	 * @return float Maximum price of all variations.
+	 */
+	public function getHighestPrice()
+	{
+		return max(array_map(function($item){
+			/** @var $item Product\Variable\Variation */
+			return $item->getProduct()->getPrice();
+		}, $this->variations));
+	}
+
+	/**
 	 * @return string Product type.
 	 */
 	public function getType()
@@ -139,15 +161,6 @@ class Variable extends Product implements Shippable, Saleable
 	public function getStateToSave()
 	{
 		$toSave = parent::getStateToSave();
-
-		foreach ($this->dirtyFields as $field) {
-			switch ($field) {
-//				case 'regular_price':
-//					$toSave['regular_price'] = $this->regularPrice;
-//					break;
-			}
-		}
-
 		$toSave['sales'] = $this->sales;
 
 		return $toSave;

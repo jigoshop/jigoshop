@@ -4,7 +4,6 @@ namespace Jigoshop\Helper;
 
 use Jigoshop\Core\Options;
 use Jigoshop\Entity\Product as ProductEntity;
-use Jigoshop\Entity\Product\Simple;
 
 class Product
 {
@@ -30,6 +29,28 @@ class Product
 	}
 
 	/**
+	 * TODO: Create proper description.
+	 * @param array $options
+	 * @param bool $emptyItem
+	 * @return array
+	 */
+	public static function getSelectOption(array $options, $emptyItem = false)
+	{
+		$result = array();
+
+		if ($emptyItem !== false) {
+			$result = array('' => $emptyItem);
+		}
+
+		foreach ($options as $item) {
+			/** @var $item ProductEntity\Attribute\Option */
+			$result[$item->getId()] = $item->getLabel();
+		}
+
+		return $result;
+	}
+
+	/**
 	 * Formats price appropriately to the product type and returns a string.
 	 *
 	 * @param ProductEntity $product
@@ -38,8 +59,8 @@ class Product
 	public static function getPriceHtml(ProductEntity $product)
 	{
 		switch($product->getType()){
-			case Simple::TYPE:
-				/** @var $product Simple */
+			case ProductEntity\Simple::TYPE:
+				/** @var $product ProductEntity\Simple */
 				if ( self::isOnSale($product)) {
 					if (strpos($product->getSales()->getPrice(), '%') !== false) {
 						return '<del>'.self::formatPrice($product->getRegularPrice()).'</del>'.self::formatPrice($product->getPrice()).'
@@ -51,6 +72,9 @@ class Product
 				}
 
 				return self::formatPrice($product->getPrice());
+			case ProductEntity\Variable::TYPE:
+				/** @var $product ProductEntity\Variable */
+				return sprintf(__('From: %s', 'jigoshop'), self::formatPrice($product->getLowestPrice()));
 			default:
 				return apply_filters('jigoshop\helper\product\get_price', '', $product);
 		}
@@ -70,8 +94,8 @@ class Product
 
 		// TODO: Respect shopping options for displaying stock values
 		switch($product->getType()){
-			case Simple::TYPE:
-				/** @var $product Simple */
+			case ProductEntity\Simple::TYPE:
+				/** @var $product ProductEntity\Simple */
 				$status = $product->getStock()->getStatus() == ProductEntity\Attributes\StockStatus::IN_STOCK ?
 					_x('In stock', 'product', 'jigoshop') :
 					'<strong class="attention">'._x('Out of stock', 'product', 'jigoshop').'</strong>';
@@ -165,8 +189,8 @@ class Product
 	{
 		$status = false;
 		switch($product->getType()){
-			case Simple::TYPE:
-				/** @var $product Simple */
+			case ProductEntity\Simple::TYPE:
+				/** @var $product ProductEntity\Simple */
 				$status = $product->getSales()->isEnabled();
 		}
 
@@ -189,5 +213,25 @@ class Product
 	public static function formatNumericPrice($price)
 	{
 		return number_format($price, Currency::decimals(), Currency::decimalSeparator(), Currency::thousandsSeparator());
+	}
+
+	/**
+	 * Prints add to cart form for product list.
+	 *
+	 * @param $product \Jigoshop\Entity\Product Product to display.
+	 * @param $template string Template base to use.
+	 */
+	public static function printAddToCartForm($product, $template)
+	{
+		switch($product->getType()){
+			case ProductEntity\Simple::TYPE:
+				Render::output("shop/{$template}/cart/simple", array('product' => $product));
+				break;
+			case ProductEntity\Variable::TYPE:
+				Render::output("shop/{$template}/cart/variable", array('product' => $product));
+				break;
+			default:
+				do_action('jigoshop\helper\product\print_cart_form', '', $product, $template);
+		}
 	}
 }

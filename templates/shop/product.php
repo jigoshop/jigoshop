@@ -15,15 +15,7 @@ use Jigoshop\Helper\Render;
 		<h1><?php echo $product->getName(); ?></h1>
 		<p class="price"><?php echo Product::getPriceHtml($product); ?></p>
 		<p class="stock"><?php echo Product::getStock($product); ?></p>
-		<form action="" method="post" class="form-inline" role="form">
-			<!-- TODO: Render proper form based on product type -->
-			<input type="hidden" name="action" value="add-to-cart" />
-			<div class="form-group">
-				<label class="sr-only" for="product-quantity"><?php _e('Quantity', 'jigoshop'); ?></label>
-				<input type="number" class="form-control" name="quantity" id="product-quantity" value="1" />
-			</div>
-			<button class="btn btn-primary" type="submit"><?php _e('Add to cart', 'jigoshop'); ?></button>
-		</form>
+		<?php Product::printAddToCartForm($product, 'product'); ?>
 		<dl class="dl-horizontal">
 			<?php if($product->getSku()): ?>
 			<dt><?php echo __('SKU', 'jigoshop'); ?></dt><dd><?php echo $product->getSku(); ?></dd>

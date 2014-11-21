@@ -169,6 +169,7 @@ class Forms
 		$defaults = array(
 			'id' => null,
 			'name' => null,
+			'type' => 'text',
 			'label' => null,
 			'value' => false,
 			'placeholder' => '',

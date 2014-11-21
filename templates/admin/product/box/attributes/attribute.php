@@ -1,7 +1,7 @@
 <?php
 use Jigoshop\Admin\Helper\Forms;
-use Jigoshop\Admin\Helper\Product;
 use Jigoshop\Entity\Product\Attribute;
+use Jigoshop\Helper\Product;
 
 /**
  * @var $attribute Attribute Attribute to display.

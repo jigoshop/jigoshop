@@ -94,6 +94,8 @@ class Variable implements Type
 		$wp->addFilter('jigoshop\admin\product\menu', array($this, 'addProductMenu'));
 		$wp->addFilter('jigoshop\admin\product\tabs', array($this, 'addProductTab'), 10, 2);
 
+		$wp->addFilter('jigoshop\helper\product\get_price', array($this, 'getPrice'), 10, 2);
+
 		$wp->addAction('wp_ajax_jigoshop.admin.product.add_variation', array($this, 'ajaxAddVariation'), 10, 0);
 		$wp->addAction('wp_ajax_jigoshop.admin.product.save_variation', array($this, 'ajaxSaveVariation'), 10, 0);
 		$wp->addAction('wp_ajax_jigoshop.admin.product.remove_variation', array($this, 'ajaxRemoveVariation'), 10, 0);
@@ -108,6 +110,13 @@ class Variable implements Type
 
 		// TODO: Move this to Installer class (somehow).
 		$this->createTables();
+	}
+
+	public function getPrice($value, $product)
+	{
+		if ($product instanceof Product\Variable) {
+
+		}
 	}
 
 	/**

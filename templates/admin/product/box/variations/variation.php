@@ -1,6 +1,5 @@
 <?php
 use Jigoshop\Admin\Helper\Forms;
-use Jigoshop\Admin\Helper\Product;
 use Jigoshop\Entity\Product\Attribute;
 use Jigoshop\Helper\Product as ProductHelper;
 
@@ -21,7 +20,7 @@ $product = $variation->getProduct();
 				'classes' => array('variation-attribute'),
 				'placeholder' => $attribute->getLabel(),
 				'value' => $variation->getAttribute($attribute->getId())->getValue(),
-				'options' => Product::getSelectOption($attribute->getOptions(), sprintf(__('Any of %s', 'jigoshop'), $attribute->getLabel())),
+				'options' => ProductHelper::getSelectOption($attribute->getOptions(), sprintf(__('Any of %s', 'jigoshop'), $attribute->getLabel())),
 				'size' => 12,
 			)); ?>
 		<?php endforeach; ?>
