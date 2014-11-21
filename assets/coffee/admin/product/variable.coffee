@@ -15,6 +15,7 @@ class AdminProductVariable
         jQuery('.list-group-item-text', $item.closest('li')).slideToggle ->
           jQuery('span', $item).toggleClass('glyphicon-collapse-down').toggleClass('glyphicon-collapse-up')
       .on 'change', 'select.variation-attribute', @updateVariation
+      .on 'change', '.list-group-item-text input.form-control, .list-group-item-text select.form-control', @updateVariation
 
   removeParameters: (event) ->
     $item = jQuery(event.target)
@@ -50,6 +51,16 @@ class AdminProductVariable
       results = /(?:^|\s)product\[variation]\[\d]\[attribute]\[(.*?)](?:\s|$)/g.exec(option.name)
       attributes[results[1]] = getOptionValue(option)
 
+    product = {}
+    productData = jQuery('.list-group-item-text input.form-control', $parent).toArray()
+    for option in productData
+      results = /(?:^|\s)product\[variation]\[\d]\[product]\[(.*?)](\[(.*?)])?(?:\s|$)/g.exec(option.name)
+      if results[3]?
+        product[results[1]] = {}
+        product[results[1]][results[3]] = getOptionValue(option)
+      else
+        product[results[1]] = getOptionValue(option)
+
     jQuery.ajax
       url: @params.ajax
       type: 'post'
@@ -59,6 +70,7 @@ class AdminProductVariable
         product_id: $container.closest('.jigoshop').data('id')
         variation_id: $parent.data('id')
         attributes: attributes
+        product: product
     .done (data) =>
       if data.success? and data.success
         addMessage('success', @params.i18n.saved, 2000)

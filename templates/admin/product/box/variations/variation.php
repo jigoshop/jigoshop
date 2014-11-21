@@ -2,6 +2,7 @@
 use Jigoshop\Admin\Helper\Forms;
 use Jigoshop\Admin\Helper\Product;
 use Jigoshop\Entity\Product\Attribute;
+use Jigoshop\Helper\Product as ProductHelper;
 
 /**
  * @var $variation \Jigoshop\Entity\Product\Variable\Variation Variation to display.
@@ -33,7 +34,7 @@ $product = $variation->getProduct();
 			'options' => $allowedSubtypes,
 		)); ?>
 		<?php Forms::text(array(
-			'name' => 'product[variation]['.$variation->getId().'][product][price]',
+			'name' => 'product[variation]['.$variation->getId().'][product][regular_price]',
 			'label' => __('Price', 'jigoshop'),
 			'value' => $product->getPrice(),
 		)); ?>
@@ -52,6 +53,7 @@ $product = $variation->getProduct();
 			'name' => 'product[variation]['.$variation->getId().'][product][sales][price]',
 			'label' => __('Sale price', 'jigoshop'),
 			'value' => $product->getSales()->getPrice(),
+			'placeholder' => ProductHelper::formatNumericPrice(0),
 		)); ?>
 	</div>
 </li>

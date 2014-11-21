@@ -17,9 +17,6 @@ use WPAL\Wordpress;
 /**
  * Variable product type definition.
  *
- * TODO: Extract Service\Product\Variable
- * TODO: Extract Factory\Product\Variable
- *
  * @package Jigoshop\Core\Types\Product
  */
 class Variable implements Type
@@ -315,6 +312,13 @@ class Variable implements Type
 			$variation = $product->removeVariation((int)$_POST['variation_id']);
 			foreach ($_POST['attributes'] as $attribute => $value) {
 				$variation->getAttribute($attribute)->setValue(trim(htmlspecialchars(strip_tags($value))));
+			}
+
+			if (isset($_POST['product']) && is_array($_POST['product'])) {
+				// For now - always manage variation product stock
+				$_POST['product']['stock']['manage'] = 'on';
+				$variation->getProduct()->restoreState($_POST['product']);
+				$variation->getProduct()->markAsDirty($_POST['product']);
 			}
 
 			$this->wp->doAction('jigoshop\admin\product_variation\save', $variation);

@@ -36,6 +36,8 @@ class Variable
 					$variation->setProduct($this->_createVariableProduct($variation, $object));
 				}
 
+				$this->productService->save($variation->getProduct());
+
 				$data = array(
 					'parent_id' => $variation->getParent()->getId(),
 					'product_id' => $variation->getProduct()->getId(),
@@ -98,7 +100,7 @@ class Variable
 		$variableProduct->setVisibility(Product::VISIBILITY_NONE);
 		$variableProduct->setTaxable($product->isTaxable());
 		$variableProduct->setTaxClasses($product->getTaxClasses());
-		$this->productService->save($variableProduct);
+		$variableProduct->getStock()->setManage(true);
 
 		return $variableProduct;
 	}
