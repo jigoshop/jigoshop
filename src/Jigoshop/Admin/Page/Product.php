@@ -49,7 +49,7 @@ class Product
 			'general' => array('label' => __('General', 'jigoshop'), 'visible' => true),
 			'advanced' => array('label' => __('Advanced', 'jigoshop'), 'visible' => true),
 			'attributes' => array('label' => __('Attributes', 'jigoshop'), 'visible' => true),
-			'stock' => array('label' => __('Stock', 'jigoshop'), 'visible' => true),
+			'stock' => array('label' => __('Stock', 'jigoshop'), 'visible' => array(Simple::TYPE)),
 			'sales' => array('label' => __('Sales', 'jigoshop'), 'visible' => array(Simple::TYPE)),
 		));
 
