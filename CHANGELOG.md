@@ -1,6 +1,6 @@
 ## Changelog
 
-* 1.13:
+* 1.13 - 2014-11-21:
     * New: Ability to select whether to show prices with or without tax in cart.
     * New: Ability to select user when creating new order manually in admin panel.
     * New: Brand, GTIN, MPN fields for product.
