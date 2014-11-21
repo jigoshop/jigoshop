@@ -34,11 +34,6 @@ class Multiselect extends Attribute implements Variable
 		return (bool)$this->variable->getValue();
 	}
 
-	public function isVisible()
-	{
-		return parent::isVisible() && !$this->isVariable();
-	}
-
 	/**
 	 * @return int Type of attribute.
 	 */

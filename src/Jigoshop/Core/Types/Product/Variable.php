@@ -89,12 +89,13 @@ class Variable implements Type
 	 */
 	public function initialize(Wordpress $wp, array $enabledTypes)
 	{
-		$wp->addAction('jigoshop\admin\product\assets', array($this, 'addAssets'), 10, 3);
+		$wp->addFilter('jigoshop\helper\product\get_price', array($this, 'getPrice'), 10, 2);
+		$wp->addAction('jigoshop\product\assets', array($this, 'addFrontendAssets'), 10, 3);
+
+		$wp->addAction('jigoshop\admin\product\assets', array($this, 'addAdminAssets'), 10, 3);
 		$wp->addAction('jigoshop\admin\product\attribute\options', array($this, 'addVariableAttributeOptions'));
 		$wp->addFilter('jigoshop\admin\product\menu', array($this, 'addProductMenu'));
 		$wp->addFilter('jigoshop\admin\product\tabs', array($this, 'addProductTab'), 10, 2);
-
-		$wp->addFilter('jigoshop\helper\product\get_price', array($this, 'getPrice'), 10, 2);
 
 		$wp->addAction('wp_ajax_jigoshop.admin.product.add_variation', array($this, 'ajaxAddVariation'), 10, 0);
 		$wp->addAction('wp_ajax_jigoshop.admin.product.save_variation', array($this, 'ajaxSaveVariation'), 10, 0);
@@ -180,7 +181,7 @@ class Variable implements Type
 	 * @param Styles $styles
 	 * @param Scripts $scripts
 	 */
-	public function addAssets(Wordpress $wp, Styles $styles, Scripts $scripts)
+	public function addAdminAssets(Wordpress $wp, Styles $styles, Scripts $scripts)
 	{
 		$styles->add('jigoshop.admin.product.variable', JIGOSHOP_URL.'/assets/css/admin/product/variable.css');
 		$scripts->add('jigoshop.admin.product.variable', JIGOSHOP_URL.'/assets/js/admin/product/variable.js', array('jquery'));
@@ -192,6 +193,43 @@ class Variable implements Type
 				'saved' => __('Variation saved.', 'jigoshop'),
 			),
 		));
+	}
+
+	/**
+	 * @param Wordpress $wp
+	 * @param Styles $styles
+	 * @param Scripts $scripts
+	 */
+	public function addFrontendAssets(Wordpress $wp, Styles $styles, Scripts $scripts)
+	{
+		$post = $wp->getGlobalPost();
+		$product = $this->productService->findForPost($post);
+
+		// TODO: Definitely cache $attributes somewhere!
+		if ($product instanceof Product\Variable) {
+			$variations = array();
+			foreach ($product->getVariations() as $variation) {
+				/** @var $variation Product\Variable\Variation */
+				$variations[$variation->getId()] = array(
+					'price' => $variation->getProduct()->getPrice(),
+					'html' => array(
+						'price' => \Jigoshop\Helper\Product::formatPrice($variation->getProduct()->getPrice()),
+					),
+					'attributes' => array(),
+				);
+				foreach ($variation->getAttributes() as $attribute) {
+					/** @var $attribute Product\Variable\Attribute */
+					$variations[$variation->getId()]['attributes'][$attribute->getAttribute()->getId()] = $attribute->getValue();
+				}
+			}
+
+			$styles->add('jigoshop.product.variable', JIGOSHOP_URL.'/assets/css/shop/product/variable.css');
+			$scripts->add('jigoshop.product.variable', JIGOSHOP_URL.'/assets/js/shop/product/variable.js', array('jquery'));
+			$scripts->localize('jigoshop.product.variable', 'jigoshop_product_variable', array(
+				'ajax' => $wp->getAjaxUrl(),
+				'variations' => $variations,
+			));
+		}
 	}
 
 	private function createTables()

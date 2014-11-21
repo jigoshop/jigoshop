@@ -16,7 +16,7 @@ use Jigoshop\Helper\Render;
  * @var $size int Size of form widget.
  */
 ?>
-<div class="form-group <?php echo $id; ?>_field clearfix<?php $hidden and print ' not-active'; ?>">
+<div class="form-group <?php echo $id; ?>_field <?php echo join(' ', $classes); ?> clearfix<?php $hidden and print ' not-active'; ?>">
 	<label for="<?php echo $id; ?>" class="col-sm-<?php echo 12 - $size; ?> control-label">
 		<?php echo $label; ?>
 		<?php if(!empty($tip)): ?>
@@ -24,7 +24,7 @@ use Jigoshop\Helper\Render;
 		<?php endif; ?>
 	</label>
 	<div class="col-sm-<?php echo $size; ?>">
-		<select id="<?php echo $id; ?>" name="<?php echo $name; ?>" class="form-control" placeholder="<?php echo $placeholder; ?>"<?php $multiple and print ' multiple="multiple"'; ?><?php $disabled and print ' disabled'; ?>>
+		<select id="<?php echo $id; ?>" name="<?php echo $name; ?>" class="form-control <?php echo join(' ', $classes); ?>" placeholder="<?php echo $placeholder; ?>"<?php $multiple and print ' multiple="multiple"'; ?><?php $disabled and print ' disabled'; ?>>
 			<?php foreach($options as $option => $item): ?>
 				<?php if(is_array($item)): ?>
 					<optgroup label="<?php echo $option; ?>">

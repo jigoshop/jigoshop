@@ -47,6 +47,7 @@ class Product implements PageInterface
 		$this->wp->addAction('jigoshop\product\after_summary', array($this, 'productTabs'), 10, 1);
 		$this->wp->addAction('jigoshop\product\tab_panels', array($this, 'productAttributes'), 10, 2);
 		$this->wp->addAction('jigoshop\product\tab_panels', array($this, 'productDescription'), 10, 2);
+		$this->wp->doAction('jigoshop\product\assets', $wp, $styles, $scripts);
 	}
 
 

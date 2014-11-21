@@ -21,6 +21,7 @@ use Jigoshop\Helper\Render;
 		<?php endforeach; ?>
 	<?php endif; ?>
 </ul>
+<!-- TODO: Default selections -->
 <noscript>
 	<style type="text/css">
 		.jigoshop #product-variations .list-group-item-text {
