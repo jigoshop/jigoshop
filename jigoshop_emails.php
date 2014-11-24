@@ -96,7 +96,10 @@ function get_order_email_arguments($order_id)
 		'subtotal' => $order->get_subtotal_to_display(),
 		'shipping' => $order->get_shipping_to_display(),
 		'discount' => jigoshop_price($order->order_discount),
+		'total_tax' => jigoshop_price($order->get_total_tax()),
 		'total' => jigoshop_price($order->order_total),
+		'is_local_pickup' => $order->shipping_method == 'local_pickup' ? true : null,
+		'payment_method' => $order->payment_method_title,
 		'billing_first_name' => $order->billing_first_name,
 		'billing_last_name' => $order->billing_last_name,
 		'billing_company' => $order->billing_company,
@@ -117,6 +120,7 @@ function get_order_email_arguments($order_id)
 		'shipping_city' => $order->shipping_city,
 		'shipping_country' => jigoshop_countries::get_country($order->shipping_country),
 		'shipping_state' => strlen($order->shipping_state) == 2 ? jigoshop_countries::get_state($order->shipping_country, $order->shipping_state) : $order->shipping_state,
+		'customer_note' => $order->customer_note,
 	),$order_id);
 }
 
@@ -133,10 +137,13 @@ function get_order_email_arguments_description()
 		'shop_email' => __('Shop Email', 'jigoshop'),
 		'customer_note' => __('Customer Note', 'jigoshop'),
 		'order_items' => __('Ordered Items', 'jigoshop'),
-		'subtotal' => __('Order Subtotal', 'jigoshop'),
-		'shipping' => __('Order Shipping Method', 'jigoshop'),
-		'discount' => __('Order Discount Price', 'jigoshop'),
-		'total' => __('Order Total Price', 'jigoshop'),
+		'subtotal' => __('Subtotal', 'jigoshop'),
+		'shipping' => __('Shipping Price and Method', 'jigoshop'),
+		'discount' => __('Discount Price', 'jigoshop'),
+		'total_tax' => __('Total Tax', 'jigoshop'),
+		'total' => __('Total Price', 'jigoshop'),
+		'payment_method' => __('Payment Method Title', 'jigoshop'),
+		'is_local_pickup' => __('Is Local Pickup?', 'jigoshop'),
 		'billing_first_name' => __('Billing First Name', 'jigoshop'),
 		'billing_last_name' => __('Billing Last Name', 'jigoshop'),
 		'billing_company' => __('Billing Company', 'jigoshop'),
@@ -157,6 +164,7 @@ function get_order_email_arguments_description()
 		'shipping_city' => __('Shipping City', 'jigoshop'),
 		'shipping_country' => __('Shipping Country', 'jigoshop'),
 		'shipping_state' => __('Shipping State', 'jigoshop'),
+		'customer_note' => __('Customer Note', 'jigoshop'),
 	));
 }
 
