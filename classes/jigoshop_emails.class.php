@@ -49,7 +49,7 @@ class jigoshop_emails extends Jigoshop_Base
 				$headers = array(
 					'MIME-Version: 1.0',
 					'Content-Type: text/html; charset=UTF-8',
-					'From: '.self::get_options()->get('jigoshop_email_from_name').'<'.self::get_options()->get('jigoshop_email').'>',
+					'From: "'.self::get_options()->get('jigoshop_email_from_name').'" <'.self::get_options()->get('jigoshop_email').'>',
 				);
 				$post->post_content = self::get_options()->get('jigoshop_email_footer') ? $post->post_content.'<br/><br/>'.self::get_options()->get('jigoshop_email_footer') : $post->post_content;
 
