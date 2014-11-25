@@ -243,22 +243,6 @@ class Order implements EntityFactoryInterface
 		return $address;
 	}
 
-	private function formatOrderItem($data)
-	{
-		$item = new Entity\Item();
-		$item->setId($data['id']);
-		$item->setType($data['product_type']);
-		$item->setName($data['title']);
-		$item->setQuantity($data['quantity']);
-		$item->setPrice($data['price']);
-		$item->setTax($data['tax']);
-
-		$product = $this->productService->find($data['product_id']);
-		$item->setProduct($product);
-
-		return $item;
-	}
-
 	/**
 	 * @param $id int Order ID.
 	 * @return array List of items assigned to the order.
@@ -276,30 +260,34 @@ class Order implements EntityFactoryInterface
 		$items = array();
 
 		for ($i = 0, $endI = count($results); $i < $endI;) {
-			$item = array(
-				'id' => $results[$i]['item_id'],
-				'order_id' => $results[$i]['order_id'],
-				'product_id' => $results[$i]['product_id'],
-				'product_type' => $results[$i]['product_type'],
-				'title' => $results[$i]['title'],
-				'price' => $results[$i]['price'],
-				'quantity' => $results[$i]['quantity'],
-				'cost' => $results[$i]['cost'],
-				'tax' => array(),
-			);
+			$item = new Entity\Item();
+			$item->setId($results[$i]['item_id']);
+			$item->setType($results[$i]['product_type']);
+			$item->setName($results[$i]['title']);
+			$item->setQuantity($results[$i]['quantity']);
+			$item->setPrice($results[$i]['price']);
+
+			$product = $this->productService->find($results[$i]['product_id']);
+			$item->setProduct($product);
+			$tax = array();
 
 			while ($i < $endI && $results[$i]['item_id'] == $item['id']) {
-				$item['tax'][str_replace('tax_', '', $results[$i]['meta_key'])] = $results[$i]['meta_value'];
+				if (strpos($results[$i]['meta_key'], 'tax_') !== false) {
+					$tax[str_replace('tax_', '', $results[$i]['meta_key'])] = $results[$i]['meta_value'];
+				} else {
+					$meta = new Entity\Item\Meta();
+					$meta->setKey($results[$i]['meta_key']);
+					$meta->setValue($results[$i]['meta_value']);
+					$item->addMeta($meta);
+				}
 				$i++;
 			}
 
+			$item->setTax($tax);
 			$items[] = $item;
 		}
 
-		$that = $this;
-		return array_map(function($item) use ($that){
-			return $that->formatOrderItem($item);
-		}, $items);
+		return $items;
 	}
 
 	private function validateAddress($address)

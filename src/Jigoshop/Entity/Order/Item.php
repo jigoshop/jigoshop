@@ -31,6 +31,8 @@ class Item implements Product\Purchasable, Product\Taxable
 	private $product;
 	/** @var string */
 	private $type;
+	/** @var array */
+	private $meta = array();
 
 	/**
 	 * @return int
@@ -174,6 +176,57 @@ class Item implements Product\Purchasable, Product\Taxable
 	public function getTaxClasses()
 	{
 		return array_keys($this->tax);
+	}
+
+	/**
+	 * Adds meta value to the item.
+	 *
+	 * @param Item\Meta $meta Meta value to add.
+	 */
+	public function addMeta(Item\Meta $meta)
+	{
+		$this->meta[$meta->getKey()] = $meta;
+	}
+
+	/**
+	 * Removes meta value from the item and returns it.
+	 *
+	 * @param string $key Meta key.
+	 * @return Item\Meta Meta object.
+	 */
+	public function removeMeta($key)
+	{
+		$meta = $this->getMeta($key);
+
+		if ($meta === null) {
+			return null;
+		}
+
+		unset($this->meta[$key]);
+		return $meta;
+	}
+
+	/**
+	 * Returns single meta object.
+	 *
+	 * @param string $key Meta key.
+	 * @return Item\Meta Meta object.
+	 */
+	public function getMeta($key)
+	{
+		if (!isset($this->meta[$key])) {
+			return null;
+		}
+
+		return $this->meta[$key];
+	}
+
+	/**
+	 * @return array All meta values assigned to the item.
+	 */
+	public function getAllMeta()
+	{
+		return $this->meta;
 	}
 
 	/**

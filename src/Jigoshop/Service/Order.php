@@ -157,6 +157,15 @@ class Order implements OrderServiceInterface
 						'meta_value' => $value,
 					));
 				}
+
+				foreach ($item->getAllMeta() as $meta) {
+					/** @var $meta Item\Meta */
+					$wpdb->replace($wpdb->prefix.'jigoshop_order_item_meta', array(
+						'item_id' => $item->getId(),
+						'meta_key' => $meta->getKey(),
+						'meta_value' => $meta->getValue(),
+					));
+				}
 			}
 
 			unset($fields['items']);
