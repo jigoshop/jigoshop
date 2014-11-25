@@ -80,4 +80,12 @@ class Attribute
 	{
 		$this->variation = $variation;
 	}
+
+	public function printValue()
+	{
+		if ($this->value) {
+			echo $this->attribute->getOption($this->value)->getLabel();
+		}
+		// TODO: Display values of "All of..."
+	}
 }

@@ -79,7 +79,8 @@ class Variable extends Product implements Shippable, Saleable
 		if (!isset($this->variations[$id])) {
 			return null;
 		}
-		return $this->variations;
+
+		return $this->variations[$id];
 	}
 
 	/**

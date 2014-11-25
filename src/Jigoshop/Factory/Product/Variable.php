@@ -62,6 +62,45 @@ class Variable
 	}
 
 	/**
+	 * Finds and fetches variation for selected product and variation ID.
+	 *
+	 * @param Product\Variable $product Parent product.
+	 * @param int $variationId Variation ID.
+	 * @return Product\Variable\Variation The variation.
+	 */
+	public function getVariation(Product\Variable $product, $variationId)
+	{
+		$wpdb = $this->wp->getWPDB();
+		$query = $wpdb->prepare("
+			SELECT * FROM {$wpdb->prefix}jigoshop_product_variation pv
+				LEFT JOIN {$wpdb->prefix}jigoshop_product_variation_attribute pva ON pv.id = pva.variation_id
+				WHERE pv.parent_id = %d AND pv.id = %d
+		", array($product->getId(), $variationId));
+		$results = $wpdb->get_results($query, ARRAY_A);
+
+		$i = 0;
+		$endI = count($results);
+		$variation = new VariableProduct\Variation();
+		$variation->setId((int)$results[$i]['id']);
+		$variation->setParent($product);
+		$variation->setProduct($this->productService->find($results[$i]['product_id'])); // TODO: Maybe some kind of fetching together?
+
+		while ($i < $endI && $results[$i]['id'] == $variation->getId()) {
+			if ($results[$i]['attribute_id'] !== null) {
+				$attribute = new VariableProduct\Attribute(VariableProduct\Attribute::VARIATION_ATTRIBUTE_EXISTS);
+				$attribute->setVariation($variation);
+				$attribute->setAttribute($product->getAttribute($results[$i]['attribute_id']));
+				$attribute->setValue($results[$i]['value']);
+				$variation->addAttribute($attribute);
+			}
+
+			$i++;
+		}
+
+		return $variation;
+	}
+
+	/**
 	 * @param $product VariableProduct Product to fetch variations for.
 	 * @return array List of variations.
 	 */

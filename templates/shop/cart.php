@@ -35,22 +35,7 @@ use Jigoshop\Helper\Render;
 			</thead>
 			<tbody>
 				<?php foreach($cart->getItems() as $key => $item): ?>
-					<?php
-					/** @var \Jigoshop\Entity\Order\Item $item */
-					$product = $item->getProduct();
-					$url = apply_filters('jigoshop\cart\product_url', get_permalink($product->getId()), $key);
-					$price = $showWithTax ? $item->getPrice() + $item->getTotalTax() / $item->getQuantity() : $item->getPrice();
-					?>
-				<tr data-id="<?php echo $key; ?>" data-product="<?php echo $product->getId(); ?>">
-					<td class="product-remove">
-						<a href="<?php echo esc_url($cart->getRemoveUrl($key)); ?>" class="remove" title="<?php echo __('Remove this item.', 'jigoshop'); ?>">&times;</a>
-					</td>
-					<td class="product-thumbnail"><a href="<?php echo $url; ?>"><?php echo Product::getFeaturedImage($product, 'shop_tiny'); ?></a></td>
-					<td class="product-name"><a href="<?php echo $url; ?>"><?php echo $product->getName(); ?></a></td>
-					<td class="product-price"><?php echo Product::formatPrice($price); ?></td>
-					<td class="product-quantity"><input type="number" name="cart[<?php echo $key; ?>]" value="<?php echo $item->getQuantity(); ?>" /></td>
-					<td class="product-subtotal"><?php echo Product::formatPrice($item->getQuantity() * $price); ?></td>
-				</tr>
+					<?php Render::output('shop/cart/item/'.$item->getType(), array('cart' => $cart, 'key' => $key, 'item' => $item, 'showWithTax' => $showWithTax)); ?>
 				<?php endforeach; ?>
 				<?php do_action('jigoshop\cart\table_body', $cart); ?>
 			</tbody>

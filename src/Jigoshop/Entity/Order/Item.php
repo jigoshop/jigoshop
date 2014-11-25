@@ -13,7 +13,7 @@ use Jigoshop\Exception;
  * @package Jigoshop\Entity\Order
  * @author Amadeusz Starzykiewicz
  */
-class Item implements Product\Purchasable, Product\Taxable
+class Item implements Product\Purchasable, Product\Taxable, \Serializable
 {
 	/** @var int */
 	private $id;
@@ -27,7 +27,7 @@ class Item implements Product\Purchasable, Product\Taxable
 	private $tax = array();
 	/** @var float */
 	private $totalTax = 0.0;
-	/** @var Product|Product\Purchasable */
+	/** @var Product|Product\Purchasable|Product\Shippable */
 	private $product;
 	/** @var string */
 	private $type;
@@ -185,6 +185,7 @@ class Item implements Product\Purchasable, Product\Taxable
 	 */
 	public function addMeta(Item\Meta $meta)
 	{
+		$meta->setItem($this);
 		$this->meta[$meta->getKey()] = $meta;
 	}
 
@@ -237,5 +238,55 @@ class Item implements Product\Purchasable, Product\Taxable
 	public function isShippable()
 	{
 		return $this->product->isShippable();
+	}
+
+	/**
+	 * (PHP 5 &gt;= 5.1.0)<br/>
+	 * String representation of object
+	 *
+	 * @link http://php.net/manual/en/serializable.serialize.php
+	 * @return string the string representation of the object or null
+	 */
+	public function serialize()
+	{
+		return serialize(array(
+			'id' => $this->id,
+			'name' => $this->name,
+			'type' => $this->type,
+			'quantity' => $this->quantity,
+			'price' => $this->price,
+			'tax' => serialize($this->tax),
+			'product' => $this->product->getState(),
+			'meta' => serialize($this->meta),
+		));
+	}
+
+	/**
+	 * (PHP 5 &gt;= 5.1.0)<br/>
+	 * Constructs the object
+	 *
+	 * @link http://php.net/manual/en/serializable.unserialize.php
+	 * @param string $serialized <p>
+	 * The string representation of the object.
+	 * </p>
+	 * @return void
+	 */
+	public function unserialize($serialized)
+	{
+		$data = unserialize($serialized);
+		$this->id = $data['id'];
+		$this->name = $data['name'];
+		$this->type = $data['type'];
+		$this->quantity = $data['quantity'];
+		$this->price = $data['price'];
+		$this->tax = unserialize($data['tax']);
+		$this->totalTax = array_reduce($this->tax, function($value, $tax){ return $value + $tax; }, 0.0);
+		$this->meta = unserialize($data['meta']);
+		// TODO: How to properly unserialize product?
+		$this->product = $data['product'];
+
+		foreach ($this->meta as $meta) {
+			$meta->setItem($this);
+		}
 	}
 }

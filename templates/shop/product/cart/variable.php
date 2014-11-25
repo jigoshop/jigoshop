@@ -27,6 +27,7 @@ use Jigoshop\Helper\Product;
 			'label' => __('Quantity', 'jigoshop'),
 			'value' => 1,
 		)); ?>
+		<input type="hidden" name="variation_id" id="variation-id" value="" />
 		<button class="btn btn-primary" type="submit"><?php _e('Add to cart', 'jigoshop'); ?></button>
 	</div>
 </form>

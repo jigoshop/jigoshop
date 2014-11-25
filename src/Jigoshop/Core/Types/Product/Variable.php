@@ -3,6 +3,7 @@
 namespace Jigoshop\Core\Types\Product;
 
 use Jigoshop\Admin\Helper\Forms;
+use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\Product;
 use Jigoshop\Entity\Product\Attribute;
 use Jigoshop\Exception;
@@ -89,7 +90,7 @@ class Variable implements Type
 	 */
 	public function initialize(Wordpress $wp, array $enabledTypes)
 	{
-		$wp->addFilter('jigoshop\helper\product\get_price', array($this, 'getPrice'), 10, 2);
+		$wp->addFilter('jigoshop\cart\add', array($this, 'addToCart'), 10, 2);
 		$wp->addAction('jigoshop\product\assets', array($this, 'addFrontendAssets'), 10, 3);
 
 		$wp->addAction('jigoshop\admin\product\assets', array($this, 'addAdminAssets'), 10, 3);
@@ -113,11 +114,28 @@ class Variable implements Type
 		$this->createTables();
 	}
 
-	public function getPrice($value, $product)
+	public function addToCart($value, $product)
 	{
 		if ($product instanceof Product\Variable) {
+			$item = new Item();
+			$item->setProduct($product);
+			$item->setType($product->getType());
 
+			$variation = $this->factory->getVariation($product, $_POST['variation_id']);
+			// TODO: Set variable parameters ("Any of...")
+			$item->setName($variation->getTitle());
+			$item->setPrice($variation->getProduct()->getPrice());
+			$item->setQuantity($_POST['quantity']);
+
+			$meta = new Item\Meta();
+			$meta->setKey('variation_id');
+			$meta->setValue($variation->getId());
+			$item->addMeta($meta);
+
+			return $item;
 		}
+
+		return $value;
 	}
 
 	/**

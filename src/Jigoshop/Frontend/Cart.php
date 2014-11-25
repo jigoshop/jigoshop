@@ -95,14 +95,10 @@ class Cart implements OrderInterface
 			$taxIncludedInPrice = $this->options->get('tax.included');
 
 			if (is_array($items)) {
-				foreach ($items as $itemData) {
-					$item = new Item();
-					$product = $this->productService->findForState($itemData['product']);
+				foreach ($items as $item) {
+					$productState = (array)$item->getProduct();
+					$product = $this->productService->findForState($productState);
 					$item->setProduct($product);
-					$item->setQuantity($itemData['quantity']);
-					$item->setPrice($product->getPrice());
-					$item->setName($product->getName());
-					$item->setTax($this->taxService->getAll($product));
 
 					foreach ($item->getTax() as $class => $value) {
 						$this->tax[$class] += $value * $item->getQuantity();
@@ -148,10 +144,6 @@ class Cart implements OrderInterface
 
 		if ($product === null || $product->getId() === 0) {
 			throw new Exception(__('Product not found', 'jigoshop'));
-		}
-
-		if (!($product instanceof Product\Purchasable)) {
-			throw new Exception(sprintf(__('Product of type "%s" cannot be added to cart', 'jigoshop'), $product->getType()));
 		}
 
 		if ($quantity <= 0) {
@@ -370,13 +362,7 @@ class Cart implements OrderInterface
 		return array(
 			'id' => $this->id,
 			'shipping_method' => $this->shippingMethod !== null ? $this->shippingMethod->getState() : null,
-			'items' => serialize(array_map(function($item){
-				/** @var $item Item */
-				return array(
-					'product' => $item->getProduct()->getState(),
-					'quantity' => $item->getQuantity(),
-				);
-			}, $this->items)),
+			'items' => serialize($this->items),
 		);
 	}
 

@@ -24,9 +24,11 @@ class ProductVariable
           break
       if proper
         jQuery('p.price > span', $buttons).html(definition.html.price)
+        jQuery('#variation-id').val(id)
         $buttons.slideDown()
         break
     if not proper
+      jQuery('#variation-id').val('')
       $buttons.slideUp()
 
 jQuery () ->

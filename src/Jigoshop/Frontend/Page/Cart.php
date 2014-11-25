@@ -240,8 +240,8 @@ class Cart implements PageInterface
 
 		try {
 			$cart->updateQuantity($_POST['item'], (int)$_POST['quantity']);
-			$item = $cart->getItem($_POST['item']);
 			$this->cartService->save($cart);
+			$item = $cart->getItem($_POST['item']);
 			// TODO: Support for "Prices includes tax"
 			$price = $this->options->get('tax.price_tax') == 'with_tax' ? $item->getPrice() + $item->getTotalTax() / $item->getQuantity() : $item->getPrice();
 
@@ -264,7 +264,6 @@ class Cart implements PageInterface
 			}
 		}
 
-		$this->cartService->save($cart);
 		echo json_encode($response);
 		exit;
 	}

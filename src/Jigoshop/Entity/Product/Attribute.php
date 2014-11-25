@@ -141,6 +141,21 @@ abstract class Attribute
 	}
 
 	/**
+	 * Returns option with selected ID.
+	 *
+	 * @param $id int Option ID.
+	 * @return Option The option.
+	 */
+	public function getOption($id)
+	{
+		if (!isset($this->options[$id])) {
+			return null;
+		}
+
+		return $this->options[$id];
+	}
+
+	/**
 	 * Removes option from the attribute.
 	 *
 	 * @param int $id Option ID to remove.
