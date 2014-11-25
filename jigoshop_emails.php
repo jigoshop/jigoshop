@@ -99,6 +99,7 @@ function get_order_email_arguments($order_id)
 		'total_tax' => jigoshop_price($order->get_total_tax()),
 		'total' => jigoshop_price($order->order_total),
 		'is_local_pickup' => $order->shipping_method == 'local_pickup' ? true : null,
+		'checkout_url' => $order->status == 'pending' ? $order->get_checkout_payment_url() : null,
 		'payment_method' => $order->payment_method_title,
 		'billing_first_name' => $order->billing_first_name,
 		'billing_last_name' => $order->billing_last_name,
@@ -144,6 +145,7 @@ function get_order_email_arguments_description()
 		'total' => __('Total Price', 'jigoshop'),
 		'payment_method' => __('Payment Method Title', 'jigoshop'),
 		'is_local_pickup' => __('Is Local Pickup?', 'jigoshop'),
+		'checkout_url' => __('If order is pending, show checkout url', 'jigoshop'),
 		'billing_first_name' => __('Billing First Name', 'jigoshop'),
 		'billing_last_name' => __('Billing Last Name', 'jigoshop'),
 		'billing_company' => __('Billing Company', 'jigoshop'),
@@ -223,7 +225,7 @@ function install_emails()
 		'product_on_backorder_notification'
 	);
 	$invoice = '==============================<wbr />==============================
-		Shop details:
+		Order details:
 		<span class="il">ORDER</span> [order_number]                                              Date: [order_date]
 		==============================<wbr />==============================
 
