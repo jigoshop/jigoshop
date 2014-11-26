@@ -9,7 +9,7 @@ use Jigoshop\Core\Types;
 use Jigoshop\Entity\OrderInterface;
 use Jigoshop\Helper\Country;
 use Jigoshop\Helper\Scripts;
-use Jigoshop\Service\CustomerServiceInterface;
+use Jigoshop\Service\CartServiceInterface;
 use WPAL\Wordpress;
 
 class FlatRate implements Method
@@ -20,21 +20,22 @@ class FlatRate implements Method
 	private $wp;
 	/** @var array */
 	private $options;
+	/** @var CartServiceInterface */
+	private $cartService;
 	/** @var Messages */
 	private $messages;
-	/** @var CustomerServiceInterface */
-	private $customerService;
 	/** @var array */
 	private $types;
 	/** @var array */
 	private $availability;
 
-	public function __construct(Wordpress $wp, Options $options, Messages $messages, CustomerServiceInterface $customerService, Scripts $scripts)
+	public function __construct(Wordpress $wp, Options $options, CartServiceInterface $cartService, Messages $messages,
+		Scripts $scripts)
 	{
 		$this->wp = $wp;
 		$this->options = $options->get('shipping.'.self::NAME);
+		$this->cartService = $cartService;
 		$this->messages = $messages;
-		$this->customerService = $customerService;
 		$this->types = array(
 			'per_order' => __('Per order', 'jigoshop'),
 			'per_item' => __('Per item', 'jigoshop'),
@@ -84,13 +85,17 @@ class FlatRate implements Method
 	 */
 	public function isEnabled()
 	{
+		$cart = $this->cartService->getCurrent();
 		$post = $this->wp->getGlobalPost();
-		$customer = null;
+
 		if ($post === null || $post->post_type != Types::ORDER) {
-			$customer = $this->customerService->getCurrent();
+			$customer = $cart->getCustomer();
+		} else {
+			// TODO: Get rid of this hack for customer fetching
+			$customer = unserialize($this->wp->getPostMeta($post->ID, 'customer', true));
 		}
 
-		return $this->options['enabled'] && ($this->options['available_for'] === 'all' || $customer === null || in_array($customer->getCountry(), $this->options['countries']));
+		return $this->options['enabled'] && ($this->options['available_for'] === 'all' || in_array($customer->getShippingAddress()->getCountry(), $this->options['countries']));
 	}
 
 	/**

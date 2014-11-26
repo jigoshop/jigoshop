@@ -2,27 +2,61 @@
 
 namespace Jigoshop\Shipping;
 
+use Jigoshop\Admin\Settings;
 use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
+use Jigoshop\Core\Types;
 use Jigoshop\Entity\OrderInterface;
+use Jigoshop\Helper\Country;
+use Jigoshop\Helper\Scripts;
 use Jigoshop\Service\CartServiceInterface;
+use WPAL\Wordpress;
 
 class FreeShipping implements Method
 {
 	const NAME = 'free_shipping';
 
+	/** @var Wordpress */
+	private $wp;
 	/** @var array */
 	private $options;
 	/** @var CartServiceInterface */
 	private $cartService;
 	/** @var Messages */
 	private $messages;
+	/** @var array */
+	private $availability;
 
-	public function __construct(Options $options, CartServiceInterface $cartService, Messages $messages)
+	public function __construct(Wordpress $wp, Options $options, CartServiceInterface $cartService, Messages $messages,
+		Scripts $scripts)
 	{
+		$this->wp = $wp;
 		$this->options = $options->get('shipping.'.self::NAME);
 		$this->cartService = $cartService;
 		$this->messages = $messages;
+
+		$this->availability = array(
+			'all' => __('All allowed countries', 'jigoshop'),
+			'specific' => __('Selected countries', 'jigoshop'),
+		);
+
+		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $scripts) {
+			// Weed out all admin pages except the Jigoshop Settings page hits
+			if (!in_array($wp->getPageNow(), array('admin.php', 'options.php'))) {
+				return;
+			}
+
+			$screen = $wp->getCurrentScreen();
+			if (!in_array($screen->base, array('jigoshop_page_'.Settings::NAME, 'options'))) {
+				return;
+			}
+
+			if (!isset($_GET['tab']) || $_GET['tab'] !== 'shipping') {
+				return;
+			}
+
+			$scripts->add('jigoshop.admin.shipping.free_shipping', JIGOSHOP_URL.'/assets/js/admin/shipping/free_shipping.js', array('jquery', 'jigoshop.admin'));
+		});
 	}
 
 	/**
@@ -47,8 +81,17 @@ class FreeShipping implements Method
 	public function isEnabled()
 	{
 		$cart = $this->cartService->getCurrent();
+		$post = $this->wp->getGlobalPost();
 
-		return $this->options['enabled'] && $cart->getProductSubtotal() >= $this->options['minimum'];
+		if ($post === null || $post->post_type != Types::ORDER) {
+			$customer = $cart->getCustomer();
+		} else {
+			// TODO: Get rid of this hack for customer fetching
+			$customer = unserialize($this->wp->getPostMeta($post->ID, 'customer', true));
+		}
+
+		return $this->options['enabled'] && $cart->getProductSubtotal() >= $this->options['minimum'] &&
+			($this->options['available_for'] === 'all' || in_array($customer->getShippingAddress()->getCountry(), $this->options['countries']));
 	}
 
 	/**
@@ -69,6 +112,24 @@ class FreeShipping implements Method
 				'description' => __('Minimum cart value from Free Shipping option should be available.', 'jigoshop'),
 				'type' => 'text',
 				'value' => $this->options['minimum'],
+			),
+			array(
+				'name' => sprintf('[%s][available_for]', self::NAME),
+				'id' => 'free_shipping_available_for',
+				'title' => __('Available for', 'jigoshop'),
+				'type' => 'select',
+				'value' => $this->options['available_for'],
+				'options' => $this->availability,
+			),
+			array(
+				'name' => sprintf('[%s][countries]', self::NAME),
+				'id' => 'free_shipping_countries',
+				'title' => __('Select countries', 'jigoshop'),
+				'type' => 'select',
+				'value' => $this->options['countries'],
+				'options' => Country::getAll(),
+				'multiple' => true,
+				'hidden' => $this->options['available_for'] == 'all',
 			),
 		);
 	}
@@ -93,6 +154,19 @@ class FreeShipping implements Method
 		} else {
 			$settings['minimum'] = $this->options['minimum'];
 			$this->messages->addWarning(__('Minimum cart value was below 0 - value is left unchanged.', 'jigoshop'));
+		}
+
+		if (!in_array($settings['available_for'], array_keys($this->availability))) {
+			$settings['available_for'] = $this->options['available_for'];
+			$this->messages->addWarning(__('Availability is invalid - value is left unchanged.', 'jigoshop'));
+		}
+
+		if ($settings['available_for'] === 'specific') {
+			$settings['countries'] = array_filter($settings['countries'], function($item){
+				return Country::exists($item);
+			});
+		} else {
+			$settings['countries'] = array();
 		}
 
 		return $settings;
