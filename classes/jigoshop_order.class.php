@@ -314,7 +314,7 @@ class jigoshop_order extends Jigoshop_Base
 	public function get_subtotal_to_display()
 	{
 		$subtotal = jigoshop_price($this->order_subtotal);
-		if ($this->order_tax > 0 && self::get_options()->get('jigoshop_calc_taxes') == 'yes') {
+		if ($this->order_tax > 0 && self::get_options()->get('jigoshop_calc_taxes') == 'yes' && self::get_options()->get('jigoshop_show_prices_with_tax') == 'no') {
 			$subtotal .= __(' <small>(ex. tax)</small>', 'jigoshop');
 		}
 
