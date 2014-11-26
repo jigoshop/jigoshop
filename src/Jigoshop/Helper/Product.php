@@ -3,7 +3,7 @@
 namespace Jigoshop\Helper;
 
 use Jigoshop\Core\Options;
-use Jigoshop\Entity\Product as ProductEntity;
+use Jigoshop\Entity;
 
 class Product
 {
@@ -43,7 +43,7 @@ class Product
 		}
 
 		foreach ($options as $item) {
-			/** @var $item ProductEntity\Attribute\Option */
+			/** @var $item Entity\Product\Attribute\Option */
 			$result[$item->getId()] = $item->getLabel();
 		}
 
@@ -53,14 +53,14 @@ class Product
 	/**
 	 * Formats price appropriately to the product type and returns a string.
 	 *
-	 * @param ProductEntity $product
+	 * @param Entity\Product $product
 	 * @return string
 	 */
-	public static function getPriceHtml(ProductEntity $product)
+	public static function getPriceHtml(Entity\Product $product)
 	{
 		switch($product->getType()){
-			case ProductEntity\Simple::TYPE:
-				/** @var $product ProductEntity\Simple */
+			case Entity\Product\Simple::TYPE:
+				/** @var $product Entity\Product\Simple */
 				if ( self::isOnSale($product)) {
 					if (strpos($product->getSales()->getPrice(), '%') !== false) {
 						return '<del>'.self::formatPrice($product->getRegularPrice()).'</del>'.self::formatPrice($product->getPrice()).'
@@ -72,8 +72,8 @@ class Product
 				}
 
 				return self::formatPrice($product->getPrice());
-			case ProductEntity\Variable::TYPE:
-				/** @var $product ProductEntity\Variable */
+			case Entity\Product\Variable::TYPE:
+				/** @var $product Entity\Product\Variable */
 				return sprintf(__('From: %s', 'jigoshop'), self::formatPrice($product->getLowestPrice()));
 			default:
 				return apply_filters('jigoshop\helper\product\get_price', '', $product);
@@ -83,10 +83,10 @@ class Product
 	/**
 	 * Formats stock status appropriately to the product type and returns a string.
 	 *
-	 * @param ProductEntity $product
+	 * @param Entity\Product $product
 	 * @return string
 	 */
-	public static function getStock(ProductEntity $product)
+	public static function getStock(Entity\Product $product)
 	{
 		if (!$product->getStock()->getManage()) {
 			return '';
@@ -94,9 +94,9 @@ class Product
 
 		// TODO: Respect shopping options for displaying stock values
 		switch($product->getType()){
-			case ProductEntity\Simple::TYPE:
-				/** @var $product ProductEntity\Simple */
-				$status = $product->getStock()->getStatus() == ProductEntity\Attributes\StockStatus::IN_STOCK ?
+			case Entity\Product\Simple::TYPE:
+				/** @var $product Entity\Product\Simple */
+				$status = $product->getStock()->getStatus() == Entity\Product\Attributes\StockStatus::IN_STOCK ?
 					_x('In stock', 'product', 'jigoshop') :
 					'<strong class="attention">'._x('Out of stock', 'product', 'jigoshop').'</strong>';
 				return sprintf(_x('%s <strong>(%d available)</strong>', 'product', 'jigoshop'), $status, $product->getStock()->getStock());
@@ -108,10 +108,10 @@ class Product
 	/**
 	 * Checks if product has a thumbnail.
 	 *
-	 * @param ProductEntity $product
+	 * @param Entity\Product $product
 	 * @return boolean
 	 */
-	public static function hasFeaturedImage(ProductEntity $product)
+	public static function hasFeaturedImage(Entity\Product $product)
 	{
 		return has_post_thumbnail($product->getId());
 	}
@@ -119,11 +119,11 @@ class Product
 	/**
 	 * Gets thumbnail <img> tag for the product.
 	 *
-	 * @param ProductEntity $product
+	 * @param Entity\Product $product
 	 * @param string $size
 	 * @return string
 	 */
-	public static function getFeaturedImage(ProductEntity $product, $size = 'admin_product_list')
+	public static function getFeaturedImage(Entity\Product $product, $size = 'admin_product_list')
 	{
 		if (self::hasFeaturedImage($product)) {
 			return get_the_post_thumbnail($product->getId(), $size);
@@ -167,30 +167,31 @@ class Product
 	/**
 	 * Formats stock status appropriately to the product type and returns a string.
 	 *
-	 * @param ProductEntity $product
+	 * @param Entity\Product $product
 	 * @return string
 	 */
-	public static function isFeatured(ProductEntity $product)
+	public static function isFeatured(Entity\Product $product)
 	{
-//				$url = wp_nonce_url( admin_url('admin-ajax.php?action=jigoshop-feature-product&product_id=' . $post->ID) );
-//				echo '<a href="'.esc_url($url).'" title="'.__('Change','jigoshop') .'">';
-//				if ($product->is_featured()) echo '<a href="'.esc_url($url).'"><img src="'.jigoshop::assets_url().'/assets/images/head_featured_desc.png" alt="yes" />';
-//				else echo '<img src="'.jigoshop::assets_url().'/assets/images/head_featured.png" alt="no" />';
-//				echo '</a>';
+		return sprintf(
+			'<a href="#" data-id="%d" class="product-featured"><span class="glyphicon %s" aria-hidden="true"></span> <span class="sr-only">%s</span></a>',
+			$product->getId(),
+			$product->isFeatured() ? 'glyphicon-star' : 'glyphicon-star-empty',
+			$product->isFeatured() ? __('Yes', 'jigoshop') : __('No', 'jigoshop')
+		);
 	}
 
 	/**
 	 * Check whether selected product is on sale.
 	 *
-	 * @param ProductEntity $product
+	 * @param Entity\Product $product
 	 * @return boolean
 	 */
-	public static function isOnSale(ProductEntity $product)
+	public static function isOnSale(Entity\Product $product)
 	{
 		$status = false;
 		switch($product->getType()){
-			case ProductEntity\Simple::TYPE:
-				/** @var $product ProductEntity\Simple */
+			case Entity\Product\Simple::TYPE:
+				/** @var $product Entity\Product\Simple */
 				$status = $product->getSales()->isEnabled();
 		}
 
@@ -224,10 +225,10 @@ class Product
 	public static function printAddToCartForm($product, $template)
 	{
 		switch($product->getType()){
-			case ProductEntity\Simple::TYPE:
+			case Entity\Product\Simple::TYPE:
 				Render::output("shop/{$template}/cart/simple", array('product' => $product));
 				break;
-			case ProductEntity\Variable::TYPE:
+			case Entity\Product\Variable::TYPE:
 				Render::output("shop/{$template}/cart/variable", array('product' => $product));
 				break;
 			default:

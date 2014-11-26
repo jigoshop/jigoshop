@@ -31,6 +31,8 @@ services:
       - '@jigoshop.options'
       - '@jigoshop.post_type.product'
       - '@jigoshop.service.product'
+      - '@jigoshop.helper.styles'
+      - '@jigoshop.helper.scripts'
   jigoshop.admin.page.product:
     class: Jigoshop\Admin\Page\Product
     arguments:

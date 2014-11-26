@@ -1,8 +1,10 @@
 @import '../bower/bootstrap/less/variables.less';
+@import '../bower/bootstrap/less/glyphicons.less';
+@import '../bower/bootstrap/less/mixins.less';
 
 .jigoshop {
   @import '../bower/bootstrap/less/normalize.less';
-  @import '../bower/bootstrap/less/glyphicons.less';
+  @import '../bower/bootstrap/less/scaffolding.less';
 
   .glyphicon-remove {
     color: @btn-danger-bg;
@@ -21,4 +23,15 @@
   .nav .not-active, .not-active {
     display: none;
   }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
 }

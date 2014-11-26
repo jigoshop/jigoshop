@@ -7,6 +7,8 @@ use Jigoshop\Core\Types;
 use Jigoshop\Entity\Product;
 use Jigoshop\Helper\Product as ProductHelper;
 use Jigoshop\Helper\Render;
+use Jigoshop\Helper\Scripts;
+use Jigoshop\Helper\Styles;
 use Jigoshop\Service\ProductServiceInterface;
 use WPAL\Wordpress;
 
@@ -21,7 +23,7 @@ class Products
 	/** @var Types\Product */
 	private $type;
 
-	public function __construct(Wordpress $wp, Options $options, Types\Product $type, ProductServiceInterface $productService)
+	public function __construct(Wordpress $wp, Options $options, Types\Product $type, ProductServiceInterface $productService, Styles $styles, Scripts $scripts)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
@@ -33,6 +35,31 @@ class Products
 		// TODO: Introduce proper category filter
 //		$wp->addAction('restrict_manage_posts', array($this, 'categoryFilter'));
 		$wp->addAction('restrict_manage_posts', array($this, 'typeFilter'));
+		$wp->addAction('wp_ajax_jigoshop.admin.products.feature_product', array($this, 'ajaxFeatureProduct'));
+
+		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $styles, $scripts){
+			if ($wp->getPostType() == Types::PRODUCT) {
+				$scripts->add('jigoshop.helpers', JIGOSHOP_URL.'/assets/js/helpers.js');
+				$scripts->add('jigoshop.admin.products', JIGOSHOP_URL.'/assets/js/admin/products.js', array('jquery', 'jigoshop.helpers'));
+				$scripts->localize('jigoshop.admin.products', 'jigoshop_admin_products', array(
+					'ajax' => $wp->getAjaxUrl(),
+				));
+
+				$wp->doAction('jigoshop\admin\products\assets', $wp, $styles, $scripts);
+			}
+		});
+	}
+
+	public function ajaxFeatureProduct()
+	{
+		$product = $this->productService->find((int)$_POST['product_id']);
+		$product->setFeatured(!$product->isFeatured());
+		$this->productService->save($product);
+
+		echo json_encode(array(
+			'success' => true,
+		));
+		exit;
 	}
 
 	public function columns() {
@@ -42,8 +69,7 @@ class Products
 			'title' => _x('Name', 'product', 'jigoshop'),
 			'sku' => _x('SKU', 'product', 'jigoshop'),
 			'featured' => sprintf(
-				'<img src="'.JIGOSHOP_URL.'/assets/images/head_featured.png" alt="%s" title="%s" />',
-				_x('Is featured?', 'product', 'jigoshop'),
+				'<span class="glyphicon glyphicon-star" aria-hidden="true"></span> <span class="sr-only">%s</span>',
 				_x('Is featured?', 'product', 'jigoshop')
 			),
 			'type' => _x('Type', 'product', 'jigoshop'),

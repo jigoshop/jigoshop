@@ -7,7 +7,7 @@ use Jigoshop\Helper\Product;
  * @var $item \Jigoshop\Entity\Order\Item
  */
 
-$id = $item->getId();
+$id = $item->getKey();
 /** @var \Jigoshop\Entity\Product\Variable $product */
 $product = $item->getProduct();
 $variation = $product->getVariation($item->getMeta('variation_id')->getValue());

@@ -7,7 +7,7 @@ use Jigoshop\Helper\Product;
  * @var $item \Jigoshop\Entity\Order\Item
  */
 
-$id = $item->getId();
+$id = $item->getKey();
 ?>
 <tr data-id="<?php echo $id; ?>" data-product="<?php echo $item->getProduct()->getId(); ?>">
 	<td class="id"><?php Forms::constant(array('name' => 'order[items]['.$id.'][id]', 'value' => $item->getProduct()->getId())); ?></td>
