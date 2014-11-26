@@ -9,8 +9,8 @@ use Jigoshop\Entity\Order\Status;
 use Jigoshop\Exception;
 use Jigoshop\Payment\Method as PaymentMethod;
 use Jigoshop\Service\TaxServiceInterface;
-use Jigoshop\Shipping\Method;
 use Jigoshop\Shipping\Method as ShippingMethod;
+use Jigoshop\Shipping\Method;
 use WPAL\Wordpress;
 
 /**
@@ -255,7 +255,7 @@ class Order implements EntityInterface, OrderInterface
 	 */
 	public function addItem(Item $item)
 	{
-		$this->items[$this->getKey($item)] = $item;
+		$this->items[$item->getKey()] = $item;
 		$this->productSubtotal += $item->getCost();
 		$this->subtotal += $item->getCost();
 		$this->total += $item->getCost() + $item->getTotalTax();
@@ -263,17 +263,6 @@ class Order implements EntityInterface, OrderInterface
 		foreach ($item->getTax() as $class => $tax) {
 			$this->tax[$class] += $tax * $item->getQuantity();
 		}
-	}
-
-	/**
-	 * Returns unique key for product in the cart.
-	 *
-	 * @param $item Order\Item Item to get key for.
-	 * @return string
-	 */
-	private function getKey($item)
-	{
-		return $item->getId() ? $item->getId() : $item->getProduct()->getId();
 	}
 
 	/**

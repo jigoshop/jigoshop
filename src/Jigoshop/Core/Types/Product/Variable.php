@@ -92,6 +92,7 @@ class Variable implements Type
 	{
 		$wp->addFilter('jigoshop\cart\add', array($this, 'addToCart'), 10, 2);
 		$wp->addFilter('jigoshop\cart\generate_item_key', array($this, 'generateItemKey'), 10, 2);
+		$wp->addFilter('jigoshop\checkout\is_shipping_required', array($this, 'isShippingRequired'), 10, 2);
 		$wp->addAction('jigoshop\product\assets', array($this, 'addFrontendAssets'), 10, 3);
 
 		$wp->addAction('jigoshop\admin\product\assets', array($this, 'addAdminAssets'), 10, 3);
@@ -113,6 +114,29 @@ class Variable implements Type
 
 		// TODO: Move this to Installer class (somehow).
 		$this->createTables();
+	}
+
+	/**
+	 * @param $status boolean
+	 * @param $item Item
+	 * @return boolean
+	 */
+	public function isShippingRequired($status, $item)
+	{
+		if ($status) {
+			return true;
+		}
+
+		$product = $item->getProduct();
+		if ($product instanceof Product\Variable) {
+			$product = $product->getVariation($item->getMeta('variation_id')->getValue())->getProduct();
+
+			if ($product instanceof Product\Shippable && $product->isShippable()) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -140,14 +164,6 @@ class Variable implements Type
 			$item->setType($product->getType());
 
 			$variation = $this->factory->getVariation($product, $_POST['variation_id']);
-			$item->setName($variation->getTitle());
-			$item->setPrice($variation->getProduct()->getPrice());
-			$item->setQuantity($_POST['quantity']);
-
-			$meta = new Item\Meta();
-			$meta->setKey('variation_id');
-			$meta->setValue($variation->getId());
-			$item->addMeta($meta);
 
 			foreach ($variation->getAttributes() as $attribute) {
 				/** @var $attribute \Jigoshop\Entity\Product\Variable\Attribute */
@@ -158,6 +174,15 @@ class Variable implements Type
 					$item->addMeta($meta);
 				}
 			}
+
+			$item->setName($variation->getTitle());
+			$item->setPrice($variation->getProduct()->getPrice());
+			$item->setQuantity($_POST['quantity']);
+
+			$meta = new Item\Meta();
+			$meta->setKey('variation_id');
+			$meta->setValue($variation->getId());
+			$item->addMeta($meta);
 
 			return $item;
 		}

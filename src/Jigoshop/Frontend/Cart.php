@@ -105,7 +105,12 @@ class Cart implements OrderInterface
 						$this->tax[$class] += $value * $item->getQuantity();
 					}
 
-					$key = $this->generateItemKey($item);
+					$key = $this->productService->generateItemKey($item);
+					if ($key != $item->getKey()) {
+						// TODO: Log warning
+					}
+
+					$item->setKey($key);
 
 					// TODO: Add support for "Price included in tax"
 //					if ($taxIncludedInPrice) {
@@ -151,7 +156,8 @@ class Cart implements OrderInterface
 			throw new Exception(__('Quantity has to be positive number', 'jigoshop'));
 		}
 
-		$key = $this->generateItemKey($item);
+		$key = $this->productService->generateItemKey($item);
+		$item->setKey($key);
 		if (isset($this->items[$key])) {
 			/** @var Item $itemInCart */
 			$itemInCart = $this->items[$key];

@@ -8,7 +8,7 @@ use Jigoshop\Exception;
 /**
  * Order item.
  *
- * TODO: Proper description in PhpDoc
+ * TODO: Proper descriptions in PhpDoc
  *
  * @package Jigoshop\Entity\Order
  * @author Amadeusz Starzykiewicz
@@ -17,6 +17,8 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 {
 	/** @var int */
 	private $id;
+	/** @var string */
+	private $key;
 	/** @var string */
 	private $name;
 	/** @var int */
@@ -48,6 +50,22 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 	public function setId($id)
 	{
 		$this->id = $id;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getKey()
+	{
+		return $this->key;
+	}
+
+	/**
+	 * @param string $key
+	 */
+	public function setKey($key)
+	{
+		$this->key = $key;
 	}
 
 	/**
@@ -231,16 +249,6 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 	}
 
 	/**
-	 * Checks whether the product requires shipping.
-	 *
-	 * @return bool Whether the product requires shipping.
-	 */
-	public function isShippable()
-	{
-		return $this->product->isShippable();
-	}
-
-	/**
 	 * (PHP 5 &gt;= 5.1.0)<br/>
 	 * String representation of object
 	 *
@@ -251,6 +259,7 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 	{
 		return serialize(array(
 			'id' => $this->id,
+			'key' => $this->key,
 			'name' => $this->name,
 			'type' => $this->type,
 			'quantity' => $this->quantity,
@@ -275,6 +284,7 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 	{
 		$data = unserialize($serialized);
 		$this->id = $data['id'];
+		$this->key = $data['key'];
 		$this->name = $data['name'];
 		$this->type = $data['type'];
 		$this->quantity = $data['quantity'];
@@ -286,6 +296,7 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 		$this->product = $data['product'];
 
 		foreach ($this->meta as $meta) {
+			/** @var $meta Item\Meta */
 			$meta->setItem($this);
 		}
 	}

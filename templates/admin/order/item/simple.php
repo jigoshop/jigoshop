@@ -3,6 +3,7 @@ use Jigoshop\Admin\Helper\Forms;
 use Jigoshop\Helper\Product;
 
 /**
+ * @var $order \Jigoshop\Entity\Order
  * @var $item \Jigoshop\Entity\Order\Item
  */
 

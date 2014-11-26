@@ -95,8 +95,7 @@ class Installer
 				cost DECIMAL(13,4) NOT NULL,
 				PRIMARY KEY id (id),
 				FOREIGN KEY item_product (product_id) REFERENCES {$wpdb->posts} (ID) ON DELETE SET NULL,
-				FOREIGN KEY item_order (order_id) REFERENCES {$wpdb->posts} (ID) ON DELETE CASCADE,
-				UNIQUE KEY item_definition (order_id, product_id)
+				FOREIGN KEY item_order (order_id) REFERENCES {$wpdb->posts} (ID) ON DELETE CASCADE
 			) {$collate};
 		";
 		$wpdb->query($query);

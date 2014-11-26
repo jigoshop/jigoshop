@@ -4,6 +4,7 @@ namespace Jigoshop\Service;
 
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\EntityInterface;
+use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\Product\Attribute;
 use Jigoshop\Exception;
 use Jigoshop\Factory\Product as ProductFactory;
@@ -475,5 +476,22 @@ class Product implements ProductServiceInterface
 	{
 		$wpdb = $this->wp->getWPDB();
 		$wpdb->delete($wpdb->prefix.'jigoshop_attribute', array('id' => $id));
+	}
+
+	/**
+	 * Returns unique key for product in the cart.
+	 *
+	 * @param $item Item Item to get key for.
+	 * @return string
+	 */
+	public function generateItemKey(Item $item)
+	{
+		$parts = array(
+			$item->getProduct()->getId(),
+		);
+
+		$parts = $this->wp->applyFilters('jigoshop\cart\generate_item_key', $parts, $item);
+
+		return hash('md5', join('_', $parts));
 	}
 }

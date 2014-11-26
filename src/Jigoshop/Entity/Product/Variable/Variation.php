@@ -44,10 +44,14 @@ class Variation
 	public function getTitle()
 	{
 		// TODO: Title changing description in docs
-		return sprintf(_x('%s (%s)', 'product_variation', 'jigoshop'), $this->parent->getName(), join(', ', array_map(function($item){
+		return sprintf(_x('%s (%s)', 'product_variation', 'jigoshop'), $this->parent->getName(), join(', ', array_filter(array_map(function($item){
 			/** @var $item Attribute */
-			return sprintf(_x('%s: %s', 'product_variation', 'jigoshop'), $item->getAttribute()->getLabel(), $item->getValue());
-		}, $this->attributes)));
+			if ($item->getValue() !== '') {
+				return sprintf(_x('%s: %s', 'product_variation', 'jigoshop'), $item->getAttribute()->getLabel(), $item->getAttribute()->getOption($item->getValue())->getLabel());
+			}
+
+			return '';
+		}, $this->attributes))));
 	}
 
 	/**

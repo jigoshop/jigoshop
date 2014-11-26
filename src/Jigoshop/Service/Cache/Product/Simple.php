@@ -3,6 +3,7 @@
 namespace Jigoshop\Service\Cache\Product;
 
 use Jigoshop\Entity\EntityInterface;
+use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\Product;
 use Jigoshop\Service\Attribute;
 use Jigoshop\Service\ProductServiceInterface;
@@ -216,20 +217,8 @@ class Simple implements ProductServiceInterface
 
 	/**
 	 * Saves attribute to database.
-
-
-
-
-
-
-
-
-
-
-
-
-*
-*@param Product\Attribute $attribute Attribute to save.
+	 *
+	 * @param Product\Attribute $attribute Attribute to save.
 	 * @return \Jigoshop\Entity\Product\Attribute Saved attribute.
 	 */
 	public function saveAttribute(Product\Attribute $attribute)
@@ -247,5 +236,16 @@ class Simple implements ProductServiceInterface
 	{
 		// TODO: Implement removeAttribute() method.
 		return $this->service->removeAttribute($id);
+	}
+
+	/**
+	 * Returns unique key for product in the cart.
+	 *
+	 * @param $item Item Item to get key for.
+	 * @return string
+	 */
+	public function generateItemKey(Item $item)
+	{
+		return $this->service->generateItemKey($item);
 	}
 }

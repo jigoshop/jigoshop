@@ -10,6 +10,7 @@ use Jigoshop\Entity\Customer\Address;
 use Jigoshop\Entity\Customer\CompanyAddress;
 use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\OrderInterface;
+use Jigoshop\Entity\Product\Simple;
 use Jigoshop\Exception;
 use Jigoshop\Frontend\Cart;
 use Jigoshop\Helper\Country;
@@ -23,6 +24,7 @@ use Jigoshop\Service\OrderServiceInterface;
 use Jigoshop\Service\PaymentServiceInterface;
 use Jigoshop\Service\ShippingServiceInterface;
 use Jigoshop\Service\TaxServiceInterface;
+use Jigoshop\Shipping\Method;
 use WPAL\Wordpress;
 
 class Checkout implements PageInterface
@@ -167,6 +169,7 @@ class Checkout implements PageInterface
 			'total' => $cart->getTotal(),
 			'html' => array(
 				'shipping' => array_map(function($item) use ($cart) {
+					/** @var $item Method */
 					return array(
 						'price' => Product::formatPrice($item->calculate($cart)),
 						'html' => Render::get('shop/cart/shipping/method', array('method' => $item, 'cart' => $cart)),
@@ -351,7 +354,7 @@ class Checkout implements PageInterface
 				'type' => 'text',
 				'label' => __('EU VAT number', 'jigoshop'),
 				'name' => 'jigoshop_order[billing][eu_vat]',
-				'value' => $address instanceof CompanyAddress ? $address->getEuVat() : '',
+				'value' => $address instanceof CompanyAddress ? $address->getVatNumber() : '',
 				'size' => 9,
 				'columnSize' => 6,
 			),
@@ -505,8 +508,16 @@ class Checkout implements PageInterface
 	{
 		foreach ($order->getItems() as $item) {
 			/** @var $item Item */
-			if ($item->isShippable()) {
-				return true;
+			switch ($item->getType()) {
+				case Simple::TYPE:
+					if ($item->getProduct()->isShippable()) {
+						return true;
+					}
+					break;
+				default:
+					if ($this->wp->applyFilters('jigoshop\checkout\is_shipping_required', false, $item)) {
+						return true;
+					}
 			}
 		}
 

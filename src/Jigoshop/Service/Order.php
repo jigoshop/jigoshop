@@ -126,6 +126,7 @@ class Order implements OrderServiceInterface
 		if (isset($fields['items'])) {
 			$wpdb = $this->wp->getWPDB();
 			$existing = array_map(function($item){
+				/** @var $item Item */
 				return $item->getId();
 			}, $fields['items']);
 			$this->removeAllExcept($object->getId(), $existing);

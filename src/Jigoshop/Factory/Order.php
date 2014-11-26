@@ -253,13 +253,14 @@ class Order implements EntityFactoryInterface
 		$query = $wpdb->prepare("
 			SELECT * FROM {$wpdb->prefix}jigoshop_order_item joi
 			LEFT JOIN {$wpdb->prefix}jigoshop_order_item_meta joim ON joim.item_id = joi.id
-			WHERE joi.order_id = %d AND (joim.meta_key LIKE %s OR joim.meta_key IS NULL)
+			WHERE joi.order_id = %d
 			ORDER BY joi.id",
-			array($id, 'tax%'));
+			array($id));
 		$results = $wpdb->get_results($query, ARRAY_A);
 		$items = array();
 
 		for ($i = 0, $endI = count($results); $i < $endI;) {
+			$id = $results[$i]['id'];
 			$item = new Entity\Item();
 			$item->setId($results[$i]['item_id']);
 			$item->setType($results[$i]['product_type']);
@@ -271,7 +272,7 @@ class Order implements EntityFactoryInterface
 			$item->setProduct($product);
 			$tax = array();
 
-			while ($i < $endI && $results[$i]['item_id'] == $item['id']) {
+			while ($i < $endI && $results[$i]['id'] == $id) {
 				if (strpos($results[$i]['meta_key'], 'tax_') !== false) {
 					$tax[str_replace('tax_', '', $results[$i]['meta_key'])] = $results[$i]['meta_value'];
 				} else {
@@ -284,12 +285,17 @@ class Order implements EntityFactoryInterface
 			}
 
 			$item->setTax($tax);
+			$item->setKey($this->productService->generateItemKey($item));
 			$items[] = $item;
 		}
 
 		return $items;
 	}
 
+	/**
+	 * @param $address Address
+	 * @return array
+	 */
 	private function validateAddress($address)
 	{
 		$errors = array();

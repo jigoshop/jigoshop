@@ -23,8 +23,8 @@ use Jigoshop\Helper\Product;
 			</tr>
 			</thead>
 			<tbody>
-			<?php foreach($order->getItems() as $item): ?>
-				<?php \Jigoshop\Helper\Render::output('admin/order/item', array('item' => $item)); ?>
+			<?php foreach($order->getItems() as $item): /** @var $item \Jigoshop\Entity\Order\Item */?>
+				<?php \Jigoshop\Helper\Render::output('admin/order/item/'.$item->getType(), array('order' => $order, 'item' => $item)); ?>
 			<?php endforeach; ?>
 			</tbody>
 			<tfoot>
