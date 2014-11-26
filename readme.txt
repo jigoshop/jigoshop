@@ -4,7 +4,7 @@ License: GNU General Public License v3
 Tags: 2checkout, 2co, affiliate, authorize, cart, checkout, commerce, coupons, e-commerce,ecommerce, gifts, moneybookers, online, online shop, online store, paypal, paypal advanced,Paypal Express, paypal pro, physical, reports, sagepay, sales, sell, shipping, shop,shopping, stock, stock control, store, tax, virtual, weights, widgets, wordpress ecommerce, wp e-commerce, woocommerce
 Requires at least: 3.8
 Tested up to: 4.0
-Stable tag: 1.13.1
+Stable tag: 1.13.2
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -118,6 +118,14 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 4. Standard customer checkout screen
 
 == Changelog ==
+
+= 1.13.2 - 2014-11-26 =
+* Improved: Additional email variables `[total_tax]`, `[is_local_pickup]`, `[checkout_url]`, `[payment_method]`.
+* Improved: Coupons now can be added or removed in checkout.
+* Fix: Some html errors.
+* Fix: Typo in default email
+* Fix: Removed ex. tax label from subtotal in cart when shop admin decide to show prices without tax.
+* Fix: Generate default emails button no longer generates warning.
 
 = 1.13.1 - 2014-11-21 =
 * Fix: Warnings in email module.

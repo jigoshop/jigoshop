@@ -1,7 +1,7 @@
 ## Changelog
 
-* 1.13.2:
-    * Improved: Additional email variables [total_tax], [is_local_pickup], [checkout_url], [payment_method].
+* 1.13.2 - 2014-11-26:
+    * Improved: Additional email variables `[total_tax]`, `[is_local_pickup]`, `[checkout_url]`, `[payment_method]`.
     * Improved: Coupons now can be added or removed in checkout.
     * Fix: Some html errors.
     * Fix: Typo in default email
@@ -14,7 +14,7 @@
     * New: Ability to select whether to show prices with or without tax in cart.
     * New: Ability to select user when creating new order manually in admin panel.
     * New: Brand, GTIN, MPN fields for product.
-    * New: Shortcode product_tag.
+    * New: Shortcode `product_tag`.
     * Improved: Disabled options in select now are hidden.
     * Improved: Stock status shows ':' instead of dash.
     * Improved: Sku variable is no longer showing in emails when sku is disabled.
