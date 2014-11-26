@@ -1,5 +1,12 @@
 ## Changelog
 
+* 1.13.2:
+    * Improved: Additional email variables [total_tax], [is_local_pickup], [checkout_url], [payment_method].
+    * Improved: Coupons now can be added or removed in checkout.
+    * Fix: Some html errors.
+    * Fix: Typo in default email
+    * Fix: Removed ex. tax label from subtotal in cart when shop admin decide to show prices without tax.
+    * Fix: Generate default emails button no longer generates warning.
 * 1.13.1 - 2014-11-21:
     * Fix: Warnings in email module. 
     * Fix: Email templates now installs properly after jigoshop activation.
