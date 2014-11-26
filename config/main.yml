@@ -26,6 +26,12 @@ services:
       - '@wpal'
       - '@jigoshop.options'
       - '@jigoshop.service.order'
+  jigoshop.api:
+    class: Jigoshop\Api
+    arguments:
+      - '@wpal'
+    tags:
+      - { name: jigoshop.container_aware }
   jigoshop.pages:
     class: Jigoshop\Core\Pages
     arguments:

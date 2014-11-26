@@ -55,5 +55,9 @@ class Core
 		// TODO: Build required extensions
 		$this->wp->addFilter('template_include', array($this->template, 'process'));
 		$this->wp->addFilter('template_redirect', array($this->template, 'redirect'));
+
+		/** @var \Jigoshop\Api $api */
+		$api = $container->get('jigoshop.api');
+		$api->run();
 	}
 }
