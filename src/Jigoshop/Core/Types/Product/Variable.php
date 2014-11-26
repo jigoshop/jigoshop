@@ -122,7 +122,6 @@ class Variable implements Type
 			$item->setType($product->getType());
 
 			$variation = $this->factory->getVariation($product, $_POST['variation_id']);
-			// TODO: Set variable parameters ("Any of...")
 			$item->setName($variation->getTitle());
 			$item->setPrice($variation->getProduct()->getPrice());
 			$item->setQuantity($_POST['quantity']);
@@ -131,6 +130,16 @@ class Variable implements Type
 			$meta->setKey('variation_id');
 			$meta->setValue($variation->getId());
 			$item->addMeta($meta);
+
+			foreach ($variation->getAttributes() as $attribute) {
+				/** @var $attribute \Jigoshop\Entity\Product\Variable\Attribute */
+				if ($attribute->getValue() === '') {
+					$meta = new Item\Meta();
+					$meta->setKey($attribute->getAttribute()->getSlug());
+					$meta->setValue($_POST['attributes'][$attribute->getAttribute()->getId()]);
+					$item->addMeta($meta);
+				}
+			}
 
 			return $item;
 		}

@@ -11,7 +11,6 @@ use Jigoshop\Helper\Product;
 <?php
 /** @var \Jigoshop\Entity\Product\Variable $product */
 $product = $item->getProduct();
-var_dump($item->getMeta('variation_id')->getValue());
 $variation = $product->getVariation($item->getMeta('variation_id')->getValue());
 $url = apply_filters('jigoshop\cart\product_url', get_permalink($product->getId()), $key);
 $price = $showWithTax ? $item->getPrice() + $item->getTotalTax() / $item->getQuantity() : $item->getPrice();
@@ -26,7 +25,7 @@ $price = $showWithTax ? $item->getPrice() + $item->getTotalTax() / $item->getQua
 		<dl class="dl-horizontal">
 			<?php foreach ($variation->getAttributes() as $attribute): /** @var $attribute \Jigoshop\Entity\Product\Variable\Attribute */?>
 				<dt><?php echo $attribute->getAttribute()->getLabel(); ?></dt>
-				<dd><?php echo $attribute->printValue(); ?></dd>
+				<dd><?php echo $attribute->printValue($item); ?></dd>
 			<?php endforeach; ?>
 		</dl>
 	</td>

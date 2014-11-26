@@ -2,6 +2,8 @@
 
 namespace Jigoshop\Entity\Product\Variable;
 
+use Jigoshop\Entity\Order\Item;
+
 /**
  * Attribute of variable product.
  *
@@ -81,11 +83,17 @@ class Attribute
 		$this->variation = $variation;
 	}
 
-	public function printValue()
+	/**
+	 * @param $item Item
+	 */
+	public function printValue($item)
 	{
-		if ($this->value) {
-			echo $this->attribute->getOption($this->value)->getLabel();
+		if ($this->value !== '') {
+			$value = $this->value;
+		} else {
+			$value = $item->getMeta($this->attribute->getSlug())->getValue();
 		}
-		// TODO: Display values of "All of..."
+
+		echo $this->getAttribute()->getOption($value)->getLabel();
 	}
 }
