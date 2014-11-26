@@ -76,7 +76,8 @@ add_action('jigoshop_product_on_backorder_notification', function ($order_id, $p
 	}
 }, 1, 3);
 
-return apply_filters('jigoshop_order_email_variables', array(
+function get_order_email_arguments($order_id){
+	return apply_filters('jigoshop_order_email_variables', array(
 		'order_number' => $order->get_order_number(),
 		'order_date' => date_i18n(get_option('date_format')),
 		'shop_name' => $options->get('jigoshop_company_name'),
