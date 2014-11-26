@@ -80,6 +80,11 @@ class Options
 			'free_shipping' => array(
 				'enabled' => false,
 				'minimum' => 0,
+				'available_for' => 'all',
+				'countries' => array(),
+			),
+			'local_pickup' => array(
+				'enabled' => false,
 			),
 		),
 		'payment' => array(

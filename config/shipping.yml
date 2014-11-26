@@ -16,5 +16,14 @@ services:
       - '@jigoshop.options'
       - '@jigoshop.service.cart'
       - '@jigoshop.messages'
+      - '@jigoshop.helper.scripts'
+    tags:
+      - { name: jigoshop.shipping.method }
+  jigoshop.shipping.local_pickup:
+    class: Jigoshop\Shipping\LocalPickup
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.service.cart'
     tags:
       - { name: jigoshop.shipping.method }
