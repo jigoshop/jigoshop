@@ -49,7 +49,7 @@ class jigoshop_emails extends Jigoshop_Base
 				$headers = array(
 					'MIME-Version: 1.0',
 					'Content-Type: text/html; charset=UTF-8',
-					'From: '.self::get_options()->get('jigoshop_email_from_name').'<'.self::get_options()->get('jigoshop_email').'>',
+					'From: "'.self::get_options()->get('jigoshop_email_from_name').'" <'.self::get_options()->get('jigoshop_email').'>',
 				);
 				$post->post_content = self::get_options()->get('jigoshop_email_footer') ? $post->post_content.'<br/><br/>'.self::get_options()->get('jigoshop_email_footer') : $post->post_content;
 
@@ -70,9 +70,12 @@ class jigoshop_emails extends Jigoshop_Base
 		foreach ($args as $key => $value) {
 			$post->post_title = str_replace('['.$key.']', $value, $post->post_title);
 			if(empty($value)){
+				$post->post_content = preg_replace('#\['.$key.'\](.*?)\[else\](.*?)\[\/'.$key.'\]#si', '$2', $post->post_content);
 				$post->post_content = preg_replace('#\['.$key.'\](.*?)\[\/'.$key.'\]#si', '', $post->post_content);
 				$post->post_content = str_replace('['.$key.']', '', $post->post_content);
 			} else {
+				$post->post_content = preg_replace('#\['.$key.'\](.*?)\[value\](.*?)\[else\](.*?)\[\/'.$key.'\]#si', '$1'.'['.$key.']'.'$2', $post->post_content);
++				$post->post_content = preg_replace('#\['.$key.'\](.*?)\[else\](.*?)\[\/'.$key.'\]#si', '$1', $post->post_content);
 				$post->post_content = preg_replace('#\['.$key.'\](.*?)\[value\](.*?)\[\/'.$key.'\]#si', '$1'.'['.$key.']'.'$2', $post->post_content);
 				$post->post_content = str_replace('['.$key.']', $value, $post->post_content);
 			}
