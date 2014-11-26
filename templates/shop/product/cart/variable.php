@@ -18,7 +18,7 @@ use Jigoshop\Helper\Product;
 			'placeholder' => __('Please select…', 'jigoshop'),
 		)); ?>
 	<?php endforeach; ?>
-	<div id="buttons">
+	<div id="add-to-cart-buttons">
 		<p class="price"><?php _e('Current price:', 'jigoshop'); ?> <span></span></p>
 		<?php \Jigoshop\Helper\Forms::text(array(
 			'id' => 'product-quantity',
@@ -29,5 +29,8 @@ use Jigoshop\Helper\Product;
 		)); ?>
 		<input type="hidden" name="variation_id" id="variation-id" value="" />
 		<button class="btn btn-primary" type="submit"><?php _e('Add to cart', 'jigoshop'); ?></button>
+	</div>
+	<div id="add-to-cart-messages">
+		<div class="alert alert-warning"><?php _e('Selected variation is not available.', 'jigoshop'); ?></div>
 	</div>
 </form>
