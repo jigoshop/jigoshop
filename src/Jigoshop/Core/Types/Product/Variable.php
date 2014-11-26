@@ -91,6 +91,7 @@ class Variable implements Type
 	public function initialize(Wordpress $wp, array $enabledTypes)
 	{
 		$wp->addFilter('jigoshop\cart\add', array($this, 'addToCart'), 10, 2);
+		$wp->addFilter('jigoshop\cart\generate_item_key', array($this, 'generateItemKey'), 10, 2);
 		$wp->addAction('jigoshop\product\assets', array($this, 'addFrontendAssets'), 10, 3);
 
 		$wp->addAction('jigoshop\admin\product\assets', array($this, 'addAdminAssets'), 10, 3);
@@ -112,6 +113,23 @@ class Variable implements Type
 
 		// TODO: Move this to Installer class (somehow).
 		$this->createTables();
+	}
+
+	/**
+	 * @param $parts array
+	 * @param $item Item
+	 * @return array
+	 */
+	public function generateItemKey($parts, $item)
+	{
+		if ($item->getProduct() instanceof Product\Variable) {
+			foreach ($item->getAllMeta() as $meta) {
+				/** @var $meta Item\Meta */
+				$parts[] = $meta->getValue();
+			}
+		}
+
+		return $parts;
 	}
 
 	public function addToCart($value, $product)
@@ -232,7 +250,7 @@ class Variable implements Type
 		$post = $wp->getGlobalPost();
 		$product = $this->productService->findForPost($post);
 
-		// TODO: Definitely cache $attributes somewhere!
+		// TODO: Cache $attributes somewhere
 		if ($product instanceof Product\Variable) {
 			$variations = array();
 			foreach ($product->getVariations() as $variation) {

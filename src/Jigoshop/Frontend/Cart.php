@@ -96,6 +96,7 @@ class Cart implements OrderInterface
 
 			if (is_array($items)) {
 				foreach ($items as $item) {
+					/** @var Item $item */
 					$productState = (array)$item->getProduct();
 					$product = $this->productService->findForState($productState);
 					$item->setProduct($product);
@@ -104,7 +105,7 @@ class Cart implements OrderInterface
 						$this->tax[$class] += $value * $item->getQuantity();
 					}
 
-					$key = $this->getItemKey($product);
+					$key = $this->generateItemKey($item);
 
 					// TODO: Add support for "Price included in tax"
 //					if ($taxIncludedInPrice) {
@@ -150,7 +151,7 @@ class Cart implements OrderInterface
 			throw new Exception(__('Quantity has to be positive number', 'jigoshop'));
 		}
 
-		$key = $this->getItemKey($product);
+		$key = $this->generateItemKey($item);
 		if (isset($this->items[$key])) {
 			/** @var Item $itemInCart */
 			$itemInCart = $this->items[$key];
@@ -369,12 +370,18 @@ class Cart implements OrderInterface
 	/**
 	 * Returns unique key for product in the cart.
 	 *
-	 * @param $product Product|Product\Purchasable Product to get key for.
+	 * @param $item Item Item to get key for.
 	 * @return string
 	 */
-	private function getItemKey($product)
+	private function generateItemKey($item)
 	{
-		return $product->getId();
+		$parts = array(
+			$item->getProduct()->getId(),
+		);
+
+		$parts = $this->wp->applyFilters('jigoshop\cart\generate_item_key', $parts, $item);
+
+		return hash('md5', join('_', $parts));
 	}
 
 	/**
