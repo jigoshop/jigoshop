@@ -491,10 +491,10 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 
 		return self::$default_options;
 	}
-	
+
 	public function generate_defaults_emails(){
-+		return '<button type="button" onClick="parent.location=\'admin.php?page=jigoshop_settings&install_emails=1\'">'.__('Generate Defaults', 'jigoshop').'</button>';
-+	}
+		return '<button type="button" onClick="parent.location=\'admin.php?page=jigoshop_settings&install_emails=1\'">'.__('Generate Defaults', 'jigoshop').'</button>';
+	}
 
 	/**
 	 * Sets the Jigoshop default options
