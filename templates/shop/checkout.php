@@ -69,20 +69,8 @@ use Jigoshop\Helper\Render;
 			<?php do_action('jigoshop\checkout\table_head', $cart); ?>
 			</thead>
 			<tbody>
-			<?php foreach($cart->getItems() as $key => $item): ?>
-				<?php
-				/** @var \Jigoshop\Entity\Order\Item $item */
-				$product = $item->getProduct();
-				$url = apply_filters('jigoshop\checkout\product_url', get_permalink($product->getId()), $key);
-				$price = $showWithTax ? $item->getPrice() + $item->getTotalTax() / $item->getQuantity() : $item->getPrice();
-				?>
-				<tr data-id="<?php echo $key; ?>" data-product="<?php echo $product->getId(); ?>">
-					<td class="product-thumbnail"><a href="<?php echo $url; ?>"><?php echo Product::getFeaturedImage($product, 'shop_tiny'); ?></a></td>
-					<td class="product-name"><a href="<?php echo $url; ?>"><?php echo $product->getName(); ?></a></td>
-					<td class="product-price"><?php echo Product::formatPrice($price); ?></td>
-					<td class="product-quantity"><?php echo $item->getQuantity(); ?></td>
-					<td class="product-subtotal"><?php echo Product::formatPrice($item->getQuantity() * $price); ?></td>
-				</tr>
+			<?php foreach($cart->getItems() as $key => $item): /** @var \Jigoshop\Entity\Order\Item $item */ ?>
+				<?php Render::output('shop/checkout/item/'.$item->getType(), array('cart' => $cart, 'key' => $key, 'item' => $item, 'showWithTax' => $showWithTax)); ?>
 			<?php endforeach; ?>
 			<?php do_action('jigoshop\checkout\table_body', $cart); ?>
 			</tbody>
@@ -118,7 +106,7 @@ use Jigoshop\Helper\Render;
 					<td>
 						<ul class="list-group" id="shipping-methods">
 							<?php foreach($shippingMethods as $method): /** @var $method \Jigoshop\Shipping\Method */ ?>
-								<?php Render::output('shop/cart/shipping/method', array('method' => $method, 'cart' => $cart)); ?>
+								<?php Render::output('shop/checkout/shipping/method', array('method' => $method, 'cart' => $cart)); ?>
 							<?php endforeach; ?>
 						</ul>
 					</td>

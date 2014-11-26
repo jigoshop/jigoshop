@@ -13,6 +13,7 @@
   @import '../../bower/bootstrap/less/forms.less';
   @import '../../bower/bootstrap/less/panels.less';
   @import '../../bower/bootstrap/less/list-group.less';
+  @import '../../bower/bootstrap/less/scaffolding.less';
   @import '../../bower/bootstrap/less/tables.less';
   @import '../../bower/bootstrap/less/type.less';
 
@@ -30,6 +31,18 @@
 
     .btn {
       text-transform: none;
+    }
+
+    .variation-data {
+      margin: @padding-large-vertical/2 0 0 0;
+
+      dt {
+        width: auto;
+      }
+      dd {
+        margin: 0 0 0 @padding-large-horizontal/2;
+        float: left;
+      }
     }
 
     tr#shipping-calculator {

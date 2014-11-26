@@ -17,12 +17,12 @@ $price = $showWithTax ? $item->getPrice() + $item->getTotalTax() / $item->getQua
 ?>
 <tr data-id="<?php echo $key; ?>" data-product="<?php echo $product->getId(); ?>">
 	<td class="product-remove">
-		<a href="<?php echo esc_url($cart->getRemoveUrl($key)); ?>" class="remove" title="<?php echo __('Remove this item.', 'jigoshop'); ?>">&times;</a>
+		<a href="<?php echo esc_url($cart->getRemoveUrl($key)); ?>" class="remove" title="<?php echo __('Remove', 'jigoshop'); ?>">&times;</a>
 	</td>
 	<td class="product-thumbnail"><a href="<?php echo $url; ?>"><?php echo Product::getFeaturedImage($product, 'shop_tiny'); ?></a></td>
 	<td class="product-name">
 		<a href="<?php echo $url; ?>"><?php echo $product->getName(); ?></a>
-		<dl class="dl-horizontal">
+		<dl class="dl-horizontal variation-data">
 			<?php foreach ($variation->getAttributes() as $attribute): /** @var $attribute \Jigoshop\Entity\Product\Variable\Attribute */?>
 				<dt><?php echo $attribute->getAttribute()->getLabel(); ?></dt>
 				<dd><?php echo $attribute->printValue($item); ?></dd>
