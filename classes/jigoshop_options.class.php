@@ -14,7 +14,6 @@
  * @copyright   Copyright © 2011-2014 Jigoshop.
  * @license     GNU General Public License v3
  */
-
 /**
  *  ====================
  *
@@ -46,81 +45,79 @@
  *  List each option sequentially for display under each 'title' or 'tab' option type
  *
  *  Each Option may have any or all of the following items: (for an option, 'id' is MANDATORY and should be unique)
-		'tab'           => '',                      - calculated based on position in array
-		'section'       => '',                      - calculated based on position in array
-		'id'            => null,                    - required
-		'type'          => '',                      - required
-		'name'          => __( '', 'jigoshop' ),    - used for Option title in Admin display
-		'desc'          => __( '', 'jigoshop' ),    - option descriptive information appears under the option in Admin
-		'tip'           => __( '', 'jigoshop' ),    - a pop-up tool tip providing help information
-		'std'           => '',                      - required, default value for the option
-		'choices'       => array(),                 - for selects, radios, etc.
-		'class'         => '',                      - any special CSS classes to assign to the options display
-		'display'       => null,        - call back function for 'user_defined' - array( $this, 'function_name' )
-		'update'        => null,        - call back function for 'user_defined' - array( $this, 'function_name' )
-		'extra'         => null,                    - for display and verification - array( 'horizontal' )
+'tab'           => '',                      - calculated based on position in array
+'section'       => '',                      - calculated based on position in array
+'id'            => null,                    - required
+'type'          => '',                      - required
+'name'          => __( '', 'jigoshop' ),    - used for Option title in Admin display
+'desc'          => __( '', 'jigoshop' ),    - option descriptive information appears under the option in Admin
+'tip'           => __( '', 'jigoshop' ),    - a pop-up tool tip providing help information
+'std'           => '',                      - required, default value for the option
+'choices'       => array(),                 - for selects, radios, etc.
+'class'         => '',                      - any special CSS classes to assign to the options display
+'display'       => null,        - call back function for 'user_defined' - array( $this, 'function_name' )
+'update'        => null,        - call back function for 'user_defined' - array( $this, 'function_name' )
+'extra'         => null,                    - for display and verification - array( 'horizontal' )
  *
  *  ====================
  *
  * Example checkbox option definition:              // Choices should be defined with 'yes' and 'no'
-		self::$default_options[] = array(
-			'name'		=> __('Jigoshop Checkbox Testing','jigoshop'),
-			'desc' 		=> '',
-			'tip' 		=> '',
-			'id' 		=> 'jigoshop_checkbox_test',
-			'type' 		=> 'checkbox',
-			'std' 		=> 'yes',
-			'choices'	=> array(
-				'no'			=> __('No', 'jigoshop'),
-				'yes'			=> __('Yes', 'jigoshop')
-			)
-		);
+self::$default_options[] = array(
+'name'		=> __('Jigoshop Checkbox Testing','jigoshop'),
+'desc' 		=> '',
+'tip' 		=> '',
+'id' 		=> 'jigoshop_checkbox_test',
+'type' 		=> 'checkbox',
+'std' 		=> 'yes',
+'choices'	=> array(
+'no'			=> __('No', 'jigoshop'),
+'yes'			=> __('Yes', 'jigoshop')
+)
+);
  *
  *  ====================
  *
  * Example range option definition:
-		self::$default_options[] = array(
-			'name'		=> __('Jigoshop Range Testing','jigoshop'),
-			'desc' 		=> '',
-			'tip' 		=> '',
-			'id' 		=> 'jigoshop_range_test',
-			'type' 		=> 'range',
-			'std' 		=> 100,
-			'extra'		=> array(
-				'min'			=> 50,
-				'max'			=> 300,
-				'step'			=> 5
-			)
-		);
+self::$default_options[] = array(
+'name'		=> __('Jigoshop Range Testing','jigoshop'),
+'desc' 		=> '',
+'tip' 		=> '',
+'id' 		=> 'jigoshop_range_test',
+'type' 		=> 'range',
+'std' 		=> 100,
+'extra'		=> array(
+'min'			=> 50,
+'max'			=> 300,
+'step'			=> 5
+)
+);
  *
  *  ====================
  *
  * Example vertical multicheck option definition:
-		self::$default_options[] = array(
-			'name'		=> __('Display Sidebar on these pages:','jigoshop'),
-			'desc' 		=> '',
-			'tip' 		=> '',
-			'id' 		=> 'jigoshop_multicheck_test',
-			'type' 		=> 'multicheck',
-			"std"		=> array('shop' => true,'category' => false,'single' => true,'cart' => false,'checkout' => true,'account' => true),
-			"choices"	=> array(
-				"shop"			=> "Shop",
-				"category"		=> "Product Categories",
-				"single"		=> "Single Products",
-				"cart"			=> "Cart",
-				"checkout"		=> "Checkout",
-				"account"		=> "Account Pages",
-			),
-			'extra'		=> array( 'vertical' )
-		);
+self::$default_options[] = array(
+'name'		=> __('Display Sidebar on these pages:','jigoshop'),
+'desc' 		=> '',
+'tip' 		=> '',
+'id' 		=> 'jigoshop_multicheck_test',
+'type' 		=> 'multicheck',
+"std"		=> array('shop' => true,'category' => false,'single' => true,'cart' => false,'checkout' => true,'account' => true),
+"choices"	=> array(
+"shop"			=> "Shop",
+"category"		=> "Product Categories",
+"single"		=> "Single Products",
+"cart"			=> "Cart",
+"checkout"		=> "Checkout",
+"account"		=> "Account Pages",
+),
+'extra'		=> array( 'vertical' )
+);
  *
  */
-
 class Jigoshop_Options implements Jigoshop_Options_Interface {
 	private static $default_options;
 	private static $current_options;
 	private $bad_extensions = array();
-
 	/**
 	 * Instantiates a new Options object
 	 *
@@ -129,13 +126,11 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	 */
 	public function __construct(){
 		self::$current_options = array();
-
 		$options = get_option(JIGOSHOP_OPTIONS);
 		if(is_array($options)){
 			self::$current_options = $options;
 		}
 	}
-
 	/**
 	 * Updates the database with the current options
 	 *
@@ -149,7 +144,6 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	public function update_options(){
 		update_option(JIGOSHOP_OPTIONS, self::$current_options);
 	}
-
 	/**
 	 * Adds a named option
 	 * Will do nothing if option already exists to match WordPress behaviour
@@ -169,7 +163,6 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 			}
 		}
 	}
-
 	/**
 	 * Adds a named option to our collection
 	 *
@@ -183,7 +176,6 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	public function add_option($name, $value){
 		$this->add($name, $value);
 	}
-
 	/**
 	 * Returns a named Jigoshop option
 	 *
@@ -204,7 +196,6 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 			return null;
 		}
 	}
-
 	/**
 	 * Returns a named Jigoshop option
 	 *
@@ -216,7 +207,6 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	public function get_option($name, $default = null){
 		return $this->get($name, $default);
 	}
-
 	/**
 	 * Sets a named Jigoshop option
 	 *
@@ -227,7 +217,6 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	public function set($name, $value)
 	{
 		$this->get_current_options();
-
 		if(isset($name)){
 			self::$current_options[$name] = $value;
 			if(!has_action('shutdown', array($this, 'update_options'))){
@@ -235,7 +224,6 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 			}
 		}
 	}
-
 	/**
 	 * Sets a named Jigoshop option
 	 *
@@ -246,7 +234,6 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	public function set_option($name, $value){
 		$this->set($name, $value);
 	}
-
 	/**
 	 * Deletes a named Jigoshop option
 	 *
@@ -262,13 +249,10 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 			if(!has_action('shutdown', array($this, 'update_options'))){
 				add_action('shutdown', array($this, 'update_options'));
 			}
-
 			return true;
 		}
-
 		return false;
 	}
-
 	/**
 	 * Deletes a named Jigoshop option
 	 *
@@ -279,7 +263,6 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	public function delete_option($name){
 		return $this->delete($name);
 	}
-
 	/**
 	 * Determines whether an Option exists
 	 *
@@ -293,10 +276,8 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		if(isset(self::$current_options[$name])){
 			return true;
 		}
-
 		return false;
 	}
-
 	/**
 	 * Determines whether an Option exists
 	 *
@@ -307,7 +288,6 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	public function exists_option($name){
 		return $this->exists($name);
 	}
-
 	/**
 	 * Install additional Tab's to Jigoshop Options
 	 * Extensions would use this to add a new Tab for their own options
@@ -328,10 +308,8 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		if(empty($tab)){
 			return;
 		}
-
 		$our_options = $this->get_default_options();
 		$our_options[] = array('type' => 'tab', 'name' => $tab);
-
 		if(!empty($options)){
 			foreach($options as $option){
 				if(isset($option['id']) && !$this->exists($option['id'])){
@@ -340,10 +318,8 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 				$our_options[] = $option;
 			}
 		}
-
 		self::$default_options = $our_options;
 	}
-
 	/**
 	 * Install additional default options for parsing onto a specific Tab
 	 * Shipping methods, Payment gateways and Extensions would use this
@@ -364,7 +340,6 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		if(empty($tab)){
 			return;
 		}
-
 		$our_options = $this->get_default_options();
 		$first_index = -1;
 		$second_index = -1;
@@ -381,11 +356,9 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 				break;
 			}
 		}
-
 		if($second_index < 0){
 			$second_index = count($our_options);
 		}
-
 		/*** get the start of the array ***/
 		$start = array_slice($our_options, 0, $second_index);
 		/*** get the end of the array ***/
@@ -397,11 +370,9 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 			}
 			$start[] = $option;
 		}
-
 		/*** glue them back together ***/
 		self::$default_options = array_merge($start, $end);
 	}
-
 	/**
 	 * Install additional default options for parsing after a specific option ID
 	 * Extensions would use this
@@ -421,7 +392,6 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		if(empty($insert_after_id)){
 			return;
 		}
-
 		$our_options = $this->get_default_options();
 		$first_index = -1;
 		foreach($our_options as $index => $option){
@@ -431,7 +401,6 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 			$first_index = $index;
 			break;
 		}
-
 		/*** get the start of the array ***/
 		$start = array_slice($our_options, 0, $first_index + 1);
 		/*** get the end of the array ***/
@@ -443,11 +412,9 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 			}
 			$start[] = $option;
 		}
-
 		/*** glue them back together ***/
 		self::$default_options = array_merge($start, $end);
 	}
-
 	/**
 	 * Return the Jigoshop current options
 	 *
@@ -461,10 +428,8 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 			}
 			$this->set_current_options(self::$default_options);
 		}
-
 		return self::$current_options;
 	}
-
 	/**
 	 * Sets the entire Jigoshop current options
 	 *
@@ -477,7 +442,6 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 			add_action('shutdown', array($this, 'update_options'));
 		}
 	}
-
 	/**
 	 * Return the Jigoshop default options
 	 *
@@ -488,10 +452,12 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		if(empty(self::$default_options)){
 			$this->set_default_options();
 		}
-
 		return self::$default_options;
 	}
 
+	public function generate_default_emails(){
+		return '<button type="button" onClick="parent.location=\'admin.php?page=jigoshop_settings&install_emails=1\'">'.__('Generate Defaults', 'jigoshop').'</button>';
+	}
 	/**
 	 * Sets the Jigoshop default options
 	 *
@@ -506,21 +472,17 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	private function set_default_options(){
 		$symbols = jigoshop::currency_symbols();
 		$countries = jigoshop::currency_countries();
-
 		$currencies = array();
 		foreach($countries as $key => $country){
 			$currencies[$key] = $country.' ('.$symbols[$key].')';
 		}
 		$currencies = apply_filters('jigoshop_currencies', $currencies);
-
 		$cSymbol = '';
 		if(function_exists('get_jigoshop_currency_symbol')){
 			$cSymbol = get_jigoshop_currency_symbol();
 		}
-
 		$cCode = $this->get('jigoshop_currency') ? $this->get('jigoshop_currency') : 'GBP';
 		$cSep = $this->get('jigoshop_price_decimal_sep') ? $this->get('jigoshop_price_decimal_sep') : '.';
-
 		self::$default_options = array(
 			// Shop tab
 			array('type' => 'tab', 'name' => __('Shop', 'jigoshop')),
@@ -665,7 +627,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 				'type' => 'text',
 			),
 			array(
-				'name' => __('Product tag slug', 'jigoshop'),
+				'name' => __('Praoduct tag slug', 'jigoshop'),
 				'desc' => '',
 				'tip' => __('Slug displayed in product tag URLs. Leave blank to use default "product-tag"', 'jigoshop'),
 				'id' => 'jigoshop_product_tag_slug',
@@ -674,13 +636,6 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 			// General tab
 			array('type' => 'tab', 'name' => __('General', 'jigoshop')),
 			array('name' => __('General Options', 'jigoshop'), 'type' => 'title', 'desc' => ''),
-			array(
-				'name' => __('Jigoshop email address', 'jigoshop'),
-				'desc' => '',
-				'tip' => __('The email address used to send all Jigoshop related emails, such as order confirmations and notices.  This may be different than your Company email address on "Shop Tab -> Invoicing".', 'jigoshop'),
-				'id' => 'jigoshop_email',
-				'type' => 'email',
-			),
 			array(
 				'name' => __('Cart shows "Return to Shop" button', 'jigoshop'),
 				'desc' => '',
@@ -824,8 +779,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 				'tip' => '',
 				'id' => 'jigoshop_email_generete_defaults',
 				'type' => 'user_defined',
-				'display' => function(){ return '<button type="button" onClick="parent.location=\'admin.php?page=jigoshop_settings&install_emails=1\'">'.__('Generate Defaults', 'jigoshop').'</button>'; }
-
+				'display' => array($this, 'generate_default_emails'),
 			),
 			array('name' => __('Checkout page', 'jigoshop'), 'type' => 'title', 'desc' => ''),
 			array(
@@ -1521,8 +1475,8 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 			),
 		);
 	}
-
 	public function jigoshop_deprecated_options(){
 		echo '<div class="error"><p>'.sprintf(__('The following items, from one or more extensions, have tried to add Jigoshop Settings in a manner that is no longer supported as of Jigoshop 1.3. (%s)', 'jigoshop').'</p></div>', implode(', ', $this->bad_extensions));
 	}
 }
+
