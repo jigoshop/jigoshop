@@ -94,6 +94,7 @@ class Cart implements PageInterface
 
 		$this->customerService->save($customer);
 		$cart = $this->cartService->getCurrent();
+		$cart->setCustomer($customer);
 
 		$response = $this->getAjaxLocationResponse($customer, $cart);
 
@@ -155,6 +156,7 @@ class Cart implements PageInterface
 			'total' => $cart->getTotal(),
 			'html' => array(
 				'shipping' => array_map(function($item) use ($cart) {
+					/** @var $item Method  */
 					return array(
 						'price' => Product::formatPrice($item->calculate($cart)),
 						'html' => Render::get('shop/cart/shipping/method', array('method' => $item, 'cart' => $cart)),
@@ -182,6 +184,7 @@ class Cart implements PageInterface
 		$customer->getShippingAddress()->setState($_POST['value']);
 		$this->customerService->save($customer);
 		$cart = $this->cartService->getCurrent();
+		$cart->setCustomer($customer);
 
 		$response = $this->getAjaxLocationResponse($customer, $cart);
 
@@ -201,6 +204,7 @@ class Cart implements PageInterface
 		$customer->getShippingAddress()->setPostcode($_POST['value']);
 		$this->customerService->save($customer);
 		$cart = $this->cartService->getCurrent();
+		$cart->setCustomer($customer);
 
 		$response = $this->getAjaxLocationResponse($customer, $cart);
 

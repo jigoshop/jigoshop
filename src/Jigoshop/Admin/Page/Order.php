@@ -64,11 +64,11 @@ class Order
 			}
 		});
 
-		$wp->addAction('wp_ajax_jigoshop.admin.order.add_product', array($this, 'addProduct'), 10, 0);
-		$wp->addAction('wp_ajax_jigoshop.admin.order.update_product', array($this, 'updateProduct'), 10, 0);
-		$wp->addAction('wp_ajax_jigoshop.admin.order.remove_product', array($this, 'removeProduct'), 10, 0);
-		$wp->addAction('wp_ajax_jigoshop.admin.order.change_country', array($this, 'changeCountry'), 10, 0);
-		$wp->addAction('wp_ajax_jigoshop.admin.order.change_shipping_method', array($this, 'changeShippingMethod'), 10, 0);
+		$wp->addAction('wp_ajax_jigoshop.admin.order.add_product', array($this, 'ajaxAddProduct'), 10, 0);
+		$wp->addAction('wp_ajax_jigoshop.admin.order.update_product', array($this, 'ajaxUpdateProduct'), 10, 0);
+		$wp->addAction('wp_ajax_jigoshop.admin.order.remove_product', array($this, 'ajaxRemoveProduct'), 10, 0);
+		$wp->addAction('wp_ajax_jigoshop.admin.order.change_country', array($this, 'ajaxChangeCountry'), 10, 0);
+		$wp->addAction('wp_ajax_jigoshop.admin.order.change_shipping_method', array($this, 'ajaxChangeShippingMethod'), 10, 0);
 
 		$that = $this;
 		$wp->addAction('add_meta_boxes_'.Types::ORDER, function() use ($wp, $orderService, $that){
@@ -84,7 +84,7 @@ class Order
 		});
 	}
 
-	public function addProduct()
+	public function ajaxAddProduct()
 	{
 		// TODO: Add invalid data protection
 		try {
@@ -112,7 +112,7 @@ class Order
 		exit;
 	}
 
-	public function updateProduct()
+	public function ajaxUpdateProduct()
 	{
 		// TODO: Add invalid data protection
 		try {
@@ -143,7 +143,7 @@ class Order
 		exit;
 	}
 
-	public function removeProduct()
+	public function ajaxRemoveProduct()
 	{
 		// TODO: Add invalid data protection
 		try {
@@ -162,7 +162,7 @@ class Order
 		exit;
 	}
 
-	public function changeShippingMethod()
+	public function ajaxChangeShippingMethod()
 	{
 		// TODO: Add invalid data protection
 		try {
@@ -183,11 +183,14 @@ class Order
 		exit;
 	}
 
-	public function changeCountry()
+	public function ajaxChangeCountry()
 	{
 		// TODO: Add invalid data protection
 		try {
-			$order = $this->orderService->find($_POST['order']);
+			// TODO: Some kind of workaround for setting global post
+			global $post;
+			$post = $this->wp->getPost((int)$_POST['order']);
+			$order = $this->orderService->findForPost($post);
 			switch ($_POST['type']) {
 				case 'shipping':
 					$address = $order->getCustomer()->getShippingAddress();
@@ -199,19 +202,11 @@ class Order
 
 			$address->setCountry($_POST['value']);
 			$order = $this->rebuildOrder($order);
-			$this->orderService->save($order); // TODO: CHECK
-
-			$shipping = array();
-			foreach ($this->shippingService->getEnabled() as $method) {
-				/** @var $method Method */
-				$shipping[$method->getId()] = $method->calculate($order);
-			}
+			$this->orderService->save($order);
 
 			$result = $this->getAjaxResponse($order);
 			$result['has_states'] = Country::hasStates($address->getCountry());
 			$result['states'] = Country::getStates($address->getCountry());
-			$result['shipping'] = $shipping;
-			$result['html']['shipping'] = array_map(function($item){ return ProductHelper::formatPrice($item); }, $shipping);
 		} catch(Exception $e) {
 			$result = array(
 				'success' => false,
@@ -344,7 +339,7 @@ class Order
 
 		Render::output('admin/order/totalsBox', array(
 			'order' => $order,
-			'shippingMethods' => $this->shippingService->getAvailable(),
+			'shippingMethods' => $this->shippingService->getEnabled(),
 			'tax' => $this->getTaxes($order),
 		));
 	}
@@ -386,13 +381,26 @@ class Order
 			$tax[$class] = $value + $shippingTax[$class];
 		}
 
+		$shipping = array();
+		foreach ($this->shippingService->getAvailable() as $method) {
+			/** @var $method Method */
+			$shipping[$method->getId()] = $method->isEnabled() ? $method->calculate($order) : -1;
+		}
+
 		return array(
 			'success' => true,
+			'shipping' => $shipping,
 			'product_subtotal' => $order->getProductSubtotal(),
 			'subtotal' => $order->getSubtotal(),
 			'total' => $order->getTotal(),
 			'tax' => $tax,
 			'html' => array(
+				'shipping' => array_map(function($item) use ($order) {
+					return array(
+						'price' => ProductHelper::formatPrice($item->calculate($order)),
+						'html' => Render::get('admin/order/totals/shipping_method', array('method' => $item, 'order' => $order)),
+					);
+				}, $this->shippingService->getEnabled()),
 				'product_subtotal' => ProductHelper::formatPrice($order->getProductSubtotal()),
 				'subtotal' => ProductHelper::formatPrice($order->getSubtotal()),
 				'total' => ProductHelper::formatPrice($order->getTotal()),

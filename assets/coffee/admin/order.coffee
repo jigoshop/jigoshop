@@ -183,13 +183,16 @@ class AdminOrder
     jQuery('#total').html(total)
 
   _updateShipping: (shipping, html) ->
-    for own shippingClass, value of html
+    for own shippingClass, value of shipping
       $method = jQuery("#shipping-#{shippingClass}")
-      jQuery('span', $method).html(value)
-      if shipping[shippingClass] != -1
-        $method.show()
-      else
-        $method.hide()
+      if $method.length > 0
+        if value > -1
+          jQuery('span', $method).html(html[shippingClass].price)
+        else
+          $method.slideUp -> jQuery(this).remove()
+      else if html[shippingClass]?
+        $item = jQuery(html[shippingClass].html)
+        $item.hide().appendTo(jQuery('#shipping-methods')).slideDown()
 
   _prepareStateField: (id) ->
     $field = jQuery(id)

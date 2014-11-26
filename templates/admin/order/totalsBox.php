@@ -17,15 +17,9 @@ $orderTax = $order->getTax();
 				<?php echo __('Shipping', 'jigoshop'); ?>
 			</label>
 			<div class="col-sm-9">
-				<ul class="list-group">
+				<ul class="list-group" id="shipping-methods">
 					<?php foreach($shippingMethods as $method): /** @var $method \Jigoshop\Shipping\Method */ ?>
-						<li class="list-group-item" id="shipping-<?php echo $method->getId(); ?>">
-							<label>
-								<input type="radio" name="order[shipping]" value="<?php echo $method->getId(); ?>" <?php echo Forms::checked($order->hasShippingMethod($method), true); ?> />
-								<?php echo $method->getName(); ?>
-							</label>
-							<span class="pull-right"><?php echo Product::formatPrice($method->calculate($order)); ?></span>
-						</li>
+						<?php \Jigoshop\Helper\Render::output('admin/order/totals/shipping_method', array('method' => $method, 'order' => $order)); ?>
 					<?php endforeach; ?>
 				</ul>
 			</div>
