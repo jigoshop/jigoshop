@@ -279,14 +279,18 @@ class Checkout implements PageInterface
 
 				$this->orderService->save($order);
 
-				if ($isPaymentRequired && !$payment->process($order)) {
-					throw new Exception(__('Payment failed. Please try again.', 'jigoshop'));
+				$url = '';
+				if ($isPaymentRequired) {
+					$url = $payment->process($order);
 				}
 
 				// Redirect to thank you page
-				$url = $this->wp->getPermalink($this->options->getPageId(Pages::THANK_YOU));
+				if (empty($url)) {
+					$url = $this->wp->getPermalink($this->wp->applyFilters('jigoshop\checkout\redirect_page_id', $this->settings->getPageId(Pages::THANK_YOU)));
+					$url = $this->wp->addQueryArg(array('order' => $order->getId()), $url); // TODO: Add randomly generated key to prevent data leakage
+				}
+
 				$this->cartService->remove($cart);
-				$url = $this->wp->addQueryArg(array('order' => $order->getId()), $url); // TODO: Add randomly generated key to prevent data leakage
 				$this->wp->wpRedirect($url);
 				exit;
 			} catch(Exception $e) {

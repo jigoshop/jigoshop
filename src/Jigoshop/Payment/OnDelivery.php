@@ -98,11 +98,12 @@ class OnDelivery implements Method
 
 	/**
 	 * @param Order $order Order to process payment for.
-	 * @return bool Is processing successful?
+	 * @return string URL to redirect to.
+	 * @throws Exception On any payment error.
 	 */
 	public function process($order)
 	{
 		$order->updateStatus(Order\Status::PROCESSING, __('Payment on delivery.', 'jigoshop'));
-		return true;
+		return '';
 	}
 }

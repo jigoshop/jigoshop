@@ -98,11 +98,12 @@ class Cheque implements Method
 
 	/**
 	 * @param Order $order Order to process payment for.
-	 * @return bool Is processing successful?
+	 * @return string URL to redirect to.
+	 * @throws Exception On any payment error.
 	 */
 	public function process($order)
 	{
 		$order->updateStatus(Order\Status::ON_HOLD, __('Waiting for cheque to arrive.', 'jigoshop'));
-		return true;
+		return '';
 	}
 }

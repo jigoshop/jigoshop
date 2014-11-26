@@ -3,6 +3,7 @@
 namespace Jigoshop\Core\Types\Product;
 
 use Jigoshop\Admin\Helper\Forms;
+use Jigoshop\Entity\Order;
 use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\Product;
 use Jigoshop\Entity\Product\Attribute;

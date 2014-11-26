@@ -3,6 +3,7 @@
 namespace Jigoshop\Payment;
 
 use Jigoshop\Entity\Order;
+use Jigoshop\Exception;
 
 /**
  * Payment method interface.
@@ -46,7 +47,8 @@ interface Method
 
 	/**
 	 * @param Order $order Order to process payment for.
-	 * @return bool Is processing successful?
+	 * @return string URL to redirect to.
+	 * @throws Exception On any payment error.
 	 */
 	public function process($order);
 }

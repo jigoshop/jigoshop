@@ -1,4 +1,6 @@
-parameters: ~
+parameters:
+  api:
+    paypal: jigoshop.payment.paypal
 services:
   jigoshop.payment.cheque:
     class: Jigoshop\Payment\Cheque
@@ -8,7 +10,6 @@ services:
       - '@jigoshop.service.customer'
     tags:
       - { name: jigoshop.payment.method }
-
   jigoshop.payment.on_delivery:
     class: Jigoshop\Payment\OnDelivery
     arguments:
@@ -17,3 +18,12 @@ services:
       - '@jigoshop.service.customer'
     tags:
       - { name: jigoshop.payment.method }
+  jigoshop.payment.paypal:
+    class: Jigoshop\Payment\PayPal
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.service.customer'
+    tags:
+      - { name: jigoshop.payment.method }
+      - { name: jigoshop.container_aware }

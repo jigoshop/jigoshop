@@ -260,17 +260,15 @@ class Order implements EntityFactoryInterface
 		$items = array();
 
 		for ($i = 0, $endI = count($results); $i < $endI;) {
+			$tax = array();
 			$id = $results[$i]['id'];
+			$product = $this->productService->find($results[$i]['product_id']);
 			$item = new Entity\Item();
 			$item->setId($results[$i]['item_id']);
 			$item->setType($results[$i]['product_type']);
 			$item->setName($results[$i]['title']);
 			$item->setQuantity($results[$i]['quantity']);
 			$item->setPrice($results[$i]['price']);
-
-			$product = $this->productService->find($results[$i]['product_id']);
-			$item->setProduct($product);
-			$tax = array();
 
 			while ($i < $endI && $results[$i]['id'] == $id) {
 				if (strpos($results[$i]['meta_key'], 'tax_') !== false) {
@@ -285,6 +283,8 @@ class Order implements EntityFactoryInterface
 			}
 
 			$item->setTax($tax);
+			$product = $this->wp->applyFilters('jigoshop\factory\order\find_product', $product, $item);
+			$item->setProduct($product);
 			$item->setKey($this->productService->generateItemKey($item));
 			$items[] = $item;
 		}
