@@ -117,11 +117,42 @@ $options = Jigoshop_Base::get_options(); ?>
 		</tbody>
 	</table>
 
-	<?php $coupons = JS_Coupons::get_coupons();
-	if (!empty($coupons)): ?>
-		<div class="coupon">
-			<label for="coupon_code"><?php _e('Coupon', 'jigoshop'); ?>:</label>
-			<input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" />
-		</div><br />
-	<?php endif; ?>
+	<?php $coupons = jigoshop_cart::get_coupons();?>
+	<table>
+		<tr>
+			<td colspan="6" class="actions">
+				<?php if (JS_Coupons::has_coupons()): ?>
+					<div class="coupon">
+						<label for="coupon_code"><?php _e('Coupon', 'jigoshop'); ?>:</label> <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" />
+						<input type="submit" class="button" name="apply_coupon" value="<?php _e('Apply Coupon', 'jigoshop'); ?>" />
+					</div>
+				<?php endif; ?>
+
+				<?php jigoshop::nonce_field('cart') ?>
+
+				<?php if ($options->get('jigoshop_cart_shows_shop_button') == 'no'): ?>
+					<noscript>
+						<input type="submit" class="button" name="update_cart" value="<?php _e('Update Shopping Cart', 'jigoshop'); ?>" />
+					</noscript>
+					<a href="<?php echo esc_url(jigoshop_cart::get_checkout_url()); ?>" class="checkout-button button-alt"><?php _e('Proceed to Checkout &rarr;', 'jigoshop'); ?></a>
+				<?php else: ?>
+					<noscript>
+						<input type="submit" class="button" name="update_cart" value="<?php _e('Update Shopping Cart', 'jigoshop'); ?>" />
+					</noscript>
+				<?php endif; ?>
+			</td>
+			<?php if (count($coupons)): ?>
+				<td class="applied-coupons">
+					<div>
+						<span class="applied-coupons-label"><?php _e('Applied Coupons: ', 'jigoshop'); ?></span>
+						<?php foreach ($coupons as $code): ?>
+							<a href="?unset_coupon=<?php echo $code; ?>" id="<?php echo $code; ?>" class="applied-coupons-values"><?php echo $code; ?>
+								<span class="close">&times;</span>
+							</a>
+						<?php endforeach; ?>
+					</div>
+				</td>
+			<?php endif; ?>
+		</tr>
+	</table>
 </div>
