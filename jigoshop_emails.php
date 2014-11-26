@@ -76,7 +76,12 @@ add_action('jigoshop_product_on_backorder_notification', function ($order_id, $p
 	}
 }, 1, 3);
 
-function get_order_email_arguments($order_id){
+function get_order_email_arguments($order_id)
+{
+	$options = Jigoshop_Base::get_options();
+	$order = new jigoshop_order($order_id);
+	$inc_tax = ($options->get('jigoshop_calc_taxes') == 'no') || ($options->get('jigoshop_prices_include_tax') == 'yes');
+
 	return apply_filters('jigoshop_order_email_variables', array(
 		'order_number' => $order->get_order_number(),
 		'order_date' => date_i18n(get_option('date_format')),
@@ -163,22 +168,6 @@ function get_order_email_arguments_description()
 		'shipping_state' => __('Shipping State', 'jigoshop'),
 		'customer_note' => __('Customer Note', 'jigoshop'),
 	));
-}
-
-function get_stock_email_arguments($product)
-{
-	$options = Jigoshop_Base::get_options();
-	return array(
-		'shop_name' => $options->get('jigoshop_company_name'),
-		'shop_address_1' => $options->get('jigoshop_address_1'),
-		'shop_address_2' => $options->get('jigoshop_address_2'),
-		'shop_tax_number' => $options->get('jigoshop_tax_number'),
-		'shop_phone' => $options->get('jigoshop_company_phone'),
-		'shop_email' => $options->get('jigoshop_company_email'),
-		'product_id' => $product->id,
-		'product_name' => $product->get_title(),
-		'sku' => $product->sku,
-	);
 }
 
 function get_stock_email_arguments($product)
