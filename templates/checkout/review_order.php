@@ -127,19 +127,6 @@ $options = Jigoshop_Base::get_options(); ?>
 						<input type="submit" class="button" name="apply_coupon" value="<?php _e('Apply Coupon', 'jigoshop'); ?>" />
 					</div>
 				<?php endif; ?>
-
-				<?php jigoshop::nonce_field('cart') ?>
-
-				<?php if ($options->get('jigoshop_cart_shows_shop_button') == 'no'): ?>
-					<noscript>
-						<input type="submit" class="button" name="update_cart" value="<?php _e('Update Shopping Cart', 'jigoshop'); ?>" />
-					</noscript>
-					<a href="<?php echo esc_url(jigoshop_cart::get_checkout_url()); ?>" class="checkout-button button-alt"><?php _e('Proceed to Checkout &rarr;', 'jigoshop'); ?></a>
-				<?php else: ?>
-					<noscript>
-						<input type="submit" class="button" name="update_cart" value="<?php _e('Update Shopping Cart', 'jigoshop'); ?>" />
-					</noscript>
-				<?php endif; ?>
 			</td>
 			<?php if (count($coupons)): ?>
 				<td class="applied-coupons">
