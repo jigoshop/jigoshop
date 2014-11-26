@@ -722,13 +722,17 @@ class jigoshop_cart extends Jigoshop_Singleton
 			// for final Orders in the Admin we always need tax out
 			if ($order_exclude_tax) {
 				$subtotal = self::get_options()->get('jigoshop_prices_include_tax') == 'yes' ? self::$subtotal_ex_tax : $subtotal;
-				$tax_label = 1; //ex. tax
+				if(self::get_options()->get('jigoshop_show_prices_with_tax') == 'yes') {
+					$tax_label = 1; //ex. tax
+				}
 			} else {
 				if (self::get_options()->get('jigoshop_prices_include_tax') == 'yes') {
 					$tax_label = 2; //inc. tax
 				} else {
 					$subtotal = self::$subtotal_ex_tax;
-					$tax_label = 1; //inc. tax
+					if(self::get_options()->get('jigoshop_show_prices_with_tax') == 'yes') {
+						$tax_label = 1; //inc. tax
+					}
 				}
 			}
 		}
