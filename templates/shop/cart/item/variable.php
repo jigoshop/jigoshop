@@ -7,8 +7,7 @@ use Jigoshop\Helper\Product;
  * @var $item \Jigoshop\Entity\Order\Item Cart item to display.
  * @var $showWithTax bool Whether to show product price with or without tax.
  */
-?>
-<?php
+
 /** @var \Jigoshop\Entity\Product\Variable $product */
 $product = $item->getProduct();
 $variation = $product->getVariation($item->getMeta('variation_id')->getValue());
