@@ -35,6 +35,7 @@ class Products
 		// TODO: Introduce proper category filter
 //		$wp->addAction('restrict_manage_posts', array($this, 'categoryFilter'));
 		$wp->addAction('restrict_manage_posts', array($this, 'typeFilter'));
+		$wp->addAction('pre_get_posts', array($this, 'setTypeFilter'));
 		$wp->addAction('wp_ajax_jigoshop.admin.products.feature_product', array($this, 'ajaxFeatureProduct'));
 
 		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $styles, $scripts){
@@ -183,12 +184,27 @@ class Products
 				'count' => $this->getTypeCount($type),
 			);
 		}
-		$currentType = $this->wp->getQueryParameter('product_type');
+		$currentType = $_GET['product_type'];
 
 		Render::output('admin/products/typeFilter', array(
 			'types' => $types,
 			'current' => $currentType
 		));
+	}
+
+	/**
+	 * @param $query \WP_Query
+	 */
+	public function setTypeFilter($query)
+	{
+		if (isset($_GET['product_type']) && in_array($_GET['product_type'], array_keys($this->type->getEnabledTypes()))) {
+			$meta = $query->meta_query;
+			$meta[] = array(
+				'key' => 'type',
+				'value' => $_GET['product_type'],
+			);
+			$query->set('meta_query', $meta);
+		}
 	}
 
 	/**
@@ -199,7 +215,11 @@ class Products
 	 */
 	private function getTypeCount($type)
 	{
-		// TODO: Implement fetching count of selected type
-		return 0;
+		$wpdb = $this->wp->getWPDB();
+		return $wpdb->get_var($wpdb->prepare("
+			SELECT COUNT(*) FROM {$wpdb->posts} p
+				LEFT JOIN {$wpdb->postmeta} pm ON pm.post_id = p.ID
+				WHERE pm.meta_key = %s AND pm.meta_value = %s
+		", array('type', $type->getId())));
 	}
 }

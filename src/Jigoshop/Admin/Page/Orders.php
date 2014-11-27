@@ -122,8 +122,9 @@ class Orders
 		if ($post->post_type == Types::ORDER) {
 			$fullFormat = _x('Y/m/d g:i:s A', 'time', 'jigoshop');
 			$format = _x('Y/m/d', 'time', 'jigoshop');
-			// TODO: Exclude mysql2date to WPAL
-			echo '<time title="'.mysql2date($fullFormat, $post->post_date).'">'.apply_filters('post_date_column_time', mysql2date($format, $post->post_date), $post ).'</time>';
+			$fullDate = $this->wp->getHelpers()->mysql2date($fullFormat, $post->post_date);
+			$date = $this->wp->getHelpers()->mysql2date($format, $post->post_date);
+			echo '<time title="'.$fullDate.'">'.$this->wp->applyFilters('post_date_column_time', $date, $post ).'</time>';
 		}
 
 		return $actions;

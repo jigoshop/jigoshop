@@ -233,8 +233,11 @@ class Product
 
 	public function ajaxFindProduct()
 	{
-		// TODO: Add invalid data protection.
-		$products = $this->productService->findLike($_POST['product']);
+		$query = trim(htmlspecialchars(strip_tags($_POST['product'])));
+		$products = array();
+		if (!empty($query)) {
+			$products = $this->productService->findLike($query);
+		}
 
 		$result = array(
 			'success' => true,
