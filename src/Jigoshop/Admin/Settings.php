@@ -214,7 +214,7 @@ class Settings implements PageInterface
 				Forms::constant($field);
 				break;
 			default:
-				// TODO: Filter for custom admin field types.
+				$this->wp->doAction('jigoshop\admin\settings\form_field\\'.$field['type'], $field);
 		}
 	}
 
