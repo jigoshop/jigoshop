@@ -10,8 +10,14 @@
     color: @btn-danger-bg;
   }
   a.badge[data-toggle=tooltip] {
+    &:hover {
+      color: @badge-link-hover-color;
+      text-decoration: none;
+    }
+
     text-decoration: none;
-    cursor: default;
+    cursor: help;
+    vertical-align: middle;
   }
   .table tbody>tr>td.vert-align {
     vertical-align: middle;

@@ -22,14 +22,15 @@ $hasLabel = !empty($label);
 			<a href="#" data-toggle="tooltip" class="badge" data-placement="top" title="<?php echo $tip; ?>">?</a>
 		<?php endif; ?>
 	</label>
-	<?php elseif(!empty($tip)): ?>
-		<a href="#" data-toggle="tooltip" class="badge" data-placement="top" title="<?php echo $tip; ?>">?</a>
 	<?php endif; ?>
 	<div class="checkbox-inline">
 		<?php if(!$multiple): ?>
 			<input type="hidden" name="<?php echo $name; ?>" value="off" />
 		<?php endif; ?>
 		<input type="checkbox" id="<?php echo $id; ?>" name="<?php echo $name; ?>" class="<?php echo join(' ', $classes); ?>" <?php echo Forms::checked($checked, true); ?> value="<?php echo $value; ?>" />
+		<?php if(!$hasLabel && !empty($tip)): ?>
+		<a href="#" data-toggle="tooltip" class="badge" data-placement="top" title="<?php echo $tip; ?>">?</a>
+		<?php endif; ?>
 		<?php if(!empty($description)): ?>
 			<span class="help"><?php echo $description; ?></span>
 		<?php endif; ?>
