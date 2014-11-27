@@ -98,6 +98,7 @@ class Order implements OrderServiceInterface
 			$post = $this->wp->wpInsertPost(array(
 				'post_type' => Types::ORDER,
 				'post_title' => $object->getTitle(),
+				'post_status' => $object->getStatus(),
 			));
 
 			if (!is_int($post) || $post === 0) {
@@ -107,15 +108,33 @@ class Order implements OrderServiceInterface
 			$object->setId($post);
 		}
 
-		if (!$object->getNumber()) {
-			$object->setNumber($this->getNextOrderNumber());
+		$this->_saveData($object);
+	}
+
+	private function _saveData(EntityInterface $order, $savingPost = false)
+	{
+		if (!$order->getNumber()) {
+			$order->setNumber($this->getNextOrderNumber());
 		}
 
-		$fields = $object->getStateToSave();
+		$fields = $order->getStateToSave();
 
-		/** @var \Jigoshop\Entity\Order $object */
+		/** @var \Jigoshop\Entity\Order $order */
 		if (isset($fields['id'])) {
 			unset($fields['id']);
+		}
+
+		$wpdb = $this->wp->getWPDB();
+
+		if (isset($fields['status']) || isset($fields['number'])) {
+			if (!$savingPost) {
+				$wpdb->update($wpdb->posts, array(
+					'post_title' => $order->getTitle(),
+					'post_status' => $order->getStatus(),
+				), array('ID' => $order->getId()));
+			}
+
+			unset($fields['status']);
 		}
 
 		if (isset($fields['customer_note']) || isset($fields['status'])) {
@@ -124,17 +143,16 @@ class Order implements OrderServiceInterface
 		}
 
 		if (isset($fields['items'])) {
-			$wpdb = $this->wp->getWPDB();
 			$existing = array_map(function($item){
 				/** @var $item Item */
 				return $item->getId();
 			}, $fields['items']);
-			$this->removeAllExcept($object->getId(), $existing);
+			$this->removeAllExcept($order->getId(), $existing);
 
 			foreach ($fields['items'] as $item) {
 				/** @var $item Item */
 				$data = array(
-					'order_id' => $object->getId(),
+					'order_id' => $order->getId(),
 					'product_id' => $item->getProduct() ? $item->getProduct()->getId() : null,
 					'product_type' => $item->getType(),
 					'title' => $item->getName(),
@@ -173,7 +191,7 @@ class Order implements OrderServiceInterface
 		}
 
 		foreach ($fields as $field => $value) {
-			$this->wp->updatePostMeta($object->getId(), $field, esc_sql($value)); // TODO: Replace esc_sql() with WPAL
+			$this->wp->updatePostMeta($order->getId(), $field, esc_sql($value)); // TODO: Replace esc_sql() with WPAL
 		}
 	}
 
@@ -198,7 +216,7 @@ class Order implements OrderServiceInterface
 		// Do not save order when trashing or restoring from trash
 		if (!isset($_GET['action'])) {
 			$order = $this->factory->create($id);
-			$this->save($order);
+			$this->_saveData($order, true);
 		}
 	}
 
