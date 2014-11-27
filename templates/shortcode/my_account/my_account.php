@@ -30,6 +30,7 @@
 		<?php endif; ?>
 		<th><span class="nobr"><?php _e('Total', 'jigoshop'); ?></span></th>
 		<th colspan="2"><span class="nobr"><?php _e('Status', 'jigoshop'); ?></span></th>
+		<?php do_action('jigoshop_my_account_orders_thead'); ?>
 	</tr>
 	</thead>
 	<tbody><?php
@@ -66,6 +67,7 @@
 			<?php endif; ?>
 			<a href="<?php echo esc_url( add_query_arg('order', $order->id, apply_filters('jigoshop_get_view_order_page_id', get_permalink(jigoshop_get_page_id('view_order')))) ); ?>" class="button"><?php _e('View', 'jigoshop'); ?></a>
 		</td>
+		<?php do_action('jigoshop_my_account_orders_tbody', $order); ?>
 		</tr><?php
 	endforeach;
 	?></tbody>
