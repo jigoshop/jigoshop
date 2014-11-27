@@ -28,7 +28,7 @@ class Order
 			$status = Status::CREATED;
 		}
 		$text = $statuses[$status];
-		return sprintf('<mark class="%s">%s</mark>', $status, $text);
+		return sprintf('<mark class="%s" title="%s">%s</mark>', $status, $text, $text);
 	}
 
 	public static function getUserLink($customer)

@@ -141,17 +141,19 @@ class Dashboard implements PageInterface
 	{
 		/** @noinspection PhpUnusedLocalVariableInspection */
 		// TODO: Replace \WP_Query in order to make Jigoshop testable
+		$statuses = Order\Status::getStatuses();
+		unset($statuses[Order\Status::CANCELLED], $statuses[Order\Status::REFUNDED]);
 		$orders = $this->orderService->findByQuery(new \WP_Query(array(
 			'numberposts' => 10,
 			'orderby' => 'post_date',
 			'order' => 'DESC',
-			'post_type' => 'shop_order',
-			'post_status' => 'publish'
+			'post_type' => Types::ORDER,
+			'post_status' => array_keys($statuses),
 		)));
-		// TODO: Implement after finishing implementing Orders
-//		Render::output('admin/dashboard/recentOrders', array(
-//			'orders' => $orders,
-//		));
+
+		Render::output('admin/dashboard/recentOrders', array(
+			'orders' => $orders,
+		));
 	}
 
 	/**

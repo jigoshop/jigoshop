@@ -1,0 +1,41 @@
+@import '../variables.less';
+
+mark {
+  display: block;
+  text-align: left;
+  text-indent: -9999px;
+  background: #ffffff;
+  height: 16px;
+  width: 16px;
+  background: #ffffff;
+  -webkit-box-shadow: inset 0 0 0 3px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  margin: 1px auto;
+  font-size: 9px;
+  text-transform: uppercase;
+  color: #ffffff;
+  font-weight: bold;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+  -webkit-transition: all ease-in-out .1s;
+}
+mark.jigoshop-new {
+  background: @order-new-color;
+}
+mark.jigoshop-pending {
+  background: @order-pending-color;
+}
+mark.jigoshop-completed {
+  background: @order-completed-color;
+}
+mark.jigoshop-on-hold {
+  background: @order-on-hold-color;
+}
+mark.jigoshop-cancelled {
+  background: @order-cancelled-color;
+}
+mark.jigoshop-processing {
+  background: @order-processing-color;
+}
+mark.jigoshop-refunded {
+  background: @order-refunded-color;
+}
