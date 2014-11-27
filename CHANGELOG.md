@@ -1,5 +1,9 @@
 ## Changelog
 
+* 1.13.3:
+    * Improved: [shipping] variable was divided into [shipping_cost] and [shipping_method].
+    * Fix: Default emails now install properly on jigoshop update.
+    * Fix: Urls for dummy products.
 * 1.13.2 - 2014-11-26:
     * Improved: Additional email variables `[total_tax]`, `[is_local_pickup]`, `[checkout_url]`, `[payment_method]`.
     * Improved: Coupons now can be added or removed in checkout.

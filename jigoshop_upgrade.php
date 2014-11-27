@@ -34,6 +34,9 @@ function jigoshop_upgrade()
 	if ($jigoshop_db_version < 1409050) {
 		jigoshop_upgrade_1_10_6();
 	}
+	if ($jigoshop_db_version < 1411270) {
+		jigoshop_upgrade_1_13_3();
+	}
 	// Update the db option
 	update_site_option('jigoshop_db_version', JIGOSHOP_DB_VERSION);
 }
@@ -83,4 +86,16 @@ function jigoshop_upgrade_1_10_6()
 	/** @var WP_Rewrite $wp_rewrite */
 	global $wp_rewrite;
 	$wp_rewrite->flush_rules(true);
+}
+
+function jigoshop_upgrade_1_13_3(){
+	$args = array(
+		'post_type' => 'shop_email',
+		'post_status' => 'publish',
+	);
+
+	$emails_array = get_posts($args);
+	if(empty($emails_array)){
+		do_action('jigoshop_install_emails');
+	}
 }
