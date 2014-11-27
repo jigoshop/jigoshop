@@ -13,6 +13,7 @@ services:
     arguments:
       - '@wpal'
       - '@jigoshop.options'
+      - '@jigoshop.messages'
       - '@jigoshop.helper.scripts'
     tags:
       - { name: jigoshop.admin.settings.tab }
