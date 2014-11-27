@@ -104,33 +104,32 @@ class Dashboard implements PageInterface
 	 */
 	public function rightNow()
 	{
-		$num_posts = $this->wp->wpCountPosts(Types::PRODUCT);
-		/** @noinspection PhpUnusedLocalVariableInspection */
-		$productCount = $this->wp->getHelpers()->numberFormatI18n($num_posts->publish);
-		/** @noinspection PhpUnusedLocalVariableInspection */
-		$categoryCount = 0;
-		/** @noinspection PhpUnusedLocalVariableInspection */
-		$tagCount = 0;
-		/** @noinspection PhpUnusedLocalVariableInspection */
-		$attributesCount = 0;
-		/** @noinspection PhpUnusedLocalVariableInspection */
-		$pendingCount = 0;
-		/** @noinspection PhpUnusedLocalVariableInspection */
-		$onHoldCount = 0;
-		/** @noinspection PhpUnusedLocalVariableInspection */
-		$processingCount = 0;
-		/** @noinspection PhpUnusedLocalVariableInspection */
-		$completedCount = 0;
+		$counts = $this->wp->wpCountPosts(Types::PRODUCT);
+		$productCount = $counts->publish;
+		$categoryCount = $this->wp->wpCountTerms(Types::PRODUCT_CATEGORY);
+		$tagCount = $this->wp->wpCountTerms(Types::PRODUCT_TAG);
+		$attributesCount = 0; // TODO: Fetch attributes count
+		$counts = $this->wp->wpCountPosts(Types::ORDER);
+		$newCount = $counts->{Order\Status::CREATED};
+		$pendingCount = $counts->{Order\Status::PENDING};
+		$onHoldCount = $counts->{Order\Status::ON_HOLD};
+		$processingCount = $counts->{Order\Status::PROCESSING};
+		$completedCount = $counts->{Order\Status::COMPLETED};
+		$cancelledCount = $counts->{Order\Status::CANCELLED};
+		$refundedCount = $counts->{Order\Status::REFUNDED};
 
 		Render::output('admin/dashboard/rightNow', array(
 			'productCount' => $productCount,
 			'categoryCount' => $categoryCount,
 			'tagCount' => $tagCount,
 			'attributesCount' => $attributesCount,
+			'newCount' => $newCount,
 			'pendingCount' => $pendingCount,
 			'onHoldCount' => $onHoldCount,
 			'processingCount' => $processingCount,
 			'completedCount' => $completedCount,
+			'cancelledCount' => $cancelledCount,
+			'refundedCount' => $refundedCount,
 		));
 	}
 
