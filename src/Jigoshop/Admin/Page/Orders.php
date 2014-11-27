@@ -6,11 +6,11 @@ use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\Order\Status;
 use Jigoshop\Helper\Order as OrderHelper;
-use Jigoshop\Helper\Product;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
 use Jigoshop\Service\OrderServiceInterface;
+use Jigoshop\Service\TaxServiceInterface;
 use WPAL\Wordpress;
 
 class Orders
@@ -21,12 +21,15 @@ class Orders
 	private $options;
 	/** @var \Jigoshop\Service\OrderServiceInterface */
 	private $orderService;
+	/** @var TaxServiceInterface */
+	private $taxService;
 
-	public function __construct(Wordpress $wp, Options $options, OrderServiceInterface $orderService, Styles $styles, Scripts $scripts)
+	public function __construct(Wordpress $wp, Options $options, OrderServiceInterface $orderService, TaxServiceInterface $taxService, Styles $styles, Scripts $scripts)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->orderService = $orderService;
+		$this->taxService = $taxService;
 
 		$wp->addFilter('request', array($this, 'request'));
 		$wp->addFilter('post_row_actions', array($this, 'displayTitle'));
@@ -99,8 +102,13 @@ class Orders
 				));
 				break;
 			case 'total':
-				// TODO: Add proper displaying (subtotal, taxes, discounts and total table)
-				echo Product::formatPrice($order->getTotal());
+				$taxService = $this->taxService;
+				Render::output('admin/orders/totals', array(
+					'order' => $order,
+					'getTaxLabel' => function($taxClass) use ($taxService) {
+						return $taxService->getLabel($taxClass);
+					},
+				));
 				break;
 		}
 	}

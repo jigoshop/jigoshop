@@ -9,8 +9,8 @@ use Jigoshop\Entity\Order\Status;
 use Jigoshop\Exception;
 use Jigoshop\Payment\Method as PaymentMethod;
 use Jigoshop\Service\TaxServiceInterface;
-use Jigoshop\Shipping\Method;
 use Jigoshop\Shipping\Method as ShippingMethod;
+use Jigoshop\Shipping\Method;
 use WPAL\Wordpress;
 
 /**
@@ -506,6 +506,19 @@ class Order implements EntityInterface, OrderInterface
 	public function setShippingTax($shippingTax)
 	{
 		$this->shippingTax = $shippingTax;
+	}
+
+	/**
+	 * @return array All tax data combined.
+	 */
+	public function getCombinedTax()
+	{
+		$tax = $this->tax;
+		foreach ($this->shippingTax as $class => $value) {
+			$tax[$class] += $value;
+		}
+
+		return $tax;
 	}
 
 	/**
