@@ -98,6 +98,11 @@ class Options
 				'title' => 'On delivery',
 				'description' => 'Pay when your order arrives at your doorstep!',
 			),
+			'paypal' => array(
+				'enabled' => false,
+				'title' => 'PayPal',
+				'description' => "Pay via PayPal; you can pay with your credit card if you don't have a PayPal account.",
+			),
 		)
 	);
 	private $options = array();

@@ -53,7 +53,12 @@ class PayPal implements Method, Processable, ContainerAware
 	 */
 	public function getName()
 	{
-		return $this->wp->isAdmin() ? __('PayPal', 'jigoshop') : $this->settings['title'];
+		return $this->wp->isAdmin() ? $this->getLogoImage().' '.__('PayPal', 'jigoshop') : $this->settings['title'];
+	}
+
+	private function getLogoImage()
+	{
+		return '<img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_37x23.jpg" alt="" class="payment-logo" />';
 	}
 
 	/**
