@@ -7,8 +7,11 @@
  * @var $classes array List of classes to add to the field.
  * @var $placeholder string Field's placeholder.
  * @var $value mixed Current value.
+ * @var $disabled bool Is field disabled?
  * @var $tip string Tip to show to the user.
  * @var $description string Field description.
+ * @var $hidden boolean Whether the field is hidden.
+ * @var $size int Size of form widget.
  */
 $hasLabel = !empty($label);
 ?>

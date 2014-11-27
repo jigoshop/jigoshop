@@ -80,7 +80,7 @@ class Product implements ProductServiceInterface
 	{
 		$post = $this->wp->getPost($state['id']);
 		$product = $this->factory->fetch($post);
-		// TODO: Restore state if needed
+		$product->restoreState($state);
 		return $product;
 	}
 
@@ -203,7 +203,7 @@ class Product implements ProductServiceInterface
 			));
 		} else {
 			$wpdb->insert($wpdb->prefix.'jigoshop_product_attribute', $data);
-			// TODO: Set attribute to EXISTS
+			$attribute->setExists(Attribute::PRODUCT_ATTRIBUTE_EXISTS);
 		}
 
 		foreach ($attribute->getFieldsToSave() as $field) {

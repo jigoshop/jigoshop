@@ -59,11 +59,19 @@ abstract class Attribute
 	}
 
 	/**
-	 * @return boolean
+	 * @return boolean Is this attribute in the database?
 	 */
 	public function exists()
 	{
 		return $this->exists;
+	}
+
+	/**
+	 * @param $exists boolean Set attribute to be in the database or not.
+	 */
+	public function setExists($exists)
+	{
+		$this->exists = $exists;
 	}
 
 	/**

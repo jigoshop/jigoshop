@@ -50,7 +50,6 @@ class Shipping implements ShippingServiceInterface
 	public function findForState(array $state)
 	{
 		$method = $this->get($state['id']);
-		// TODO: Maybe some kind of state refreshing?
 		return $method;
 	}
 
@@ -62,7 +61,19 @@ class Shipping implements ShippingServiceInterface
 	 */
 	public function getCheapest(Cart $cart)
 	{
-		// TODO: Implement getCheapest() method.
+		$cheapest = null;
+		$cheapestPrice = PHP_INT_MAX;
+
+		foreach ($this->getEnabled() as $method) {
+			/** @var Method $method */
+			$price = $method->calculate($cart);
+
+			if ($price < $cheapestPrice) {
+				$cheapest = $method;
+			}
+		}
+
+		return $cheapest;
 	}
 
 	/**

@@ -86,11 +86,20 @@ class Order
 
 	public function ajaxAddProduct()
 	{
-		// TODO: Add invalid data protection
 		try {
-			$order = $this->orderService->find($_POST['order']);
+			$order = $this->orderService->find((int)$_POST['order']);
+
+			if ($order->getId() === null) {
+				throw new Exception(__('Order not found.', 'jigoshop'));
+			}
+
 			/** @var Product|Product\Purchasable $product */
-			$product = $this->productService->find($_POST['product']);
+			$product = $this->productService->find((int)$_POST['product']);
+
+			if ($product->getId() === null) {
+				throw new Exception(__('Product not found.', 'jigoshop'));
+			}
+
 			$item = $this->formatItem($order, $product);
 			$order->addItem($item);
 			$this->orderService->save($order);
@@ -114,9 +123,19 @@ class Order
 
 	public function ajaxUpdateProduct()
 	{
-		// TODO: Add invalid data protection
 		try {
-			$order = $this->orderService->find($_POST['order']);
+			if (!is_numeric($_POST['quantity']) || $_POST['quantity'] < 0) {
+				throw new Exception(__('Invalid quantity value.', 'jigoshop'));
+			}
+			if (!is_numeric($_POST['price']) || $_POST['price'] < 0) {
+				throw new Exception(__('Invalid product price.', 'jigoshop'));
+			}
+
+			$order = $this->orderService->find((int)$_POST['order']);
+
+			if ($order->getId() === null) {
+				throw new Exception(__('Order not found.', 'jigoshop'));
+			}
 
 			$item = $order->removeItem($_POST['product']);
 			$item->setQuantity((int)$_POST['quantity']);
@@ -145,9 +164,13 @@ class Order
 
 	public function ajaxRemoveProduct()
 	{
-		// TODO: Add invalid data protection
 		try {
-			$order = $this->orderService->find($_POST['order']);
+			$order = $this->orderService->find((int)$_POST['order']);
+
+			if ($order->getId() === null) {
+				throw new Exception(__('Order not found.', 'jigoshop'));
+			}
+
 			$order->removeItem($_POST['product']);
 			$this->orderService->save($order);
 			$result = $this->getAjaxResponse($order);
@@ -164,9 +187,13 @@ class Order
 
 	public function ajaxChangeShippingMethod()
 	{
-		// TODO: Add invalid data protection
 		try {
-			$order = $this->orderService->find($_POST['order']);
+			$order = $this->orderService->find((int)$_POST['order']);
+
+			if ($order->getId() === null) {
+				throw new Exception(__('Order not found.', 'jigoshop'));
+			}
+
 			$shippingMethod = $this->shippingService->get($_POST['method']);
 			$order->setShippingMethod($shippingMethod, $this->taxService);
 			$order = $this->rebuildOrder($order);
@@ -185,12 +212,20 @@ class Order
 
 	public function ajaxChangeCountry()
 	{
-		// TODO: Add invalid data protection
 		try {
+			if (!in_array($_POST['value'], array_keys(Country::getAll()))) {
+				throw new Exception(__('Invalid country.', 'jigoshop'));
+			}
+
 			// TODO: Some kind of workaround for setting global post
 			global $post;
 			$post = $this->wp->getPost((int)$_POST['order']);
 			$order = $this->orderService->findForPost($post);
+
+			if ($order->getId() === null) {
+				throw new Exception(__('Order not found.', 'jigoshop'));
+			}
+
 			switch ($_POST['type']) {
 				case 'shipping':
 					$address = $order->getCustomer()->getShippingAddress();
@@ -217,6 +252,8 @@ class Order
 		echo json_encode($result);
 		exit;
 	}
+
+	// TODO: Change actions for state and postcode
 
 	public function dataBox()
 	{

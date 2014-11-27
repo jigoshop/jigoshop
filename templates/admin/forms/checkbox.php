@@ -9,8 +9,11 @@ use Jigoshop\Admin\Helper\Forms;
  * @var $value mixed Current value.
  * @var $checked boolean Whether checkbox is checked.
  * @var $multiple boolean Whether checkbox is with multiple values.
+ * @var $disabled bool Is field disabled?
  * @var $tip string Tip to show to the user.
  * @var $description string Field description.
+ * @var $hidden boolean Whether the field is hidden.
+ * @var $size int Size of form widget.
  */
 $hasLabel = !empty($label);
 ?>

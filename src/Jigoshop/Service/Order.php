@@ -220,36 +220,38 @@ class Order implements OrderServiceInterface
 	 */
 	public function findFromMonth($month)
 	{
-//		function orders_this_month( $where = '' ) {
-//			global $current_month_offset;
-//
-//			$month = $current_month_offset;
-//			$year = (int) date('Y');
-//
-//			$first_day = strtotime("{$year}-{$month}-01");
-//			$last_day = strtotime('-1 second', strtotime('+1 month', $first_day));
-//
-//			$after = date('Y-m-d H:i:s', $first_day);
-//			$before = date('Y-m-d H:i:s', $last_day);
-//
-//			$where .= " AND post_date >= '$after'";
-//			$where .= " AND post_date <= '$before'";
-//
-//			return $where;
-//		}
-//		add_filter( 'posts_where', 'orders_this_month' );
-//
-//		$args = array(
-//			'numberposts'     => -1,
-//			'orderby'         => 'post_date',
-//			'order'           => 'DESC',
-//			'post_type'       => 'shop_order',
-//			'post_status'     => 'publish' ,
-//			'suppress_filters'=> false
-//		);
-//		$orders = get_posts( $args );
-		// TODO: Implement findFromMonth() method.
-		return array();
+		$restriction = function( $where = '' ) use ($month) {
+			$year = (int)date('Y');
+
+			$firstDay = strtotime("{$year}-{$month}-01");
+			$lastDay = strtotime('-1 second', strtotime('+1 month', $firstDay));
+
+			$after = date('Y-m-d H:i:s', $firstDay);
+			$before = date('Y-m-d H:i:s', $lastDay);
+
+			$where .= " AND post_date >= '$after'";
+			$where .= " AND post_date <= '$before'";
+
+			return $where;
+		};
+
+		$statuses = Status::getStatuses();
+		unset($statuses[Status::CANCELLED], $statuses[Status::REFUNDED]);
+
+		$this->wp->addFilter('posts_where', $restriction);
+		$query = new \WP_Query(array(
+			'post_status' => $statuses,
+			'post_type' => Types::ORDER,
+			'suppress_filters' => false,
+			'fields' => 'ids',
+			'order' => 'DESC',
+			'orderby' => 'post_date',
+			'numberposts' => -1,
+		));
+		$results = $this->findByQuery($query);
+		$this->wp->removeFilter('posts_where', $restriction);
+
+		return $results;
 	}
 
 	/**

@@ -122,7 +122,6 @@ class Tax implements TaxServiceInterface
 	 */
 	public function getShipping(Method $method, $price, $taxClass, Customer $customer = null)
 	{
-		// TODO: Ability to specify customer
 		if (!in_array($taxClass, $this->taxClasses)) {
 			throw new Exception(sprintf('No tax class: %s', $taxClass));
 		}
@@ -214,7 +213,7 @@ class Tax implements TaxServiceInterface
 			$customer = $this->customers->getCurrent();
 		}
 
-		$definition = $this->fetch($taxClass, $customer->getTaxAddress()); // TODO: Properly fetch name based on all available addresses?
+		$definition = $this->fetch($taxClass, $customer->getTaxAddress());
 
 		return sprintf('%s (%s%%)', $definition['label'], $definition['rate']);
 	}

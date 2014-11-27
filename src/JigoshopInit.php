@@ -104,7 +104,7 @@ class JigoshopInit
 				return;
 			}
 
-			wp_die(__('Invalid query interceptor instance in Jigoshop. Unable to proceed.', 'jigoshop')); // TODO: Replace with error message on admin pages
+			wp_die(__('Invalid query interceptor instance in Jigoshop. Unable to proceed.', 'jigoshop'));
 		}
 
 		$interceptor->run();

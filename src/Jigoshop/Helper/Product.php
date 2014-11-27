@@ -29,10 +29,13 @@ class Product
 	}
 
 	/**
-	 * TODO: Create proper description.
-	 * @param array $options
-	 * @param bool $emptyItem
-	 * @return array
+	 * Returns options array for select form element based on provided options list.
+	 *
+	 * It also allows to add empty item (placeholder for Select2) at the beginning.
+	 *
+	 * @param array $options Options to use.
+	 * @param bool|string $emptyItem Empty item name or false to disable.
+	 * @return array List of options.
 	 */
 	public static function getSelectOption(array $options, $emptyItem = false)
 	{

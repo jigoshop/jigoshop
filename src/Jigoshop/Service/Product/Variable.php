@@ -30,7 +30,7 @@ class Variable
 	 */
 	public function find(Product\Variable $product, $variationId)
 	{
-		// TODO: Implement for the sake of consisteny
+		// TODO: Implement for the sake of consistency
 	}
 
 	public function save(EntityInterface $object)
@@ -77,7 +77,7 @@ class Variable
 						));
 					} else {
 						$wpdb->insert($wpdb->prefix.'jigoshop_product_variation_attribute', $data);
-						// TODO: Set attribute to EXISTS
+						$attribute->setExists(Product\Variable\Attribute::VARIATION_ATTRIBUTE_EXISTS);
 					}
 				}
 			}

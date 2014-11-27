@@ -61,12 +61,27 @@ class Forms
 	}
 
 	/**
-	 * Outputs simple text field.
+	 * Outputs checkbox field.
+	 *
+	 * Available parameters (with defaults):
+	 *   * id (null) - HTML id for the tag
+	 *   * name (null) - HTML name for the tag
+	 *   * label (null) - label for the tag
+	 *   * value ('on') - HTML value of the tag
+	 *   * multiple (false) - whether there are many checkboxes with the same name
+	 *   * checked (false) - whether checkbox is checked by default
+	 *   * disabled (false) - whether checkbox is disabled
+	 *   * classes (array()) - list of HTML classes for the tag
+	 *   * description (false) - description of the tag
+	 *   * tip (false) - tip for the tag
+	 *   * hidden (false) - whether to hide element by default
+	 *   * size (10) - default size of the element (Bootstrap column size 10)
+	 *
+	 * Field's name is required.
 	 *
 	 * @param $field array Field parameters.
 	 * @throws \Jigoshop\Exception
 	 *
-	 * // TODO: Describe field parameters.
 	 */
 	public static function checkbox($field)
 	{
@@ -81,7 +96,6 @@ class Forms
 			'classes' => array(),
 			'description' => false,
 			'tip' => false,
-			'options' => array(),
 			'hidden' => false,
 			'size' => 10,
 		);
@@ -110,10 +124,25 @@ class Forms
 	/**
 	 * Outputs select field.
 	 *
+	 * Available parameters (with defaults):
+	 *   * id (null) - HTML id for the tag
+	 *   * name (null) - HTML name for the tag
+	 *   * label (null) - label for the tag
+	 *   * value (false) - HTML value of the tag
+	 *   * multiple (false) - whether there are many checkboxes with the same name
+	 *   * placeholder ('') - placeholder of the tag
+	 *   * disabled (false) - whether checkbox is disabled
+	 *   * classes (array()) - list of HTML classes for the tag
+	 *   * description (false) - description of the tag
+	 *   * tip (false) - tip for the tag
+	 *   * options (array) - available options to select
+	 *   * hidden (false) - whether to hide element by default
+	 *   * size (10) - default size of the element (Bootstrap column size 10)
+	 *
+	 * Field's name is required.
+	 *
 	 * @param $field array Field parameters.
 	 * @throws \Jigoshop\Exception
-	 *
-	 * // TODO: Describe field parameters.
 	 */
 	public static function select($field)
 	{
@@ -159,10 +188,24 @@ class Forms
 	/**
 	 * Outputs simple text field.
 	 *
+	 * Available parameters (with defaults):
+	 *   * id (null) - HTML id for the tag
+	 *   * name (null) - HTML name for the tag
+	 *   * type ('text') - HTML type for the tag
+	 *   * label (null) - label for the tag
+	 *   * value (false) - HTML value of the tag
+	 *   * placeholder ('') - placeholder of the tag
+	 *   * disabled (false) - whether checkbox is disabled
+	 *   * classes (array()) - list of HTML classes for the tag
+	 *   * description (false) - description of the tag
+	 *   * tip (false) - tip for the tag
+	 *   * hidden (false) - whether to hide element by default
+	 *   * size (10) - default size of the element (Bootstrap column size 10)
+	 *
+	 * Field's name is required.
+	 *
 	 * @param $field array Field parameters.
 	 * @throws \Jigoshop\Exception
-	 *
-	 * // TODO: Describe field parameters.
 	 */
 	public static function text($field)
 	{
@@ -177,7 +220,6 @@ class Forms
 			'classes' => array(),
 			'description' => false,
 			'tip' => false,
-			'options' => array(),
 			'hidden' => false,
 			'size' => 10,
 		);
@@ -202,10 +244,23 @@ class Forms
 	/**
 	 * Outputs textarea field.
 	 *
+	 * Available parameters (with defaults):
+	 *   * id (null) - HTML id for the tag
+	 *   * name (null) - HTML name for the tag
+	 *   * label (null) - label for the tag
+	 *   * value (false) - HTML value of the tag
+	 *   * rows (3) - HTML rows of the tag
+	 *   * disabled (false) - whether checkbox is disabled
+	 *   * classes (array()) - list of HTML classes for the tag
+	 *   * description (false) - description of the tag
+	 *   * tip (false) - tip for the tag
+	 *   * hidden (false) - whether to hide element by default
+	 *   * size (10) - default size of the element (Bootstrap column size 10)
+	 *
+	 * Field's name is required.
+	 *
 	 * @param $field array Field parameters.
 	 * @throws \Jigoshop\Exception
-	 *
-	 * // TODO: Describe field parameters.
 	 */
 	public static function textarea($field)
 	{
@@ -219,7 +274,6 @@ class Forms
 			'classes' => array(),
 			'description' => false,
 			'tip' => false,
-			'options' => array(),
 			'hidden' => false,
 			'size' => 10,
 		);
@@ -244,10 +298,16 @@ class Forms
 	/**
 	 * Outputs hidden field.
 	 *
+	 * Available parameters (with defaults):
+	 *   * id (null) - HTML id for the tag
+	 *   * name (null) - HTML name for the tag
+	 *   * value (false) - HTML value of the tag
+	 *   * classes (array()) - list of HTML classes for the tag
+	 *
+	 * Field's name is required.
+	 *
 	 * @param $field array Field parameters.
 	 * @throws \Jigoshop\Exception
-	 *
-	 * // TODO: Describe field parameters.
 	 */
 	public static function hidden($field)
 	{
@@ -255,9 +315,7 @@ class Forms
 			'id' => null,
 			'name' => null,
 			'value' => false,
-			'placeholder' => '',
 			'classes' => array(),
-			'options' => array(),
 		);
 		$field = wp_parse_args($field, $defaults);
 
@@ -281,14 +339,25 @@ class Forms
 	/**
 	 * Outputs simple static (constant) field.
 	 *
+	 * Available parameters (with defaults):
+	 *   * id (null) - HTML id for the tag
+	 *   * name (null) - HTML name for the tag
+	 *   * label (null) - label for the tag
+	 *   * value (false) - HTML value of the tag
+	 *   * placeholder ('') - placeholder of the tag
+	 *   * classes (array()) - list of HTML classes for the tag
+	 *   * description (false) - description of the tag
+	 *   * tip (false) - tip for the tag
+	 *   * hidden (false) - whether to hide element by default
+	 *   * size (10) - default size of the element (Bootstrap column size 10)
+	 *
+	 * Field's name is required.
+	 *
 	 * @param $field array Field parameters.
 	 * @throws \Jigoshop\Exception
-	 *
-	 * // TODO: Describe field parameters.
 	 */
 	public static function constant($field)
 	{
-		// TODO: Refactor text() and constant() (and maybe others) to use some generic protected function.
 		$defaults = array(
 			'id' => null,
 			'name' => null,
@@ -298,7 +367,6 @@ class Forms
 			'classes' => array(),
 			'description' => false,
 			'tip' => false,
-			'options' => array(),
 			'hidden' => false,
 			'size' => 10,
 		);
