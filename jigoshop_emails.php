@@ -94,7 +94,8 @@ function get_order_email_arguments($order_id)
 		'customer_note' => $order->customer_note,
 		'order_items' => $order->email_order_items_list(true, true, $inc_tax),
 		'subtotal' => $order->get_subtotal_to_display(),
-		'shipping' => $order->get_shipping_to_display(),
+		'shipping_cost' => $order->order_shipping,
+		'shipping_method' => $order->shipping_service,
 		'discount' => jigoshop_price($order->order_discount),
 		'total_tax' => jigoshop_price($order->get_total_tax()),
 		'total' => jigoshop_price($order->order_total),
@@ -140,6 +141,8 @@ function get_order_email_arguments_description()
 		'order_items' => __('Ordered Items', 'jigoshop'),
 		'subtotal' => __('Subtotal', 'jigoshop'),
 		'shipping' => __('Shipping Price and Method', 'jigoshop'),
+		'shipping_cost' => __('Shipping Cost', 'jigoshop'),
+		'shipping_method' => __('Shipping Method', 'jigoshop'),
 		'discount' => __('Discount Price', 'jigoshop'),
 		'total_tax' => __('Total Tax', 'jigoshop'),
 		'total' => __('Total Price', 'jigoshop'),
@@ -232,7 +235,7 @@ function install_emails()
 		[order_items]
 
 		Subtotal:                     [subtotal]
-		Shipping:                     [shipping]
+		Shipping:                     [shipping_cost] via [shipping_method]
 		Total:                        [total]
 
 		------------------------------<wbr />------------------------------<wbr />--------------------
