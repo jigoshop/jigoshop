@@ -3,6 +3,7 @@
 namespace Jigoshop\Payment;
 
 use Jigoshop\Api\Processable;
+use Jigoshop\Core;
 use Jigoshop\Core\ContainerAware;
 use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
@@ -459,7 +460,7 @@ class PayPal implements Method, Processable, ContainerAware
 			'body' => $values,
 			'sslverify' => false,
 			'timeout' => 30,
-			'user-agent' => 'Jigoshop/'.JIGOSHOP_VERSION,
+			'user-agent' => 'Jigoshop/'.Core::VERSION,
 		);
 
 		// Get url
