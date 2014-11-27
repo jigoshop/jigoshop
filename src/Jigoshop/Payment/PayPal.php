@@ -4,6 +4,7 @@ namespace Jigoshop\Payment;
 
 use Jigoshop\Api\Processable;
 use Jigoshop\Core\ContainerAware;
+use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Pages;
 use Jigoshop\Entity\Customer\CompanyAddress;
@@ -27,15 +28,18 @@ class PayPal implements Method, Processable, ContainerAware
 	private $wp;
 	/** @var Options */
 	private $options;
+	/** @var Messages */
+	private $messages;
 	/** @var array */
 	private $settings;
 	/** @var Container */
 	private $di;
 
-	public function __construct(Wordpress $wp, Options $options)
+	public function __construct(Wordpress $wp, Options $options, Messages $messages)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
+		$this->messages = $messages;
 		$this->settings = $options->get('payment.'.self::ID);
 		$this->decimals = min($options->get('general.currency_decimals'), (in_array($options->get('general.currency'), self::$noDecimalCurrencies) ? 0 : 2));
 	}
@@ -152,6 +156,30 @@ class PayPal implements Method, Processable, ContainerAware
 		$settings['enabled'] = $settings['enabled'] == 'on';
 		$settings['title'] = trim(htmlspecialchars(strip_tags($settings['title'])));
 		$settings['description'] = trim(htmlspecialchars(strip_tags($settings['description'], '<p><a><strong><em><b><i>')));
+
+		$settings['email'] = filter_var($settings['email'], FILTER_VALIDATE_EMAIL, array(
+			'options' => array(
+				'default' => false,
+			),
+		));
+		if (!$settings['email']) {
+			$settings['email'] = '';
+			$this->messages->addWarning(__('Email address is not valid.', 'jigoshop'));
+		}
+
+		$settings['send_shipping'] = $settings['send_shipping'] == 'on';
+		$settings['force_payment'] = $settings['force_payment'] == 'on';
+		$settings['test_mode'] = $settings['test_mode'] == 'on';
+
+		$settings['test_email'] = filter_var($settings['test_email'], FILTER_VALIDATE_EMAIL, array(
+			'options' => array(
+				'default' => false,
+			),
+		));
+		if (!$settings['test_email']) {
+			$settings['test_email'] = '';
+			$this->messages->addWarning(__('Test email address is not valid.', 'jigoshop'));
+		}
 
 		return $settings;
 	}

@@ -23,6 +23,7 @@ services:
     arguments:
       - '@wpal'
       - '@jigoshop.options'
+      - '@jigoshop.messages'
       - '@jigoshop.service.customer'
     tags:
       - { name: jigoshop.payment.method }
