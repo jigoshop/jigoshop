@@ -64,7 +64,7 @@ class Admin
 				throw new Exception(sprintf('Trying to add page to invalid parent (%s). Available ones are: %s', $parent, join(', ', array_keys($this->pages))));
 			}
 
-			// TODO: Log message.
+			Registry::getInstance('jigoshop')->addDebug(sprintf('Trying to add page to invalid parent (%s).', $parent), array('parents' => $this->pages));
 			return;
 		}
 

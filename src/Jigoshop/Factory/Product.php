@@ -6,6 +6,7 @@ use Jigoshop\Core\Types;
 use Jigoshop\Entity\Product\Attribute;
 use Jigoshop\Entity\Product\Simple;
 use Jigoshop\Exception;
+use Monolog\Registry;
 use WPAL\Wordpress;
 
 class Product implements EntityFactoryInterface
@@ -29,11 +30,11 @@ class Product implements EntityFactoryInterface
 	public function addType($type, $class)
 	{
 		if (isset($this->types[$type])) {
-			// TODO: Log message.
 			if (WP_DEBUG) {
-				throw new Exception(sprintf('Product of type "%s" already exists.'), $type);
+				throw new Exception(sprintf(__('Product of type "%s" already exists.', 'jigoshop'), $type));
 			}
 
+			Registry::getInstance('jigoshop')->addWarning(sprintf('Product of type "%s" already exists.', $type));
 			return;
 		}
 
@@ -54,7 +55,7 @@ class Product implements EntityFactoryInterface
 				throw new Exception(sprintf('Product type "%s" does not exists.', $type));
 			}
 
-			// TODO: Log message.
+			Registry::getInstance('jigoshop')->addWarning(sprintf('Product type "%s" does not exists.', $type));
 			$type = Simple::TYPE;
 		}
 

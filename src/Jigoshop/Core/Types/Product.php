@@ -7,6 +7,7 @@ use Jigoshop\Core\Types;
 use Jigoshop\Entity\Product\Variable;
 use Jigoshop\Exception;
 use Jigoshop\Service\ProductServiceInterface;
+use Monolog\Registry;
 use WPAL\Wordpress;
 
 class Product implements Post
@@ -32,7 +33,7 @@ class Product implements Post
 					throw new Exception(sprintf(__('Invalid type definition! Offending class: "%s".', 'jigoshop'), $typeClass));
 				}
 
-				// TODO: Log error
+				Registry::getInstance('jigoshop')->addWarning(sprintf('Invalid type definition! Offending class: "%s".', $typeClass));
 				continue;
 			}
 

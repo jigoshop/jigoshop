@@ -3,6 +3,7 @@
 namespace Jigoshop\Entity;
 
 use Jigoshop\Exception;
+use Monolog\Registry;
 
 /**
  * Customer entity.
@@ -127,7 +128,7 @@ class Customer implements EntityInterface
 				throw new Exception(sprintf(__('Unknown address type: "%s".', 'jigoshop'), $address));
 			}
 
-			// TODO: Log message.
+			Registry::getInstance('jigoshop')->addCritical(sprintf('Unknown address type: "%s".', $address));
 			return;
 		}
 

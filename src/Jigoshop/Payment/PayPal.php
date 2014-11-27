@@ -14,6 +14,7 @@ use Jigoshop\Entity\Product;
 use Jigoshop\Helper\Api;
 use Jigoshop\Helper\Currency;
 use Jigoshop\Helper\Order as OrderHelper;
+use Monolog\Registry;
 use Symfony\Component\DependencyInjection\Container;
 use WPAL\Wordpress;
 
@@ -478,13 +479,7 @@ class PayPal implements Method, Processable, ContainerAware
 			return true;
 		}
 
-		// TODO: Log errors
-//		jigoshop_log('Received invalid response from PayPal!');
-//		jigoshop_log('IPN Response: '.print_r($response, true));
-//
-//		if(is_wp_error($response)){
-//			jigoshop_log('PayPal IPN WordPress Error message: '.$response->get_error_message());
-//		}
+		Registry::getInstance('jigoshop')->addWarning('Received invalid response from PayPal!', array('response' => $response));
 
 		return false;
 	}

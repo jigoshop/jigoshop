@@ -12,6 +12,7 @@ use Jigoshop\Service\ProductServiceInterface;
 use Jigoshop\Service\ShippingServiceInterface;
 use Jigoshop\Service\TaxServiceInterface;
 use Jigoshop\Shipping\Method;
+use Monolog\Registry;
 use WPAL\Wordpress;
 
 class Cart implements OrderInterface
@@ -107,7 +108,7 @@ class Cart implements OrderInterface
 
 					$key = $this->productService->generateItemKey($item);
 					if ($key != $item->getKey()) {
-						// TODO: Log warning
+						Registry::getInstance('jigoshop')->addWarning(sprintf('Initializing cart: item "%d" has invalid key ("%s" instead of "%s").', $item->getId(), $item->getKey(), $key));
 					}
 
 					$item->setKey($key);

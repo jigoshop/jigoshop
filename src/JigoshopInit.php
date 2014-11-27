@@ -25,12 +25,24 @@ class JigoshopInit
 		$loader->addPrefix('Jigoshop', JIGOSHOP_DIR.'/src');
 		$loader->register();
 
+		// Prepare logger
+		$logger = new \Monolog\Logger('jigoshop');
+		if (WP_DEBUG) {
+			$logger->pushHandler(new \Monolog\Handler\StreamHandler(JIGOSHOP_DIR.'/log/jigoshop.debug.log', \Monolog\Logger::DEBUG));
+		}
+		$logger->pushHandler(new \Monolog\Handler\StreamHandler(JIGOSHOP_DIR.'/log/jigoshop.log', \Monolog\Logger::WARNING));
+		$logger->pushProcessor(new \Monolog\Processor\IntrospectionProcessor());
+		$logger->pushProcessor(new \Monolog\Processor\WebProcessor());
+		\Monolog\Registry::addLogger($logger);
+
 		// Initialize Jigoshop Dependency Injection Container
 		$file = JIGOSHOP_DIR.'/cache/container.php';
 		$is_debug = WP_DEBUG;
 		$cache = new ConfigCache($file, $is_debug);
 
 		if (!$cache->isFresh()) {
+			$logger->addDebug('Refreshing container definition.');
+
 			$diDefinition = new \Symfony\Component\DependencyInjection\Definition();
 			$diDefinition->setSynthetic(true);
 
@@ -101,10 +113,10 @@ class JigoshopInit
 					echo __('Invalid query interceptor instance in Jigoshop. The shop will remain inactive until configured properly.', 'jigoshop');
 					echo '</p></div>';
 				});
-				return;
 			}
 
-			wp_die(__('Invalid query interceptor instance in Jigoshop. Unable to proceed.', 'jigoshop'));
+			\Monolog\Registry::getInstance('jigoshop')->addEmergency('Invalid query interceptor instance in Jigoshop. Unable to proceed.');
+			return;
 		}
 
 		$interceptor->run();
@@ -158,10 +170,12 @@ class JigoshopInit
 			)
 		);
 	}
+
 	/**
 	 * Adds Jigoshop items to admin bar.
 	 */
-	function toolbar() {
+	public function toolbar()
+	{
 		/** @var WP_Admin_Bar $wp_admin_bar */
 		global $wp_admin_bar;
 		$manage_products = current_user_can('manage_jigoshop_products');
@@ -218,7 +232,7 @@ class JigoshopInit
 		}
 	}
 
-	function pluginLinks($links)
+	public function pluginLinks($links)
 	{
 		return array_merge(array(
 			'<a href="'.admin_url('admin.php?page=jigoshop_settings').'">'.__('Settings', 'jigoshop').'</a>',

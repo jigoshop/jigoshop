@@ -6,6 +6,7 @@ namespace Jigoshop\Core;
 use Jigoshop\Exception;
 use Jigoshop\Frontend\Page\PageInterface;
 use Jigoshop\Helper\Render;
+use Monolog\Registry;
 use WPAL\Wordpress;
 
 /**
@@ -69,7 +70,7 @@ class Template
 				throw new Exception('Page object should already be set for Jigoshop pages, but none found.');
 			}
 
-			// TODO: Log message.
+			Registry::getInstance('jigoshop')->addCritical('Page object should already be set for Jigoshop pages, but none found.');
 			return false;
 		}
 

@@ -3,6 +3,7 @@
 namespace Jigoshop\Helper;
 
 use Jigoshop\Exception;
+use Monolog\Registry;
 
 class Forms
 {
@@ -106,7 +107,7 @@ class Forms
 				throw new Exception('Field "%s" must have a name!', serialize($field));
 			}
 
-			// TODO: Log message.
+			Registry::getInstance('jigoshop')->addCritical('Field must have a name!', array('field' => $field));
 			return;
 		}
 
@@ -168,7 +169,7 @@ class Forms
 				throw new Exception(sprintf('Field "%s" must have a name!', serialize($field)));
 			}
 
-			// TODO: Log message.
+			Registry::getInstance('jigoshop')->addCritical('Field must have a name!', array('field' => $field));
 			return;
 		}
 
@@ -230,7 +231,7 @@ class Forms
 				throw new Exception(sprintf('Field "%s" must have a name!', serialize($field)));
 			}
 
-			// TODO: Log message.
+			Registry::getInstance('jigoshop')->addCritical('Field must have a name!', array('field' => $field));
 			return;
 		}
 
@@ -284,7 +285,7 @@ class Forms
 				throw new Exception(sprintf('Field "%s" must have a name!', serialize($field)));
 			}
 
-			// TODO: Log message.
+			Registry::getInstance('jigoshop')->addCritical('Field must have a name!', array('field' => $field));
 			return;
 		}
 
@@ -324,7 +325,7 @@ class Forms
 				throw new Exception(sprintf('Field "%s" must have a name!', serialize($field)));
 			}
 
-			// TODO: Log message.
+			Registry::getInstance('jigoshop')->addCritical('Field must have a name!', array('field' => $field));
 			return;
 		}
 
@@ -377,7 +378,7 @@ class Forms
 				throw new Exception(sprintf('Field "%s" must have a name!', serialize($field)));
 			}
 
-			// TODO: Log message.
+			Registry::getInstance('jigoshop')->addCritical('Field must have a name!', array('field' => $field));
 			return;
 		}
 

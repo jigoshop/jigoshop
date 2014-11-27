@@ -8,6 +8,7 @@ use Jigoshop\Entity\EntityInterface;
 use Jigoshop\Entity\Order;
 use Jigoshop\Exception;
 use Jigoshop\Factory\Customer as Factory;
+use Monolog\Registry;
 use WPAL\Wordpress;
 
 /**
@@ -116,7 +117,7 @@ class Customer implements CustomerServiceInterface
 			throw new Exception('Customer service do not support fetching for post - users are not stored this way.');
 		}
 
-		// TODO: Log message.
+		Registry::getInstance('jigoshop')->addWarning('Invalid call to Jigoshop\Service\Customer::findForPost() method.');
 		return null;
 	}
 
@@ -132,7 +133,7 @@ class Customer implements CustomerServiceInterface
 			throw new Exception('Customer service do not support fetching by query - users are not stored like posts.');
 		}
 
-		// TODO: Log message.
+		Registry::getInstance('jigoshop')->addWarning('Invalid call to Jigoshop\Service\Customer::findByQuery() method.');
 		return null;
 	}
 }

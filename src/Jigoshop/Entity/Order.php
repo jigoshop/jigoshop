@@ -9,8 +9,9 @@ use Jigoshop\Entity\Order\Status;
 use Jigoshop\Exception;
 use Jigoshop\Payment\Method as PaymentMethod;
 use Jigoshop\Service\TaxServiceInterface;
-use Jigoshop\Shipping\Method;
 use Jigoshop\Shipping\Method as ShippingMethod;
+use Jigoshop\Shipping\Method;
+use Monolog\Registry;
 use WPAL\Wordpress;
 
 /**
@@ -246,7 +247,7 @@ class Order implements EntityInterface, OrderInterface
 				throw new Exception(sprintf(__('No item with ID %d in order %d', 'jigoshop'), $item, $this->id));
 			}
 
-			// TODO: Log message.
+			Registry::getInstance('jigoshop')->addWarning(sprintf('No item with ID %d in order %d', $item, $this->id));
 			return null;
 		}
 

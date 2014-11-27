@@ -4,6 +4,7 @@ namespace Jigoshop\Entity\Customer;
 
 use Jigoshop\Entity\Customer;
 use Jigoshop\Exception;
+use Monolog\Registry;
 
 class Guest extends Customer
 {
@@ -14,10 +15,11 @@ class Guest extends Customer
 
 	public function setId($id)
 	{
-		// TODO: Log message.
 		if (WP_DEBUG) {
 			throw new Exception(__('Guest customer cannot be updated!', 'jigoshop'));
 		}
+
+		Registry::getInstance('jigoshop')->addDebug('Guest customer cannot be updated!');
 	}
 
 	public function getLogin()
@@ -27,10 +29,11 @@ class Guest extends Customer
 
 	public function setLogin($login)
 	{
-		// TODO: Log message.
 		if (WP_DEBUG) {
 			throw new Exception(__('Guest customer cannot be updated!', 'jigoshop'));
 		}
+
+		Registry::getInstance('jigoshop')->addDebug('Guest customer cannot be updated!');
 	}
 
 	public function getName()
@@ -40,10 +43,11 @@ class Guest extends Customer
 
 	public function setName($name)
 	{
-		// TODO: Log message.
 		if (WP_DEBUG) {
 			throw new Exception(__('Guest customer cannot be updated!', 'jigoshop'));
 		}
+
+		Registry::getInstance('jigoshop')->addDebug('Guest customer cannot be updated!');
 	}
 
 	public function __toString()

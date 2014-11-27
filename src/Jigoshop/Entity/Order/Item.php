@@ -4,6 +4,7 @@ namespace Jigoshop\Entity\Order;
 
 use Jigoshop\Entity\Product;
 use Jigoshop\Exception;
+use Monolog\Registry;
 
 /**
  * Order item.
@@ -99,7 +100,7 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 	public function setQuantity($quantity)
 	{
 		if ($quantity < 0) {
-			// TODO: Log message.
+			Registry::getInstance('jigoshop')->addCritical('Item quantity cannot be below 0');
 			throw new Exception(__('Item quantity cannot be below 0', 'jigoshop'));
 		}
 
