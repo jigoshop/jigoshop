@@ -112,6 +112,7 @@ class JigoshopInit
 		$options = $this->container->get('jigoshop.options');
 		Jigoshop\Helper\Currency::setOptions($options);
 		Jigoshop\Helper\Product::setOptions($options);
+		Jigoshop\Helper\Order::setOptions($options);
 
 		/** @var \Jigoshop\Core $jigoshop */
 		$jigoshop = $this->container->get('jigoshop');

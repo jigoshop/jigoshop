@@ -13,6 +13,7 @@ use Jigoshop\Entity\Order;
 use Jigoshop\Entity\Product;
 use Jigoshop\Helper\Api;
 use Jigoshop\Helper\Currency;
+use Jigoshop\Helper\Order as OrderHelper;
 use Symfony\Component\DependencyInjection\Container;
 use WPAL\Wordpress;
 
@@ -234,8 +235,8 @@ class PayPal implements Method, Processable, ContainerAware
 				'charset' => 'UTF-8',
 				'rm' => 2,
 				'upload' => 1,
-				'return' => $this->wp->addQueryArg(array('order' => $order->getId()), $this->wp->getPermalink($thankYouPage)), // TODO: Add order key for security
-				'cancel_return' => '', //$order->get_cancel_order_url(), // TODO: Generate cancel URLs
+				'return' => $this->wp->addQueryArg(array('order' => $order->getId(), 'key' => ''), $this->wp->getPermalink($thankYouPage)), // TODO: Add order key for security
+				'cancel_return' => OrderHelper::getCancelLink($order),
 				// Order key
 				'custom' => $order->getId(),
 				// IPN
@@ -284,7 +285,7 @@ class PayPal implements Method, Processable, ContainerAware
 
 		// If prices include tax, send the whole order as a single item
 		// TODO: Price includes tax
-		$priceIncludesTax = $this->options->get('tax.included');
+//		$priceIncludesTax = $this->options->get('tax.included');
 //		if($priceIncludesTax){
 //			// Discount
 //			//$args['discount_amount_cart'] = number_format((float)$order->order_discount, $this->decimals); // TODO: Add discounts after adding coupons support
@@ -451,7 +452,6 @@ class PayPal implements Method, Processable, ContainerAware
 	 * Check PayPal IPN validity
 	 */
 	private function isResponseValid(){
-		// TODO: Replace WP calls
 		$values = $this->wp->getHelpers()->stripSlashesDeep($_POST);
 		$values['cmd'] = '_notify-validate';
 

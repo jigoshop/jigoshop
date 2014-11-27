@@ -7,6 +7,7 @@ use Jigoshop\Core\Options;
 use Jigoshop\Core\Pages;
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\Customer;
+use Jigoshop\Entity\Order\Status;
 use Jigoshop\Exception;
 use Jigoshop\Helper\Country;
 use Jigoshop\Helper\Product;
@@ -15,6 +16,7 @@ use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
 use Jigoshop\Service\CartServiceInterface;
 use Jigoshop\Service\CustomerServiceInterface;
+use Jigoshop\Service\OrderServiceInterface;
 use Jigoshop\Service\ProductServiceInterface;
 use Jigoshop\Service\ShippingServiceInterface;
 use Jigoshop\Service\TaxServiceInterface;
@@ -39,9 +41,12 @@ class Cart implements PageInterface
 	private $shippingService;
 	/** @var TaxServiceInterface */
 	private $taxService;
+	/** @var OrderServiceInterface */
+	private $orderService;
 
 	public function __construct(Wordpress $wp, Options $options, Messages $messages, CartServiceInterface $cartService, ProductServiceInterface $productService,
-		CustomerServiceInterface $customerService, ShippingServiceInterface $shippingService, TaxServiceInterface $taxService, Styles $styles, Scripts $scripts)
+		CustomerServiceInterface $customerService, OrderServiceInterface $orderService, ShippingServiceInterface $shippingService, TaxServiceInterface $taxService,
+		Styles $styles, Scripts $scripts)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
@@ -50,6 +55,7 @@ class Cart implements PageInterface
 		$this->productService = $productService;
 		$this->customerService = $customerService;
 		$this->shippingService = $shippingService;
+		$this->orderService = $orderService;
 		$this->taxService = $taxService;
 
 		$styles->add('jigoshop.shop', JIGOSHOP_URL.'/assets/css/shop.css');
@@ -274,8 +280,25 @@ class Cart implements PageInterface
 
 	public function action()
 	{
-		if (isset($_POST['action'])) {
-			switch ($_POST['action']) {
+		if (isset($_REQUEST['action'])) {
+			switch ($_REQUEST['action']) {
+				case 'cancel_order':
+					if (!$this->wp->getHelpers()->verifyNonce($_REQUEST['cancel_order'], 'cancel_order')) {
+						$order = $this->orderService->find((int)$_REQUEST['id']);
+
+						// TODO: Add order security with order keys
+//						if ($order->getKey() != $_REQUEST['key']) {
+//							$this->messages->addError(__('Invalid order key.', 'jigoshop'));
+//							return;
+//						}
+
+						$order->updateStatus(Status::CANCELLED);
+						$this->orderService->save($order);
+						$cart = $this->cartService->createFromOrder($this->cartService->getCartIdForCurrentUser(),$order);
+						$this->cartService->save($cart);
+						$this->messages->addNotice(__('The order has been cancelled', 'jigoshop'));
+					}
+					break;
 				case 'update-shipping':
 					$customer = $this->customerService->getCurrent();
 					$this->updateCustomer($customer);

@@ -2,6 +2,7 @@
 
 namespace Jigoshop\Service;
 
+use Jigoshop\Entity\Order;
 use Jigoshop\Frontend\Cart;
 
 /**
@@ -51,4 +52,13 @@ interface CartServiceInterface
 	 * @return string Cart ID for currently logged in user.
 	 */
 	public function getCartIdForCurrentUser();
+
+	/**
+	 * Creates cart from order ID.
+	 *
+	 * @param $cartId string Cart ID to use.
+	 * @param $order Order Order to base cart on.
+	 * @return Cart The cart.
+	 */
+	public function createFromOrder($cartId, $order);
 }

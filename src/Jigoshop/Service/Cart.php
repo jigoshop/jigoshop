@@ -3,6 +3,7 @@
 namespace Jigoshop\Service;
 
 use Jigoshop\Core\Options;
+use Jigoshop\Entity\Order;
 use Jigoshop\Frontend\Cart as CartContainer;
 use WPAL\Wordpress;
 
@@ -13,6 +14,8 @@ class Cart implements CartServiceInterface
 
 	/** @var Wordpress */
 	private $wp;
+	/** @var TaxServiceInterface */
+	private $taxService;
 	/** @var string */
 	private $currentUserCartId;
 	/** @var CartContainer */
@@ -22,6 +25,8 @@ class Cart implements CartServiceInterface
 		CustomerServiceInterface $customerService)
 	{
 		$this->wp = $wp;
+		$this->taxService = $taxService;
+		// TODO: Replace $cart with Container Aware interface and get cart from container
 		$this->cart = new CartContainer($wp, $options, $productService, $taxService, $shippingService);
 		$this->cart->setCustomer($customerService->getCurrent());
 
@@ -118,5 +123,25 @@ class Cart implements CartServiceInterface
 		}
 
 		return $id;
+	}
+
+	/**
+	 * Creates cart from order ID.
+	 *
+	 * @param $cartId string Cart ID to use.
+	 * @param $order Order Order to base cart on.
+	 * @return CartContainer The cart.
+	 */
+	public function createFromOrder($cartId, $order)
+	{
+		$cart = $this->cart;
+		$cart->initializeFor($cartId, array());
+		$cart->setCustomer($order->getCustomer());
+		$cart->setShippingMethod($order->getShippingMethod(), $this->taxService);
+		foreach ($order->getItems() as $item) {
+			$cart->addItem($item);
+		}
+
+		return $cart;
 	}
 }
