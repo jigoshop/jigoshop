@@ -41,6 +41,16 @@ class PayPal implements Method, Processable, ContainerAware
 	}
 
 	/**
+	 * Sets container for every container aware service.
+	 *
+	 * @param Container $container
+	 */
+	public function setContainer(Container $container)
+	{
+		$this->di = $container;
+	}
+
+	/**
 	 * @return string ID of payment method.
 	 */
 	public function getId()
@@ -93,6 +103,40 @@ class PayPal implements Method, Processable, ContainerAware
 				'tip' => sprintf(__('Allowed HTML tags are: %s', 'jigoshop'), '<p>, <a>, <strong>, <em>, <b>, <i>'),
 				'type' => 'text',
 				'value' => $this->settings['description'],
+			),
+			array(
+				'name' => sprintf('[%s][email]', self::ID),
+				'title' => __('PayPal email address', 'jigoshop'),
+				'tip' => __('Please enter your PayPal email address; this is needed in order to take payment!', 'jigoshop'),
+				'type' => 'text',
+				'value' => $this->settings['email'],
+			),
+			array(
+				'name' => sprintf('[%s][send_shipping]', self::ID),
+				'title' => __('Send shipping details to PayPal', 'jigoshop'),
+				'tip' => __('If your checkout page does not ask for shipping details, or if you do not want to send shipping information to PayPal, set this option to no. If you enable this option PayPal may restrict where things can be sent, and will prevent some orders going through for your protection.', 'jigoshop'),
+				'type' => 'checkbox',
+				'checked' => $this->settings['send_shipping'],
+			),
+			array(
+				'name' => sprintf('[%s][force_payment]', self::ID),
+				'title' => __('Force payment', 'jigoshop'),
+				'tip' => __('If product totals are free and shipping is also free (excluding taxes), this will force 0.01 to allow paypal to process payment. Shop owner is responsible for refunding customer.', 'jigoshop'),
+				'type' => 'checkbox',
+				'checked' => $this->settings['force_payment'],
+			),
+			array(
+				'name' => sprintf('[%s][test_mode]', self::ID),
+				'title' => __('Enable Sandbox', 'jigoshop'),
+				'type' => 'checkbox',
+				'checked' => $this->settings['test_mode'],
+			),
+			array(
+				'name' => sprintf('[%s][test_email]', self::ID),
+				'title' => __('PayPal test email address', 'jigoshop'),
+				'tip' => __('Please enter your test PayPal email address; this is needed for testing purposes and used when test mode is enabled.', 'jigoshop'),
+				'type' => 'text',
+				'value' => $this->settings['test_email'],
 			),
 		);
 	}
@@ -151,7 +195,7 @@ class PayPal implements Method, Processable, ContainerAware
 		}
 
 		// filter redirect page
-		$thankYouPage = $this->wp->applyFilters('jigoshop\checkout\redirect_page_id', $this->settings->getPageId(Pages::THANK_YOU));
+		$thankYouPage = $this->wp->applyFilters('jigoshop\checkout\redirect_page_id', $this->options->getPageId(Pages::THANK_YOU));
 		$args = array_merge(
 			array(
 				'cmd' => '_cart',
@@ -262,17 +306,17 @@ class PayPal implements Method, Processable, ContainerAware
 					}
 
 					return sprintf(_x('%s: %s', 'product_variation', 'jigoshop'), $attribute->getAttribute()->getLabel(), $attribute->getAttribute()->getOption($value)->getLabel());
-				}, $product->getVariableAttributes()))).')';
+				}, $product->getVariation($item->getMeta('variation_id')->getValue())->getAttributes()))).')';
 			}
 
 			$args['item_name_'.$item_loop] = $title;
 			$args['quantity_'.$item_loop] = $item->getQuantity();
 			//Apparently, PayPal did not like "28.4525" as the amount. Changing that to "28.45" fixed the issue.
-			$args['amount_'.$item_loop] = number_format($this->wp->applyFilters('jigoshop\paypal\item_price', $item->getCost(), $item), $this->decimals);
+			$args['amount_'.$item_loop] = number_format($this->wp->applyFilters('jigoshop\paypal\item_price', $item->getPrice(), $item), $this->decimals);
 		}
 
 		// Shipping Cost
-		if($this->options->get('shipping.enabled') && $order->getShippingPrice() > 0){
+		if($this->options->get('shipping.enabled') && $this->settings['send_shipping'] && $order->getShippingPrice() > 0){
 			$item_loop++;
 			$args['item_name_'.$item_loop] = __('Shipping cost', 'jigoshop');
 			$args['quantity_'.$item_loop] = '1';
@@ -282,7 +326,7 @@ class PayPal implements Method, Processable, ContainerAware
 		$args['tax'] = $args['tax_cart'] = number_format($order->getTotalTax(), $this->decimals);
 //			$args['discount_amount_cart'] = $order->order_discount; // TODO: Add when coupons support is added
 
-		if($this->settings['force_payment'] && $order->getTotal()){
+		if($this->settings['force_payment'] && $order->getTotal() == 0){
 			$item_loop++;
 			$args['item_name_'.$item_loop] = __('Force payment on free orders', 'jigoshop');
 			$args['quantity_'.$item_loop] = '1';
@@ -299,16 +343,14 @@ class PayPal implements Method, Processable, ContainerAware
 	public function processResponse()
 	{
 		if ($this->isResponseValid()) {
-			// TODO: Replace WP calls
-			$posted = stripslashes_deep($_POST);
+			$posted = $this->wp->getHelpers()->stripSlashesDeep($_POST);
 
 			// 'custom' holds post ID (Order ID)
 			if (!empty($posted['custom']) && !empty($posted['txn_type']) && !empty($posted['invoice'])) {
 				$accepted_types = array('cart', 'instant', 'express_checkout', 'web_accept', 'masspay', 'send_money', 'subscr_payment');
-				/** @var \Jigoshop\Factory\Order $factory */
-				$factory = $this->di->get('jigoshop.factory.order');
-				$post = $this->wp->getPost((int)$posted['custom']);
-				$order = $factory->fetch($post);
+				/** @var \Jigoshop\Service\Order $service */
+				$service = $this->di->get('jigoshop.service.order');
+				$order = $service->find((int)$posted['custom']);
 
 				// Sandbox fix
 				if (isset($posted['test_ipn']) && $posted['test_ipn'] == 1 && strtolower($posted['payment_status']) == 'pending') {
@@ -381,7 +423,7 @@ class PayPal implements Method, Processable, ContainerAware
 	 */
 	private function isResponseValid(){
 		// TODO: Replace WP calls
-		$values = (array)stripslashes_deep($_POST);
+		$values = $this->wp->getHelpers()->stripSlashesDeep($_POST);
 		$values['cmd'] = '_notify-validate';
 
 		// Send back post vars to PayPal
@@ -400,10 +442,10 @@ class PayPal implements Method, Processable, ContainerAware
 		}
 
 		// Post back to get a response
-		$response = wp_remote_post($url, $params);
+		$response = $this->wp->wpSafeRemotePost($url, $params);
 
 		// check to see if the request was valid
-		if(!is_wp_error($response) && $response['response']['code'] >= 200 && $response['response']['code'] < 300 && (strcmp($response['body'], "VERIFIED") == 0)){
+		if(!$this->wp->isWpError($response) && $response['response']['code'] >= 200 && $response['response']['code'] < 300 && (strcmp($response['body'], "VERIFIED") == 0)){
 			return true;
 		}
 
@@ -416,15 +458,5 @@ class PayPal implements Method, Processable, ContainerAware
 //		}
 
 		return false;
-	}
-
-	/**
-	 * Sets container for every container aware service.
-	 *
-	 * @param Container $container
-	 */
-	public function setContainer(Container $container)
-	{
-		$this->di = $container;
 	}
 }

@@ -102,6 +102,11 @@ class Options
 				'enabled' => false,
 				'title' => 'PayPal',
 				'description' => "Pay via PayPal; you can pay with your credit card if you don't have a PayPal account.",
+				'email' => '',
+				'send_shipping' => true,
+				'force_payment' => false,
+				'test_mode' => true,
+				'test_email' => '',
 			),
 		)
 	);

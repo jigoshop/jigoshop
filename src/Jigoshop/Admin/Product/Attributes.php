@@ -94,7 +94,7 @@ class Attributes implements PageInterface
 		if (isset($_POST['slug']) && !empty($_POST['slug'])) {
 			$attribute->setSlug(trim(htmlspecialchars(strip_tags($_POST['slug']))));
 		} else {
-			$attribute->setSlug($this->wp->sanitizeTitle($attribute->getLabel()));
+			$attribute->setSlug($this->wp->getHelpers()->sanitizeTitle($attribute->getLabel()));
 		}
 
 		$this->productService->saveAttribute($attribute);
@@ -164,7 +164,7 @@ class Attributes implements PageInterface
 		if (isset($_POST['slug']) && !empty($_POST['slug'])) {
 			$option->setValue(trim(htmlspecialchars(strip_tags($_POST['value']))));
 		} else {
-			$option->setValue($this->wp->sanitizeTitle($option->getLabel()));
+			$option->setValue($this->wp->getHelpers()->sanitizeTitle($option->getLabel()));
 		}
 
 		$attribute->addOption($option);

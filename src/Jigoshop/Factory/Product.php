@@ -75,8 +75,9 @@ class Product implements EntityFactoryInterface
 		$product->setId($id);
 
 		if (!empty($_POST)) {
-			$product->setName($this->wp->sanitizeTitle($_POST['post_title']));
-			$product->setDescription($this->wp->wpautop($this->wp->wptexturize($_POST['post_excerpt'])));
+			$helpers = $this->wp->getHelpers();
+			$product->setName($helpers->sanitizeTitle($_POST['post_title']));
+			$product->setDescription($helpers->parsePostBody($_POST['post_excerpt']));
 			$_POST['product']['categories'] = $this->getTerms($id, Types::PRODUCT_CATEGORY, $this->wp->getTerms(Types::PRODUCT_CATEGORY, array(
 				'posts__in' => $_POST['tax_input']['product_category'],
 			)));
@@ -121,7 +122,7 @@ class Product implements EntityFactoryInterface
 			$state['attributes'] = $this->getAttributes($post->ID);
 			$state['id'] = $post->ID;
 			$state['name'] = $post->post_title;
-			$state['description'] = $this->wp->wpautop($this->wp->wptexturize($post->post_content));
+			$state['description'] = $this->wp->getHelpers()->parsePostBody($post->post_content);
 			$state['categories'] = $this->getTerms($post->ID, Types::PRODUCT_CATEGORY);
 			$state['tags'] = $this->getTerms($post->ID, Types::PRODUCT_TAG);
 

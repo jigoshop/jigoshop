@@ -27,24 +27,6 @@ class Customer implements EntityFactoryInterface
 		$customer = new Entity();
 		$customer->setId($id);
 
-//		if (!empty($_POST)) {
-//			$customer->setName($this->wp->sanitizeTitle($_POST['post_title']));
-//			$customer->setDescription($this->wp->wpautop($this->wp->wptexturize($_POST['post_excerpt'])));
-//			$_POST['product']['categories'] = $this->getTerms($id, Types::PRODUCT_CATEGORY, $this->wp->getTerms(Types::PRODUCT_CATEGORY, array(
-//				'posts__in' => $_POST['tax_input']['product_category'],
-//			)));
-//			$_POST['product']['tags'] = $this->getTerms($id, Types::PRODUCT_TAG, $this->wp->getTerms(Types::PRODUCT_TAG, array(
-//				'posts__in' => $_POST['tax_input']['product_tag'],
-//			)));
-//
-//			if (!isset($_POST['product']['tax_classes'])) {
-//				$_POST['product']['tax_classes'] = array();
-//			}
-//
-//			$customer->restoreState($_POST['product']);
-//			$customer->markAsDirty($_POST['product']);
-//		}
-
 		return $customer;
 	}
 

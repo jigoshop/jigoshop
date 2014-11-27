@@ -106,7 +106,7 @@ class Dashboard implements PageInterface
 	{
 		$num_posts = $this->wp->wpCountPosts(Types::PRODUCT);
 		/** @noinspection PhpUnusedLocalVariableInspection */
-		$productCount = $this->wp->numberFormatI18n($num_posts->publish);
+		$productCount = $this->wp->getHelpers()->numberFormatI18n($num_posts->publish);
 		/** @noinspection PhpUnusedLocalVariableInspection */
 		$categoryCount = 0;
 		/** @noinspection PhpUnusedLocalVariableInspection */
@@ -272,7 +272,7 @@ class Dashboard implements PageInterface
 						$date = $item->get_date('U');
 
 						return array(
-							'title' => $that->wp->wptexturize($item->get_title()),
+							'title' => $that->wp->getHelpers()->wptexturize($item->get_title()),
 							'link' => $item->get_permalink(),
 							'date' => (abs(time() - $date)) < 86400 ? sprintf(__('%s ago', 'jigoshop'), $that->wp->humanTimeDiff($date)) : date(__('F jS Y', 'jigoshop'), $date),
 						);
