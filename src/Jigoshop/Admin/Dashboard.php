@@ -108,7 +108,7 @@ class Dashboard implements PageInterface
 		$productCount = $counts->publish;
 		$categoryCount = $this->wp->wpCountTerms(Types::PRODUCT_CATEGORY);
 		$tagCount = $this->wp->wpCountTerms(Types::PRODUCT_TAG);
-		$attributesCount = 0; // TODO: Fetch attributes count
+		$attributesCount = $this->productService->countAttributes();
 		$counts = $this->wp->wpCountPosts(Types::ORDER);
 		$newCount = $counts->{Order\Status::CREATED};
 		$pendingCount = $counts->{Order\Status::PENDING};

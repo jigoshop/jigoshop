@@ -369,6 +369,21 @@ class Product implements ProductServiceInterface
 	}
 
 	/**
+	 * Finds and returns number of available attributes.
+	 *
+	 * @return int Number of available product attributes
+	 */
+	public function countAttributes()
+	{
+		$wpdb = $this->wp->getWPDB();
+		$query = "
+		SELECT COUNT(*) FROM {$wpdb->prefix}jigoshop_attribute a
+			WHERE a.is_local = 0
+		";
+		return $wpdb->get_var($query);
+	}
+
+	/**
 	 * Finds and returns list of attributes associated with selected product by it's ID.
 	 *
 	 * @param $productId int Product ID.

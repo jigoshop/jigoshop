@@ -242,4 +242,15 @@ class Simple implements ProductServiceInterface
 	{
 		return $this->service->generateItemKey($item);
 	}
+
+	/**
+	 * Finds and returns number of available attributes.
+	 *
+	 * @return int Number of available product attributes
+	 */
+	public function countAttributes()
+	{
+		// TODO: Implement countAttributes() method.
+		return $this->service->countAttributes();
+	}
 }
