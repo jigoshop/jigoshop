@@ -54,7 +54,6 @@ class ProductCategory implements Taxonomy
 				'assign_terms' => 'assign_product_terms',
 			),
 			'hierarchical' => true,
-//				'update_count_callback' => '_update_post_term_count', // TODO: Analyze if `update_count_callback` is needed for product_category
 			'show_ui' => true,
 			'query_var' => self::NAME,
 			'rewrite' => array(

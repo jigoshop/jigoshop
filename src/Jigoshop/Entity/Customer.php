@@ -7,9 +7,6 @@ use Jigoshop\Exception;
 /**
  * Customer entity.
  *
- * TODO: Maybe we can use Customer class in Order to avoid duplicating it?
- * TODO: Probably it would be nice to store customer data in separate table and link to it in Order then
- *
  * @package Jigoshop\Entity
  */
 class Customer implements EntityInterface

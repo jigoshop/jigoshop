@@ -8,8 +8,6 @@ use Jigoshop\Exception;
 /**
  * Order item.
  *
- * TODO: Proper descriptions in PhpDoc
- *
  * @package Jigoshop\Entity\Order
  * @author Amadeusz Starzykiewicz
  */
@@ -37,7 +35,7 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 	private $meta = array();
 
 	/**
-	 * @return int
+	 * @return int Item ID.
 	 */
 	public function getId()
 	{
@@ -45,7 +43,7 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 	}
 
 	/**
-	 * @param int $id
+	 * @param int $id New ID for item.
 	 */
 	public function setId($id)
 	{
@@ -53,7 +51,9 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 	}
 
 	/**
-	 * @return string
+	 * Returns distinctive item key based on all product data and generated in product service.
+	 *
+	 * @return string Item key.
 	 */
 	public function getKey()
 	{
@@ -61,7 +61,7 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 	}
 
 	/**
-	 * @param string $key
+	 * @param string $key New item key.
 	 */
 	public function setKey($key)
 	{
@@ -69,7 +69,7 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 	}
 
 	/**
-	 * @return string
+	 * @return string Product name.
 	 */
 	public function getName()
 	{
@@ -77,7 +77,7 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 	}
 
 	/**
-	 * @param string $name
+	 * @param string $name New name of the product.
 	 */
 	public function setName($name)
 	{
@@ -85,7 +85,7 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 	}
 
 	/**
-	 * @return int
+	 * @return int Item quantity.
 	 */
 	public function getQuantity()
 	{
@@ -93,7 +93,7 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 	}
 
 	/**
-	 * @param int $quantity
+	 * @param int $quantity New item quantity.
 	 * @throws Exception When quantity is invalid.
 	 */
 	public function setQuantity($quantity)
@@ -107,7 +107,7 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 	}
 
 	/**
-	 * @return float
+	 * @return float Single item price.
 	 */
 	public function getPrice()
 	{
@@ -115,7 +115,7 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 	}
 
 	/**
-	 * @param float $price
+	 * @param float $price New price of single item.
 	 */
 	public function setPrice($price)
 	{
@@ -123,7 +123,7 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 	}
 
 	/**
-	 * @return array
+	 * @return array Tax data (per item).
 	 */
 	public function getTax()
 	{
@@ -131,7 +131,7 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 	}
 
 	/**
-	 * @param array $tax
+	 * @param array $tax New tax data (per item).
 	 */
 	public function setTax($tax)
 	{
@@ -140,7 +140,7 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 	}
 
 	/**
-	 * @return float
+	 * @return float Total tax of whole quantity.
 	 */
 	public function getTotalTax()
 	{
@@ -148,7 +148,7 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 	}
 
 	/**
-	 * @return float
+	 * @return float Item cost excluding tax.
 	 */
 	public function getCost()
 	{
@@ -157,7 +157,7 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 	}
 
 	/**
-	 * @return Product|null
+	 * @return Product|Product\Purchasable|null The product.
 	 */
 	public function getProduct()
 	{
@@ -165,27 +165,20 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 	}
 
 	/**
-	 * @param Product $product
+	 * @param Product $product New product for the item.
 	 */
 	public function setProduct(Product $product)
 	{
 		$this->product = $product;
+		$this->type = $product->getType();
 	}
 
 	/**
-	 * @return string
+	 * @return string Product type.
 	 */
 	public function getType()
 	{
 		return $this->type;
-	}
-
-	/**
-	 * @param string $type
-	 */
-	public function setType($type)
-	{
-		$this->type = $type;
 	}
 
 	/**

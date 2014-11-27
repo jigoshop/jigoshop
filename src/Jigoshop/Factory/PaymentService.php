@@ -29,9 +29,6 @@ class PaymentService
 
 		switch ($this->options->get('cache_mechanism')) {
 			// TODO: Add caching mechanisms
-//			case 'simple':
-//				$service = new SimpleCache($service);
-//				break;
 			default:
 				$service = $this->wp->applyFilters('jigoshop\core\get_payment_service', $service);
 		}

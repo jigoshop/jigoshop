@@ -18,12 +18,7 @@ class Options
 	/** @var Wordpress */
 	private $wp;
 
-	// TODO: Fill default options
 	private $defaults = array(
-//		'cache_mechanism' => 'simple',
-//		'disable_css' => 'no',
-//		'disable_prettyphoto' => 'no',
-//		'load_frontend_css' => 'yes',
 		'general' => array(
 			'country' => 'GB',
 			'email' => '',

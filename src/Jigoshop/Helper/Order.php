@@ -42,7 +42,7 @@ class Order
 
 	/**
 	 * @param $order \Jigoshop\Entity\Order
-	 * @return string
+	 * @return string Cancel order link.
 	 */
 	public static function getCancelLink($order)
 	{
@@ -55,5 +55,14 @@ class Order
 		$url = add_query_arg($args, get_permalink(self::$options->getPageId(Pages::CART)));
 
 		return apply_filters('jigoshop_get_cancel_order', $url);
+	}
+
+	/**
+	 * @param $key string Item key.
+	 * @return string Link to remove item.
+	 */
+	public static function getRemoveLink($key)
+	{
+		return add_query_arg(array('action' => 'remove-item', 'item' => $key));
 	}
 }

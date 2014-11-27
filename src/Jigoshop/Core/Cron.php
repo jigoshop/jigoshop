@@ -2,6 +2,7 @@
 
 namespace Jigoshop\Core;
 
+use Jigoshop\Entity\Order\Status;
 use Jigoshop\Service\OrderServiceInterface;
 use WPAL\Wordpress;
 
@@ -51,6 +52,7 @@ class Cron
 	 */
 	public function updatePendingOrders()
 	{
+		// TODO: Proper option name
 		if ($this->options->get('reset_pending_orders') == 'yes') {
 			$orders = $this->service->findOldPending();
 
@@ -59,7 +61,7 @@ class Cron
 
 			foreach ($orders as $order) {
 				/** @var $order \Jigoshop\Entity\Order */
-				$order->updateStatus('on-hold', __('Archived due to order being in pending state for a month or longer.', 'jigoshop'));
+				$order->updateStatus(Status::ON_HOLD, __('Archived due to order being in pending state for a month or longer.', 'jigoshop'));
 			}
 
 			// TODO: Enable notification of the user
@@ -74,6 +76,7 @@ class Cron
 	 */
 	public function completeProcessingOrders()
 	{
+		// TODO: Proper option name
 		if ($this->options->get('complete_processing_orders') == 'yes') {
 			$orders = $this->service->findOldProcessing();
 
@@ -82,7 +85,7 @@ class Cron
 
 			foreach ($orders as $order) {
 				/** @var $order \Jigoshop\Entity\Order */
-				$order->updateStatus('completed', __('Completed due to order being in processing state for a month or longer.', 'jigoshop'));
+				$order->updateStatus(Status::COMPLETED, __('Completed due to order being in processing state for a month or longer.', 'jigoshop'));
 			}
 
 			// TODO: Enable notification of the user

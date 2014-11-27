@@ -147,14 +147,8 @@ class Simple implements ProductServiceInterface
 
 	/**
 	 * Finds item specified by state.
-
-
-
-
-
-
-*
-*@param array $state State of the product to be found.
+	 *
+	 * @param array $state State of the product to be found.
 	 * @return Product|Product\Purchasable Item found.
 	 */
 	public function findForState(array $state)

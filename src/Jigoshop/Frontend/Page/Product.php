@@ -189,7 +189,6 @@ class Product implements PageInterface
 	private function formatItem($product)
 	{
 		$item = new Item();
-		$item->setType($product->getType());
 		$item->setName($product->getName());
 		$item->setPrice($product->getPrice());
 		$item->setQuantity((int)$_POST['quantity']);

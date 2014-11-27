@@ -83,7 +83,7 @@ class Simple implements CustomerServiceInterface
 	 */
 	public function findForPost($post)
 	{
-		// TODO: Implement findForPost() method.
+		return $this->service->findForPost($post);
 	}
 
 	/**
@@ -94,6 +94,6 @@ class Simple implements CustomerServiceInterface
 	 */
 	public function findByQuery($query)
 	{
-		// TODO: Implement findByQuery() method.
+		return $this->service->findByQuery($query);
 	}
 }

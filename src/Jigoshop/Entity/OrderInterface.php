@@ -40,9 +40,10 @@ interface OrderInterface
 	 *
 	 * @param $key string Item key in the cart.
 	 * @param $quantity int Quantity to set.
+	 * @param $taxService TaxServiceInterface Tax service to calculate taxes.
 	 * @throws Exception When product does not exists or quantity is not numeric.
 	 */
-	public function updateQuantity($key, $quantity);
+	public function updateQuantity($key, $quantity, $taxService);
 
 	/**
 	 * @param $key string Item key.

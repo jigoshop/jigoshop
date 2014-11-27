@@ -63,7 +63,6 @@ class Settings implements PageInterface
 	 */
 	public function addTab(TabInterface $tab)
 	{
-		// TODO: It would be nice to load tabs only when settings are visible
 		$this->tabs[$tab->getSlug()] = $tab;
 	}
 

@@ -162,7 +162,6 @@ class Variable implements Type
 		if ($product instanceof Product\Variable) {
 			$item = new Item();
 			$item->setProduct($product);
-			$item->setType($product->getType());
 
 			$variation = $this->factory->getVariation($product, $_POST['variation_id']);
 

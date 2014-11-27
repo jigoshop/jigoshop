@@ -2,12 +2,14 @@
 
 namespace Jigoshop\Service;
 
+use Jigoshop\Core\ContainerAware;
 use Jigoshop\Core\Options;
 use Jigoshop\Entity\Order;
 use Jigoshop\Frontend\Cart as CartContainer;
+use Symfony\Component\DependencyInjection\Container;
 use WPAL\Wordpress;
 
-class Cart implements CartServiceInterface
+class Cart implements CartServiceInterface, ContainerAware
 {
 	const CART = 'jigoshop_cart';
 	const CART_ID = 'jigoshop_cart_id';
@@ -16,25 +18,34 @@ class Cart implements CartServiceInterface
 	private $wp;
 	/** @var TaxServiceInterface */
 	private $taxService;
+	/** @var CustomerServiceInterface */
+	private $customerService;
 	/** @var string */
 	private $currentUserCartId;
-	/** @var CartContainer */
-	private $cart;
+	/** @var Container */
+	private $di;
 
-	public function __construct(Wordpress $wp, Options $options, ProductServiceInterface $productService, TaxServiceInterface $taxService, ShippingServiceInterface $shippingService,
-		CustomerServiceInterface $customerService)
+	public function __construct(Wordpress $wp, Options $options, TaxServiceInterface $taxService, CustomerServiceInterface $customerService)
 	{
 		$this->wp = $wp;
 		$this->taxService = $taxService;
-		// TODO: Replace $cart with Container Aware interface and get cart from container
-		$this->cart = new CartContainer($wp, $options, $productService, $taxService, $shippingService);
-		$this->cart->setCustomer($customerService->getCurrent());
+		$this->customerService = $customerService;
 
 		if (!isset($_SESSION[self::CART])) {
 			$_SESSION[self::CART] = array();
 		}
 
 		$this->currentUserCartId = $this->generateCartId();
+	}
+
+	/**
+	 * Sets container for every container aware service.
+	 *
+	 * @param Container $container
+	 */
+	public function setContainer(Container $container)
+	{
+		$this->di = $container;
 	}
 
 	/**
@@ -52,8 +63,15 @@ class Cart implements CartServiceInterface
 			$data = unserialize($_SESSION[self::CART][$id]);
 		}
 
-		$this->cart->initializeFor($this->getCartIdForCurrentUser(), $data);
-		return $this->cart;
+		/** @var \Jigoshop\Frontend\Cart $cart */
+		$cart = $this->di->get('jigoshop.cart');
+		$cart->initializeFor($this->getCartIdForCurrentUser(), $data);
+
+		if ($cart->getCustomer() === null) {
+			$cart->setCustomer($this->customerService->getCurrent());
+		}
+
+		return $cart;
 	}
 
 	/**
@@ -134,7 +152,8 @@ class Cart implements CartServiceInterface
 	 */
 	public function createFromOrder($cartId, $order)
 	{
-		$cart = $this->cart;
+		/** @var \Jigoshop\Frontend\Cart $cart */
+		$cart = $this->di->get('jigoshop.cart');
 		$cart->initializeFor($cartId, array());
 		$cart->setCustomer($order->getCustomer());
 		$cart->setShippingMethod($order->getShippingMethod(), $this->taxService);

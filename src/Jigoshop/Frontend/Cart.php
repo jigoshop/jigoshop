@@ -210,23 +210,18 @@ class Cart implements OrderInterface
 		return null;
 	}
 
-	public function getRemoveUrl($key)
-	{
-		// TODO: Move this properly to different class
-		return add_query_arg(array('action' => 'remove-item', 'item' => $key));
-	}
-
 	/**
 	 * Updates quantity of selected item by it's key.
 	 *
 	 * @param $key string Item key in the cart.
 	 * @param $quantity int Quantity to set.
+	 * @param $taxService TaxServiceInterface Tax service to calculate taxes.
 	 * @throws Exception When product does not exists or quantity is not numeric.
 	 */
-	public function updateQuantity($key, $quantity)
+	public function updateQuantity($key, $quantity, $taxService)
 	{
 		if (!isset($this->items[$key])) {
-			throw new Exception(__('Item does not exists', 'jigoshop')); // TODO: Will be nice to get better error message
+			throw new Exception(__('Item does not exists', 'jigoshop'));
 		}
 
 		if (!is_numeric($quantity)) {
@@ -251,7 +246,7 @@ class Cart implements OrderInterface
 	public function getItem($key)
 	{
 		if (!isset($this->items[$key])) {
-			throw new Exception(__('Item does not exists', 'jigoshop')); // TODO: Will be nice to get better error message
+			throw new Exception(__('Item does not exists', 'jigoshop'));
 		}
 
 		return $this->items[$key];

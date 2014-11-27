@@ -63,6 +63,15 @@ services:
       - '@wpal'
       - '@jigoshop.options'
       - '@jigoshop.pages'
+  jigoshop.cart:
+    class: Jigoshop\Frontend\Cart
+    scope: prototype
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.service.product'
+      - '@jigoshop.service.tax'
+      - '@jigoshop.service.shipping'
   jigoshop.post_type.product:
     class: Jigoshop\Core\Types\Product
     arguments:

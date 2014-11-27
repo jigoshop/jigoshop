@@ -29,7 +29,6 @@ class Order implements OrderServiceInterface
 		$this->factory = $factory;
 
 		$wp->addAction('save_post_'.Types\Order::NAME, array($this, 'savePost'), 10);
-		$wp->addFilter('wp_insert_post_data', array($this, 'updateTitle'), 10, 2);
 	}
 
 	/**
@@ -93,6 +92,16 @@ class Order implements OrderServiceInterface
 			throw new Exception('Trying to save not an order!');
 		}
 
+		/** @var \Jigoshop\Entity\Order $object */
+		$object->setUpdatedAt(new \DateTime());
+
+		if (!$object->getNumber()) {
+			$object->setNumber($this->getNextOrderNumber());
+		}
+
+		$fields = $object->getStateToSave();
+		$created = false;
+
 		if (!$object->getId()) {
 			$object->setNumber($this->getNextOrderNumber());
 			$post = $this->wp->wpInsertPost(array(
@@ -106,35 +115,20 @@ class Order implements OrderServiceInterface
 			}
 
 			$object->setId($post);
+			$created = true;
 		}
 
-		$this->_saveData($object);
-	}
-
-	private function _saveData(EntityInterface $order, $savingPost = false)
-	{
-		if (!$order->getNumber()) {
-			$order->setNumber($this->getNextOrderNumber());
-		}
-
-		$fields = $order->getStateToSave();
-
-		/** @var \Jigoshop\Entity\Order $order */
 		if (isset($fields['id'])) {
 			unset($fields['id']);
 		}
 
 		$wpdb = $this->wp->getWPDB();
 
-		if (isset($fields['status']) || isset($fields['number'])) {
-			if (!$savingPost) {
-				$wpdb->update($wpdb->posts, array(
-					'post_title' => $order->getTitle(),
-					'post_status' => $order->getStatus(),
-				), array('ID' => $order->getId()));
-			}
-
-			unset($fields['status']);
+		if (!$created && (isset($fields['status']) || isset($fields['number']))) {
+			$wpdb->update($wpdb->posts, array(
+				'post_title' => $object->getTitle(),
+				'post_status' => $object->getStatus(),
+			), array('ID' => $object->getId()));
 		}
 
 		if (isset($fields['customer_note']) || isset($fields['status'])) {
@@ -147,12 +141,12 @@ class Order implements OrderServiceInterface
 				/** @var $item Item */
 				return $item->getId();
 			}, $fields['items']);
-			$this->removeAllExcept($order->getId(), $existing);
+			$this->removeAllExcept($object->getId(), $existing);
 
 			foreach ($fields['items'] as $item) {
 				/** @var $item Item */
 				$data = array(
-					'order_id' => $order->getId(),
+					'order_id' => $object->getId(),
 					'product_id' => $item->getProduct() ? $item->getProduct()->getId() : null,
 					'product_type' => $item->getType(),
 					'title' => $item->getName(),
@@ -191,7 +185,7 @@ class Order implements OrderServiceInterface
 		}
 
 		foreach ($fields as $field => $value) {
-			$this->wp->updatePostMeta($order->getId(), $field, esc_sql($value)); // TODO: Replace esc_sql() with WPAL
+			$this->wp->updatePostMeta($object->getId(), $field, $this->wp->getHelpers()->escSql($value));
 		}
 	}
 
@@ -216,36 +210,8 @@ class Order implements OrderServiceInterface
 		// Do not save order when trashing or restoring from trash
 		if (!isset($_GET['action'])) {
 			$order = $this->factory->create($id);
-			$this->_saveData($order, true);
+			$this->save($order);
 		}
-	}
-
-	/**
-	 * Updates post title based on order number.
-	 *
-	 * @param $data array Data to save.
-	 * @param $post array Post data.
-	 * @return array
-	 */
-	public function updateTitle($data, $post)
-	{
-		if ($data['post_type'] === Types::ORDER) {
-			// Do not update when trashing or restoring from trash
-			if ($data['post_status'] !== 'trash') {
-				// TODO: Create order only single time (not twice, here and in savePost).
-				$order = $this->factory->create($post['ID']);
-				if (empty($data['post_title'])) {
-					$data['post_title'] = $order->getTitle();
-				}
-				$data['post_status'] = $_POST['post_status'] = $order->getStatus();
-			}
-
-			if (isset($_GET['action']) && $_GET['action'] == 'untrash') {
-				$data['post_status'] = Status::CREATED;
-			}
-		}
-
-		return $data;
 	}
 
 	/**
@@ -291,12 +257,10 @@ class Order implements OrderServiceInterface
 	 */
 	public function findOldPending()
 	{
-		// TODO: Improve findOldPending method
 		$this->wp->addFilter('posts_where', array($this, 'ordersFilter'));
 		$query = new \WP_Query(array(
-			'post_status' => 'publish',
-			'post_type' => 'shop_order',
-			'shop_order_status' => 'pending',
+			'post_status' => Status::PENDING,
+			'post_type' => Types::ORDER,
 			'suppress_filters' => false,
 			'fields' => 'ids',
 		));
@@ -311,12 +275,10 @@ class Order implements OrderServiceInterface
 	 */
 	public function findOldProcessing()
 	{
-		// TODO: Improve findOldProcessing method
 		$this->wp->addFilter('posts_where', array($this, 'ordersFilter'));
 		$query = new \WP_Query(array(
-			'post_status' => 'publish',
-			'post_type' => 'shop_order',
-			'shop_order_status' => 'processing',
+			'post_status' => Status::PROCESSING,
+			'post_type' => Types::ORDER,
 			'suppress_filters' => false,
 			'fields' => 'ids',
 		));

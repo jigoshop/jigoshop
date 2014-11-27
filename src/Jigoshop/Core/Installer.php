@@ -31,7 +31,7 @@ class Installer
 
 	public function install()
 	{
-		$db = false;//$this->wp->getOption('jigoshop_database_version'); // TODO: Restore checking DB version.
+		$db = $this->wp->getOption('jigoshop_database_version');
 
 		if ($db === false) {
 			$this->_createTables();

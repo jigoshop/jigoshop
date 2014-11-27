@@ -357,7 +357,6 @@ class Order
 	private function formatItem($order, $product)
 	{
 		$item = new Item();
-		$item->setType($product->getType());
 		$item->setName($product->getName());
 		// TODO: Item price should ALWAYS be without taxes.
 		$item->setPrice($product->getPrice());

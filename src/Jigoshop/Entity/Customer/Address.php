@@ -262,6 +262,11 @@ class Address implements \Serializable
 		return $result;
 	}
 
+	/**
+	 * Returns location string based on current translation.
+	 *
+	 * @return string Location string.
+	 */
 	public function getLocation()
 	{
 		// TODO: Write documentation about changing customer location string

@@ -32,7 +32,6 @@ class CustomerService
 		$service = new Service($this->wp, $this->factory, $this->options);
 
 		switch ($this->options->get('cache_mechanism')) {
-			// TODO: Add caching mechanisms
 			case 'simple':
 				$service = new SimpleCache($service);
 				break;

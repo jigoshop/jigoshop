@@ -9,13 +9,12 @@ use Jigoshop\Entity\Order\Status;
 use Jigoshop\Exception;
 use Jigoshop\Payment\Method as PaymentMethod;
 use Jigoshop\Service\TaxServiceInterface;
-use Jigoshop\Shipping\Method as ShippingMethod;
 use Jigoshop\Shipping\Method;
+use Jigoshop\Shipping\Method as ShippingMethod;
 use WPAL\Wordpress;
 
 /**
  * Order class.
- * TODO: Fully implement the class.
  *
  * @package Jigoshop\Entity
  * @author Amadeusz Starzykiewicz
@@ -27,9 +26,9 @@ class Order implements EntityInterface, OrderInterface
 	/** @var string */
 	private $number;
 	/** @var \DateTime */
-	private $created_at;
+	private $createdAt;
 	/** @var \DateTime */
-	private $updated_at;
+	private $updatedAt;
 	/** @var Customer */
 	private $customer;
 	/** @var array */
@@ -51,6 +50,8 @@ class Order implements EntityInterface, OrderInterface
 	/** @var array */
 	private $shippingTax = array();
 	/** @var float */
+	private $totalTax;
+	/** @var float */
 	private $shippingPrice = 0.0;
 	/** @var string */
 	private $status = Status::CREATED;
@@ -65,8 +66,10 @@ class Order implements EntityInterface, OrderInterface
 		$this->wp = $wp;
 
 		$this->customer = new Guest();
-		$this->created_at = new \DateTime();
-		$this->updated_at = new \DateTime();
+		$this->createdAt = new \DateTime();
+		$this->updatedAt = new \DateTime();
+		$this->completedAt = new \DateTime();
+		$this->totalTax = null;
 
 		foreach ($taxClasses as $class) {
 			$this->tax[$class['class']] = 0.0;
@@ -83,7 +86,6 @@ class Order implements EntityInterface, OrderInterface
 	 */
 	public function addNote($note, $private = true)
 	{
-		// TODO: Remove WP calls
 		$comment = array(
 			'comment_post_ID' => $this->id,
 			'comment_author' => __('Jigoshop', 'jigoshop'),
@@ -93,13 +95,13 @@ class Order implements EntityInterface, OrderInterface
 			'comment_type' => 'order_note',
 			'comment_agent' => __('Jigoshop', 'jigoshop'),
 			'comment_parent' => 0,
-			'comment_date' => current_time('timestamp'),
-			'comment_date_gmt' => current_time('timestamp', true),
+			'comment_date' => $this->wp->getHelpers()->currentTime('timestamp'),
+			'comment_date_gmt' => $this->wp->getHelpers()->currentTime('timestamp', true),
 			'comment_approved' => true
 		);
 
-		$comment_id = wp_insert_comment($comment);
-		add_comment_meta($comment_id, 'private', $private);
+		$comment_id = $this->wp->wpInsertComment($comment);
+		$this->wp->addCommentMeta($comment_id, 'private', $private);
 
 		return $comment_id;
 	}
@@ -149,15 +151,15 @@ class Order implements EntityInterface, OrderInterface
 	 */
 	public function getCreatedAt()
 	{
-		return $this->created_at;
+		return $this->createdAt;
 	}
 
 	/**
-	 * @param \DateTime $created_at Creation time.
+	 * @param \DateTime $createdAt Creation time.
 	 */
-	public function setCreatedAt($created_at)
+	public function setCreatedAt($createdAt)
 	{
-		$this->created_at = $created_at;
+		$this->createdAt = $createdAt;
 	}
 
 	/**
@@ -165,15 +167,15 @@ class Order implements EntityInterface, OrderInterface
 	 */
 	public function getUpdatedAt()
 	{
-		return $this->updated_at;
+		return $this->updatedAt;
 	}
 
 	/**
-	 * @param \DateTime $updated_at Last update time.
+	 * @param \DateTime $updatedAt Last update time.
 	 */
-	public function setUpdatedAt($updated_at)
+	public function setUpdatedAt($updatedAt)
 	{
-		$this->updated_at = $updated_at;
+		$this->updatedAt = $updatedAt;
 	}
 
 	/**
@@ -227,6 +229,7 @@ class Order implements EntityInterface, OrderInterface
 		$this->subtotal = 0.0;
 		$this->total = 0.0;
 		$this->tax = array_map(function() { return 0.0; }, $this->tax);
+		$this->totalTax = null;
 	}
 
 	/**
@@ -263,6 +266,7 @@ class Order implements EntityInterface, OrderInterface
 		foreach ($item->getTax() as $class => $tax) {
 			$this->tax[$class] += $tax * $item->getQuantity();
 		}
+		$this->totalTax = null;
 	}
 
 	/**
@@ -282,6 +286,7 @@ class Order implements EntityInterface, OrderInterface
 			$this->tax[$class] -= $tax * $item->getQuantity();
 		}
 
+		$this->totalTax = null;
 		unset($this->items[$item->getId()]);
 		return $item;
 	}
@@ -398,8 +403,8 @@ class Order implements EntityInterface, OrderInterface
 
 				// Date
 				if ($status == Status::COMPLETED) {
-					// TODO: Add completion date and save overall quantity sold.
-//					update_post_meta($this->id, 'completed_date', current_time('timestamp'));
+					$this->completedAt = new \DateTime();
+					// TODO: Save overall quantity sold.
 //					foreach ($this->items as $item) {
 //						/** @var \Jigoshop\Entity\Order\Item $item */
 //						$sales = get_post_meta($item->getParent()->getId(), 'quantity_sold', true) + $item->getQuantity();
@@ -489,6 +494,7 @@ class Order implements EntityInterface, OrderInterface
 	 */
 	public function setTax($tax)
 	{
+		$this->totalTax = null;
 		$this->tax = $tax;
 	}
 
@@ -528,6 +534,7 @@ class Order implements EntityInterface, OrderInterface
 	 */
 	public function updateTaxes(array $tax)
 	{
+		$this->totalTax = null;
 		foreach ($tax as $class => $value) {
 			$this->tax[$class] += $value;
 		}
@@ -538,8 +545,11 @@ class Order implements EntityInterface, OrderInterface
 	 */
 	public function getTotalTax()
 	{
-		// TODO: Probably nice idea to keep it stored
-		return array_reduce($this->tax, function($value, $item){ return $value + $item; }, 0.0);
+		if ($this->totalTax === null) {
+			$this->totalTax = array_reduce($this->tax, function($value, $item){ return $value + $item; }, 0.0);;
+		}
+
+		return $this->totalTax;
 	}
 
 	/**
@@ -547,12 +557,13 @@ class Order implements EntityInterface, OrderInterface
 	 *
 	 * @param $key string Item key in the order.
 	 * @param $quantity int Quantity to set.
+	 * @param $taxService TaxServiceInterface Tax service to calculate taxes.
 	 * @throws Exception When product does not exists or quantity is not numeric.
 	 */
-	public function updateQuantity($key, $quantity)
+	public function updateQuantity($key, $quantity, $taxService)
 	{
 		if (!isset($this->items[$key])) {
-			throw new Exception(__('Item does not exists', 'jigoshop')); // TODO: Will be nice to get better error message
+			throw new Exception(__('Item does not exists', 'jigoshop'));
 		}
 
 		if (!is_numeric($quantity)) {
@@ -571,8 +582,7 @@ class Order implements EntityInterface, OrderInterface
 		$this->subtotal += $item->getPrice() * $difference;
 		$this->productSubtotal += $item->getPrice() * $difference;
 		foreach ($item->getProduct()->getTaxClasses() as $class) {
-			// TODO: Pass tax service as well
-			$this->tax[$class] += $this->taxService->get($item->getProduct(), $class) * $difference;
+			$this->tax[$class] += $taxService->get($item->getProduct(), $class) * $difference;
 		}
 		$item->setQuantity($quantity);
 	}
@@ -585,7 +595,7 @@ class Order implements EntityInterface, OrderInterface
 		return array(
 			'id' => $this->id,
 			'number' => $this->number,
-			'updated_at' => $this->updated_at->getTimestamp(),
+			'updated_at' => $this->updatedAt->getTimestamp(),
 			'items' => $this->items,
 			'customer' => serialize($this->customer),
 			'shipping' => array(
@@ -611,7 +621,7 @@ class Order implements EntityInterface, OrderInterface
 			$this->number = $state['number'];
 		}
 		if (isset($state['updated_at'])) {
-			$this->updated_at->setTimestamp($state['updated_at']);
+			$this->updatedAt->setTimestamp($state['updated_at']);
 		}
 		if (isset($state['items'])) {
 			foreach ($state['items'] as $item) {

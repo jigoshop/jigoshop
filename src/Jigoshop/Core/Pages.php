@@ -8,8 +8,6 @@ use WPAL\Wordpress;
 /**
  * Class containing available pages in Jigoshop.
  *
- * TODO: Check if caching of current page does not break anything.
- *
  * @package Jigoshop
  * @author Amadeusz Starzykiewicz
  */

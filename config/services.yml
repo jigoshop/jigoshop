@@ -29,10 +29,12 @@ services:
     arguments:
       - '@wpal'
       - '@jigoshop.options'
-      - '@jigoshop.service.product'
       - '@jigoshop.service.tax'
-      - '@jigoshop.service.shipping'
       - '@jigoshop.service.customer'
+    calls:
+      - [setContainer, ['@di']]
+    tags:
+      - { name: jigoshop.container_aware }
   jigoshop.service.product.variable:
     class: Jigoshop\Service\Product\Variable
     arguments:

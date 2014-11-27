@@ -102,7 +102,6 @@ class Simple implements OrderServiceInterface
 	 */
 	public function findFromMonth($month)
 	{
-		// TODO: Implement findFromMonth() method.
 		return $this->service->findFromMonth($month);
 	}
 
