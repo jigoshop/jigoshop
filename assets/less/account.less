@@ -1,0 +1,36 @@
+@import '../bower/bootstrap/less/variables.less';
+@import '../bower/bootstrap/less/mixins.less';
+@import '../bower/bootstrap/less/glyphicons.less';
+
+.jigoshop {
+  @import '../bower/bootstrap/less/alerts.less';
+  @import '../bower/bootstrap/less/grid.less';
+  @import '../bower/bootstrap/less/buttons.less';
+  @import '../bower/bootstrap/less/panels.less';
+  @import '../bower/bootstrap/less/list-group.less';
+  @import '../bower/bootstrap/less/utilities.less';
+  @import '../bower/bootstrap/less/scaffolding.less';
+  @import '../bower/bootstrap/less/type.less';
+
+  padding: @padding-base-vertical @padding-base-horizontal;
+
+  dl {
+    margin-bottom: @padding-large-vertical;
+
+    dd {
+      margin-bottom: @padding-base-vertical;
+    }
+  }
+  .panel-heading {
+    h3.panel-title {
+      display: inline-block;
+    }
+    a.btn {
+      margin-top: -@padding-large-horizontal/4;
+    }
+  }
+
+  .glyphicon-remove {
+    color: @btn-danger-bg;
+  }
+}

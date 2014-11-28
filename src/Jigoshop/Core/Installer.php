@@ -32,7 +32,7 @@ class Installer
 
 	public function install()
 	{
-		$db = $this->wp->getOption('jigoshop_database_version');
+		$db = false;//$this->wp->getOption('jigoshop_database_version');
 
 		if ($db === false) {
 			Registry::getInstance('jigoshop')->addNotice('Installing Jigoshop.');
@@ -208,9 +208,9 @@ class Installer
 		$this->_createPage(Pages::THANK_YOU, array_merge($data, array(
 			'post_title' => __('Checkout - thank you', 'jigoshop'),
 		)));
-//		$this->_createPage(Pages::ACCOUNT, array_merge($data, array(
-//			'post_title' => __('My account', 'jigoshop'),
-//		)));
+		$this->_createPage(Pages::ACCOUNT, array_merge($data, array(
+			'post_title' => __('My account', 'jigoshop'),
+		)));
 	}
 
 	private function _createPage($slug, $data)

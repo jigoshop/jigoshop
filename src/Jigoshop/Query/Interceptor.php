@@ -68,7 +68,16 @@ class Interceptor
 			);
 		}
 
+		if ($this->isAccount($request)) {
+			return $request;
+		}
+
 		return $request;
+	}
+
+	private function isAccount($request)
+	{
+		return isset($request['pagename']) && $request['pagename'] == Pages::SHOP;
 	}
 
 	private function isProductList($request)

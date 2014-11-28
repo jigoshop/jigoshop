@@ -78,3 +78,13 @@ services:
       - '@jigoshop.service.order'
       - '@jigoshop.helper.styles'
       - '@jigoshop.helper.scripts'
+  jigoshop.page.account:
+    class: Jigoshop\Frontend\Page\Account
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.service.customer'
+      - '@jigoshop.service.order'
+      - '@jigoshop.messages'
+      - '@jigoshop.helper.styles'
+      - '@jigoshop.helper.scripts'
