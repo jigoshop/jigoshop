@@ -62,7 +62,7 @@ class jigoshop_emails extends Jigoshop_Base
 		}
 	}
 
-	private function filter_post(wp_post $post, array $args)
+	private static function filter_post(wp_post $post, array $args)
 	{
 		if (empty($args)) {
 			return $post;
@@ -75,7 +75,7 @@ class jigoshop_emails extends Jigoshop_Base
 				$post->post_content = str_replace('['.$key.']', '', $post->post_content);
 			} else {
 				$post->post_content = preg_replace('#\['.$key.'\](.*?)\[value\](.*?)\[else\](.*?)\[\/'.$key.'\]#si', '$1'.'['.$key.']'.'$2', $post->post_content);
-+				$post->post_content = preg_replace('#\['.$key.'\](.*?)\[else\](.*?)\[\/'.$key.'\]#si', '$1', $post->post_content);
+				$post->post_content = preg_replace('#\['.$key.'\](.*?)\[else\](.*?)\[\/'.$key.'\]#si', '$1', $post->post_content);
 				$post->post_content = preg_replace('#\['.$key.'\](.*?)\[value\](.*?)\[\/'.$key.'\]#si', '$1'.'['.$key.']'.'$2', $post->post_content);
 				$post->post_content = str_replace('['.$key.']', $value, $post->post_content);
 			}
