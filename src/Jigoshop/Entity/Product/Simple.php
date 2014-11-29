@@ -12,11 +12,14 @@ class Simple extends Product implements Purchasable, Shippable, Saleable
 	private $regularPrice = 0.0;
 	/** @var Attributes\Sales */
 	private $sales;
+	/** @var Product\Attributes\StockStatus */
+	private $stock;
 
 	public function __construct(Wordpress $wp)
 	{
 		parent::__construct($wp);
 		$this->sales = new Attributes\Sales();
+		$this->stock = new Product\Attributes\StockStatus();
 	}
 
 	/**
@@ -37,6 +40,30 @@ class Simple extends Product implements Purchasable, Shippable, Saleable
 	{
 		// TODO: Improve code to calculate price single time only
 		return $this->wp->applyFilters('jigoshop\product\get_price', $this->calculatePrice(), $this);
+	}
+
+	/**
+	 * Sets product stock.
+	 * Applies `jigoshop\product\set_stock` filter to allow plugins to modify stock data. When filter returns false stock is not modified at all.
+	 *
+	 * @param Product\Attributes\StockStatus $stock New product stock status.
+	 */
+	public function setStock(Product\Attributes\StockStatus $stock)
+	{
+		$stock = $this->wp->applyFilters('jigoshop\product\set_stock', $stock, $this);
+
+		if ($stock !== false) {
+			$this->stock = $stock;
+			$this->dirtyFields[] = 'stock';
+		}
+	}
+
+	/**
+	 * @return Product\Attributes\StockStatus Current stock status.
+	 */
+	public function getStock()
+	{
+		return $this->stock;
 	}
 
 	/**
@@ -116,6 +143,7 @@ class Simple extends Product implements Purchasable, Shippable, Saleable
 		}
 
 		$toSave['sales'] = $this->sales;
+		$toSave['stock'] = $this->stock;
 
 		return $toSave;
 	}
@@ -141,6 +169,19 @@ class Simple extends Product implements Purchasable, Shippable, Saleable
 				$this->sales = unserialize($state['sales']);
 			}
 		}
+		if (isset($state['stock']) && !empty($state['stock'])) {
+			if (is_array($state['stock'])) {
+				$this->stock->setManage($state['stock']['manage'] == 'on');
+				$this->stock->setAllowBackorders($state['stock']['allow_backorders'] == 'on');
+				if ($this->stock->getManage()) {
+					$this->stock->setStock($state['stock']['stock']);
+				} else {
+					$this->stock->setStatus($state['stock']['status']);
+				}
+			} else {
+				$this->stock = unserialize($state['stock']);
+			}
+		}
 	}
 
 	/**
@@ -151,6 +192,7 @@ class Simple extends Product implements Purchasable, Shippable, Saleable
 	public function markAsDirty(array $state)
 	{
 		$this->dirtyFields[] = 'sales';
+		$this->dirtyFields[] = 'stock';
 
 		parent::markAsDirty($state);
 	}

@@ -27,8 +27,6 @@ abstract class Product implements EntityInterface, Product\Taxable
 	private $taxClasses = array();
 	/** @var Product\Attributes\Size */
 	private $size;
-	/** @var Product\Attributes\StockStatus */
-	private $stock;
 
 	private $visibility = self::VISIBILITY_PUBLIC;
 	private $featured;
@@ -43,7 +41,6 @@ abstract class Product implements EntityInterface, Product\Taxable
 	{
 		$this->wp = $wp;
 		$this->size = new Product\Attributes\Size();
-		$this->stock = new Product\Attributes\StockStatus();
 	}
 
 	/**
@@ -228,30 +225,6 @@ abstract class Product implements EntityInterface, Product\Taxable
 	}
 
 	/**
-	 * Sets product stock.
-	 * Applies `jigoshop\product\set_stock` filter to allow plugins to modify stock data. When filter returns false stock is not modified at all.
-	 *
-	 * @param Product\Attributes\StockStatus $stock New product stock status.
-	 */
-	public function setStock(Product\Attributes\StockStatus $stock)
-	{
-		$stock = $this->wp->applyFilters('jigoshop\product\set_stock', $stock, $this);
-
-		if ($stock !== false) {
-			$this->stock = $stock;
-			$this->dirtyFields[] = 'stock';
-		}
-	}
-
-	/**
-	 * @return Product\Attributes\StockStatus Current stock status.
-	 */
-	public function getStock()
-	{
-		return $this->stock;
-	}
-
-	/**
 	 * Adds new attribute to the product.
 	 * If attribute already exists - it is replaced.
 	 * Calls `jigoshop\product\add_attribute` filter before adding. If filter returns false - attribute is not added.
@@ -423,7 +396,6 @@ abstract class Product implements EntityInterface, Product\Taxable
 		}
 
 		$toSave['size'] = $this->size;
-		$toSave['stock'] = $this->stock;
 		$toSave['attributes'] = $this->attributes;
 
 		return $toSave;
@@ -474,19 +446,6 @@ abstract class Product implements EntityInterface, Product\Taxable
 				$this->size = unserialize($state['size']);
 			}
 		}
-		if (isset($state['stock']) && !empty($state['stock'])) {
-			if (is_array($state['stock'])) {
-				$this->stock->setManage($state['stock']['manage'] == 'on');
-				$this->stock->setAllowBackorders($state['stock']['allow_backorders'] == 'on');
-				if ($this->stock->getManage()) {
-					$this->stock->setStock($state['stock']['stock']);
-				} else {
-					$this->stock->setStatus($state['stock']['status']);
-				}
-			} else {
-				$this->stock = unserialize($state['stock']);
-			}
-		}
 
 		if (isset($state['attributes'])) {
 			$this->attributes = $state['attributes'];
@@ -501,7 +460,6 @@ abstract class Product implements EntityInterface, Product\Taxable
 	public function markAsDirty(array $state)
 	{
 		$this->dirtyFields[] = 'size';
-		$this->dirtyFields[] = 'stock';
 		$this->dirtyFields = array_merge($this->dirtyFields, array_keys($state));
 	}
 
