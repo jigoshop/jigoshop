@@ -28,6 +28,7 @@ services:
     class: Jigoshop\Factory\Product
     arguments:
       - '@wpal'
+      - '@jigoshop.options'
   jigoshop.factory.product.variable:
     class: Jigoshop\Factory\Product\Variable
     arguments:

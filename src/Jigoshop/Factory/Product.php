@@ -2,8 +2,10 @@
 
 namespace Jigoshop\Factory;
 
+use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\Product\Attribute;
+use Jigoshop\Entity\Product\Purchasable;
 use Jigoshop\Entity\Product\Simple;
 use Jigoshop\Exception;
 use Monolog\Registry;
@@ -13,11 +15,14 @@ class Product implements EntityFactoryInterface
 {
 	/** @var \WPAL\Wordpress */
 	private $wp;
+	/** @var Options */
+	private $options;
 	private $types = array();
 
-	public function __construct(Wordpress $wp)
+	public function __construct(Wordpress $wp, Options $options)
 	{
 		$this->wp = $wp;
+		$this->options = $options;
 	}
 
 	/**
@@ -60,7 +65,12 @@ class Product implements EntityFactoryInterface
 		}
 
 		$class = $this->types[$type];
-		return new $class($this->wp);
+		$instance = new $class($this->wp);
+		if ($instance instanceof Purchasable) {
+			$instance->getStock()->setManage($this->options->get('products.manage_stock'));
+		}
+
+		return $instance;
 	}
 
 	/**
