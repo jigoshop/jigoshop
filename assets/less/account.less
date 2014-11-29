@@ -6,8 +6,9 @@
   @import '../bower/bootstrap/less/alerts.less';
   @import '../bower/bootstrap/less/grid.less';
   @import '../bower/bootstrap/less/buttons.less';
-  @import '../bower/bootstrap/less/panels.less';
+  @import '../bower/bootstrap/less/forms.less';
   @import '../bower/bootstrap/less/list-group.less';
+  @import '../bower/bootstrap/less/panels.less';
   @import '../bower/bootstrap/less/utilities.less';
   @import '../bower/bootstrap/less/scaffolding.less';
   @import '../bower/bootstrap/less/type.less';
@@ -21,6 +22,20 @@
       margin-bottom: @padding-base-vertical;
     }
   }
+  ul.list-group {
+    margin: 0;
+  }
+  #unpaid-orders {
+    margin: @padding-large-vertical/2 0 0 0;
+
+    dt {
+      width: 60px;
+    }
+    dd {
+      margin: 0 0 0 @padding-large-horizontal/2;
+      float: left;
+    }
+  }
   .panel-heading {
     h3.panel-title {
       display: inline-block;
@@ -29,7 +44,9 @@
       margin-top: -@padding-large-horizontal/4;
     }
   }
-
+  button.btn {
+    text-transform: none;
+  }
   .glyphicon-remove {
     color: @btn-danger-bg;
   }

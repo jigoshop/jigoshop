@@ -238,6 +238,7 @@ class Checkout implements PageInterface
 				}
 				break;
 		}
+		// TODO: Zip validation
 
 		$this->customerService->save($customer);
 		$cart = $this->cartService->getCurrent();

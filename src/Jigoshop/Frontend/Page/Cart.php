@@ -207,6 +207,7 @@ class Cart implements PageInterface
 		if ($customer->hasMatchingAddresses()) {
 			$customer->getBillingAddress()->setPostcode($_POST['value']);
 		}
+		// TODO: Zip validation
 		$customer->getShippingAddress()->setPostcode($_POST['value']);
 		$this->customerService->save($customer);
 		$cart = $this->cartService->getCurrent();
@@ -249,7 +250,7 @@ class Cart implements PageInterface
 		$cart = $this->cartService->getCurrent();
 
 		try {
-			$cart->updateQuantity($_POST['item'], (int)$_POST['quantity']);
+			$cart->updateQuantity($_POST['item'], (int)$_POST['quantity'], $this->taxService);
 			$this->cartService->save($cart);
 			$item = $cart->getItem($_POST['item']);
 			// TODO: Support for "Prices includes tax"
@@ -358,7 +359,7 @@ class Cart implements PageInterface
 	{
 		if (isset($_POST['cart']) && is_array($_POST['cart'])) {
 			foreach ($_POST['cart'] as $item => $quantity) {
-				$cart->updateQuantity($item, (int)$quantity);
+				$cart->updateQuantity($item, (int)$quantity, $this->taxService);
 			}
 		}
 	}

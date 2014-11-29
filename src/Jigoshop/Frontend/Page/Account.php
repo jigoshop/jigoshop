@@ -7,6 +7,8 @@ use Jigoshop\Core\Options;
 use Jigoshop\Core\Pages;
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\Order\Item;
+use Jigoshop\Entity\Order\Status;
+use Jigoshop\Helper\Api;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
@@ -39,6 +41,8 @@ class Account implements PageInterface
 		$styles->add('jigoshop.account', JIGOSHOP_URL.'/assets/css/account.css');
 //		$styles->add('jigoshop.vendors', JIGOSHOP_URL.'/assets/css/vendors.min.css');
 //		$scripts->add('jigoshop.vendors', JIGOSHOP_URL.'/assets/js/vendors.min.js');
+		$scripts->add('jigoshop.helpers', JIGOSHOP_URL.'/assets/js/helpers.js', array('jquery'));
+		$scripts->add('jigoshop.shop', JIGOSHOP_URL.'/assets/js/shop.js', array('jquery', 'jigoshop.helpers'));
 //		$scripts->add('jigoshop.account', JIGOSHOP_URL.'/assets/js/account.js', array('jquery', 'jigoshop.vendors'));
 		$this->wp->doAction('jigoshop\account\assets', $wp, $styles, $scripts);
 	}
@@ -46,18 +50,30 @@ class Account implements PageInterface
 
 	public function action()
 	{
-		// TODO: Check if user is logged in and redirect to login page if not
-		// TODO: Probably addresses should be changed here
 	}
 
 	public function render()
 	{
+		if ($this->wp->getCurrentUserId() == 0) {
+			return Render::get('user/login', array());
+		}
+
 		$content = $this->wp->getPostField('post_content', $this->options->getPageId(Pages::ACCOUNT));
 		$customer = $this->customerService->getCurrent();
-		return Render::get('account', array(
+		$query = new \WP_Query(array(
+			'post_type' => Types::ORDER,
+			'post_status' => array(Status::CREATED, Status::PENDING, Status::ON_HOLD),
+			'posts_per_page' => 5, // TODO: Add option for unpaid orders number
+		));
+		$orders = $this->orderService->findByQuery($query);
+
+		return Render::get('user/account', array(
 			'content' => $content,
 			'messages' => $this->messages,
 			'customer' => $customer,
+			'unpaidOrders' => $orders,
+			'editBillingAddressUrl' => Api::getEndpointUrl('edit-address', 'billing'),
+			'editShippingAddressUrl' => Api::getEndpointUrl('edit-address', 'shipping'),
 		));
 	}
 }

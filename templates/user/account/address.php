@@ -5,7 +5,7 @@ use Jigoshop\Helper\Country;
  * @var $address \Jigoshop\Entity\Customer\Address
  */
 ?>
-<dl class="dl-horizontal">
+<dl class="dl-horizontal clearfix">
 	<dt><?php echo __('Name', 'jigoshop'); ?></dt>
 	<dd><?php echo $address->getName(); ?></dd>
 	<dt><?php echo __('Address', 'jigoshop'); ?></dt>

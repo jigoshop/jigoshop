@@ -315,7 +315,7 @@ class Order implements EntityFactoryInterface
 			if ($address->getState() == null) {
 				$errors[] = __('State or province is not selected.', 'jigoshop');
 			}
-			if ($address->getPostcode() == null) {
+			if ($address->getPostcode() == null) {// TODO: Zip validation
 				$errors[] = __('Postcode is empty.', 'jigoshop');
 			}
 		}

@@ -69,6 +69,10 @@ class PageResolver
 			return $container->get('jigoshop.page.product');
 		}
 
+		if ($this->pages->isAccountEditAddress()) {
+			return $container->get('jigoshop.page.account.edit_address');
+		}
+
 		if ($this->pages->isAccount()) {
 			return $container->get('jigoshop.page.account');
 		}

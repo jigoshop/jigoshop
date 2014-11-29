@@ -213,10 +213,26 @@ class Pages
 	{
 		if (!isset($this->cache[self::ACCOUNT])) {
 			$page = $this->options->getPageId(self::ACCOUNT);
-			$this->cache[self::ACCOUNT] = $page !== false && $this->wp->isPage($page); // || is_page(jigoshop_get_page_id('edit_address')) || is_page(jigoshop_get_page_id('change_password')) || is_page(jigoshop_get_page_id('view_order'));
+			$this->cache[self::ACCOUNT] = $page !== false && $this->wp->isPage($page);
 		}
 
 		return $this->cache[self::ACCOUNT];
+	}
+
+	/**
+	 * Evaluates to true only on the Edit address page of My account page
+	 *
+	 * @return bool
+	 * @since 2.0
+	 */
+	public function isAccountEditAddress()
+	{
+		if (!isset($this->cache['account-edit-address'])) {
+			$wp = $this->wp->getWp();
+			$this->cache['account-edit-address'] = $this->isAccount() && isset($wp->query_vars['edit-address']);
+		}
+
+		return $this->cache['account-edit-address'];
 	}
 
 	/**
