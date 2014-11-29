@@ -49,6 +49,17 @@ class Options
 			'restrict_selling_locations' => false,
 			'selling_locations' => array(),
 		),
+		'products' => array(
+			'weight_unit' => 'kg',
+			'dimensions_unit' => 'cm',
+			'manage_stock' => true,
+			'show_stock' => true,
+			'low_stock_threshold' => 2,
+			'hide_out_of_stock' => false,
+			'notify_low_stock' => false,
+			'notify_out_of_stock' => true,
+			'notify_on_backorders' => false,
+		),
 		'tax' => array(
 			'before_coupons' => false,
 			'included' => false,

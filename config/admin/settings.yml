@@ -17,6 +17,14 @@ services:
       - '@jigoshop.helper.scripts'
     tags:
       - { name: jigoshop.admin.settings.tab }
+  jigoshop.admin.settings.products:
+    class: Jigoshop\Admin\Settings\ProductsTab
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.messages'
+    tags:
+      - { name: jigoshop.admin.settings.tab }
   jigoshop.admin.settings.taxes:
     class: Jigoshop\Admin\Settings\TaxesTab
     arguments:
