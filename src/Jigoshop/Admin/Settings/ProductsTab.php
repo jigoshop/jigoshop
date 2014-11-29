@@ -105,43 +105,46 @@ class ProductsTab implements TabInterface
 						'type' => 'number',
 						'value' => $this->options['low_stock_threshold'],
 					),
-					array(
-						'name' => '[hide_out_of_stock]',
-						'title' => __('Hide out of stock products?', 'jigoshop'),
-						'description' => __('This option allows you to hide products which are out of stock from lists.', 'jigoshop'),
-						'type' => 'checkbox',
-						'checked' => $this->options['hide_out_of_stock'],
-					),
+					// TODO: Add support for hiding out of stock items
+//					array(
+//						'name' => '[hide_out_of_stock]',
+//						'title' => __('Hide out of stock products?', 'jigoshop'),
+//						'description' => __('This option allows you to hide products which are out of stock from lists.', 'jigoshop'),
+//						'type' => 'checkbox',
+//						'checked' => $this->options['hide_out_of_stock'],
+//					),
 				),
 			),
-			array(
-				'title' => __('Stock notifications', 'jigoshop'),
-				'id' => 'stock_notifications',
-				'fields' => array(
-					array(
-						'name' => '[notify_low_stock]',
-						'title' => __('Low stock', 'jigoshop'),
-						'description' => __('Notify when product reaches low stock', 'jigoshop'),
-						'type' => 'checkbox',
-						'checked' => $this->options['notify_low_stock'],
-					),
-					array(
-						'name' => '[notify_out_of_stock]',
-						'title' => __('Out of stock', 'jigoshop'),
-						'description' => __('Notify when product becomes out of stock', 'jigoshop'),
-						'type' => 'checkbox',
-						'checked' => $this->options['notify_out_of_stock'],
-					),
-					array(
-						'name' => '[notify_on_backorders]',
-						'title' => __('On backorders', 'jigoshop'),
-//						'description' => __('Notify when product reaches backorders', 'jigoshop'), // TODO: How to describe this?
-						'type' => 'checkbox',
-						'checked' => $this->options['notify_on_backorders'],
-					),
-				),
-			),
-//			array( // TODO: Images section
+			// TODO: Add support for stock notifications
+//			array(
+//				'title' => __('Stock notifications', 'jigoshop'),
+//				'id' => 'stock_notifications',
+//				'fields' => array(
+//					array(
+//						'name' => '[notify_low_stock]',
+//						'title' => __('Low stock', 'jigoshop'),
+//						'description' => __('Notify when product reaches low stock', 'jigoshop'),
+//						'type' => 'checkbox',
+//						'checked' => $this->options['notify_low_stock'],
+//					),
+//					array(
+//						'name' => '[notify_out_of_stock]',
+//						'title' => __('Out of stock', 'jigoshop'),
+//						'description' => __('Notify when product becomes out of stock', 'jigoshop'),
+//						'type' => 'checkbox',
+//						'checked' => $this->options['notify_out_of_stock'],
+//					),
+//					array(
+//						'name' => '[notify_on_backorders]',
+//						'title' => __('On backorders', 'jigoshop'),
+////						'description' => __('Notify when product reaches backorders', 'jigoshop'), // TODO: How to describe this?
+//						'type' => 'checkbox',
+//						'checked' => $this->options['notify_on_backorders'],
+//					),
+//				),
+//			),
+			// TODO: Add images section
+//			array(
 //				'title' => __('Images', 'jigoshop'),
 //				'id' => 'images',
 //				'fields' => array(
