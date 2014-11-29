@@ -20,11 +20,27 @@ class Interceptor
 	{
 		$this->wp = $wp;
 		$this->options = $options;
+
+		$this->endpoints = array(
+			'edit-address',
+		);
 	}
 
 	public function run()
 	{
+		$this->addEndpoints();
 		$this->wp->addFilter('request', array($this, 'intercept'));
+	}
+
+	/**
+	 * Adds endpoints.
+	 */
+	public function addEndpoints()
+	{
+		foreach ($this->endpoints as $endpoint) {
+			$this->wp->addRewriteEndpoint($endpoint, EP_ROOT | EP_PAGES | EP_PERMALINK);
+		}
+		$this->wp->flushRewriteRules();
 	}
 
 	public function intercept($request)
