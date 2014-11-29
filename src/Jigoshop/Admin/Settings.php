@@ -182,7 +182,6 @@ class Settings implements PageInterface
 
 		// TODO: Think on how to improve this name hacking
 		$field['name'] = Options::NAME.$field['name'];
-		// TODO: Properly check if fields are valid.
 
 		return $field;
 	}

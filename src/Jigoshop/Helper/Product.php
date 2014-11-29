@@ -20,12 +20,12 @@ class Product
 
 	public static function dimensionsUnit()
 	{
-		return 'cm'; // TODO: Properly implement after setting up the settings page.
+		return self::$options->get('products.dimensions_unit');
 	}
 
 	public static function weightUnit()
 	{
-		return 'kg'; // TODO: Properly implement after setting up the settings page.
+		return self::$options->get('products.weight_unit');
 	}
 
 	/**
@@ -95,13 +95,17 @@ class Product
 			return '';
 		}
 
-		// TODO: Respect shopping options for displaying stock values
 		switch($product->getType()){
 			case Entity\Product\Simple::TYPE:
 				/** @var $product Entity\Product\Simple */
 				$status = $product->getStock()->getStatus() == Entity\Product\Attributes\StockStatus::IN_STOCK ?
 					_x('In stock', 'product', 'jigoshop') :
 					'<strong class="attention">'._x('Out of stock', 'product', 'jigoshop').'</strong>';
+
+				if (!self::$options->get('products.show_stock')) {
+					return $status;
+				}
+
 				return sprintf(_x('%s <strong>(%d available)</strong>', 'product', 'jigoshop'), $status, $product->getStock()->getStock());
 			default:
 				return apply_filters('jigoshop\helper\product\get_stock', '', $product);
