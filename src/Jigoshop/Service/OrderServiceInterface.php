@@ -38,6 +38,14 @@ interface OrderServiceInterface extends ServiceInterface
 	public function findForPost($post);
 
 	/**
+	 * Finds orders for specified user.
+	 *
+	 * @param $userId int User ID.
+	 * @return array Orders found.
+	 */
+	public function findForUser($userId);
+
+	/**
 	 * @param $month int Month to find orders from.
 	 * @return array List of orders from selected month.
 	 */

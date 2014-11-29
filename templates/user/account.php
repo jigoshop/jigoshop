@@ -9,7 +9,8 @@ use Jigoshop\Helper\Render;
  * @var $customer \Jigoshop\Entity\Customer The customer.
  * @var $editBillingAddressUrl string URL to billing address edition page.
  * @var $editShippingAddressUrl string URL to shipping address edition page.
- * @var $changePasswordUrl string URL to password changing page..
+ * @var $changePasswordUrl string URL to password changing page.
+ * @var $myOrdersUrl string URL to My orders page.
  */
 ?>
 
@@ -43,7 +44,7 @@ use Jigoshop\Helper\Render;
 		</div>
 		<ul class="list-group">
 			<li class="list-group-item"><a href="<?php echo $changePasswordUrl; ?>"><?php _e('Change password', 'jigoshop'); ?></a></li>
-			<li class="list-group-item"><a href=""><?php _e('My orders', 'jigoshop'); ?></a></li>
+			<li class="list-group-item"><a href="<?php echo $myOrdersUrl; ?>"><?php _e('My orders', 'jigoshop'); ?></a></li>
 		</ul>
 	</div>
 	<div class="panel panel-warning" id="unpaid-orders">
@@ -66,7 +67,7 @@ use Jigoshop\Helper\Render;
 			</li>
 			<?php endforeach; ?>
 			<li class="list-group-item">
-				<a href="" class="btn btn-default"><?php _e('See more...', 'jigoshop'); ?></span></a>
+				<a href="<?php echo $myOrdersUrl; ?>" class="btn btn-default"><?php _e('See more...', 'jigoshop'); ?></span></a>
 			</li>
 		</ul>
 	</div>

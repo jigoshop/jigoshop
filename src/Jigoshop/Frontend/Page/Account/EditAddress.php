@@ -38,7 +38,6 @@ class EditAddress implements PageInterface
 		$styles->add('jigoshop.user.account.edit_address', JIGOSHOP_URL.'/assets/css/user/account/edit_address.css');
 		$styles->add('jigoshop.vendors', JIGOSHOP_URL.'/assets/css/vendors.min.css');
 		$scripts->add('jigoshop.vendors', JIGOSHOP_URL.'/assets/js/vendors.min.js');
-//		$scripts->add('jigoshop.account', JIGOSHOP_URL.'/assets/js/account.js', array('jquery', 'jigoshop.vendors'));
 		$this->wp->doAction('jigoshop\account\assets', $wp, $styles, $scripts);
 	}
 

@@ -1,57 +1,37 @@
-@import '../../bower/bootstrap/less/variables';
-@import '../../bower/bootstrap/less/mixins';
-@import '../../bower/bootstrap/less/glyphicons';
+@import '../../../../bower/bootstrap/less/variables';
+@import '../../../../bower/bootstrap/less/mixins';
+@import '../../../../bower/bootstrap/less/glyphicons';
 
 .jigoshop {
-  @import '../../bower/bootstrap/less/alerts';
-  @import '../../bower/bootstrap/less/grid';
-  @import '../../bower/bootstrap/less/buttons';
-  @import '../../bower/bootstrap/less/forms';
-  @import '../../bower/bootstrap/less/list-group';
-  @import '../../bower/bootstrap/less/panels';
-  @import '../../bower/bootstrap/less/utilities';
-  @import '../../bower/bootstrap/less/scaffolding';
-  @import '../../bower/bootstrap/less/type';
-
-  padding: @padding-base-vertical @padding-base-horizontal;
-
-  dl {
-    margin-bottom: @padding-large-vertical;
-
-    dd {
-      margin-bottom: @padding-base-vertical;
-    }
+  table, th, td {
+    border: 0;
   }
-  ul.list-group {
-    margin: 0;
+  @import '../../../../bower/bootstrap/less/tables';
 
-    a.btn {
-      margin-left: @padding-base-horizontal;
-    }
+  td {
+    vertical-align: middle;
   }
-  #unpaid-orders {
+  .variation-data {
     margin: @padding-large-vertical/2 0 0 0;
 
     dt {
-      width: 60px;
+      width: auto;
     }
     dd {
       margin: 0 0 0 @padding-large-horizontal/2;
       float: left;
     }
   }
-  .panel-heading {
-    h3.panel-title {
-      display: inline-block;
+  #cart-collaterals {
+    .clearfix();
+
+    #cart-totals {
+      width: 50%;
+
+      th {
+        text-align: right;
+        width: 30%;
+      }
     }
-    a.btn {
-      margin-top: -@padding-large-horizontal/4;
-    }
-  }
-  button.btn {
-    text-transform: none;
-  }
-  .glyphicon-remove {
-    color: @btn-danger-bg;
   }
 }

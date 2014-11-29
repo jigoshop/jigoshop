@@ -72,6 +72,7 @@ class Account implements PageInterface
 			'editBillingAddressUrl' => Api::getEndpointUrl('edit-address', 'billing'),
 			'editShippingAddressUrl' => Api::getEndpointUrl('edit-address', 'shipping'),
 			'changePasswordUrl' => Api::getEndpointUrl('change-password'),
+			'myOrdersUrl' => Api::getEndpointUrl('orders'),
 		));
 	}
 }

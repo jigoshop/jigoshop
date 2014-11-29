@@ -321,4 +321,30 @@ class Order implements OrderServiceInterface
 		$wpdb = $this->wp->getWPDB();
 		return $wpdb->get_var($wpdb->prepare("SELECT MAX(ID)+1 FROM {$wpdb->posts} WHERE post_type = %s", array(Types::ORDER)));
 	}
+
+	/**
+	 * Finds orders for specified user.
+	 *
+	 * @param $userId int User ID.
+	 * @return array Orders found.
+	 */
+	public function findForUser($userId)
+	{
+		$query = new \WP_Query(array(
+			'post_status' => array_keys(Status::getStatuses()),
+			'post_type' => Types::ORDER,
+			'suppress_filters' => false,
+			'fields' => 'ids',
+			'order' => 'DESC',
+			'orderby' => 'post_date',
+			'numberposts' => -1, // TODO: Pagination?
+			'meta_query' => array(
+				array(
+					'key' => 'customer_id',
+					'value' => $userId,
+				),
+			),
+		));
+		return $this->findByQuery($query);
+	}
 }

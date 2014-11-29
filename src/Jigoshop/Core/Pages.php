@@ -254,6 +254,22 @@ class Pages
 	}
 
 	/**
+	 * Evaluates to true only on the My orders page of My account.
+	 *
+	 * @return bool
+	 * @since 2.0
+	 */
+	public function isAccountOrders()
+	{
+		if (!isset($this->cache['account-orders'])) {
+			$wp = $this->wp->getWp();
+			$this->cache['account-orders'] = $this->isAccount() && isset($wp->query_vars['orders']);
+		}
+
+		return $this->cache['account-orders'];
+	}
+
+	/**
 	 * Evaluates to true only on the Order Tracking page
 	 *
 	 * @return bool

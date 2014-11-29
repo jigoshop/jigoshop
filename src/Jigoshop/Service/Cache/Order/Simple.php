@@ -120,4 +120,15 @@ class Simple implements OrderServiceInterface
 	{
 		return $this->service->findOldProcessing();
 	}
+
+	/**
+	 * Finds orders for specified user.
+	 *
+	 * @param $userId int User ID.
+	 * @return array Orders found.
+	 */
+	public function findForUser($userId)
+	{
+		return $this->service->findForUser($userId);
+	}
 }

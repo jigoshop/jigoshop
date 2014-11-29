@@ -24,6 +24,7 @@ class Interceptor
 		$this->endpoints = array(
 			'edit-address',
 			'change-password',
+			'orders',
 		);
 	}
 

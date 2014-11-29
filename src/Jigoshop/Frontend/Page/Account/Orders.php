@@ -6,17 +6,18 @@ use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Pages;
 use Jigoshop\Core\Types;
-use Jigoshop\Entity\Customer\CompanyAddress;
 use Jigoshop\Entity\Order\Item;
 use Jigoshop\Frontend\Page\PageInterface;
-use Jigoshop\Helper\Country;
+use Jigoshop\Helper\Api;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
 use Jigoshop\Service\CustomerServiceInterface;
+use Jigoshop\Service\OrderServiceInterface;
+use Jigoshop\Service\TaxServiceInterface;
 use WPAL\Wordpress;
 
-class EditAddress implements PageInterface
+class Orders implements PageInterface
 {
 	/** @var \WPAL\Wordpress */
 	private $wp;
@@ -42,6 +43,7 @@ class EditAddress implements PageInterface
 		$this->messages = $messages;
 
 		$styles->add('jigoshop.user.account', JIGOSHOP_URL.'/assets/css/user/account.css');
+		$styles->add('jigoshop.user.account.orders', JIGOSHOP_URL.'/assets/css/user/account/orders.css');
 		$styles->add('jigoshop.user.account.orders.single', JIGOSHOP_URL.'/assets/css/user/account/orders/single.css');
 		$this->wp->doAction('jigoshop\account\assets', $wp, $styles, $scripts);
 	}
@@ -57,20 +59,31 @@ class EditAddress implements PageInterface
 			return Render::get('user/login', array());
 		}
 
-		$customer = $this->customerService->getCurrent();
-		switch ($this->wp->getQueryParameter('edit-address')) {
-			case 'billing':
-				$address = $customer->getBillingAddress();
-				break;
-			case 'shipping':
-				$address = $customer->getShippingAddress();
-				break;
+		$order = $this->wp->getQueryParameter('orders');
+		$accountUrl = $this->wp->getPermalink($this->options->getPageId(Pages::ACCOUNT));
+
+		if (!empty($order) && is_numeric($order)) {
+			$taxService = $this->taxService;
+			$order = $this->orderService->find($order);
+			return Render::get('user/account/orders/single', array(
+				'messages' => $this->messages,
+				'order' => $order,
+				'myAccountUrl' => $accountUrl,
+				'listUrl' => Api::getEndpointUrl('orders', '', $accountUrl),
+				'showWithTax' => $this->options->get('tax.price_tax') == 'with_tax',
+				'getTaxLabel' => function($taxClass) use ($taxService, $order) {
+					return $taxService->getLabel($taxClass, $order->getCustomer());
+				},
+			));
 		}
-		return Render::get('user/account/edit_address', array(
+
+		$customer = $this->customerService->getCurrent();
+		$orders = $this->orderService->findForUser($customer->getId());
+		return Render::get('user/account/orders', array(
 			'messages' => $this->messages,
 			'customer' => $customer,
-			'address' => $address,
-			'myAccountUrl' => $this->wp->getPermalink($this->options->getPageId(Pages::ACCOUNT)),
+			'orders' => $orders,
+			'myAccountUrl' => $accountUrl,
 		));
 	}
 }

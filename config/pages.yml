@@ -106,3 +106,14 @@ services:
       - '@jigoshop.messages'
       - '@jigoshop.helper.styles'
       - '@jigoshop.helper.scripts'
+  jigoshop.page.account.orders:
+    class: Jigoshop\Frontend\Page\Account\Orders
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.service.customer'
+      - '@jigoshop.service.order'
+      - '@jigoshop.service.tax'
+      - '@jigoshop.messages'
+      - '@jigoshop.helper.styles'
+      - '@jigoshop.helper.scripts'
