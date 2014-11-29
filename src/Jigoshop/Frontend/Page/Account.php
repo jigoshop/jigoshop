@@ -38,12 +38,9 @@ class Account implements PageInterface
 		$this->orderService = $orderService;
 		$this->messages = $messages;
 
-		$styles->add('jigoshop.account', JIGOSHOP_URL.'/assets/css/account.css');
-//		$styles->add('jigoshop.vendors', JIGOSHOP_URL.'/assets/css/vendors.min.css');
-//		$scripts->add('jigoshop.vendors', JIGOSHOP_URL.'/assets/js/vendors.min.js');
+		$styles->add('jigoshop.user.account', JIGOSHOP_URL.'/assets/css/user/account.css');
 		$scripts->add('jigoshop.helpers', JIGOSHOP_URL.'/assets/js/helpers.js', array('jquery'));
 		$scripts->add('jigoshop.shop', JIGOSHOP_URL.'/assets/js/shop.js', array('jquery', 'jigoshop.helpers'));
-//		$scripts->add('jigoshop.account', JIGOSHOP_URL.'/assets/js/account.js', array('jquery', 'jigoshop.vendors'));
 		$this->wp->doAction('jigoshop\account\assets', $wp, $styles, $scripts);
 	}
 

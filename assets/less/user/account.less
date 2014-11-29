@@ -1,0 +1,60 @@
+@import '../../bower/bootstrap/less/variables';
+@import '../../bower/bootstrap/less/mixins';
+@import '../../bower/bootstrap/less/glyphicons';
+
+.jigoshop {
+  @import '../../bower/bootstrap/less/alerts';
+  @import '../../bower/bootstrap/less/grid';
+  @import '../../bower/bootstrap/less/buttons';
+  @import '../../bower/bootstrap/less/list-group';
+  @import '../../bower/bootstrap/less/panels';
+  @import '../../bower/bootstrap/less/utilities';
+  @import '../../bower/bootstrap/less/scaffolding';
+  @import '../../bower/bootstrap/less/type';
+
+  padding: @padding-base-vertical @padding-base-horizontal;
+
+  dl.address {
+    margin-bottom: @padding-large-vertical;
+
+    dt {
+      width: 130px;
+    }
+    dd {
+      margin-left: 130px + @padding-base-horizontal;
+      margin-bottom: @padding-base-vertical;
+    }
+  }
+  ul.list-group {
+    margin: 0;
+
+    a.btn {
+      margin-left: @padding-base-horizontal;
+    }
+  }
+  #unpaid-orders {
+    margin: @padding-large-vertical/2 0 0 0;
+
+    dt {
+      width: 60px;
+    }
+    dd {
+      margin: 0 0 0 @padding-large-horizontal/2;
+      float: left;
+    }
+  }
+  .panel-heading {
+    h3.panel-title {
+      display: inline-block;
+    }
+    a.btn {
+      margin-top: -@padding-large-horizontal/4;
+    }
+  }
+  button.btn {
+    text-transform: none;
+  }
+  .glyphicon-remove {
+    color: @btn-danger-bg;
+  }
+}

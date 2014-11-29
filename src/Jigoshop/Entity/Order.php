@@ -599,6 +599,7 @@ class Order implements EntityInterface, OrderInterface
 			'updated_at' => $this->updatedAt->getTimestamp(),
 			'items' => $this->items,
 			'customer' => serialize($this->customer),
+			'customer_id' =>  $this->customer->getId(),
 			'shipping' => array(
 				'method' => $this->shippingMethod ? $this->shippingMethod->getState() : false,
 				'price' => $this->shippingPrice,

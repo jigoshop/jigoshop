@@ -98,6 +98,8 @@ class Pages
 				return $this->isProductList();
 			case self::PRODUCT_TAG:
 				return $this->isProductTag();
+			case self::ACCOUNT:
+				return $this->isAccount();
 			case self::ALL:
 				return true;
 			default:
