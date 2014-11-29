@@ -220,7 +220,7 @@ class Pages
 	}
 
 	/**
-	 * Evaluates to true only on the Edit address page of My account page
+	 * Evaluates to true only on the Edit address page of My account.
 	 *
 	 * @return bool
 	 * @since 2.0
@@ -233,6 +233,22 @@ class Pages
 		}
 
 		return $this->cache['account-edit-address'];
+	}
+
+	/**
+	 * Evaluates to true only on the Change password page of My account.
+	 *
+	 * @return bool
+	 * @since 2.0
+	 */
+	public function isAccountChangePassword()
+	{
+		if (!isset($this->cache['account-change-password'])) {
+			$wp = $this->wp->getWp();
+			$this->cache['account-change-password'] = $this->isAccount() && isset($wp->query_vars['change-password']);
+		}
+
+		return $this->cache['account-change-password'];
 	}
 
 	/**

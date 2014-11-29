@@ -54,7 +54,7 @@ class Account implements PageInterface
 
 	public function render()
 	{
-		if ($this->wp->getCurrentUserId() == 0) {
+		if (!$this->wp->isUserLoggedIn()) {
 			return Render::get('user/login', array());
 		}
 
@@ -74,6 +74,7 @@ class Account implements PageInterface
 			'unpaidOrders' => $orders,
 			'editBillingAddressUrl' => Api::getEndpointUrl('edit-address', 'billing'),
 			'editShippingAddressUrl' => Api::getEndpointUrl('edit-address', 'shipping'),
+			'changePasswordUrl' => Api::getEndpointUrl('change-password'),
 		));
 	}
 }

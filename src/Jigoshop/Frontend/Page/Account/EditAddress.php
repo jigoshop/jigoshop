@@ -103,7 +103,7 @@ class EditAddress implements PageInterface
 
 	public function render()
 	{
-		if ($this->wp->getCurrentUserId() == 0) {
+		if (!$this->wp->isUserLoggedIn()) {
 			return Render::get('user/login', array());
 		}
 

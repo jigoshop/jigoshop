@@ -7,8 +7,9 @@ use Jigoshop\Helper\Render;
  * @var $messages \Jigoshop\Core\Messages Messages container.
  * @var $content string Contents of cart page
  * @var $customer \Jigoshop\Entity\Customer The customer.
- * @var $editBillingAddressUrl string URL to billing address edition.
- * @var $editShippingAddressUrl string URL to shipping address edition.
+ * @var $editBillingAddressUrl string URL to billing address edition page.
+ * @var $editShippingAddressUrl string URL to shipping address edition page.
+ * @var $changePasswordUrl string URL to password changing page..
  */
 ?>
 
@@ -41,7 +42,7 @@ use Jigoshop\Helper\Render;
 			<h3 class="panel-title"><?php _e('Account options', 'jigoshop'); ?></h3>
 		</div>
 		<ul class="list-group">
-			<li class="list-group-item"><a href=""><?php _e('Change password', 'jigoshop'); ?></a></li>
+			<li class="list-group-item"><a href="<?php echo $changePasswordUrl; ?>"><?php _e('Change password', 'jigoshop'); ?></a></li>
 			<li class="list-group-item"><a href=""><?php _e('My orders', 'jigoshop'); ?></a></li>
 		</ul>
 	</div>

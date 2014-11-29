@@ -73,6 +73,10 @@ class PageResolver
 			return $container->get('jigoshop.page.account.edit_address');
 		}
 
+		if ($this->pages->isAccountChangePassword()) {
+			return $container->get('jigoshop.page.account.change_password');
+		}
+
 		if ($this->pages->isAccount()) {
 			return $container->get('jigoshop.page.account');
 		}
