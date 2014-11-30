@@ -13,7 +13,7 @@ use Jigoshop\Helper\Formatter;
 
 	<p><?= sprintf(__('Use the information below when submitting technical support requests via <a href="%s" title="Jigoshop Support">Jigoshop Support</a>', 'jigoshop'), 'http://wordpress.org/support/plugin/jigoshop'); ?></p>
 
-	<textarea readonly="readonly" id="system-info-textarea" title="<?= __('To copy the system info, click below then press Ctrl + C (PC) or Cmd + C (Mac)', 'jigoshop'); ?>">
+	<textarea readonly="readonly" id="system-info-textarea" rows="30" cols="100" title="<?= __('To copy the system info, click below then press Ctrl + C (PC) or Cmd + C (Mac)', 'jigoshop'); ?>">
 ### Begin System Info ###
 Multi-site:               <?= (is_multisite() ? 'Yes' : 'No').PHP_EOL ?>
 
