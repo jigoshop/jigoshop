@@ -226,5 +226,6 @@ class Installer
 		}
 
 		$this->options->setPageId($slug, $page_id);
+		$this->options->update('advanced.pages.'.$slug, $page_id);
 	}
 }

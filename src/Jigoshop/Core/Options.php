@@ -114,7 +114,16 @@ class Options
 				'test_mode' => true,
 				'test_email' => '',
 			),
-		)
+		),
+		'advanced' => array(
+			'automatic_complete' => false,
+			'automatic_reset' => false,
+			'force_ssl' => false,
+			'integrations' => array(
+				'share_this' => '',
+				'google_analytics' => '',
+			),
+		),
 	);
 	private $options = array();
 	private $dirty = false;

@@ -52,8 +52,7 @@ class Cron
 	 */
 	public function updatePendingOrders()
 	{
-		// TODO: Proper option name
-		if ($this->options->get('reset_pending_orders') == 'yes') {
+		if ($this->options->get('advanced.automatic_reset')) {
 			$orders = $this->service->findOldPending();
 
 			// TODO: Disable notification of the user
@@ -76,8 +75,7 @@ class Cron
 	 */
 	public function completeProcessingOrders()
 	{
-		// TODO: Proper option name
-		if ($this->options->get('complete_processing_orders') == 'yes') {
+		if ($this->options->get('advanced.automatic_complete')) {
 			$orders = $this->service->findOldProcessing();
 
 			// TODO: Disable notification of the user

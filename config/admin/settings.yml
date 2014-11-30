@@ -49,3 +49,11 @@ services:
       - '@jigoshop.service.payment'
     tags:
       - { name: jigoshop.admin.settings.tab }
+  jigoshop.admin.settings.advanced:
+    class: Jigoshop\Admin\Settings\AdvancedTab
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.messages'
+    tags:
+      - { name: jigoshop.admin.settings.tab }
