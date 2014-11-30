@@ -44,7 +44,7 @@ $product = $variation->getProduct();
 			'placeholder' => $variation->getParent()->getId().' - '.$variation->getId(),
 		)); ?>
 		<?php Forms::text(array(
-			'name' => 'product[variation]['.$variation->getId().'][product][stock][stock]',
+			'name' => 'product[variation]['.$variation->getId().'][product][stock_stock]',
 			'label' => __('Stock', 'jigoshop'),
 			'value' => $product->getStock()->getStock(),
 		)); ?>

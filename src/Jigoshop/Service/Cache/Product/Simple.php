@@ -111,12 +111,13 @@ class Simple implements ProductServiceInterface
 	}
 
 	/**
+	 * @param $number int Number of products to find.
 	 * @return array List of products that are out of stock.
 	 */
-	public function findOutOfStock()
+	public function findOutOfStock($number)
 	{
 		if (!isset($this->queries['out_of_stock'])) {
-			$this->queries['out_of_stock'] = $this->service->findOutOfStock();
+			$this->queries['out_of_stock'] = $this->service->findOutOfStock($number);
 		}
 
 		return $this->queries['out_of_stock'];
@@ -124,12 +125,13 @@ class Simple implements ProductServiceInterface
 
 	/**
 	 * @param $threshold int Threshold where to assume product is low in stock.
+	 * @param $number int Number of products to find.
 	 * @return array List of products that are low in stock.
 	 */
-	public function findLowStock($threshold)
+	public function findLowStock($threshold, $number)
 	{
 		if (!isset($this->queries['low_stock_'.$threshold])) {
-			$this->queries['low_stock_'.$threshold] = $this->service->findLowStock($threshold);
+			$this->queries['low_stock_'.$threshold] = $this->service->findLowStock($threshold, $number);
 		}
 
 		return $this->queries['low_stock_'.$threshold];

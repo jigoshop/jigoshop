@@ -143,7 +143,11 @@ class Simple extends Product implements Purchasable, Shippable, Saleable
 		}
 
 		$toSave['sales'] = $this->sales;
-		$toSave['stock'] = $this->stock;
+		$toSave['stock_manage'] = $this->stock->getManage();
+		$toSave['stock_stock'] = $this->stock->getStock();
+		$toSave['stock_allow_backorders'] = $this->stock->getAllowBackorders();
+		$toSave['stock_status'] = $this->stock->getStatus();
+		$toSave['stock_sold'] = $this->stock->getSoldQuantity();
 
 		return $toSave;
 	}
@@ -169,18 +173,20 @@ class Simple extends Product implements Purchasable, Shippable, Saleable
 				$this->sales = unserialize($state['sales']);
 			}
 		}
-		if (isset($state['stock']) && !empty($state['stock'])) {
-			if (is_array($state['stock'])) {
-				$this->stock->setManage($state['stock']['manage'] == 'on');
-				$this->stock->setAllowBackorders($state['stock']['allow_backorders'] == 'on');
-				if ($this->stock->getManage()) {
-					$this->stock->setStock($state['stock']['stock']);
-				} else {
-					$this->stock->setStatus($state['stock']['status']);
-				}
-			} else {
-				$this->stock = unserialize($state['stock']);
-			}
+		if (isset($state['stock_manage'])) {
+			$this->stock->setManage((bool)$state['stock_manage']);
+		}
+		if (isset($state['stock_stock'])) {
+			$this->stock->setStock((int)$state['stock_stock']);
+		}
+		if (isset($state['stock_allow_backorders'])) {
+			$this->stock->setAllowBackorders($state['stock_allow_backorders']);
+		}
+		if (isset($state['stock_status'])) {
+			$this->stock->setStatus((int)$state['stock_status']);
+		}
+		if (isset($state['stock_sold'])) {
+			$this->stock->addSoldQuantity((int)$state['stock_sold']);
 		}
 	}
 

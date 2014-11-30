@@ -56,15 +56,17 @@ interface ProductServiceInterface extends ServiceInterface
 	public function findLike($name);
 
 	/**
+	 * @param $number int Number of products to find.
 	 * @return array List of products that are out of stock.
 	 */
-	public function findOutOfStock();
+	public function findOutOfStock($number);
 
 	/**
 	 * @param $threshold int Threshold where to assume product is low in stock.
+	 * @param $number int Number of products to find.
 	 * @return array List of products that are low in stock.
 	 */
-	public function findLowStock($threshold);
+	public function findLowStock($threshold, $number);
 
 	/**
 	 * @param Product $product Product to find thumbnails for.

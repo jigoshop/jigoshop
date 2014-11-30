@@ -226,16 +226,16 @@ class Product implements ProductServiceInterface
 	}
 
 	/**
+	 * @param $number int Number of products to find.
 	 * @return array List of products that are out of stock.
 	 */
-	public function findOutOfStock()
+	public function findOutOfStock($number)
 	{
 		// TODO: Replace \WP_Query in order to make Jigoshop testable
 		$query = new \WP_Query(array(
 			'post_type' => Types::PRODUCT,
 			'post_status' => 'publish',
-			'ignore_sticky_posts' => 1,
-			'posts_per_page' => -1,
+			'posts_per_page' => $number,
 			'meta_query' => array(
 				array(
 					'key' => 'stock_manage',
@@ -255,16 +255,16 @@ class Product implements ProductServiceInterface
 
 	/**
 	 * @param $threshold int Threshold where to assume product is low in stock.
+	 * @param $number int Number of products to find.
 	 * @return array List of products that are low in stock.
 	 */
-	public function findLowStock($threshold)
+	public function findLowStock($threshold, $number)
 	{
 		// TODO: Replace \WP_Query in order to make Jigoshop testable
 		$query = new \WP_Query(array(
 			'post_type' => Types::PRODUCT,
 			'post_status' => 'publish',
-			'ignore_sticky_posts' => 1,
-			'posts_per_page' => -1,
+			'posts_per_page' => $number,
 			'meta_query' => array(
 				array(
 					'key' => 'stock_manage',
@@ -274,7 +274,7 @@ class Product implements ProductServiceInterface
 				array(
 					'key' => 'stock_stock',
 					'value' => $threshold,
-					'compare' => '<',
+					'compare' => '<=',
 				),
 			),
 		));

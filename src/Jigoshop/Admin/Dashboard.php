@@ -85,7 +85,7 @@ class Dashboard implements PageInterface
 
 		$this->wp->addMetaBox('jigoshop_dashboard_right_now', __('<span>Shop</span> Content', 'jigoshop'), array($this, 'rightNow'), 'jigoshop', 'side', 'core');
 		$this->wp->addMetaBox('jigoshop_dashboard_recent_orders', __('<span>Recent</span> Orders', 'jigoshop'), array($this, 'recentOrders'), 'jigoshop', 'side', 'core');
-		if ($this->options->get('manage_stock') == 'yes') {
+		if ($this->options->get('products.manage_stock')) {
 			$this->wp->addMetaBox('jigoshop_dashboard_stock_report', __('<span>Stock</span> Report', 'jigoshop'), array($this, 'stockReport'), 'jigoshop', 'side', 'core');
 		}
 		$this->wp->addMetaBox('jigoshop_dashboard_monthly_report', __('<span>Monthly</span> Report', 'jigoshop'), array($this, 'monthlyReport'), 'jigoshop', 'normal', 'core');
@@ -160,15 +160,16 @@ class Dashboard implements PageInterface
 	 */
 	public function stockReport()
 	{
-		$lowStockAmount = $this->options->get('notify_low_stock_amount', 1);
-		$notifyOufOfStock = $this->options->get('notify_out_of_stock', true);
+		$lowStockThreshold = $this->options->get('advanced.low_stock_threshold', 2);
+		$notifyOufOfStock = $this->options->get('advanced.notify_out_of_stock', true);
+		$number = $this->options->get('advanced.dashboard_stock_number', 5);
 		$outOfStock = array();
 
 		if ($notifyOufOfStock) {
-			$outOfStock = $this->productService->findOutOfStock();
+			$outOfStock = $this->productService->findOutOfStock($number);
 		}
 
-		$lowStock = $this->productService->findLowStock($lowStockAmount);
+		$lowStock = $this->productService->findLowStock($lowStockThreshold, $number);
 
 		Render::output('admin/dashboard/stockReport', array(
 			'notifyOutOfStock' => $notifyOufOfStock,

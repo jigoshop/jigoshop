@@ -10,13 +10,13 @@ $stock = $product instanceof Product\Purchasable ? $product->getStock() : new Pr
 <fieldset>
 	<?php
 	Forms::checkbox(array(
-		'name' => 'product[stock][manage]',
+		'name' => 'product[stock_manage]',
 		'id' => 'stock-manage',
 		'label' => __('Manage stock?', 'jigoshop'),
 		'checked' => $stock->getManage(),
 	));
 	Forms::select(array(
-		'name' => 'product[stock][status]',
+		'name' => 'product[stock_status]',
 		'id' => 'stock-status',
 		'label' => __('Status', 'jigoshop'),
 		'value' => $stock->getStatus(),
@@ -31,14 +31,14 @@ $stock = $product instanceof Product\Purchasable ? $product->getStock() : new Pr
 <fieldset class="stock-status" style="<?php !$stock->getManage() and print 'display: none;'; ?>">
 	<?php
 	Forms::text(array(
-		'name' => 'product[stock][stock]',
+		'name' => 'product[stock_stock]',
 		'label' => __('Items in stock', 'jigoshop'),
 		'value' => $stock->getStock(),
 	));
 	?>
 	<?php
 	Forms::select(array(
-		'name' => 'product[stock][allow_backorders]',
+		'name' => 'product[stock_allow_backorders]',
 		'label' => __('Allow backorders?', 'jigoshop'),
 		'value' => $stock->getAllowBackorders(),
 		'options' => array(
