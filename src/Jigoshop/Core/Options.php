@@ -125,6 +125,12 @@ class Options
 			),
 			'cache' => 'simple',
 		),
+		'permalinks' => array(
+			'product' => '',
+			'category' => 'product-category',
+			'tag' => 'product-tag',
+			'verbose' => false,
+		),
 	);
 	private $options = array();
 	private $dirty = false;

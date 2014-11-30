@@ -98,7 +98,7 @@ abstract class AbstractProductList implements PageInterface
 
 	public function render()
 	{
-		$query = $this->wp->getWpQuery();
+		$query = $this->wp->getQuery();
 		$products = $this->productService->findByQuery($query);
 		return Render::get('shop', array(
 			'content' => $this->getContent(),

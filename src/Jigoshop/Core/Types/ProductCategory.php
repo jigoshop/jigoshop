@@ -2,9 +2,19 @@
 
 namespace Jigoshop\Core\Types;
 
+use Jigoshop\Core\Options;
+
 class ProductCategory implements Taxonomy
 {
 	const NAME = 'product_category';
+
+	/** @var Options */
+	private $options;
+
+	public function __construct(Options $options)
+	{
+		$this->options = $options;
+	}
 
 	/**
 	 * Returns name which taxonomy will be registered under.
@@ -57,7 +67,7 @@ class ProductCategory implements Taxonomy
 			'show_ui' => true,
 			'query_var' => self::NAME,
 			'rewrite' => array(
-				'slug' => 'product-category',
+				'slug' => $this->options->get('permalinks.category'),
 				'with_front' => true,
 				'feeds' => false,
 				'pages' => true,

@@ -16,12 +16,15 @@ class Product implements Post
 
 	/** @var \WPAL\Wordpress */
 	private $wp;
+	/** @var Options */
+	private $options;
 	/** @var array */
 	private $enabledTypes = array();
 
 	public function __construct(\JigoshopContainer $di, Wordpress $wp, Options $options, ProductServiceInterface $productService)
 	{
 		$this->wp = $wp;
+		$this->options = $options;
 
 		$types = $options->getEnabledProductTypes();
 		foreach ($types as $typeClass) {
@@ -78,7 +81,7 @@ class Product implements Post
 			'exclude_from_search' => false,
 			'hierarchical' => false, // Hierarchical causes a memory leak http://core.trac.wordpress.org/ticket/15459
 			'rewrite' => array(
-				'slug' => 'product',
+				'slug' => $this->options->get('permalinks.product'),
 				'with_front' => true,
 				'feeds' => true,
 				'pages' => true,

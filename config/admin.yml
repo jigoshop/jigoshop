@@ -5,6 +5,7 @@ services:
     arguments:
       - '@wpal'
       - '@jigoshop.admin.dashboard'
+      - '@jigoshop.admin.permalinks'
       - '@jigoshop.helper.styles'
       - '@jigoshop.helper.scripts'
   jigoshop.admin.dashboard:
@@ -17,6 +18,11 @@ services:
       - '@jigoshop.helper.styles'
     tags:
       - { name: jigoshop.admin.page }
+  jigoshop.admin.permalinks:
+    class: Jigoshop\Admin\Permalinks
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
   jigoshop.admin.reports:
     class: Jigoshop\Admin\Reports
     tags:

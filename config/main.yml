@@ -72,6 +72,11 @@ services:
       - '@jigoshop.service.product'
       - '@jigoshop.service.tax'
       - '@jigoshop.service.shipping'
+  jigoshop.permalinks:
+    class: Jigoshop\Core\Permalinks
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
   jigoshop.post_type.product:
     class: Jigoshop\Core\Types\Product
     arguments:
@@ -83,10 +88,14 @@ services:
       - { name: jigoshop.type.post }
   jigoshop.taxonomy.product_category:
     class: Jigoshop\Core\Types\ProductCategory
+    arguments:
+      - '@jigoshop.options'
     tags:
       - { name: jigoshop.type.taxonomy }
   jigoshop.taxonomy.product_tag:
     class: Jigoshop\Core\Types\ProductTag
+    arguments:
+      - '@jigoshop.options'
     tags:
       - { name: jigoshop.type.taxonomy }
   jigoshop.post_type.order:

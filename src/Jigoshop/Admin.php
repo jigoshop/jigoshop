@@ -4,6 +4,7 @@ namespace Jigoshop;
 
 use Jigoshop\Admin\Dashboard;
 use Jigoshop\Admin\PageInterface;
+use Jigoshop\Admin\Permalinks;
 use Jigoshop\Admin\Settings;
 use Jigoshop\Core\Types;
 use Jigoshop\Helper\Scripts;
@@ -28,7 +29,7 @@ class Admin
 	);
 	private $dashboard;
 
-	public function __construct(Wordpress $wp, Dashboard $dashboard, Styles $styles, Scripts $scripts)
+	public function __construct(Wordpress $wp, Dashboard $dashboard, Permalinks $permalinks, Styles $styles, Scripts $scripts)
 	{
 		$this->wp = $wp;
 		$this->dashboard = $dashboard;
