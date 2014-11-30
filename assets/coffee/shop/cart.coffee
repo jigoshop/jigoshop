@@ -65,7 +65,7 @@ class Cart
         value: jQuery('#country').val()
     )
     .done (result) =>
-      if result.success == true
+      if result.success? and result.success
         jQuery('#shipping-calculator th p > span').html(result.html.estimation)
         @_updateTotals(result.html.total, result.html.subtotal)
         @_updateTaxes(result.tax, result.html.tax)
@@ -81,6 +81,8 @@ class Cart
             data: data
         else
           jQuery('#state').attr('type', 'text').select2('destroy').val('')
+      else
+        addMessage('danger', result.error, 6000)
       @unblock()
 
   updateState: (field) =>

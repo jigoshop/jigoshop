@@ -92,7 +92,7 @@ use Jigoshop\Helper\Render;
 										<?php \Jigoshop\Helper\Forms::select(array(
 											'name' => 'country',
 											'value' => $customer->getShippingAddress()->getCountry(),
-											'options' => Country::getAll(), // TODO: Work on restricted selling locations
+											'options' => Country::getAllowed(),
 										)); ?>
 										<?php \Jigoshop\Helper\Forms::hidden(array(
 											'id' => 'state',

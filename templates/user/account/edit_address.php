@@ -60,7 +60,7 @@ use Jigoshop\Helper\Render;
 		'name' => 'address[country]',
 		'label' => __('Country', 'jigoshop'),
 		'value' => $address->getCountry(),
-		'options' => Country::getAll(),
+		'options' => Country::getAllowed(),
 	)); ?>
 	<?php \Jigoshop\Helper\Forms::text(array(
 		'name' => 'address[phone]',

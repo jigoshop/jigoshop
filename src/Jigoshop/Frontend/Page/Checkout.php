@@ -90,6 +90,15 @@ class Checkout implements PageInterface
 	{
 		$customer = $this->customerService->getCurrent();
 
+		if ($this->options->get('shopping.restrict_selling_locations') && !in_array($_POST['value'], $this->options->get('shopping.selling_locations'))) {
+			$locations = array_map(function($location){ return Country::getName($location); }, $this->options->get('shopping.selling_locations'));
+			echo json_encode(array(
+				'success' => false,
+				'error' => sprintf(__('This location is not supported, we sell only to %s.'), join(', ', $locations)),
+			));
+			exit;
+		}
+
 		switch ($_POST['field']) {
 			case 'shipping':
 				$customer->getShippingAddress()->setCountry($_POST['value']);
@@ -264,6 +273,11 @@ class Checkout implements PageInterface
 
 		if (isset($_POST['action']) && $_POST['action'] == 'purchase') {
 			try {
+				if (!Country::isAllowed($cart->getCustomer()->getBillingAddress()->getCountry())) {
+					$locations = array_map(function($location){ return Country::getName($location); }, $this->options->get('shopping.selling_locations'));
+					throw new Exception(sprintf(__('This location is not supported, we sell only to %s.'), join(', ', $locations)));
+				}
+
 				$order = $this->orderService->createFromCart($cart);
 				$this->customerService->save($order->getCustomer());
 
@@ -375,7 +389,7 @@ class Checkout implements PageInterface
 				'type' => 'select',
 				'label' => __('Country', 'jigoshop'),
 				'name' => 'jigoshop_order[billing][country]',
-				'options' => Country::getAll(),
+				'options' => Country::getAllowed(),
 				'value' => $address->getCountry(),
 				'size' => 9,
 				'columnSize' => 6,
@@ -463,7 +477,7 @@ class Checkout implements PageInterface
 				'type' => 'select',
 				'label' => __('Country', 'jigoshop'),
 				'name' => 'jigoshop_order[shipping][country]',
-				'options' => Country::getAll(),
+				'options' => Country::getAllowed(),
 				'value' => $address->getCountry(),
 				'size' => 9,
 				'columnSize' => 6,

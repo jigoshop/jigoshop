@@ -93,6 +93,15 @@ class Cart implements PageInterface
 	{
 		$customer = $this->customerService->getCurrent();
 
+		if (!Country::isAllowed($_POST['value'])) {
+			$locations = array_map(function($location){ return Country::getName($location); }, $this->options->get('shopping.selling_locations'));
+			echo json_encode(array(
+				'success' => false,
+				'error' => sprintf(__('This location is not supported, we sell only to %s.'), join(', ', $locations)),
+			));
+			exit;
+		}
+
 		if ($customer->hasMatchingAddresses()) {
 			$customer->getBillingAddress()->setCountry($_POST['value']);
 		}

@@ -122,6 +122,7 @@ class JigoshopInit
 		$interceptor->run();
 		/** @var \Jigoshop\Core\Options $options */
 		$options = $this->container->get('jigoshop.options');
+		Jigoshop\Helper\Country::setOptions($options);
 		Jigoshop\Helper\Currency::setOptions($options);
 		Jigoshop\Helper\Product::setOptions($options);
 		Jigoshop\Helper\Order::setOptions($options);

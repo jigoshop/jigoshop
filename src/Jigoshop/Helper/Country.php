@@ -2,6 +2,8 @@
 
 namespace Jigoshop\Helper;
 
+use Jigoshop\Core\Options;
+
 /**
  * Country helper.
  *
@@ -793,7 +795,17 @@ class Country
 		'GB' => 'United Kingdom'
 	);
 
+	/** @var Options */
+	private static $options;
 	private static $cache = array();
+
+	/**
+	 * @param Options $options Options object.
+	 */
+	public static function setOptions($options)
+	{
+		self::$options = $options;
+	}
 
 	/**
 	 * Returns list of available countries with translated names.
@@ -811,6 +823,30 @@ class Country
 		}
 
 		return self::$cache['countries'];
+	}
+
+
+	/**
+	 * Returns list of all allowed countries with translated names.
+	 *
+	 * Safe to use multiple times (uses cache to speed-up).
+	 *
+	 * @return array List of allowed translated countries.
+	 */
+	public function getAllowed()
+	{
+		if (!isset(self::$cache['allowed'])) {
+			$countries = self::getAll();
+
+			if (self::$options->get('shopping.restrict_selling_locations')) {
+				$allowed = self::$options->get('shopping.selling_locations');
+				$countries = array_intersect_key($countries, array_flip($allowed));
+			}
+
+			self::$cache['allowed'] = $countries;
+		}
+
+		return self::$cache['allowed'];
 	}
 
 	/**
@@ -833,11 +869,21 @@ class Country
 
 	/**
 	 * @param $countryCode string Country code to check.
-	 * @return bool Whether the country has defined states.
+	 * @return bool Whether the country exists.
 	 */
 	public static function exists($countryCode)
 	{
 		return isset(self::$countries[$countryCode]);
+	}
+
+	/**
+	 * @param $countryCode string Country code to check.
+	 * @return bool Whether the country is allowed.
+	 */
+	public static function isAllowed($countryCode)
+	{
+		$allowed = self::getAllowed();
+		return isset($allowed[$countryCode]);
 	}
 
 	public static function getStateName($countryCode, $stateCode)

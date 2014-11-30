@@ -213,7 +213,7 @@ class Order
 	public function ajaxChangeCountry()
 	{
 		try {
-			if (!in_array($_POST['value'], array_keys(Country::getAll()))) {
+			if (!in_array($_POST['value'], array_keys(Country::getAllowed()))) {
 				throw new Exception(__('Invalid country.', 'jigoshop'));
 			}
 
@@ -292,7 +292,7 @@ class Order
 			'country' => array(
 				'label' => __('Country', 'jigoshop'),
 				'type' => 'select',
-				'options' => Country::getAll(),
+				'options' => Country::getAllowed(),
 			),
 			'state' => array(
 				'label' => __('State/Province', 'jigoshop'),
@@ -336,7 +336,7 @@ class Order
 			'country' => array(
 				'label' => __('Country', 'jigoshop'),
 				'type' => 'select',
-				'options' => Country::getAll(),
+				'options' => Country::getAllowed(),
 			),
 			'state' => array(
 				'label' => __('State/Province', 'jigoshop'),

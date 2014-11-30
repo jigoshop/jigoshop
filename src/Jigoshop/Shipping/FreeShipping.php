@@ -127,7 +127,7 @@ class FreeShipping implements Method
 				'title' => __('Select countries', 'jigoshop'),
 				'type' => 'select',
 				'value' => $this->options['countries'],
-				'options' => Country::getAll(),
+				'options' => Country::getAllowed(),
 				'multiple' => true,
 				'hidden' => $this->options['available_for'] == 'all',
 			),

@@ -111,37 +111,37 @@ class ShoppingTab implements TabInterface
 					),
 				),
 			),
-			// TODO: Add support for validation (postcode, locations restriction)
-//			array(
-//				'title' => __('Validation', 'jigoshop'),
-//				'id' => 'validation',
-//				'fields' => array(
+			// TODO: Add support for validation (postcode)
+			array(
+				'title' => __('Validation', 'jigoshop'),
+				'id' => 'validation',
+				'fields' => array(
 //					array(
 //						'name' => '[validate_postcode]',
 //						'title' => __('Validate postcode', 'jigoshop'),
 //						'type' => 'checkbox',
 //						'checked' => $this->options['validate_postcode'],
 //					),
-//					array(
-//						'name' => '[restrict_selling_locations]',
-//						'id' => 'restrict_selling_locations',
-//						'title' => __('Restrict selling locations?', 'jigoshop'),
-//						'description' => __('This option allows you to select what countries you want to sell to.', 'jigoshop'),
-//						'type' => 'checkbox',
-//						'checked' => $this->options['restrict_selling_locations'],
-//					),
-//					array(
-//						'name' => '[selling_locations]',
-//						'id' => 'selling_locations',
-//						'title' => __('Selling locations', 'jigoshop'),
-//						'type' => 'select',
-//						'multiple' => true,
-//						'value' => $this->options['selling_locations'],
-//						'options' => Country::getAll(),
-//						'classes' => array($this->options['restrict_selling_locations'] ?  '' : 'not-active'),
-//					),
-//				),
-//			),
+					array(
+						'name' => '[restrict_selling_locations]',
+						'id' => 'restrict_selling_locations',
+						'title' => __('Restrict selling locations?', 'jigoshop'),
+						'description' => __('This option allows you to select what countries you want to sell to.', 'jigoshop'),
+						'type' => 'checkbox',
+						'checked' => $this->options['restrict_selling_locations'],
+					),
+					array(
+						'name' => '[selling_locations]',
+						'id' => 'selling_locations',
+						'title' => __('Selling locations', 'jigoshop'),
+						'type' => 'select',
+						'multiple' => true,
+						'value' => $this->options['selling_locations'],
+						'options' => Country::getAll(),
+						'classes' => array($this->options['restrict_selling_locations'] ?  '' : 'not-active'),
+					),
+				),
+			),
 		// TODO: Add support for guest purchases, showing login form on checkout and allowing registration on checkout
 //			array(
 //				'title' => __('Accounts', 'jigoshop'),
