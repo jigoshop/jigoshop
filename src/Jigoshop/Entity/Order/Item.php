@@ -3,6 +3,7 @@
 namespace Jigoshop\Entity\Order;
 
 use Jigoshop\Entity\Product;
+use Jigoshop\Entity\Product\Attributes;
 use Jigoshop\Exception;
 use Monolog\Registry;
 
@@ -293,5 +294,15 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 			/** @var $meta Item\Meta */
 			$meta->setItem($this);
 		}
+	}
+
+	/**
+	 * Returns stock data.
+	 *
+	 * @return Attributes\StockStatus Current stock status.
+	 */
+	public function getStock()
+	{
+		throw new Exception(__('Items do not have stock.', 'jigoshop'));
 	}
 }
