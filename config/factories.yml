@@ -12,6 +12,12 @@ services:
       - '@wpal'
       - '@jigoshop.options'
       - '@jigoshop.factory.product'
+  jigoshop.factory.variable_product_service:
+    class: Jigoshop\Factory\Product\VariableService
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.service.product'
   jigoshop.factory.tax_service:
     class: Jigoshop\Factory\TaxService
     arguments:

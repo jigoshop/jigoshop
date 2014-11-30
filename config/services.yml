@@ -8,6 +8,10 @@ services:
     class: Jigoshop\Service\Product
     factory_service: jigoshop.factory.product_service
     factory_method: getService
+  jigoshop.service.product.variable:
+    class: Jigoshop\Service\Product\Variable
+    factory_service: jigoshop.factory.variable_product_service
+    factory_method: getService
   jigoshop.service.tax:
     class: Jigoshop\Service\Tax
     factory_service: jigoshop.factory.tax_service
@@ -35,8 +39,3 @@ services:
       - [setContainer, ['@di']]
     tags:
       - { name: jigoshop.container_aware }
-  jigoshop.service.product.variable:
-    class: Jigoshop\Service\Product\Variable
-    arguments:
-      - '@wpal'
-      - '@jigoshop.service.product'

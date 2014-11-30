@@ -7,7 +7,7 @@ use Jigoshop\Entity\Product;
 use Jigoshop\Service\ProductServiceInterface;
 use WPAL\Wordpress;
 
-class Variable
+class Variable implements VariableServiceInterface
 {
 	/** @var Wordpress */
 	private $wp;
