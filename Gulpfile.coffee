@@ -56,7 +56,7 @@ gulp.task 'fonts', ->
     .pipe gulp.dest('assets/fonts')
 
 gulp.task 'clean', ->
-  gulp.src ['assets/css/*', 'assets/js/*', 'assets/fonts'], {read: false}
+  gulp.src ['assets/css/*', '!assets/js/flot', '!assets/js/flot/**', 'assets/js/*',  'assets/fonts'], {read: false}
     .pipe rimraf()
 
 gulp.task 'watch', ['styles', 'scripts', 'fonts'], ->

@@ -16,6 +16,7 @@ services:
       - '@jigoshop.service.order'
       - '@jigoshop.service.product'
       - '@jigoshop.helper.styles'
+      - '@jigoshop.helper.scripts'
     tags:
       - { name: jigoshop.admin.page }
   jigoshop.admin.permalinks:

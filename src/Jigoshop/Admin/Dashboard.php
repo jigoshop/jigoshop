@@ -6,6 +6,7 @@ use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\Order;
 use Jigoshop\Helper\Render;
+use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
 use Jigoshop\Service\OrderServiceInterface;
 use Jigoshop\Service\ProductServiceInterface;
@@ -30,14 +31,15 @@ class Dashboard implements PageInterface
 	/** @var Options */
 	private $options;
 
-	public function __construct(Wordpress $wp, Options $options, OrderServiceInterface $orderService, ProductServiceInterface $productService, Styles $styles)
+	public function __construct(Wordpress $wp, Options $options, OrderServiceInterface $orderService, ProductServiceInterface $productService, Styles $styles,
+		Scripts $scripts)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->orderService = $orderService;
 		$this->productService = $productService;
 
-		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $styles) {
+		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $styles, $scripts) {
 			// Weed out all admin pages except the Jigoshop Settings page hits
 			if (!in_array($wp->getPageNow(), array('admin.php', 'options.php'))) {
 				return;
@@ -49,6 +51,8 @@ class Dashboard implements PageInterface
 			}
 
 			$styles->add('jigoshop.admin.dashboard', JIGOSHOP_URL.'/assets/css/admin/dashboard.css');
+			$scripts->add('jigoshop.flot', JIGOSHOP_URL.'/assets/js/flot/jquery.flot.min.js', array('jquery'));
+			$scripts->add('jigoshop.flot.time', JIGOSHOP_URL.'/assets/js/flot/jquery.flot.time.min.js', array('jquery', 'jigoshop.flot'));
 		});
 	}
 
@@ -193,18 +197,16 @@ class Dashboard implements PageInterface
 		$previousYear = ($selectedMonth == 1) ? $selectedYear - 1 : $selectedYear;
 		$previousMonth = ($selectedMonth == 1) ? 12 : $selectedMonth - 1;
 
-		$orders = $this->orderService->findFromMonth($selectedMonth);
+		$orders = $this->orderService->findFromMonth($selectedMonth, $selectedYear);
 		$days = range(strtotime($selectedYear.'-'.$selectedMonth.'-01'), time(), 24 * 3600);
 		$orderAmountsData = $orderCountsData = array_fill_keys($days, 0);
 		$orderAmounts = $orderCounts = array();
 
 		foreach ($orders as $order) {
 			/** @var $order Order */
-			if (!in_array($order->getStatus(), array(Order\Status::REFUNDED, Order\Status::CANCELLED), true)) {
-				$day = strtotime(date('Y-m-d', $order->getCreatedAt()->getTimestamp()));
-				$orderCountsData[$day] += 1;
-				$orderAmountsData[$day] += $order->getSubtotal() + $order->getShippingMethod();
-			}
+			$day = strtotime($order->getCreatedAt()->format('Y-m-d'));
+			$orderCountsData[$day] += 1;
+			$orderAmountsData[$day] += $order->getSubtotal() + $order->getShippingMethod();
 		}
 
 		foreach ($orderCountsData as $day => $value) {

@@ -47,9 +47,10 @@ interface OrderServiceInterface extends ServiceInterface
 
 	/**
 	 * @param $month int Month to find orders from.
+	 * @param $year int Year to find orders from.
 	 * @return array List of orders from selected month.
 	 */
-	public function findFromMonth($month);
+	public function findFromMonth($month, $year);
 
 	/**
 	 * @return array List of orders that are too long in Pending status.

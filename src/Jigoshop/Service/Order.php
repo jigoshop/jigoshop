@@ -70,6 +70,10 @@ class Order implements OrderServiceInterface
 	{
 		// Fetch only IDs
 		$query->query_vars['fields'] = 'ids';
+//		$query->query_vars['cache_results'] = false;
+//		$query->query_vars['update_post_term_cache'] = false;
+//		$query->query_vars['update_post_meta_cache'] = false;
+
 		$results = $query->get_posts();
 		$that = $this;
 		// TODO: Maybe it is good to optimize this to fetch all found orders data at once?
@@ -216,13 +220,12 @@ class Order implements OrderServiceInterface
 
 	/**
 	 * @param $month int Month to find orders from.
+	 * @param $year int Year to find orders from.
 	 * @return array List of orders from selected month.
 	 */
-	public function findFromMonth($month)
+	public function findFromMonth($month, $year)
 	{
-		$restriction = function( $where = '' ) use ($month) {
-			$year = (int)date('Y');
-
+		$restriction = function( $where = '' ) use ($month, $year) {
 			$firstDay = strtotime("{$year}-{$month}-01");
 			$lastDay = strtotime('-1 second', strtotime('+1 month', $firstDay));
 
@@ -236,18 +239,17 @@ class Order implements OrderServiceInterface
 		};
 
 		$statuses = Status::getStatuses();
-		unset($statuses[Status::CANCELLED], $statuses[Status::REFUNDED]);
+//		unset($statuses[Status::CREATED], $statuses[Status::CANCELLED], $statuses[Status::REFUNDED]);
 
 		$this->wp->addFilter('posts_where', $restriction);
 		$query = new \WP_Query(array(
-			'post_status' => $statuses,
+			'post_status' => array_keys($statuses),
 			'post_type' => Types::ORDER,
-			'suppress_filters' => false,
-			'fields' => 'ids',
 			'order' => 'DESC',
 			'orderby' => 'post_date',
-			'numberposts' => -1,
+			'posts_per_page' => -1
 		));
+
 		$results = $this->findByQuery($query);
 		$this->wp->removeFilter('posts_where', $restriction);
 

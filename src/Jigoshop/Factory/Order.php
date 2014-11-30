@@ -117,6 +117,7 @@ class Order implements EntityFactoryInterface
 			$order->setId($post->ID);
 			$state['customer_note'] = $post->post_excerpt;
 			$state['status'] = $post->post_status;
+			$state['created_at'] = strtotime($post->post_date);
 			// Customer must be unserialized twice "thanks" to WordPress second serialization.
 			$state['customer'] = unserialize(unserialize($state['customer']));
 			// TODO: Think on lazy loading of items.
