@@ -6,6 +6,7 @@ use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Pages;
 use Jigoshop\Core\Template;
+use Jigoshop\Helper\Render;
 use WPAL\Wordpress;
 
 class Core
@@ -43,6 +44,7 @@ class Core
 	{
 		$this->wp->addFilter('template_include', array($this->template, 'process'));
 		$this->wp->addFilter('template_redirect', array($this->template, 'redirect'));
+		$this->wp->addAction('jigoshop\shop\content\before', array($this, 'displayCustomMessage'));
 
 		$container->get('jigoshop.permalinks');
 
@@ -52,5 +54,17 @@ class Core
 
 		// TODO: Why this is required? :/
 		$this->wp->flushRewriteRules();
+	}
+
+	/**
+	 * Adds a custom store banner to the site.
+	 */
+	public function displayCustomMessage()
+	{
+		if ($this->options->get('general.show_message') && $this->pages->isJigoshop()){
+			Render::output('shop/custom_message', array(
+				'message' => $this->options->get('general.message'),
+			));
+		}
 	}
 }
