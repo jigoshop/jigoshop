@@ -33,7 +33,7 @@ class OrderService
 		/** @var \WPAL\Wordpress $wp */
 		$service = new Service($this->wp, $this->factory);
 
-		switch ($this->options->get('cache_mechanism')) {
+		switch ($this->options->get('advanced.cache')) {
 			case 'simple':
 				$service = new SimpleCache($service);
 				break;

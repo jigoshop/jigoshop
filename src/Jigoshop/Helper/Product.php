@@ -91,7 +91,7 @@ class Product
 	 */
 	public static function getStock(Entity\Product $product)
 	{
-		if (!$product->getStock()->getManage()) {
+		if (!($product instanceof Entity\Product\Purchasable) || !$product->getStock()->getManage()) {
 			return '';
 		}
 

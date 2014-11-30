@@ -27,7 +27,7 @@ class ShippingService
 	{
 		$service = new Service();
 
-		switch ($this->options->get('cache_mechanism')) {
+		switch ($this->options->get('advanced.cache')) {
 			// TODO: Add caching mechanisms
 //			case 'simple':
 //				$service = new SimpleCache($service);

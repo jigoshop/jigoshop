@@ -116,6 +116,23 @@ class AdvancedTab implements TabInterface
 //				),
 //			),
 			array(
+				'title' => __('Others', 'jigoshop'),
+				'id' => 'others',
+				'fields' => array(
+					array(
+						'name' => '[cache]',
+						'title' => __('Caching mechanism', 'jigoshop'),
+						'description' => __('Decides which mechanism for caching is used on the page.', 'jigoshop'),
+						'type' => 'select',
+						'value' => $this->settings['cache'],
+						// TODO: Proper options for cache
+						'options' => array(
+							'simple' => __('Simple', 'jigoshop'),
+						),
+					),
+				),
+			),
+			array(
 				'title' => __('Pages', 'jigoshop'),
 				'id' => 'pages',
 				'description' => __('This section allows you to change content source page for each part of Jigoshop. It will not change the main behaviour though.', 'jigoshop'),

@@ -12,7 +12,7 @@ use Jigoshop\Factory\Product\Variable as VariableFactory;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
-use Jigoshop\Service\Product\Variable as VariableService;
+use Jigoshop\Service\Product\VariableServiceInterface;
 use Jigoshop\Service\ProductServiceInterface;
 use WPAL\Wordpress;
 
@@ -27,7 +27,7 @@ class Variable implements Type
 
 	/** @var Wordpress */
 	private $wp;
-	/** @var VariableService */
+	/** @var VariableServiceInterface */
 	private $service;
 	/** @var VariableFactory */
 	private $factory;
@@ -36,7 +36,7 @@ class Variable implements Type
 	/** @var array */
 	private $allowedSubtypes = array();
 
-	public function __construct(Wordpress $wp, ProductServiceInterface $productService, VariableService $service, VariableFactory $factory)
+	public function __construct(Wordpress $wp, ProductServiceInterface $productService, VariableServiceInterface $service, VariableFactory $factory)
 	{
 		$this->wp = $wp;
 		$this->productService = $productService;

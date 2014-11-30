@@ -123,6 +123,7 @@ class Options
 				'share_this' => '',
 				'google_analytics' => '',
 			),
+			'cache' => 'simple',
 		),
 	);
 	private $options = array();

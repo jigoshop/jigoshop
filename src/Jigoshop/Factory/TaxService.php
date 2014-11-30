@@ -31,7 +31,7 @@ class TaxService
 		$classes = array_map(function($item){ return $item['class']; }, $this->options->get('tax.classes'));
 		$service = new Service($this->wp, $classes, $this->customerService, $this->options->get('tax.included'));
 
-		switch ($this->options->get('cache_mechanism')) {
+		switch ($this->options->get('advanced.cache')) {
 			// TODO: Add caching mechanisms
 //			case 'simple':
 //				$service = new SimpleCache($service);
