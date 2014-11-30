@@ -14,6 +14,7 @@ use Jigoshop\Entity\Product;
 use Jigoshop\Helper\Api;
 use Jigoshop\Helper\Currency;
 use Jigoshop\Helper\Order as OrderHelper;
+use Jigoshop\Helper\Validation;
 use Monolog\Registry;
 use Symfony\Component\DependencyInjection\Container;
 use WPAL\Wordpress;
@@ -160,12 +161,7 @@ class PayPal implements Method, Processable, ContainerAware
 		$settings['title'] = trim(htmlspecialchars(strip_tags($settings['title'])));
 		$settings['description'] = trim(htmlspecialchars(strip_tags($settings['description'], '<p><a><strong><em><b><i>')));
 
-		$settings['email'] = filter_var($settings['email'], FILTER_VALIDATE_EMAIL, array(
-			'options' => array(
-				'default' => false,
-			),
-		));
-		if (!$settings['email']) {
+		if (!Validation::isEmail($settings['email'])) {
 			$settings['email'] = '';
 			$this->messages->addWarning(__('Email address is not valid.', 'jigoshop'));
 		}
@@ -174,12 +170,7 @@ class PayPal implements Method, Processable, ContainerAware
 		$settings['force_payment'] = $settings['force_payment'] == 'on';
 		$settings['test_mode'] = $settings['test_mode'] == 'on';
 
-		$settings['test_email'] = filter_var($settings['test_email'], FILTER_VALIDATE_EMAIL, array(
-			'options' => array(
-				'default' => false,
-			),
-		));
-		if (!$settings['test_email']) {
+		if (!Validation::isEmail($settings['test_email'])) {
 			$settings['test_email'] = '';
 			$this->messages->addWarning(__('Test email address is not valid.', 'jigoshop'));
 		}

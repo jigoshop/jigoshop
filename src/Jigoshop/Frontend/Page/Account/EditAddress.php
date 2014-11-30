@@ -13,6 +13,7 @@ use Jigoshop\Helper\Country;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
+use Jigoshop\Helper\Validation;
 use Jigoshop\Service\CustomerServiceInterface;
 use WPAL\Wordpress;
 
@@ -66,8 +67,13 @@ class EditAddress implements PageInterface
 			$address->setLastName(trim(htmlspecialchars(strip_tags($_POST['address']['last_name']))));
 			$address->setAddress(trim(htmlspecialchars(strip_tags($_POST['address']['address']))));
 			$address->setCity(trim(htmlspecialchars(strip_tags($_POST['address']['city']))));
-			// TODO: Zip validation
-			$address->setPostcode(trim(htmlspecialchars(strip_tags($_POST['address']['postcode']))));
+
+			$postcode = trim(htmlspecialchars(strip_tags($_POST['address']['postcode'])));
+			if ($this->options->get('shopping.validate_zip') && !Validation::is_postcode($_POST, $address->getCountry())) {
+				$errors[] = __('Postcode is not valid!', 'jigoshop');
+			} else {
+				$address->setPostcode($postcode);
+			}
 
 			$country = trim(htmlspecialchars(strip_tags($_POST['address']['country'])));
 			if (!Country::exists($country)) {
@@ -84,8 +90,7 @@ class EditAddress implements PageInterface
 			}
 
 			$email = trim(htmlspecialchars(strip_tags($_POST['address']['email'])));
-			$email = filter_var($email, FILTER_VALIDATE_EMAIL);
-			if ($email === false) {
+			if (!Validation::isEmail($email)) {
 				$errors[] = __('Invalid email address', 'jigoshop');
 			} else {
 				$address->setEmail($email);

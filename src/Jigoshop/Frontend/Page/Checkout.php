@@ -18,6 +18,7 @@ use Jigoshop\Helper\Product;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
+use Jigoshop\Helper\Validation;
 use Jigoshop\Service\CartServiceInterface;
 use Jigoshop\Service\CustomerServiceInterface;
 use Jigoshop\Service\OrderServiceInterface;
@@ -65,6 +66,7 @@ class Checkout implements PageInterface
 		$styles->add('jigoshop.checkout', JIGOSHOP_URL.'/assets/css/shop/checkout.css');
 		$styles->add('jigoshop.vendors', JIGOSHOP_URL.'/assets/css/vendors.min.css');
 		$scripts->add('jigoshop.vendors', JIGOSHOP_URL.'/assets/js/vendors.min.js', array('jquery'));
+		$scripts->add('jigoshop.helpers', JIGOSHOP_URL.'/assets/js/helpers.js');
 		$scripts->add('jigoshop.checkout', JIGOSHOP_URL.'/assets/js/shop/checkout.js', array('jquery', 'jigoshop.vendors'));
 		$scripts->add('jquery-blockui', '//cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.66.0-2013.10.09/jquery.blockUI.min.js');
 		$scripts->localize('jigoshop.checkout', 'jigoshop_checkout', array(
@@ -235,19 +237,34 @@ class Checkout implements PageInterface
 
 		switch ($_POST['field']) {
 			case 'shipping':
+				if ($this->options->get('shopping.validate_zip') && !Validation::isPostcode($_POST['value'], $customer->getShippingAddress()->getCountry())) {
+					echo json_encode(array(
+						'success' => false,
+						'error' => __('Shipping postcode is not valid!', 'jigoshop'),
+					));
+					exit;
+				}
+
 				$customer->getShippingAddress()->setPostcode($_POST['value']);
 				if ($customer->getBillingAddress()->getPostcode() == null) {
 					$customer->getBillingAddress()->setPostcode($_POST['value']);
 				}
 				break;
 			case 'billing':
+				if ($this->options->get('shopping.validate_zip') && !Validation::isPostcode($_POST['value'], $customer->getBillingAddress()->getCountry())) {
+					echo json_encode(array(
+						'success' => false,
+						'error' => __('Billing postcode is not valid!', 'jigoshop'),
+					));
+					exit;
+				}
+
 				$customer->getBillingAddress()->setPostcode($_POST['value']);
 				if ($_POST['differentShipping'] === 'false') {
 					$customer->getShippingAddress()->setPostcode($_POST['value']);
 				}
 				break;
 		}
-		// TODO: Zip validation
 
 		$this->customerService->save($customer);
 		$cart = $this->cartService->getCurrent();

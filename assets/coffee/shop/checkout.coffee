@@ -77,8 +77,7 @@ class Checkout
         @_updateTotals(result.html.total, result.html.subtotal)
         @_updateTaxes(result.tax, result.html.tax)
       else
-        # TODO: It would be nice to have kind of helper for error messages
-        alert result.error
+        addMessage('danger', result.error, 6000)
 
   updateCountry: (field, event) =>
     @block()
@@ -93,7 +92,7 @@ class Checkout
         value: jQuery(event.target).val()
     )
     .done (result) =>
-      if result.success == true
+      if result.success? and result.success
         @_updateTotals(result.html.total, result.html.subtotal)
         @_updateTaxes(result.tax, result.html.tax)
         @_updateShipping(result.shipping, result.html.shipping)
@@ -109,6 +108,8 @@ class Checkout
             data: data
         else
           jQuery(stateClass).attr('type', 'text').select2('destroy').val('')
+      else
+        addMessage('danger', result.error, 6000)
       @unblock()
 
   updateState: (field) =>
@@ -131,10 +132,12 @@ class Checkout
         value: value
     )
     .done (result) =>
-      if result.success == true
+      if result.success? and result.success
         @_updateTotals(result.html.total, result.html.subtotal)
         @_updateTaxes(result.tax, result.html.tax)
         @_updateShipping(result.shipping, result.html.shipping)
+      else
+        addMessage('danger', result.error, 6000)
       @unblock()
 
   _updateTotals: (total, subtotal) ->

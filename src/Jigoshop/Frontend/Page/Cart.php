@@ -14,6 +14,7 @@ use Jigoshop\Helper\Product;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
+use Jigoshop\Helper\Validation;
 use Jigoshop\Service\CartServiceInterface;
 use Jigoshop\Service\CustomerServiceInterface;
 use Jigoshop\Service\OrderServiceInterface;
@@ -213,10 +214,19 @@ class Cart implements PageInterface
 	public function ajaxChangePostcode()
 	{
 		$customer = $this->customerService->getCurrent();
+
+		if ($this->options->get('shopping.validate_zip') && !Validation::isPostcode($_POST['value'], $customer->getShippingAddress()->getCountry())) {
+			echo json_encode(array(
+				'success' => false,
+				'error' => __('Postcode is not valid!', 'jigoshop'),
+			));
+			exit;
+		}
+
 		if ($customer->hasMatchingAddresses()) {
 			$customer->getBillingAddress()->setPostcode($_POST['value']);
 		}
-		// TODO: Zip validation
+
 		$customer->getShippingAddress()->setPostcode($_POST['value']);
 		$this->customerService->save($customer);
 		$cart = $this->cartService->getCurrent();
@@ -316,14 +326,14 @@ class Cart implements PageInterface
 				case 'checkout':
 					try {
 						$cart = $this->cartService->getCurrent();
+
 						// Update quantities
 						$this->updateQuantities($cart);
 						// Update customer (if needed)
-						if ($this->options->get('shopping.calculator')) {
+						if ($this->options->get('shipping.calculator')) {
 							$customer = $this->customerService->getCurrent();
 							$this->updateCustomer($customer);
 						}
-
 
 						if (isset($_POST['jigoshop_order']['shipping_method'])) {
 							// Select shipping method
@@ -336,12 +346,20 @@ class Cart implements PageInterface
 							$this->messages->addWarning(__('Previous shipping method is unavailable. Please select different one.', 'jigoshop'));
 						}
 
+						if ($this->options->get('shopping.validate_zip')) {
+							$address = $cart->getCustomer()->getShippingAddress();
+							if(!Validation::isPostcode($address->getPostcode(), $address->getCountry())) {
+								throw new Exception(__('Postcode is not valid!', 'jigoshop'));
+							}
+						}
+
 						$this->cartService->save($cart);
 						$this->messages->preserveMessages();
 						$this->wp->redirectTo($this->options->getPageId(Pages::CHECKOUT));
 					} catch(Exception $e) {
 						$this->messages->addError(sprintf(__('Error occurred while updating cart: %s', 'jigoshop'), $e->getMessage()));
 					}
+					break;
 				case 'update-cart':
 					if (isset($_POST['cart']) && is_array($_POST['cart'])) {
 						try {

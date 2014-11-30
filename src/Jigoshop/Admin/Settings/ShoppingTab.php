@@ -111,17 +111,16 @@ class ShoppingTab implements TabInterface
 					),
 				),
 			),
-			// TODO: Add support for validation (postcode)
 			array(
 				'title' => __('Validation', 'jigoshop'),
 				'id' => 'validation',
 				'fields' => array(
-//					array(
-//						'name' => '[validate_postcode]',
-//						'title' => __('Validate postcode', 'jigoshop'),
-//						'type' => 'checkbox',
-//						'checked' => $this->options['validate_postcode'],
-//					),
+					array(
+						'name' => '[validate_zip]',
+						'title' => __('Validate postcode', 'jigoshop'),
+						'type' => 'checkbox',
+						'checked' => $this->options['validate_zip'],
+					),
 					array(
 						'name' => '[restrict_selling_locations]',
 						'id' => 'restrict_selling_locations',

@@ -10,6 +10,7 @@ use Jigoshop\Entity\Order as Entity;
 use Jigoshop\Exception;
 use Jigoshop\Frontend\Cart;
 use Jigoshop\Helper\Country;
+use Jigoshop\Helper\Validation;
 use Jigoshop\Service\CustomerServiceInterface;
 use Jigoshop\Service\PaymentServiceInterface;
 use Jigoshop\Service\ProductServiceInterface;
@@ -169,7 +170,7 @@ class Order implements EntityFactoryInterface
 			}
 		}
 
-		if (filter_var($address->getEmail(), FILTER_VALIDATE_EMAIL) === false) {
+		if (!Validation::isEmail($address->getEmail())) {
 			$billingErrors[] = __('Email address is invalid.', 'jigoshop');
 		}
 
