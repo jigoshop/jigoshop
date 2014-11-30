@@ -23,10 +23,10 @@ services:
     arguments:
       - '@wpal'
       - '@jigoshop.options'
-  jigoshop.admin.reports:
-    class: Jigoshop\Admin\Reports
-    tags:
-      - { name: jigoshop.admin.page }
+#  jigoshop.admin.reports:
+#    class: Jigoshop\Admin\Reports
+#    tags:
+#      - { name: jigoshop.admin.page }
   jigoshop.admin.settings:
     class: Jigoshop\Admin\Settings
     arguments:

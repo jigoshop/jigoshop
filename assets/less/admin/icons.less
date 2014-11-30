@@ -1,0 +1,78 @@
+#menu-posts-product {
+  .wp-menu-image {
+    background-position: -35px -32px !important;
+  }
+
+  &:hover .wp-menu-image, &.wp-has-current-submenu .wp-menu-image {
+    background-position: -35px 0px !important;
+  }
+}
+#menu-posts-shop_order {
+  .wp-menu-image {
+    background-position: -70px -32px !important;
+  }
+
+  &:hover .wp-menu-image, &.wp-has-current-submenu .wp-menu-image {
+    background-position: -70px 0px !important;
+  }
+}
+
+#toplevel_page_jigoshop {
+  .wp-menu-image {
+    background-position: 0px -32px !important;
+
+    img {
+      display: none;
+    }
+  }
+
+  &:hover .wp-menu-image, &.wp-has-current-submenu .wp-menu-image {
+    background-position: 0px 0px !important;
+  }
+
+  .toplevel_page_jigoshop .wp-menu-image:before,
+  ul.wp-submenu a:before {
+    background: url(../images/icons.png) no-repeat;
+    content: "";
+    width: 19px;
+    height: 15px;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    text-indent: -9999999px;
+    padding: 0;
+  }
+
+  ul.wp-submenu {
+    a {
+      padding-left: 38px !important;
+      position: relative;
+
+      &:before {
+        background-position: 0 -22px;
+        width: 13px;
+        height: 13px;
+        left: 13px;
+        top: 7px;
+      }
+    }
+    .wp-first-item {
+      // Reports
+//      & + li a:before {
+//        background-position: 0 -42px;
+//      }
+      // Coupons
+//      & + li + li a:before {
+//        background-position: 0 -61px;
+//      }
+      // Settings
+      & + li a:before {
+        background-position: 0 -80px;
+      }
+      // System Info
+      & + li + li a:before {
+        background-position: 0 -99px;
+      }
+    }
+  }
+}

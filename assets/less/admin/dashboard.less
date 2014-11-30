@@ -26,7 +26,8 @@
   src: local('Open Sans Bold'), local('OpenSans-Bold'), url(//themes.googleusercontent.com/static/fonts/opensans/v8/k3k702ZOKiLJc3WVjuplzBa1RVmPjeKy21_GQJaLlJI.woff) format('woff');
 }
 
-@import 'order_statuses.less';
+@import 'order_statuses';
+@import 'icons';
 
 mark {
   display: inline-block;
@@ -38,154 +39,47 @@ body.toplevel_page_jigoshop {
   }
 }
 
-#toplevel_page_jigoshop .wp-menu-image img {
-  display: none;
-}
+div.pages ul.pages li {
+  a {
+    position: relative;
+  }
 
-#toplevel_page_jigoshop .wp-menu-image {
-  background-position: 0px -32px !important;
-}
+  // Dashboard
+  a:before {
+    background: url(../../images/icons.png) -27px -21px no-repeat;
+    content: "";
+    width: 19px;
+    height: 19px;
+    position: absolute;
+    left: 13px;
+    top: 14px;
+    text-indent: -9999999px;
+    padding: 0;
+  }
 
-#toplevel_page_jigoshop:hover .wp-menu-image, #toplevel_page_jigoshop.wp-has-current-submenu .wp-menu-image {
-  background-position: 0px 0px !important;
-}
+  // Reports
+  //& + li a:before {
+  //  background-position: -27px -40px;
+  //}
 
-#menu-posts-product .wp-menu-image {
-  background-position: -35px -32px !important;
-}
+  // Coupons
+  //& + li a:before {
+  //  background-position: -27px -63px;
+  //}
 
-#menu-posts-product:hover .wp-menu-image, #menu-posts-product.wp-has-current-submenu .wp-menu-image {
-  background-position: -35px 0px !important;
-}
+  // Settings
+  & + li a:before {
+    background-position: -27px -83px;
+  }
 
-#menu-posts-shop_order .wp-menu-image {
-  background-position: -70px -32px !important;
-}
+  // System Info
+  & + li + li a:before {
+    background-position: -27px -103px;
+  }
 
-#menu-posts-shop_order:hover .wp-menu-image, #menu-posts-shop_order.wp-has-current-submenu .wp-menu-image {
-  background-position: -70px 0px !important;
-}
-
-#toplevel_page_jigoshop .toplevel_page_jigoshop .wp-menu-image:before,
-#toplevel_page_jigoshop ul.wp-submenu a:before {
-  background: url(../../images/icons.png) no-repeat;
-  content: "";
-  width: 19px;
-  height: 15px;
-  position: absolute;
-  left: 10px;
-  top: 10px;
-  text-indent: -9999999px;
-  padding: 0;
-}
-
-#toplevel_page_jigoshop ul.wp-submenu a {
-  padding-left: 38px !important;
-  position: relative;
-}
-
-#toplevel_page_jigoshop ul.wp-submenu a:before {
-  background-position: 0 -22px;
-  width: 13px;
-  height: 13px;
-  left: 13px;
-  top: 7px;
-}
-
-#toplevel_page_jigoshop ul.wp-submenu .wp-first-item + li a:before {
-  background-position: 0 -42px;
-}
-
-#toplevel_page_jigoshop ul.wp-submenu .wp-first-item + li + li a:before {
-  background-position: 0 -61px;
-}
-
-#toplevel_page_jigoshop ul.wp-submenu .wp-first-item + li + li + li a:before {
-  background-position: 0 -80px;
-}
-
-#toplevel_page_jigoshop ul.wp-submenu .wp-first-item + li + li + li a:before {
-  background-position: 0 -80px;
-}
-
-#toplevel_page_jigoshop ul.wp-submenu .wp-first-item + li + li + li + li a:before {
-  background-position: 0 -80px;
-}
-
-#toplevel_page_jigoshop ul.wp-submenu .wp-first-item + li + li + li + li + li a:before {
-  background-position: 0 -80px;
-}
-
-#toplevel_page_jigoshop ul.wp-submenu .wp-first-item + li + li + li + li + li + li a:before {
-  background-position: 0 -80px;
-}
-
-#toplevel_page_jigoshop ul.wp-submenu .wp-first-item + li + li + li + li + li + li + li a:before {
-  background-position: 0 -99px;
-}
-
-#toplevel_page_jigoshop ul.wp-submenu .wp-first-item + li + li + li + li + li + li + li + li a:before {
-  background-position: 0 -80px;
-}
-
-#toplevel_page_jigoshop ul.wp-submenu li:last-child a:before {
-  background-position: -54px -133px !important;
-}
-
-div.pages ul.pages li a {
-  position: relative;
-}
-
-div.pages ul.pages li a:before {
-  background: url(../../images/icons.png) -27px -21px no-repeat;
-  content: "";
-  width: 19px;
-  height: 19px;
-  position: absolute;
-  left: 13px;
-  top: 14px;
-  text-indent: -9999999px;
-  padding: 0;
-}
-
-div.pages ul.pages li + li a:before {
-  background-position: -27px -40px;
-}
-
-div.pages ul.pages li + li + li a:before {
-  background-position: -27px -63px;
-}
-
-div.pages ul.pages li + li + li + li a:before {
-  background-position: -27px -83px;
-}
-
-div.pages ul.pages li + li + li + li a:before {
-  background-position: -27px -83px;
-}
-
-div.pages ul.pages li + li + li + li + li a:before {
-  background-position: -27px -83px;
-}
-
-div.pages ul.pages li + li + li + li + li + li a:before {
-  background-position: -27px -83px;
-}
-
-div.pages ul.pages li + li + li + li + li + li + li a:before {
-  background-position: -27px -83px;
-}
-
-div.pages ul.pages li + li + li + li + li + li + li + li a:before {
-  background-position: -27px -103px;
-}
-
-div.pages ul.pages li + li + li + li + li + li + li + li + li a:before {
-  background-position: -27px -83px;
-}
-
-div.pages ul.pages li:last-child a:before {
-  background-position: -27px -130px !important;
+  //&:last-child a:before {
+  //  background-position: -27px -130px !important;
+  //}
 }
 
 #wpadminbar > #wp-toolbar > #wp-admin-bar-root-default > li#wp-admin-bar-jigoshop > a:before {
