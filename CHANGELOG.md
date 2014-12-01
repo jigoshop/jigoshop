@@ -2,6 +2,7 @@
 
 * 1.13.3:
     * Improved: [shipping] variable was divided into [shipping_cost] and [shipping_method].
+    * Improved: Order item is now passed to `jigoshop_order_product_title` filter as 3rd argument. Thanks to @ermx
     * Fix: Default emails now install properly on jigoshop update.
     * Fix: Urls for dummy products.
 * 1.13.2 - 2014-11-26:
