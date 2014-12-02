@@ -303,13 +303,17 @@ class Checkout implements PageInterface
 			$this->wp->redirectTo($this->options->getPageId(Pages::SHOP));
 		}
 
-		if (!$this->options->get('shopping.guest_purchases') && !$this->wp->isUserLoggedIn()) {
+		if (!$this->isAllowedToEnterCheckout()) {
 			$this->messages->addError(__('You need to log in before processing to checkout.', 'jigoshop'));
 			$this->wp->redirectTo($this->options->getPageId(Pages::CART));
 		}
 
 		if (isset($_POST['action']) && $_POST['action'] == 'purchase') {
 			try {
+				if (!$this->isAllowedToCheckout()) {
+					throw new Exception(__('You need to log in before purchasing.', 'jigoshop'));
+				}
+
 				if ($this->options->get('advanced.pages.terms') > 0 && (!isset($_POST['terms']) || $_POST['terms'] != 'on')) {
 					throw new Exception(__('You need to accept terms &amp; conditions!', 'jigoshop'));
 				}
@@ -384,6 +388,7 @@ class Checkout implements PageInterface
 			'billingFields' => $billingFields,
 			'shippingFields' => $shippingFields,
 			'showWithTax' => $this->options->get('tax.price_tax') == 'with_tax',
+			'showLoginForm' => $this->options->get('shopping.show_login_form') && !$this->wp->isUserLoggedIn(),
 			'alwaysShowShipping' => $this->options->get('shipping.always_show_shipping'),
 			'differentShipping' => isset($_POST['jigoshop_order']) ? $_POST['jigoshop_order']['different_shipping'] == 'on' : false, // TODO: Fetch whether user want different shipping by default
 			'termsUrl' => $termsUrl,
@@ -589,5 +594,23 @@ class Checkout implements PageInterface
 		}
 
 		return false;
+	}
+
+	/**
+	 * Checks whether user is allowed to see checkout page.
+	 * @return bool Is user allowed to enter checkout page?
+	 */
+	private function isAllowedToEnterCheckout()
+	{
+		return $this->options->get('shopping.guest_purchases') && $this->wp->isUserLoggedIn() || $this->options->get('shopping.show_login_form');
+	}
+
+	/**
+	 * Checks whether user is allowed to see checkout page.
+	 * @return bool Is user allowed to enter checkout page?
+	 */
+	private function isAllowedToCheckout()
+	{
+		return $this->options->get('shopping.guest_purchases') && $this->wp->isUserLoggedIn();
 	}
 }

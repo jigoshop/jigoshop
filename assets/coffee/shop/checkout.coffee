@@ -9,6 +9,9 @@ class Checkout
     @_prepareStateField("#jigoshop_order_billing_state")
     @_prepareStateField("#jigoshop_order_shipping_state")
 
+    jQuery('#jigoshop-login').on 'click', (event) ->
+      event.preventDefault()
+      jQuery('#jigoshop-login-form').slideToggle()
     jQuery('#different_shipping').on 'change', ->
       jQuery('#shipping-address').slideToggle()
       if (jQuery(this).is(':checked'))

@@ -10,6 +10,7 @@ use Jigoshop\Helper\Render;
  * @var $customer \Jigoshop\Entity\Customer Current customer.
  * @var $shippingMethods array List of available shipping methods.
  * @var $paymentMethods array List of available payment methods.
+ * @var $showLoginForm bool Whether to show login form.
  * @var $showWithTax bool Whether to show product price with or without tax.
  * @var $alwaysShowShipping bool Whether to always show shipping fields.
  * @var $cartUrl string URL to cart.
@@ -21,6 +22,9 @@ use Jigoshop\Helper\Render;
 <h1><?php _e('Checkout', 'jigoshop'); ?></h1>
 <?php Render::output('shop/messages', array('messages' => $messages)); ?>
 <?php echo wpautop(wptexturize($content)); ?>
+<?php if ($showLoginForm): ?>
+	<?php Render::output('shop/checkout/login', array()); ?>
+<?php endif; ?>
 <form action="" role="form" method="post" id="checkout">
 	<div class="panel panel-default">
 		<div class="panel-heading">

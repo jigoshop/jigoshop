@@ -153,12 +153,12 @@ class ShoppingTab implements TabInterface
 						'type' => 'checkbox',
 						'checked' => $this->options['guest_purchases'],
 					),
-//					array(
-//						'name' => '[show_login_form]',
-//						'title' => __('Show login form', 'jigoshop'),
-//						'type' => 'checkbox',
-//						'checked' => $this->options['show_login_form'],
-//					),
+					array(
+						'name' => '[show_login_form]',
+						'title' => __('Show login form', 'jigoshop'),
+						'type' => 'checkbox',
+						'checked' => $this->options['show_login_form'],
+					),
 //					array(
 //						'name' => '[allow_registration]',
 //						'title' => __('Allow registration', 'jigoshop'),
