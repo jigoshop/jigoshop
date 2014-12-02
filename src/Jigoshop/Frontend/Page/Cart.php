@@ -348,7 +348,7 @@ class Cart implements PageInterface
 
 						if ($this->options->get('shopping.validate_zip')) {
 							$address = $cart->getCustomer()->getShippingAddress();
-							if(!Validation::isPostcode($address->getPostcode(), $address->getCountry())) {
+							if($address->getPostcode() && !Validation::isPostcode($address->getPostcode(), $address->getCountry())) {
 								throw new Exception(__('Postcode is not valid!', 'jigoshop'));
 							}
 						}
