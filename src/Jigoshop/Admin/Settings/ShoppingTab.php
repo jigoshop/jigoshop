@@ -141,18 +141,18 @@ class ShoppingTab implements TabInterface
 					),
 				),
 			),
-		// TODO: Add support for guest purchases, showing login form on checkout and allowing registration on checkout
-//			array(
-//				'title' => __('Accounts', 'jigoshop'),
-//				'id' => 'accounts',
-//				'description' => __('This section allows you to modify checkout requirements for being signed in.', 'jigoshop'),
-//				'fields' => array(
-//					array(
-//						'name' => '[guest_purchases]',
-//						'title' => __('Allow guest purchases', 'jigoshop'),
-//						'type' => 'checkbox',
-//						'checked' => $this->options['guest_purchases'],
-//					),
+		// TODO: Add support for showing login form on checkout and allowing registration on checkout
+			array(
+				'title' => __('Accounts', 'jigoshop'),
+				'id' => 'accounts',
+				'description' => __('This section allows you to modify checkout requirements for being signed in.', 'jigoshop'),
+				'fields' => array(
+					array(
+						'name' => '[guest_purchases]',
+						'title' => __('Allow guest purchases', 'jigoshop'),
+						'type' => 'checkbox',
+						'checked' => $this->options['guest_purchases'],
+					),
 //					array(
 //						'name' => '[show_login_form]',
 //						'title' => __('Show login form', 'jigoshop'),
@@ -165,8 +165,8 @@ class ShoppingTab implements TabInterface
 //						'type' => 'checkbox',
 //						'checked' => $this->options['show_login_form'],
 //					),
-//				),
-//			),
+				),
+			),
 			array(
 				'title' => __('Redirection', 'jigoshop'),
 				'id' => 'redirection',

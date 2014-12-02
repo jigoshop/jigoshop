@@ -303,6 +303,11 @@ class Checkout implements PageInterface
 			$this->wp->redirectTo($this->options->getPageId(Pages::SHOP));
 		}
 
+		if (!$this->options->get('shopping.guest_purchases') && !$this->wp->isUserLoggedIn()) {
+			$this->messages->addError(__('You need to log in before processing to checkout.', 'jigoshop'));
+			$this->wp->redirectTo($this->options->getPageId(Pages::CART));
+		}
+
 		if (isset($_POST['action']) && $_POST['action'] == 'purchase') {
 			try {
 				if ($this->options->get('advanced.pages.terms') > 0 && (!isset($_POST['terms']) || $_POST['terms'] != 'on')) {
