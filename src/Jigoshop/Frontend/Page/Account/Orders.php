@@ -45,7 +45,7 @@ class Orders implements PageInterface
 		$styles->add('jigoshop.user.account', JIGOSHOP_URL.'/assets/css/user/account.css');
 		$styles->add('jigoshop.user.account.orders', JIGOSHOP_URL.'/assets/css/user/account/orders.css');
 		$styles->add('jigoshop.user.account.orders.single', JIGOSHOP_URL.'/assets/css/user/account/orders/single.css');
-		$this->wp->doAction('jigoshop\account\assets', $wp, $styles, $scripts);
+		$this->wp->doAction('jigoshop\account\orders\assets', $wp, $styles, $scripts);
 	}
 
 

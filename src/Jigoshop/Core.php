@@ -45,6 +45,7 @@ class Core
 		$this->wp->addFilter('template_include', array($this->template, 'process'));
 		$this->wp->addFilter('template_redirect', array($this->template, 'redirect'));
 		$this->wp->addAction('jigoshop\shop\content\before', array($this, 'displayCustomMessage'));
+		$this->wp->addAction('wp_head', array($this, 'googleAnalyticsTracking'), 9990);
 
 		$container->get('jigoshop.permalinks');
 
@@ -54,6 +55,43 @@ class Core
 
 		// TODO: Why this is required? :/
 		$this->wp->flushRewriteRules();
+	}
+
+	/**
+	 * Displays Google Analytics tracking code in the header as the LAST item before closing </head> tag
+	 */
+	public function googleAnalyticsTracking()
+	{
+		// Do not track admin pages
+		if ($this->wp->isAdmin()) {
+			return;
+		}
+
+		// Do not track shop owners
+		if ($this->wp->currentUserCan('manage_jigoshop')) {
+			return;
+		}
+
+		$trackingId = $this->options->get('advanced.integration.google_analytics');
+
+		if (empty($trackingId)) {
+			return;
+		}
+
+		$userId = '';
+		if ($this->wp->isUserLoggedIn()) {
+			$userId = $this->wp->getCurrentUserId();
+		}
+		?>
+		<script type="text/javascript">
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+				(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+				m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'jigoshopGoogleAnalytics');
+			jigoshopGoogleAnalytics('create', '<?php echo $trackingId; ?>', { 'userId': '<?php echo $userId; ?>' });
+			jigoshopGoogleAnalytics('send', 'pageview');
+		</script>
+	<?php
 	}
 
 	/**

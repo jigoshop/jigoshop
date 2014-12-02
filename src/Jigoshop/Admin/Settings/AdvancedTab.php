@@ -94,11 +94,11 @@ class AdvancedTab implements TabInterface
 					),
 				),
 			),
-		// TODO Google Analytics and Share This integration
-//			array(
-//				'title' => __('Integration', 'jigoshop'),
-//				'id' => 'integration',
-//				'fields' => array(
+			array(
+				'title' => __('Integration', 'jigoshop'),
+				'id' => 'integration',
+				'fields' => array(
+					// TODO: Share This integration
 //					array(
 //						'name' => '[integration][share_this]',
 //						'title' => __('ShareThis Publisher ID', 'jigoshop'),
@@ -107,15 +107,15 @@ class AdvancedTab implements TabInterface
 //						'type' => 'text',
 //						'value' => $this->settings['integration']['share_this'],
 //					),
-//					array(
-//						'name' => '[integration][google_analytics]',
-//						'title' => __('Google Analytics ID', 'jigoshop'),
-//						'description' => __('Log into your Google Analytics account to find your ID. e.g. <code>UA-XXXXXXX-X</code>', 'jigoshop'),
-//						'type' => 'text',
-//						'value' => $this->settings['integration']['google_analytics'],
-//					),
-//				),
-//			),
+					array(
+						'name' => '[integration][google_analytics]',
+						'title' => __('Google Analytics ID', 'jigoshop'),
+						'description' => __('Log into your Google Analytics account to find your ID. e.g. <code>UA-XXXXXXX-X</code>', 'jigoshop'),
+						'type' => 'text',
+						'value' => $this->settings['integration']['google_analytics'],
+					),
+				),
+			),
 			array(
 				'title' => __('Others', 'jigoshop'),
 				'id' => 'others',

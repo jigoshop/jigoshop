@@ -142,6 +142,23 @@ class Pages
 	}
 
 	/**
+	 * Evaluates to true only on the Thank You page
+	 *
+	 * @return bool
+	 * @since 2.0
+	 */
+	public function isCheckoutThankYou()
+	{
+		if (!isset($this->cache[self::THANK_YOU])) {
+			$page = $this->options->getPageId(self::THANK_YOU);
+			$this->cache[self::THANK_YOU] = $page !== false && $this->wp->isPage($page);
+			$this->cache[self::THANK_YOU] |= $this->isAjax() && strpos($_REQUEST['action'], 'thank_you') !== false;
+		}
+
+		return $this->cache[self::THANK_YOU];
+	}
+
+	/**
 	 * Evaluates to true only on the Single Product Page
 	 *
 	 * @return bool
@@ -332,7 +349,7 @@ class Pages
 	 */
 	public function isJigoshop()
 	{
-		return $this->isShop() || $this->isAccount() || $this->isCart() || $this->isCheckout() || $this->isOrderTracker();
+		return $this->isShop() || $this->isAccount() || $this->isCart() || $this->isCheckout() || $this->isOrderTracker() || $this->isCheckoutThankYou();
 	}
 
 	/**

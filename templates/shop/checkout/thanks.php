@@ -1,24 +1,24 @@
 <?php
-use Jigoshop\Entity\Customer;
 use Jigoshop\Entity\Order\Status;
 use Jigoshop\Helper\Product;
 use Jigoshop\Helper\Render;
 
 /**
- * @var $customer Customer
- * @var $order \Jigoshop\Entity\Order Order to display.
  * @var $messages \Jigoshop\Core\Messages Messages container.
- * @var $myAccountUrl string URL to my account.
- * @var $listUrl string URL to orders list.
+ * @var $content string Contents of cart page
+ * @var $order \Jigoshop\Entity\Order The order.
+ * @var $shopUrl string URL to product list page.
  * @var $showWithTax bool Whether to show product price with or without tax.
  * @var $getTaxLabel \Closure Function to retrieve tax label.
  */
 ?>
-<h1><?php printf(__('My account &rang; Orders &rang; %s', 'jigoshop'), $order->getTitle()); ?></h1>
+
+<h1><?php _e('Thank you for your order', 'jigoshop'); ?></h1>
 <?php Render::output('shop/messages', array('messages' => $messages)); ?>
+<?php echo wpautop(wptexturize($content)); ?>
 <dl class="dl-horizontal">
-	<dt><?php _e('Made on', 'jigoshop'); ?></dt>
-	<dd><?php echo $order->getCreatedAt()->format(_x('d.m.Y, H:i', 'account', 'jigoshop')); ?></dd>
+	<dt><?php _e('Order number', 'jigoshop'); ?></dt>
+	<dd><?php echo $order->getNumber(); ?></dd>
 	<dt><?php _e('Status', 'jigoshop'); ?></dt>
 	<dd><?php echo Status::getName($order->getStatus()); ?></dd>
 </dl>
@@ -45,26 +45,26 @@ use Jigoshop\Helper\Render;
 <h3><?php _e('Order details', 'jigoshop'); ?></h3>
 <table class="table table-hover">
 	<thead>
-		<tr>
-			<th class="product-thumbnail"></th>
-			<th class="product-name"><?php _e('Product Name', 'jigoshop'); ?></th>
-			<th class="product-price"><?php _e('Unit Price', 'jigoshop'); ?></th>
-			<th class="product-quantity"><?php _e('Quantity', 'jigoshop'); ?></th>
-			<th class="product-subtotal"><?php _e('Price', 'jigoshop'); ?></th>
-		</tr>
-		<?php do_action('jigoshop\checkout\table_head', $order); ?>
+	<tr>
+		<th class="product-thumbnail"></th>
+		<th class="product-name"><?php _e('Product Name', 'jigoshop'); ?></th>
+		<th class="product-price"><?php _e('Unit Price', 'jigoshop'); ?></th>
+		<th class="product-quantity"><?php _e('Quantity', 'jigoshop'); ?></th>
+		<th class="product-subtotal"><?php _e('Price', 'jigoshop'); ?></th>
+	</tr>
+	<?php do_action('jigoshop\checkout\table_head', $order); ?>
 	</thead>
 	<tbody>
-		<?php foreach($order->getItems() as $key => $item): /** @var $item \Jigoshop\Entity\Order\Item */ ?>
-			<?php Render::output('shop/checkout/item/'.$item->getType(), array('cart' => $order, 'key' => $key, 'item' => $item, 'showWithTax' => $showWithTax)); ?>
-		<?php endforeach; ?>
-		<?php do_action('jigoshop\checkout\table_body', $order); ?>
+	<?php foreach($order->getItems() as $key => $item): /** @var $item \Jigoshop\Entity\Order\Item */ ?>
+		<?php Render::output('shop/checkout/item/'.$item->getType(), array('cart' => $order, 'key' => $key, 'item' => $item, 'showWithTax' => $showWithTax)); ?>
+	<?php endforeach; ?>
+	<?php do_action('jigoshop\checkout\table_body', $order); ?>
 	</tbody>
 	<tfoot>
-		<tr id="product-subtotal">
-			<th scope="row" colspan="4" class="text-right"><?php _e('Products subtotal', 'jigoshop'); ?></th>
-			<td><?php echo Product::formatPrice($order->getProductSubtotal()); ?></td>
-		</tr>
+	<tr id="product-subtotal">
+		<th scope="row" colspan="4" class="text-right"><?php _e('Products subtotal', 'jigoshop'); ?></th>
+		<td><?php echo Product::formatPrice($order->getProductSubtotal()); ?></td>
+	</tr>
 	</tfoot>
 </table>
 <div id="cart-collaterals">
@@ -105,8 +105,4 @@ use Jigoshop\Helper\Render;
 		</table>
 	</div>
 </div>
-<a href="<?php echo $myAccountUrl; ?>" class="btn btn-default"><?php _e('Go back to My account', 'jigoshop'); ?></a>
-<a href="<?php echo $listUrl; ?>" class="btn btn-default"><?php _e('Go back to orders list', 'jigoshop'); ?></a>
-<?php if (in_array($order->getStatus(), array(Status::CREATED, Status::PENDING))): ?>
-	<a href="" class="btn btn-success pull-right"><?php _e('Pay', 'jigoshop'); ?></a>
-<?php endif; ?>
+<a href="<?php echo $shopUrl; ?>" class="btn btn-primary pull-right"><?php _e('Continue shopping', 'jigoshop'); ?></a>
