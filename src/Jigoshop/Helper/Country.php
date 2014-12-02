@@ -833,7 +833,7 @@ class Country
 	 *
 	 * @return array List of allowed translated countries.
 	 */
-	public function getAllowed()
+	public static function getAllowed()
 	{
 		if (!isset(self::$cache['allowed'])) {
 			$countries = self::getAll();

@@ -81,20 +81,19 @@ class AdvancedTab implements TabInterface
 					),
 				),
 			),
-			// TODO: Forcing SSL on checkout
-//			array(
-//				'title' => __('Enforcing', 'jigoshop'),
-//				'id' => 'enforcing',
-//				'fields' => array(
-//					array(
-//						'name' => '[force_ssl]',
-//						'title' => __('Force SSL on checkout', 'jigoshop'),
-//						'description' => __('Enforces WordPress to use SSL on checkout pages.', 'jigoshop'),
-//						'type' => 'checkbox',
-//						'checked' => $this->settings['force_ssl'],
-//					),
-//				),
-//			),
+			array(
+				'title' => __('Enforcing', 'jigoshop'),
+				'id' => 'enforcing',
+				'fields' => array(
+					array(
+						'name' => '[force_ssl]',
+						'title' => __('Force SSL on checkout', 'jigoshop'),
+						'description' => __('Enforces WordPress to use SSL on checkout pages.', 'jigoshop'),
+						'type' => 'checkbox',
+						'checked' => $this->settings['force_ssl'],
+					),
+				),
+			),
 		// TODO Google Analytics and Share This integration
 //			array(
 //				'title' => __('Integration', 'jigoshop'),

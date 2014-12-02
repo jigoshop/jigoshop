@@ -77,12 +77,27 @@ class Checkout implements PageInterface
 			),
 		));
 
+		if (!$wp->isSsl() && $options->get('advanced.force_ssl')) {
+			$wp->addAction('template_redirect', array($this, 'redirectToSsl'), 100, 0);
+		}
+
 		$wp->addAction('wp_ajax_jigoshop_checkout_change_country', array($this, 'ajaxChangeCountry'));
 		$wp->addAction('wp_ajax_nopriv_jigoshop_checkout_change_country', array($this, 'ajaxChangeCountry'));
 		$wp->addAction('wp_ajax_jigoshop_checkout_change_state', array($this, 'ajaxChangeState'));
 		$wp->addAction('wp_ajax_nopriv_jigoshop_checkout_change_state', array($this, 'ajaxChangeState'));
 		$wp->addAction('wp_ajax_jigoshop_checkout_change_postcode', array($this, 'ajaxChangePostcode'));
 		$wp->addAction('wp_ajax_nopriv_jigoshop_checkout_change_postcode', array($this, 'ajaxChangePostcode'));
+	}
+
+	/**
+	 * Redirects to SSL checkout page.
+	 */
+	public function redirectToSsl()
+	{
+		$page = $this->options->getPageId(Pages::CHECKOUT);
+		$url = str_replace('http:', 'https:', $this->wp->getPermalink($page));
+		$this->wp->wpSafeRedirect($url, 301);
+		exit;
 	}
 
 	/**
@@ -321,8 +336,8 @@ class Checkout implements PageInterface
 
 				// Redirect to thank you page
 				if (empty($url)) {
-					$url = $this->wp->getPermalink($this->wp->applyFilters('jigoshop\checkout\redirect_page_id', $this->settings->getPageId(Pages::THANK_YOU)));
-					$url = $this->wp->addQueryArg(array('order' => $order->getId()), $url); // TODO: Add randomly generated key to prevent data leakage
+					$url = $this->wp->getPermalink($this->wp->applyFilters('jigoshop\checkout\redirect_page_id', $this->options->getPageId(Pages::THANK_YOU)));
+					$url = $this->wp->getHelpers()->addQueryArg(array('order' => $order->getId()), $url); // TODO: Add randomly generated key to prevent data leakage
 				}
 
 				$this->cartService->remove($cart);
