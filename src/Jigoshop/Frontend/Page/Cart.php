@@ -412,6 +412,12 @@ class Cart implements PageInterface
 		$cart = $this->cartService->getCurrent();
 		$content = $this->wp->getPostField('post_content', $this->options->getPageId(Pages::CART));
 
+		$termsUrl = '';
+		$termsPage = $this->options->get('advanced.pages.terms');
+		if ($termsPage > 0) {
+			$termsUrl = $this->wp->getPermalink($termsPage);
+		}
+
 		return Render::get('shop/cart', array(
 			'content' => $content,
 			'cart' => $cart,
@@ -422,6 +428,7 @@ class Cart implements PageInterface
 			'shopUrl' => $this->wp->getPermalink($this->options->getPageId(Pages::SHOP)),
 			'showWithTax' => $this->options->get('tax.price_tax') == 'with_tax',
 			'showShippingCalculator' => $this->options->get('shipping.calculator'),
+			'termsUrl' => $termsUrl,
 		));
 	}
 }

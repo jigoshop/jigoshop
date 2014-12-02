@@ -124,6 +124,9 @@ class Options
 				'google_analytics' => '',
 			),
 			'cache' => 'simple',
+			'pages' => array(
+				'terms' => 0,
+			),
 		),
 		'permalinks' => array(
 			'product' => '',

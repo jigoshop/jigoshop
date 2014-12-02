@@ -15,6 +15,7 @@ use Jigoshop\Helper\Render;
  * @var $cartUrl string URL to cart.
  * @var $billingFields array Fields to display as billing fields.
  * @var $differentShipping boolean Whether to use different shipping address.
+ * @var $termsUrl string Url to terms and conditions page.
  */
 ?>
 <h1><?php _e('Checkout', 'jigoshop'); ?></h1>
@@ -154,6 +155,13 @@ use Jigoshop\Helper\Render;
 			</style>
 		</noscript>
 	</div>
+	<?php endif; ?>
+	<?php if (!empty($termsUrl)): ?>
+		<?php Forms::checkbox(array(
+			'name' => 'terms',
+			'label' => sprintf(__('I accept the <a href="%s">Terms &amp; Conditions</a>'), $termsUrl),
+			'checked' => false,
+		)); ?>
 	<?php endif; ?>
 	<a class="btn btn-default" href="<?php echo $cartUrl; ?>"><?php _e('Back to cart', 'jigoshop'); ?></a>
 	<button class="btn btn-success pull-right clearfix" name="action" value="purchase" type="submit"><?php _e('Purchase', 'jigoshop'); ?></button>

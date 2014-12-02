@@ -12,6 +12,7 @@ use Jigoshop\Helper\Render;
  * @var $shippingMethods array List of available shipping methods.
  * @var $shopUrl string Url to shop (product list).
  * @var $showWithTax bool Whether to show product price with or without tax.
+ * @var $termsUrl string Url to terms and conditions page.
  */
 ?>
 <h1><?php _e('Cart', 'jigoshop'); ?></h1>

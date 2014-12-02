@@ -290,6 +290,9 @@ class Checkout implements PageInterface
 
 		if (isset($_POST['action']) && $_POST['action'] == 'purchase') {
 			try {
+				if ($this->options->get('advanced.pages.terms') > 0 && (!isset($_POST['terms']) || $_POST['terms'] != 'on')) {
+					throw new Exception(__('You need to accept terms &amp; conditions!', 'jigoshop'));
+				}
 				if (!Country::isAllowed($cart->getCustomer()->getBillingAddress()->getCountry())) {
 					$locations = array_map(function($location){ return Country::getName($location); }, $this->options->get('shopping.selling_locations'));
 					throw new Exception(sprintf(__('This location is not supported, we sell only to %s.'), join(', ', $locations)));
@@ -344,6 +347,12 @@ class Checkout implements PageInterface
 		$billingFields = $this->wp->applyFilters('jigoshop\checkout\billing_fields', $this->getBillingFields($cart->getCustomer()->getBillingAddress()));
 		$shippingFields = $this->wp->applyFilters('jigoshop\checkout\shipping_fields', $this->getShippingFields($cart->getCustomer()->getShippingAddress()));
 
+		$termsUrl = '';
+		$termsPage = $this->options->get('advanced.pages.terms');
+		if ($termsPage > 0) {
+			$termsUrl = $this->wp->getPageLink($termsPage);
+		}
+
 		return Render::get('shop/checkout', array(
 			'cartUrl' => $this->wp->getPermalink($this->options->getPageId(Pages::CART)),
 			'content' => $content,
@@ -356,6 +365,7 @@ class Checkout implements PageInterface
 			'showWithTax' => $this->options->get('tax.price_tax') == 'with_tax',
 			'alwaysShowShipping' => $this->options->get('shipping.always_show_shipping'),
 			'differentShipping' => isset($_POST['jigoshop_order']) ? $_POST['jigoshop_order']['different_shipping'] == 'on' : false, // TODO: Fetch whether user want different shipping by default
+			'termsUrl' => $termsUrl,
 		));
 	}
 

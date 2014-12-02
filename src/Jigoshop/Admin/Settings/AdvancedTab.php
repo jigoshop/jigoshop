@@ -55,6 +55,8 @@ class AdvancedTab implements TabInterface
 	public function getSections()
 	{
 		$pages = $this->_getPages();
+		$termsPages = $pages;
+		$termsPages[0] = __('None', 'jigoshop');
 
 		return array(
 			array(
@@ -172,14 +174,13 @@ class AdvancedTab implements TabInterface
 						'value' => $this->settings['pages']['account'],
 						'options' => $pages,
 					),
-					// TODO: Add Terms page
-//					array(
-//						'name' => '[pages][terms]',
-//						'title' => __('Terms page', 'jigoshop'),
-//						'type' => 'select',
-//						'value' => $this->settings['pages']['terms'],
-//						'options' => $pages,
-//					),
+					array(
+						'name' => '[pages][terms]',
+						'title' => __('Terms page', 'jigoshop'),
+						'type' => 'select',
+						'value' => $this->settings['pages']['terms'],
+						'options' => $termsPages
+					),
 				),
 			),
 		);
@@ -229,9 +230,9 @@ class AdvancedTab implements TabInterface
 		} else {
 			$this->options->setPageId(Pages::ACCOUNT, $settings['pages']['account']);
 		}
-//		if (!empty($settings['pages']['terms']) && !in_array($settings['pages']['terms'], array_keys($pages))) {
-//			$this->messages->addError(__('Invalid terms page, please select again.', 'jigoshop'));
-//		}
+		if (!empty($settings['pages']['terms']) && $settings['pages']['terms'] != 0 && !in_array($settings['pages']['terms'], array_keys($pages))) {
+			$this->messages->addError(__('Invalid terms page, please select again.', 'jigoshop'));
+		}
 
 		return $settings;
 	}
