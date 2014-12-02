@@ -1247,10 +1247,18 @@ class jigoshop_cart extends Jigoshop_Singleton
 				$display_value = (!empty($data['display']))
 					? $data['display']
 					: $data['value'];
-
-				$data_list[] = $flat
-					? sprintf('%s: %s<br />', $data['name'], $display_value)
-					: sprintf('<dt>%s:</dt> <dd>%s</dd><br />', $data['name'], $display_value);
+                // allows a plugin to decide which format to use for your data
+				$data_display = apply_filters('jigoshop_get_item_data_display', $flat, $data);
+				if (!$data_display)
+                {
+				    $data_list[] = $flat
+					    ? sprintf('%s: %s<br />', $data['name'], $display_value)
+					    : sprintf('<dt>%s:</dt> <dd>%s</dd><br />', $data['name'], $display_value);
+			    }
+			    else
+			    {
+				    $data_list[] = $data_display;
+			    }
 			}
 
 			$return .= $flat ? implode(', ', $data_list) : implode('', $data_list);
