@@ -43,6 +43,7 @@ class Cart implements OrderInterface
 	private $total = 0.0;
 	private $subtotal = 0.0;
 	private $productSubtotal = 0.0;
+	private $totalTax;
 
 	/**
 	 * @param Wordpress $wp
@@ -76,6 +77,7 @@ class Cart implements OrderInterface
 		$this->total = 0.0;
 		$this->subtotal = 0.0;
 		$this->productSubtotal = 0.0;
+		$this->totalTax = null;
 		$this->shippingPrice = 0.0;
 		$this->tax = array_map(function(){ return 0.0; }, $this->tax);
 		$this->shippingTax = array_map(function(){ return 0.0; }, $this->shippingTax);
@@ -180,6 +182,7 @@ class Cart implements OrderInterface
 			$this->total += $quantity * ($price + $tax);
 			$this->subtotal += $quantity * $price;
 			$this->productSubtotal += $quantity * $price;
+			$this->totalTax = null;
 
 			$this->items[$key] = $item;
 		}
@@ -200,6 +203,7 @@ class Cart implements OrderInterface
 			$this->total -= $item->getCost() + $item->getTotalTax();
 			$this->subtotal -= $item->getCost();
 			$this->productSubtotal -= $item->getCost();
+			$this->totalTax = null;
 			foreach ($item->getTaxClasses() as $class) {
 				$this->tax[$class] -= $this->taxService->get($item, $class) * $item->getQuantity();
 			}
@@ -299,6 +303,18 @@ class Cart implements OrderInterface
 	public function getTax()
 	{
 		return $this->tax;
+	}
+
+	/**
+	 * @return float Total tax of the order.
+	 */
+	public function getTotalTax()
+	{
+		if ($this->totalTax === null) {
+			$this->totalTax = array_reduce($this->tax, function($value, $item){ return $value + $item; }, 0.0);;
+		}
+
+		return $this->totalTax;
 	}
 
 	/**

@@ -2,7 +2,6 @@
 
 namespace Jigoshop\Admin\Settings;
 
-use Jigoshop\Core\Currency;
 use Jigoshop\Core\Options;
 use Jigoshop\Helper\Country;
 use Jigoshop\Helper\Render;
@@ -100,23 +99,23 @@ class TaxesTab implements TabInterface
 						'type' => 'checkbox',
 						'checked' => $this->options['before_coupons'],
 					),
-					array(
-						'name' => '[included]',
-						'title' => __('Included in product price?', 'jigoshop'),
-						'type' => 'checkbox',
-						'checked' => $this->options['included'],
-					),
 					// TODO: Add support for tax included in prices
 //					array(
-//						'name' => '[price_tax]',
-//						'title' => __('Show prices', 'jigoshop'),
-//						'type' => 'select',
-//						'value' => $this->options['price_tax'],
-//						'options' => array(
-//							'with_tax' => __('With tax', 'jigoshop'),
-//							'without_tax' => __('Without tax', 'jigoshop'),
-//						)
+//						'name' => '[included]',
+//						'title' => __('Included in product price?', 'jigoshop'),
+//						'type' => 'checkbox',
+//						'checked' => $this->options['included'],
 //					),
+					array(
+						'name' => '[price_tax]',
+						'title' => __('Show prices', 'jigoshop'),
+						'type' => 'select',
+						'value' => $this->options['price_tax'],
+						'options' => array(
+							'with_tax' => __('With tax', 'jigoshop'),
+							'without_tax' => __('Without tax', 'jigoshop'),
+						)
+					),
 					array(
 						'name' => '[shipping]',
 						'title' => __('Taxes based on shipping country?', 'jigoshop'),

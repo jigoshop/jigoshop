@@ -12,6 +12,7 @@ use Jigoshop\Helper\Render;
  * @var $shippingMethods array List of available shipping methods.
  * @var $shopUrl string Url to shop (product list).
  * @var $showWithTax bool Whether to show product price with or without tax.
+ * @var $showShippingCalculator bool Whether to show shipping calculator.
  * @var $termsUrl string Url to terms and conditions page.
  */
 ?>
@@ -35,15 +36,16 @@ use Jigoshop\Helper\Render;
 				<?php do_action('jigoshop\cart\table_head', $cart); ?>
 			</thead>
 			<tbody>
-				<?php foreach($cart->getItems() as $key => $item): ?>
+				<?php foreach($cart->getItems() as $key => $item): /** @var $item \Jigoshop\Entity\Order\Item */ ?>
 					<?php Render::output('shop/cart/item/'.$item->getType(), array('cart' => $cart, 'key' => $key, 'item' => $item, 'showWithTax' => $showWithTax)); ?>
 				<?php endforeach; ?>
 				<?php do_action('jigoshop\cart\table_body', $cart); ?>
 			</tbody>
 			<tfoot>
 				<tr id="product-subtotal">
+					<?php $productSubtotal = $showWithTax ? $cart->getProductSubtotal() + $cart->getTotalTax() : $cart->getProductSubtotal(); ?>
 					<th scope="row" colspan="5" class="text-right"><?php _e('Products subtotal', 'jigoshop'); ?></th>
-					<td><?php echo Product::formatPrice($cart->getProductSubtotal()); ?></td>
+					<td><?php echo Product::formatPrice($productSubtotal); ?></td>
 				</tr>
 				<tr>
 					<td colspan="6">

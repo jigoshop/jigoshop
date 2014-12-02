@@ -2,7 +2,6 @@
 
 namespace Jigoshop\Admin\Settings;
 
-use Jigoshop\Core\Currency;
 use Jigoshop\Core\Options;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Service\ShippingServiceInterface;

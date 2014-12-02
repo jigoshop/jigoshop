@@ -62,8 +62,9 @@ use Jigoshop\Helper\Render;
 	</tbody>
 	<tfoot>
 		<tr id="product-subtotal">
-			<th scope="row" colspan="4" class="text-right"><?php _e('Products subtotal', 'jigoshop'); ?></th>
-			<td><?php echo Product::formatPrice($order->getProductSubtotal()); ?></td>
+			<?php $productSubtotal = $showWithTax ? $order->getProductSubtotal() + $order->getTotalTax() : $order->getProductSubtotal(); ?>
+			<th scope="row" colspan="5" class="text-right"><?php _e('Products subtotal', 'jigoshop'); ?></th>
+			<td><?php echo Product::formatPrice($productSubtotal); ?></td>
 		</tr>
 	</tfoot>
 </table>

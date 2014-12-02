@@ -17,6 +17,7 @@ use Jigoshop\Helper\Render;
  * @var $alwaysShowShipping bool Whether to always show shipping fields.
  * @var $cartUrl string URL to cart.
  * @var $billingFields array Fields to display as billing fields.
+ * @var $shippingFields array Fields to display as shipping fields.
  * @var $differentShipping boolean Whether to use different shipping address.
  * @var $termsUrl string Url to terms and conditions page.
  */
@@ -36,7 +37,6 @@ use Jigoshop\Helper\Render;
 			<div class="row" id="billing-address clearfix">
 				<?php foreach($billingFields as $field): ?>
 				<div class="col-md-<?php echo $field['columnSize']; ?>">
-					<!-- TODO: Proper form validation - maybe it's good idea to use Symfony component? -->
 					<?php Forms::field($field['type'], $field); ?>
 				</div>
 				<?php endforeach; ?>
@@ -88,8 +88,9 @@ use Jigoshop\Helper\Render;
 			</tbody>
 			<tfoot>
 			<tr id="product-subtotal">
-				<th scope="row" colspan="4" class="text-right"><?php _e('Products subtotal', 'jigoshop'); ?></th>
-				<td><?php echo Product::formatPrice($cart->getProductSubtotal()); ?></td>
+				<?php $productSubtotal = $showWithTax ? $cart->getProductSubtotal() + $cart->getTotalTax() : $cart->getProductSubtotal(); ?>
+				<th scope="row" colspan="5" class="text-right"><?php _e('Products subtotal', 'jigoshop'); ?></th>
+				<td><?php echo Product::formatPrice($productSubtotal); ?></td>
 			</tr>
 			</tfoot>
 		</table>

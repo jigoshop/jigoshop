@@ -13,6 +13,7 @@ use Jigoshop\Helper\Product;
 $product = $item->getProduct();
 $variation = $product->getVariation($item->getMeta('variation_id')->getValue());
 $url = apply_filters('jigoshop\cart\product_url', get_permalink($product->getId()), $key);
+// TODO: Support for "Prices includes tax"
 $price = $showWithTax ? $item->getPrice() + $item->getTotalTax() / $item->getQuantity() : $item->getPrice();
 ?>
 <tr data-id="<?php echo $key; ?>" data-product="<?php echo $product->getId(); ?>">
