@@ -54,6 +54,7 @@ class Optimization
 			add_filter('jigoshop_remove_script', array($this, 'remove_script'), 99999, 2);
 			add_filter('jigoshop_localize_script', array($this, 'localize_script'), 99999, 3);
 			add_filter('jigoshop_add_style', array($this, 'add_style'), 99999, 4);
+			add_filter('jigoshop_remove_style', array($this, 'remove_style'), 99999, 2);
 
 			// Admin
 			if(is_admin())
@@ -168,11 +169,65 @@ class Optimization
 		return '';
 	}
 
+	private function prepare_script_handle($handle)
+	{
+		return 'script_'.str_replace(array('-', '.'), '_', $handle);
+	}
+
+	private function check_script_dependencies(array &$dependencies)
+	{
+		/** @var $wp_scripts \WP_Scripts */
+		global $wp_scripts;
+
+		if($wp_scripts !== null)
+		{
+			$diff = array_diff($dependencies, array_keys($wp_scripts->registered));
+		}
+		else
+		{
+			$diff = $dependencies;
+		}
+
+		$current_page = $this->get_current_page();
+
+		// Check if non-WordPress dependencies are present.
+		foreach($diff as $key => $dependency)
+		{
+			unset($dependencies[$key]);
+			$dependency = '@'.$this->prepare_script_handle($dependency);
+			if(!in_array($dependency, $this->_scripts[JIGOSHOP_ALL]) && !in_array($dependency, $this->_scripts[$current_page]))
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	private function get_current_page()
+	{
+		$available = jigoshop_get_available_pages();
+		foreach($available as $page)
+		{
+			if(is_jigoshop_single_page($page))
+			{
+				return $page;
+			}
+		}
+
+		return JIGOSHOP_ALL;
+	}
+
+	private function get_source_path($src)
+	{
+		return preg_replace('@'.str_replace('http', 'http(s)?', WP_CONTENT_URL).'@', WP_CONTENT_DIR, $src);
+	}
+
 	/**
 	 * Removes file from managed scripts.
 
 	 * Available options:
-	 *   * page - list of pages to use the stylesheet.
+	 *   * page - list of pages to use the script.
 	 *
 	 * @param $handle string Name of script.
 	 * @param $options array List of options.
@@ -257,6 +312,74 @@ class Optimization
 		return '';
 	}
 
+	private function prepare_style_handle($handle)
+	{
+		return 'style_'.str_replace(array('-', '.'), '_', $handle);
+	}
+
+	private function check_style_dependencies(array &$dependencies)
+	{
+		/** @var $wp_styles \WP_Styles */
+		global $wp_styles;
+
+		if($wp_styles !== null)
+		{
+			$diff = array_diff($dependencies, array_keys($wp_styles->registered));
+		}
+		else
+		{
+			$diff = $dependencies;
+		}
+
+		$current_page = $this->get_current_page();
+
+		// Check if non-WordPress dependencies are present.
+		foreach($diff as $key => $dependency)
+		{
+			unset($dependencies[$key]);
+			$dependency = '@'.$this->prepare_style_handle($dependency);
+			if(!in_array($dependency, $this->_styles[JIGOSHOP_ALL]) && !in_array($dependency, $this->_styles[$current_page]))
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Removes file from managed styles.
+
+	 * Available options:
+	 *   * page - list of pages to use the stylesheet.
+	 *
+	 * @param $handle string Name of style.
+	 * @param $options array List of options.
+	 * @return string Empty string for jigoshop_remove_style() function if script was found or handle name otherwise.
+	 */
+	public function remove_style($handle, array $options = array())
+	{
+		$pages = isset($options['page']) ? (array)$options['page'] : array('all');
+		$style_handle = $this->prepare_style_handle($handle);
+		$manager = $this->_factory->getAssetManager();
+		if($manager->has($style_handle))
+		{
+			$manager->set($style_handle, null);
+			foreach($pages as $page)
+			{
+				$position = array_search('@'.$style_handle, $this->_styles[$page]);
+				if($position !== false)
+				{
+					unset($this->_styles[$page][$position]);
+				}
+			}
+
+			return '';
+		}
+
+		return $handle;
+	}
+
 	/**
 	 * Prints admin styles.
 	 */
@@ -268,6 +391,15 @@ class Optimization
 		$css = $asset->getAsset();
 
 		wp_enqueue_style('jigoshop_web_optimization_admin_styles', JIGOSHOP_WEB_OPTIMIZATION_SYSTEM_URL.'/cache/'.$this->get_asset_name($css));
+	}
+
+	private function get_asset_name(AssetInterface $asset)
+	{
+		return VarUtils::resolve(
+			$asset->getTargetPath(),
+			$asset->getVars(),
+			$asset->getValues()
+		);
 	}
 
 	/**
@@ -323,103 +455,5 @@ class Optimization
 		{
 			wp_localize_script('jigoshop_web_optimization', $object, $values);
 		}
-	}
-
-	private function get_source_path($src)
-	{
-		return preg_replace('@'.str_replace('http', 'http(s)?', WP_CONTENT_URL).'@', WP_CONTENT_DIR, $src);
-	}
-
-	private function check_script_dependencies(array &$dependencies)
-	{
-		/** @var $wp_scripts \WP_Scripts */
-		global $wp_scripts;
-
-		if($wp_scripts !== null)
-		{
-			$diff = array_diff($dependencies, array_keys($wp_scripts->registered));
-		}
-		else
-		{
-			$diff = $dependencies;
-		}
-
-		$current_page = $this->get_current_page();
-
-		// Check if non-WordPress dependencies are present.
-		foreach($diff as $key => $dependency)
-		{
-			unset($dependencies[$key]);
-			$dependency = '@'.$this->prepare_script_handle($dependency);
-			if(!in_array($dependency, $this->_scripts[JIGOSHOP_ALL]) && !in_array($dependency, $this->_scripts[$current_page]))
-			{
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	private function check_style_dependencies(array &$dependencies)
-	{
-		/** @var $wp_styles \WP_Styles */
-		global $wp_styles;
-
-		if($wp_styles !== null)
-		{
-			$diff = array_diff($dependencies, array_keys($wp_styles->registered));
-		}
-		else
-		{
-			$diff = $dependencies;
-		}
-
-		$current_page = $this->get_current_page();
-
-		// Check if non-WordPress dependencies are present.
-		foreach($diff as $key => $dependency)
-		{
-			unset($dependencies[$key]);
-			$dependency = '@'.$this->prepare_style_handle($dependency);
-			if(!in_array($dependency, $this->_styles[JIGOSHOP_ALL]) && !in_array($dependency, $this->_styles[$current_page]))
-			{
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	private function get_current_page()
-	{
-		$available = jigoshop_get_available_pages();
-		foreach($available as $page)
-		{
-			if(is_jigoshop_single_page($page))
-			{
-				return $page;
-			}
-		}
-
-		return JIGOSHOP_ALL;
-	}
-
-	private function prepare_script_handle($handle)
-	{
-		return 'script_'.str_replace(array('-', '.'), '_', $handle);
-	}
-
-	private function prepare_style_handle($handle)
-	{
-		return 'style_'.str_replace(array('-', '.'), '_', $handle);
-	}
-
-	private function get_asset_name(AssetInterface $asset)
-	{
-		return VarUtils::resolve(
-			$asset->getTargetPath(),
-			$asset->getVars(),
-			$asset->getValues()
-		);
 	}
 }

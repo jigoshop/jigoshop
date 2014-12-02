@@ -21,6 +21,7 @@ include_once('order_tracking.php');
 include_once('pay.php');
 include_once('thankyou.php');
 include_once('product_list.php');
+include_once('product_tag.php');
 
 function jigoshop_shortcode_wrapper( $function, $atts = array() ) {
 	// WordPress caching of shortcodes stripped out in version 1.4.9 for compatibility with Cache plugins on Cart and Checkout
@@ -414,6 +415,7 @@ add_shortcode('recent_products'         , 'jigoshop_recent_products');
 add_shortcode('featured_products'       , 'jigoshop_featured_products');
 add_shortcode('jigoshop_category'       , 'jigoshop_product_category');
 add_shortcode('sale_products'           , 'jigoshop_sale_products');
+add_shortcode('product_tag'		, 'jigoshop_product_tag');
 
 add_shortcode('jigoshop_cart'           , 'get_jigoshop_cart');
 add_shortcode('jigoshop_checkout'       , 'get_jigoshop_checkout');

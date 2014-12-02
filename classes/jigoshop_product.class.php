@@ -24,6 +24,9 @@ class jigoshop_product extends Jigoshop_Base {
 	public $exists;       // : jigoshop_cart.class.php on line 66
 	public $product_type; // : jigoshop_template_functions.php on line 271
 	public $sku;          // : jigoshop_template_functions.php on line 246
+	public $brand;
+	public $gtin;
+	public $mpn;
 
 	public $data;         // jigoshop_tax.class.php on line 186
 	public $post;         // for get_title()
@@ -102,6 +105,9 @@ class jigoshop_product extends Jigoshop_Base {
 		$this->tax_class             = isset($meta['tax_class'][0]) ? $meta['tax_class'][0] : null;
 
 		$this->sku                   = isset($meta['sku'][0]) ? $meta['sku'][0] : $this->ID;
+		$this->brand                 = isset($meta['brand'][0]) ? $meta['brand'][0] : null;
+		$this->gtin                  = isset($meta['gtin'][0]) ? $meta['gtin'][0] : null;
+		$this->mpn                   = isset($meta['mpn'][0]) ? $meta['mpn'][0] : null;
 		$this->visibility            = isset($meta['visibility'][0]) ? $meta['visibility'][0] : null;
 		$this->featured              = isset($meta['featured'][0]) ? $meta['featured'][0] : null;
 
@@ -483,7 +489,7 @@ class jigoshop_product extends Jigoshop_Base {
 				$notice['availability'] = __('Available for order', 'jigoshop');
 			} else if(self::get_options()->get('jigoshop_show_stock') == 'yes' && !$this->has_child() && $this->stock > 0){
 				// Check if we want user to get how many items is available
-				$notice['availability'] .= ' &ndash; '.$this->stock.' '.__(' available', 'jigoshop');
+				$notice['availability'] .= ': '.$this->stock.' '.__(' available', 'jigoshop');
 			}
 		} else {
 			$notice['availability'] = __('Out of Stock', 'jigoshop');
@@ -568,6 +574,21 @@ class jigoshop_product extends Jigoshop_Base {
 	 */
 	public function get_weight() {
 		return $this->weight;
+	}
+
+	/**
+	 * Get the product total price excluding or with tax
+	 *
+	 * @param int $quantity
+	 * @return float the total price of the product times the quantity.
+	 */
+	public function get_defined_price($quantity = 1)
+	{
+		if(self::get_options()->get('jigoshop_show_prices_with_tax') == 'yes') {
+			return $this->get_price_with_tax($quantity);
+		} else {
+			return $this->get_price_excluding_tax($quantity);
+		}
 	}
 
 	/**
@@ -858,7 +879,9 @@ class jigoshop_product extends Jigoshop_Base {
 				if ( $child->is_in_stock() ) {
 					if ( $child->is_on_sale() ) $onsale = true; // signal at least one child is on sale
 					// store product id for later, get regular or sale price if available
-					$array[$child_ID] = $child->get_price();
+					if( $child->get_price() != null ) {
+						$array[$child_ID] = $child->get_price();
+					}
 				}
 			}
 			asort( $array );	// cheapest price first

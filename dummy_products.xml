@@ -84,7 +84,7 @@
 		<link>http://demo.jigoshop.com/?attachment_id=15</link>
 		<pubDate>Tue, 20 Dec 2011 18:42:08 +0000</pubDate>
 		<dc:creator>jigoshop</dc:creator>
-		<guid isPermaLink="false">http://www.jigoshop.com/jigoshop_dummy/wimpykid.jpg</guid>
+		<guid isPermaLink="false">https://www.jigoshop.com/jigoshop_dummy/wimpykid.jpg</guid>
 		<description></description>
 		<content:encoded><![CDATA[]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
@@ -100,7 +100,7 @@
 		<wp:post_type>attachment</wp:post_type>
 		<wp:post_password></wp:post_password>
 		<wp:is_sticky>0</wp:is_sticky>
-		<wp:attachment_url>http://www.jigoshop.com/jigoshop_dummy/wimpykid.jpg</wp:attachment_url>
+		<wp:attachment_url>https://www.jigoshop.com/jigoshop_dummy/wimpykid.jpg</wp:attachment_url>
 		<wp:postmeta>
 			<wp:meta_key>_wp_attached_file</wp:meta_key>
 			<wp:meta_value><![CDATA[2011/12/wimpykid.jpg]]></wp:meta_value>
@@ -115,7 +115,7 @@
 		<link>http://demo.jigoshop.com/?attachment_id=17</link>
 		<pubDate>Tue, 20 Dec 2011 18:52:33 +0000</pubDate>
 		<dc:creator>jigoshop</dc:creator>
-		<guid isPermaLink="false">http://www.jigoshop.com/jigoshop_dummy/stevejobs.jpg</guid>
+		<guid isPermaLink="false">https://www.jigoshop.com/jigoshop_dummy/stevejobs.jpg</guid>
 		<description></description>
 		<content:encoded><![CDATA[]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
@@ -131,7 +131,7 @@
 		<wp:post_type>attachment</wp:post_type>
 		<wp:post_password></wp:post_password>
 		<wp:is_sticky>0</wp:is_sticky>
-		<wp:attachment_url>http://www.jigoshop.com/jigoshop_dummy/stevejobs.jpg</wp:attachment_url>
+		<wp:attachment_url>https://www.jigoshop.com/jigoshop_dummy/stevejobs.jpg</wp:attachment_url>
 		<wp:postmeta>
 			<wp:meta_key>_wp_attached_file</wp:meta_key>
 			<wp:meta_value><![CDATA[2011/12/stevejobs.jpg]]></wp:meta_value>
@@ -146,7 +146,7 @@
 		<link>http://demo.jigoshop.com/?attachment_id=19</link>
 		<pubDate>Tue, 20 Dec 2011 18:56:56 +0000</pubDate>
 		<dc:creator>jigoshop</dc:creator>
-		<guid isPermaLink="false">http://www.jigoshop.com/jigoshop_dummy/push.jpg</guid>
+		<guid isPermaLink="false">https://www.jigoshop.com/jigoshop_dummy/push.jpg</guid>
 		<description></description>
 		<content:encoded><![CDATA[]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
@@ -162,7 +162,7 @@
 		<wp:post_type>attachment</wp:post_type>
 		<wp:post_password></wp:post_password>
 		<wp:is_sticky>0</wp:is_sticky>
-		<wp:attachment_url>http://www.jigoshop.com/jigoshop_dummy/push.jpg</wp:attachment_url>
+		<wp:attachment_url>https://www.jigoshop.com/jigoshop_dummy/push.jpg</wp:attachment_url>
 		<wp:postmeta>
 			<wp:meta_key>_wp_attached_file</wp:meta_key>
 			<wp:meta_value><![CDATA[2011/12/push.jpg]]></wp:meta_value>
@@ -177,7 +177,7 @@
 		<link>http://demo.jigoshop.com/?attachment_id=21</link>
 		<pubDate>Tue, 20 Dec 2011 18:58:29 +0000</pubDate>
 		<dc:creator>jigoshop</dc:creator>
-		<guid isPermaLink="false">http://www.jigoshop.com/jigoshop_dummy/stephenking.jpg</guid>
+		<guid isPermaLink="false">https://www.jigoshop.com/jigoshop_dummy/stephenking.jpg</guid>
 		<description></description>
 		<content:encoded><![CDATA[]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
@@ -193,7 +193,7 @@
 		<wp:post_type>attachment</wp:post_type>
 		<wp:post_password></wp:post_password>
 		<wp:is_sticky>0</wp:is_sticky>
-		<wp:attachment_url>http://www.jigoshop.com/jigoshop_dummy/stephenking.jpg</wp:attachment_url>
+		<wp:attachment_url>https://www.jigoshop.com/jigoshop_dummy/stephenking.jpg</wp:attachment_url>
 		<wp:postmeta>
 			<wp:meta_key>_wp_attached_file</wp:meta_key>
 			<wp:meta_value><![CDATA[2011/12/stephenking.jpg]]></wp:meta_value>
@@ -208,7 +208,7 @@
 		<link>http://demo.jigoshop.com/?attachment_id=23</link>
 		<pubDate>Tue, 20 Dec 2011 19:03:06 +0000</pubDate>
 		<dc:creator>jigoshop</dc:creator>
-		<guid isPermaLink="false">http://www.jigoshop.com/jigoshop_dummy/inheritance.jpg</guid>
+		<guid isPermaLink="false">https://www.jigoshop.com/jigoshop_dummy/inheritance.jpg</guid>
 		<description></description>
 		<content:encoded><![CDATA[]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
@@ -224,7 +224,7 @@
 		<wp:post_type>attachment</wp:post_type>
 		<wp:post_password></wp:post_password>
 		<wp:is_sticky>0</wp:is_sticky>
-		<wp:attachment_url>http://www.jigoshop.com/jigoshop_dummy/inheritance.jpg</wp:attachment_url>
+		<wp:attachment_url>https://www.jigoshop.com/jigoshop_dummy/inheritance.jpg</wp:attachment_url>
 		<wp:postmeta>
 			<wp:meta_key>_wp_attached_file</wp:meta_key>
 			<wp:meta_value><![CDATA[2011/12/inheritance.jpg]]></wp:meta_value>
@@ -239,7 +239,7 @@
 		<link>http://demo.jigoshop.com/?attachment_id=25</link>
 		<pubDate>Tue, 20 Dec 2011 19:10:47 +0000</pubDate>
 		<dc:creator>jigoshop</dc:creator>
-		<guid isPermaLink="false">http://www.jigoshop.com/jigoshop_dummy/harrypotter.jpg</guid>
+		<guid isPermaLink="false">https://www.jigoshop.com/jigoshop_dummy/harrypotter.jpg</guid>
 		<description></description>
 		<content:encoded><![CDATA[]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
@@ -255,7 +255,7 @@
 		<wp:post_type>attachment</wp:post_type>
 		<wp:post_password></wp:post_password>
 		<wp:is_sticky>0</wp:is_sticky>
-		<wp:attachment_url>http://www.jigoshop.com/jigoshop_dummy/harrypotter.jpg</wp:attachment_url>
+		<wp:attachment_url>https://www.jigoshop.com/jigoshop_dummy/harrypotter.jpg</wp:attachment_url>
 		<wp:postmeta>
 			<wp:meta_key>_wp_attached_file</wp:meta_key>
 			<wp:meta_value><![CDATA[2011/12/harrypotter.jpg]]></wp:meta_value>
@@ -278,7 +278,7 @@
 		<link>http://demo.jigoshop.com/?attachment_id=27</link>
 		<pubDate>Tue, 20 Dec 2011 19:15:33 +0000</pubDate>
 		<dc:creator>jigoshop</dc:creator>
-		<guid isPermaLink="false">http://www.jigoshop.com/jigoshop_dummy/thehelp.jpg</guid>
+		<guid isPermaLink="false">https://www.jigoshop.com/jigoshop_dummy/thehelp.jpg</guid>
 		<description></description>
 		<content:encoded><![CDATA[]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
@@ -294,7 +294,7 @@
 		<wp:post_type>attachment</wp:post_type>
 		<wp:post_password></wp:post_password>
 		<wp:is_sticky>0</wp:is_sticky>
-		<wp:attachment_url>http://www.jigoshop.com/jigoshop_dummy/thehelp.jpg</wp:attachment_url>
+		<wp:attachment_url>https://www.jigoshop.com/jigoshop_dummy/thehelp.jpg</wp:attachment_url>
 		<wp:postmeta>
 			<wp:meta_key>_wp_attached_file</wp:meta_key>
 			<wp:meta_value><![CDATA[2011/12/thehelp.jpg]]></wp:meta_value>
@@ -309,7 +309,7 @@
 		<link>http://demo.jigoshop.com/?attachment_id=29</link>
 		<pubDate>Tue, 20 Dec 2011 19:17:50 +0000</pubDate>
 		<dc:creator>jigoshop</dc:creator>
-		<guid isPermaLink="false">http://www.jigoshop.com/jigoshop_dummy/midnightinparis.jpg</guid>
+		<guid isPermaLink="false">https://www.jigoshop.com/jigoshop_dummy/midnightinparis.jpg</guid>
 		<description></description>
 		<content:encoded><![CDATA[]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
@@ -325,7 +325,7 @@
 		<wp:post_type>attachment</wp:post_type>
 		<wp:post_password></wp:post_password>
 		<wp:is_sticky>0</wp:is_sticky>
-		<wp:attachment_url>http://www.jigoshop.com/jigoshop_dummy/midnightinparis.jpg</wp:attachment_url>
+		<wp:attachment_url>https://www.jigoshop.com/jigoshop_dummy/midnightinparis.jpg</wp:attachment_url>
 		<wp:postmeta>
 			<wp:meta_key>_wp_attached_file</wp:meta_key>
 			<wp:meta_value><![CDATA[2011/12/midnightinparis.jpg]]></wp:meta_value>
@@ -340,7 +340,7 @@
 		<link>http://demo.jigoshop.com/?attachment_id=31</link>
 		<pubDate>Tue, 20 Dec 2011 19:19:19 +0000</pubDate>
 		<dc:creator>jigoshop</dc:creator>
-		<guid isPermaLink="false">http://www.jigoshop.com/jigoshop_dummy/kungfu.jpg</guid>
+		<guid isPermaLink="false">https://www.jigoshop.com/jigoshop_dummy/kungfu.jpg</guid>
 		<description></description>
 		<content:encoded><![CDATA[]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
@@ -356,7 +356,7 @@
 		<wp:post_type>attachment</wp:post_type>
 		<wp:post_password></wp:post_password>
 		<wp:is_sticky>0</wp:is_sticky>
-		<wp:attachment_url>http://www.jigoshop.com/jigoshop_dummy/kungfu.jpg</wp:attachment_url>
+		<wp:attachment_url>https://www.jigoshop.com/jigoshop_dummy/kungfu.jpg</wp:attachment_url>
 		<wp:postmeta>
 			<wp:meta_key>_wp_attached_file</wp:meta_key>
 			<wp:meta_value><![CDATA[2011/12/kungfu.jpg]]></wp:meta_value>
@@ -371,7 +371,7 @@
 		<link>http://demo.jigoshop.com/?attachment_id=33</link>
 		<pubDate>Tue, 20 Dec 2011 19:21:10 +0000</pubDate>
 		<dc:creator>jigoshop</dc:creator>
-		<guid isPermaLink="false">http://www.jigoshop.com/jigoshop_dummy/141757334.jpg</guid>
+		<guid isPermaLink="false">https://www.jigoshop.com/jigoshop_dummy/141757334.jpg</guid>
 		<description></description>
 		<content:encoded><![CDATA[]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
@@ -387,7 +387,7 @@
 		<wp:post_type>attachment</wp:post_type>
 		<wp:post_password></wp:post_password>
 		<wp:is_sticky>0</wp:is_sticky>
-		<wp:attachment_url>http://www.jigoshop.com/jigoshop_dummy/141757334.jpg</wp:attachment_url>
+		<wp:attachment_url>https://www.jigoshop.com/jigoshop_dummy/141757334.jpg</wp:attachment_url>
 		<wp:postmeta>
 			<wp:meta_key>_wp_attached_file</wp:meta_key>
 			<wp:meta_value><![CDATA[2011/12/141757334.jpg]]></wp:meta_value>
@@ -402,7 +402,7 @@
 		<link>http://demo.jigoshop.com/?attachment_id=34</link>
 		<pubDate>Tue, 20 Dec 2011 19:21:12 +0000</pubDate>
 		<dc:creator>jigoshop</dc:creator>
-		<guid isPermaLink="false">http://www.jigoshop.com/jigoshop_dummy/141757332.jpg</guid>
+		<guid isPermaLink="false">https://www.jigoshop.com/jigoshop_dummy/141757332.jpg</guid>
 		<description></description>
 		<content:encoded><![CDATA[]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
@@ -418,7 +418,7 @@
 		<wp:post_type>attachment</wp:post_type>
 		<wp:post_password></wp:post_password>
 		<wp:is_sticky>0</wp:is_sticky>
-		<wp:attachment_url>http://www.jigoshop.com/jigoshop_dummy/141757332.jpg</wp:attachment_url>
+		<wp:attachment_url>https://www.jigoshop.com/jigoshop_dummy/141757332.jpg</wp:attachment_url>
 		<wp:postmeta>
 			<wp:meta_key>_wp_attached_file</wp:meta_key>
 			<wp:meta_value><![CDATA[2011/12/141757332.jpg]]></wp:meta_value>
@@ -433,7 +433,7 @@
 		<link>http://demo.jigoshop.com/?attachment_id=35</link>
 		<pubDate>Tue, 20 Dec 2011 19:21:13 +0000</pubDate>
 		<dc:creator>jigoshop</dc:creator>
-		<guid isPermaLink="false">http://www.jigoshop.com/jigoshop_dummy/141757330.jpg</guid>
+		<guid isPermaLink="false">https://www.jigoshop.com/jigoshop_dummy/141757330.jpg</guid>
 		<description></description>
 		<content:encoded><![CDATA[]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
@@ -449,7 +449,7 @@
 		<wp:post_type>attachment</wp:post_type>
 		<wp:post_password></wp:post_password>
 		<wp:is_sticky>0</wp:is_sticky>
-		<wp:attachment_url>http://www.jigoshop.com/jigoshop_dummy/141757330.jpg</wp:attachment_url>
+		<wp:attachment_url>https://www.jigoshop.com/jigoshop_dummy/141757330.jpg</wp:attachment_url>
 		<wp:postmeta>
 			<wp:meta_key>_wp_attached_file</wp:meta_key>
 			<wp:meta_value><![CDATA[2011/12/141757330.jpg]]></wp:meta_value>
@@ -464,7 +464,7 @@
 		<link>http://demo.jigoshop.com/?attachment_id=36</link>
 		<pubDate>Tue, 20 Dec 2011 19:21:34 +0000</pubDate>
 		<dc:creator>jigoshop</dc:creator>
-		<guid isPermaLink="false">http://www.jigoshop.com/jigoshop_dummy/142018455.jpg</guid>
+		<guid isPermaLink="false">https://www.jigoshop.com/jigoshop_dummy/142018455.jpg</guid>
 		<description></description>
 		<content:encoded><![CDATA[]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
@@ -480,7 +480,7 @@
 		<wp:post_type>attachment</wp:post_type>
 		<wp:post_password></wp:post_password>
 		<wp:is_sticky>0</wp:is_sticky>
-		<wp:attachment_url>http://www.jigoshop.com/jigoshop_dummy/142018455.jpg</wp:attachment_url>
+		<wp:attachment_url>https://www.jigoshop.com/jigoshop_dummy/142018455.jpg</wp:attachment_url>
 		<wp:postmeta>
 			<wp:meta_key>_wp_attached_file</wp:meta_key>
 			<wp:meta_value><![CDATA[2011/12/142018455.jpg]]></wp:meta_value>
@@ -495,7 +495,7 @@
 		<link>http://demo.jigoshop.com/?attachment_id=38</link>
 		<pubDate>Tue, 20 Dec 2011 19:26:00 +0000</pubDate>
 		<dc:creator>jigoshop</dc:creator>
-		<guid isPermaLink="false">http://www.jigoshop.com/jigoshop_dummy/98655049.jpg</guid>
+		<guid isPermaLink="false">https://www.jigoshop.com/jigoshop_dummy/98655049.jpg</guid>
 		<description></description>
 		<content:encoded><![CDATA[]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
@@ -511,7 +511,7 @@
 		<wp:post_type>attachment</wp:post_type>
 		<wp:post_password></wp:post_password>
 		<wp:is_sticky>0</wp:is_sticky>
-		<wp:attachment_url>http://www.jigoshop.com/jigoshop_dummy/98655049.jpg</wp:attachment_url>
+		<wp:attachment_url>https://www.jigoshop.com/jigoshop_dummy/98655049.jpg</wp:attachment_url>
 		<wp:postmeta>
 			<wp:meta_key>_wp_attached_file</wp:meta_key>
 			<wp:meta_value><![CDATA[2011/12/98655049.jpg]]></wp:meta_value>
@@ -526,7 +526,7 @@
 		<link>http://demo.jigoshop.com/?attachment_id=40</link>
 		<pubDate>Tue, 20 Dec 2011 19:32:59 +0000</pubDate>
 		<dc:creator>jigoshop</dc:creator>
-		<guid isPermaLink="false">http://www.jigoshop.com/jigoshop_dummy/120153216.jpg</guid>
+		<guid isPermaLink="false">https://www.jigoshop.com/jigoshop_dummy/120153216.jpg</guid>
 		<description></description>
 		<content:encoded><![CDATA[]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
@@ -542,7 +542,7 @@
 		<wp:post_type>attachment</wp:post_type>
 		<wp:post_password></wp:post_password>
 		<wp:is_sticky>0</wp:is_sticky>
-		<wp:attachment_url>http://www.jigoshop.com/jigoshop_dummy/120153216.jpg</wp:attachment_url>
+		<wp:attachment_url>https://www.jigoshop.com/jigoshop_dummy/120153216.jpg</wp:attachment_url>
 		<wp:postmeta>
 			<wp:meta_key>_wp_attached_file</wp:meta_key>
 			<wp:meta_value><![CDATA[2011/12/120153216.jpg]]></wp:meta_value>
@@ -557,7 +557,7 @@
 		<link>http://demo.jigoshop.com/?attachment_id=41</link>
 		<pubDate>Tue, 20 Dec 2011 19:33:00 +0000</pubDate>
 		<dc:creator>jigoshop</dc:creator>
-		<guid isPermaLink="false">http://www.jigoshop.com/jigoshop_dummy/120153230.jpg</guid>
+		<guid isPermaLink="false">https://www.jigoshop.com/jigoshop_dummy/120153230.jpg</guid>
 		<description></description>
 		<content:encoded><![CDATA[]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
@@ -573,7 +573,7 @@
 		<wp:post_type>attachment</wp:post_type>
 		<wp:post_password></wp:post_password>
 		<wp:is_sticky>0</wp:is_sticky>
-		<wp:attachment_url>http://www.jigoshop.com/jigoshop_dummy/120153230.jpg</wp:attachment_url>
+		<wp:attachment_url>https://www.jigoshop.com/jigoshop_dummy/120153230.jpg</wp:attachment_url>
 		<wp:postmeta>
 			<wp:meta_key>_wp_attached_file</wp:meta_key>
 			<wp:meta_value><![CDATA[2011/12/120153230.jpg]]></wp:meta_value>
@@ -588,7 +588,7 @@
 		<link>http://demo.jigoshop.com/?attachment_id=42</link>
 		<pubDate>Tue, 20 Dec 2011 19:33:01 +0000</pubDate>
 		<dc:creator>jigoshop</dc:creator>
-		<guid isPermaLink="false">http://www.jigoshop.com/jigoshop_dummy/120153226.jpg</guid>
+		<guid isPermaLink="false">https://www.jigoshop.com/jigoshop_dummy/120153226.jpg</guid>
 		<description></description>
 		<content:encoded><![CDATA[]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
@@ -604,7 +604,7 @@
 		<wp:post_type>attachment</wp:post_type>
 		<wp:post_password></wp:post_password>
 		<wp:is_sticky>0</wp:is_sticky>
-		<wp:attachment_url>http://www.jigoshop.com/jigoshop_dummy/120153226.jpg</wp:attachment_url>
+		<wp:attachment_url>https://www.jigoshop.com/jigoshop_dummy/120153226.jpg</wp:attachment_url>
 		<wp:postmeta>
 			<wp:meta_key>_wp_attached_file</wp:meta_key>
 			<wp:meta_value><![CDATA[2011/12/120153226.jpg]]></wp:meta_value>
@@ -619,7 +619,7 @@
 		<link>http://demo.jigoshop.com/?attachment_id=43</link>
 		<pubDate>Tue, 20 Dec 2011 19:33:02 +0000</pubDate>
 		<dc:creator>jigoshop</dc:creator>
-		<guid isPermaLink="false">http://www.jigoshop.com/jigoshop_dummy/120153228.jpg</guid>
+		<guid isPermaLink="false">https://www.jigoshop.com/jigoshop_dummy/120153228.jpg</guid>
 		<description></description>
 		<content:encoded><![CDATA[]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
@@ -635,7 +635,7 @@
 		<wp:post_type>attachment</wp:post_type>
 		<wp:post_password></wp:post_password>
 		<wp:is_sticky>0</wp:is_sticky>
-		<wp:attachment_url>http://www.jigoshop.com/jigoshop_dummy/120153228.jpg</wp:attachment_url>
+		<wp:attachment_url>https://www.jigoshop.com/jigoshop_dummy/120153228.jpg</wp:attachment_url>
 		<wp:postmeta>
 			<wp:meta_key>_wp_attached_file</wp:meta_key>
 			<wp:meta_value><![CDATA[2011/12/120153228.jpg]]></wp:meta_value>
@@ -650,7 +650,7 @@
 		<link>http://demo.jigoshop.com/?attachment_id=46</link>
 		<pubDate>Tue, 20 Dec 2011 19:39:17 +0000</pubDate>
 		<dc:creator>jigoshop</dc:creator>
-		<guid isPermaLink="false">http://www.jigoshop.com/jigoshop_dummy/6092rsx4or496q.jpg</guid>
+		<guid isPermaLink="false">https://www.jigoshop.com/jigoshop_dummy/6092rsx4or496q.jpg</guid>
 		<description></description>
 		<content:encoded><![CDATA[]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
@@ -666,7 +666,7 @@
 		<wp:post_type>attachment</wp:post_type>
 		<wp:post_password></wp:post_password>
 		<wp:is_sticky>0</wp:is_sticky>
-		<wp:attachment_url>http://www.jigoshop.com/jigoshop_dummy/6092rsx4or496q.jpg</wp:attachment_url>
+		<wp:attachment_url>https://www.jigoshop.com/jigoshop_dummy/6092rsx4or496q.jpg</wp:attachment_url>
 		<wp:postmeta>
 			<wp:meta_key>_wp_attached_file</wp:meta_key>
 			<wp:meta_value><![CDATA[2011/12/6092rsx4or496q.jpg]]></wp:meta_value>
@@ -681,7 +681,7 @@
 		<link>http://demo.jigoshop.com/?attachment_id=58</link>
 		<pubDate>Tue, 20 Dec 2011 19:56:59 +0000</pubDate>
 		<dc:creator>jigoshop</dc:creator>
-		<guid isPermaLink="false">http://www.jigoshop.com/jigoshop_dummy/jigoshop.themekraft.png</guid>
+		<guid isPermaLink="false">https://www.jigoshop.com/jigoshop_dummy/jigoshop.themekraft.png</guid>
 		<description></description>
 		<content:encoded><![CDATA[]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
@@ -697,7 +697,7 @@
 		<wp:post_type>attachment</wp:post_type>
 		<wp:post_password></wp:post_password>
 		<wp:is_sticky>0</wp:is_sticky>
-		<wp:attachment_url>http://www.jigoshop.com/jigoshop_dummy/jigoshop.themekraft.png</wp:attachment_url>
+		<wp:attachment_url>https://www.jigoshop.com/jigoshop_dummy/jigoshop.themekraft.png</wp:attachment_url>
 		<wp:postmeta>
 			<wp:meta_key>_wp_attached_file</wp:meta_key>
 			<wp:meta_value><![CDATA[2011/12/jigoshop.themekraft.png]]></wp:meta_value>
@@ -1174,7 +1174,7 @@ Additionally, Chalene shares 30 ridiculously easy and delicious Throw-and-Go rec
 		<link>http://demo.jigoshop.com/?attachment_id=59</link>
 		<pubDate>Tue, 20 Dec 2011 19:58:17 +0000</pubDate>
 		<dc:creator>jigoshop</dc:creator>
-		<guid isPermaLink="false">http://www.jigoshop.com/jigoshop_dummy/Want-button-thumb.jpg</guid>
+		<guid isPermaLink="false">https://www.jigoshop.com/jigoshop_dummy/Want-button-thumb.jpg</guid>
 		<description></description>
 		<content:encoded><![CDATA[]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
@@ -1190,7 +1190,7 @@ Additionally, Chalene shares 30 ridiculously easy and delicious Throw-and-Go rec
 		<wp:post_type>attachment</wp:post_type>
 		<wp:post_password></wp:post_password>
 		<wp:is_sticky>0</wp:is_sticky>
-		<wp:attachment_url>http://www.jigoshop.com/jigoshop_dummy/Want-button-thumb.jpg</wp:attachment_url>
+		<wp:attachment_url>https://www.jigoshop.com/jigoshop_dummy/Want-button-thumb.jpg</wp:attachment_url>
 		<wp:postmeta>
 			<wp:meta_key>_wp_attached_file</wp:meta_key>
 			<wp:meta_value><![CDATA[2011/12/Want-button-thumb.jpg]]></wp:meta_value>
@@ -1205,7 +1205,7 @@ Additionally, Chalene shares 30 ridiculously easy and delicious Throw-and-Go rec
 		<link>http://demo.jigoshop.com/?attachment_id=61</link>
 		<pubDate>Tue, 20 Dec 2011 19:59:07 +0000</pubDate>
 		<dc:creator>jigoshop</dc:creator>
-		<guid isPermaLink="false">http://www.jigoshop.com/jigoshop_dummy/affiliates_plugin_large.png</guid>
+		<guid isPermaLink="false">https://www.jigoshop.com/jigoshop_dummy/affiliates_plugin_large.png</guid>
 		<description></description>
 		<content:encoded><![CDATA[]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
@@ -1221,7 +1221,7 @@ Additionally, Chalene shares 30 ridiculously easy and delicious Throw-and-Go rec
 		<wp:post_type>attachment</wp:post_type>
 		<wp:post_password></wp:post_password>
 		<wp:is_sticky>0</wp:is_sticky>
-		<wp:attachment_url>http://www.jigoshop.com/jigoshop_dummy/affiliates_plugin_large.png</wp:attachment_url>
+		<wp:attachment_url>https://www.jigoshop.com/jigoshop_dummy/affiliates_plugin_large.png</wp:attachment_url>
 		<wp:postmeta>
 			<wp:meta_key>_wp_attached_file</wp:meta_key>
 			<wp:meta_value><![CDATA[2011/12/affiliates_plugin_large.png]]></wp:meta_value>
@@ -1236,7 +1236,7 @@ Additionally, Chalene shares 30 ridiculously easy and delicious Throw-and-Go rec
 		<link>http://demo.jigoshop.com/?attachment_id=62</link>
 		<pubDate>Tue, 20 Dec 2011 19:59:09 +0000</pubDate>
 		<dc:creator>jigoshop</dc:creator>
-		<guid isPermaLink="false">http://www.jigoshop.com/jigoshop_dummy/Affiliates_plugin_thumb.png</guid>
+		<guid isPermaLink="false">https://www.jigoshop.com/jigoshop_dummy/Affiliates_plugin_thumb.png</guid>
 		<description></description>
 		<content:encoded><![CDATA[]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
@@ -1252,7 +1252,7 @@ Additionally, Chalene shares 30 ridiculously easy and delicious Throw-and-Go rec
 		<wp:post_type>attachment</wp:post_type>
 		<wp:post_password></wp:post_password>
 		<wp:is_sticky>0</wp:is_sticky>
-		<wp:attachment_url>http://www.jigoshop.com/jigoshop_dummy/Affiliates_plugin_thumb.png</wp:attachment_url>
+		<wp:attachment_url>https://www.jigoshop.com/jigoshop_dummy/Affiliates_plugin_thumb.png</wp:attachment_url>
 		<wp:postmeta>
 			<wp:meta_key>_wp_attached_file</wp:meta_key>
 			<wp:meta_value><![CDATA[2011/12/Affiliates_plugin_thumb.png]]></wp:meta_value>
@@ -1267,7 +1267,7 @@ Additionally, Chalene shares 30 ridiculously easy and delicious Throw-and-Go rec
 		<link>http://demo.jigoshop.com/?attachment_id=68</link>
 		<pubDate>Tue, 20 Dec 2011 20:05:34 +0000</pubDate>
 		<dc:creator>jigoshop</dc:creator>
-		<guid isPermaLink="false">http://www.jigoshop.com/jigoshop_dummy/royalty-free-shirt-clipart-illustration-1068029.jpg</guid>
+		<guid isPermaLink="false">https://www.jigoshop.com/jigoshop_dummy/royalty-free-shirt-clipart-illustration-1068029.jpg</guid>
 		<description></description>
 		<content:encoded><![CDATA[]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
@@ -1283,7 +1283,7 @@ Additionally, Chalene shares 30 ridiculously easy and delicious Throw-and-Go rec
 		<wp:post_type>attachment</wp:post_type>
 		<wp:post_password></wp:post_password>
 		<wp:is_sticky>0</wp:is_sticky>
-		<wp:attachment_url>http://www.jigoshop.com/jigoshop_dummy/royalty-free-shirt-clipart-illustration-1068029.jpg</wp:attachment_url>
+		<wp:attachment_url>https://www.jigoshop.com/jigoshop_dummy/royalty-free-shirt-clipart-illustration-1068029.jpg</wp:attachment_url>
 		<wp:postmeta>
 			<wp:meta_key>_wp_attached_file</wp:meta_key>
 			<wp:meta_value><![CDATA[2011/12/royalty-free-shirt-clipart-illustration-1068029.jpg]]></wp:meta_value>

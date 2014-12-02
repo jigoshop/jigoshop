@@ -44,13 +44,14 @@ function install_jigoshop( $network_wide = false ) {
 
 function _install_jigoshop(){
 	jigoshop_populate_options();
+	jigoshop_create_emails();
 
 	if(!get_option('jigoshop_db_version')){
 
 		jigoshop_tables_install(); /* we need tables installed first to eliminate installation errors */
 
 		jigoshop_create_pages();
-
+		
 		jigoshop_post_type();
 		jigoshop_default_taxonomies();
 
@@ -261,6 +262,18 @@ function jigoshop_create_pages() {
 	$page_data['post_parent']  = jigoshop_get_page_id('checkout');
 	jigoshop_create_single_page( 'thanks', 'jigoshop_thanks_page_id', $page_data );
 
+}
+
+function jigoshop_create_emails(){
+	$args = array(
+		'post_type' => 'shop_email',
+		'post_status' => 'publish',
+	);
+	
+	$emails_array = get_posts($args);
+	if(empty($emails_array)){
+		do_action('jigoshop_install_emails');
+	}
 }
 
 /**

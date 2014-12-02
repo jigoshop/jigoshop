@@ -1,5 +1,32 @@
 ## Changelog
 
+* 1.13.3:
+    * Improved: [shipping] variable was divided into [shipping_cost] and [shipping_method].
+    * Fix: Default emails now install properly on jigoshop update.
+    * Fix: Urls for dummy products.
+* 1.13.2 - 2014-11-26:
+    * Improved: Additional email variables `[total_tax]`, `[is_local_pickup]`, `[checkout_url]`, `[payment_method]`.
+    * Improved: Coupons now can be added or removed in checkout.
+    * Fix: Some html errors.
+    * Fix: Typo in default email
+    * Fix: Removed ex. tax label from subtotal in cart when shop admin decide to show prices without tax.
+    * Fix: Generate default emails button no longer generates warning.
+* 1.13.1 - 2014-11-21:
+    * Fix: Warnings in email module. 
+    * Fix: Email templates now installs properly after jigoshop activation.
+* 1.13 - 2014-11-21:
+    * New: Ability to select whether to show prices with or without tax in cart.
+    * New: Ability to select user when creating new order manually in admin panel.
+    * New: Brand, GTIN, MPN fields for product.
+    * New: Shortcode `product_tag`.
+    * Improved: Disabled options in select now are hidden.
+    * Improved: Stock status shows ':' instead of dash.
+    * Improved: Sku variable is no longer showing in emails when sku is disabled.
+    * Improved: Shop administrator is able to not set price for variables.
+    * Improved: Shop emails are now customizable.
+    * Fix: Disappearing items from cart after login.
+* 1.12.4 - 2014-11-10:
+    * Improved: `jigoshop_remove_style()` with support in JWOS.
 * 1.12.3 - 2014-10-27:
     * Improved: Automatic plugin update mechanism uses as low HTTP requests as possible.
 * 1.12.2 - 2014-10-17:

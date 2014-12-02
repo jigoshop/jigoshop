@@ -74,13 +74,13 @@ jQuery(function($) {
 	}
 
 	//disable option fields that are unavaiable for current set of attributes
-	function update_variation_values(variations){
+		function update_variation_values(variations){
 
 		// Loop through selects and disable/enable options based on selections
 		$('.variations select').each(function(index, el){
 			var current_attr_select = $(el);
-			// Disable all
-			current_attr_select.find('option:gt(0)').attr('disabled', 'disabled');
+			// Hide all
+			current_attr_select.find('option:gt(0)').hide()
 			// Get name
 			var current_attr_name = current_attr_select.attr('name');
 			// Loop through variations
@@ -90,15 +90,15 @@ jQuery(function($) {
 					var attr_val = attributes[attr_name];
 					if(attr_name == current_attr_name){
 						if(attr_val){
-							current_attr_select.find('option[value="' + attr_val + '"]').removeAttr('disabled');
+							current_attr_select.find('option[value="' + attr_val + '"]').show();
 						} else {
-							current_attr_select.find('option').removeAttr('disabled');
+							current_attr_select.find('option').show();
 						}
 					}
 				}
 			}
 			// completely re-enable the previous select so 'Choose an option' isn't required to change selections
-			current_attr_select.parent().prev().find('select').find('option:gt(0)').removeAttr('disabled');
+			current_attr_select.parent().prev().find('select').find('option:gt(0)').show();
 		});
 	}
 
@@ -147,8 +147,10 @@ jQuery(function($) {
 		}
 		if(!variation.in_stock){
 			$('.single_variation').slideDown();
-		} else {
+		} else if(!variation.no_price) {
 			$('.variations_button, .single_variation').slideDown();
+		} else {
+			$('.single_variation').slideDown();
 		}
 	}
 

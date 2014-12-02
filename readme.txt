@@ -2,9 +2,10 @@
 Contributors: Jigoshop
 License: GNU General Public License v3
 Tags: 2checkout, 2co, affiliate, authorize, cart, checkout, commerce, coupons, e-commerce,ecommerce, gifts, moneybookers, online, online shop, online store, paypal, paypal advanced,Paypal Express, paypal pro, physical, reports, sagepay, sales, sell, shipping, shop,shopping, stock, stock control, store, tax, virtual, weights, widgets, wordpress ecommerce, wp e-commerce, woocommerce
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=sales%40jigoshop%2ecom&lc=US&item_name=Jigoshop%20%2d%20Wordpress%2eorg%20donation%20link&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
 Requires at least: 3.8
 Tested up to: 4.0
-Stable tag: 1.12.3
+Stable tag: 1.13.2
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -55,6 +56,10 @@ choose the best to power your eCommerce shop and help us prove to you that we re
 You can take a look at our official extensions here: http://www.jigoshop.com/product-category/extensions/
 
 And our Jigoshop-optimized themes here: http://www.jigoshop.com/product-category/themes/
+
+== Upgrade Notice ==
+
+[Click here for complete changelog](https://wordpress.org/plugins/jigoshop/changelog/ "Jigoshop Changelog")
 
 == Installation ==
 
@@ -119,8 +124,33 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 
 == Changelog ==
 
+= 1.13.2 - 2014-11-26 =
+* Improved: Additional email variables `[total_tax]`, `[is_local_pickup]`, `[checkout_url]`, `[payment_method]`.
+* Improved: Coupons now can be added or removed in checkout.
+* Fix: Some html errors.
+* Fix: Typo in default email
+* Fix: Removed ex. tax label from subtotal in cart when shop admin decide to show prices without tax.
+* Fix: Generate default emails button no longer generates warning.
+
+= 1.13.1 - 2014-11-21 =
+* Fix: Warnings in email module.
+* Fix: Email templates now installs properly after jigoshop activation.
+
+= 1.13 - 2014-11-21 =
+* New: Ability to select whether to show prices with or without tax in cart.
+* New: Ability to select user when creating new order manually in admin panel.
+* New: Brand, GTIN, MPN fields for product.
+* New: Shortcode product_tag.
+* Improved: Disabled options in select now are hidden.
+* Improved: Stock status shows ':' instead of dash.
+* Improved: Sku variable is no longer showing in emails when sku is disabled.
+* Improved: Shop administrator is able to not set price for variables.
+* Improved: Shop emails are now customizable.
+* Fix: Disappearing items from cart after login.
+
 = 1.12.3 - 2014-10-27 =
 * Improved: Automatic plugin update mechanism uses as low HTTP requests as possible.
+
 = 1.12.2 - 2014-10-17 =
 * Improved: Show plugin updates even when licence is not activated.
 * Improved: Checking for updates is now 5 times faster.

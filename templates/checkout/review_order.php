@@ -108,7 +108,7 @@ $options = Jigoshop_Base::get_options(); ?>
 					<td><?php echo $values['quantity']; ?></td>
 					<td>
 						<?php
-						echo jigoshop_price($product->get_price_excluding_tax() * $values['quantity'], array('ex_tax_label' => 1));
+						echo jigoshop_price($product->get_defined_price() * $values['quantity'], array('ex_tax_label' => Jigoshop_Base::get_options()->get('jigoshop_show_prices_with_tax') == 'yes' ?  2 : 1));
 						?></td>
 				</tr>
 			<?php endif;
@@ -117,11 +117,29 @@ $options = Jigoshop_Base::get_options(); ?>
 		</tbody>
 	</table>
 
-	<?php $coupons = JS_Coupons::get_coupons();
-	if (!empty($coupons)): ?>
-		<div class="coupon">
-			<label for="coupon_code"><?php _e('Coupon', 'jigoshop'); ?>:</label>
-			<input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" />
-		</div><br />
-	<?php endif; ?>
+	<?php $coupons = jigoshop_cart::get_coupons();?>
+	<table>
+		<tr>
+			<td colspan="6" class="actions">
+				<?php if (JS_Coupons::has_coupons()): ?>
+					<div class="coupon">
+						<label for="coupon_code"><?php _e('Coupon', 'jigoshop'); ?>:</label> <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" />
+						<input type="submit" class="button" name="apply_coupon" value="<?php _e('Apply Coupon', 'jigoshop'); ?>" />
+					</div>
+				<?php endif; ?>
+			</td>
+			<?php if (count($coupons)): ?>
+				<td class="applied-coupons">
+					<div>
+						<span class="applied-coupons-label"><?php _e('Applied Coupons: ', 'jigoshop'); ?></span>
+						<?php foreach ($coupons as $code): ?>
+							<a href="?unset_coupon=<?php echo $code; ?>" id="<?php echo $code; ?>" class="applied-coupons-values"><?php echo $code; ?>
+								<span class="close">&times;</span>
+							</a>
+						<?php endforeach; ?>
+					</div>
+				</td>
+			<?php endif; ?>
+		</tr>
+	</table>
 </div>

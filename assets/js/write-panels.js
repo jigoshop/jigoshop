@@ -266,6 +266,54 @@ jQuery(function($) {
 				$("#order_product_select").css('border-color', 'red');
 			}
 		});
+		
+		$( "#customer_user" ).change(function() {
+			if($(this).val() > 0) {
+				$.getJSON("?post_type=shop_order&load_address=" + $(this).val(), function(data) {
+					$("#billing_first_name").val(data.billing_first_name);
+					$("#billing_last_name").val(data.billing_last_name);
+					$("#billing_company").val(data.billing_company);
+					$("#billing_address_1").val(data.billing_address_1);
+					$("#billing_address_2").val(data.billing_address_2);
+					$("#billing_city").val(data.billing_city);
+					$("#billing_state").val(data.billing_state);
+					$("#billing_postcode").val(data.billing_postcode);
+					$("#billing_country").val(data.billing_country);
+					$("#billing_phone").val(data.billing_phone);
+					$("#billing_email").val(data.billing_email);
+					$("#shipping_first_name").val(data.shipping_first_name);
+					$("#shipping_last_name").val(data.shipping_last_name);
+					$("#shipping_company").val(data.shipping_company);
+					$("#shipping_address_1").val(data.shipping_address_1);
+					$("#shipping_address_2").val(data.shipping_address_2);
+					$("#shipping_city").val(data.shipping_city);
+					$("#shipping_state").val(data.shipping_state);
+					$("#shipping_postcode").val(data.shipping_postcode);
+					$("#shipping_country").val(data.shipping_country);
+				});
+			} else {
+				$("#billing_first_name").val('');
+				$("#billing_last_name").val('');
+				$("#billing_company").val('');
+				$("#billing_address_1").val('');
+				$("#billing_address_2").val('');
+				$("#billing_city").val('');
+				$("#billing_state").val('');
+				$("#billing_postcode").val('');
+				$("#billing_country").val('');
+				$("#billing_phone").val('');
+				$("#billing_email").val('');
+				$("#shipping_first_name").val('');
+				$("#shipping_last_name").val('');
+				$("#shipping_company").val('');
+				$("#shipping_address_1").val('');
+				$("#shipping_address_2").val('');
+				$("#shipping_city").val('');
+				$("#shipping_state").val('');
+				$("#shipping_postcode").val('');
+				$("#shipping_country").val('');
+			}
+		});
 
 	}
 

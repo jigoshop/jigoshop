@@ -338,7 +338,15 @@ if (!function_exists('jigoshop_template_single_meta')) {
 		if ($jigoshop_options->get('jigoshop_enable_sku')=='yes' && !empty($_product->sku)) :
 			echo '<div class="sku">'.__('SKU','jigoshop').': ' . $_product->sku . '</div>';
 		endif;
-
+		if ($jigoshop_options->get('jigoshop_enable_brand')=='yes' && !empty($_product->brand)) :
+			echo '<div class="brand">'.__('Brand','jigoshop').': ' . $_product->brand . '</div>';
+		endif;
+		if ($jigoshop_options->get('jigoshop_enable_gtin')=='yes' && !empty($_product->gtin)) :
+			echo '<div class="gtin">'.__('GTIN','jigoshop').': ' . $_product->gtin . '</div>';
+		endif;
+		if ($jigoshop_options->get('jigoshop_enable_mpn')=='yes' && !empty($_product->mpn)) :
+			echo '<div class="mpn">'.__('MPN','jigoshop').': ' . $_product->mpn . '</div>';
+		endif;
 		echo $_product->get_categories( ', ', ' <div class="posted_in">' . __( 'Posted in ', 'jigoshop' ) . '', '.</div>');
 		echo $_product->get_tags( ', ', ' <div class="tagged_as">' . __( 'Tagged as ', 'jigoshop' ) . '', '.</div>');
 		echo '</div>';
@@ -529,6 +537,7 @@ if (!function_exists('jigoshop_variable_add_to_cart')) {
 					'a_width'          => $a_width,
 					'a_height'         => $a_height,
 					'same_prices'      => $_product->variations_priced_the_same(),
+					'no_price'         => $variation->get_price() == null ? true : false,
                 );
             }
         }
@@ -589,7 +598,7 @@ if (!function_exists('jigoshop_external_add_to_cart')) {
 		if ( ! $external_url ) return false;
 
 		?>
-			<form action="" class="cart" method="">
+			<form action="#" class="cart" method="post">
 				<?php do_action('jigoshop_before_add_to_cart_form_button'); ?>
 				<p>
 					<a href="<?php echo esc_url( $external_url ); ?>" rel="nofollow" class="button"><?php _e('Buy product', 'jigoshop'); ?></a>
@@ -742,7 +751,7 @@ if (!function_exists('jigoshop_product_customize_panel')) {
 
 			?>
 
-				<form action="" method="post">
+				<form action="#" method="post">
 
 					<input type="hidden" name="customized_id" value="<?php echo esc_attr( $_product->ID ); ?>" />
 

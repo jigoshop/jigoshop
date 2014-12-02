@@ -73,7 +73,7 @@ $options = Jigoshop_Base::get_options();
 							?>
 						</td>
 						<td class="product-price">
-							<?php echo apply_filters('jigoshop_product_price_display_in_cart', jigoshop_price($product->get_price_excluding_tax()), $values['product_id'], $values); ?>
+							<?php echo apply_filters('jigoshop_product_price_display_in_cart', jigoshop_price($product->get_defined_price()), $values['product_id'], $values); ?>
 						</td>
 						<td class="product-quantity">
 							<?php ob_start(); // It is important to keep quantity in single line ?>
@@ -83,9 +83,15 @@ $options = Jigoshop_Base::get_options();
 							echo apply_filters('jigoshop_product_quantity_display_in_cart', $quantity_display, $values['product_id'], $values);
 							?>
 						</td>
-						<td class="product-subtotal">
-							<?php echo apply_filters('jigoshop_product_subtotal_display_in_cart', jigoshop_price($product->get_price_excluding_tax() * $values['quantity']), $values['product_id'], $values); ?>
-						</td>
+						<?php if(Jigoshop_Base::get_options()->get('jigoshop_show_prices_with_tax') == 'yes') : ?>
+							<td class="product-total">
+								<?php echo apply_filters('jigoshop_product_total_display_in_cart', jigoshop_price($product->get_defined_price() * $values['quantity']), $values['product_id'], $values); ?>
+							</td>
+						<?php else : ?>
+							<td class="product-subtotal">
+								<?php echo apply_filters('jigoshop_product_subtotal_display_in_cart', jigoshop_price($product->get_defined_price() * $values['quantity']), $values['product_id'], $values); ?>
+							</td>
+						<?php endif; ?>
 					</tr>
 				<?php
 				endif;
@@ -184,7 +190,7 @@ $options = Jigoshop_Base::get_options();
 							<th class="cart-row-subtotal-title"><?php _e('Subtotal', 'jigoshop'); ?></th>
 							<?php
 							$price = jigoshop_cart::$cart_contents_total_ex_tax + jigoshop_cart::$shipping_total;
-							$price = jigoshop_price($price, array('ex_tax_label' => 1));
+							$price = self::get_options()->get('jigoshop_show_prices_with_tax') == 'yes'? jigoshop_price($price, array('ex_tax_label' => 1)) : jigoshop_price($price);
 							?>
 							<td class="cart-row-subtotal"><?php echo $price; ?></td>
 						</tr>
