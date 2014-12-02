@@ -308,13 +308,14 @@ class Checkout implements PageInterface
 				if ($this->options->get('advanced.pages.terms') > 0 && (!isset($_POST['terms']) || $_POST['terms'] != 'on')) {
 					throw new Exception(__('You need to accept terms &amp; conditions!', 'jigoshop'));
 				}
-				if (!Country::isAllowed($cart->getCustomer()->getBillingAddress()->getCountry())) {
-					$locations = array_map(function($location){ return Country::getName($location); }, $this->options->get('shopping.selling_locations'));
-					throw new Exception(sprintf(__('This location is not supported, we sell only to %s.'), join(', ', $locations)));
-				}
 
 				$order = $this->orderService->createFromCart($cart);
 				$this->customerService->save($order->getCustomer());
+
+				if (!Country::isAllowed($order->getCustomer()->getBillingAddress()->getCountry())) {
+					$locations = array_map(function($location){ return Country::getName($location); }, $this->options->get('shopping.selling_locations'));
+					throw new Exception(sprintf(__('This location is not supported, we sell only to %s.'), join(', ', $locations)));
+				}
 
 				$shipping = $order->getShippingMethod();
 				if ($this->isShippingRequired($order) && (!$shipping || !$shipping->isEnabled())) {
