@@ -10,6 +10,8 @@ use Jigoshop\Helper\Render;
  * @var $customer \Jigoshop\Entity\Customer Current customer.
  * @var $shippingMethods array List of available shipping methods.
  * @var $paymentMethods array List of available payment methods.
+ * @var $allowRegistration bool Whether to allow registering.
+ * @var $showRegistrationForm bool Whether to show registration form.
  * @var $showLoginForm bool Whether to show login form.
  * @var $showWithTax bool Whether to show product price with or without tax.
  * @var $alwaysShowShipping bool Whether to always show shipping fields.
@@ -56,6 +58,11 @@ use Jigoshop\Helper\Render;
 					</div>
 				<?php endforeach; ?>
 			</div>
+			<?php if ($allowRegistration): ?>
+				<?php Render::output('shop/checkout/registration_form', array(
+					'showRegistrationForm' => $showRegistrationForm,
+				)); ?>
+			<?php endif; ?>
 		</div>
 	</div>
 	<div class="panel panel-success">

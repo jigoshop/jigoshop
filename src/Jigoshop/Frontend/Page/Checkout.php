@@ -310,7 +310,16 @@ class Checkout implements PageInterface
 
 		if (isset($_POST['action']) && $_POST['action'] == 'purchase') {
 			try {
-				if (!$this->isAllowedToCheckout()) {
+				$allowRegistration = $this->options->get('shopping.allow_registration');
+				if ($allowRegistration) {
+					$this->createUserAccount();
+				}
+
+				if (!$this->isAllowedToCheckout($cart)) {
+					if ($allowRegistration) {
+						throw new Exception(__('You need either to log in or create account to purchase.', 'jigoshop'));
+					}
+
 					throw new Exception(__('You need to log in before purchasing.', 'jigoshop'));
 				}
 
@@ -359,6 +368,60 @@ class Checkout implements PageInterface
 		}
 	}
 
+	private function createUserAccount()
+	{
+		// Check if user agreed to account creation
+		if (isset($_POST['jigoshop_account']) && $_POST['jigoshop_account']['create'] != 'on') {
+			return;
+		}
+
+		$email = $_POST['jigoshop_order']['billing']['email'];
+		$errors = new \WP_Error();
+		$this->wp->doAction('register_post', $email, $email, $errors);
+
+		if ($errors->get_error_code()) {
+			throw new Exception($errors->get_error_message());
+		}
+
+		$login = $_POST['jigoshop_account']['login'];
+		$password = $_POST['jigoshop_account']['password'];
+
+		if (empty($login) || empty($password)) {
+			throw new Exception(__('You need to fill username and password fields.', 'jigoshop'));
+		}
+
+		if ($password != $_POST['jigoshop_account']['password2']) {
+			throw new Exception(__('Passwords do not match.', 'jigoshop'));
+		}
+
+		$id = $this->wp->wpCreateUser($login, $password, $email);
+
+		if (!$id) {
+			throw new Exception(sprintf(
+				__("<strong>Error</strong> Couldn't register an account for you. Please contact the <a href=\"mailto:%s\">administrator</a>.", 'jigoshop'),
+				$this->options->get('general.email')
+			));
+		}
+
+		$this->wp->wpUpdateUser(array(
+			'ID' => $id,
+			'role' => 'customer',
+			'first_name' => $_POST['jigoshop_order']['billing']['first_name'],
+			'last_name' => $_POST['jigoshop_order']['billing']['last_name'],
+		));
+		$this->wp->doAction('jigoshop\checkout\created_account', $id);
+
+		// send the user a confirmation and their login details
+		// TODO: Enable when emails finished
+//		if (apply_filters('jigoshop_new_user_notification', true, $user_id, $user_pass)) {
+//			wp_new_user_notification($user_id, $user_pass);
+//		}
+
+		$this->wp->wpSetAuthCookie($id, true, $this->wp->isSsl());
+		$customer = $this->cartService->getCurrent()->getCustomer();
+		$customer->setId($id);
+	}
+
 	/**
 	 * Renders page template.
 	 *
@@ -389,6 +452,8 @@ class Checkout implements PageInterface
 			'shippingFields' => $shippingFields,
 			'showWithTax' => $this->options->get('tax.price_tax') == 'with_tax',
 			'showLoginForm' => $this->options->get('shopping.show_login_form') && !$this->wp->isUserLoggedIn(),
+			'allowRegistration' => $this->options->get('shopping.allow_registration') && !$this->wp->isUserLoggedIn(),
+			'showRegistrationForm' => $this->options->get('shopping.allow_registration') && !$this->options->get('shopping.guest_purchases') && !$this->wp->isUserLoggedIn(),
 			'alwaysShowShipping' => $this->options->get('shipping.always_show_shipping'),
 			'differentShipping' => isset($_POST['jigoshop_order']) ? $_POST['jigoshop_order']['different_shipping'] == 'on' : false, // TODO: Fetch whether user want different shipping by default
 			'termsUrl' => $termsUrl,
@@ -602,15 +667,19 @@ class Checkout implements PageInterface
 	 */
 	private function isAllowedToEnterCheckout()
 	{
-		return $this->options->get('shopping.guest_purchases') && $this->wp->isUserLoggedIn() || $this->options->get('shopping.show_login_form');
+		return $this->options->get('shopping.guest_purchases') && $this->wp->isUserLoggedIn() || $this->options->get('shopping.show_login_form')
+			|| $this->options->get('shopping.allow_registration');
 	}
 
 	/**
 	 * Checks whether user is allowed to see checkout page.
+	 *
+	 * @param Cart $cart The cart.
 	 * @return bool Is user allowed to enter checkout page?
 	 */
-	private function isAllowedToCheckout()
+	private function isAllowedToCheckout(Cart $cart)
 	{
-		return $this->options->get('shopping.guest_purchases') && $this->wp->isUserLoggedIn();
+		return $this->options->get('shopping.guest_purchases') || $this->wp->isUserLoggedIn()
+			|| ($this->options->get('shopping.allow_registration') && $cart->getCustomer()->getId() > 0);
 	}
 }

@@ -12,6 +12,8 @@ class Checkout
     jQuery('#jigoshop-login').on 'click', (event) ->
       event.preventDefault()
       jQuery('#jigoshop-login-form').slideToggle()
+    jQuery('#create-account').on 'change', ->
+      jQuery('#registration-form').slideToggle()
     jQuery('#different_shipping').on 'change', ->
       jQuery('#shipping-address').slideToggle()
       if (jQuery(this).is(':checked'))

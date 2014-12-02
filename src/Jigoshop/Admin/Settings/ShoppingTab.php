@@ -141,7 +141,6 @@ class ShoppingTab implements TabInterface
 					),
 				),
 			),
-		// TODO: Add support for showing login form on checkout and allowing registration on checkout
 			array(
 				'title' => __('Accounts', 'jigoshop'),
 				'id' => 'accounts',
@@ -159,12 +158,12 @@ class ShoppingTab implements TabInterface
 						'type' => 'checkbox',
 						'checked' => $this->options['show_login_form'],
 					),
-//					array(
-//						'name' => '[allow_registration]',
-//						'title' => __('Allow registration', 'jigoshop'),
-//						'type' => 'checkbox',
-//						'checked' => $this->options['show_login_form'],
-//					),
+					array(
+						'name' => '[allow_registration]',
+						'title' => __('Allow registration', 'jigoshop'),
+						'type' => 'checkbox',
+						'checked' => $this->options['allow_registration'],
+					),
 				),
 			),
 			array(
