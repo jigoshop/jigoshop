@@ -3,6 +3,8 @@
 namespace Jigoshop\Core;
 
 use Jigoshop\Core;
+use Jigoshop\Helper\Emails;
+use Jigoshop\Service\Email;
 use Monolog\Registry;
 use WPAL\Wordpress;
 
@@ -22,22 +24,26 @@ class Installer
 	private $options;
 	/** @var \Jigoshop\Core\Cron */
 	private $cron;
+	/** @var Email */
+	private $emailService;
 
-	public function __construct(Wordpress $wp, Options $options, Cron $cron)
+	public function __construct(Wordpress $wp, Options $options, Cron $cron, Email $emailService)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->cron = $cron;
+		$this->emailService = $emailService;
 	}
 
 	public function install()
 	{
-		$db = false;//$this->wp->getOption('jigoshop_database_version');
+		$db = false;//$this->wp->getOption('jigoshop_database_version'); // TODO: Restore DB version checking
 
 		if ($db === false) {
 			Registry::getInstance('jigoshop')->addNotice('Installing Jigoshop.');
 			$this->_createTables();
 			$this->_createPages();
+			$this->_installEmails();
 			$this->cron->clear();
 		}
 
@@ -227,5 +233,135 @@ class Installer
 
 		$this->options->setPageId($slug, $page_id);
 		$this->options->update('advanced.pages.'.$slug, $page_id);
+	}
+
+	private function _installEmails()
+	{
+		$default_emails = array(
+			'new_order_admin_notification',
+			'customer_order_status_pending_to_processing',
+			'customer_order_status_pending_to_on-hold',
+			'customer_order_status_on-hold_to_processing',
+			'customer_order_status_completed',
+			'customer_order_status_refunded',
+			'send_customer_invoice',
+			'low_stock_notification',
+			'no_stock_notification',
+			'product_on_backorder_notification'
+		);
+		$invoice = '==============================<wbr />==============================
+		Order details:
+		<span class="il">ORDER</span> [order_number]                                              Date: [order_date]
+		==============================<wbr />==============================
+
+		[order_items]
+
+		Subtotal:                     [subtotal]
+		Shipping:                     [shipping_cost] via [shipping_method]
+		Total:                        [total]
+
+		------------------------------<wbr />------------------------------<wbr />--------------------
+		CUSTOMER DETAILS
+		------------------------------<wbr />------------------------------<wbr />--------------------
+		Email:                        <a href="mailto:[billing_email]">[billing_email]</a>
+		Tel:                          [billing_phone]
+
+		------------------------------<wbr />------------------------------<wbr />--------------------
+		BILLING ADDRESS
+		------------------------------<wbr />------------------------------<wbr />--------------------
+		[billing_first_name] [billing_last_name]
+		[billing_address_1], [billing_address_2], [billing_city]
+		[billing_state], [billing_country], [billing_postcode]
+
+		------------------------------<wbr />------------------------------<wbr />--------------------
+		SHIPPING ADDRESS
+		------------------------------<wbr />------------------------------<wbr />--------------------
+		[shipping_first_name] [shipping_last_name]
+		[shipping_address_1], [shipping_address_2], [shipping_city]
+		[shipping_state], [shipping_country], [shipping_postcode]';
+
+		$title = '';
+		$message = '';
+		$post_title = '';
+		foreach ($default_emails as $email) {
+			switch ($email) {
+				case 'new_order_admin_notification':
+					$post_title = 'New order admin notification';
+					$title = '[[shop_name]] New Customer Order - [order_number]';
+					$message = 'You have received an order from [billing_first_name] [billing_last_name]. Their order is as follows:<br/>'.$invoice;
+					break;
+				case 'customer_order_status_pending_to_on-hold':
+					$post_title = 'Customer order status pending to on-hold';
+					$title = '[[shop_name]] Order Received';
+					$message = 'Thank you, we have received your order. Your order\'s details are below:<br/>'.$invoice;
+					break;
+				case 'customer_order_status_pending_to_processing' :
+					$post_title = 'Customer order status pending to processing';
+					$title = '[[shop_name]] Order Received';
+					$message = 'Thank you, we are now processing your order. Your order\'s details are below:<br/>'.$invoice;
+					break;
+				case 'customer_order_status_on-hold_to_processing' :
+					$post_title = 'Customer order status on-hold to processing';
+					$title = '[[shop_name]] Order Received';
+					$message = 'Thank you, we are now processing your order. Your order\'s details are below:<br/>'.$invoice;
+					break;
+				case 'customer_order_status_completed' :
+					$post_title = 'Customer order status completed';
+					$title = '[[shop_name]] Order Complete';
+					$message = 'Your order is complete. Your order\'s details are below:<br/>'.$invoice;
+					break;
+				case 'customer_order_status_refunded' :
+					$post_title = 'Customer order status refunded';
+					$title = '[[shop_name]] Order Refunded';
+					$message = 'Your order has been refunded. Your order\'s details are below:<br/>'.$invoice;
+					break;
+				case 'send_customer_invoice' :
+					$post_title = 'Send customer invoice';
+					$title = 'Invoice for Order: [order_number]';
+					$message = $invoice;
+					break;
+				case 'low_stock_notification' :
+					$post_title = 'Low stock notification';
+					$title = '[[shop_name]] Product low in stock';
+					$message = '#[product_id] [product_name] ([sku]) is low in stock.';
+					break;
+				case 'no_stock_notification' :
+					$post_title = 'No stock notification';
+					$title = '[[shop_name]] Product out of stock';
+					$message = '#[product_id] [product_name] ([sku]) is out of stock.';
+					break;
+				case 'product_on_backorder_notification' :
+					$post_title = 'Product on backorder notification';
+					$title = '[[shop_name]] Product Backorder on Order: [order_number].';
+					$message = '#[product_id] [product_name] ([sku]) was found to be on backorder.<br/>'.$invoice;
+					break;
+			}
+			$post_data = array(
+				'post_content' => $message,
+				'post_title' => $post_title,
+				'post_status' => 'publish',
+				'post_type' => 'shop_email',
+				'post_author' => 1,
+				'ping_status' => 'closed',
+				'comment_status' => 'closed',
+			);
+			$post_id = $this->wp->wpInsertPost($post_data);
+			$this->wp->updatePostMeta($post_id, 'general.email_subject', $title);
+			if ($email == 'new_order_admin_notification') {
+				$this->emailService->setActions($post_id, array(
+					'admin_order_status_pending_to_processing',
+					'admin_order_status_pending_to_completed',
+					'admin_order_status_pending_to_on-hold'
+				));
+				$this->wp->updatePostMeta($post_id, 'general.email_actions', array(
+					'admin_order_status_pending_to_processing',
+					'admin_order_status_pending_to_completed',
+					'admin_order_status_pending_to_on-hold'
+				));
+			} else {
+				$this->emailService->setActions($post_id, array($email));
+				$this->wp->updatePostMeta($post_id, 'general.email_actions', array($email));
+			}
+		}
 	}
 }

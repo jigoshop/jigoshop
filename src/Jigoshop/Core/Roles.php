@@ -21,6 +21,8 @@ class Roles
 	 *  * jigoshop\role\customer - customer role capabilities array
 	 *  * jigoshop\role\shop_manager - shop manager role capabilities array
 	 *  * jigoshop\capability\types - capabilities for custom types
+	 *
+	 * @param Wordpress $wp
 	 */
 	public function __construct(Wordpress $wp)
 	{
@@ -87,7 +89,7 @@ class Roles
 			)
 		);
 
-		$types = $this->wp->applyFilters('jigoshop\capability\types', array('product', 'shop_order', 'shop_coupon'));
+		$types = $this->wp->applyFilters('jigoshop\capability\types', array(Types::PRODUCT, Types::ORDER, Types::EMAIL)); // TODO: Add coupons
 		foreach ($types as $type) {
 			$capabilities[$type] = array(
 				// Post type

@@ -39,3 +39,9 @@ services:
       - [setContainer, ['@di']]
     tags:
       - { name: jigoshop.container_aware }
+  jigoshop.service.email:
+    class: Jigoshop\Service\Email
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.factory.email'

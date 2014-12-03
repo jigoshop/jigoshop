@@ -13,6 +13,10 @@ class StockStatus implements \Serializable
 	const OUT_STOCK = 0;
 	const IN_STOCK = 1;
 
+	const BACKORDERS_ALLOW = 'yes';
+	const BACKORDERS_FORBID = 'no';
+	const BACKORDERS_NOTIFY = 'notify';
+
 	/** @var boolean */
 	private $manage = false;
 	/** @var int */
@@ -70,7 +74,7 @@ class StockStatus implements \Serializable
 	}
 
 	/**
-	 * @return boolean Does product allow backorders?
+	 * @return string Backorders status.
 	 */
 	public function getAllowBackorders()
 	{

@@ -23,12 +23,7 @@ $price = $showWithTax ? $item->getPrice() + $item->getTotalTax() / $item->getQua
 	<td class="product-thumbnail"><a href="<?php echo $url; ?>"><?php echo Product::getFeaturedImage($product, 'shop_tiny'); ?></a></td>
 	<td class="product-name">
 		<a href="<?php echo $url; ?>"><?php echo $product->getName(); ?></a>
-		<dl class="dl-horizontal variation-data">
-			<?php foreach ($variation->getAttributes() as $attribute): /** @var $attribute \Jigoshop\Entity\Product\Variable\Attribute */?>
-				<dt><?php echo $attribute->getAttribute()->getLabel(); ?></dt>
-				<dd><?php echo $attribute->printValue($item); ?></dd>
-			<?php endforeach; ?>
-		</dl>
+		<?php echo Product::getVariation($variation); ?>
 	</td>
 	<td class="product-price"><?php echo Product::formatPrice($price); ?></td>
 	<td class="product-quantity"><input type="number" name="cart[<?php echo $key; ?>]" value="<?php echo $item->getQuantity(); ?>" /></td>

@@ -16,6 +16,7 @@ services:
       - '@wpal'
       - '@jigoshop.options'
       - '@jigoshop.cron'
+      - '@jigoshop.emails'
   jigoshop.options:
     class: Jigoshop\Core\Options
     arguments:
@@ -26,6 +27,13 @@ services:
       - '@wpal'
       - '@jigoshop.options'
       - '@jigoshop.service.order'
+      - '@jigoshop.service.email'
+  jigoshop.emails:
+    class: Jigoshop\Core\Emails
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.service.email'
   jigoshop.api:
     class: Jigoshop\Api
     arguments:
@@ -84,6 +92,12 @@ services:
       - '@wpal'
       - '@jigoshop.options'
       - '@jigoshop.service.product'
+    tags:
+      - { name: jigoshop.type.post }
+  jigoshop.post_type.email:
+    class: Jigoshop\Core\Types\Email
+    arguments:
+      - '@wpal'
     tags:
       - { name: jigoshop.type.post }
   jigoshop.taxonomy.product_category:

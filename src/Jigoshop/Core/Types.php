@@ -18,6 +18,7 @@ class Types
 	const PRODUCT = Types\Product::NAME;
 	const ORDER = Types\Order::NAME;
 //	const COUPON = 'shop_coupon';
+	const EMAIL = Types\Email::NAME;
 
 	// Taxonomy types
 	const PRODUCT_CATEGORY = Types\ProductCategory::NAME;

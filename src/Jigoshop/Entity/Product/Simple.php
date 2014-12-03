@@ -164,6 +164,7 @@ class Simple extends Product implements Purchasable, Shippable, Saleable
 		}
 
 		if (isset($state['sales']) && !empty($state['sales'])) {
+			// TODO: Change into list of fields
 			if (is_array($state['sales'])) {
 				$this->sales->setEnabled($state['sales']['enabled'] == 'on');
 				$this->sales->setFromTime($state['sales']['from']);

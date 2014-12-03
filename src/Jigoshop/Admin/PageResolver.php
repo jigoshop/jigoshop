@@ -53,6 +53,10 @@ class PageResolver
 			return $container->get('jigoshop.admin.page.order');
 		}
 
+		if ($this->isEmail()) {
+			return $container->get('jigoshop.admin.page.email');
+		}
+
 		return null;
 	}
 
@@ -98,5 +102,16 @@ class PageResolver
 		}
 
 		return DOING_AJAX && isset($_POST['action']) && strpos($_POST['action'], 'admin.order') !== false;
+	}
+
+	private function isEmail()
+	{
+		$screen = $this->wp->getCurrentScreen();
+
+		if ($screen !== null) {
+			return $screen->post_type === Types::EMAIL && $screen->id === Types::EMAIL;
+		}
+
+		return DOING_AJAX && isset($_POST['action']) && strpos($_POST['action'], 'admin.email') !== false;
 	}
 }

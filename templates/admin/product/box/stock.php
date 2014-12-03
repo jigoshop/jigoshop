@@ -1,11 +1,12 @@
 <?php
 use Jigoshop\Admin\Helper\Forms;
 use Jigoshop\Entity\Product;
+use Jigoshop\Entity\Product\Attributes\StockStatus;
 
 /**
  * @var $product Product The product.
  */
-$stock = $product instanceof Product\Purchasable ? $product->getStock() : new Product\Attributes\StockStatus();
+$stock = $product instanceof Product\Purchasable ? $product->getStock() : new StockStatus();
 ?>
 <fieldset>
 	<?php
@@ -21,8 +22,8 @@ $stock = $product instanceof Product\Purchasable ? $product->getStock() : new Pr
 		'label' => __('Status', 'jigoshop'),
 		'value' => $stock->getStatus(),
 		'options' => array(
-			Product\Attributes\StockStatus::IN_STOCK => __('In stock', 'jigoshop'),
-			Product\Attributes\StockStatus::OUT_STOCK => __('Out of stock', 'jigoshop'),
+			StockStatus::IN_STOCK => __('In stock', 'jigoshop'),
+			StockStatus::OUT_STOCK => __('Out of stock', 'jigoshop'),
 		),
 		'classes' => array($stock->getManage() ? 'not-active' : ''),
 	));
@@ -42,9 +43,9 @@ $stock = $product instanceof Product\Purchasable ? $product->getStock() : new Pr
 		'label' => __('Allow backorders?', 'jigoshop'),
 		'value' => $stock->getAllowBackorders(),
 		'options' => array(
-			'no' => __('Do not allow', 'jigoshop'),
-			'notify' => __('Allow, but notify customer', 'jigoshop'),
-			'yes' => __('Allow', 'jigoshop')
+			StockStatus::BACKORDERS_FORBID => __('Do not allow', 'jigoshop'),
+			StockStatus::BACKORDERS_NOTIFY => __('Allow, but notify customer', 'jigoshop'),
+			StockStatus::BACKORDERS_ALLOW => __('Allow', 'jigoshop')
 		),
 	));
 	?>

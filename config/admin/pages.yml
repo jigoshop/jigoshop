@@ -43,3 +43,11 @@ services:
       - '@jigoshop.service.product'
       - '@jigoshop.helper.styles'
       - '@jigoshop.helper.scripts'
+  jigoshop.admin.page.email:
+    class: Jigoshop\Admin\Page\Email
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.service.email'
+      - '@jigoshop.helper.styles'
+      - '@jigoshop.helper.scripts'

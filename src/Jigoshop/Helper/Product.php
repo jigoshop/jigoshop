@@ -242,4 +242,15 @@ class Product
 				do_action('jigoshop\helper\product\print_cart_form', '', $product, $template);
 		}
 	}
+
+	/**
+	 * @param Entity\Product\Variable\Variation $variation Variation to format.
+	 * @return string Formatted variation data in HTML.
+	 */
+	public static function getVariation(Entity\Product\Variable\Variation $variation)
+	{
+		return Render::get('helper/product/variation', array(
+			'variation' => $variation,
+		));
+	}
 }

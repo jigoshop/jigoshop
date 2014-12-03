@@ -53,6 +53,9 @@ class Core
 		$api = $container->get('jigoshop.api');
 		$api->run();
 
+		// TODO: Install emails if needed
+		$container->get('jigoshop.emails');
+
 		// TODO: Why this is required? :/
 		$this->wp->flushRewriteRules();
 	}
