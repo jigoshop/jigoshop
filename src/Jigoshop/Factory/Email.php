@@ -55,6 +55,8 @@ class Email implements EntityFactoryInterface
 			}, $this->wp->getPostMeta($post->ID));
 
 			$email->setId($post->ID);
+			$email->setTitle($post->post_title);
+			$email->setText($post->post_content);
 			$state['actions'] = unserialize($state['actions']);
 
 			$email->restoreState($state);
