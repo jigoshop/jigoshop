@@ -105,45 +105,49 @@ if (!function_exists('jigoshop_template_loop_add_to_cart')) {
 		do_action('jigoshop_before_add_to_cart_button');
 
 		// do not show "add to cart" button if product's price isn't announced
-		if ( $_product->get_price() === '' AND ! ($_product->is_type(array('variable', 'grouped', 'external'))) ) return;
-
-		if ( $_product->is_in_stock() OR $_product->is_type('external') ) {
-			$button_type = Jigoshop_Base::get_options()->get('jigoshop_catalog_product_button');
-			if ( $button_type === false ) $button_type = 'add';
-			if ( $_product->is_type(array('variable', 'grouped')) ) {
-				if ( $button_type != 'none' ) {
-					if ( $button_type == 'view' ) {
-						$output = '<a href="'.esc_url(get_permalink($_product->id)).'" class="button">'.__('View Product', 'jigoshop').'</a>';
-					} else {
-						$output = '<a href="'.esc_url(get_permalink($_product->id)).'" class="button">'._x('Select', 'verb', 'jigoshop').'</a>';
-					}
-				} else {
-					$output = '';
-				}
-			} else if ( $_product->is_type('external') ) {
-				if ( $button_type != 'none' ) {
-					if ( $button_type == 'view' ) {
-						$output = '<a href="'.esc_url(get_permalink($_product->id)).'" class="button">'.__('View Product', 'jigoshop').'</a>';
-					} else {
-						$output = '<a href="'.esc_url(get_post_meta( $_product->id, 'external_url', true )).'" class="button" rel="nofollow">'.__('Buy product', 'jigoshop').'</a>';
-					}
-				} else {
-					$output = '';
-				}
-			} else if ( $button_type == 'add' ) {
-				$output = '<a href="'.esc_url($_product->add_to_cart_url()).'" class="button" rel="nofollow">'.__('Add to cart', 'jigoshop').'</a>';
-			} else if ( $button_type == 'view' ) {
-				$output = '<a href="'.esc_url(get_permalink($_product->id)).'" class="button">'.__('View Product', 'jigoshop').'</a>';
-			} else {
-				$output = '';
-			}
-		} else if ( ($_product->is_type(array('grouped')) ) ) {
-			$output = '';
+		if ( $_product->get_price() === '' AND ! ($_product->is_type(array('variable', 'grouped', 'external'))) ) {
+			// do nothing
 		} else {
-			$output = '<span class="nostock">'.__('Out of Stock', 'jigoshop').'</span>';
+			if ( $_product->is_in_stock() OR $_product->is_type('external') ) {
+				$button_type = Jigoshop_Base::get_options()->get('jigoshop_catalog_product_button');
+				if ( $button_type === false ) $button_type = 'add';
+				if ( $_product->is_type(array('variable', 'grouped')) ) {
+					if ( $button_type != 'none' ) {
+						if ( $button_type == 'view' ) {
+							$output = '<a href="'.esc_url(get_permalink($_product->id)).'" class="button">'.__('View Product', 'jigoshop').'</a>';
+						} else {
+							$output = '<a href="'.esc_url(get_permalink($_product->id)).'" class="button">'._x('Select', 'verb', 'jigoshop').'</a>';
+						}
+					} else {
+						$output = '';
+					}
+				} else if ( $_product->is_type('external') ) {
+					if ( $button_type != 'none' ) {
+						if ( $button_type == 'view' ) {
+							$output = '<a href="'.esc_url(get_permalink($_product->id)).'" class="button">'.__('View Product', 'jigoshop').'</a>';
+						} else {
+							$output = '<a href="'.esc_url(get_post_meta( $_product->id, 'external_url', true )).'" class="button" rel="nofollow">'.__('Buy product', 'jigoshop').'</a>';
+						}
+					} else {
+						$output = '';
+					}
+				} else if ( $button_type == 'add' ) {
+					$output = '<a href="'.esc_url($_product->add_to_cart_url()).'" class="button" rel="nofollow">'.__('Add to cart', 'jigoshop').'</a>';
+				} else if ( $button_type == 'view' ) {
+					$output = '<a href="'.esc_url(get_permalink($_product->id)).'" class="button">'.__('View Product', 'jigoshop').'</a>';
+				} else {
+					$output = '';
+				}
+			} else if ( ($_product->is_type(array('grouped')) ) ) {
+				$output = '';
+			} else {
+				$output = '<span class="nostock">'.__('Out of Stock', 'jigoshop').'</span>';
+			}
+			
+			
+			echo apply_filters( 'jigoshop_loop_add_to_cart_output', $output, $post, $_product );
 		}
 
-		echo apply_filters( 'jigoshop_loop_add_to_cart_output', $output, $post, $_product );
 
 		do_action('jigoshop_after_add_to_cart_button');
 
