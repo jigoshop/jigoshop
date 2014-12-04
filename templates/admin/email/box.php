@@ -4,7 +4,7 @@
  * @var $emails array List of registered emails.
  */
 ?>
-<div class="jigoshop">
+<div class="jigoshop" data-id="<?php echo $email->getId(); ?>">
 	<?php echo \Jigoshop\Admin\Helper\Forms::text(array(
 		'name' => 'jigoshop_email[subject]',
 		'label' => __('Subject', 'jigoshop'),
@@ -19,26 +19,4 @@
 		'options' => $emails,
 		'value' => $email->getActions(),
 	)); ?>
-</div>
-<div id="coupon_options" class="panel jigoshop_options_panel">
-	<script>
-		jQuery(document).ready(function($) {
-			$('#jigoshop_email_actions').change(function() {
-				$.ajax({
-					type: "POST",
-					url: jigoshop_params.ajax_url,
-					data: {
-						'action':'jigoshop.admin.email.update_variable_list',
-						'actions' : $('select#jigoshop_email_actions').val()
-					},
-					success:function(data) {
-						$('#available_arguments').replaceWith(data);
-					},
-					error: function(errorThrown){
-						console.log(errorThrown);
-					}
-				});
-			});
-		});
-	</script>
 </div>

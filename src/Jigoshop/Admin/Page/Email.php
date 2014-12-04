@@ -4,6 +4,7 @@ namespace Jigoshop\Admin\Page;
 
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
+use Jigoshop\Exception;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
@@ -25,7 +26,7 @@ class Email
 		$this->options = $options;
 		$this->emailService = $emailService;
 
-		// TODO: Ajax action for updating variables
+		add_action('wp_ajax_jigoshop.admin.email.update_variable_list', array($this, 'ajaxVariables'));
 
 		$that = $this;
 		$wp->addAction('add_meta_boxes_'.Types::EMAIL, function() use ($wp, $that){
@@ -37,10 +38,50 @@ class Email
 			if ($wp->getPostType() == Types::EMAIL) {
 				$styles->add('jigoshop.admin', JIGOSHOP_URL.'/assets/css/admin.css');
 				$scripts->add('jigoshop.helpers', JIGOSHOP_URL.'/assets/js/helpers.js');
+				$scripts->add('jigoshop.admin.email', JIGOSHOP_URL.'/assets/js/admin/email.js');
+				$scripts->localize('jigoshop.admin.email', 'jigoshop_admin_email', array(
+					'ajax' => $wp->getAjaxUrl(),
+				));
 
 				$wp->doAction('jigoshop\admin\email\assets', $wp, $styles, $scripts);
 			}
 		});
+	}
+
+	/**
+	 * Displays the product data box, tabbed, with several panels covering price, stock etc
+	 *
+	 * @since 		1.0
+	 */
+	public function ajaxVariables()
+	{
+		try {
+			/** @var \Jigoshop\Entity\Email $email */
+			$email = $this->emailService->find((int)$_POST['email']);
+
+			if ($email->getId() === null) {
+				throw new Exception(__('Email not found.', 'jigoshop'));
+			}
+
+			// TODO: Check if actions are correct.
+			$email->setActions($_POST['actions']);
+
+			$result = array(
+				'success' => true,
+				'html' => Render::get('admin/email/variables', array(
+					'email' => $email,
+					'emails' => $this->emailService->getMails(),
+				))
+			);
+		} catch (Exception $e) {
+			$result = array(
+				'success' => false,
+				'error' => $e->getMessage(),
+			);
+		}
+
+		echo json_encode($result);
+		exit;
 	}
 
 	/**
