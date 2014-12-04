@@ -347,6 +347,14 @@ class Checkout implements PageInterface
 				}
 
 				$this->orderService->save($order);
+				// TODO: Reduce states
+				// TODO: If configured - send emails on backorders, low stock and out of stock
+				/**
+				 *
+				$this->wp->addAction('jigoshop\product\low_stock', array($this, 'productLowStock'));
+				$this->wp->addAction('jigoshop\product\out_of_stock', array($this, 'productOutOfStock'));
+				$this->wp->addAction('jigoshop\product\backorders', array($this, 'productBackorders'));
+				 */
 
 				$url = '';
 				if ($isPaymentRequired) {

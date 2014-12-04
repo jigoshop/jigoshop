@@ -6,7 +6,6 @@ use Jigoshop\Entity\Customer\CompanyAddress;
 use Jigoshop\Entity\Order;
 use Jigoshop\Entity\Product;
 use Jigoshop\Helper\Country;
-use Jigoshop\Helper\Emails as Helper;
 use Jigoshop\Helper\Product as ProductHelper;
 use Jigoshop\Service\Email;
 use Jigoshop\Shipping\LocalPickup;
@@ -36,6 +35,9 @@ class Emails {
 		$wp->addAction('jigoshop_low_stock_notification', array($this, 'productLowStock'));
 		$wp->addAction('jigoshop_no_stock_notification', array($this, 'productOutOfStock'));
 		$wp->addAction('jigoshop_product_on_backorders_notification', array($this, 'productBackorders'));
+
+		$this->addOrderActions();
+		$this->addProductActions();
 	}
 
 	public function registerMails()
@@ -45,10 +47,10 @@ class Emails {
 
 		$this->emailService->register('admin_order_status_pending_to_processing', __('Order Pending to Processing for admin'), $orderArguments);
 		$this->emailService->register('admin_order_status_pending_to_completed', __('Order Pending to Completed for admin'), $orderArguments);
-		$this->emailService->register('admin_order_status_pending_to_on-hold', __('Order Pending to On-Hold for admin'), $orderArguments);
-		$this->emailService->register('customer_order_status_pending_to_on-hold', __('Order Pending to On-Hold for customer'), $orderArguments);
+		$this->emailService->register('admin_order_status_pending_to_on_hold', __('Order Pending to On-Hold for admin'), $orderArguments);
+		$this->emailService->register('customer_order_status_pending_to_on_hold', __('Order Pending to On-Hold for customer'), $orderArguments);
 		$this->emailService->register('customer_order_status_pending_to_processing', __('Order Pending to Processing for customer'), $orderArguments);
-		$this->emailService->register('customer_order_status_on-hold_to_processing', __('Order On-Hold to Processing for customer'), $orderArguments);
+		$this->emailService->register('customer_order_status_on_hold_to_processing', __('Order On-Hold to Processing for customer'), $orderArguments);
 		$this->emailService->register('customer_order_status_completed', __('Order Completed for customer'), $orderArguments);
 		$this->emailService->register('customer_order_status_refunded', __('Order Refunded for customer'), $orderArguments);
 		$this->emailService->register('low_stock_notification', __('Low Stock Notification'), $stockArguments);
@@ -80,15 +82,15 @@ class Emails {
 	 */
 	public function orderPendingToOnHold($order){
 		$arguments = $this->getOrderEmailArguments($order);
-		$this->emailService->send('admin_order_status_pending_to_on-hold', $arguments, $this->options->get('general.email'));
-		$this->emailService->send('customer_order_status_pending_to_on-hold', $arguments, $order->getCustomer()->getBillingAddress()->getEmail());
+		$this->emailService->send('admin_order_status_pending_to_on_hold', $arguments, $this->options->get('general.email'));
+		$this->emailService->send('customer_order_status_pending_to_on_hold', $arguments, $order->getCustomer()->getBillingAddress()->getEmail());
 	}
 
 	/**
 	 * @param $order Order
 	 */
 	public function orderOnHoldToProcessing($order){
-		$this->emailService->send('customer_order_status_on-hold_to_processing', $this->getOrderEmailArguments($order), $order->getCustomer()->getBillingAddress()->getEmail());
+		$this->emailService->send('customer_order_status_on_hold_to_processing', $this->getOrderEmailArguments($order), $order->getCustomer()->getBillingAddress()->getEmail());
 	}
 
 	/**
@@ -348,6 +350,24 @@ class Emails {
 	public function sendCustomerInvoice($order)
 	{
 		$this->emailService->send('send_customer_invoice', $this->getOrderEmailArguments($order), $order->getCustomer()->getBillingAddress()->getEmail());
+	}
+
+	private function addOrderActions()
+	{
+		$this->wp->addAction(sprintf('jigoshop\order\%s_to_%s', Order\Status::PENDING, Order\Status::PROCESSING), array($this, 'orderPendingToProcessing'));
+		$this->wp->addAction(sprintf('jigoshop\order\%s_to_%s', Order\Status::PENDING, Order\Status::COMPLETED), array($this, 'orderPendingToCompleted'));
+		$this->wp->addAction(sprintf('jigoshop\order\%s_to_%s', Order\Status::PENDING, Order\Status::ON_HOLD), array($this, 'orderPendingToOnHold'));
+		$this->wp->addAction(sprintf('jigoshop\order\%s_to_%s', Order\Status::ON_HOLD, Order\Status::PROCESSING), array($this, 'orderOnHoldToProcessing'));
+		$this->wp->addAction(sprintf('jigoshop\order\%s_to_%s', Order\Status::PENDING, Order\Status::PROCESSING), array($this, 'orderPendingToProcessing'));
+		$this->wp->addAction(sprintf('jigoshop\order\%s', Order\Status::COMPLETED), array($this, 'orderCompleted'));
+		$this->wp->addAction(sprintf('jigoshop\order\%s', Order\Status::REFUNDED), array($this, 'orderRefunded'));
+	}
+
+	private function addProductActions()
+	{
+		$this->wp->addAction('jigoshop\product\low_stock', array($this, 'productLowStock'));
+		$this->wp->addAction('jigoshop\product\out_of_stock', array($this, 'productOutOfStock'));
+		$this->wp->addAction('jigoshop\product\backorders', array($this, 'productBackorders'));
 	}
 }
 
