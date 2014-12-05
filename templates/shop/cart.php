@@ -42,18 +42,26 @@ use Jigoshop\Helper\Render;
 				<?php do_action('jigoshop\cart\table_body', $cart); ?>
 			</tbody>
 			<tfoot>
-				<tr id="product-subtotal">
+				<tr>
+					<td colspan="4">
+						<?php \Jigoshop\Helper\Forms::text(array(
+							'id' => 'jigoshop_coupons',
+							'name' => 'jigoshop_coupons',
+							'placeholder' => __('Enter coupons...', 'jigoshop'),
+							'value' => join(',', array_map(function($coupon){ return $coupon->getCode(); }, $cart->getCoupons())),
+						)); ?>
+					</td>
 					<?php $productSubtotal = $showWithTax ? $cart->getProductSubtotal() + $cart->getTotalTax() : $cart->getProductSubtotal(); ?>
-					<th scope="row" colspan="5" class="text-right"><?php _e('Products subtotal', 'jigoshop'); ?></th>
-					<td><?php echo Product::formatPrice($productSubtotal); ?></td>
+					<th scope="row" class="text-right"><?php _e('Products subtotal', 'jigoshop'); ?></th>
+					<td id="product-subtotal"><?php echo Product::formatPrice($productSubtotal); ?></td>
 				</tr>
+				<noscript>
 				<tr>
 					<td colspan="6">
-						<noscript>
 							<button type="submit" class="btn btn-success pull-right" name="action" value="update-cart"><?php _e('Update Shopping Cart', 'jigoshop'); ?></button>
-						</noscript>
 					</td>
 				</tr>
+				</noscript>
 			</tfoot>
 		</table>
 		<div id="cart-collaterals">
@@ -137,6 +145,10 @@ use Jigoshop\Helper\Render;
 							<td><?php echo Product::formatPrice($tax); ?></td>
 						</tr>
 					<?php endforeach; ?>
+					<tr id="cart-discount"<?php $cart->getDiscount() == 0 and print ' class="not-active"'; ?>>
+						<th scope="row"><?php _e('Discount', 'jigoshop'); ?></th>
+						<td><?php echo Product::formatPrice($cart->getDiscount()); ?></td>
+					</tr>
 					<tr id="cart-total">
 						<th scope="row"><?php _e('Total', 'jigoshop'); ?></th>
 						<td><?php echo Product::formatPrice($cart->getTotal()); ?></td>

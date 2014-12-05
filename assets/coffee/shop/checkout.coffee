@@ -33,6 +33,13 @@ class Checkout
     jQuery('#jigoshop_order_shipping_state').on 'change', @updateState.bind(@, 'shipping')
     jQuery('#jigoshop_order_billing_postcode').on 'change', @updatePostcode.bind(@, 'billing')
     jQuery('#jigoshop_order_shipping_postcode').on 'change', @updatePostcode.bind(@, 'shipping')
+    jQuery('#jigoshop_coupons')
+      .on 'change', @updateDiscounts
+      .select2
+        tags: []
+        tokenSeparators: [',']
+        multiple: true
+        formatNoMatches: ''
 
     # TODO: Copy shipping changing etc. here from Cart
     # TODO: Refactor Cart and Checkout (for sure) to create one place for many shared parameters and functions
@@ -80,7 +87,9 @@ class Checkout
     .done (result) =>
       if result.success
         @_updateTotals(result.html.total, result.html.subtotal)
+        @_updateDiscount(result)
         @_updateTaxes(result.tax, result.html.tax)
+        jQuery('#jigoshop_coupons').val(result.coupons)
       else
         addMessage('danger', result.error, 6000)
 
@@ -99,8 +108,10 @@ class Checkout
     .done (result) =>
       if result.success? and result.success
         @_updateTotals(result.html.total, result.html.subtotal)
+        @_updateDiscount(result)
         @_updateTaxes(result.tax, result.html.tax)
         @_updateShipping(result.shipping, result.html.shipping)
+        jQuery('#jigoshop_coupons').val(result.coupons)
         stateClass = '#' + jQuery(event.target).attr('id').replace(/country/, 'state')
 
         if result.has_states
@@ -125,6 +136,38 @@ class Checkout
     fieldClass = "#jigoshop_order_#{field}_postcode"
     @_updateShippingField('jigoshop_checkout_change_postcode', field, jQuery(fieldClass).val())
 
+  updateDiscounts: (event) =>
+    $item = jQuery(event.target)
+    @block()
+    jQuery.ajax(@params.ajax,
+      type: 'post'
+      dataType: 'json'
+      data:
+        action: 'jigoshop_cart_update_discounts'
+        coupons: $item.val()
+    )
+    .done (result) =>
+      if result.success? && result.success
+        if result.empty_cart? == true
+          $empty = jQuery(result.html).hide()
+          $cart = jQuery('#cart')
+          $cart.after($empty)
+          $cart.slideUp()
+          $empty.slideDown()
+          @unblock()
+          return
+
+        jQuery('td#product-subtotal').html(result.html.product_subtotal)
+        @_updateTotals(result.html.total, result.html.subtotal)
+        @_updateDiscount(result)
+        @_updateTaxes(result.tax, result.html.tax)
+        @_updateShipping(result.shipping, result.html.shipping)
+        jQuery('#jigoshop_coupons').val(result.coupons)
+      else
+        addMessage('danger', result.error, 6000)
+      @unblock()
+
+
   _updateShippingField: (action, field, value) =>
     @block()
     jQuery.ajax(@params.ajax,
@@ -139,8 +182,10 @@ class Checkout
     .done (result) =>
       if result.success? and result.success
         @_updateTotals(result.html.total, result.html.subtotal)
+        @_updateDiscount(result)
         @_updateTaxes(result.tax, result.html.tax)
         @_updateShipping(result.shipping, result.html.shipping)
+        jQuery('#jigoshop_coupons').val(result.coupons)
       else
         addMessage('danger', result.error, 6000)
       @unblock()
@@ -148,6 +193,17 @@ class Checkout
   _updateTotals: (total, subtotal) ->
     jQuery('#cart-total > td > strong').html(total)
     jQuery('#cart-subtotal > td').html(subtotal)
+
+  _updateDiscount: (data) ->
+    jQuery('input#jigoshop_coupons').select2('val', data.coupons.split(','))
+    $parent = jQuery('tr#cart-discount')
+    if data.discount > 0
+      jQuery('td', $parent).html(data.html.discount)
+      $parent.show()
+    else
+      $parent.hide()
+    if data.html.coupons?
+      addMessage('warning', data.html.coupons)
 
   _updateShipping: (shipping, html) ->
     for own shippingClass, value of shipping

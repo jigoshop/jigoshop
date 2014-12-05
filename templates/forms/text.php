@@ -15,12 +15,14 @@
  */
 ?>
 <div class="form-group <?php echo $id; ?>_field clearfix<?php $hidden and print ' not-active'; ?>">
+	<?php if ($label): ?>
 	<label for="<?php echo $id; ?>" class="col-sm-<?php echo 12 - $size; ?> control-label">
 		<?php echo $label; ?>
 		<?php if(!empty($tip)): ?>
 			<a href="#" data-toggle="tooltip" class="badge" data-placement="top" title="<?php echo $tip; ?>">?</a>
 		<?php endif; ?>
 	</label>
+	<?php endif; ?>
 	<div class="col-sm-<?php echo $size; ?>">
 		<input type="<?php echo $type; ?>" id="<?php echo $id; ?>" name="<?php echo $name; ?>" class="form-control <?php echo join(' ', $classes); ?>" placeholder="<?php echo $placeholder; ?>" value="<?php echo $value; ?>"<?php $disabled and print ' disabled'; ?> />
 		<?php if(!empty($description)): ?>

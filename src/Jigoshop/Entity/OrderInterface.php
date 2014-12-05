@@ -72,6 +72,11 @@ interface OrderInterface
 	public function getProductSubtotal();
 
 	/**
+	 * @return float Total discount of the cart.
+	 */
+	public function getDiscount();
+
+	/**
 	 * @return array List of tax values per tax class.
 	 */
 	public function getTax();

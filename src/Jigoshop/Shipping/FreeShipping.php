@@ -6,6 +6,7 @@ use Jigoshop\Admin\Settings;
 use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
+use Jigoshop\Entity\Coupon;
 use Jigoshop\Entity\OrderInterface;
 use Jigoshop\Helper\Country;
 use Jigoshop\Helper\Scripts;
@@ -90,8 +91,13 @@ class FreeShipping implements Method
 			$customer = unserialize($this->wp->getPostMeta($post->ID, 'customer', true));
 		}
 
-		return $this->options['enabled'] && $cart->getProductSubtotal() >= $this->options['minimum'] &&
-			($this->options['available_for'] === 'all' || in_array($customer->getShippingAddress()->getCountry(), $this->options['countries']));
+		$freeShippingCoupon = array_reduce($cart->getCoupons(), function($value, $coupon){
+			/** @var $coupon Coupon */
+			return $value || $coupon->isFreeShipping();
+		}, false);
+
+		return $this->options['enabled'] && ($freeShippingCoupon || ($cart->getProductSubtotal() >= $this->options['minimum'] &&
+			($this->options['available_for'] === 'all' || in_array($customer->getShippingAddress()->getCountry(), $this->options['countries']))));
 	}
 
 	/**

@@ -6,6 +6,7 @@ use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Pages;
 use Jigoshop\Core\Types;
+use Jigoshop\Entity\Coupon;
 use Jigoshop\Entity\Customer;
 use Jigoshop\Entity\Order\Status;
 use Jigoshop\Exception;
@@ -16,6 +17,7 @@ use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
 use Jigoshop\Helper\Validation;
 use Jigoshop\Service\CartServiceInterface;
+use Jigoshop\Service\CouponServiceInterface;
 use Jigoshop\Service\CustomerServiceInterface;
 use Jigoshop\Service\OrderServiceInterface;
 use Jigoshop\Service\ProductServiceInterface;
@@ -44,10 +46,12 @@ class Cart implements PageInterface
 	private $taxService;
 	/** @var OrderServiceInterface */
 	private $orderService;
+	/** @var CouponServiceInterface */
+	private $couponService;
 
 	public function __construct(Wordpress $wp, Options $options, Messages $messages, CartServiceInterface $cartService, ProductServiceInterface $productService,
 		CustomerServiceInterface $customerService, OrderServiceInterface $orderService, ShippingServiceInterface $shippingService, TaxServiceInterface $taxService,
-		Styles $styles, Scripts $scripts)
+		CouponServiceInterface $couponService, Styles $styles, Scripts $scripts)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
@@ -58,6 +62,7 @@ class Cart implements PageInterface
 		$this->shippingService = $shippingService;
 		$this->orderService = $orderService;
 		$this->taxService = $taxService;
+		$this->couponService = $couponService;
 
 		$styles->add('jigoshop.shop', JIGOSHOP_URL.'/assets/css/shop.css');
 		$styles->add('jigoshop.shop.cart', JIGOSHOP_URL.'/assets/css/shop/cart.css');
@@ -79,6 +84,8 @@ class Cart implements PageInterface
 		$wp->addAction('wp_ajax_nopriv_jigoshop_cart_update_item', array($this, 'ajaxUpdateItem'));
 		$wp->addAction('wp_ajax_jigoshop_cart_select_shipping', array($this, 'ajaxSelectShipping'));
 		$wp->addAction('wp_ajax_nopriv_jigoshop_cart_select_shipping', array($this, 'ajaxSelectShipping'));
+		$wp->addAction('wp_ajax_jigoshop_cart_update_discounts', array($this, 'ajaxUpdateDiscounts'));
+		$wp->addAction('wp_ajax_nopriv_jigoshop_cart_update_discounts', array($this, 'ajaxUpdateDiscounts'));
 		$wp->addAction('wp_ajax_jigoshop_cart_change_country', array($this, 'ajaxChangeCountry'));
 		$wp->addAction('wp_ajax_nopriv_jigoshop_cart_change_country', array($this, 'ajaxChangeCountry'));
 		$wp->addAction('wp_ajax_jigoshop_cart_change_state', array($this, 'ajaxChangeState'));
@@ -163,11 +170,18 @@ class Cart implements PageInterface
 			$shipping[$method->getId()] = $method->isEnabled() ? $method->calculate($cart) : -1;
 		}
 
+		$productSubtotal = $this->options->get('tax.price_tax') == 'with_tax' ? $cart->getProductSubtotal() + $cart->getTotalTax() : $cart->getProductSubtotal();
+		$coupons = join(',', array_map(function($coupon){
+			/** @var $coupon Coupon */
+			return $coupon->getCode();
+		}, $cart->getCoupons()));
 		$response = array(
 			'success' => true,
 			'shipping' => $shipping,
 			'subtotal' => $cart->getSubtotal(),
-			'product_subtotal' => $cart->getProductSubtotal(),
+			'product_subtotal' => $productSubtotal,
+			'discount' => $cart->getDiscount(),
+			'coupons' => $coupons,
 			'tax' => $cart->getTax(),
 			'total' => $cart->getTotal(),
 			'html' => array(
@@ -178,8 +192,9 @@ class Cart implements PageInterface
 						'html' => Render::get('shop/cart/shipping/method', array('method' => $item, 'cart' => $cart)),
 					);
 				}, $this->shippingService->getEnabled()),
+				'discount' => Product::formatPrice($cart->getDiscount()),
 				'subtotal' => Product::formatPrice($cart->getSubtotal()),
-				'product_subtotal' => Product::formatPrice($cart->getProductSubtotal()),
+				'product_subtotal' => Product::formatPrice($productSubtotal),
 				'tax' => $tax,
 				'total' => Product::formatPrice($cart->getTotal()),
 			),
@@ -247,6 +262,49 @@ class Cart implements PageInterface
 			$method = $this->shippingService->get($_POST['method']);
 			$cart = $this->cartService->getCurrent();
 			$cart->setShippingMethod($method, $this->taxService);
+			$this->cartService->save($cart);
+
+			$response = $this->getAjaxCartResponse($cart);
+		} catch (Exception $e) {
+			$response = array(
+				'success' => false,
+				'error' => $e->getMessage(),
+			);
+		}
+
+		echo json_encode($response);
+		exit;
+	}
+
+	/**
+	 * Processes updates of coupons and returns updated cart details.
+	 */
+	public function ajaxUpdateDiscounts()
+	{
+		try {
+			$cart = $this->cartService->getCurrent();
+
+			if (isset($_POST['coupons'])) {
+				$errors = array();
+				$codes = array_filter(explode(',', $_POST['coupons']));
+				$cart->removeAllCouponsExcept($codes);
+				$coupons = $this->couponService->getByCodes($codes);
+
+				foreach ($coupons as $coupon) {
+					try {
+						$cart->addCoupon($coupon);
+					} catch (Exception $e) {
+						$errors[] = $e->getMessage();
+					}
+				}
+
+				if (!empty($errors)) {
+					throw new Exception(join('<br/>', $errors));
+				}
+			}
+
+			// TODO: Add support for other discounts
+
 			$this->cartService->save($cart);
 
 			$response = $this->getAjaxCartResponse($cart);

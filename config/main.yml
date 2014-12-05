@@ -81,6 +81,7 @@ services:
       - '@jigoshop.service.tax'
       - '@jigoshop.service.shipping'
       - '@jigoshop.service.coupon'
+      - '@jigoshop.messages'
   jigoshop.permalinks:
     class: Jigoshop\Core\Permalinks
     arguments:

@@ -542,9 +542,11 @@ class Order implements EntityInterface, OrderInterface
 		$this->total += ($item->getPrice() + $item->getTax()) * $difference;
 		$this->subtotal += $item->getPrice() * $difference;
 		$this->productSubtotal += $item->getPrice() * $difference;
+
 		foreach ($item->getProduct()->getTaxClasses() as $class) {
 			$this->tax[$class] += $taxService->get($item->getProduct(), $class) * $difference;
 		}
+
 		$item->setQuantity($quantity);
 	}
 

@@ -17,6 +17,13 @@ class Cart
       .on 'change', '#state', @updateState.bind(@, '#state')
       .on 'change', '#noscript_state', @updateState.bind(@, '#noscript_state')
       .on 'change', '#postcode', @updatePostcode
+    jQuery('input#jigoshop_coupons')
+      .on 'change', @updateDiscounts
+      .select2
+        tags: []
+        tokenSeparators: [',']
+        multiple: true
+        formatNoMatches: ''
 
   block: =>
     jQuery('#cart > button').block
@@ -67,6 +74,7 @@ class Cart
       if result.success? and result.success
         jQuery('#shipping-calculator th p > span').html(result.html.estimation)
         @_updateTotals(result.html.total, result.html.subtotal)
+        @_updateDiscount(result)
         @_updateTaxes(result.tax, result.html.tax)
         @_updateShipping(result.shipping, result.html.shipping)
 
@@ -103,6 +111,7 @@ class Cart
       if result.success? and result.success
         jQuery('#shipping-calculator th p > span').html(result.html.estimation)
         @_updateTotals(result.html.total, result.html.subtotal)
+        @_updateDiscount(result)
         @_updateTaxes(result.tax, result.html.tax)
         @_updateShipping(result.shipping, result.html.shipping)
       else
@@ -143,8 +152,39 @@ class Cart
         else
           jQuery('.product-subtotal', $item).html(result.html.item_subtotal)
 
-        jQuery('#product-subtotal > td').html(result.html.product_subtotal)
+        jQuery('td#product-subtotal').html(result.html.product_subtotal)
         @_updateTotals(result.html.total, result.html.subtotal)
+        @_updateDiscount(result)
+        @_updateTaxes(result.tax, result.html.tax)
+        @_updateShipping(result.shipping, result.html.shipping)
+      else
+        addMessage('danger', result.error, 6000)
+      @unblock()
+
+  updateDiscounts: (event) =>
+    $item = jQuery(event.target)
+    @block()
+    jQuery.ajax(@params.ajax,
+      type: 'post'
+      dataType: 'json'
+      data:
+        action: 'jigoshop_cart_update_discounts'
+        coupons: $item.val()
+    )
+    .done (result) =>
+      if result.success? && result.success
+        if result.empty_cart? == true
+          $empty = jQuery(result.html).hide()
+          $cart = jQuery('#cart')
+          $cart.after($empty)
+          $cart.slideUp()
+          $empty.slideDown()
+          @unblock()
+          return
+
+        jQuery('td#product-subtotal').html(result.html.product_subtotal)
+        @_updateTotals(result.html.total, result.html.subtotal)
+        @_updateDiscount(result)
         @_updateTaxes(result.tax, result.html.tax)
         @_updateShipping(result.shipping, result.html.shipping)
       else
@@ -154,6 +194,17 @@ class Cart
   _updateTotals: (total, subtotal) ->
     jQuery('#cart-total > td').html(total)
     jQuery('#cart-subtotal > td').html(subtotal)
+
+  _updateDiscount: (data) ->
+    jQuery('input#jigoshop_coupons').select2('val', data.coupons.split(','))
+    $parent = jQuery('tr#cart-discount')
+    if data.discount > 0
+      jQuery('td', $parent).html(data.html.discount)
+      $parent.show()
+    else
+      $parent.hide()
+    if data.html.coupons?
+      addMessage('warning', data.html.coupons)
 
   _updateShipping: (shipping, html) ->
     for own shippingClass, value of shipping

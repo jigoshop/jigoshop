@@ -93,6 +93,7 @@ class Cart implements CartServiceInterface, ContainerAware
 	public function save(CartContainer $cart)
 	{
 		// TODO: Support for transients?
+		$cart->recalculateCoupons();
 		$_SESSION[self::CART][$cart->getId()] = serialize($cart->getState());
 	}
 

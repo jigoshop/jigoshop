@@ -87,10 +87,18 @@ use Jigoshop\Helper\Render;
 			<?php do_action('jigoshop\checkout\table_body', $cart); ?>
 			</tbody>
 			<tfoot>
-			<tr id="product-subtotal">
+			<tr>
+				<td colspan="4">
+					<?php \Jigoshop\Helper\Forms::text(array(
+						'id' => 'jigoshop_coupons',
+						'name' => 'jigoshop_coupons',
+						'placeholder' => __('Enter coupons...', 'jigoshop'),
+						'value' => join(',', array_map(function($coupon){ return $coupon->getCode(); }, $cart->getCoupons())),
+					)); ?>
+				</td>
 				<?php $productSubtotal = $showWithTax ? $cart->getProductSubtotal() + $cart->getTotalTax() : $cart->getProductSubtotal(); ?>
 				<th scope="row" colspan="5" class="text-right"><?php _e('Products subtotal', 'jigoshop'); ?></th>
-				<td><?php echo Product::formatPrice($productSubtotal); ?></td>
+				<td id="product-subtotal"><?php echo Product::formatPrice($productSubtotal); ?></td>
 			</tr>
 			</tfoot>
 		</table>
@@ -134,6 +142,10 @@ use Jigoshop\Helper\Render;
 						<td><?php echo Product::formatPrice($tax); ?></td>
 					</tr>
 				<?php endforeach; ?>
+				<tr id="cart-discount"<?php $cart->getDiscount() == 0 and print ' class="not-active"'; ?>>
+					<th scope="row"><?php _e('Discount', 'jigoshop'); ?></th>
+					<td><?php echo Product::formatPrice($cart->getDiscount()); ?></td>
+				</tr>
 				<tr id="cart-total" class="info">
 					<th scope="row"><?php _e('Total', 'jigoshop'); ?></th>
 					<td><strong><?php echo Product::formatPrice($cart->getTotal()); ?></strong></td>

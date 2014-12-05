@@ -2,12 +2,16 @@
 
 namespace Jigoshop\Frontend;
 
+use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
+use Jigoshop\Entity\Coupon;
 use Jigoshop\Entity\Customer;
 use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\OrderInterface;
 use Jigoshop\Entity\Product;
 use Jigoshop\Exception;
+use Jigoshop\Helper\Product as ProductHelper;
+use Jigoshop\Service\CouponServiceInterface;
 use Jigoshop\Service\ProductServiceInterface;
 use Jigoshop\Service\ShippingServiceInterface;
 use Jigoshop\Service\TaxServiceInterface;
@@ -27,10 +31,16 @@ class Cart implements OrderInterface
 	private $taxService;
 	/** @var ShippingServiceInterface */
 	private $shippingService;
+	/** @var CouponServiceInterface */
+	private $couponService;
+	/** @var Messages */
+	private $messages;
 
 	/** @var string */
 	private $id;
+	/** @var array */
 	private $items = array();
+	/** @var array */
 	private $tax = array();
 	/** @var array */
 	private $shippingTax = array();
@@ -40,25 +50,29 @@ class Cart implements OrderInterface
 	private $shippingMethod;
 	/** @var Customer */
 	private $customer;
+	/** @var float */
 	private $total = 0.0;
+	/** @var float */
 	private $subtotal = 0.0;
+	/** @var float */
 	private $productSubtotal = 0.0;
+	/** @var float */
+	private $discount = 0.0;
+	/** @var float */
 	private $totalTax;
+	/** @var array */
+	private $coupons = array();
 
-	/**
-	 * @param Wordpress $wp
-	 * @param Options $options
-	 * @param ProductServiceInterface $productService
-	 * @param TaxServiceInterface $taxService
-	 * @param ShippingServiceInterface $shippingService
-	 */
-	public function __construct(Wordpress $wp, Options $options, ProductServiceInterface $productService, TaxServiceInterface $taxService, ShippingServiceInterface $shippingService)
+	public function __construct(Wordpress $wp, Options $options, ProductServiceInterface $productService, TaxServiceInterface $taxService,
+		ShippingServiceInterface $shippingService, CouponServiceInterface $couponService, Messages $messages)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->productService = $productService;
 		$this->taxService = $taxService;
 		$this->shippingService = $shippingService;
+		$this->couponService = $couponService;
+		$this->messages = $messages;
 
 		foreach ($this->options->get('tax.classes') as $class) {
 			$this->tax[$class['class']] = 0.0;
@@ -77,6 +91,8 @@ class Cart implements OrderInterface
 		$this->total = 0.0;
 		$this->subtotal = 0.0;
 		$this->productSubtotal = 0.0;
+		$this->discount = 0.0;
+		$this->coupons = array();
 		$this->totalTax = null;
 		$this->shippingPrice = 0.0;
 		$this->tax = array_map(function(){ return 0.0; }, $this->tax);
@@ -91,11 +107,12 @@ class Cart implements OrderInterface
 				$this->setCustomer($customer);
 			}
 
-			$items = unserialize($data['items']);
 			if (isset($data['shipping_method'])) {
 				$this->setShippingMethod($this->shippingService->findForState($data['shipping_method']), $this->taxService);
 			}
-			$taxIncludedInPrice = $this->options->get('tax.included');
+
+			$items = unserialize($data['items']);
+//			$taxIncludedInPrice = $this->options->get('tax.included');
 
 			if (is_array($items)) {
 				foreach ($items as $item) {
@@ -125,6 +142,16 @@ class Cart implements OrderInterface
 					$this->total += $item->getCost() + $item->getTotalTax();
 
 					$this->items[$key] = $item;
+				}
+			}
+
+			if (isset($data['coupons'])) {
+				foreach ($data['coupons'] as $couponId) {
+					try {
+						$this->addCoupon($this->couponService->find($couponId));
+					} catch (Exception $e) {
+						$this->messages->addWarning($e->getMessage(), false);
+					}
 				}
 			}
 		}
@@ -204,9 +231,11 @@ class Cart implements OrderInterface
 			$this->subtotal -= $item->getCost();
 			$this->productSubtotal -= $item->getCost();
 			$this->totalTax = null;
+
 			foreach ($item->getTaxClasses() as $class) {
 				$this->tax[$class] -= $this->taxService->get($item, $class) * $item->getQuantity();
 			}
+
 
 			unset($this->items[$key]);
 			return $item;
@@ -298,6 +327,83 @@ class Cart implements OrderInterface
 	}
 
 	/**
+	 * @param $coupon Coupon
+	 */
+	public function addCoupon($coupon)
+	{
+		if (isset($this->coupons[$coupon->getId()])) {
+			return;
+		}
+
+		if (is_numeric($coupon->getOrderTotalMinimum()) && $this->total < $coupon->getOrderTotalMinimum()) {
+			throw new Exception(sprintf(__('Cannot apply coupon "%s". Order total less than %s.'), $coupon->getCode(), ProductHelper::formatPrice($coupon->getOrderTotalMinimum())));
+		}
+		if (is_numeric($coupon->getOrderTotalMaximum()) && $this->total > $coupon->getOrderTotalMaximum()) {
+			throw new Exception(sprintf(__('Cannot apply coupon "%s". Order total more than %s.'), $coupon->getCode(), ProductHelper::formatPrice($coupon->getOrderTotalMaximum())));
+		}
+
+		// TODO: Ask if applying individual use coupon we should discard all other or warn that it cannot be applied?
+		if ($coupon->isIndividualUse()) {
+			$this->removeAllCouponsExcept(array());
+		}
+
+		$discount = $coupon->getDiscount($this);
+		$this->coupons[$coupon->getId()] = array(
+			'object' => $coupon,
+			'discount' => $discount,
+		);
+		$this->discount += $discount;
+		$this->total -= $discount;
+	}
+
+	/**
+	 * @param $id int Coupon ID.
+	 */
+	public function removeCoupon($id)
+	{
+		if (!isset($this->coupons[$id])) {
+			return;
+		}
+
+		$coupon = $this->coupons[$id];
+		$this->discount -= $coupon['discount'];
+		$this->total += $coupon['discount'];
+		unset($this->coupons[$id]);
+	}
+
+	/**
+	 * Removes all coupons except ones listed in the parameter.
+	 *
+	 * @param $codes array List of actual coupon codes.
+	 */
+	public function removeAllCouponsExcept($codes)
+	{
+		foreach ($this->coupons as $coupon) {
+			/** @var Coupon $coupon */
+			$coupon = $coupon['object'];
+			if (!in_array($coupon->getCode(), $codes)) {
+				$this->removeCoupon($coupon->getId());
+			}
+		}
+	}
+
+	/**
+	 * @return array Coupons list.
+	 */
+	public function getCoupons()
+	{
+		return array_map(function($item){ return $item['object']; }, $this->coupons);
+	}
+
+	/**
+	 * @return float Total discount of the cart.
+	 */
+	public function getDiscount()
+	{
+		return $this->discount;
+	}
+
+	/**
 	 * @return array List of tax values per tax class.
 	 */
 	public function getTax()
@@ -381,25 +487,13 @@ class Cart implements OrderInterface
 		return array(
 			'id' => $this->id,
 			'shipping_method' => $this->shippingMethod !== null ? $this->shippingMethod->getState() : null,
+			'coupons' => array_map(function($item){
+				/** @var Coupon $coupon */
+				$coupon = $item['object'];
+				return $coupon->getId();
+			}, $this->coupons),
 			'items' => serialize($this->items),
 		);
-	}
-
-	/**
-	 * Returns unique key for product in the cart.
-	 *
-	 * @param $item Item Item to get key for.
-	 * @return string
-	 */
-	private function generateItemKey($item)
-	{
-		$parts = array(
-			$item->getProduct()->getId(),
-		);
-
-		$parts = $this->wp->applyFilters('jigoshop\cart\generate_item_key', $parts, $item);
-
-		return hash('md5', join('_', $parts));
 	}
 
 	/**
@@ -439,5 +533,23 @@ class Cart implements OrderInterface
 	public function setCustomer($customer)
 	{
 		$this->customer = $customer;
+	}
+
+	/**
+	 * Removes and adds each coupon currently applied to the cart. This causes to recalculate discount values.
+	 */
+	public function recalculateCoupons()
+	{
+		foreach ($this->coupons as $data) {
+			/** @var Coupon $coupon */
+			$coupon = $data['object'];
+
+			$this->removeCoupon($coupon->getId());
+			try {
+				$this->addCoupon($coupon);
+			} catch (Exception $e) {
+				// TODO: Some idea how to report this to the user?
+			}
+		}
 	}
 }
