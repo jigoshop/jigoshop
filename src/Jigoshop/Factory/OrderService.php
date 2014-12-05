@@ -31,7 +31,7 @@ class OrderService
 	public function getService()
 	{
 		/** @var \WPAL\Wordpress $wp */
-		$service = new Service($this->wp, $this->factory);
+		$service = new Service($this->wp, $this->options, $this->factory);
 
 		switch ($this->options->get('advanced.cache')) {
 			case 'simple':

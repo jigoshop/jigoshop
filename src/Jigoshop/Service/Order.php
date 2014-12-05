@@ -2,6 +2,7 @@
 
 namespace Jigoshop\Service;
 
+use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\EntityInterface;
 use Jigoshop\Entity\Order\Item;
@@ -20,12 +21,15 @@ class Order implements OrderServiceInterface
 {
 	/** @var \WPAL\Wordpress */
 	private $wp;
+	/** @var Options */
+	private $options;
 	/** @var Factory */
 	private $factory;
 
-	public function __construct(Wordpress $wp, Factory $factory)
+	public function __construct(Wordpress $wp, Options $options, Factory $factory)
 	{
 		$this->wp = $wp;
+		$this->options = $options;
 		$this->factory = $factory;
 
 		$wp->addAction('save_post_'.Types\Order::NAME, array($this, 'savePost'), 10);
@@ -210,12 +214,26 @@ class Order implements OrderServiceInterface
 		}
 
 		$this->wp->doAction('jigoshop\order\after\\'.$object->getStatus(), $object);
-		// TODO: If configured - send emails on backorders, low stock and out of stock
+		$notifyLowStock = $this->options->get('products.notify_low_stock');
+		$notifyOutOfStock = $this->options->get('products.notify_out_of_stock');
+
+		if ($notifyLowStock || $notifyOutOfStock) {
+			$threshold = $this->options->get('products.low_stock_threshold');
+			foreach ($object->getItems() as $item) {
+				$product = $item->getProduct();
+				if ($notifyOutOfStock && $product->getStock()->getStock() == 0) {
+					$this->wp->doAction('jigoshop\product\out_of_stock', $product);
+					continue;
+				}
+				if ($notifyLowStock && $product->getStock()->getStock() <= $threshold) {
+					$this->wp->doAction('jigoshop\product\low_stock', $product);
+				}
+			}
+		}
+
 		/**
-		 *
-		$this->wp->addAction('jigoshop\product\low_stock', array($this, 'productLowStock'));
-		$this->wp->addAction('jigoshop\product\out_of_stock', array($this, 'productOutOfStock'));
-		$this->wp->addAction('jigoshop\product\backorders', array($this, 'productBackorders'));
+		 * TODO: If configured - send emails on backorders
+		 * $this->wp->addAction('jigoshop\product\backorders', array($this, 'productBackorders'));
 		 */
 	}
 

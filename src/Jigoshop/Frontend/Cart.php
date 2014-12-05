@@ -187,6 +187,7 @@ class Cart implements OrderInterface
 		}
 
 		if ($product->getStock()->getManage()) {
+			// TODO: Check for backorders!
 			if ($quantity > $product->getStock()->getStock()) {
 				throw new NotEnoughStockException($product->getStock()->getStock());
 			}

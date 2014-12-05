@@ -115,25 +115,25 @@ class ProductsTab implements TabInterface
 //					),
 				),
 			),
-			// TODO: Add support for stock notifications
-//			array(
-//				'title' => __('Stock notifications', 'jigoshop'),
-//				'id' => 'stock_notifications',
-//				'fields' => array(
-//					array(
-//						'name' => '[notify_low_stock]',
-//						'title' => __('Low stock', 'jigoshop'),
-//						'description' => __('Notify when product reaches low stock', 'jigoshop'),
-//						'type' => 'checkbox',
-//						'checked' => $this->options['notify_low_stock'],
-//					),
-//					array(
-//						'name' => '[notify_out_of_stock]',
-//						'title' => __('Out of stock', 'jigoshop'),
-//						'description' => __('Notify when product becomes out of stock', 'jigoshop'),
-//						'type' => 'checkbox',
-//						'checked' => $this->options['notify_out_of_stock'],
-//					),
+			array(
+				'title' => __('Stock notifications', 'jigoshop'),
+				'id' => 'stock_notifications',
+				'fields' => array(
+					array(
+						'name' => '[notify_low_stock]',
+						'title' => __('Low stock', 'jigoshop'),
+						'description' => __('Notify when product reaches low stock', 'jigoshop'),
+						'type' => 'checkbox',
+						'checked' => $this->options['notify_low_stock'],
+					),
+					array(
+						'name' => '[notify_out_of_stock]',
+						'title' => __('Out of stock', 'jigoshop'),
+						'description' => __('Notify when product becomes out of stock', 'jigoshop'),
+						'type' => 'checkbox',
+						'checked' => $this->options['notify_out_of_stock'],
+					),
+					// TODO: Backorders notifications
 //					array(
 //						'name' => '[notify_on_backorders]',
 //						'title' => __('On backorders', 'jigoshop'),
@@ -141,8 +141,8 @@ class ProductsTab implements TabInterface
 //						'type' => 'checkbox',
 //						'checked' => $this->options['notify_on_backorders'],
 //					),
-//				),
-//			),
+				),
+			),
 			// TODO: Add images section
 //			array(
 //				'title' => __('Images', 'jigoshop'),
