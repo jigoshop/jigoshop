@@ -412,10 +412,9 @@ class Checkout implements PageInterface
 		$this->wp->doAction('jigoshop\checkout\created_account', $id);
 
 		// send the user a confirmation and their login details
-		// TODO: Enable when emails finished
-//		if (apply_filters('jigoshop_new_user_notification', true, $user_id, $user_pass)) {
-//			wp_new_user_notification($user_id, $user_pass);
-//		}
+		if ($this->wp->applyFilters('jigoshop\checkout\new_user_notification', true, $id)) {
+			$this->wp->wpNewUserNotification($id, $password);
+		}
 
 		$this->wp->wpSetAuthCookie($id, true, $this->wp->isSsl());
 		$customer = $this->cartService->getCurrent()->getCustomer();

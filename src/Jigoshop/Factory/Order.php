@@ -313,8 +313,11 @@ class Order implements EntityFactoryInterface
 			if ($address->getState() == null) {
 				$errors[] = __('State or province is not selected.', 'jigoshop');
 			}
-			if ($address->getPostcode() == null) {// TODO: Zip validation
+			if ($address->getPostcode() == null) {
 				$errors[] = __('Postcode is empty.', 'jigoshop');
+			}
+			if ($this->options->get('shopping.validate_zip') && !Validation::isPostcode($address->getPostcode(), $address->getCountry())) {
+				$errors[] = __('Invalid postcode.', 'jigoshop');
 			}
 		}
 

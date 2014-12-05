@@ -6,7 +6,6 @@ use Jigoshop\Entity\Coupon;
 
 /**
  * Coupon service.
- * TODO: Add caching.
  *
  * @package Jigoshop\Service
  */

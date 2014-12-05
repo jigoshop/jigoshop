@@ -210,7 +210,6 @@ class Order implements OrderServiceInterface
 		}
 
 		$this->wp->doAction('jigoshop\order\after\\'.$object->getStatus(), $object);
-		// TODO: Reduce items counts
 		// TODO: If configured - send emails on backorders, low stock and out of stock
 		/**
 		 *

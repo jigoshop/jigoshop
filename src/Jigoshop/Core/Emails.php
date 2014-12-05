@@ -165,7 +165,7 @@ class Emails {
 			'shipping' => ProductHelper::formatPrice($order->getShippingPrice()),
 			'shipping_cost' => $order->getShippingPrice(),
 			'shipping_method' => $order->getShippingMethod(),
-			'discount' => '',//ProductHelper::formatPrice($order->order_discount), // TODO: Properly add discounts after coupons
+			'discount' => ProductHelper::formatPrice($order->getDiscount()),
 			'total_tax' => ProductHelper::formatPrice($order->getTotalTax()),
 			'total' => ProductHelper::formatPrice($order->getTotal()),
 			'is_local_pickup' => $order->getShippingMethod() && $order->getShippingMethod()->getId() == LocalPickup::NAME ? true : null,

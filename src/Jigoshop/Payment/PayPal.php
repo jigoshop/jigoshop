@@ -280,7 +280,7 @@ class PayPal implements Method, Processable, ContainerAware
 //		$priceIncludesTax = $this->options->get('tax.included');
 //		if($priceIncludesTax){
 //			// Discount
-//			//$args['discount_amount_cart'] = number_format((float)$order->order_discount, $this->decimals); // TODO: Add discounts after adding coupons support
+//			//$args['discount_amount_cart'] = number_format($order->getDiscount(), $this->decimals);
 //
 //			// Don't pass items - PayPal breaks tax due to catalog prices include tax.
 //			// PayPal has no option for tax inclusive pricing.
@@ -346,7 +346,7 @@ class PayPal implements Method, Processable, ContainerAware
 		}
 
 		$args['tax'] = $args['tax_cart'] = number_format($order->getTotalTax(), $this->decimals);
-//			$args['discount_amount_cart'] = $order->order_discount; // TODO: Add when coupons support is added
+		$args['discount_amount_cart'] = number_format($order->getDiscount(), $this->decimals);
 
 		if($this->settings['force_payment'] && $order->getTotal() == 0){
 			$item_loop++;

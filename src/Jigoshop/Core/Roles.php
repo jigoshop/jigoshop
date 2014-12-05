@@ -89,7 +89,7 @@ class Roles
 			)
 		);
 
-		$types = $this->wp->applyFilters('jigoshop\capability\types', array(Types::PRODUCT, Types::ORDER, Types::EMAIL)); // TODO: Add coupons
+		$types = $this->wp->applyFilters('jigoshop\capability\types', array(Types::PRODUCT, Types::ORDER, Types::EMAIL, Types::COUPON));
 		foreach ($types as $type) {
 			$capabilities[$type] = array(
 				// Post type

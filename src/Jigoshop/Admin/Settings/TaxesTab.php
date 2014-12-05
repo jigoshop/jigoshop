@@ -93,12 +93,13 @@ class TaxesTab implements TabInterface
 				'title' => __('Main', 'jigoshop'),
 				'id' => 'main',
 				'fields' => array(
-					array(
-						'name' => '[before_coupons]',
-						'title' => __('Apply before coupons?', 'jigoshop'),
-						'type' => 'checkbox',
-						'checked' => $this->options['before_coupons'],
-					),
+					// TODO: Add support for taxing after applying coupons
+//					array(
+//						'name' => '[before_coupons]',
+//						'title' => __('Apply before coupons?', 'jigoshop'),
+//						'type' => 'checkbox',
+//						'checked' => $this->options['before_coupons'],
+//					),
 					// TODO: Add support for tax included in prices
 //					array(
 //						'name' => '[included]',
