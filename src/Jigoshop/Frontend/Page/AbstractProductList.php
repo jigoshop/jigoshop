@@ -49,14 +49,7 @@ abstract class AbstractProductList implements PageInterface
 		if (isset($_POST['action']) && $_POST['action'] == 'add-to-cart') {
 			try {
 				$product = $this->productService->find($_POST['item']);
-
-				switch ($product->getType()) {
-					case Product\Simple::TYPE:
-						$item = $this->formatItem($product);
-						break;
-					default:
-						$item = $this->wp->applyFilters('jigoshop\cart\add', null, $product);
-				}
+				$item = $this->wp->applyFilters('jigoshop\cart\add', null, $product);
 
 				if ($item === null) {
 					throw new Exception(__('Unable to add product to the cart.', 'jigoshop'));

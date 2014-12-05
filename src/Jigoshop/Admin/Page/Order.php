@@ -102,7 +102,12 @@ class Order
 				throw new Exception(__('Product not found.', 'jigoshop'));
 			}
 
-			$item = $this->formatItem($order, $product);
+			$item = $this->wp->applyFilters('jigoshop\cart\add', null, $product);
+
+			if ($item === null) {
+				throw new Exception(__('Product cannot be added to the order.', 'jigoshop'));
+			}
+
 			$order->addItem($item);
 			$this->orderService->save($order);
 
@@ -389,24 +394,6 @@ class Order
 	}
 
 	/**
-	 * @param $order \Jigoshop\Entity\Order The order.
-	 * @param $product Product|Product\Purchasable The product to format.
-	 * @return Item Prepared item.
-	 */
-	private function formatItem($order, $product)
-	{
-		$item = new Item();
-		$item->setName($product->getName());
-		// TODO: Item price should ALWAYS be without taxes.
-		$item->setPrice($product->getPrice());
-		$item->setTax($this->taxService->getAll($product, 1, $order->getCustomer()));
-		$item->setQuantity(1);
-		$item->setProduct($product);
-
-		return $item;
-	}
-
-	/**
 	 * @param $order OrderInterface Order to get values from.
 	 * @return array Ajax response array.
 	 */
@@ -434,6 +421,7 @@ class Order
 			'tax' => $tax,
 			'html' => array(
 				'shipping' => array_map(function($item) use ($order) {
+					/** @var $item Method */
 					return array(
 						'price' => ProductHelper::formatPrice($item->calculate($order)),
 						'html' => Render::get('admin/order/totals/shipping_method', array('method' => $item, 'order' => $order)),

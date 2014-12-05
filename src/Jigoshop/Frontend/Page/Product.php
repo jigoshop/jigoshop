@@ -7,7 +7,6 @@ use Jigoshop\Core\Options;
 use Jigoshop\Core\Pages;
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\Order\Item;
-use Jigoshop\Entity\Product\Simple;
 use Jigoshop\Exception;
 use Jigoshop\Helper\Product as ProductHelper;
 use Jigoshop\Helper\Render;
@@ -58,14 +57,7 @@ class Product implements PageInterface
 			try {
 				$post = $this->wp->getGlobalPost();
 				$product = $this->productService->findForPost($post);
-
-				switch ($product->getType()) {
-					case Simple::TYPE:
-						$item = $this->formatItem($product);
-						break;
-					default:
-						$item = $this->wp->applyFilters('jigoshop\cart\add', null, $product);
-				}
+				$item = $this->wp->applyFilters('jigoshop\cart\add', null, $product);
 
 				if ($item === null) {
 					throw new Exception(__('Unable to add product to the cart.', 'jigoshop'));

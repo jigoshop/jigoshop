@@ -47,7 +47,24 @@ class Simple implements Type
 	 */
 	public function initialize(Wordpress $wp, array $enabledTypes)
 	{
+		$wp->addFilter('jigoshop\cart\add', array($this, 'addToCart'), 10, 2);
 		$wp->addAction('jigoshop\admin\product\assets', array($this, 'addAssets'), 10, 3);
+	}
+
+	public function addToCart($value, $product)
+	{
+		if ($product instanceof \Jigoshop\Entity\Product\Simple) {
+			$item = new Item();
+			$item->setName($product->getName());
+			$item->setPrice($product->getPrice());
+			$item->setQuantity(1);
+			$item->setProduct($product);
+			// TODO: Set tax
+
+			return $item;
+		}
+
+		return $value;
 	}
 
 	/**
