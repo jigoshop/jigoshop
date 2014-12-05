@@ -51,6 +51,14 @@ services:
       - '@jigoshop.service.email'
       - '@jigoshop.helper.styles'
       - '@jigoshop.helper.scripts'
+  jigoshop.admin.page.coupons:
+    class: Jigoshop\Admin\Page\Coupons
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.service.coupon'
+      - '@jigoshop.helper.styles'
+      - '@jigoshop.helper.scripts'
   jigoshop.admin.page.coupon:
     class: Jigoshop\Admin\Page\Coupon
     arguments:

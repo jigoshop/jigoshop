@@ -5,6 +5,7 @@ namespace Jigoshop\Admin\Page;
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\Product;
+use Jigoshop\Helper\Formatter;
 use Jigoshop\Helper\Product as ProductHelper;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
@@ -117,9 +118,8 @@ class Products
 				echo $product->getSku();
 				break;
 			case 'creation':
-				$fullFormat = _x('Y/m/d g:i:s A', 'time', 'jigoshop');
-				$format = _x('Y/m/d', 'time', 'jigoshop');
-				echo '<abbr title="'.mysql2date($fullFormat, $post->post_date).'">'.apply_filters('post_date_column_time', mysql2date($format, $post->post_date), $post ).'</abbr>';
+				$timestamp = strtotime($post->post_date);
+				echo Formatter::date($timestamp);
 
 				if($product->isVisible()){
 					echo '<br /><strong>'.__('Visible in', 'jigoshop').'</strong>: ';

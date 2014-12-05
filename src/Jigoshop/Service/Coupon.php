@@ -129,4 +129,18 @@ class Coupon implements ServiceInterface
 
 		return $this->wp->applyFilters('jigoshop\service\coupon\types', $types);
 	}
+
+	/**
+	 * @param $coupon \Jigoshop\Entity\Coupon
+	 * @return string Type name.
+	 */
+	public function getType($coupon)
+	{
+		$types = $this->getTypes();
+		if (!isset($types[$coupon->getType()])) {
+			return '';
+		}
+
+		return $types[$coupon->getType()];
+	}
 }

@@ -57,6 +57,10 @@ class PageResolver
 			return $container->get('jigoshop.admin.page.email');
 		}
 
+		if ($this->isCouponList()) {
+			return $container->get('jigoshop.admin.page.coupons');
+		}
+
 		if ($this->isCoupon()) {
 			return $container->get('jigoshop.admin.page.coupon');
 		}
@@ -117,6 +121,17 @@ class PageResolver
 		}
 
 		return DOING_AJAX && isset($_POST['action']) && strpos($_POST['action'], 'admin.email') !== false;
+	}
+
+	private function isCouponList()
+	{
+		$screen = $this->wp->getCurrentScreen();
+
+		if ($screen !== null) {
+			return $screen->post_type === Types::COUPON && $screen->id === 'edit-'.Types::COUPON;
+		}
+
+		return DOING_AJAX && isset($_POST['action']) && strpos($_POST['action'], 'admin.coupons') !== false;
 	}
 
 	private function isCoupon()

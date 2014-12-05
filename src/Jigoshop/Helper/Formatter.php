@@ -30,4 +30,18 @@ class Formatter
 
 		return $result;
 	}
+
+	/**
+	 * @param $timestamp int Timestamp to display.
+	 * @return string HTML for date.
+	 */
+	public static function date($timestamp)
+	{
+		$fullFormat = _x('Y/m/d g:i:s A', 'time', 'jigoshop');
+		$format = _x('Y/m/d', 'time', 'jigoshop');
+		// TODO: Apply filter on dates?
+		$fullDate = date($fullFormat, $timestamp);
+		$date = date($format, $timestamp);
+		return '<abbr title="'.$fullDate.'">'.$date.'</abbr>';
+	}
 }
