@@ -178,7 +178,6 @@ class Variable implements Type
 			$item->setName($variation->getTitle());
 			$item->setPrice($variation->getProduct()->getPrice());
 			$item->setQuantity($_POST['quantity']);
-			// TODO: Set tax
 
 			$meta = new Item\Meta();
 			$meta->setKey('variation_id');

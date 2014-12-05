@@ -2,6 +2,7 @@
 
 namespace Jigoshop\Core\Types\Product;
 
+use Jigoshop\Entity\Order\Item;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
 use WPAL\Wordpress;
@@ -59,7 +60,6 @@ class Simple implements Type
 			$item->setPrice($product->getPrice());
 			$item->setQuantity(1);
 			$item->setProduct($product);
-			// TODO: Set tax
 
 			return $item;
 		}
