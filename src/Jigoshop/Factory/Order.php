@@ -205,6 +205,8 @@ class Order implements EntityFactoryInterface
 			$order->addItem($item);
 		}
 
+		$order->setDiscount($cart->getDiscount());
+
 		return $order;
 	}
 

@@ -63,7 +63,7 @@ use Jigoshop\Helper\Render;
 	<tfoot>
 	<tr id="product-subtotal">
 		<?php $productSubtotal = $showWithTax ? $order->getProductSubtotal() + $order->getTotalTax() : $order->getProductSubtotal(); ?>
-		<th scope="row" colspan="5" class="text-right"><?php _e('Products subtotal', 'jigoshop'); ?></th>
+		<th scope="row" colspan="4" class="text-right"><?php _e('Products subtotal', 'jigoshop'); ?></th>
 		<td><?php echo Product::formatPrice($productSubtotal); ?></td>
 	</tr>
 	</tfoot>
@@ -98,6 +98,10 @@ use Jigoshop\Helper\Render;
 					</tr>
 				<?php endif; ?>
 			<?php endforeach; ?>
+			<tr id="cart-discount"<?php $order->getDiscount() == 0 and print ' class="not-active"'; ?>>
+				<th scope="row"><?php _e('Discount', 'jigoshop'); ?></th>
+				<td><?php echo Product::formatPrice($order->getDiscount()); ?></td>
+			</tr>
 			<tr id="cart-total">
 				<th scope="row"><?php _e('Total', 'jigoshop'); ?></th>
 				<td><?php echo Product::formatPrice($order->getTotal()); ?></td>

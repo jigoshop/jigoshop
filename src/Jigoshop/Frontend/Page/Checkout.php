@@ -311,7 +311,7 @@ class Checkout implements PageInterface
 		if (isset($_POST['action']) && $_POST['action'] == 'purchase') {
 			try {
 				$allowRegistration = $this->options->get('shopping.allow_registration');
-				if ($allowRegistration) {
+				if ($allowRegistration && !$this->wp->isUserLoggedIn()) {
 					$this->createUserAccount();
 				}
 
