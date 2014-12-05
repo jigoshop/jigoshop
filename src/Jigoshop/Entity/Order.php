@@ -9,8 +9,8 @@ use Jigoshop\Entity\Order\Status;
 use Jigoshop\Exception;
 use Jigoshop\Payment\Method as PaymentMethod;
 use Jigoshop\Service\TaxServiceInterface;
-use Jigoshop\Shipping\Method as ShippingMethod;
 use Jigoshop\Shipping\Method;
+use Jigoshop\Shipping\Method as ShippingMethod;
 use Monolog\Registry;
 use WPAL\Wordpress;
 
@@ -370,22 +370,6 @@ class Order implements EntityInterface, OrderInterface
 		$this->status = $status;
 
 		if ($currentStatus != $status) {
-			$this->wp->doAction('jigoshop\order\before\\'.$status, $this);
-
-			if ($currentStatus !== null) {
-				$this->wp->doAction('jigoshop\order\\'.$currentStatus.'_to_'.$status, $this);
-			}
-
-			if ($status == Status::COMPLETED) {
-				$this->completedAt = new \DateTime();
-				foreach ($this->getItems() as $item) {
-					/** @var \Jigoshop\Entity\Order\Item $item */
-					$this->wp->doAction('jigoshop\product\sold', $item->getProduct(), $item->getQuantity(), $item);
-				}
-			}
-
-			$this->wp->doAction('jigoshop\order\after\\'.$status, $this);
-
 			$this->updateMessages[] = array(
 				'message' => $message,
 				'old_status' => $currentStatus,

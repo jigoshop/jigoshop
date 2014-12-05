@@ -187,7 +187,7 @@ class Simple extends Product implements Purchasable, Shippable, Saleable
 			$this->stock->setStatus((int)$state['stock_status']);
 		}
 		if (isset($state['stock_sold'])) {
-			$this->stock->addSoldQuantity((int)$state['stock_sold']);
+			$this->stock->setSoldQuantity((int)$state['stock_sold']);
 		}
 	}
 

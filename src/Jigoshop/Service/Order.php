@@ -70,9 +70,6 @@ class Order implements OrderServiceInterface
 	{
 		// Fetch only IDs
 		$query->query_vars['fields'] = 'ids';
-//		$query->query_vars['cache_results'] = false;
-//		$query->query_vars['update_post_term_cache'] = false;
-//		$query->query_vars['update_post_meta_cache'] = false;
 
 		$results = $query->get_posts();
 		$that = $this;
@@ -106,6 +103,8 @@ class Order implements OrderServiceInterface
 		$fields = $object->getStateToSave();
 		$created = false;
 
+		$this->wp->doAction('jigoshop\order\before\\'.$object->getStatus(), $object);
+
 		if (!$object->getId()) {
 			$object->setNumber($this->getNextOrderNumber());
 			$post = $this->wp->wpInsertPost(array(
@@ -137,6 +136,7 @@ class Order implements OrderServiceInterface
 
 		if (isset($fields['update_messages']) && !empty($fields['update_messages'])) {
 			foreach ($fields['update_messages'] as $messages) {
+				$this->wp->doAction('jigoshop\order\\'.$messages['old_status'].'_to_'.$messages['new_status'], $object);
 				$this->addNote($object, sprintf(__('%sOrder status changed from %s to %s.', 'jigoshop'), $messages['message'], Status::getName($messages['old_status']),
 					Status::getName($messages['new_status'])));
 			}
@@ -148,6 +148,8 @@ class Order implements OrderServiceInterface
 		}
 
 		if (isset($fields['items'])) {
+			// TODO: Check again if we have enough stock
+
 			$existing = array_map(function($item){
 				/** @var $item Item */
 				return $item->getId();
@@ -190,6 +192,14 @@ class Order implements OrderServiceInterface
 						'meta_value' => $meta->getValue(),
 					));
 				}
+
+				if ($object->getStatus() == Status::COMPLETED) {
+					$object->setCompletedAt();
+					foreach ($object->getItems() as $item) {
+						/** @var \Jigoshop\Entity\Order\Item $item */
+						$this->wp->doAction('jigoshop\product\sold', $item->getProduct(), $item->getQuantity(), $item);
+					}
+				}
 			}
 
 			unset($fields['items']);
@@ -198,6 +208,8 @@ class Order implements OrderServiceInterface
 		foreach ($fields as $field => $value) {
 			$this->wp->updatePostMeta($object->getId(), $field, $this->wp->getHelpers()->escSql($value));
 		}
+
+		$this->wp->doAction('jigoshop\order\after\\'.$object->getStatus(), $object);
 		// TODO: Reduce items counts
 		// TODO: If configured - send emails on backorders, low stock and out of stock
 		/**

@@ -47,9 +47,18 @@ class StockStatus implements \Serializable
 	/**
 	 * @param int $soldQuantity Number of products sold.
 	 */
+	public function setSoldQuantity($soldQuantity)
+	{
+		$this->soldQuantity = (int)$soldQuantity;
+	}
+
+	/**
+	 * @param int $soldQuantity Number of products sold.
+	 */
 	public function addSoldQuantity($soldQuantity)
 	{
-		$this->soldQuantity += intval($soldQuantity);
+		$this->soldQuantity += (int)$soldQuantity;
+		$this->stock -= (int)$soldQuantity;
 	}
 
 	/**
