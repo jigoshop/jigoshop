@@ -167,11 +167,11 @@ class Cart implements OrderInterface
 
 	/**
 	 * Adds item to the cart.
-	 *
 	 * If item is already present - increases it's quantity.
 	 *
 	 * @param Item $item Item to add to cart.
-	 * @throw Exception On any error.
+	 * @throws NotEnoughStockException When user requests more than we have.
+	 * @throws Exception On any error.
 	 */
 	public function addItem(Item $item)
 	{
@@ -184,6 +184,12 @@ class Cart implements OrderInterface
 
 		if ($quantity <= 0) {
 			throw new Exception(__('Quantity has to be positive number', 'jigoshop'));
+		}
+
+		if ($product->getStock()->getManage()) {
+			if ($quantity > $product->getStock()->getStock()) {
+				throw new NotEnoughStockException($product->getStock()->getStock());
+			}
 		}
 
 		$key = $this->productService->generateItemKey($item);

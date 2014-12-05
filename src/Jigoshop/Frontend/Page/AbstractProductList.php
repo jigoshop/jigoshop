@@ -82,8 +82,12 @@ abstract class AbstractProductList implements PageInterface
 					$this->wp->wpRedirect($url);
 					exit;
 				}
+			} catch(NotEnoughStockException $e) {
+				$message = $this->options->get('products.show_stock')
+					? sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order. We only have %d available at this time. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'), $product->getName(), $e->getMessage())
+					: sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'), $product->getName());
+				$this->messages->addError($message);
 			} catch(Exception $e) {
-				// TODO: Could be improved with `NotEnoughStockException` and others
 				$this->messages->addError(sprintf(__('A problem ocurred when adding to cart: %s', 'jigoshop'), $e->getMessage()), false);
 			}
 		}

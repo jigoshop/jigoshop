@@ -149,7 +149,6 @@ class Order implements EntityFactoryInterface
 	{
 		$customer = $cart->getCustomer();
 		$customer->selectTaxAddress($this->options->get('taxes.shipping') ? 'shipping' : 'billing');
-		// TODO: Check if shipping address and shipping method do not overlap here
 		$address = $this->createAddress($_POST['jigoshop_order']['billing']);
 		$customer->setBillingAddress($address);
 

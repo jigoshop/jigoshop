@@ -8,7 +8,7 @@ use Jigoshop\Exception;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
-use Jigoshop\Service\Email as Service;
+use Jigoshop\Service\EmailServiceInterface as Service;
 use WPAL\Wordpress;
 
 class Email

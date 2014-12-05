@@ -39,9 +39,8 @@ class Formatter
 	{
 		$fullFormat = _x('Y/m/d g:i:s A', 'time', 'jigoshop');
 		$format = _x('Y/m/d', 'time', 'jigoshop');
-		// TODO: Apply filter on dates?
-		$fullDate = date($fullFormat, $timestamp);
-		$date = date($format, $timestamp);
+		$fullDate = apply_filter('jigoshop\formatter\date', date($fullFormat, $timestamp), $fullFormat, $timestamp);
+		$date = apply_filter('jigoshop\formatter\date', date($format, $timestamp), $format, $timestamp);
 		return '<abbr title="'.$fullDate.'">'.$date.'</abbr>';
 	}
 }

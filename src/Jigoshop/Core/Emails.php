@@ -7,7 +7,7 @@ use Jigoshop\Entity\Order;
 use Jigoshop\Entity\Product;
 use Jigoshop\Helper\Country;
 use Jigoshop\Helper\Product as ProductHelper;
-use Jigoshop\Service\Email;
+use Jigoshop\Service\EmailServiceInterface;
 use Jigoshop\Shipping\LocalPickup;
 use WPAL\Wordpress;
 
@@ -16,10 +16,10 @@ class Emails {
 	private $wp;
 	/** @var Options */
 	private $options;
-	/** @var Email */
+	/** @var EmailServiceInterface */
 	private $emailService;
 
-	public function __construct(Wordpress $wp, Options $options, Email $emailService)
+	public function __construct(Wordpress $wp, Options $options, EmailServiceInterface $emailService)
 	{
 		$this->wp = $wp;
 		$this->options = $options;

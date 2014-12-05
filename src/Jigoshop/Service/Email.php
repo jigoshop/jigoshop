@@ -15,7 +15,7 @@ use WPAL\Wordpress;
  *
  * @package Jigoshop\Service
  */
-class Email implements ServiceInterface
+class Email implements EmailServiceInterface
 {
 	/** @var Wordpress */
 	private $wp;
@@ -48,7 +48,7 @@ class Email implements ServiceInterface
 	 * Finds item specified by ID.
 	 *
 	 * @param $id int The ID.
-	 * @return EntityInterface
+	 * @return \Jigoshop\Entity\Email The item.
 	 */
 	public function find($id)
 	{
@@ -65,7 +65,7 @@ class Email implements ServiceInterface
 	 * Finds item for specified WordPress post.
 	 *
 	 * @param $post \WP_Post WordPress post.
-	 * @return EntityInterface Item found.
+	 * @return \Jigoshop\Entity\Email Item found.
 	 */
 	public function findForPost($post)
 	{
@@ -152,7 +152,11 @@ class Email implements ServiceInterface
 		);
 	}
 
-	public function setActions($postId, $hooks)
+	/**
+	 * @param $postId int Email template to add.
+	 * @param $hooks array List of hooks to add to.
+	 */
+	public function addTemplate($postId, $hooks)
 	{
 		$templates = $this->options->get('emails.templates');
 
@@ -171,6 +175,13 @@ class Email implements ServiceInterface
 		$this->options->update('emails.templates', $templates);
 	}
 
+	/**
+	 * Sends specified email to specified address.
+	 *
+	 * @param $hook string Email to send.
+	 * @param array $args Arguments to the email.
+	 * @param $to string Receiver address.
+	 */
 	public function send($hook, array $args = array(), $to)
 	{
 		if ($this->suppress) {

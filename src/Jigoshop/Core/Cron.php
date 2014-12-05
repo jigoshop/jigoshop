@@ -3,7 +3,7 @@
 namespace Jigoshop\Core;
 
 use Jigoshop\Entity\Order\Status;
-use Jigoshop\Service\Email;
+use Jigoshop\Service\EmailServiceInterface;
 use Jigoshop\Service\OrderServiceInterface;
 use WPAL\Wordpress;
 
@@ -15,10 +15,10 @@ class Cron
 	private $options;
 	/** @var OrderServiceInterface */
 	private $orderService;
-	/** @var Email */
+	/** @var EmailServiceInterface */
 	private $emailService;
 
-	public function __construct(Wordpress $wp, Options $options, OrderServiceInterface $orderService, Email $emailService)
+	public function __construct(Wordpress $wp, Options $options, OrderServiceInterface $orderService, EmailServiceInterface $emailService)
 	{
 		$this->wp = $wp;
 		$this->options = $options;

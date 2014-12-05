@@ -3,8 +3,7 @@
 namespace Jigoshop\Core;
 
 use Jigoshop\Core;
-use Jigoshop\Helper\Emails;
-use Jigoshop\Service\Email;
+use Jigoshop\Service\EmailServiceInterface;
 use Monolog\Registry;
 use WPAL\Wordpress;
 
@@ -24,10 +23,10 @@ class Installer
 	private $options;
 	/** @var \Jigoshop\Core\Cron */
 	private $cron;
-	/** @var Email */
+	/** @var EmailServiceInterface */
 	private $emailService;
 
-	public function __construct(Wordpress $wp, Options $options, Cron $cron, Email $emailService)
+	public function __construct(Wordpress $wp, Options $options, Cron $cron, EmailServiceInterface $emailService)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
@@ -348,7 +347,7 @@ class Installer
 			$post_id = $this->wp->wpInsertPost($post_data);
 			$this->wp->updatePostMeta($post_id, 'general.email_subject', $title);
 			if ($email == 'new_order_admin_notification') {
-				$this->emailService->setActions($post_id, array(
+				$this->emailService->addTemplate($post_id, array(
 					'admin_order_status_pending_to_processing',
 					'admin_order_status_pending_to_completed',
 					'admin_order_status_pending_to_on-hold'
@@ -359,7 +358,7 @@ class Installer
 					'admin_order_status_pending_to_on-hold'
 				));
 			} else {
-				$this->emailService->setActions($post_id, array($email));
+				$this->emailService->addTemplate($post_id, array($email));
 				$this->wp->updatePostMeta($post_id, 'general.email_actions', array($email));
 			}
 		}

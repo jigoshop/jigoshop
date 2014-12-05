@@ -24,6 +24,8 @@ class Coupon implements CouponServiceInterface
 	private $options;
 	/** @var Factory */
 	private $factory;
+	/** @var array */
+	private $types;
 
 	public function __construct(Wordpress $wp, Options $options, Factory $factory)
 	{
@@ -123,15 +125,16 @@ class Coupon implements CouponServiceInterface
 	 */
 	public function getTypes()
 	{
-		// TODO: Call filter only single time
-		$types = array(
-			Entity::FIXED_CART => __('Cart Discount', 'jigoshop'),
-			Entity::PERCENT_CART => __('Cart % Discount', 'jigoshop'),
-			Entity::FIXED_PRODUCT => __('Product Discount', 'jigoshop'),
-			Entity::PERCENT_PRODUCT => __('Product % Discount', 'jigoshop')
-		);
+		if ($this->types === null) {
+			$this->types = $this->wp->applyFilters('jigoshop\service\coupon\types', array(
+				Entity::FIXED_CART => __('Cart Discount', 'jigoshop'),
+				Entity::PERCENT_CART => __('Cart % Discount', 'jigoshop'),
+				Entity::FIXED_PRODUCT => __('Product Discount', 'jigoshop'),
+				Entity::PERCENT_PRODUCT => __('Product % Discount', 'jigoshop')
+			));
+		}
 
-		return $this->wp->applyFilters('jigoshop\service\coupon\types', $types);
+		return $this->types;
 	}
 
 	/**
@@ -160,9 +163,25 @@ class Coupon implements CouponServiceInterface
 			$coupons[] = $this->findByCode($code);
 		}
 
-		// TODO: Filter by dates (or maybe somehow in DB?)
+		// TODO: Filter by dates somehow in DB?
+		$time = time();
+		$coupons = array_filter($coupons, function($coupon) use ($time) {
+			/** @var $coupon \Jigoshop\Entity\Coupon */
+			if ($coupon === null) {
+				return false;
+			}
 
-		return array_filter($coupons);
+			if ($coupon->getFrom() !== null && $coupon->getFrom()->getTimestamp() < $time) {
+				return false;
+			}
+			if ($coupon->getTo() !== null && $coupon->getTo()->getTimestamp() > $time) {
+				return false;
+			}
+
+			return true;
+		});
+
+		return $coupons;
 	}
 
 	/**
