@@ -122,10 +122,13 @@ class JigoshopInit
 		$interceptor->run();
 		/** @var \Jigoshop\Core\Options $options */
 		$options = $this->container->get('jigoshop.options');
+		/** @var \WPAL\Wordpress $wp */
+		$wp = $this->container->get('wpal');
 		Jigoshop\Helper\Country::setOptions($options);
 		Jigoshop\Helper\Currency::setOptions($options);
 		Jigoshop\Helper\Product::setOptions($options);
 		Jigoshop\Helper\Order::setOptions($options);
+		Jigoshop\Entity\Order\Status::setWordpress($wp);
 
 		/** @var \Jigoshop\Core $jigoshop */
 		$jigoshop = $this->container->get('jigoshop');

@@ -3,6 +3,7 @@
 namespace Jigoshop\Core;
 
 use Jigoshop\Entity\Order\Status;
+use Jigoshop\Service\Email;
 use Jigoshop\Service\OrderServiceInterface;
 use WPAL\Wordpress;
 
@@ -13,13 +14,16 @@ class Cron
 	/** @var Options */
 	private $options;
 	/** @var OrderServiceInterface */
-	private $service;
+	private $orderService;
+	/** @var Email */
+	private $emailService;
 
-	public function __construct(Wordpress $wp, Options $options, OrderServiceInterface $service)
+	public function __construct(Wordpress $wp, Options $options, OrderServiceInterface $orderService, Email $emailService)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
-		$this->service = $service;
+		$this->orderService = $orderService;
+		$this->emailService = $emailService;
 		$this->_scheduleEvents();
 
 		$wp->addAction('jigoshop\cron\pending_orders', array($this, 'updatePendingOrders'));
@@ -53,19 +57,14 @@ class Cron
 	public function updatePendingOrders()
 	{
 		if ($this->options->get('advanced.automatic_reset')) {
-			$orders = $this->service->findOldPending();
-
-			// TODO: Disable notification of the user
-//			$this->wp->removeAction('jigoshop\order\status\pending_to_on-hold', 'jigoshop_processing_order_customer_notification');
+			$orders = $this->orderService->findOldPending();
 
 			foreach ($orders as $order) {
+				$this->emailService->suppressNextEmail();
 				/** @var $order \Jigoshop\Entity\Order */
 				$order->setStatus(Status::ON_HOLD, __('Archived due to order being in pending state for a month or longer.', 'jigoshop'));
-				$this->service->save($order);
+				$this->orderService->save($order);
 			}
-
-			// TODO: Enable notification of the user
-//			$this->wp->addAction('jigoshop\order\status\pending_to_on-hold', 'jigoshop_processing_order_customer_notification');
 		}
 	}
 
@@ -77,19 +76,14 @@ class Cron
 	public function completeProcessingOrders()
 	{
 		if ($this->options->get('advanced.automatic_complete')) {
-			$orders = $this->service->findOldProcessing();
-
-			// TODO: Disable notification of the user
-//			$this->wp->removeAction('jigoshop\order\status\completed', 'jigoshop_processing_order_customer_notification');
+			$orders = $this->orderService->findOldProcessing();
 
 			foreach ($orders as $order) {
+				$this->emailService->suppressNextEmail();
 				/** @var $order \Jigoshop\Entity\Order */
 				$order->setStatus(Status::COMPLETED, __('Completed due to order being in processing state for a month or longer.', 'jigoshop'));
-				$this->service->save($order);
+				$this->orderService->save($order);
 			}
-
-			// TODO: Enable notification of the user
-//			$this->wp->addAction('jigoshop\order\status\completed', 'jigoshop_processing_order_customer_notification');
 		}
 	}
 }

@@ -37,7 +37,7 @@ class Installer
 
 	public function install()
 	{
-		$db = false;//$this->wp->getOption('jigoshop_database_version'); // TODO: Restore DB version checking
+		$db = $this->wp->getOption('jigoshop_database_version');
 
 		if ($db === false) {
 			Registry::getInstance('jigoshop')->addNotice('Installing Jigoshop.');

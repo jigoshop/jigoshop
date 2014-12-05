@@ -78,20 +78,19 @@ class Permalinks
 	{
 		echo '<p>'.__('These settings control the permalinks used for products. These settings only apply when <strong>not using "default" permalinks above</strong>.', 'jigoshop').'</p>';
 
-		// TODO: Remove WP calls
-		$permalink = trailingslashit($this->options->get('permalinks.product'));
+		$helpers = $this->wp->getHelpers();
+		$permalink = $helpers->trailingslashit($this->options->get('permalinks.product'));
 
 		// Get shop page
 		$shopPageId = $this->options->getPageId(Pages::SHOP);
 		$base = urldecode(($shopPageId > 0 && $this->wp->getPost($shopPageId)) ? $this->wp->getPageUri($shopPageId) : _x('shop', 'default-slug', 'jigoshop'));
 		$productBase = _x('product', 'default-slug', 'jigoshop');
 
-		// TODO: Remove WP calls
 		$structures = array(
 			0 => '',
-			1 => '/'.trailingslashit($productBase),
-			2 => '/'.trailingslashit($base),
-			3 => '/'.trailingslashit($base).'%'.Types::PRODUCT_CATEGORY.'%'
+			1 => '/'.$helpers->trailingslashit($productBase),
+			2 => '/'.$helpers->trailingslashit($base),
+			3 => '/'.$helpers->trailingslashit($base).'%'.Types::PRODUCT_CATEGORY.'%'
 		);
 		Render::output('admin/permalinks', array(
 			'permalink' => $permalink,
@@ -115,9 +114,9 @@ class Permalinks
 
 			$permalinks = $this->options->get('permalinks');
 
-			// TODO: Remove WP calls
-			$permalinks['category'] = untrailingslashit($categorySlug);
-			$permalinks['tag'] = untrailingslashit($tagSlug);
+			$helpers = $this->wp->getHelpers();
+			$permalinks['category'] = $helpers->untrailingslashit($categorySlug);
+			$permalinks['tag'] = $helpers->untrailingslashit($tagSlug);
 
 			// Product base
 			$product_permalink = trim(strip_tags($_POST['product_permalink']));
@@ -134,8 +133,7 @@ class Permalinks
 				$product_permalink = false;
 			}
 
-			// TODO: Remove WP calls
-			$permalinks['product'] = untrailingslashit($product_permalink);
+			$permalinks['product'] = $helpers->untrailingslashit($product_permalink);
 
 			// Shop base may require verbose page rules if nesting pages
 			$shopPageId = $this->options->getPageId(Pages::SHOP);

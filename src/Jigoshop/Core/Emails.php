@@ -150,9 +150,9 @@ class Emails {
 		$billingAddress = $order->getCustomer()->getBillingAddress();
 		$shippingAddress = $order->getCustomer()->getShippingAddress();
 
-		return apply_filters('jigoshop_order_email_variables', array(
+		return $this->wp->applyFilters('jigoshop\emails\order_variables', array(
 			'order_number' => $order->getNumber(),
-			'order_date' => date_i18n(get_option('date_format')), // TODO: Replace with WPAL calls
+			'order_date' => $this->wp->getHelpers()->dateI18n($this->wp->getOption('date_format')),
 			'shop_name' => $this->options->get('general.company_name'),
 			'shop_address_1' => $this->options->get('general.company_address_1'),
 			'shop_address_2' => $this->options->get('general.company_address_2'),

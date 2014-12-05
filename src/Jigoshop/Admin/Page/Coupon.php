@@ -55,12 +55,11 @@ class Coupon
 	public function ajaxFindCategory()
 	{
 		try {
-			// TODO: Remove WP calls
 			if (isset($_POST['query'])) {
 				$query = trim(htmlspecialchars(strip_tags($_POST['query'])));
 				$categories = array();
 				if (!empty($query)) {
-					$categories = get_categories(array(
+					$categories = $this->wp->getCategories(array(
 						'taxonomy' => Types\ProductCategory::NAME,
 						'name__like' => $query,
 					));
@@ -68,7 +67,7 @@ class Coupon
 			} else if (isset($_POST['value'])) {
 				$query = explode(',', trim(htmlspecialchars(strip_tags($_POST['value']))));
 				foreach ($query as $id) {
-					$categories[] = get_term($id, Types\ProductCategory::NAME);
+					$categories[] = $this->wp->getTerm($id, Types\ProductCategory::NAME);
 				}
 			} else {
 				throw new Exception(__('Neither query nor value is provided to find categories.', 'jigoshop'));

@@ -25,6 +25,8 @@ class Email implements ServiceInterface
 	private $factory;
 	/** @var array */
 	private $mails = array();
+	/** @var bool */
+	private $suppress = false;
 
 	public function __construct(Wordpress $wp, Options $options, Factory $factory)
 	{
@@ -32,6 +34,14 @@ class Email implements ServiceInterface
 		$this->options = $options;
 		$this->factory = $factory;
 		$wp->addAction('save_post_'.Types\Email::NAME, array($this, 'savePost'), 10);
+	}
+
+	/**
+	 * Suppresses sending next email.
+	 */
+	public function suppressNextEmail()
+	{
+		$this->suppress = true;
 	}
 
 	/**
@@ -163,6 +173,11 @@ class Email implements ServiceInterface
 
 	public function send($hook, array $args = array(), $to)
 	{
+		if ($this->suppress) {
+			$this->suppress = false;
+			return;
+		}
+
 		$templates = $this->options->get('emails.templates');
 		if (!$templates[$hook]) {
 			return;

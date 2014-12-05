@@ -567,7 +567,7 @@ class Order implements EntityInterface, OrderInterface
 				'method' => $this->shippingMethod ? $this->shippingMethod->getState() : false,
 				'price' => $this->shippingPrice,
 			),
-			'payment' => $this->paymentMethod ? $this->paymentMethod->getId() : false, // TODO: Maybe a state as for shipping methods?
+			'payment' => $this->paymentMethod ? $this->paymentMethod->getId() : false,
 			'customer_note' => $this->customerNote,
 			'total' => $this->total,
 			'subtotal' => $this->subtotal,

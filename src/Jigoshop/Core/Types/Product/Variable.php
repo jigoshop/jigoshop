@@ -113,7 +113,7 @@ class Variable implements Type
 			return in_array($type->getId(), $allowedSubtypes);
 		});
 
-		// TODO: Move this to Installer class (somehow).
+		// TODO: Move this to Installer class - new compiler pass with installer extensions.
 		$this->createTables();
 	}
 

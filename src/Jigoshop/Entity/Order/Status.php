@@ -2,6 +2,8 @@
 
 namespace Jigoshop\Entity\Order;
 
+use WPAL\Wordpress;
+
 /**
  * Order statuses.
  *
@@ -22,6 +24,16 @@ class Status
 //			'voided' => __('Voided', 'jigoshop'), /* can be set from PayPal, not currently shown anywhere -JAP- */
 
 	private static $statuses;
+	/** @var Wordpress */
+	private static $wp;
+
+	/**
+	 * @param Wordpress $wp
+	 */
+	public static function setWordpress($wp)
+	{
+		self::$wp = $wp;
+	}
 
 	/**
 	 * Checks if selected status exists.
@@ -42,8 +54,7 @@ class Status
 	public static function getStatuses()
 	{
 		if (self::$statuses === null) {
-			// TODO: Replace with WPAL call
-			self::$statuses = apply_filters('jigoshop\order\statuses', array(
+			self::$statuses = self::$wp->applyFilters('jigoshop\order\statuses', array(
 				Status::PENDING => __('Pending', 'jigoshop'),
 				Status::ON_HOLD => __('On-Hold', 'jigoshop'),
 				Status::PROCESSING => __('Processing', 'jigoshop'),
