@@ -9,7 +9,7 @@ use Jigoshop\Helper\Formatter;
 use Jigoshop\Helper\Product as ProductHelper;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
-use Jigoshop\Service\Coupon;
+use Jigoshop\Service\CouponServiceInterface;
 use WPAL\Wordpress;
 
 class Coupons
@@ -18,10 +18,10 @@ class Coupons
 	private $wp;
 	/** @var \Jigoshop\Core\Options */
 	private $options;
-	/** @var \Jigoshop\Service\Coupon */
+	/** @var \Jigoshop\Service\CouponServiceInterface */
 	private $couponService;
 
-	public function __construct(Wordpress $wp, Options $options, Coupon $couponService, Styles $styles, Scripts $scripts)
+	public function __construct(Wordpress $wp, Options $options, CouponServiceInterface $couponService, Styles $styles, Scripts $scripts)
 	{
 		$this->wp = $wp;
 		$this->options = $options;

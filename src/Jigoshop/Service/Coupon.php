@@ -15,7 +15,7 @@ use WPAL\Wordpress;
  *
  * @package Jigoshop\Service
  */
-class Coupon implements ServiceInterface
+class Coupon implements CouponServiceInterface
 {
 	/** @var Wordpress */
 	private $wp;
@@ -117,6 +117,9 @@ class Coupon implements ServiceInterface
 		$this->save($coupon);
 	}
 
+	/**
+	 * @return array List of available coupon types.
+	 */
 	public function getTypes()
 	{
 		// TODO: Call filter only single time

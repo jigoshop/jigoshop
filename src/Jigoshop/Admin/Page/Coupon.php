@@ -9,7 +9,7 @@ use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
 use Jigoshop\Payment\Method;
-use Jigoshop\Service\Coupon as Service;
+use Jigoshop\Service\CouponServiceInterface as Service;
 use Jigoshop\Service\PaymentServiceInterface;
 use WPAL\Wordpress;
 
