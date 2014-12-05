@@ -9,8 +9,8 @@ use Jigoshop\Entity\Order\Status;
 use Jigoshop\Exception;
 use Jigoshop\Payment\Method as PaymentMethod;
 use Jigoshop\Service\TaxServiceInterface;
-use Jigoshop\Shipping\Method;
 use Jigoshop\Shipping\Method as ShippingMethod;
+use Jigoshop\Shipping\Method;
 use Monolog\Registry;
 use WPAL\Wordpress;
 
@@ -602,7 +602,7 @@ class Order implements EntityInterface, OrderInterface
 				$this->addItem($item);
 			}
 		}
-		if (isset($state['customer'])) {
+		if (isset($state['customer']) && $state['customer'] !== false) {
 			$this->customer = $state['customer'];
 		}
 		if (isset($state['shipping']) && is_array($state['shipping'])) {
