@@ -192,13 +192,13 @@ class Order implements OrderServiceInterface
 						'meta_value' => $meta->getValue(),
 					));
 				}
+			}
 
-				if ($object->getStatus() == Status::COMPLETED) {
-					$object->setCompletedAt();
-					foreach ($object->getItems() as $item) {
-						/** @var \Jigoshop\Entity\Order\Item $item */
-						$this->wp->doAction('jigoshop\product\sold', $item->getProduct(), $item->getQuantity(), $item);
-					}
+			if ($object->getStatus() == Status::COMPLETED) {
+				$object->setCompletedAt();
+				foreach ($object->getItems() as $item) {
+					/** @var \Jigoshop\Entity\Order\Item $item */
+					$this->wp->doAction('jigoshop\product\sold', $item->getProduct(), $item->getQuantity(), $item);
 				}
 			}
 
