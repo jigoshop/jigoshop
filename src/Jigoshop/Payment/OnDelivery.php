@@ -4,6 +4,7 @@ namespace Jigoshop\Payment;
 
 use Jigoshop\Core\Options;
 use Jigoshop\Entity\Order;
+use Jigoshop\Exception;
 use WPAL\Wordpress;
 
 class OnDelivery implements Method
@@ -103,7 +104,7 @@ class OnDelivery implements Method
 	 */
 	public function process($order)
 	{
-		$order->updateStatus(Order\Status::PROCESSING, __('Payment on delivery.', 'jigoshop'));
+		$order->setStatus(Order\Status::PROCESSING, __('Payment on delivery.', 'jigoshop'));
 		return '';
 	}
 }

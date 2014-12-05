@@ -227,7 +227,7 @@ class PayPal implements Method, Processable, ContainerAware
 				'charset' => 'UTF-8',
 				'rm' => 2,
 				'upload' => 1,
-				'return' => $this->wp->addQueryArg(array('order' => $order->getId(), 'key' => ''), $this->wp->getPermalink($thankYouPage)), // TODO: Add order key for security
+				'return' => $this->wp->getHelpers()->addQueryArg(array('order' => $order->getId(), 'key' => ''), $this->wp->getPermalink($thankYouPage)), // TODO: Add order key for security
 				'cancel_return' => OrderHelper::getCancelLink($order),
 				// Order key
 				'custom' => $order->getId(),
@@ -357,7 +357,7 @@ class PayPal implements Method, Processable, ContainerAware
 //		}
 
 		$args = $this->wp->applyFilters('jigoshop\paypal\args', $args);
-		$order->updateStatus(Order\Status::PENDING, __('Waiting for PayPal payment.', 'jigoshop'));
+		$order->setStatus(Order\Status::PENDING, __('Waiting for PayPal payment.', 'jigoshop'));
 
 		return $url.http_build_query($args);
 	}
@@ -387,44 +387,44 @@ class PayPal implements Method, Processable, ContainerAware
 						case 'completed':
 							if (!in_array(strtolower($posted['txn_type']), $accepted_types)) {
 								// Put this order on-hold for manual checking
-								$order->updateStatus(Order\Status::ON_HOLD, sprintf(__('PayPal Validation Error: Unknown "txn_type" of "%s" for Order ID: %s.', 'jigoshop'), $posted['txn_type'], $posted['custom']));
+								$order->setStatus(Order\Status::ON_HOLD, sprintf(__('PayPal Validation Error: Unknown "txn_type" of "%s" for Order ID: %s.', 'jigoshop'), $posted['txn_type'], $posted['custom']));
 
 								return;
 							}
 
 							if ($order->getNumber() !== $posted['invoice']) {
 								// Put this order on-hold for manual checking
-								$order->updateStatus(Order\Status::ON_HOLD, sprintf(__('PayPal Validation Error: Order Invoice Number does NOT match PayPal posted invoice (%s) for Order ID: .', 'jigoshop'), $posted['invoice'], $posted['custom']));
+								$order->setStatus(Order\Status::ON_HOLD, sprintf(__('PayPal Validation Error: Order Invoice Number does NOT match PayPal posted invoice (%s) for Order ID: .', 'jigoshop'), $posted['invoice'], $posted['custom']));
 								exit;
 							}
 
 							// Validate Amount
 							if (number_format($order->getTotal(), $this->decimals, '.', '') != $posted['mc_gross']) {
 								// Put this order on-hold for manual checking
-								$order->updateStatus(Order\Status::ON_HOLD, sprintf(__('PayPal Validation Error: Payment amounts do not match initial order (gross %s).', 'jigoshop'), $posted['mc_gross']));
+								$order->setStatus(Order\Status::ON_HOLD, sprintf(__('PayPal Validation Error: Payment amounts do not match initial order (gross %s).', 'jigoshop'), $posted['mc_gross']));
 								exit;
 							}
 
 							if (strcasecmp(trim($posted['business']), trim($merchant)) != 0) {
 								// Put this order on-hold for manual checking
-								$order->updateStatus(Order\Status::ON_HOLD, sprintf(__('PayPal Validation Error: Payment Merchant email received does not match PayPal Gateway settings. (%s)', 'jigoshop'), $posted['business']));
+								$order->setStatus(Order\Status::ON_HOLD, sprintf(__('PayPal Validation Error: Payment Merchant email received does not match PayPal Gateway settings. (%s)', 'jigoshop'), $posted['business']));
 								exit;
 							}
 
 							if ($posted['mc_currency'] != $this->options->get('general.currency')) {
 								// Put this order on-hold for manual checking
-								$order->updateStatus(Order\Status::ON_HOLD, sprintf(__('PayPal Validation Error: Payment currency received (%s) does not match Shop currency.', 'jigoshop'), $posted['mc_currency']));
+								$order->setStatus(Order\Status::ON_HOLD, sprintf(__('PayPal Validation Error: Payment currency received (%s) does not match Shop currency.', 'jigoshop'), $posted['mc_currency']));
 								exit;
 							}
 
-							$order->updateStatus(Order\Status::PROCESSING, __('PayPal payment completed', 'jigoshop'));
+							$order->setStatus(Order\Status::PROCESSING, __('PayPal payment completed', 'jigoshop'));
 							break;
 						case 'denied':
 						case 'expired':
 						case 'failed':
 						case 'voided':
 							// Failed order
-							$order->updateStatus(Order\Status::ON_HOLD, sprintf(__('Payment %s via PayPal.', 'jigoshop'), strtolower($posted['payment_status'])));
+							$order->setStatus(Order\Status::ON_HOLD, sprintf(__('Payment %s via PayPal.', 'jigoshop'), strtolower($posted['payment_status'])));
 							break;
 						case 'refunded':
 						case 'reversed':

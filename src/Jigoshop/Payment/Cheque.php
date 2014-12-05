@@ -4,6 +4,7 @@ namespace Jigoshop\Payment;
 
 use Jigoshop\Core\Options;
 use Jigoshop\Entity\Order;
+use Jigoshop\Exception;
 use WPAL\Wordpress;
 
 class Cheque implements Method
@@ -103,7 +104,7 @@ class Cheque implements Method
 	 */
 	public function process($order)
 	{
-		$order->updateStatus(Order\Status::ON_HOLD, __('Waiting for cheque to arrive.', 'jigoshop'));
+		$order->setStatus(Order\Status::ON_HOLD, __('Waiting for cheque to arrive.', 'jigoshop'));
 		return '';
 	}
 }
