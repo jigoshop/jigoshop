@@ -62,6 +62,7 @@ services:
       - '@jigoshop.service.order'
       - '@jigoshop.service.shipping'
       - '@jigoshop.service.tax'
+      - '@jigoshop.service.coupon'
       - '@jigoshop.helper.styles'
       - '@jigoshop.helper.scripts'
   jigoshop.page.checkout:

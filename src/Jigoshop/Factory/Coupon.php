@@ -35,6 +35,8 @@ class Coupon implements EntityFactoryInterface
 			$helpers = $this->wp->getHelpers();
 			$coupon->setTitle($helpers->sanitizeTitle($_POST['post_title']));
 
+			$_POST['jigoshop_coupon']['individual_use'] = $_POST['jigoshop_coupon']['individual_use'] == 'on';
+			$_POST['jigoshop_coupon']['free_shipping'] = $_POST['jigoshop_coupon']['free_shipping'] == 'on';
 			$_POST['jigoshop_coupon']['products'] = array_filter(explode(',',$_POST['jigoshop_coupon']['products']));
 			$_POST['jigoshop_coupon']['excluded_products'] = array_filter(explode(',', $_POST['jigoshop_coupon']['excluded_products']));
 			$_POST['jigoshop_coupon']['categories'] = array_filter(explode(',', $_POST['jigoshop_coupon']['categories']));

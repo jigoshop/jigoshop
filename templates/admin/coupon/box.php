@@ -60,7 +60,7 @@ use Jigoshop\Admin\Helper\Forms;
 			'description' => sprintf(__('Times used: %s','jigoshop'), $coupon->getUsage()),
 			'tip' => __('Control how many times this coupon may be used.', 'jigoshop'),
 			'placeholder' => 0,
-			'value' => $coupon->getAmount(),
+			'value' => $coupon->getUsageLimit(),
 		)); ?>
 		<?php Forms::checkbox(array(
 			'name' => 'jigoshop_coupon[individual_use]',

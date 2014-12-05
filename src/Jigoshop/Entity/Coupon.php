@@ -2,6 +2,8 @@
 
 namespace Jigoshop\Entity;
 
+use Jigoshop\Entity\Order\Item;
+
 /**
  * Shop coupon entity.
  *
@@ -9,6 +11,11 @@ namespace Jigoshop\Entity;
  */
 class Coupon implements EntityInterface
 {
+	const FIXED_CART = 'fixed_cart';
+	const PERCENT_CART = 'percent_cart';
+	const FIXED_PRODUCT = 'fixed_product';
+	const PERCENT_PRODUCT = 'percent_product';
+
 	/** @var int */
 	private $id;
 	/** @var string */
@@ -17,7 +24,7 @@ class Coupon implements EntityInterface
 	private $type;
 	/** @var string */
 	private $code;
-	/** @var string */
+	/** @var float */
 	private $amount;
 	/** @var \DateTime */
 	private $from;
@@ -476,5 +483,57 @@ class Coupon implements EntityInterface
 		if (isset($state['payment_methods'])) {
 			$this->paymentMethods = $state['payment_methods'];
 		}
+	}
+
+	/**
+	 * @param $order OrderInterface
+	 * @return float
+	 */
+	public function getDiscount($order)
+	{
+		switch ($this->type) {
+			case self::FIXED_CART:
+				return $this->amount;
+			case self::PERCENT_CART:
+				return $this->amount * $order->getSubtotal() / 100;
+			case self::FIXED_PRODUCT:
+				$discount = 0.0;
+				foreach ($order->getItems() as $item) {
+					/** @var $item Item */
+					if ($this->_productMatchesCoupon($item->getProduct())) {
+						$discount += $item->getQuantity() * $this->amount;
+					}
+				}
+
+				return $discount;
+			case self::PERCENT_PRODUCT:
+				$discount = 0.0;
+				foreach ($order->getItems() as $item) {
+					/** @var $item Item */
+					if ($this->_productMatchesCoupon($item->getProduct())) {
+						$discount += $this->amount * $item->getCost() / 100;
+					}
+				}
+
+				return $discount;
+		}
+	}
+
+	/**
+	 * @param $product Product Product to check.
+	 * @return bool Is product good for the coupon.
+	 */
+	private function _productMatchesCoupon($product) {
+		if (!empty($this->products) && in_array($product->getId(), $this->products)) {
+			return true;
+		} else if (!empty($this->excludedProducts) && !in_array($product->getId(), $this->excludedProducts)) {
+			return true;
+		} else if (!empty($this->categories) && in_array($product->getCategories(), $this->categories)) {
+			return true;
+		} else if (!empty($this->excludedCategories) && !in_array($product->getCategories(), $this->excludedCategories)) {
+			return true;
+		}
+
+		return false;
 	}
 }

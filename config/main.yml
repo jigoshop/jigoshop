@@ -80,6 +80,7 @@ services:
       - '@jigoshop.service.product'
       - '@jigoshop.service.tax'
       - '@jigoshop.service.shipping'
+      - '@jigoshop.service.coupon'
   jigoshop.permalinks:
     class: Jigoshop\Core\Permalinks
     arguments:

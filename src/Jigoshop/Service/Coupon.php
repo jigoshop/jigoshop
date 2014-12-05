@@ -4,6 +4,7 @@ namespace Jigoshop\Service;
 
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
+use Jigoshop\Entity\Coupon as Entity;
 use Jigoshop\Entity\EntityInterface;
 use Jigoshop\Factory\Coupon as Factory;
 use WPAL\Wordpress;
@@ -86,7 +87,7 @@ class Coupon implements CouponServiceInterface
 	 */
 	public function save(EntityInterface $object)
 	{
-		if (!($object instanceof \Jigoshop\Entity\Coupon)) {
+		if (!($object instanceof Entity)) {
 			throw new Exception('Trying to save not a coupon!');
 		}
 
@@ -124,17 +125,17 @@ class Coupon implements CouponServiceInterface
 	{
 		// TODO: Call filter only single time
 		$types = array(
-			'fixed_cart' => __('Cart Discount', 'jigoshop'),
-			'percent' => __('Cart % Discount', 'jigoshop'),
-			'fixed_product' => __('Product Discount', 'jigoshop'),
-			'percent_product' => __('Product % Discount', 'jigoshop')
+			Entity::FIXED_CART => __('Cart Discount', 'jigoshop'),
+			Entity::PERCENT_CART => __('Cart % Discount', 'jigoshop'),
+			Entity::FIXED_PRODUCT => __('Product Discount', 'jigoshop'),
+			Entity::PERCENT_PRODUCT => __('Product % Discount', 'jigoshop')
 		);
 
 		return $this->wp->applyFilters('jigoshop\service\coupon\types', $types);
 	}
 
 	/**
-	 * @param $coupon \Jigoshop\Entity\Coupon
+	 * @param $coupon Entity
 	 * @return string Type name.
 	 */
 	public function getType($coupon)
@@ -145,5 +146,42 @@ class Coupon implements CouponServiceInterface
 		}
 
 		return $types[$coupon->getType()];
+	}
+
+	/**
+	 * @param array $codes List of codes to find.
+	 * @return array Found coupons.
+	 */
+	public function getByCodes(array $codes)
+	{
+		$coupons = array();
+
+		foreach ($codes as $code) {
+			$coupons[] = $this->findByCode($code);
+		}
+
+		// TODO: Filter by dates (or maybe somehow in DB?)
+
+		return array_filter($coupons);
+	}
+
+	/**
+	 * @param $code string Code of the coupon to find.
+	 * @return \Jigoshop\Entity\Coupon Coupon found.
+	 */
+	public function findByCode($code)
+	{
+		$query = new \WP_Query(array(
+			'post_type' => Types::COUPON,
+			'name' => $code,
+		));
+
+		$results = $this->findByQuery($query);
+
+		if (count($results) > 0) {
+			return $results[0];
+		}
+
+		return null;
 	}
 }
