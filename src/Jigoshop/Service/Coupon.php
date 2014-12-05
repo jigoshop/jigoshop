@@ -94,9 +94,9 @@ class Coupon implements ServiceInterface
 
 		$fields = $object->getStateToSave();
 
-		if (isset($fields['id']) || isset($fields['title'])) {
-			// We do not need to save ID and title as they are saved by WordPress itself.
-			unset($fields['id'], $fields['title']);
+		if (isset($fields['id']) || isset($fields['title']) || isset($fields['code'])) {
+			// We do not need to save ID, title and code (post name) as they are saved by WordPress itself.
+			unset($fields['id'], $fields['title'], $fields['code']);
 		}
 
 		foreach ($fields as $field => $value) {
@@ -115,5 +115,18 @@ class Coupon implements ServiceInterface
 	{
 		$coupon = $this->factory->create($id);
 		$this->save($coupon);
+	}
+
+	public function getTypes()
+	{
+		// TODO: Call filter only single time
+		$types = array(
+			'fixed_cart' => __('Cart Discount', 'jigoshop'),
+			'percent' => __('Cart % Discount', 'jigoshop'),
+			'fixed_product' => __('Product Discount', 'jigoshop'),
+			'percent_product' => __('Product % Discount', 'jigoshop')
+		);
+
+		return $this->wp->applyFilters('jigoshop\service\coupon\types', $types);
 	}
 }

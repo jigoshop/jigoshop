@@ -35,6 +35,12 @@ class Coupon implements EntityFactoryInterface
 			$helpers = $this->wp->getHelpers();
 			$coupon->setTitle($helpers->sanitizeTitle($_POST['post_title']));
 
+			$_POST['jigoshop_coupon']['products'] = array_filter(explode(',',$_POST['jigoshop_coupon']['products']));
+			$_POST['jigoshop_coupon']['excluded_products'] = array_filter(explode(',', $_POST['jigoshop_coupon']['excluded_products']));
+			$_POST['jigoshop_coupon']['categories'] = array_filter(explode(',', $_POST['jigoshop_coupon']['categories']));
+			$_POST['jigoshop_coupon']['excluded_categories'] = array_filter(explode(',', $_POST['jigoshop_coupon']['excluded_categories']));
+			$_POST['jigoshop_coupon']['payment_methods'] = array_filter(explode(',', $_POST['jigoshop_coupon']['payment_methods']));
+
 			$coupon->restoreState($_POST['jigoshop_coupon']);
 		}
 
@@ -59,6 +65,7 @@ class Coupon implements EntityFactoryInterface
 
 			$coupon->setId($post->ID);
 			$coupon->setTitle($post->post_title);
+			$coupon->setCode($post->post_name);
 
 			$state['products'] = unserialize($state['products']);
 			$state['excluded_products'] = unserialize($state['excluded_products']);

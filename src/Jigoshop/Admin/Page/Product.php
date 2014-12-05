@@ -233,22 +233,38 @@ class Product
 
 	public function ajaxFindProduct()
 	{
-		$query = trim(htmlspecialchars(strip_tags($_POST['product'])));
-		$products = array();
-		if (!empty($query)) {
-			$products = $this->productService->findLike($query);
-		}
+		try {
+			if (isset($_POST['query'])) {
+				$query = trim(htmlspecialchars(strip_tags($_POST['query'])));
+				$products = array();
+				if (!empty($query)) {
+					$products = $this->productService->findLike($query);
+				}
+			} else if (isset($_POST['value'])) {
+				$query = explode(',', trim(htmlspecialchars(strip_tags($_POST['value']))));
+				foreach ($query as $id) {
+					$products[] = $this->productService->find($id);
+				}
+			} else {
+				throw new Exception(__('Neither query nor value is provided to find products.', 'jigoshop'));
+			}
 
-		$result = array(
-			'success' => true,
-			'results' => array_map(function($item){
-				/** @var $item Product */
-				return array(
-					'id' => $item->getId(),
-					'text' => $item->getName(),
-				);
-			}, $products),
-		);
+			$result = array(
+				'success' => true,
+				'results' => array_map(function ($item){
+					/** @var $item Product */
+					return array(
+						'id' => $item->getId(),
+						'text' => $item->getName(),
+					);
+				}, $products),
+			);
+		} catch(Exception $e) {
+			$result = array(
+				'success' => false,
+				'error' => $e->getMessage(),
+			);
+		}
 
 		echo json_encode($result);
 		exit;

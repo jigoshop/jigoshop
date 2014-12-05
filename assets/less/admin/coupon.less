@@ -1,0 +1,35 @@
+@import '../../bower/bootstrap/less/variables';
+@import '../../bower/bootstrap/less/mixins';
+@import '../../bower/bootstrap/less/glyphicons';
+
+#poststuff .inside {
+  margin: 0;
+  padding: 0;
+}
+
+.jigoshop {
+  @import '../../bower/bootstrap/less/badges';
+  @import '../../bower/bootstrap/less/grid';
+  @import '../../bower/bootstrap/less/forms';
+  @import '../../bower/bootstrap/less/tables';
+  @import '../../bower/bootstrap/less/scaffolding';
+  @import '../../bower/bootstrap/less/utilities';
+  @import '../../bower/bootstrap/less/tooltip';
+  @import '../../bower/bootstrap/less/type';
+
+  a:focus {
+    box-shadow: none;
+  }
+
+  fieldset {
+    background: @body-bg;
+    border-bottom: 1px solid @nav-tabs-border-color;
+    padding: @padding-base-vertical @padding-base-horizontal;
+
+    .form-control-static {
+      margin: 0;
+      padding-top: 0;
+      font-family: monospace, sans-serif;
+    }
+  }
+}

@@ -24,11 +24,13 @@ class Coupon implements EntityInterface
 	/** @var \DateTime */
 	private $to;
 	/** @var int */
+	private $usage = 0;
+	/** @var int */
 	private $usageLimit;
 	/** @var bool */
-	private $individualUse;
+	private $individualUse = false;
 	/** @var bool */
-	private $freeShipping;
+	private $freeShipping = false;
 	/** @var float */
 	private $orderTotalMinimum;
 	/** @var float */
@@ -43,12 +45,6 @@ class Coupon implements EntityInterface
 	private $excludedCategories = array();
 	/** @var array */
 	private $paymentMethods = array();
-
-	public function __construct()
-	{
-		$this->from = new \DateTime();
-		$this->to = new \DateTime();
-	}
 
 	/**
 	 * @return int
@@ -353,6 +349,22 @@ class Coupon implements EntityInterface
 	/**
 	 * @return int
 	 */
+	public function getUsage()
+	{
+		return $this->usage;
+	}
+
+	/**
+	 * @param int $usage
+	 */
+	public function setUsage($usage)
+	{
+		$this->usage = $usage;
+	}
+
+	/**
+	 * @return int
+	 */
 	public function getUsageLimit()
 	{
 		return $this->usageLimit;
@@ -401,11 +413,10 @@ class Coupon implements EntityInterface
 	public function getStateToSave()
 	{
 		return array(
-			'code' => $this->code,
 			'type' => $this->type,
 			'amount' => $this->amount,
-			'from' => $this->from->getTimestamp(),
-			'to' => $this->to->getTimestamp(),
+			'from' => $this->from ? $this->from->getTimestamp() : 0,
+			'to' => $this->to ? $this->to->getTimestamp() : 0,
 			'usage_limit' => $this->usageLimit,
 			'individual_use' => $this->individualUse,
 			'free_shipping' => $this->freeShipping,
@@ -421,19 +432,18 @@ class Coupon implements EntityInterface
 
 	public function restoreState(array $state)
 	{
-		if (isset($state['code'])) {
-			$this->code = $state['code'];
-		}
 		if (isset($state['type'])) {
 			$this->type = $state['type'];
 		}
 		if (isset($state['amount'])) {
 			$this->amount = $state['amount'];
 		}
-		if (isset($state['from'])) {
+		if (isset($state['from']) && $state['from'] > 0) {
+			$this->from = new \DateTime();
 			$this->from->setTimestamp($state['from']);
 		}
-		if (isset($state['to'])) {
+		if (isset($state['to']) && $state['to'] > 0) {
+			$this->to = new \DateTime();
 			$this->to->setTimestamp($state['to']);
 		}
 		if (isset($state['usage_limit'])) {

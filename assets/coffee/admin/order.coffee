@@ -50,8 +50,8 @@ class AdminOrder
         dataType: 'json'
         data: (term) ->
           return {
-          product: term
-          action: 'jigoshop.admin.product.find'
+            query: term
+            action: 'jigoshop.admin.product.find'
           }
         results: (data) ->
           if data.success?

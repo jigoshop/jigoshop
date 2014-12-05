@@ -51,7 +51,7 @@ class Coupon implements Post
 			'hierarchical' => false,
 			'rewrite' => false,
 			'query_var' => true,
-			'supports' => array('title', 'editor'),
+			'supports' => array('title'),
 			'show_in_nav_menus' => false,
 			'show_in_menu' => 'jigoshop'
 		);
