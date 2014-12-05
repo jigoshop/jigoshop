@@ -100,6 +100,11 @@ class Customer implements CustomerServiceInterface
 			unset($fields['id'], $fields['name'], $fields['email'], $fields['login']);
 		}
 
+		if ($object instanceof Entity\Guest) {
+			$_SESSION[Factory::CUSTOMER] = $fields;
+			return;
+		}
+
 		foreach ($fields as $field => $value) {
 			$this->wp->updateUserMeta($object->getId(), $field, $value);
 		}

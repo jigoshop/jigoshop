@@ -8,6 +8,8 @@ use WPAL\Wordpress;
 
 class Customer implements EntityFactoryInterface
 {
+	const CUSTOMER = 'jigoshop_customer';
+
 	/** @var \WPAL\Wordpress */
 	private $wp;
 
@@ -38,12 +40,15 @@ class Customer implements EntityFactoryInterface
 	 */
 	public function fetch($user)
 	{
-		$customer = new Entity();
-		$state = array();
+		if ($user->ID == 0) {
+			$customer = new Entity\Guest();
 
-		// TODO: Fetching customer (if not logged in) data from session
+			if (isset($_SESSION[self::CUSTOMER])) {
+				$customer->restoreState($_SESSION[self::CUSTOMER]);
+			}
+		} else {
+			$customer = new Entity();
 
-		if($user){
 			$state = array();
 			$meta = $this->wp->getUserMeta($user->ID);
 
@@ -60,6 +65,8 @@ class Customer implements EntityFactoryInterface
 
 			$customer->restoreState($state);
 		}
+
+//		echo '<pre>'; var_dump($customer); exit;
 
 		return $this->wp->applyFilters('jigoshop\find\customer', $customer, $state);
 	}

@@ -57,9 +57,10 @@ class Guest extends Customer
 
 	public function getStateToSave()
 	{
-		return array(
-			'id' => '',
-		);
+		$state = parent::getStateToSave();
+		unset($state['id'], $state['login'], $state['email'], $state['name']);
+		$state['billing'] = serialize($state['billing']);
+		$state['shipping'] = serialize($state['shipping']);
+		return $state;
 	}
-
 }
