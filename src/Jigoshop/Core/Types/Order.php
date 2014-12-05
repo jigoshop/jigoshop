@@ -60,7 +60,7 @@ class Order implements Post
 			'show_in_nav_menus' => false,
 			'publicly_queryable' => false,
 			'exclude_from_search' => true,
-			'capability_type' => 'shop_order',
+			'capability_type' => self::NAME,
 			'map_meta_cap' => true,
 			'hierarchical' => false,
 			'rewrite' => false,

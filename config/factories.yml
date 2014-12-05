@@ -68,3 +68,7 @@ services:
     class: Jigoshop\Factory\Email
     arguments:
       - '@wpal'
+  jigoshop.factory.coupon:
+    class: Jigoshop\Factory\Coupon
+    arguments:
+      - '@wpal'

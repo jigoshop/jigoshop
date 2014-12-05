@@ -84,7 +84,7 @@ class Product implements Post
 			'description' => __('This is where you can add new products to your store.', 'jigoshop'),
 			'public' => true,
 			'show_ui' => true,
-			'capability_type' => 'product',
+			'capability_type' => self::NAME,
 			'map_meta_cap' => true,
 			'publicly_queryable' => true,
 			'exclude_from_search' => false,

@@ -5,6 +5,11 @@ namespace Jigoshop\Factory;
 use Jigoshop\Entity\Email as Entity;
 use WPAL\Wordpress;
 
+/**
+ * Email factory.
+ *
+ * @package Jigoshop\Factory
+ */
 class Email implements EntityFactoryInterface
 {
 	/** @var Wordpress */

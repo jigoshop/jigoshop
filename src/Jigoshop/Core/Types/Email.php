@@ -44,7 +44,7 @@ class Email implements Post
 			'description' => __('This is where you can add new emails that customers can receive in your store.', 'jigoshop'),
 			'public' => true,
 			'show_ui' => true,
-			'capability_type' => Email::NAME,
+			'capability_type' => self::NAME,
 			'map_meta_cap' => true,
 			'publicly_queryable' => false,
 			'exclude_from_search' => true,

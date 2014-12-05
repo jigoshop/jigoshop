@@ -45,3 +45,9 @@ services:
       - '@wpal'
       - '@jigoshop.options'
       - '@jigoshop.factory.email'
+  jigoshop.service.coupon:
+    class: Jigoshop\Service\Coupon
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.factory.coupon'

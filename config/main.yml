@@ -100,6 +100,12 @@ services:
       - '@wpal'
     tags:
       - { name: jigoshop.type.post }
+  jigoshop.post_type.coupon:
+    class: Jigoshop\Core\Types\Coupon
+    arguments:
+      - '@wpal'
+    tags:
+      - { name: jigoshop.type.post }
   jigoshop.taxonomy.product_category:
     class: Jigoshop\Core\Types\ProductCategory
     arguments:
