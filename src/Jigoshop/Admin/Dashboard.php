@@ -114,7 +114,6 @@ class Dashboard implements PageInterface
 		$tagCount = $this->wp->wpCountTerms(Types::PRODUCT_TAG);
 		$attributesCount = $this->productService->countAttributes();
 		$counts = $this->wp->wpCountPosts(Types::ORDER);
-		$newCount = $counts->{Order\Status::CREATED};
 		$pendingCount = $counts->{Order\Status::PENDING};
 		$onHoldCount = $counts->{Order\Status::ON_HOLD};
 		$processingCount = $counts->{Order\Status::PROCESSING};
@@ -127,7 +126,6 @@ class Dashboard implements PageInterface
 			'categoryCount' => $categoryCount,
 			'tagCount' => $tagCount,
 			'attributesCount' => $attributesCount,
-			'newCount' => $newCount,
 			'pendingCount' => $pendingCount,
 			'onHoldCount' => $onHoldCount,
 			'processingCount' => $processingCount,

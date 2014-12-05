@@ -108,6 +108,6 @@ use Jigoshop\Helper\Render;
 </div>
 <a href="<?php echo $myAccountUrl; ?>" class="btn btn-default"><?php _e('Go back to My account', 'jigoshop'); ?></a>
 <a href="<?php echo $listUrl; ?>" class="btn btn-default"><?php _e('Go back to orders list', 'jigoshop'); ?></a>
-<?php if (in_array($order->getStatus(), array(Status::CREATED, Status::PENDING))): ?>
+<?php if (in_array($order->getStatus(), array(Status::PENDING))): ?>
 	<a href="" class="btn btn-success pull-right"><?php _e('Pay', 'jigoshop'); ?></a>
 <?php endif; ?>

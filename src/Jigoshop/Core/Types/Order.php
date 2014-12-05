@@ -19,6 +19,15 @@ class Order implements Post
 
 		$wp->addAction('init', array($this, 'registerOrderStatuses'));
 		$wp->addFilter('post_updated_messages', array($this, 'updateMessages'));
+		// Enable comments for all orders, disable pings
+		$wp->addFilter('wp_insert_post_data', function ($data){
+			if ($data['post_type'] == Order::NAME) {
+				$data['comment_status'] = 'open';
+				$data['ping_status'] = 'closed';
+			}
+
+			return $data;
+		});
 	}
 
 	public function getName()
@@ -67,8 +76,8 @@ class Order implements Post
 	{
 		$statuses = Status::getStatuses();
 		foreach ($statuses as $status => $label) {
-			register_post_status($status, array(
-				'label' => _x('On hold', 'order-status', 'jigoshop'),
+			$this->wp->registerPostStatus($status, array(
+				'label' => $label,
 				'public' => false,
 				'exclude_from_search' => false,
 				'show_in_admin_all_list' => true,

@@ -9,8 +9,8 @@ use Jigoshop\Entity\Order\Status;
 use Jigoshop\Exception;
 use Jigoshop\Payment\Method as PaymentMethod;
 use Jigoshop\Service\TaxServiceInterface;
-use Jigoshop\Shipping\Method;
 use Jigoshop\Shipping\Method as ShippingMethod;
+use Jigoshop\Shipping\Method;
 use Monolog\Registry;
 use WPAL\Wordpress;
 
@@ -30,6 +30,8 @@ class Order implements EntityInterface, OrderInterface
 	private $createdAt;
 	/** @var \DateTime */
 	private $updatedAt;
+	/** @var \DateTime */
+	private $completedAt;
 	/** @var Customer */
 	private $customer;
 	/** @var array */
@@ -55,9 +57,11 @@ class Order implements EntityInterface, OrderInterface
 	/** @var float */
 	private $shippingPrice = 0.0;
 	/** @var string */
-	private $status = Status::CREATED;
+	private $status = Status::PENDING;
 	/** @var string */
 	private $customerNote;
+	/** @var array */
+	private $updateMessages = array();
 
 	/** @var \WPAL\Wordpress */
 	protected $wp;
@@ -69,42 +73,12 @@ class Order implements EntityInterface, OrderInterface
 		$this->customer = new Guest();
 		$this->createdAt = new \DateTime();
 		$this->updatedAt = new \DateTime();
-		$this->completedAt = new \DateTime();
 		$this->totalTax = null;
 
 		foreach ($taxClasses as $class) {
 			$this->tax[$class['class']] = 0.0;
 			$this->shippingTax[$class['class']] = 0.0;
 		}
-	}
-
-	/**
-	 * Adds a note to the order.
-	 *
-	 * @param $note string Note text.
-	 * @param $private bool Is note private?
-	 * @return int Note ID.
-	 */
-	public function addNote($note, $private = true)
-	{
-		$comment = array(
-			'comment_post_ID' => $this->id,
-			'comment_author' => __('Jigoshop', 'jigoshop'),
-			'comment_author_email' => '',
-			'comment_author_url' => '',
-			'comment_content' => $note,
-			'comment_type' => 'order_note',
-			'comment_agent' => __('Jigoshop', 'jigoshop'),
-			'comment_parent' => 0,
-			'comment_date' => $this->wp->getHelpers()->currentTime('timestamp'),
-			'comment_date_gmt' => $this->wp->getHelpers()->currentTime('timestamp', true),
-			'comment_approved' => true
-		);
-
-		$comment_id = $this->wp->wpInsertComment($comment);
-		$this->wp->addCommentMeta($comment_id, 'private', $private);
-
-		return $comment_id;
 	}
 
 	/**
@@ -177,6 +151,14 @@ class Order implements EntityInterface, OrderInterface
 	public function setUpdatedAt($updatedAt)
 	{
 		$this->updatedAt = $updatedAt;
+	}
+
+	/**
+	 * Updates completion time to current date.
+	 */
+	public function setCompletedAt()
+	{
+		$this->completedAt = new \DateTime();
 	}
 
 	/**
@@ -379,42 +361,36 @@ class Order implements EntityInterface, OrderInterface
 	}
 
 	/**
-	 * @param string $status New order status.
+	 * @param string $status Status to set.
+	 * @param string $message Message to add with status change.
 	 */
-	public function setStatus($status)
+	public function setStatus($status, $message = '')
 	{
+		$currentStatus = $this->status;
 		$this->status = $status;
-	}
 
-	/**
-	 * @param $status string New order status.
-	 * @param $message string Message to add.
-	 * @since 2.0
-	 */
-	public function updateStatus($status, $message = '')
-	{
-		if ($status) {
-			if ($this->status != $status) {
-				// Do actions for changing statuses
-				$this->wp->doAction('jigoshop\order\before\\'.$status, $this);
-				$this->wp->doAction('jigoshop\order\\'.$this->status.'_to_'.$status, $this);
+		if ($currentStatus != $status) {
+			$this->wp->doAction('jigoshop\order\before\\'.$status, $this);
 
-				$this->addNote($message.sprintf(__('Order status changed from %s to %s.', 'jigoshop'), Status::getName($this->status), Status::getName($status)));
-				$this->status = $status;
-
-				// Date
-				if ($status == Status::COMPLETED) {
-					$this->completedAt = new \DateTime();
-					// TODO: Save overall quantity sold.
-//					foreach ($this->items as $item) {
-//						/** @var \Jigoshop\Entity\Order\Item $item */
-//						$sales = get_post_meta($item->getParent()->getId(), 'quantity_sold', true) + $item->getQuantity();
-//						update_post_meta($item->getParent()->getId(), 'quantity_sold', $sales);
-//					}
-				}
-
-				$this->wp->doAction('jigoshop\order\after\\'.$status, $this);
+			if ($currentStatus !== null) {
+				$this->wp->doAction('jigoshop\order\\'.$currentStatus.'_to_'.$status, $this);
 			}
+
+			if ($status == Status::COMPLETED) {
+				$this->completedAt = new \DateTime();
+				foreach ($this->getItems() as $item) {
+					/** @var \Jigoshop\Entity\Order\Item $item */
+					$this->wp->doAction('jigoshop\product\sold', $item->getProduct(), $item->getQuantity(), $item);
+				}
+			}
+
+			$this->wp->doAction('jigoshop\order\after\\'.$status, $this);
+
+			$this->updateMessages[] = array(
+				'message' => $message,
+				'old_status' => $currentStatus,
+				'new_status' => $status,
+			);
 		}
 	}
 
@@ -597,6 +573,7 @@ class Order implements EntityInterface, OrderInterface
 			'id' => $this->id,
 			'number' => $this->number,
 			'updated_at' => $this->updatedAt->getTimestamp(),
+			'completed_at' => $this->completedAt ? $this->completedAt->getTimestamp() : 0,
 			'items' => $this->items,
 			'customer' => serialize($this->customer),
 			'customer_id' =>  $this->customer->getId(),
@@ -611,6 +588,7 @@ class Order implements EntityInterface, OrderInterface
 			'discount' => $this->discount,
 			'shipping_tax' => $this->shippingTax,
 			'status' => $this->status,
+			'update_messages' => $this->updateMessages,
 		);
 	}
 
@@ -627,6 +605,13 @@ class Order implements EntityInterface, OrderInterface
 		}
 		if (isset($state['updated_at'])) {
 			$this->updatedAt->setTimestamp($state['updated_at']);
+		}
+		if (isset($state['completed_at'])) {
+			$this->completedAt = new \DateTime();
+			$this->completedAt->setTimestamp($state['completed_at']);
+		}
+		if (isset($state['status'])) {
+			$this->status = $state['status'];
 		}
 		if (isset($state['items'])) {
 			foreach ($state['items'] as $item) {
@@ -664,9 +649,5 @@ class Order implements EntityInterface, OrderInterface
 
 		$this->total = $this->subtotal + array_reduce($this->tax, function($value, $item){ return $value + $item; }, 0.0)
 			+ array_reduce($this->shippingTax, function($value, $item){ return $value + $item; }, 0.0) - $this->discount;
-
-		if (isset($state['status'])) {
-			$this->status = $state['status'];
-		}
 	}
 }

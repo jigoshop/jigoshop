@@ -20,7 +20,7 @@ use Jigoshop\Helper\Render;
 	</div>
 	<ul class="list-group">
 		<?php foreach ($orders as $order): /** @var $order \Jigoshop\Entity\Order */?>
-			<?php $unpaid = in_array($order->getStatus(), array(Status::CREATED, Status::PENDING)); ?>
+			<?php $unpaid = in_array($order->getStatus(), array(Status::PENDING)); ?>
 			<li class="list-group-item clearfix <?php $unpaid and print 'list-group-item-warning'; ?>">
 				<h4 class="list-group-item-heading">
 					<?php echo $order->getTitle(); ?>

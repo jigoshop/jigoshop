@@ -135,6 +135,13 @@ class Order implements OrderServiceInterface
 			), array('ID' => $object->getId()));
 		}
 
+		if (isset($fields['update_messages']) && !empty($fields['update_messages'])) {
+			foreach ($fields['update_messages'] as $messages) {
+				$this->addNote($object, sprintf(__('%sOrder status changed from %s to %s.', 'jigoshop'), $messages['message'], Status::getName($messages['old_status']),
+					Status::getName($messages['new_status'])));
+			}
+		}
+
 		if (isset($fields['customer_note']) || isset($fields['status'])) {
 			// We don't need to save these values - they are stored by WordPress itself.
 			unset($fields['customer_note'], $fields['status']);
@@ -191,6 +198,44 @@ class Order implements OrderServiceInterface
 		foreach ($fields as $field => $value) {
 			$this->wp->updatePostMeta($object->getId(), $field, $this->wp->getHelpers()->escSql($value));
 		}
+		// TODO: Reduce items counts
+		// TODO: If configured - send emails on backorders, low stock and out of stock
+		/**
+		 *
+		$this->wp->addAction('jigoshop\product\low_stock', array($this, 'productLowStock'));
+		$this->wp->addAction('jigoshop\product\out_of_stock', array($this, 'productOutOfStock'));
+		$this->wp->addAction('jigoshop\product\backorders', array($this, 'productBackorders'));
+		 */
+	}
+
+	/**
+	 * Adds a note to the order.
+	 *
+	 * @param $order \Jigoshop\Entity\Order The order.
+	 * @param $note string Note text.
+	 * @param $private bool Is note private?
+	 * @return int Note ID.
+	 */
+	public function addNote($order, $note, $private = true)
+	{
+		$comment = array(
+			'comment_post_ID' => $order->getId(),
+			'comment_author' => __('Jigoshop', 'jigoshop'),
+			'comment_author_email' => '',
+			'comment_author_url' => '',
+			'comment_content' => $note,
+			'comment_type' => 'order_note',
+			'comment_agent' => __('Jigoshop', 'jigoshop'),
+			'comment_parent' => 0,
+			'comment_date' => $this->wp->getHelpers()->currentTime('mysql'),
+			'comment_date_gmt' => $this->wp->getHelpers()->currentTime('mysql', true),
+			'comment_approved' => true
+		);
+
+		$comment_id = $this->wp->wpInsertComment($comment);
+		$this->wp->addCommentMeta($comment_id, 'private', $private);
+
+		return $comment_id;
 	}
 
 	/**

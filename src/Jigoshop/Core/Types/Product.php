@@ -46,6 +46,15 @@ class Product implements Post
 		}
 
 		$wp->doAction('jigoshop\product\type\init', $wp, $this->enabledTypes);
+		// Enable comments for all orders, disable pings
+		$wp->addFilter('wp_insert_post_data', function ($data){
+			if ($data['post_type'] == Product::NAME) {
+				$data['comment_status'] = 'open';
+				$data['ping_status'] = 'closed';
+			}
+
+			return $data;
+		});
 	}
 
 	public function getName()

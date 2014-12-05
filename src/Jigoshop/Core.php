@@ -46,6 +46,10 @@ class Core
 		$this->wp->addFilter('template_redirect', array($this->template, 'redirect'));
 		$this->wp->addAction('jigoshop\shop\content\before', array($this, 'displayCustomMessage'));
 		$this->wp->addAction('wp_head', array($this, 'googleAnalyticsTracking'), 9990);
+		// Action for limiting WordPress feed from using order notes.
+		$this->wp->addAction('comment_feed_where', function($where){
+			return $where." AND comment_type <> 'order_note'";
+		});
 
 		$container->get('jigoshop.permalinks');
 

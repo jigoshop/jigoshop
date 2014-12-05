@@ -52,7 +52,7 @@ use Jigoshop\Entity\Order\Status;
 			<?php $address = $order->getCustomer()->getBillingAddress(); ?>
 			<?php
 			foreach ($billingFields as $field => $definition) {
-				$definition['name'] = "order[billing][{$field}]";
+				$definition['name'] = "order[billing_address][{$field}]";
 				$definition['value'] = $address->get($field);
 				echo Forms::field($definition['type'], $definition);
 			}
@@ -63,7 +63,7 @@ use Jigoshop\Entity\Order\Status;
 			<?php $address = $order->getCustomer()->getShippingAddress(); ?>
 			<?php
 			foreach ($shippingFields as $field => $definition) {
-				$definition['name'] = "order[shipping][{$field}]";
+				$definition['name'] = "order[shipping_address][{$field}]";
 				$definition['value'] = $address->get($field);
 				echo Forms::field($definition['type'], $definition);
 			}

@@ -312,7 +312,7 @@ class Cart implements PageInterface
 //							return;
 //						}
 
-						$order->updateStatus(Status::CANCELLED);
+						$order->setStatus(Status::CANCELLED);
 						$this->orderService->save($order);
 						$cart = $this->cartService->createFromOrder($this->cartService->getCartIdForCurrentUser(),$order);
 						$this->cartService->save($cart);

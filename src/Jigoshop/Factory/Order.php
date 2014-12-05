@@ -53,22 +53,15 @@ class Order implements EntityFactoryInterface
 	 */
 	public function create($id)
 	{
-		if (empty($_POST)) {
-			$post = $this->wp->getPost($id);
+		$post = $this->wp->getPost($id);
 
-			return $this->fetch($post);
+		// Support for our own post types and "Publish" button.
+		if (isset($_POST['original_post_status'])) {
+			$post->post_status = $_POST['original_post_status'];
 		}
 
-		$order = new Entity($this->wp, $this->options->get('tax.classes'));
-		$order->setId($id);
+		$order = $this->fetch($post);
 
-		$date = new \DateTime();
-		if (isset($_POST['aa'])) {
-			$date->setDate($_POST['aa'], $_POST['mm'], $_POST['jj']);
-			$date->setTime($_POST['hh'], $_POST['mn'], $_POST['ss']);
-		}
-
-		$order->setCreatedAt($date);
 		$order->setUpdatedAt(new \DateTime());
 		if (isset($_POST['post_excerpt'])) {
 			$order->setCustomerNote($_POST['post_excerpt']);
@@ -82,11 +75,11 @@ class Order implements EntityFactoryInterface
 				$order->setCustomer($this->customerService->find($_POST['order']['customer']));
 			}
 
-			if (isset($_POST['order']['billing'])) {
-				$order->getCustomer()->setBillingAddress($this->createAddress($_POST['order']['billing']));
+			if (isset($_POST['order']['billing_address'])) {
+				$order->getCustomer()->setBillingAddress($this->createAddress($_POST['order']['billing_address']));
 			}
-			if (isset($_POST['order']['shipping'])) {
-				$order->getCustomer()->setShippingAddress($this->createAddress($_POST['order']['shipping']));
+			if (isset($_POST['order']['shipping_address'])) {
+				$order->getCustomer()->setShippingAddress($this->createAddress($_POST['order']['shipping_address']));
 			}
 		}
 
@@ -156,6 +149,7 @@ class Order implements EntityFactoryInterface
 	{
 		$customer = $cart->getCustomer();
 		$customer->selectTaxAddress($this->options->get('taxes.shipping') ? 'shipping' : 'billing');
+		// TODO: Check if shipping address and shipping method do not overlap here
 		$address = $this->createAddress($_POST['jigoshop_order']['billing']);
 		$customer->setBillingAddress($address);
 
@@ -195,7 +189,7 @@ class Order implements EntityFactoryInterface
 		$order = new Entity($this->wp, $this->options->get('tax.classes'));
 		$order->setCustomer($customer);
 		$order->setCustomerNote(trim(htmlspecialchars(strip_tags($_POST['jigoshop_order']['note']))));
-		$order->setStatus(Entity\Status::CREATED);
+		$order->setStatus(Entity\Status::PENDING);
 
 		if (isset($_POST['jigoshop_order']['payment_method'])) {
 			$payment = $this->paymentService->get($_POST['jigoshop_order']['payment_method']);

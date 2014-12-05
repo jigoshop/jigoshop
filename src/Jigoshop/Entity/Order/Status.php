@@ -10,7 +10,6 @@ namespace Jigoshop\Entity\Order;
  */
 class Status
 {
-	const CREATED = 'jigoshop-new';
 	const PENDING = 'jigoshop-pending';
 	const ON_HOLD = 'jigoshop-on-hold';
 	const PROCESSING = 'jigoshop-processing';
@@ -43,8 +42,8 @@ class Status
 	public static function getStatuses()
 	{
 		if (self::$statuses === null) {
+			// TODO: Replace with WPAL call
 			self::$statuses = apply_filters('jigoshop\order\statuses', array(
-				Status::CREATED => __('New', 'jigoshop'),
 				Status::PENDING => __('Pending', 'jigoshop'),
 				Status::ON_HOLD => __('On-Hold', 'jigoshop'),
 				Status::PROCESSING => __('Processing', 'jigoshop'),

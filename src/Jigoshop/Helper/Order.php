@@ -25,7 +25,7 @@ class Order
 		$statuses = Status::getStatuses();
 		$status = $order->getStatus();
 		if (!isset($statuses[$status])) {
-			$status = Status::CREATED;
+			$status = Status::PENDING;
 		}
 		$text = $statuses[$status];
 		return sprintf('<mark class="%s" title="%s">%s</mark>', $status, $text, $text);

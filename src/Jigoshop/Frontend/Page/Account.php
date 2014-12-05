@@ -59,7 +59,7 @@ class Account implements PageInterface
 		$customer = $this->customerService->getCurrent();
 		$query = new \WP_Query(array(
 			'post_type' => Types::ORDER,
-			'post_status' => array(Status::CREATED, Status::PENDING, Status::ON_HOLD),
+			'post_status' => array(Status::PENDING, Status::ON_HOLD),
 			'posts_per_page' => 5, // TODO: Add option for unpaid orders number
 		));
 		$orders = $this->orderService->findByQuery($query);

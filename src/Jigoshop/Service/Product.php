@@ -6,6 +6,7 @@ use Jigoshop\Core\Types;
 use Jigoshop\Entity\EntityInterface;
 use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\Product\Attribute;
+use Jigoshop\Entity\Product\Purchasable;
 use Jigoshop\Exception;
 use Jigoshop\Factory\Product as ProductFactory;
 use WPAL\Wordpress;
@@ -28,6 +29,7 @@ class Product implements ProductServiceInterface
 		$this->wp = $wp;
 		$this->factory = $factory;
 		$wp->addAction('save_post_'.Types\Product::NAME, array($this, 'savePost'), 10);
+		$wp->addAction('jigoshop\product\sold', array($this, 'addSoldQuantity'), 10, 2);
 	}
 
 	/**
@@ -40,6 +42,16 @@ class Product implements ProductServiceInterface
 	public function addType($type, $class)
 	{
 		$this->factory->addType($type, $class);
+	}
+
+	/**
+	 * @param $product \Jigoshop\Entity\Product|Purchasable The product.
+	 * @param $quantity int Quantity to add.
+	 */
+	public function addSoldQuantity($product, $quantity)
+	{
+		$product->getStock()->addSoldQuantity($quantity);
+		$this->save($product);
 	}
 
 	/**
