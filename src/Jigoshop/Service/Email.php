@@ -134,7 +134,7 @@ class Email implements EmailServiceInterface
 	 */
 	public function getMails()
 	{
-		return $this->mails;
+		return $this->factory->getActions();
 	}
 
 	/**
@@ -146,10 +146,7 @@ class Email implements EmailServiceInterface
 	 */
 	public function register($action, $description, array $arguments)
 	{
-		$this->mails[$action] = array(
-			'description' => $description,
-			'arguments' => $arguments
-		);
+		$this->factory->register($action, $description, $arguments);
 	}
 
 	/**
@@ -157,7 +154,7 @@ class Email implements EmailServiceInterface
 	 */
 	public function getAvailableActions()
 	{
-		return $this->factory->getAvailableActions();
+		return array_keys($this->factory->getActions());
 	}
 
 	/**

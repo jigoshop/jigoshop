@@ -63,10 +63,8 @@ class Email
 				throw new Exception(__('Email not found.', 'jigoshop'));
 			}
 
-			$actions = $_POST['actions'];
-			// TODO: Replace emails.templates with proper email fetching so that available actions will be always good
-//			$availableActions = $this->emailService->getAvailableActions();
-//			$actions = array_intersect($_POST['actions'], $availableActions);
+			$availableActions = $this->emailService->getAvailableActions();
+			$actions = array_intersect($_POST['actions'], $availableActions);
 			$email->setActions($actions);
 
 			$result = array(

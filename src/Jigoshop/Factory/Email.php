@@ -17,11 +17,36 @@ class Email implements EntityFactoryInterface
 	private $wp;
 	/** @var Options */
 	private $options;
+	/** @var array */
+	private $actions = array();
 
 	public function __construct(Wordpress $wp, Options $options)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
+	}
+
+	/**
+	 * Registers an email action.
+	 *
+	 * @param $action string Action name.
+	 * @param $description string Email description.
+	 * @param array $arguments Accepted arguments list.
+	 */
+	public function register($action, $description, array $arguments)
+	{
+		$this->actions[$action] = array(
+			'description' => $description,
+			'arguments' => $arguments
+		);
+	}
+
+	/**
+	 * @return array Registered actions.
+	 */
+	public function getActions()
+	{
+		return $this->actions;
 	}
 
 	/**
@@ -40,9 +65,8 @@ class Email implements EntityFactoryInterface
 			$email->setTitle($helpers->sanitizeTitle($_POST['post_title']));
 			$email->setText($helpers->parsePostBody($_POST['content']));
 
-			// TODO: Replace emails.templates with proper email fetching so that available actions will be always good
-//			$availableActions = $this->getAvailableActions();
-//			$_POST['jigoshop_email']['actions'] = array_intersect($_POST['jigoshop_email']['actions'], $availableActions);
+			$availableActions = $this->getAvailableActions();
+			$_POST['jigoshop_email']['actions'] = array_intersect($_POST['jigoshop_email']['actions'], $availableActions);
 			$email->restoreState($_POST['jigoshop_email']);
 		}
 
@@ -74,15 +98,5 @@ class Email implements EntityFactoryInterface
 		}
 
 		return $this->wp->applyFilters('jigoshop\find\email', $email, $state);
-	}
-
-	/**
-	 * @return array List of available actions.
-	 */
-	public function getAvailableActions()
-	{
-		// TODO: Replace emails.templates with proper email fetching so that available actions will be always good
-		$templates = $this->options->get('emails.templates', array());
-		return array_keys($templates);
 	}
 }
