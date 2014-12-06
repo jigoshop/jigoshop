@@ -159,6 +159,22 @@ class Pages
 	}
 
 	/**
+	 * Evaluates to true only on the Thank You page
+	 *
+	 * @return bool
+	 * @since 2.0
+	 */
+	public function isCheckoutPay()
+	{
+		if (!isset($this->cache['checkout-pay'])) {
+			$wp = $this->wp->getWp();
+			$this->cache['checkout-pay'] = $this->isCheckout() && isset($wp->query_vars['pay']);
+		}
+
+		return $this->cache['checkout-pay'];
+	}
+
+	/**
 	 * Evaluates to true only on the Single Product Page
 	 *
 	 * @return bool

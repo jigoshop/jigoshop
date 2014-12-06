@@ -1,6 +1,7 @@
 <?php
 use Jigoshop\Entity\Customer;
 use Jigoshop\Entity\Order\Status;
+use Jigoshop\Helper\Order;
 use Jigoshop\Helper\Product;
 use Jigoshop\Helper\Render;
 
@@ -113,5 +114,5 @@ use Jigoshop\Helper\Render;
 <a href="<?php echo $myAccountUrl; ?>" class="btn btn-default"><?php _e('Go back to My account', 'jigoshop'); ?></a>
 <a href="<?php echo $listUrl; ?>" class="btn btn-default"><?php _e('Go back to orders list', 'jigoshop'); ?></a>
 <?php if (in_array($order->getStatus(), array(Status::PENDING))): ?>
-	<a href="" class="btn btn-success pull-right"><?php _e('Pay', 'jigoshop'); ?></a>
+	<a href="<?php echo Order::getPayLink($order); ?>" class="btn btn-success pull-right"><?php _e('Pay', 'jigoshop'); ?></a>
 <?php endif; ?>

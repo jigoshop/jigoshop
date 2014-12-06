@@ -7,6 +7,7 @@ use Jigoshop\Entity\Order;
 use Jigoshop\Entity\Product;
 use Jigoshop\Helper\Api;
 use Jigoshop\Helper\Country;
+use Jigoshop\Helper\Order as OrderHelper;
 use Jigoshop\Helper\Product as ProductHelper;
 use Jigoshop\Service\EmailServiceInterface;
 use Jigoshop\Shipping\LocalPickup;
@@ -170,7 +171,7 @@ class Emails {
 			'total_tax' => ProductHelper::formatPrice($order->getTotalTax()),
 			'total' => ProductHelper::formatPrice($order->getTotal()),
 			'is_local_pickup' => $order->getShippingMethod() && $order->getShippingMethod()->getId() == LocalPickup::NAME ? true : null,
-			'checkout_url' => $order->getStatus() == Order\Status::PENDING ? Api::getEndpointUrl('pay', $order->getId(), $this->wp->getPermalink($this->options->getPageId(Pages::CHECKOUT))) : null,
+			'checkout_url' => $order->getStatus() == Order\Status::PENDING ? OrderHelper::getPayLink($order) : null,
 			'payment_method' => $order->getPaymentMethod()->getName(),
 			'billing_first_name' => $billingAddress->getFirstName(),
 			'billing_last_name' => $billingAddress->getLastName(),

@@ -2,6 +2,7 @@
 use Jigoshop\Entity\Customer;
 use Jigoshop\Entity\Order\Status;
 use Jigoshop\Helper\Api;
+use Jigoshop\Helper\Order;
 use Jigoshop\Helper\Product;
 use Jigoshop\Helper\Render;
 
@@ -25,7 +26,7 @@ use Jigoshop\Helper\Render;
 				<h4 class="list-group-item-heading">
 					<?php echo $order->getTitle(); ?>
 					<?php if ($unpaid): ?>
-						<a href="" class="btn btn-success pull-right"><?php _e('Pay', 'jigoshop'); ?></span></a>
+						<a href="<?php echo Order::getPayLink($order); ?>" class="btn btn-success pull-right"><?php _e('Pay', 'jigoshop'); ?></a>
 					<?php endif; ?>
 					<a href="<?php echo Api::getEndpointUrl('orders', $order->getId()); ?>" class="btn btn-primary pull-right"><?php _e('View', 'jigoshop'); ?></span></a>
 				</h4>

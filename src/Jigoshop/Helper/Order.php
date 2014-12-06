@@ -65,4 +65,13 @@ class Order
 	{
 		return add_query_arg(array('action' => 'remove-item', 'item' => $key));
 	}
+
+	/**
+	 * @param $order \Jigoshop\Entity\Order Order to generate link for.
+	 * @return string Payment link.
+	 */
+	public static function getPayLink($order)
+	{
+		return add_query_arg(array('key' => $order->getKey()), Api::getEndpointUrl('pay', $order->getId(), get_permalink(self::$options->getPageId(Pages::CHECKOUT))));
+	}
 }

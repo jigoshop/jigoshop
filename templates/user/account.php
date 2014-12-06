@@ -1,5 +1,6 @@
 <?php
 use Jigoshop\Entity\Order\Status;
+use Jigoshop\Helper\Order;
 use Jigoshop\Helper\Product;
 use Jigoshop\Helper\Render;
 
@@ -63,7 +64,7 @@ use Jigoshop\Helper\Render;
 					<dt><?php _e('Total', 'jigoshop'); ?></dt>
 					<dd><?php echo Product::formatPrice($order->getTotal()); ?></dd>
 				</dl>
-				<a href="" class="btn btn-success pull-right"><?php _e('Pay', 'jigoshop'); ?></span></a>
+				<a href="<?php echo Order::getPayLink($order); ?>" class="btn btn-success pull-right"><?php _e('Pay', 'jigoshop'); ?></a>
 			</li>
 			<?php endforeach; ?>
 			<li class="list-group-item">
