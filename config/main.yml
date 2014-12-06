@@ -137,3 +137,5 @@ services:
       - '@jigoshop.factory.product.variable'
   jigoshop.product_type.external:
     class: Jigoshop\Core\Types\Product\External
+  jigoshop.product_type.downloadable:
+    class: Jigoshop\Core\Types\Product\Downloadable

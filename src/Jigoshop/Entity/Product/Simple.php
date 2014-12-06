@@ -9,6 +9,7 @@ class Simple extends Product implements Purchasable, Shippable, Saleable
 {
 	const TYPE = 'simple';
 
+	/** @var float */
 	private $regularPrice = 0.0;
 	/** @var Attributes\Sales */
 	private $sales;
