@@ -89,6 +89,16 @@ services:
       - '@jigoshop.service.tax'
       - '@jigoshop.helper.styles'
       - '@jigoshop.helper.scripts'
+  jigoshop.page.checkout.pay:
+    class: Jigoshop\Frontend\Page\Checkout\Pay
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.messages'
+      - '@jigoshop.service.order'
+      - '@jigoshop.service.tax'
+      - '@jigoshop.helper.styles'
+      - '@jigoshop.helper.scripts'
   jigoshop.page.account:
     class: Jigoshop\Frontend\Page\Account
     arguments:

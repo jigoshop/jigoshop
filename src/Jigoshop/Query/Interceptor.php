@@ -25,6 +25,7 @@ class Interceptor
 			'edit-address',
 			'change-password',
 			'orders',
+			'pay',
 		);
 	}
 

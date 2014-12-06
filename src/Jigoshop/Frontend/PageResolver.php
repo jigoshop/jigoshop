@@ -49,6 +49,10 @@ class PageResolver
 			return $container->get('jigoshop.page.checkout.thank_you');
 		}
 
+		if ($this->pages->isCheckoutPay()) {
+			return $container->get('jigoshop.page.checkout.pay');
+		}
+
 		if ($this->pages->isCheckout()) {
 			return $container->get('jigoshop.page.checkout');
 		}
