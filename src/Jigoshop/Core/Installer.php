@@ -239,7 +239,7 @@ class Installer
 		$default_emails = array(
 			'new_order_admin_notification',
 			'customer_order_status_pending_to_processing',
-			'customer_order_status_pending_to_on-hold',
+			'customer_order_status_pending_to_on_hold',
 			'customer_order_status_on-hold_to_processing',
 			'customer_order_status_completed',
 			'customer_order_status_refunded',
@@ -289,7 +289,7 @@ class Installer
 					$title = '[[shop_name]] New Customer Order - [order_number]';
 					$message = 'You have received an order from [billing_first_name] [billing_last_name]. Their order is as follows:<br/>'.$invoice;
 					break;
-				case 'customer_order_status_pending_to_on-hold':
+				case 'customer_order_status_pending_to_on_hold':
 					$post_title = 'Customer order status pending to on-hold';
 					$title = '[[shop_name]] Order Received';
 					$message = 'Thank you, we have received your order. Your order\'s details are below:<br/>'.$invoice;
@@ -299,7 +299,7 @@ class Installer
 					$title = '[[shop_name]] Order Received';
 					$message = 'Thank you, we are now processing your order. Your order\'s details are below:<br/>'.$invoice;
 					break;
-				case 'customer_order_status_on-hold_to_processing' :
+				case 'customer_order_status_on_hold_to_processing' :
 					$post_title = 'Customer order status on-hold to processing';
 					$title = '[[shop_name]] Order Received';
 					$message = 'Thank you, we are now processing your order. Your order\'s details are below:<br/>'.$invoice;
@@ -350,12 +350,12 @@ class Installer
 				$this->emailService->addTemplate($post_id, array(
 					'admin_order_status_pending_to_processing',
 					'admin_order_status_pending_to_completed',
-					'admin_order_status_pending_to_on-hold'
+					'admin_order_status_pending_to_on_hold'
 				));
 				$this->wp->updatePostMeta($post_id, 'general.email_actions', array(
 					'admin_order_status_pending_to_processing',
 					'admin_order_status_pending_to_completed',
-					'admin_order_status_pending_to_on-hold'
+					'admin_order_status_pending_to_on_hold'
 				));
 			} else {
 				$this->emailService->addTemplate($post_id, array($email));

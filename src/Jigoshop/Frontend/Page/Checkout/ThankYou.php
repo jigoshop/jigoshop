@@ -68,7 +68,9 @@ class ThankYou implements PageInterface
 		}
 
 		$order = $this->orderService->find((int)$_REQUEST['order']);
-		// TODO: Security check with order key
+		if ($order->getKey() != $_REQUEST['key']) {
+			return;
+		}
 		?>
 		<script type="text/javascript">
 			jigoshopGoogleAnalytics('require', 'ecommerce');
@@ -111,7 +113,10 @@ class ThankYou implements PageInterface
 		$taxService = $this->taxService;
 		$content = $this->wp->getPostField('post_content', $this->options->getPageId(Pages::THANK_YOU));
 		$order = $this->orderService->find((int)$_REQUEST['order']);
-		// TODO: Security check with order key
+		if ($order->getKey() != $_REQUEST['key']) {
+			$this->messages->addError(__('Invalid security key. The order was processed.', 'jigoshop'));
+			$this->wp->redirectTo($this->options->getPageId(Pages::SHOP));
+		}
 
 		return Render::get('shop/checkout/thanks', array(
 			'content' => $content,

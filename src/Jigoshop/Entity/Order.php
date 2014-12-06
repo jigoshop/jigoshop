@@ -25,6 +25,8 @@ class Order implements EntityInterface, OrderInterface
 	/** @var int */
 	private $id;
 	/** @var string */
+	private $key;
+	/** @var string */
 	private $number;
 	/** @var \DateTime */
 	private $createdAt;
@@ -119,6 +121,22 @@ class Order implements EntityInterface, OrderInterface
 	public function setNumber($number)
 	{
 		$this->number = $number;
+	}
+
+	/**
+	 * @return string Order security key.
+	 */
+	public function getKey()
+	{
+		return $this->key;
+	}
+
+	/**
+	 * @param string $key New security key for the order.
+	 */
+	public function setKey($key)
+	{
+		$this->key = $key;
 	}
 
 	/**
@@ -583,6 +601,9 @@ class Order implements EntityInterface, OrderInterface
 	 */
 	public function restoreState(array $state)
 	{
+		if (isset($state['key'])) {
+			$this->key = $state['key'];
+		}
 		if (isset($state['number'])) {
 			$this->number = $state['number'];
 		}

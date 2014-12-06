@@ -13,7 +13,6 @@
 			$keys = array_keys($emails[$selected[0]]['arguments']);
 			if (count($selected) > 1) {
 				foreach ($selected as $hook) {
-					var_dump($emails[$hook]);
 					$keys = array_intersect(array_keys($emails[$hook]['arguments']), $keys);
 				}
 			}

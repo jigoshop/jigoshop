@@ -227,7 +227,7 @@ class PayPal implements Method, Processable, ContainerAware
 				'charset' => 'UTF-8',
 				'rm' => 2,
 				'upload' => 1,
-				'return' => $this->wp->getHelpers()->addQueryArg(array('order' => $order->getId(), 'key' => ''), $this->wp->getPermalink($thankYouPage)), // TODO: Add order key for security
+				'return' => $this->wp->getHelpers()->addQueryArg(array('order' => $order->getId(), 'key' => $order->getKey()), $this->wp->getPermalink($thankYouPage)),
 				'cancel_return' => OrderHelper::getCancelLink($order),
 				// Order key
 				'custom' => $order->getId(),

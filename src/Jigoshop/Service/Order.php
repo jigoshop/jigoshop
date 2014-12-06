@@ -209,6 +209,9 @@ class Order implements OrderServiceInterface
 			unset($fields['items']);
 		}
 
+		$fields['key'] = $this->generateOrderKey($object);
+		$object->setKey($fields['key']);
+
 		foreach ($fields as $field => $value) {
 			$this->wp->updatePostMeta($object->getId(), $field, $this->wp->getHelpers()->escSql($value));
 		}
@@ -422,5 +425,24 @@ class Order implements OrderServiceInterface
 			),
 		));
 		return $this->findByQuery($query);
+	}
+
+	/**
+	 * @param $object \Jigoshop\Entity\Order
+	 * @return string Random order key.
+	 */
+	private function generateOrderKey($object)
+	{
+		$fields = $object->getStateToSave();
+		$keys = array_keys($fields);
+		$min = 0;
+		$max = count($keys)-1;
+		$source = time().$this->wp->getCurrentUserId();
+
+		for ($i = 0; $i < 5; $i++) {
+			$source .= $fields[$keys[rand($min, $max)]];
+		}
+
+		return hash('md5', str_repeat($source, 5));
 	}
 }

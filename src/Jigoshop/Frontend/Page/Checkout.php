@@ -356,7 +356,7 @@ class Checkout implements PageInterface
 				// Redirect to thank you page
 				if (empty($url)) {
 					$url = $this->wp->getPermalink($this->wp->applyFilters('jigoshop\checkout\redirect_page_id', $this->options->getPageId(Pages::THANK_YOU)));
-					$url = $this->wp->getHelpers()->addQueryArg(array('order' => $order->getId()), $url); // TODO: Add randomly generated key to prevent data leakage
+					$url = $this->wp->getHelpers()->addQueryArg(array('order' => $order->getId(), 'key' => $order->getKey()), $url);
 				}
 
 				$this->cartService->remove($cart);

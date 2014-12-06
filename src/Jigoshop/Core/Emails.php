@@ -5,6 +5,7 @@ namespace Jigoshop\Core;
 use Jigoshop\Entity\Customer\CompanyAddress;
 use Jigoshop\Entity\Order;
 use Jigoshop\Entity\Product;
+use Jigoshop\Helper\Api;
 use Jigoshop\Helper\Country;
 use Jigoshop\Helper\Product as ProductHelper;
 use Jigoshop\Service\EmailServiceInterface;
@@ -28,8 +29,8 @@ class Emails {
 		$wp->addAction('init', array($this, 'registerMails'), 100);
 		$wp->addAction('order_status_pending_to_processing', array($this, 'orderPendingToProcessing'));
 		$wp->addAction('order_status_pending_to_completed', array($this, 'orderPendingToCompleted'));
-		$wp->addAction('order_status_pending_to_on-hold', array($this, 'orderPendingToOnHold'));
-		$wp->addAction('order_status_on-hold_to_processing', array($this, 'orderOnHoldToProcessing'));
+		$wp->addAction('order_status_pending_to_on_hold', array($this, 'orderPendingToOnHold'));
+		$wp->addAction('order_status_on_hold_to_processing', array($this, 'orderOnHoldToProcessing'));
 		$wp->addAction('order_status_completed', array($this, 'orderCompleted'));
 		$wp->addAction('order_status_refunded', array($this, 'orderRefunded'));
 		$wp->addAction('jigoshop_low_stock_notification', array($this, 'productLowStock'));
@@ -169,7 +170,7 @@ class Emails {
 			'total_tax' => ProductHelper::formatPrice($order->getTotalTax()),
 			'total' => ProductHelper::formatPrice($order->getTotal()),
 			'is_local_pickup' => $order->getShippingMethod() && $order->getShippingMethod()->getId() == LocalPickup::NAME ? true : null,
-			'checkout_url' => null, //$order->getStatus() == Order\Status::PENDING ? $order->get_checkout_payment_url() : null, // TODO: Get payment URL
+			'checkout_url' => $order->getStatus() == Order\Status::PENDING ? Api::getEndpointUrl('pay', $order->getId(), $this->wp->getPermalink($this->options->getPageId(Pages::CHECKOUT))) : null,
 			'payment_method' => $order->getPaymentMethod()->getName(),
 			'billing_first_name' => $billingAddress->getFirstName(),
 			'billing_last_name' => $billingAddress->getLastName(),

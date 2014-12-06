@@ -275,7 +275,6 @@ class Variable implements Type
 		$post = $wp->getGlobalPost();
 		$product = $this->productService->findForPost($post);
 
-		// TODO: Cache $attributes somewhere
 		if ($product instanceof Product\Variable) {
 			$variations = array();
 			foreach ($product->getVariations() as $variation) {

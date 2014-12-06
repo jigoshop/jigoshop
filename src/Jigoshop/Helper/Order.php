@@ -50,7 +50,7 @@ class Order
 			'action' => 'cancel_order',
 			'nonce' => wp_create_nonce('cancel_order'),
 			'id' => $order->getId(),
-			'key' => '', // TODO: Implement order key security $order->getKey(),
+			'key' => $order->getKey(),
 		);
 		$url = add_query_arg($args, get_permalink(self::$options->getPageId(Pages::CART)));
 

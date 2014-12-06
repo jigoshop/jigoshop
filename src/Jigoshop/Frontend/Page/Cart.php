@@ -364,11 +364,10 @@ class Cart implements PageInterface
 					if (!$this->wp->getHelpers()->verifyNonce($_REQUEST['cancel_order'], 'cancel_order')) {
 						$order = $this->orderService->find((int)$_REQUEST['id']);
 
-						// TODO: Add order security with order keys
-//						if ($order->getKey() != $_REQUEST['key']) {
-//							$this->messages->addError(__('Invalid order key.', 'jigoshop'));
-//							return;
-//						}
+						if ($order->getKey() != $_REQUEST['key']) {
+							$this->messages->addError(__('Invalid order key.', 'jigoshop'));
+							return;
+						}
 
 						$order->setStatus(Status::CANCELLED);
 						$this->orderService->save($order);
