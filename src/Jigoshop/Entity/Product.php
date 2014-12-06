@@ -23,6 +23,9 @@ abstract class Product implements EntityInterface, Product\Taxable
 	private $categories;
 	private $tags;
 	private $sku;
+	private $brand;
+	private $gtin;
+	private $mpn;
 	private $taxable;
 	private $taxClasses = array();
 	/** @var Product\Attributes\Size */
@@ -125,6 +128,57 @@ abstract class Product implements EntityInterface, Product\Taxable
 	public function getSku()
 	{
 		return $this->sku;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getBrand()
+	{
+		return $this->brand;
+	}
+
+	/**
+	 * @param string $brand
+	 */
+	public function setBrand($brand)
+	{
+		$this->brand = $brand;
+		$this->dirtyFields[] = 'brand';
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getGtin()
+	{
+		return $this->gtin;
+	}
+
+	/**
+	 * @param string $gtin
+	 */
+	public function setGtin($gtin)
+	{
+		$this->gtin = $gtin;
+		$this->dirtyFields[] = 'gtin';
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getMpn()
+	{
+		return $this->mpn;
+	}
+
+	/**
+	 * @param string $mpn
+	 */
+	public function setMpn($mpn)
+	{
+		$this->mpn = $mpn;
+		$this->dirtyFields[] = 'mpn';
 	}
 
 	/**
@@ -377,6 +431,15 @@ abstract class Product implements EntityInterface, Product\Taxable
 				case 'sku':
 					$toSave['sku'] = $this->sku;
 					break;
+				case 'brand':
+					$toSave['brand'] = $this->brand;
+					break;
+				case 'gtin':
+					$toSave['gtin'] = $this->gtin;
+					break;
+				case 'mpn':
+					$toSave['mpn'] = $this->mpn;
+					break;
 				case 'featured':
 					$toSave['featured'] = $this->featured;
 					break;
@@ -423,6 +486,15 @@ abstract class Product implements EntityInterface, Product\Taxable
 		}
 		if (isset($state['sku'])) {
 			$this->sku = $state['sku'];
+		}
+		if (isset($state['brand'])) {
+			$this->brand = $state['brand'];
+		}
+		if (isset($state['gtin'])) {
+			$this->gtin = $state['gtin'];
+		}
+		if (isset($state['mpn'])) {
+			$this->mpn = $state['mpn'];
 		}
 		if (isset($state['featured'])) {
 			$this->featured = is_numeric($state['featured']) ? (bool)$state['featured'] : $state['featured'] == 'on';

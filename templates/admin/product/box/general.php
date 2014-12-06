@@ -22,6 +22,21 @@ use Jigoshop\Helper\Product as ProductHelper;
 		'value' => $product->getSku(),
 		'placeholder' => $product->getId(),
 	));
+	Forms::text(array(
+		'name' => 'product[brand]',
+		'label' => __('Brand', 'jigoshop'),
+		'value' => $product->getBrand(),
+	));
+	Forms::text(array(
+		'name' => 'product[gtin]',
+		'label' => __('GTIN', 'jigoshop'),
+		'value' => $product->getGtin(),
+	));
+	Forms::text(array(
+		'name' => 'product[mpn]',
+		'label' => __('MPN', 'jigoshop'),
+		'value' => $product->getMpn(),
+	));
 	?>
 </fieldset>
 <fieldset>
