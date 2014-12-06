@@ -273,6 +273,20 @@ class jigoshop_order extends Jigoshop_Base
 		}
 	}
 
+	private function get_shipping_tax()
+	{
+		$tax = (float)$this->_fetch('order_shipping_tax');
+		if ($tax == 0 && isset(jigoshop_session::instance()->chosen_shipping_method_id) && isset(jigoshop_session::instance()->selected_rate_id)) {
+			foreach($this->get_tax_classes() as $class) {
+				if (isset($this->order_tax[$class][jigoshop_session::instance()->chosen_shipping_method_id.jigoshop_session::instance()->selected_rate_id])) {
+					$tax += (float)$this->order_tax[$class][jigoshop_session::instance()->chosen_shipping_method_id.jigoshop_session::instance()->selected_rate_id];
+				}
+			}
+		}
+
+		return $tax;
+	}
+
 	public function tax_class_is_not_compound($tax_class)
 	{
 		return !$this->order_tax[$tax_class]['compound'];
@@ -357,7 +371,7 @@ class jigoshop_order extends Jigoshop_Base
 		}
 		foreach ($this->items as $item) {
 			$_product = $this->get_product_from_item($item);
-			$return .= $item['qty'].' x '.html_entity_decode(apply_filters('jigoshop_order_product_title', $item['name'], $_product), ENT_QUOTES, 'UTF-8');
+			$return .= $item['qty'].' x '.html_entity_decode(apply_filters('jigoshop_order_product_title', $item['name'], $_product, $item), ENT_QUOTES, 'UTF-8');
 			if ($show_sku && self::get_options()->get('jigoshop_enable_sku') == 'yes') {
 				$return .= ' (#'.$_product->sku.')';
 			}
@@ -609,19 +623,5 @@ class jigoshop_order extends Jigoshop_Base
 			}
 		}
 		$this->add_order_note(__('Order item stock reduced successfully.', 'jigoshop'));
-	}
-
-	private function get_shipping_tax()
-	{
-		$tax = (float)$this->_fetch('order_shipping_tax');
-		if ($tax == 0 && isset(jigoshop_session::instance()->chosen_shipping_method_id) && isset(jigoshop_session::instance()->selected_rate_id)) {
-			foreach($this->get_tax_classes() as $class) {
-				if (isset($this->order_tax[$class][jigoshop_session::instance()->chosen_shipping_method_id.jigoshop_session::instance()->selected_rate_id])) {
-					$tax += (float)$this->order_tax[$class][jigoshop_session::instance()->chosen_shipping_method_id.jigoshop_session::instance()->selected_rate_id];
-				}
-			}
-		}
-
-		return $tax;
 	}
 }
