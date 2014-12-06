@@ -169,6 +169,26 @@ class GeneralTab implements TabInterface
 					),
 				),
 			),
+			array(
+				'title' => __('Emails', 'jigoshop'),
+				'id' => 'emails',
+				'fields' => array(
+					array(
+						'name' => '[emails][from]',
+						'title' => __('From name', 'jigoshop'),
+						'description' => __('Name shown in all Jigoshop emails.', 'jigoshop'),
+						'type' => 'text',
+						'value' => $this->options['emails']['from'],
+					),
+					array(
+						'name' => '[emails][footer]',
+						'title' => __('Footer', 'jigoshop'),
+						'description' => __('The email footer used in all Jigoshop emails.', 'jigoshop'),
+						'type' => 'textarea',
+						'value' => $this->options['emails']['footer'],
+					),
+				),
+			),
 		);
 	}
 

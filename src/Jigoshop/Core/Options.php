@@ -35,6 +35,10 @@ class Options
 			'currency_decimals' => 2,
 			'currency_thousand_separator' => ',',
 			'currency_decimal_separator' => '.',
+			'emails' => array(
+				'from' => 'Jigoshop',
+				'footer' => '',
+			),
 		),
 		'shopping' => array(
 			'catalog_per_page' => 12,

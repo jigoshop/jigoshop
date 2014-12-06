@@ -197,15 +197,16 @@ class Email implements EmailServiceInterface
 			$post = $this->wp->getPost($postId);
 
 			if (!empty($post) && $post->post_status == 'publish') {
-				$subject = $this->wp->getPostMeta($postId, 'jigoshop_email_subject', true);
+				$subject = $this->wp->getPostMeta($postId, 'subject', true);
 				$post->post_title = empty($subject) ? $post->post_title : $subject;
 				$post = $this->filterPost($post, $args);
 				$headers = array(
 					'MIME-Version: 1.0',
 					'Content-Type: text/html; charset=UTF-8',
-					'From: "'.$this->options->get('emails.from_name').'" <'.$this->options->get('general.email').'>',
+					'From: "'.$this->options->get('general.emails.from').'" <'.$this->options->get('general.email').'>',
 				);
-				$post->post_content = $this->options->get('emails.footer') ? $post->post_content.'<br/><br/>'.$this->options->get('emails.footer') : $post->post_content;
+				$footer = $this->options->get('general.emails.footer');
+				$post->post_content = $footer ? $post->post_content.'<br/><br/>'.$footer : $post->post_content;
 
 				$this->wp->wpMail(
 					$to,

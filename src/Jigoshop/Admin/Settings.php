@@ -212,6 +212,9 @@ class Settings implements PageInterface
 			case 'constant':
 				Forms::constant($field);
 				break;
+			case 'textarea':
+				Forms::textarea($field);
+				break;
 			default:
 				$this->wp->doAction('jigoshop\admin\settings\form_field\\'.$field['type'], $field);
 		}
