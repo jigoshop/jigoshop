@@ -15,13 +15,16 @@ class VariableService
 	private $wp;
 	/** @var \Jigoshop\Core\Options */
 	private $options;
+	/** @var Variable */
+	private $factory;
 	/** @var ProductServiceInterface */
 	private $productService;
 
-	public function __construct(Wordpress $wp, Options $options, ProductServiceInterface $productService)
+	public function __construct(Wordpress $wp, Options $options, Variable $factory, ProductServiceInterface $productService)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
+		$this->factory = $factory;
 		$this->productService = $productService;
 	}
 
@@ -31,7 +34,7 @@ class VariableService
 	 */
 	public function getService()
 	{
-		$service = new Service($this->wp, $this->productService);
+		$service = new Service($this->wp, $this->factory, $this->productService);
 
 		switch ($this->options->get('advanced.cache')) {
 			case 'simple':

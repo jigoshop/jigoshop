@@ -4,6 +4,7 @@ namespace Jigoshop\Service\Product;
 
 use Jigoshop\Entity\EntityInterface;
 use Jigoshop\Entity\Product;
+use Jigoshop\Factory\Product\Variable as Factory;
 use Jigoshop\Service\ProductServiceInterface;
 use WPAL\Wordpress;
 
@@ -11,12 +12,15 @@ class Variable implements VariableServiceInterface
 {
 	/** @var Wordpress */
 	private $wp;
+	/** @var Factory */
+	private $factory;
 	/** @var ProductServiceInterface */
 	private $productService;
 
-	public function __construct(Wordpress $wp, ProductServiceInterface $productService)
+	public function __construct(Wordpress $wp, Factory $factory, ProductServiceInterface $productService)
 	{
 		$this->wp = $wp;
+		$this->factory = $factory;
 		$this->productService = $productService;
 		$wp->addAction('jigoshop\service\product\save', array($this, 'save'));
 	}
@@ -30,7 +34,7 @@ class Variable implements VariableServiceInterface
 	 */
 	public function find(Product\Variable $product, $variationId)
 	{
-		// TODO: Implement for the sake of consistency
+		return $this->factory->getVariation($product, $variationId);
 	}
 
 	public function save(EntityInterface $object)
