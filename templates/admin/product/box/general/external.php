@@ -6,7 +6,6 @@ use Jigoshop\Entity\Product;
  * @var $product Product The product.
  */
 ?>
-<fieldset>
 <?php
 	Forms::text(array(
 		'name' => 'product[url]',
@@ -16,4 +15,3 @@ use Jigoshop\Entity\Product;
 		'value' => $product instanceof Product\External ? $product->getUrl() : '',
 	));
 ?>
-</fieldset>

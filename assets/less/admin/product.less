@@ -1,19 +1,18 @@
-@import '../../bower/bootstrap/less/variables.less';
-@import '../../bower/bootstrap/less/mixins.less';
+@import '../../bower/bootstrap/less/variables';
+@import '../../bower/bootstrap/less/mixins';
 
 .jigoshop {
-  @import '../../bower/bootstrap/less/component-animations.less';
-  @import '../../bower/bootstrap/less/grid.less';
-  @import '../../bower/bootstrap/less/forms.less';
-  @import '../../bower/bootstrap/less/tables.less';
-  @import '../../bower/bootstrap/less/buttons.less';
-  @import '../../bower/bootstrap/less/navs.less';
-  @import '../../bower/bootstrap/less/badges.less';
-  @import '../../bower/bootstrap/less/list-group.less';
-  @import '../../bower/bootstrap/less/tooltip.less';
-  @import '../../bower/bootstrap/less/utilities.less';
-  @import '../../bower/bootstrap/less/alerts.less';
-  @import '../../bower/bootstrap/less/type.less';
+  @import '../../bower/bootstrap/less/component-animations';
+  @import '../../bower/bootstrap/less/grid';
+  @import '../../bower/bootstrap/less/tables';
+  @import '../../bower/bootstrap/less/buttons';
+  @import '../../bower/bootstrap/less/navs';
+  @import '../../bower/bootstrap/less/badges';
+  @import '../../bower/bootstrap/less/list-group';
+  @import '../../bower/bootstrap/less/tooltip';
+  @import '../../bower/bootstrap/less/utilities';
+  @import '../../bower/bootstrap/less/alerts';
+  @import '../../bower/bootstrap/less/type';
 
   .panel-heading button {
     margin-top: -@padding-large-horizontal/2;
@@ -65,7 +64,11 @@
     background: @body-bg;
     border: 1px solid @nav-tabs-border-color;
     border-top: 0;
-    padding: @padding-base-vertical @padding-base-horizontal;
+    padding: @padding-base-vertical 0;
+
+    #attributes {
+      padding: 0 @padding-base-horizontal;
+    }
   }
   h3 {
     margin: 1em 0 !important;
