@@ -51,3 +51,4 @@ if ($product instanceof Product\Saleable) {
 	));
 	?>
 </fieldset>
+<?php do_action('jigoshop\product\tabs\sales', $product); ?>

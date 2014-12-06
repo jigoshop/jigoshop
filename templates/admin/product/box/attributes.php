@@ -22,4 +22,4 @@ use Jigoshop\Helper\Render;
 		<?php Render::output('admin/product/box/attributes/attribute', array('attribute' => $attribute)); ?>
 	<?php endforeach; ?>
 </ul>
-<?php do_action('jigoshop\product\tabs\attributes'); ?>
+<?php do_action('jigoshop\product\tabs\attributes', $product); ?>

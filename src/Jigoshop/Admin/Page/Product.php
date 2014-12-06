@@ -47,7 +47,7 @@ class Product
 
 		$this->menu = $menu = $this->wp->applyFilters('jigoshop\admin\product\menu', array(
 			'general' => array('label' => __('General', 'jigoshop'), 'visible' => true),
-			'advanced' => array('label' => __('Advanced', 'jigoshop'), 'visible' => true),
+			'advanced' => array('label' => __('Advanced', 'jigoshop'), 'visible' => array(Simple::TYPE)),
 			'attributes' => array('label' => __('Attributes', 'jigoshop'), 'visible' => true),
 			'stock' => array('label' => __('Stock', 'jigoshop'), 'visible' => array(Simple::TYPE)),
 			'sales' => array('label' => __('Sales', 'jigoshop'), 'visible' => array(Simple::TYPE)),

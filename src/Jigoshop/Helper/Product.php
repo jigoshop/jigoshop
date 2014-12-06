@@ -63,6 +63,7 @@ class Product
 	{
 		switch($product->getType()){
 			case Entity\Product\Simple::TYPE:
+			case Entity\Product\External::TYPE:
 				/** @var $product Entity\Product\Simple */
 				if ( self::isOnSale($product)) {
 					if (strpos($product->getSales()->getPrice(), '%') !== false) {
@@ -198,6 +199,7 @@ class Product
 		$status = false;
 		switch($product->getType()){
 			case Entity\Product\Simple::TYPE:
+			case Entity\Product\External::TYPE:
 				/** @var $product Entity\Product\Simple */
 				$status = $product->getSales()->isEnabled();
 		}
@@ -234,6 +236,9 @@ class Product
 		switch($product->getType()){
 			case Entity\Product\Simple::TYPE:
 				Render::output("shop/{$template}/cart/simple", array('product' => $product));
+				break;
+			case Entity\Product\External::TYPE:
+				Render::output("shop/{$template}/cart/external", array('product' => $product));
 				break;
 			case Entity\Product\Variable::TYPE:
 				Render::output("shop/{$template}/cart/variable", array('product' => $product));

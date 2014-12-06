@@ -220,6 +220,7 @@ class Variable implements Type
 	public function addProductMenu($menu)
 	{
 		$menu['variations'] = array('label' => __('Variations', 'jigoshop'), 'visible' => array(Product\Variable::TYPE));
+		$menu['advanced']['visible'][] = Product\Variable::TYPE;
 		$menu['sales']['visible'][] = Product\Variable::TYPE;
 		return $menu;
 	}

@@ -26,4 +26,4 @@ use Jigoshop\Entity\Product;
 	));
 	?>
 </fieldset>
-<?php do_action('jigoshop\product\tabs\advanced'); ?>
+<?php do_action('jigoshop\product\tabs\advanced', $product); ?>

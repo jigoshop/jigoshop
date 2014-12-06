@@ -69,4 +69,4 @@ use Jigoshop\Helper\Product as ProductHelper;
 	));
 	?>
 </fieldset>
-<?php do_action('jigoshop\product\tabs\general'); ?>
+<?php do_action('jigoshop\product\tabs\general', $product); ?>

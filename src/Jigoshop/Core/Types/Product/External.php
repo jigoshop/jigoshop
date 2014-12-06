@@ -3,11 +3,14 @@
 namespace Jigoshop\Core\Types\Product;
 
 use Jigoshop\Entity\Order\Item;
+use Jigoshop\Entity\Product;
+use Jigoshop\Entity\Product\External as Entity;
+use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
 use WPAL\Wordpress;
 
-class Simple implements Type
+class External implements Type
 {
 	/**
 	 * Returns identifier for the type.
@@ -16,7 +19,7 @@ class Simple implements Type
 	 */
 	public function getId()
 	{
-		return \Jigoshop\Entity\Product\Simple::TYPE;
+		return Entity::TYPE;
 	}
 
 	/**
@@ -26,7 +29,7 @@ class Simple implements Type
 	 */
 	public function getName()
 	{
-		return __('Simple', 'jigoshop');
+		return __('External / Affiliate', 'jigoshop');
 	}
 
 	/**
@@ -37,7 +40,7 @@ class Simple implements Type
 	 */
 	public function getClass()
 	{
-		return '\Jigoshop\Entity\Product\Simple';
+		return '\Jigoshop\Entity\Product\External';
 	}
 
 	/**
@@ -50,18 +53,19 @@ class Simple implements Type
 	{
 		$wp->addFilter('jigoshop\cart\add', array($this, 'addToCart'), 10, 2);
 		$wp->addAction('jigoshop\admin\product\assets', array($this, 'addAssets'), 10, 3);
+		$wp->addFilter('jigoshop\admin\product\menu', array($this, 'addProductMenu'));
+		$wp->addFilter('jigoshop\product\tabs\general', array($this, 'addToGeneralTab'), 10, 1);
 	}
 
+	/**
+	 * @param $value
+	 * @param $product
+	 * @return null
+	 */
 	public function addToCart($value, $product)
 	{
-		if ($product instanceof \Jigoshop\Entity\Product\Simple) {
-			$item = new Item();
-			$item->setName($product->getName());
-			$item->setPrice($product->getPrice());
-			$item->setQuantity(1);
-			$item->setProduct($product);
-
-			return $item;
+		if ($product instanceof Entity) {
+			return null;
 		}
 
 		return $value;
@@ -74,6 +78,30 @@ class Simple implements Type
 	 */
 	public function addAssets(Wordpress $wp, Styles $styles, Scripts $scripts)
 	{
-		$scripts->add('jigoshop.admin.product.simple', JIGOSHOP_URL.'/assets/js/admin/product/simple.js', array('jquery'));
+		$scripts->add('jigoshop.admin.product.external', JIGOSHOP_URL.'/assets/js/admin/product/external.js', array('jquery'));
+	}
+
+	/**
+	 * Updates product menu.
+	 *
+	 * @param $menu array
+	 * @return array
+	 */
+	public function addProductMenu($menu)
+	{
+		$menu['sales']['visible'][] = Product\External::TYPE;
+		return $menu;
+	}
+
+	/**
+	 * Updates product tab with external URL field.
+	 *
+	 * @param $product Product
+	 */
+	public function addToGeneralTab($product)
+	{
+		Render::output('admin/product/box/general/external', array(
+			'product' => $product,
+		));
 	}
 }

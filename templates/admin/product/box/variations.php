@@ -32,4 +32,4 @@ use Jigoshop\Helper\Render;
 		}
 	</style>
 </noscript>
-<?php do_action('jigoshop\product\tabs\variations'); ?>
+<?php do_action('jigoshop\product\tabs\variations', $product); ?>

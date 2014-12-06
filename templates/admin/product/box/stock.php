@@ -50,3 +50,4 @@ $stock = $product instanceof Product\Purchasable ? $product->getStock() : new St
 	));
 	?>
 </fieldset>
+<?php do_action('jigoshop\product\tabs\stock', $product); ?>
