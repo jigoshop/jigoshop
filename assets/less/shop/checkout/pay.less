@@ -1,0 +1,53 @@
+@import '../../../bower/bootstrap/less/variables';
+@import '../../../bower/bootstrap/less/mixins';
+
+.jigoshop {
+  table, th, td {
+    border: 0;
+  }
+
+  @import '../../../bower/bootstrap/less/buttons';
+  @import '../../../bower/bootstrap/less/forms';
+  @import '../../../bower/bootstrap/less/list-group';
+  @import '../../../bower/bootstrap/less/panels';
+  @import '../../../bower/bootstrap/less/tables';
+  @import '../../../bower/bootstrap/less/type';
+  @import '../../../bower/bootstrap/less/wells';
+
+  form {
+    margin: 0 15px;
+
+    #totals th {
+      text-align: right;
+      width: 20%;
+    }
+    button {
+      text-transform: none;
+    }
+    .list-group {
+      margin-left: 0;
+      margin-bottom: 8px;
+    }
+    #payment-methods li > div {
+      margin: @padding-base-horizontal/2 0;
+      display: none;
+
+      &.well {
+        min-height: 0;
+      }
+    }
+  }
+
+  #cart-collaterals {
+    .clearfix();
+
+    #cart-totals {
+      width: 50%;
+
+      th {
+        text-align: right;
+        width: 30%;
+      }
+    }
+  }
+}

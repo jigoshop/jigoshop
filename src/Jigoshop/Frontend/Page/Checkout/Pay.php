@@ -9,11 +9,13 @@ use Jigoshop\Core\Types;
 use Jigoshop\Entity\Order;
 use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\Product;
+use Jigoshop\Exception;
 use Jigoshop\Frontend\Page\PageInterface;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
 use Jigoshop\Service\OrderServiceInterface;
+use Jigoshop\Service\PaymentServiceInterface;
 use Jigoshop\Service\TaxServiceInterface;
 use WPAL\Wordpress;
 
@@ -29,38 +31,85 @@ class Pay implements PageInterface
 	private $orderService;
 	/** @var TaxServiceInterface */
 	private $taxService;
+	/** @var PaymentServiceInterface */
+	private $paymentService;
 
 	public function __construct(Wordpress $wp, Options $options, Messages $messages, OrderServiceInterface $orderService, TaxServiceInterface $taxService,
-		Styles $styles, Scripts $scripts)
+		PaymentServiceInterface $paymentService, Styles $styles, Scripts $scripts)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->messages = $messages;
 		$this->orderService = $orderService;
 		$this->taxService = $taxService;
+		$this->paymentService = $paymentService;
 
-		$styles->add('jigoshop.checkout.pay', JIGOSHOP_URL.'/assets/css/checkout/pay.css');
+		$styles->add('jigoshop', JIGOSHOP_URL.'/assets/css/shop.css');
+		$styles->add('jigoshop.checkout.pay', JIGOSHOP_URL.'/assets/css/shop/checkout/pay.css');
+		$scripts->add('jigoshop.checkout.pay', JIGOSHOP_URL.'/assets/js/shop/checkout/pay.js', array('jquery'));
 		$wp->doAction('jigoshop\checkout\pay\assets', $wp, $styles, $scripts);
 	}
 
 	public function action()
 	{
+		$order = $this->orderService->find((int)$this->wp->getQueryParameter('pay'));
+
+		if ($order->getKey() !==$_GET['key']) {
+			$this->messages->addError(__('Invalid security key. Unable to process order.', 'jigoshop'));
+			$this->wp->redirectTo($this->options->getPageId(Pages::ACCOUNT));
+		}
+
+		if (isset($_POST['action']) && $_POST['action'] == 'purchase') {
+			try {
+				if ($this->options->get('advanced.pages.terms') > 0 && (!isset($_POST['terms']) || $_POST['terms'] != 'on')) {
+					throw new Exception(__('You need to accept terms &amp; conditions!', 'jigoshop'));
+				}
+
+				if (!isset($_POST['payment_method'])) {
+					throw new Exception(__('Please select one of available payment methods.', 'jigoshop'));
+				}
+
+				$payment = $this->paymentService->get($_POST['payment_method']);
+				$order->setPaymentMethod($payment);
+
+				if (!$payment->isEnabled()) {
+					throw new Exception(__('Selected payment method is not available. Please select another one.', 'jigoshop'));
+				}
+
+				$this->orderService->save($order);
+				$url = $payment->process($order);
+
+				// Redirect to thank you page
+				if (empty($url)) {
+					$url = $this->wp->getPermalink($this->wp->applyFilters('jigoshop\checkout\redirect_page_id', $this->options->getPageId(Pages::THANK_YOU)));
+					$url = $this->wp->getHelpers()->addQueryArg(array('order' => $order->getId(), 'key' => $order->getKey()), $url);
+				}
+
+				$this->wp->wpRedirect($url);
+				exit;
+			} catch(Exception $e) {
+				$this->messages->addError($e->getMessage());
+			}
+		}
 	}
 
 	public function render()
 	{
 		$taxService = $this->taxService;
-		$order = $this->orderService->find((int)$_GET['pay']);
-		if ($order->getKey() != $_GET['key']) {
-			$this->messages->addError(__('Invalid security key. Unable to process order.', 'jigoshop'));
-			$this->wp->redirectTo($this->options->getPageId(Pages::ACCOUNT));
+		$order = $this->orderService->find((int)$this->wp->getQueryParameter('pay'));
+
+		$termsUrl = '';
+		$termsPage = $this->options->get('advanced.pages.terms');
+		if ($termsPage > 0) {
+			$termsUrl = $this->wp->getPageLink($termsPage);
 		}
 
 		return Render::get('shop/checkout/pay', array(
 			'messages' => $this->messages,
 			'order' => $order,
 			'showWithTax' => $this->options->get('tax.price_tax') == 'with_tax',
-			'shopUrl' => $this->wp->getPermalink($this->options->getPageId(Pages::SHOP)),
+			'termsUrl' => $termsUrl,
+			'paymentMethods' => $this->paymentService->getEnabled(),
 			'getTaxLabel' => function($taxClass) use ($taxService, $order) {
 				return $taxService->getLabel($taxClass, $order->getCustomer());
 			},

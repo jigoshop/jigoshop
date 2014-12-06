@@ -97,6 +97,7 @@ services:
       - '@jigoshop.messages'
       - '@jigoshop.service.order'
       - '@jigoshop.service.tax'
+      - '@jigoshop.service.payment'
       - '@jigoshop.helper.styles'
       - '@jigoshop.helper.scripts'
   jigoshop.page.account:
