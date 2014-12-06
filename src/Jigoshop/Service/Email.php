@@ -153,6 +153,14 @@ class Email implements EmailServiceInterface
 	}
 
 	/**
+	 * @return array List of available actions.
+	 */
+	public function getAvailableActions()
+	{
+		return $this->factory->getAvailableActions();
+	}
+
+	/**
 	 * @param $postId int Email template to add.
 	 * @param $hooks array List of hooks to add to.
 	 */

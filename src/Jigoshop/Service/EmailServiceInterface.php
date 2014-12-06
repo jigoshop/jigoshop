@@ -48,6 +48,11 @@ interface EmailServiceInterface extends ServiceInterface
 	public function register($action, $description, array $arguments);
 
 	/**
+	 * @return array List of available actions.
+	 */
+	public function getAvailableActions();
+
+	/**
 	 * @param $postId int Email template to add.
 	 * @param $hooks array List of hooks to add to.
 	 */

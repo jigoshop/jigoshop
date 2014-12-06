@@ -89,7 +89,6 @@ class Checkout
         @_updateTotals(result.html.total, result.html.subtotal)
         @_updateDiscount(result)
         @_updateTaxes(result.tax, result.html.tax)
-        jQuery('#jigoshop_coupons').val(result.coupons)
       else
         addMessage('danger', result.error, 6000)
 
@@ -111,7 +110,6 @@ class Checkout
         @_updateDiscount(result)
         @_updateTaxes(result.tax, result.html.tax)
         @_updateShipping(result.shipping, result.html.shipping)
-        jQuery('#jigoshop_coupons').val(result.coupons)
         stateClass = '#' + jQuery(event.target).attr('id').replace(/country/, 'state')
 
         if result.has_states
@@ -162,11 +160,9 @@ class Checkout
         @_updateDiscount(result)
         @_updateTaxes(result.tax, result.html.tax)
         @_updateShipping(result.shipping, result.html.shipping)
-        jQuery('#jigoshop_coupons').val(result.coupons)
       else
         addMessage('danger', result.error, 6000)
       @unblock()
-
 
   _updateShippingField: (action, field, value) =>
     @block()
@@ -185,7 +181,6 @@ class Checkout
         @_updateDiscount(result)
         @_updateTaxes(result.tax, result.html.tax)
         @_updateShipping(result.shipping, result.html.shipping)
-        jQuery('#jigoshop_coupons').val(result.coupons)
       else
         addMessage('danger', result.error, 6000)
       @unblock()

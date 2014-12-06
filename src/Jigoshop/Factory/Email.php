@@ -2,6 +2,7 @@
 
 namespace Jigoshop\Factory;
 
+use Jigoshop\Core\Options;
 use Jigoshop\Entity\Email as Entity;
 use WPAL\Wordpress;
 
@@ -14,10 +15,13 @@ class Email implements EntityFactoryInterface
 {
 	/** @var Wordpress */
 	private $wp;
+	/** @var Options */
+	private $options;
 
-	public function __construct(Wordpress $wp)
+	public function __construct(Wordpress $wp, Options $options)
 	{
 		$this->wp = $wp;
+		$this->options = $options;
 	}
 
 	/**
@@ -36,7 +40,9 @@ class Email implements EntityFactoryInterface
 			$email->setTitle($helpers->sanitizeTitle($_POST['post_title']));
 			$email->setText($helpers->parsePostBody($_POST['content']));
 
-			// TODO: Check if actions are valid
+			// TODO: Replace emails.templates with proper email fetching so that available actions will be always good
+//			$availableActions = $this->getAvailableActions();
+//			$_POST['jigoshop_email']['actions'] = array_intersect($_POST['jigoshop_email']['actions'], $availableActions);
 			$email->restoreState($_POST['jigoshop_email']);
 		}
 
@@ -68,5 +74,15 @@ class Email implements EntityFactoryInterface
 		}
 
 		return $this->wp->applyFilters('jigoshop\find\email', $email, $state);
+	}
+
+	/**
+	 * @return array List of available actions.
+	 */
+	public function getAvailableActions()
+	{
+		// TODO: Replace emails.templates with proper email fetching so that available actions will be always good
+		$templates = $this->options->get('emails.templates', array());
+		return array_keys($templates);
 	}
 }

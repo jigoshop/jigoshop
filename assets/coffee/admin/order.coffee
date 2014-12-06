@@ -6,18 +6,19 @@ class AdminOrder
 
   constructor: (@params) ->
     @newItemSelect()
-    @_prepareStateField("#order_billing_state")
-    @_prepareStateField("#order_shipping_state")
+    @_prepareStateField("#order_billing_address_state")
+    @_prepareStateField("#order_shipping_address_state")
 
     jQuery('#add-item').on 'click', @newItemClick
     jQuery('.jigoshop-order table').on 'click', 'a.remove', @removeItemClick
     jQuery('.jigoshop-order table').on 'change', '.price input, .quantity input', @updateItem
     jQuery('.jigoshop-data')
-      .on 'change', "#order_billing_country", @updateCountry
-      .on 'change', "#order_shipping_country", @updateCountry
-#      .on 'change', "#order_#{@params.tax_field}_state", @updateTaxState.bind(@, '#state')
-#      .on 'change', '#noscript_state', @updateState.bind(@, '#noscript_state')
-#      .on 'change', "#order_#{@params.tax_field}_postcode", @updateTaxPostcode
+      .on 'change', "#order_billing_address_country", @updateCountry
+      .on 'change', "#order_shipping_address_country", @updateCountry
+      .on 'change', '#order_billing_address_state', @updateState
+      .on 'change', '#order_shipping_address_state', @updateState
+      .on 'change', '#order_billing_address_postcode', @updatePostcode
+      .on 'change', '#order_shipping_address_postcode', @updatePostcode
 
     jQuery('.jigoshop-totals')
       .on 'click', 'input[type=radio]', @selectShipping
@@ -165,7 +166,55 @@ class AdminOrder
           $field.select2
             data: data
         else
-          $field.select2('destroy').val('')
+          $field.attr('type', 'text').select2('destroy').val('')
+      else
+        addMessage('danger', result.error, 6000)
+
+  updateState: (e) =>
+    $target = jQuery(e.target)
+    $parent = $target.closest('.jigoshop')
+    id = $target.attr('id')
+    type = id.replace(/order_/, '').replace(/_state/, '')
+
+    jQuery.ajax(@params.ajax,
+      type: 'post'
+      dataType: 'json'
+      data:
+        action: 'jigoshop.admin.order.change_state'
+        value: $target.val()
+        order: $parent.data('order')
+        type: type
+    )
+    .done (result) =>
+      if result.success? and result.success
+        @_updateTotals(result.html.total, result.html.subtotal)
+        @_updateTaxes(result.tax, result.html.tax)
+        @_updateShipping(result.shipping, result.html.shipping)
+      else
+        addMessage('danger', result.error, 6000)
+
+  updatePostcode: (e) =>
+    $target = jQuery(e.target)
+    $parent = $target.closest('.jigoshop')
+    id = $target.attr('id')
+    type = id.replace(/order_/, '').replace(/_postcode/, '')
+
+    jQuery.ajax(@params.ajax,
+      type: 'post'
+      dataType: 'json'
+      data:
+        action: 'jigoshop.admin.order.change_postcode'
+        value: $target.val()
+        order: $parent.data('order')
+        type: type
+    )
+    .done (result) =>
+      if result.success? and result.success
+        @_updateTotals(result.html.total, result.html.subtotal)
+        @_updateTaxes(result.tax, result.html.tax)
+        @_updateShipping(result.shipping, result.html.shipping)
+      else
+        addMessage('danger', result.error, 6000)
 
   _updateTaxes: (taxes, html) ->
     for own taxClass, tax of html
@@ -212,27 +261,6 @@ class AdminOrder
     $field.replaceWith($replacement)
     $replacement.select2
       data: data
-
-#  updateState: (field) =>
-#    @_updateShippingField('jigoshop_cart_change_state', jQuery(field).val())
-#
-#  updatePostcode: =>
-#    @_updateShippingField('jigoshop_cart_change_postcode', jQuery('#postcode').val())
-#
-#  _updateShippingField: (action, value) =>
-#    jQuery.ajax(@params.ajax,
-#      type: 'post'
-#      dataType: 'json'
-#      data:
-#        action: action
-#        value: value
-#    )
-#    .done (result) =>
-#      if result.success == true
-#        jQuery('#shipping-calculator th p > span').html(result.html.estimation)
-#        @_updateTotals(result.html.total, result.html.subtotal)
-#        @_updateTaxes(result.tax, result.html.tax)
-#        @_updateShipping(result.shipping, result.html.shipping)
 
 jQuery ->
   new AdminOrder(jigoshop_admin_order)

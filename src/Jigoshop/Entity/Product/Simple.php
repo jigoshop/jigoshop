@@ -142,7 +142,10 @@ class Simple extends Product implements Purchasable, Shippable, Saleable
 			}
 		}
 
-		$toSave['sales'] = $this->sales;
+		$toSave['sales_enabled'] = $this->sales->isEnabled();
+		$toSave['sales_from'] = $this->sales->getFrom()->getTimestamp();
+		$toSave['sales_to'] = $this->sales->getTo()->getTimestamp();
+		$toSave['sales_price'] = $this->sales->getPrice();
 		$toSave['stock_manage'] = $this->stock->getManage();
 		$toSave['stock_stock'] = $this->stock->getStock();
 		$toSave['stock_allow_backorders'] = $this->stock->getAllowBackorders();
@@ -162,17 +165,17 @@ class Simple extends Product implements Purchasable, Shippable, Saleable
 		if (isset($state['regular_price'])) {
 			$this->regularPrice = (float)$state['regular_price'];
 		}
-
-		if (isset($state['sales']) && !empty($state['sales'])) {
-			// TODO: Change into list of fields
-			if (is_array($state['sales'])) {
-				$this->sales->setEnabled($state['sales']['enabled'] == 'on');
-				$this->sales->setFromTime($state['sales']['from']);
-				$this->sales->setToTime($state['sales']['to']);
-				$this->sales->setPrice($state['sales']['price']);
-			} else {
-				$this->sales = unserialize($state['sales']);
-			}
+		if (isset($state['sales_enabled'])) {
+			$this->sales->setEnabled($state['sales_enabled']);
+		}
+		if (isset($state['sales_from'])) {
+			$this->sales->setFromTime($state['sales_from']);
+		}
+		if (isset($state['sales_to'])) {
+			$this->sales->setToTime($state['sales_to']);
+		}
+		if (isset($state['sales_price'])) {
+			$this->sales->setPrice($state['sales_price']);
 		}
 		if (isset($state['stock_manage'])) {
 			$this->stock->setManage((bool)$state['stock_manage']);

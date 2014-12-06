@@ -14,6 +14,7 @@ use Jigoshop\Helper\Product as ProductHelper;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
+use Jigoshop\Helper\Validation;
 use Jigoshop\Service\CustomerServiceInterface;
 use Jigoshop\Service\OrderServiceInterface;
 use Jigoshop\Service\ProductServiceInterface;
@@ -53,9 +54,8 @@ class Order
 		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $options, $styles, $scripts){
 			if ($wp->getPostType() == Types::ORDER) {
 				$styles->add('jigoshop.admin.order', JIGOSHOP_URL.'/assets/css/admin/order.css');
-				$styles->add('jigoshop.vendors', JIGOSHOP_URL.'/assets/css/vendors.min.css');
-				$scripts->add('jigoshop.admin.order', JIGOSHOP_URL.'/assets/js/admin/order.js');
-				$scripts->add('jigoshop.vendors', JIGOSHOP_URL.'/assets/js/vendors.min.js');
+				$scripts->add('jigoshop.helpers', JIGOSHOP_URL.'/assets/js/helpers.js');
+				$scripts->add('jigoshop.admin.order', JIGOSHOP_URL.'/assets/js/admin/order.js', array('jquery', 'jigoshop.helpers'));
 				$scripts->localize('jigoshop.admin.order', 'jigoshop_admin_order', array(
 					'ajax' => $wp->getAjaxUrl(),
 					'tax_shipping' => $options->get('tax.shipping'),
@@ -68,6 +68,8 @@ class Order
 		$wp->addAction('wp_ajax_jigoshop.admin.order.update_product', array($this, 'ajaxUpdateProduct'), 10, 0);
 		$wp->addAction('wp_ajax_jigoshop.admin.order.remove_product', array($this, 'ajaxRemoveProduct'), 10, 0);
 		$wp->addAction('wp_ajax_jigoshop.admin.order.change_country', array($this, 'ajaxChangeCountry'), 10, 0);
+		$wp->addAction('wp_ajax_jigoshop.admin.order.change_state', array($this, 'ajaxChangeState'), 10, 0);
+		$wp->addAction('wp_ajax_jigoshop.admin.order.change_postcode', array($this, 'ajaxChangePostcode'), 10, 0);
 		$wp->addAction('wp_ajax_jigoshop.admin.order.change_shipping_method', array($this, 'ajaxChangeShippingMethod'), 10, 0);
 
 		$that = $this;
@@ -260,7 +262,93 @@ class Order
 		exit;
 	}
 
-	// TODO: Change actions for state and postcode
+	/**
+	 * Ajax action for changing state.
+	 */
+	public function ajaxChangeState()
+	{
+		try {
+		// TODO: Some kind of workaround for setting global post
+			global $post;
+			$post = $this->wp->getPost((int)$_POST['order']);
+			$order = $this->orderService->findForPost($post);
+
+			if ($order->getId() === null) {
+				throw new Exception(__('Order not found.', 'jigoshop'));
+			}
+
+			switch ($_POST['type']) {
+				case 'shipping':
+					$address = $order->getCustomer()->getShippingAddress();
+					break;
+				case 'billing':
+				default:
+					$address = $order->getCustomer()->getBillingAddress();
+			}
+
+			if (Country::hasStates($address->getCountry()) && !Country::hasState($address->getCountry(), $_POST['value'])) {
+				throw new Exception(__('Invalid state.', 'jigoshop'));
+			}
+
+			$address->setState($_POST['value']);
+			$order = $this->rebuildOrder($order);
+			$this->orderService->save($order);
+
+			$result = $this->getAjaxResponse($order);
+		} catch (Exception $e) {
+			$result = array(
+				'success' => false,
+				'error' => $e->getMessage(),
+			);
+		}
+
+		echo json_encode($result);
+		exit;
+	}
+
+	/**
+	 * Ajax action for changing postcode.
+	 */
+	public function ajaxChangePostcode()
+	{
+		try {
+		// TODO: Some kind of workaround for setting global post
+			global $post;
+			$post = $this->wp->getPost((int)$_POST['order']);
+			$order = $this->orderService->findForPost($post);
+
+			if ($order->getId() === null) {
+				throw new Exception(__('Order not found.', 'jigoshop'));
+			}
+
+			switch ($_POST['type']) {
+				case 'shipping':
+					$address = $order->getCustomer()->getShippingAddress();
+					break;
+				case 'billing':
+				default:
+					$address = $order->getCustomer()->getBillingAddress();
+			}
+
+			if ($this->options->get('shopping.validate_zip') && !Validation::isPostcode($_POST['value'], $address->getCountry())) {
+				throw new Exception(__('Invalid postcode.', 'jigoshop'));
+			}
+
+			$address->setPostcode($_POST['value']);
+			$order = $this->rebuildOrder($order);
+			$this->orderService->save($order);
+
+			$result = $this->getAjaxResponse($order);
+		} catch (Exception $e) {
+			$result = array(
+				'success' => false,
+				'error' => $e->getMessage(),
+			);
+		}
+
+		echo json_encode($result);
+		exit;
+	}
 
 	public function dataBox()
 	{

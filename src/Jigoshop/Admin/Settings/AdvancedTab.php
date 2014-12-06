@@ -24,6 +24,8 @@ class AdvancedTab implements TabInterface
 	private $settings;
 	/** @var Messages */
 	private $messages;
+	/** @var array */
+	private $caches;
 
 	public function __construct(Wordpress $wp, Options $options, Messages $messages)
 	{
@@ -31,6 +33,10 @@ class AdvancedTab implements TabInterface
 		$this->options = $options;
 		$this->settings = $options->get(self::SLUG);
 		$this->messages = $messages;
+
+		$this->caches = array(
+			'simple' => _x('Simple', 'cache', 'jigoshop'),
+		);
 	}
 
 	/**
@@ -126,10 +132,7 @@ class AdvancedTab implements TabInterface
 						'description' => __('Decides which mechanism for caching is used on the page.', 'jigoshop'),
 						'type' => 'select',
 						'value' => $this->settings['cache'],
-						// TODO: Proper options for cache
-						'options' => array(
-							'simple' => __('Simple', 'jigoshop'),
-						),
+						'options' => $this->caches,
 					),
 				),
 			),
@@ -197,6 +200,11 @@ class AdvancedTab implements TabInterface
 		$settings['automatic_complete'] = $settings['automatic_complete'] == 'on';
 		$settings['automatic_reset'] = $settings['automatic_reset'] == 'on';
 		$settings['force_ssl'] = $settings['force_ssl'] == 'on';
+
+		if (!in_array($settings['cache'], array_keys($this->caches))) {
+			$this->messages->addWarning(sprintf(__('Invalid cache mechanism: "%s". Value set to %s.', 'jigoshop'), $settings['cache'], $this->caches['simple']));
+			$settings['cache'] = 'simple';
+		}
 
 		$pages = $this->_getPages();
 

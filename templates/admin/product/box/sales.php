@@ -21,7 +21,7 @@ if ($product instanceof Product\Saleable) {
 <fieldset>
 	<?php
 	Forms::checkbox(array(
-		'name' => 'product[sales][enabled]',
+		'name' => 'product[sales_enabled]',
 		'id' => 'sales-enabled',
 		'label' => __('Put product on sale?', 'jigoshop'),
 		'checked' => $enabled,
@@ -32,19 +32,19 @@ if ($product instanceof Product\Saleable) {
 	<h3><?php _e('Schedule', 'jigoshop'); ?></h3>
 	<?php
 	Forms::text(array(
-		'name' => 'product[sales][price]',
+		'name' => 'product[sales_price]',
 		'label' => __('Sale price', 'jigoshop'),
 		'value' => $price,
 		'placeholder' => __('15% or 19.99', 'jigoshop'),
 	));
 	Forms::text(array(
-		'name' => 'product[sales][from]',
+		'name' => 'product[sales_from]',
 		'id' => 'sales-from',
 		'label' => __('From', 'jigoshop'),
 		'value' => $from,
 	));
 	Forms::text(array(
-		'name' => 'product[sales][to]',
+		'name' => 'product[sales_to]',
 		'id' => 'sales-to',
 		'label' => __('To', 'jigoshop'),
 		'value' => $to,
