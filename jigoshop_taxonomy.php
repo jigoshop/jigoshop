@@ -308,7 +308,7 @@ function jigoshop_post_type()
 			'show_in_menu' => 'jigoshop'
 		)
 	);
-	
+
 	register_post_type("shop_email",
 		array(
 			'labels' => array(
