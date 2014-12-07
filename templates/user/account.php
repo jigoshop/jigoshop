@@ -73,3 +73,4 @@ use Jigoshop\Helper\Render;
 		</ul>
 	</div>
 </div>
+<?php do_action('jigoshop\user\account', $customer);

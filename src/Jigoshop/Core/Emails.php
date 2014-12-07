@@ -5,7 +5,6 @@ namespace Jigoshop\Core;
 use Jigoshop\Entity\Customer\CompanyAddress;
 use Jigoshop\Entity\Order;
 use Jigoshop\Entity\Product;
-use Jigoshop\Helper\Api;
 use Jigoshop\Helper\Country;
 use Jigoshop\Helper\Order as OrderHelper;
 use Jigoshop\Helper\Product as ProductHelper;
@@ -245,21 +244,7 @@ class Emails {
 				$itemResult = rtrim($itemResult, ',');
 			}
 
-			$itemResult = $this->wp->applyFilters('jigoshop\emails\order_item', $itemResult, $item);
-
-			// TODO: Add download links in downloadable type
-//			if ($product->is_type('downloadable')) {
-//				if ((bool)$item['variation_id']) {
-//					$product_id = $product->variation_id;
-//				} else {
-//					$product_id = $product->ID;
-//				}
-//				if ($this->get_downloadable_file_url($product_id)) {
-//					$result .= PHP_EOL.__('Your download link for this file is:', 'jigoshop');
-//					$result .= PHP_EOL.' - '.$this->get_downloadable_file_url($product_id).'';
-//				}
-//			}
-
+			$itemResult = $this->wp->applyFilters('jigoshop\emails\order_item', $itemResult, $item, $order);
 			$result .= $itemResult.PHP_EOL;
 		}
 

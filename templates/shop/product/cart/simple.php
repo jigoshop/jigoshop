@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $product \Jigoshop\Entity\Product\Variable Product to add.
+ * @var $product \Jigoshop\Entity\Product\Simple Product to add.
  */
 ?>
 <form action="" method="post" class="form-inline" role="form">

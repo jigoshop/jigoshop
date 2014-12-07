@@ -24,6 +24,7 @@ class AdminProduct
       else
         jQuery('.stock-status_field').slideDown()
         jQuery('.stock-status').slideUp()
+    jQuery('.stock-status_field .not-active').show()
     jQuery('#sales-enabled').on 'change', ->
       if jQuery(this).is(':checked')
         jQuery('.schedule').slideDown()
@@ -34,6 +35,7 @@ class AdminProduct
         jQuery('.tax_classes_field').slideDown()
       else
         jQuery('.tax_classes_field').slideUp()
+    jQuery('.tax_classes_field .not-active').show()
     jQuery('#sales-from').datepicker
       todayBtn: 'linked'
       autoclose: true

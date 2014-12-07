@@ -13,6 +13,12 @@ class Meta implements \Serializable
 	/** @var mixed */
 	private $value;
 
+	public function __construct($key = null, $value = null)
+	{
+		$this->key = $key;
+		$this->value = $value;
+	}
+
 	/**
 	 * @return Item
 	 */

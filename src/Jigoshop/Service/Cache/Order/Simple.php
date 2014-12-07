@@ -132,4 +132,15 @@ class Simple implements OrderServiceInterface
 	{
 		return $this->service->findForUser($userId);
 	}
+
+	/**
+	 * Saves item meta value to database.
+	 *
+	 * @param $item Order\Item Item of the meta.
+	 * @param $meta Order\Item\Meta Meta to save.
+	 */
+	public function saveItemMeta($item, $meta)
+	{
+		$this->service->saveItemMeta($item, $meta);
+	}
 }

@@ -26,6 +26,7 @@ class Interceptor
 			'change-password',
 			'orders',
 			'pay',
+			'download-file',
 		);
 	}
 

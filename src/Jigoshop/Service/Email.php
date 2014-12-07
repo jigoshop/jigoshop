@@ -23,8 +23,6 @@ class Email implements EmailServiceInterface
 	private $options;
 	/** @var Factory */
 	private $factory;
-	/** @var array */
-	private $mails = array();
 	/** @var bool */
 	private $suppress = false;
 
@@ -115,6 +113,7 @@ class Email implements EmailServiceInterface
 			$this->wp->updatePostMeta($object->getId(), $field, $value);
 		}
 
+		$this->addTemplate($object->getId(), $object->getActions());
 		$this->wp->doAction('jigoshop\service\email\save', $object);
 	}
 

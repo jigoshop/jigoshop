@@ -61,4 +61,12 @@ interface OrderServiceInterface extends ServiceInterface
 	 * @return array List of orders that are too long in Processing status.
 	 */
 	public function findOldProcessing();
+
+	/**
+	 * Saves item meta value to database.
+	 *
+	 * @param $item Order\Item Item of the meta.
+	 * @param $meta Order\Item\Meta Meta to save.
+	 */
+	public function saveItemMeta($item, $meta);
 }

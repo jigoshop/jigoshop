@@ -155,14 +155,23 @@ class ShoppingTab implements TabInterface
 					array(
 						'name' => '[show_login_form]',
 						'title' => __('Show login form', 'jigoshop'),
+						'description' => __('Add login form on checkout page.', 'jigoshop'),
 						'type' => 'checkbox',
 						'checked' => $this->options['show_login_form'],
 					),
 					array(
 						'name' => '[allow_registration]',
 						'title' => __('Allow registration', 'jigoshop'),
+						'description' => __('Add registration form on checkout page.', 'jigoshop'),
 						'type' => 'checkbox',
 						'checked' => $this->options['allow_registration'],
+					),
+					array(
+						'name' => '[login_for_downloads]',
+						'title' => __('Require login for downloads', 'jigoshop'),
+						'description' => __('Forces user to log in before they could download files.', 'jigoshop'),
+						'type' => 'checkbox',
+						'checked' => $this->options['login_for_downloads'],
 					),
 				),
 			),

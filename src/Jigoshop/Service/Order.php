@@ -190,11 +190,7 @@ class Order implements OrderServiceInterface
 
 				foreach ($item->getAllMeta() as $meta) {
 					/** @var $meta Item\Meta */
-					$wpdb->replace($wpdb->prefix.'jigoshop_order_item_meta', array(
-						'item_id' => $item->getId(),
-						'meta_key' => $meta->getKey(),
-						'meta_value' => $meta->getValue(),
-					));
+					$this->saveItemMeta($item, $meta);
 				}
 			}
 
@@ -238,6 +234,22 @@ class Order implements OrderServiceInterface
 		 * TODO: If configured - send emails on backorders
 		 * $this->wp->addAction('jigoshop\product\backorders', array($this, 'productBackorders'));
 		 */
+	}
+
+	/**
+	 * Saves item meta value to database.
+	 *
+	 * @param $item Item Item of the meta.
+	 * @param $meta Item\Meta Meta to save.
+	 */
+	public function saveItemMeta($item, $meta)
+	{
+		$wpdb = $this->wp->getWPDB();
+		$wpdb->replace($wpdb->prefix.'jigoshop_order_item_meta', array(
+			'item_id' => $item->getId(),
+			'meta_key' => $meta->getKey(),
+			'meta_value' => $meta->getValue(),
+		));
 	}
 
 	/**
