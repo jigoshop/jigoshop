@@ -125,6 +125,11 @@ class Order implements OrderServiceInterface
 			$created = true;
 		}
 
+		if (!$object->getKey()) {
+			$fields['key'] = $this->generateOrderKey($object);
+			$object->setKey($fields['key']);
+		}
+
 		if (isset($fields['id'])) {
 			unset($fields['id']);
 		}
@@ -144,6 +149,7 @@ class Order implements OrderServiceInterface
 				$this->addNote($object, sprintf(__('%sOrder status changed from %s to %s.', 'jigoshop'), $messages['message'], Status::getName($messages['old_status']),
 					Status::getName($messages['new_status'])));
 			}
+			unset($fields['update_messages']);
 		}
 
 		if (isset($fields['customer_note']) || isset($fields['status'])) {
@@ -204,9 +210,6 @@ class Order implements OrderServiceInterface
 
 			unset($fields['items']);
 		}
-
-		$fields['key'] = $this->generateOrderKey($object);
-		$object->setKey($fields['key']);
 
 		foreach ($fields as $field => $value) {
 			$this->wp->updatePostMeta($object->getId(), $field, $this->wp->getHelpers()->escSql($value));
