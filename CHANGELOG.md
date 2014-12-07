@@ -2,6 +2,7 @@
 
 * 1.13.4:
     * Fixed: Creating orders in `jigoshop_orders` class. Thanks to @newash for pointing out.
+    * Fixed: Allow to install emails only on Jigoshop Settings page in admin panel. Thanks to @newash.
 * 1.13.3 - 2014-12-01:
     * Improved: [shipping] variable was divided into [shipping_cost] and [shipping_method].
     * Improved: Order item is now passed to `jigoshop_order_product_title` filter as 3rd argument. Thanks to @ermx
