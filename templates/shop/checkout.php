@@ -88,7 +88,7 @@ use Jigoshop\Helper\Render;
 			</tbody>
 			<tfoot>
 			<tr>
-				<td colspan="4">
+				<td colspan="3">
 					<?php \Jigoshop\Helper\Forms::text(array(
 						'id' => 'jigoshop_coupons',
 						'name' => 'jigoshop_coupons',
@@ -97,7 +97,7 @@ use Jigoshop\Helper\Render;
 					)); ?>
 				</td>
 				<?php $productSubtotal = $showWithTax ? $cart->getProductSubtotal() + $cart->getTotalTax() : $cart->getProductSubtotal(); ?>
-				<th scope="row" colspan="5" class="text-right"><?php _e('Products subtotal', 'jigoshop'); ?></th>
+				<th scope="row" class="text-right"><?php _e('Products subtotal', 'jigoshop'); ?></th>
 				<td id="product-subtotal"><?php echo Product::formatPrice($productSubtotal); ?></td>
 			</tr>
 			</tfoot>
@@ -122,6 +122,7 @@ use Jigoshop\Helper\Render;
 		</div>
 		<table class="table">
 			<tbody>
+			<?php if ($cart->isShippingRequired()): ?>
 				<tr id="shipping-calculator">
 					<th scope="row"><?php _e('Shipping', 'jigoshop'); ?></th>
 					<td>
@@ -132,6 +133,7 @@ use Jigoshop\Helper\Render;
 						</ul>
 					</td>
 				</tr>
+			<?php endif; ?>
 				<tr id="cart-subtotal">
 					<th scope="row"><?php _e('Subtotal', 'jigoshop'); ?></th>
 					<td><?php echo Product::formatPrice($cart->getSubtotal()); ?></td>

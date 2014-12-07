@@ -75,8 +75,8 @@ class Downloadable implements Type
 	public function initialize(Wordpress $wp, array $enabledTypes)
 	{
 		$wp->addFilter('jigoshop\cart\add', array($this, 'addToCart'), 10, 2);
-		$wp->addFilter('jigoshop\emails\order_item', array($this, 'emailLink'), 10, 2);
-		$wp->addAction('init', array($this, 'downloadFile'), 10, 0);
+		$wp->addFilter('jigoshop\emails\order_item', array($this, 'emailLink'), 10, 3);
+		$wp->addAction('template_redirect', array($this, 'downloadFile'), 10, 0);
 
 		$wp->addAction('jigoshop\admin\product\assets', array($this, 'addAssets'), 10, 3);
 		$wp->addFilter('jigoshop\admin\product\menu', array($this, 'addProductMenu'));
@@ -118,7 +118,7 @@ class Downloadable implements Type
 	{
 		$product = $item->getProduct();
 		if ($product instanceof Product\Downloadable) {
-			$url = Api::getEndpointUrl('download-file', $order->getKey().'.'.$order->getId().'.'.$item->getId());
+			$url = Api::getEndpointUrl('download-file', $order->getKey().'.'.$order->getId().'.'.$item->getKey());
 
 			$result .= PHP_EOL.__('Your download link for this file is:', 'jigoshop');
 			$result .= PHP_EOL.' - '.$url;
@@ -138,7 +138,7 @@ class Downloadable implements Type
 					throw new Exception(__('Invalid download key. Unable to download file.', 'jigoshop'));
 				}
 
-				list($key, $id, $itemId) = $data;
+				list($key, $id, $itemKey) = $data;
 				$order = $this->orderService->find((int)$id);
 
 				if ($order->getKey() !== $key) {
@@ -149,7 +149,7 @@ class Downloadable implements Type
 					throw new Exception(__('Invalid order.', 'jigoshop'));
 				}
 
-				$item = $order->getItem((int)$itemId);
+				$item = $order->getItem($itemKey);
 				if ($item->getType() !== Product\Downloadable::TYPE) {
 					throw new Exception(__('Invalid file to download.', 'jigoshop'));
 				}
@@ -172,8 +172,10 @@ class Downloadable implements Type
 					throw new Exception(__('File not found.', 'jigoshop'));
 				}
 
-				$item->getMeta('downloads')->setValue($downloads - 1);
-				$this->orderService->saveItemMeta($item, $item->getMeta('downloads'));
+				if (!empty($downloads)) {
+					$item->getMeta('downloads')->setValue($downloads - 1);
+					$this->orderService->saveItemMeta($item, $item->getMeta('downloads'));
+				}
 
 				if (!$this->wp->isMultisite()) {
 					$site_url = $this->wp->siteUrl();
@@ -191,13 +193,13 @@ class Downloadable implements Type
 					$file = str_replace($upload_dir['baseurl'], $upload_dir['basedir'], $file);
 				}
 
-				$file = $this->wp->applyFilters('jigoshop\downloadable\file_path', $file, $itemId, $order);
+				$file = $this->wp->applyFilters('jigoshop\downloadable\file_path', $file, $itemKey, $order);
 
 				// See if its local or remote
 				if (strstr($file, 'http:') || strstr($file, 'https:') || strstr($file, 'ftp:')) {
-					$remote_file = true;
+					$isRemote = true;
 				} else {
-					$remote_file = false;
+					$isRemote = false;
 					$file = realpath($file);
 				}
 
@@ -264,7 +266,7 @@ class Downloadable implements Type
 					header('Content-Disposition: attachment; filename="'.basename($file).'";');
 				}
 
-				if ($remote_file) {
+				if ($isRemote) {
 					header('Location: '.$file);
 				} else if (file_exists($file)) {
 					header('Content-Length: '.filesize($file));

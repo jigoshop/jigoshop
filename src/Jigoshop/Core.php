@@ -62,6 +62,7 @@ class Core
 
 		// TODO: Why this is required? :/
 		$this->wp->flushRewriteRules();
+		$this->wp->doAction('jigoshop\run');
 	}
 
 	/**

@@ -70,7 +70,7 @@ use Jigoshop\Helper\Render;
 				<div class="panel-heading"><h2 class="panel-title"><?php _e('Cart Totals', 'jigoshop'); ?></h2></div>
 				<table class="table">
 					<tbody>
-					<?php if ($showShippingCalculator): ?>
+					<?php if ($showShippingCalculator && $cart->isShippingRequired()): ?>
 						<tr id="shipping-calculator">
 							<th scope="row">
 								<?php _e('Shipping', 'jigoshop'); ?>

@@ -139,3 +139,9 @@ services:
     class: Jigoshop\Core\Types\Product\External
   jigoshop.product_type.downloadable:
     class: Jigoshop\Core\Types\Product\Downloadable
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.messages'
+      - '@jigoshop.service.order'
+

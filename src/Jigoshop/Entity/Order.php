@@ -9,8 +9,8 @@ use Jigoshop\Entity\Order\Status;
 use Jigoshop\Exception;
 use Jigoshop\Payment\Method as PaymentMethod;
 use Jigoshop\Service\TaxServiceInterface;
-use Jigoshop\Shipping\Method as ShippingMethod;
 use Jigoshop\Shipping\Method;
+use Jigoshop\Shipping\Method as ShippingMethod;
 use Monolog\Registry;
 use WPAL\Wordpress;
 
@@ -234,9 +234,9 @@ class Order implements EntityInterface, OrderInterface
 	}
 
 	/**
-	 * Returns item of selected ID.
+	 * Returns item of selected key.
 	 *
-	 * @param $item int Item ID to fetch.
+	 * @param $item string Item key to fetch.
 	 * @return Item Order item.
 	 * @throws Exception When item is not found.
 	 */
