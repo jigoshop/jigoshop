@@ -1,5 +1,6 @@
 ## Changelog
-
+* 1.14:
+*  * New: Used Coupon column on Orders page.
 * 1.13:
     * New: Ability to select whether to show prices with or without tax in cart.
     * New: Ability to select user when creating new order manually in admin panel.
