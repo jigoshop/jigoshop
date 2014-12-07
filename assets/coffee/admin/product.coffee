@@ -91,7 +91,7 @@ class AdminProduct
     options = {}
     optionsData = jQuery('.options input.attribute-options', $parent).toArray()
     for option in optionsData
-      results = /(?:^|\s)product\[attributes]\[\d]\[(.*?)](?:\s|$)/g.exec(option.name)
+      results = /(?:^|\s)product\[attributes]\[\d+]\[(.*?)](?:\s|$)/g.exec(option.name)
       options[results[1]] = getOptionValue(option)
 
     jQuery.ajax

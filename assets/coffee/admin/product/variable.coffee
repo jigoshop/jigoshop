@@ -48,13 +48,13 @@ class AdminProductVariable
     attributes = {}
     attributesData = jQuery('select.variation-attribute', $parent).toArray()
     for option in attributesData
-      results = /(?:^|\s)product\[variation]\[\d]\[attribute]\[(.*?)](?:\s|$)/g.exec(option.name)
+      results = /(?:^|\s)product\[variation]\[\d+]\[attribute]\[(.*?)](?:\s|$)/g.exec(option.name)
       attributes[results[1]] = getOptionValue(option)
 
     product = {}
     productData = jQuery('.list-group-item-text input.form-control', $parent).toArray()
     for option in productData
-      results = /(?:^|\s)product\[variation]\[\d]\[product]\[(.*?)](\[(.*?)])?(?:\s|$)/g.exec(option.name)
+      results = /(?:^|\s)product\[variation]\[\d+]\[product]\[(.*?)](\[(.*?)])?(?:\s|$)/g.exec(option.name)
       if results[3]?
         product[results[1]] = {}
         product[results[1]][results[3]] = getOptionValue(option)

@@ -36,7 +36,7 @@ class Attributes implements PageInterface
 
 		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $styles, $scripts) {
 			// Weed out all admin pages except the Jigoshop Settings page hits
-			if (!in_array($wp->getPageNow(), array('admin.php'))) {
+			if (!in_array($wp->getPageNow(), array('edit.php'))) {
 				return;
 			}
 
