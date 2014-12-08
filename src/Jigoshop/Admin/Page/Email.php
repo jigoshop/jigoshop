@@ -36,9 +36,7 @@ class Email
 
 		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $styles, $scripts){
 			if ($wp->getPostType() == Types::EMAIL) {
-				$styles->add('jigoshop.admin', JIGOSHOP_URL.'/assets/css/admin.css');
-				$scripts->add('jigoshop.helpers', JIGOSHOP_URL.'/assets/js/helpers.js');
-				$scripts->add('jigoshop.admin.email', JIGOSHOP_URL.'/assets/js/admin/email.js');
+				$scripts->add('jigoshop.admin.email', JIGOSHOP_URL.'/assets/js/admin/email.js', array('jquery', 'jigoshop.helpers'));
 				$scripts->localize('jigoshop.admin.email', 'jigoshop_admin_email', array(
 					'ajax' => $wp->getAjaxUrl(),
 				));

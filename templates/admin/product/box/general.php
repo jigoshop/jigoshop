@@ -30,11 +30,13 @@ use Jigoshop\Helper\Product as ProductHelper;
 	Forms::text(array(
 		'name' => 'product[gtin]',
 		'label' => __('GTIN', 'jigoshop'),
+		'tip' => 'Global Trade Item Number',
 		'value' => $product->getGtin(),
 	));
 	Forms::text(array(
 		'name' => 'product[mpn]',
 		'label' => __('MPN', 'jigoshop'),
+		'tip' => 'Manufacturer Part Number',
 		'value' => $product->getMpn(),
 	));
 	?>

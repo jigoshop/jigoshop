@@ -43,6 +43,7 @@ class Admin
 			$styles->add('jigoshop.admin', JIGOSHOP_URL.'/assets/css/admin.css');
 			$styles->add('jigoshop.vendors', JIGOSHOP_URL.'/assets/css/vendors.min.css');
 			$scripts->add('jigoshop.vendors', JIGOSHOP_URL.'/assets/js/vendors.min.js', array('jquery'));
+			$scripts->add('jigoshop.helpers', JIGOSHOP_URL.'/assets/js/helpers.js', array('jquery'));
 			$scripts->add('jigoshop.admin', JIGOSHOP_URL.'/assets/js/admin.js', array('jquery', 'jigoshop.vendors'));
 		}, 100);
 	}

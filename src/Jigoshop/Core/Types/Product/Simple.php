@@ -3,6 +3,7 @@
 namespace Jigoshop\Core\Types\Product;
 
 use Jigoshop\Entity\Order\Item;
+use Jigoshop\Entity\Product\Simple as Entity;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
 use WPAL\Wordpress;
@@ -16,7 +17,7 @@ class Simple implements Type
 	 */
 	public function getId()
 	{
-		return \Jigoshop\Entity\Product\Simple::TYPE;
+		return Entity::TYPE;
 	}
 
 	/**
@@ -49,12 +50,24 @@ class Simple implements Type
 	public function initialize(Wordpress $wp, array $enabledTypes)
 	{
 		$wp->addFilter('jigoshop\cart\add', array($this, 'addToCart'), 10, 2);
+		$wp->addFilter('jigoshop\core\types\variable\subtypes', array($this, 'addVariableSubtype'), 10, 1);
 		$wp->addAction('jigoshop\admin\product\assets', array($this, 'addAssets'), 10, 3);
+	}
+
+	/**
+	 * Adds downloadable as proper subtype for variations.
+	 *
+	 * @param $subtypes array Current list of subtypes.
+	 * @return array Updated list of subtypes.
+	 */
+	public function addVariableSubtype($subtypes) {
+		$subtypes[] = Entity::TYPE;
+		return $subtypes;
 	}
 
 	public function addToCart($value, $product)
 	{
-		if ($product instanceof \Jigoshop\Entity\Product\Simple) {
+		if ($product instanceof Entity) {
 			$item = new Item();
 			$item->setName($product->getName());
 			$item->setPrice($product->getPrice());

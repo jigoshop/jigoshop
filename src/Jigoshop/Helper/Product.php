@@ -79,7 +79,14 @@ class Product
 				return self::formatPrice($product->getPrice());
 			case Entity\Product\Variable::TYPE:
 				/** @var $product Entity\Product\Variable */
-				return sprintf(__('From: %s', 'jigoshop'), self::formatPrice($product->getLowestPrice()));
+				$price = $product->getLowestPrice();
+				$formatted = self::formatPrice($price);
+
+				if ($price !== '') {
+					return sprintf(__('From: %s', 'jigoshop'), $formatted);
+				}
+
+				return $formatted;
 			default:
 				return apply_filters('jigoshop\helper\product\get_price', '', $product);
 		}
@@ -216,7 +223,11 @@ class Product
 	 */
 	public static function formatPrice($price)
 	{
-		return sprintf(Currency::format(), Currency::symbol(), Currency::code(), self::formatNumericPrice($price));
+		if ($price !== '') {
+			return sprintf(Currency::format(), Currency::symbol(), Currency::code(), self::formatNumericPrice($price));
+		}
+
+		return __('Price not announced.', 'jigoshop');
 	}
 
 	/**

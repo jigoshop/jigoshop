@@ -11,6 +11,7 @@ use Jigoshop\Entity\Product;
 use Jigoshop\Entity\Product\Downloadable as Entity;
 use Jigoshop\Exception;
 use Jigoshop\Helper\Api;
+use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
 use Jigoshop\Service\OrderServiceInterface;
@@ -76,11 +77,39 @@ class Downloadable implements Type
 	{
 		$wp->addFilter('jigoshop\cart\add', array($this, 'addToCart'), 10, 2);
 		$wp->addFilter('jigoshop\emails\order_item', array($this, 'emailLink'), 10, 3);
+//		$wp->addFilter('jigoshop\core\types\variable\subtypes', array($this, 'addVariableSubtype'), 10, 1); // TODO: Enable variable subtypes changing
 		$wp->addAction('template_redirect', array($this, 'downloadFile'), 10, 0);
 
 		$wp->addAction('jigoshop\admin\product\assets', array($this, 'addAssets'), 10, 3);
 		$wp->addFilter('jigoshop\admin\product\menu', array($this, 'addProductMenu'));
 		$wp->addFilter('jigoshop\admin\product\tabs', array($this, 'addProductTab'), 10, 2);
+		$wp->addAction('jigoshop\admin\variation', array($this, 'addVariationFields'), 10, 2);
+	}
+
+	/**
+	 * Renders additional fields for variations.
+	 *
+	 * @param $variation Product\Variable\Variation
+	 * @param $product Product\Variable
+	 */
+	public function addVariationFields($variation, $product)
+	{
+		Render::output('admin/product/box/variations/variation/downloadable', array(
+			'variation' => $variation,
+			'product' => $variation->getProduct(),
+			'parent' => $product,
+		));
+	}
+
+	/**
+	 * Adds downloadable as proper subtype for variations.
+	 *
+	 * @param $subtypes array Current list of subtypes.
+	 * @return array Updated list of subtypes.
+	 */
+	public function addVariableSubtype($subtypes) {
+		$subtypes[] = Entity::TYPE;
+		return $subtypes;
 	}
 
 	/**
@@ -290,7 +319,7 @@ class Downloadable implements Type
 	 */
 	public function addAssets(Wordpress $wp, Styles $styles, Scripts $scripts)
 	{
-//		$scripts->add('jigoshop.admin.product.downloadable', JIGOSHOP_URL.'/assets/js/admin/product/downloadable.js', array('jquery'));
+		$scripts->add('jigoshop.admin.product.downloadable', JIGOSHOP_URL.'/assets/js/admin/product/downloadable.js', array('jquery', 'jigoshop.helpers'));
 	}
 
 	/**

@@ -105,12 +105,13 @@ class Variable implements Type
 		$wp->addAction('wp_ajax_jigoshop.admin.product.save_variation', array($this, 'ajaxSaveVariation'), 10, 0);
 		$wp->addAction('wp_ajax_jigoshop.admin.product.remove_variation', array($this, 'ajaxRemoveVariation'), 10, 0);
 
-		$allowedSubtypes = $wp->applyFilters('jigoshop\core\types\variable\subtypes', array(
-			Product\Simple::TYPE,
-		));
-		$this->allowedSubtypes = array_filter($enabledTypes, function($type) use ($allowedSubtypes){
-			/** @var $type Type */
-			return in_array($type->getId(), $allowedSubtypes);
+		$that = $this;
+		$wp->addAction('jigoshop\run', function() use ($that, $wp, $enabledTypes){
+			$allowedSubtypes = $wp->applyFilters('jigoshop\core\types\variable\subtypes', array());
+			$that->allowedSubtypes = array_filter($enabledTypes, function($type) use ($allowedSubtypes){
+				/** @var $type Type */
+				return in_array($type->getId(), $allowedSubtypes);
+			});
 		});
 
 		// TODO: Move this to Installer class - new compiler pass with installer extensions.

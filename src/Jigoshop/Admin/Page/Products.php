@@ -41,7 +41,6 @@ class Products
 
 		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $styles, $scripts){
 			if ($wp->getPostType() == Types::PRODUCT) {
-				$scripts->add('jigoshop.helpers', JIGOSHOP_URL.'/assets/js/helpers.js');
 				$scripts->add('jigoshop.admin.products', JIGOSHOP_URL.'/assets/js/admin/products.js', array('jquery', 'jigoshop.helpers'));
 				$scripts->localize('jigoshop.admin.products', 'jigoshop_admin_products', array(
 					'ajax' => $wp->getAjaxUrl(),

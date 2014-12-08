@@ -51,7 +51,6 @@ class Settings implements PageInterface
 			}
 
 			$styles->add('jigoshop.admin.settings', JIGOSHOP_URL.'/assets/css/admin/settings.css');
-			$scripts->add('jigoshop.helpers', JIGOSHOP_URL.'/assets/js/helpers.js');
 			$scripts->add('jigoshop.admin.settings', JIGOSHOP_URL.'/assets/js/admin/settings.js', array('jquery', 'jigoshop.helpers', 'jigoshop.vendors'));
 		});
 	}

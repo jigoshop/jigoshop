@@ -33,7 +33,7 @@ class AdminProductVariable
         product_id: $parent.closest('.jigoshop').data('id')
     .done (data) ->
       if data.success? and data.success
-        jQuery(data.html).hide().appendTo($parent).slideDown()
+        jQuery(data.html).hide().appendTo($parent).slideDown().trigger('jigoshop.variation.add')
       else
         addMessage('danger', data.error, 6000)
   updateVariation: (event) =>
@@ -73,6 +73,7 @@ class AdminProductVariable
         product: product
     .done (data) =>
       if data.success? and data.success
+        $parent.trigger('jigoshop.variation.update')
         addMessage('success', @params.i18n.saved, 2000)
       else
         addMessage('danger', data.error, 6000)
@@ -90,6 +91,7 @@ class AdminProductVariable
           variation_id: $parent.data('id')
       .done (data) =>
         if data.success? and data.success
+          $parent.trigger('jigoshop.variation.remove')
           $parent.slideUp -> $parent.remove()
           addMessage('success', @params.i18n.variation_removed, 2000)
         else

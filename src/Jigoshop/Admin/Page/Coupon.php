@@ -39,10 +39,8 @@ class Coupon
 
 		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $styles, $scripts){
 			if ($wp->getPostType() == Types::COUPON) {
-				$styles->add('jigoshop.admin', JIGOSHOP_URL.'/assets/css/admin.css');
 				$styles->add('jigoshop.admin.coupon', JIGOSHOP_URL.'/assets/css/admin/coupon.css');
-				$scripts->add('jigoshop.helpers', JIGOSHOP_URL.'/assets/js/helpers.js');
-				$scripts->add('jigoshop.admin.coupon', JIGOSHOP_URL.'/assets/js/admin/coupon.js');
+				$scripts->add('jigoshop.admin.coupon', JIGOSHOP_URL.'/assets/js/admin/coupon.js', array('jquery', 'jigoshop.helpers'));
 				$scripts->localize('jigoshop.admin.coupon', 'jigoshop_admin_coupon', array(
 					'ajax' => $wp->getAjaxUrl(),
 				));
