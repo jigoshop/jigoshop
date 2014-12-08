@@ -11,6 +11,7 @@ use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\Product;
 use Jigoshop\Exception;
 use Jigoshop\Frontend\Page\PageInterface;
+use Jigoshop\Helper\Api;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
@@ -104,11 +105,15 @@ class Pay implements PageInterface
 			$termsUrl = $this->wp->getPageLink($termsPage);
 		}
 
+		$accountUrl = $this->wp->getPermalink($this->options->getPageId(Pages::ACCOUNT));
+
 		return Render::get('shop/checkout/pay', array(
 			'messages' => $this->messages,
 			'order' => $order,
 			'showWithTax' => $this->options->get('tax.price_tax') == 'with_tax',
 			'termsUrl' => $termsUrl,
+			'myAccountUrl' => $accountUrl,
+			'myOrdersUrl' => Api::getEndpointUrl('orders', '', $accountUrl),
 			'paymentMethods' => $this->paymentService->getEnabled(),
 			'getTaxLabel' => function($taxClass) use ($taxService, $order) {
 				return $taxService->getLabel($taxClass, $order->getCustomer());

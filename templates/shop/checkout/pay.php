@@ -8,6 +8,8 @@ use Jigoshop\Helper\Render;
  * @var $order \Jigoshop\Entity\Order The order.
  * @var $showWithTax bool Whether to show product price with or without tax.
  * @var $termsUrl string URL to Terms and Conditions page (if applicable).
+ * @var $myAccountUrl string URL to My account page.
+ * @var $myOrdersUrl string URL to My orders page.
  * @var $getTaxLabel \Closure Function to retrieve tax label.
  * @var $paymentMethods array List of available payment methods.
  */
@@ -118,5 +120,7 @@ use Jigoshop\Helper\Render;
 			'checked' => false,
 		)); ?>
 	<?php endif; ?>
+	<a class="btn btn-default" href="<?php echo $myAccountUrl; ?>"><?php _e('Go back to My account', 'jigoshop'); ?></a>
+	<a class="btn btn-default" href="<?php echo $myOrdersUrl; ?>"><?php _e('Go back to My orders', 'jigoshop'); ?></a>
 	<button class="btn btn-success pull-right clearfix" name="action" value="purchase" type="submit"><?php _e('Pay', 'jigoshop'); ?></button>
 </form>
