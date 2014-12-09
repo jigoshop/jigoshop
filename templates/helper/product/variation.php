@@ -1,6 +1,7 @@
 <?php
 /**
  * @var $variation \Jigoshop\Entity\Product\Variable\Variation
+ * @var $item \Jigoshop\Entity\Order\Item
  */
 ?>
 <dl class="dl-horizontal variation-data">

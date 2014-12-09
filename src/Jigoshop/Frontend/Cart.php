@@ -186,7 +186,7 @@ class Cart implements OrderInterface
 			throw new Exception(__('Quantity has to be positive number', 'jigoshop'));
 		}
 
-		if ($product->getStock()->getManage()) {
+		if ($product instanceof Product\Purchasable && $product->getStock()->getManage()) {
 			// TODO: Check for backorders!
 			if ($quantity > $product->getStock()->getStock()) {
 				throw new NotEnoughStockException($product->getStock()->getStock());

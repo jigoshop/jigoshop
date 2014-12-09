@@ -2,6 +2,7 @@
 
 namespace Jigoshop\Entity\Product;
 
+use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\Product;
 use Jigoshop\Entity\Product\Attribute;
 use WPAL\Wordpress;
@@ -28,8 +29,8 @@ class Variable extends Product implements Shippable, Saleable
 	public function isShippable()
 	{
 		return array_reduce($this->variations, function($value, $item){
-			/** @var $item Shippable */
-			return $value & $item->isShippable();
+			/** @var $item Item */
+			return $value & ($item->getProduct() instanceof Shippable && $item->getProduct()->isShippable());
 		}, true);
 	}
 

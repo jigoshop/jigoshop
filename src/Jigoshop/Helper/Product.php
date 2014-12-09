@@ -267,12 +267,14 @@ class Product
 
 	/**
 	 * @param Entity\Product\Variable\Variation $variation Variation to format.
+	 * @param Entity\Order\Item $item Order item.
 	 * @return string Formatted variation data in HTML.
 	 */
-	public static function getVariation(Entity\Product\Variable\Variation $variation)
+	public static function getVariation(Entity\Product\Variable\Variation $variation, Entity\Order\Item $item)
 	{
 		return Render::get('helper/product/variation', array(
 			'variation' => $variation,
+			'item' => $item,
 		));
 	}
 }

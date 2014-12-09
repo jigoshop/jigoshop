@@ -23,7 +23,7 @@ $price = $showWithTax ? $item->getPrice() + $item->getTotalTax() / $item->getQua
 	<td class="product-thumbnail"><a href="<?php echo $url; ?>"><?php echo Product::getFeaturedImage($product, 'shop_tiny'); ?></a></td>
 	<td class="product-name">
 		<a href="<?php echo $url; ?>"><?php echo $product->getName(); ?></a>
-		<?php echo Product::getVariation($variation); ?>
+		<?php echo Product::getVariation($variation, $item); ?>
 	</td>
 	<td class="product-price"><?php echo Product::formatPrice($price); ?></td>
 	<td class="product-quantity"><input type="number" name="cart[<?php echo $key; ?>]" value="<?php echo $item->getQuantity(); ?>" /></td>

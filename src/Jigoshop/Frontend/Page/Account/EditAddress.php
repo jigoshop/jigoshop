@@ -69,7 +69,7 @@ class EditAddress implements PageInterface
 			$address->setCity(trim(htmlspecialchars(strip_tags($_POST['address']['city']))));
 
 			$postcode = trim(htmlspecialchars(strip_tags($_POST['address']['postcode'])));
-			if ($this->options->get('shopping.validate_zip') && !Validation::is_postcode($_POST, $address->getCountry())) {
+			if ($this->options->get('shopping.validate_zip') && !Validation::isPostcode($postcode, $address->getCountry())) {
 				$errors[] = __('Postcode is not valid!', 'jigoshop');
 			} else {
 				$address->setPostcode($postcode);
