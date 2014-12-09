@@ -83,6 +83,7 @@ function get_order_email_arguments($order_id)
 	$inc_tax = ($options->get('jigoshop_calc_taxes') == 'no') || ($options->get('jigoshop_prices_include_tax') == 'yes');
 
 	return apply_filters('jigoshop_order_email_variables', array(
+		'blog_name' => get_bloginfo('name'),
 		'order_number' => $order->get_order_number(),
 		'order_date' => date_i18n(get_option('date_format')),
 		'shop_name' => $options->get('jigoshop_company_name'),
@@ -106,6 +107,8 @@ function get_order_email_arguments($order_id)
 		'billing_city' => $order->billing_city,
 		'billing_country' => jigoshop_countries::get_country($order->billing_country),
 		'billing_state' => strlen($order->billing_state) == 2 ? jigoshop_countries::get_state($order->billing_country, $order->billing_state) : $order->billing_state,
+		'billing_country_raw' => $order->billing_country,
+		'billing state_raw' => $order->billing_state,
 		'billing_email' => $order->billing_email,
 		'billing_phone' => $order->billing_phone,
 		'shipping_first_name' => $order->shipping_first_name,
@@ -117,12 +120,15 @@ function get_order_email_arguments($order_id)
 		'shipping_city' => $order->shipping_city,
 		'shipping_country' => jigoshop_countries::get_country($order->shipping_country),
 		'shipping_state' => strlen($order->shipping_state) == 2 ? jigoshop_countries::get_state($order->shipping_country, $order->shipping_state) : $order->shipping_state,
+		'shipping_country_raw' => $order->shipping_country,
+		'shipping_state_raw' => $order->shipping_state,
 	),$order_id);
 }
 
 function get_order_email_arguments_description()
 {
 	return apply_filters('jigoshop_order_email_variables_description', array(
+		'blog_name' => __('Blog Name', 'jigoshop'),
 		'order_number' => __('Order Number', 'jigoshop'),
 		'order_date' => __('Order Date', 'jigoshop'),
 		'shop_name' => __('Shop Name', 'jigoshop'),
@@ -146,6 +152,8 @@ function get_order_email_arguments_description()
 		'billing_city' => __('Billing City', 'jigoshop'),
 		'billing_country' => __('Billing Country', 'jigoshop'),
 		'billing_state' => __('Billing State', 'jigoshop'),
+		'billing_country_raw' => __('Raw Billing Country', 'jigoshop'),
+		'billing state_raw' => __('Raw Billing State', 'jigoshop'),
 		'billing_email' => __('Billing Email', 'jigoshop'),
 		'billing_phone' => __('Billing Phone    ', 'jigoshop'),
 		'shipping_first_name' => __('Shipping First Name', 'jigoshop'),
@@ -157,6 +165,9 @@ function get_order_email_arguments_description()
 		'shipping_city' => __('Shipping City', 'jigoshop'),
 		'shipping_country' => __('Shipping Country', 'jigoshop'),
 		'shipping_state' => __('Shipping State', 'jigoshop'),
+		'shipping_country_raw' => __('Raw Shipping Country', 'jigoshop'),
+		'shipping_state_raw' => __('Raw Shipping State', 'jigoshop'),
+
 	));
 }
 
@@ -164,6 +175,7 @@ function get_stock_email_arguments($product)
 {
 	$options = Jigoshop_Base::get_options();
 	return array(
+		'blog_name' => get_bloginfo('name'),
 		'shop_name' => $options->get('jigoshop_company_name'),
 		'shop_address_1' => $options->get('jigoshop_address_1'),
 		'shop_address_2' => $options->get('jigoshop_address_2'),
@@ -179,6 +191,7 @@ function get_stock_email_arguments($product)
 function get_stock_email_arguments_description()
 {
 	return array(
+		'blog_name' => __('Blog Name', 'jigoshop'),
 		'shop_name' => __('Shop Name', 'jigoshop'),
 		'shop_address_1' => __('Shop Address part 1', 'jigoshop'),
 		'shop_address_2' => __('Shop Address part 2', 'jigoshop'),

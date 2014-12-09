@@ -245,7 +245,7 @@ function jigoshop_admin_toolbar() {
 	$manage_jigoshop = current_user_can('manage_jigoshop');
 	$view_reports = current_user_can('view_jigoshop_reports');
 	$manege_emails = current_user_can('manage_jigoshop_emails');
-	
+
 	if (!is_admin() && ($manage_jigoshop || $manage_products || $manage_orders || $view_reports)) {
 		$wp_admin_bar->add_node(array(
 			'id' => 'jigoshop',
@@ -292,7 +292,7 @@ function jigoshop_admin_toolbar() {
 				'href' => admin_url('admin.php?page=jigoshop_settings'),
 			));
 		}
-		
+
 		if($manege_emails) {
 			$wp_admin_bar->add_node(array(
 				'id' => 'jigoshop_emils',
@@ -798,7 +798,6 @@ function jigoshop_admin_scripts()
 	}
 
 	jigoshop_add_script('jigoshop-select2', JIGOSHOP_URL.'/assets/js/select2.min.js', array('jquery'));
-
 	if (jigoshop_is_admin_page()) {
 		wp_enqueue_media();
 		wp_enqueue_script('jquery-ui-sortable');
@@ -807,6 +806,9 @@ function jigoshop_admin_scripts()
 		jigoshop_add_script('jigoshop_media', JIGOSHOP_URL.'/assets/js/media.js', array('jquery', 'media-editor'));
 		jigoshop_add_script('jigoshop_blockui', JIGOSHOP_URL.'/assets/js/blockui.js', array('jquery'), array('version' => '2.4.6'));
 		jigoshop_add_script('jigoshop_backend', JIGOSHOP_URL.'/assets/js/backend.js', array('jquery'), array('version' => '1.0'));
+		if($current_screen->base == 'edit-tags') {
+			jigoshop_add_script('jigoshop_draggable_categories', JIGOSHOP_URL.'/assets/js/draggable_categories.js', array('jquery'), array('version' => '1.0'));
+		}
 		jigoshop_add_script('jquery_flot', JIGOSHOP_URL.'/assets/js/jquery.flot.min.js', array('jquery'), array(
 				'version' => '1.0',
 				'page' => array('jigoshop_page_jigoshop_reports', 'toplevel_page_jigoshop')
