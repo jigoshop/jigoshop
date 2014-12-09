@@ -1,6 +1,9 @@
 ## Changelog
 * 1.14:
-*  * New: Used Coupon column on Orders page.
+   * New: Used Coupon column on Orders page.
+   * New: Email variables.
+   * New: Draggable categories.
+   * Improved: Report is generated based on completed orders.
 * 1.13:
     * New: Ability to select whether to show prices with or without tax in cart.
     * New: Ability to select user when creating new order manually in admin panel.

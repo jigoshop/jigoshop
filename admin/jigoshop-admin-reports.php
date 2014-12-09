@@ -64,8 +64,16 @@ class Jigoshop_reports {
 			'orderby' => 'post_date',
 			'order' => 'ASC',
 			'post_type' => 'shop_order',
-			'post_status' => 'publish',
-			'suppress_filters'=> false,
+			'post_status' => 'publish' ,
+			'suppress_filters' => false,
+			'tax_query' => array(
+				array(
+					'taxonomy' => 'shop_order_status',
+					'terms' => array('completed'),
+					'field' => 'slug',
+					'operator' => 'IN'
+				)
+			)
 		);
 
 		return get_posts( $args );
