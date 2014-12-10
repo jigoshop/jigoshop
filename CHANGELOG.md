@@ -1,5 +1,10 @@
 ## Changelog
 
+* 1.14:
+     * New: Used Coupon column on Orders page.
+     * New: Email variables.
+     * New: Draggable categories.
+     * Improved: Report is generated based on completed orders.
 * 1.13.4:
     * Fixed: Creating orders in `jigoshop_orders` class. Thanks to @newash for pointing out.
     * Fixed: Allow to install emails only on Jigoshop Settings page in admin panel. Thanks to @newash.
