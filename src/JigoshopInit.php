@@ -49,6 +49,7 @@ class JigoshopInit
 			$builder = new ContainerBuilder();
 			$builder->setDefinition('di', $diDefinition);
 			$builder->addCompilerPass(new Jigoshop\Core\Types\CompilerPass());
+			$builder->addCompilerPass(new Jigoshop\Core\Installer\CompilerPass());
 			$builder->addCompilerPass(new Jigoshop\Payment\CompilerPass());
 			$builder->addCompilerPass(new Jigoshop\Shipping\CompilerPass());
 			$builder->addCompilerPass(new Jigoshop\Admin\CompilerPass());

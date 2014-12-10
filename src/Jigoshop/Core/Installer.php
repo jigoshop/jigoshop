@@ -25,6 +25,8 @@ class Installer
 	private $cron;
 	/** @var EmailServiceInterface */
 	private $emailService;
+	/** @var array */
+	private $initializers = array();
 
 	public function __construct(Wordpress $wp, Options $options, Cron $cron, EmailServiceInterface $emailService)
 	{
@@ -32,6 +34,15 @@ class Installer
 		$this->options = $options;
 		$this->cron = $cron;
 		$this->emailService = $emailService;
+	}
+
+	/**
+	 * Adds new initializer to Jigoshop installation.
+	 * @param Installer\Initializer $initializer
+	 */
+	public function addInitializer(Core\Installer\Initializer $initializer)
+	{
+		$this->initializers[] = $initializer;
 	}
 
 	public function install()
@@ -43,6 +54,12 @@ class Installer
 			$this->_createTables();
 			$this->_createPages();
 			$this->_installEmails();
+
+			foreach ($this->initializers as $initializer) {
+				/** @var $initializer Core\Installer\Initializer */
+				$initializer->initialize($this->wp);
+			}
+
 			$this->cron->clear();
 		}
 

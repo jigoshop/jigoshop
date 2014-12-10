@@ -16,7 +16,7 @@ services:
       - '@wpal'
       - '@jigoshop.options'
       - '@jigoshop.cron'
-      - '@jigoshop.emails'
+      - '@jigoshop.service.email'
   jigoshop.options:
     class: Jigoshop\Core\Options
     arguments:
@@ -135,6 +135,10 @@ services:
       - '@jigoshop.service.product'
       - '@jigoshop.service.product.variable'
       - '@jigoshop.factory.product.variable'
+  jigoshop.product_type.variable.initializer:
+    class: Jigoshop\Core\Installer\Product\Variable
+    tags:
+      - { name: jigoshop.installer }
   jigoshop.product_type.external:
     class: Jigoshop\Core\Types\Product\External
   jigoshop.product_type.downloadable:
