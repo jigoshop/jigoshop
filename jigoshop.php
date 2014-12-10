@@ -838,6 +838,9 @@ function jigoshop_admin_scripts()
 		jigoshop_add_script('jigoshop_media', JIGOSHOP_URL.'/assets/js/media.js', array('jquery', 'media-editor'));
 		jigoshop_add_script('jigoshop_blockui', JIGOSHOP_URL.'/assets/js/blockui.js', array('jquery'), array('version' => '2.4.6'));
 		jigoshop_add_script('jigoshop_backend', JIGOSHOP_URL.'/assets/js/backend.js', array('jquery'), array('version' => '1.0'));
+		if($current_screen->base == 'edit-tags') {
+			jigoshop_add_script('jigoshop_draggable_categories', JIGOSHOP_URL.'/assets/js/draggable_categories.js', array('jquery'), array('version' => '1.0'));
+		}
 		jigoshop_add_script('jquery_flot', JIGOSHOP_URL.'/assets/js/jquery.flot.min.js', array('jquery'), array(
 				'version' => '1.0',
 				'page' => array('jigoshop_page_jigoshop_reports', 'toplevel_page_jigoshop')
