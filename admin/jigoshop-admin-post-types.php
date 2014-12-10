@@ -457,9 +457,11 @@ function jigoshop_custom_order_columns($column) {
             <?php
             break;
 	    case 'order_coupons':
-		    foreach($order->order_discount_coupons as $used_coupon): ?>
-		           <p class="order_coupon"><?php echo '#'.$used_coupon['id'].' - '.$used_coupon['code'] ?></p>
-			<?php endforeach;
+			if(!empty($order->order_discount_coupons)):
+			    foreach($order->order_discount_coupons as $used_coupon): ?>
+			           <p class="order_coupon"><?php echo '#'.$used_coupon['id'].' - '.$used_coupon['code'] ?></p>
+				<?php endforeach;
+			endif;
 		    break;
     }
 }
