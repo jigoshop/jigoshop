@@ -225,9 +225,8 @@ class Order
 				throw new Exception(__('Invalid country.', 'jigoshop'));
 			}
 
-			// TODO: Some kind of workaround for setting global post
-			global $post;
 			$post = $this->wp->getPost((int)$_POST['order']);
+			$this->wp->updateGlobalPost($post);
 			$order = $this->orderService->findForPost($post);
 
 			if ($order->getId() === null) {
@@ -267,9 +266,8 @@ class Order
 	public function ajaxChangeState()
 	{
 		try {
-		// TODO: Some kind of workaround for setting global post
-			global $post;
 			$post = $this->wp->getPost((int)$_POST['order']);
+			$this->wp->updateGlobalPost($post);
 			$order = $this->orderService->findForPost($post);
 
 			if ($order->getId() === null) {
@@ -311,9 +309,8 @@ class Order
 	public function ajaxChangePostcode()
 	{
 		try {
-		// TODO: Some kind of workaround for setting global post
-			global $post;
 			$post = $this->wp->getPost((int)$_POST['order']);
+			$this->wp->updateGlobalPost($post);
 			$order = $this->orderService->findForPost($post);
 
 			if ($order->getId() === null) {

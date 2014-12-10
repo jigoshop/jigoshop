@@ -33,8 +33,7 @@ class Products
 
 		$wp->addFilter(sprintf('manage_edit-%s_columns', Types::PRODUCT), array($this, 'columns'));
 		$wp->addAction(sprintf('manage_%s_posts_custom_column', Types::PRODUCT), array($this, 'displayColumn'), 2);
-		// TODO: Introduce proper category filter
-//		$wp->addAction('restrict_manage_posts', array($this, 'categoryFilter'));
+		$wp->addAction('restrict_manage_posts', array($this, 'categoryFilter'));
 		$wp->addAction('restrict_manage_posts', array($this, 'typeFilter'));
 		$wp->addAction('pre_get_posts', array($this, 'setTypeFilter'));
 		$wp->addAction('wp_ajax_jigoshop.admin.products.feature_product', array($this, 'ajaxFeatureProduct'));
@@ -141,28 +140,36 @@ class Products
 	 * Filter products by category, uses slugs for option values.
 	 * Props to: Andrew Benbow - chromeorange.co.uk
 	 */
-//	public function categoryFilter()
-//	{
-//		global $typenow, $wp_query;
-//
-//		if ($typenow == self::NAME) {
-//			$r = array();
-//			$r['pad_counts'] = 1;
-//			$r['hierarchical'] = true;
-//			$r['hide_empty'] = true;
-//			$r['show_count'] = true;
-//			$r['selected']   = isset( $wp_query->query['product_cat'] ) ? $wp_query->query['product_cat'] : '';
-//
-//			$terms = get_terms( 'product_cat', $r );
-//			if ( ! $terms ) return;
-//
-//			$output  = "<select name='product_cat' id='dropdown_product_cat'>";
-//
-//			$output .= '<option value="" ' .  selected( isset( $_GET['product_cat'] ) ? esc_attr( $_GET['product_cat'] ) : '', '', false ) . '>'.__('View all categories', 'jigoshop').'</option>';
-//			$output .= jigoshop_walk_category_dropdown_tree( $terms, 0, $r );
-//			$output .="</select>";
-//		}
-//	}
+	public function categoryFilter()
+	{
+		$type = $this->wp->getTypeNow();
+		if ($type != Types::PRODUCT) {
+			return;
+		}
+
+		$query = array(
+			'pad_counts' => 1,
+			'hierarchical' => true,
+			'hide_empty' => true,
+			'show_count' => true,
+			'selected' => $this->wp->getQueryParameter(Types::PRODUCT_CATEGORY),
+		);
+
+		$terms = $this->wp->getTerms(Types::PRODUCT_CATEGORY, $query);
+		if (!$terms) {
+			return;
+		}
+
+		$current = isset($_GET[Types::PRODUCT_CATEGORY]) ? $_GET[Types::PRODUCT_CATEGORY] : '';
+		$walker = new Products\CategoryWalker($this->wp);
+
+		Render::output('admin/products/categoryFilter', array(
+			'terms' => $terms,
+			'current' => $current,
+			'walker' => $walker,
+			'query' => $query,
+		));
+	}
 
 	/**
 	 * Filter products by type
