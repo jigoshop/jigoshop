@@ -157,17 +157,11 @@ function jigoshop_get_address_fields($load_address, $user_id)
 function jigoshop_edit_address()
 {
 	$account_url = get_permalink(jigoshop_get_page_id(JIGOSHOP_MY_ACCOUNT));
-
-	if (!is_user_logged_in()) {
-		wp_safe_redirect(apply_filters('jigoshop_get_myaccount_page_id', $account_url));
-		exit;
-	}
-
 	$user_id = get_current_user_id();
 	$load_address = jigoshop_get_address_to_edit();
 	$address = jigoshop_get_address_fields($load_address, $user_id);
 
-	if (isset($_POST['save_address']) && jigoshop::verify_nonce('edit_address')) {
+	if (isset($_POST['save_address']) && jigoshop::verify_nonce(JIGOSHOP_EDIT_ADDRESS)) {
 		if ($user_id > 0) {
 			foreach ($address as &$field) {
 				if (isset($_POST[$field['name']])) {
@@ -182,7 +176,7 @@ function jigoshop_edit_address()
 
 	jigoshop_render('shortcode/my_account/edit_address', array(
 		'url' => add_query_arg('address', $load_address,
-			apply_filters('jigoshop_get_edit_address_page_id', get_permalink(jigoshop_get_page_id('edit_address')))),
+			apply_filters('jigoshop_get_edit_address_page_id', get_permalink(jigoshop_get_page_id(JIGOSHOP_EDIT_ADDRESS)))),
 		'account_url' => $account_url,
 		'load_address' => $load_address,
 		'address' => $address,
@@ -196,27 +190,6 @@ function get_jigoshop_change_password()
 
 function jigoshop_change_password()
 {
-	if (!is_user_logged_in()) {
-		wp_safe_redirect(apply_filters('jigoshop_get_myaccount_page_id', get_permalink(jigoshop_get_page_id('myaccount'))));
-		exit;
-	}
-
-	$user_id = get_current_user_id();
-
-	if ($_POST && $user_id > 0 && jigoshop::verify_nonce('change_password')) {
-		if ($_POST['password-1'] && $_POST['password-2']) {
-			if ($_POST['password-1'] == $_POST['password-2']) {
-				wp_update_user(array('ID' => $user_id, 'user_pass' => $_POST['password-1']));
-				wp_safe_redirect(apply_filters('jigoshop_get_myaccount_page_id', get_permalink(jigoshop_get_page_id('myaccount'))));
-				exit;
-			} else {
-				jigoshop::add_error(__('Passwords do not match.', 'jigoshop'));
-			}
-		} else {
-			jigoshop::add_error(__('Please enter your password.', 'jigoshop'));
-		}
-	}
-
 	jigoshop_render('shortcode/my_account/change_password', array());
 }
 
@@ -227,26 +200,52 @@ function get_jigoshop_view_order()
 
 function jigoshop_view_order()
 {
-	if (!is_user_logged_in()) {
-		wp_safe_redirect(apply_filters('jigoshop_get_myaccount_page_id', get_permalink(jigoshop_get_page_id('myaccount'))));
-		exit;
-	}
-
-	if (!isset($_GET['order'])) {
-		wp_safe_redirect(apply_filters('jigoshop_get_myaccount_page_id', get_permalink(jigoshop_get_page_id('myaccount'))));
-		exit;
-	}
-
 	$options = Jigoshop_Base::get_options();
 	$order = new jigoshop_order($_GET['order']);
-
-	if ($order->user_id != get_current_user_id()) {
-		wp_safe_redirect(apply_filters('jigoshop_get_myaccount_page_id', get_permalink(jigoshop_get_page_id('myaccount'))));
-		exit;
-	}
 
 	jigoshop_render('shortcode/my_account/view_order', array(
 		'order' => $order,
 		'options' => $options,
 	));
 }
+
+add_action('template_redirect', function (){
+	$isViewOrder = is_jigoshop_single_page(JIGOSHOP_VIEW_ORDER);
+	$isEditAddress = is_jigoshop_single_page(JIGOSHOP_EDIT_ADDRESS);
+	$isChangePassword = is_jigoshop_single_page(JIGOSHOP_CHANGE_PASSWORD);
+
+	if (($isViewOrder || $isEditAddress || $isChangePassword) && !is_user_logged_in()) {
+		wp_safe_redirect(apply_filters('jigoshop_get_myaccount_page_id', get_permalink(jigoshop_get_page_id(JIGOSHOP_MY_ACCOUNT))));
+		exit;
+	}
+
+	if ($isViewOrder) {
+		if (!isset($_GET['order'])) {
+			wp_safe_redirect(apply_filters('jigoshop_get_myaccount_page_id', get_permalink(jigoshop_get_page_id('myaccount'))));
+			exit;
+		}
+		$order = new jigoshop_order($_GET['order']);
+
+		if ($order->user_id != get_current_user_id()) {
+			wp_safe_redirect(apply_filters('jigoshop_get_myaccount_page_id', get_permalink(jigoshop_get_page_id('myaccount'))));
+			exit;
+		}
+	}
+
+	if ($isChangePassword){
+		$user_id = get_current_user_id();
+		if ($_POST && $user_id > 0 && jigoshop::verify_nonce('change_password')) {
+			if ($_POST['password-1'] && $_POST['password-2']) {
+				if ($_POST['password-1'] == $_POST['password-2']) {
+					wp_update_user(array('ID' => $user_id, 'user_pass' => $_POST['password-1']));
+					wp_safe_redirect(apply_filters('jigoshop_get_myaccount_page_id', get_permalink(jigoshop_get_page_id('myaccount'))));
+					exit;
+				} else {
+					jigoshop::add_error(__('Passwords do not match.', 'jigoshop'));
+				}
+			} else {
+				jigoshop::add_error(__('Please enter your password.', 'jigoshop'));
+			}
+		}
+	}
+});

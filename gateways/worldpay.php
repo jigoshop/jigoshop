@@ -318,7 +318,7 @@ class jigoshop_worldpay extends jigoshop_payment_gateway
 			$worldpay_form_array[] = '<input type="hidden" name="'.$key.'" value="'.$value.'" />';
 		}
 
-		return jigoshop_render_result('gateways/paypal', array(
+		return jigoshop_render_result('gateways/worldpay', array(
 			'url' => $worldpay_url,
 			'fields' => $worldpay_args,
 		));

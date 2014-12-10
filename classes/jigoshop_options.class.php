@@ -492,6 +492,10 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		return self::$default_options;
 	}
 
+	public function generate_defaults_emails(){
+		return '<button type="button" onClick="parent.location=\'admin.php?page=jigoshop_settings&install_emails=1\'">'.__('Generate Defaults', 'jigoshop').'</button>';
+	}
+
 	/**
 	 * Sets the Jigoshop default options
 	 *
@@ -675,13 +679,6 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 			array('type' => 'tab', 'name' => __('General', 'jigoshop')),
 			array('name' => __('General Options', 'jigoshop'), 'type' => 'title', 'desc' => ''),
 			array(
-				'name' => __('Jigoshop email address', 'jigoshop'),
-				'desc' => '',
-				'tip' => __('The email address used to send all Jigoshop related emails, such as order confirmations and notices.  This may be different than your Company email address on "Shop Tab -> Invoicing".', 'jigoshop'),
-				'id' => 'jigoshop_email',
-				'type' => 'email',
-			),
-			array(
 				'name' => __('Cart shows "Return to Shop" button', 'jigoshop'),
 				'desc' => '',
 				'tip' => __('Enabling this setting will display a "Return to Shop" button on the Cart page along with the "Continue to Checkout" button.', 'jigoshop'),
@@ -824,8 +821,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 				'tip' => '',
 				'id' => 'jigoshop_email_generete_defaults',
 				'type' => 'user_defined',
-				'display' => function(){ return '<button type="button" onClick="parent.location=\'admin.php?page=jigoshop_settings&install_emails=1\'">'.__('Generate Defaults', 'jigoshop').'</button>'; }
-
+				'display' => array($this, 'generate_defaults_emails'),
 			),
 			array('name' => __('Checkout page', 'jigoshop'), 'type' => 'title', 'desc' => ''),
 			array(

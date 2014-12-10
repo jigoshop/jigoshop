@@ -1,54 +1,65 @@
 === Jigoshop ===
 Contributors: Jigoshop
-Tags: e-commerce, wp e-commerce, ecommerce, wordpress ecommerce, store, shop, shopping, cart, checkout, widgets, reports, shipping, tax, paypal, jigoshop, shipping, inventory, stock, online, sell, sales, weights, dimensions, configurable, variable, downloadable, external, affiliate, download, virtual, physical
+License: GNU General Public License v3
+Tags: 2checkout, 2co, affiliate, authorize, cart, checkout, commerce, coupons, e-commerce,ecommerce, gifts, moneybookers, online, online shop, online store, paypal, paypal advanced,Paypal Express, paypal pro, physical, reports, sagepay, sales, sell, shipping, shop,shopping, stock, stock control, store, tax, virtual, weights, widgets, wordpress ecommerce, wp e-commerce, woocommerce
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=sales%40jigoshop%2ecom&lc=US&item_name=Jigoshop%20%2d%20Wordpress%2eorg%20donation%20link&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
 Requires at least: 3.8
-Tested up to: 4.0
-Stable tag: 1.12
+Tested up to: 4.0.1
+Stable tag: 1.13.3
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
 == Description ==
 
-Jigoshop, a WordPress eCommerce plugin developed by professionals with years of experience delivering online shops for global brands.
+Use <a href="https://www.jigoshop.com">Jigoshop</a> to turn your WordPress website into a dynamic eCommerce store.
+Jigoshop is led by a motivated development team with years of experience with delivering professional online shops
+for global brands. Our number one priority is to make it easy to get professional results for WordPress eCommerce solution.
+
+With the Jigoshop plugin for WordPress you have your very own web store for your website. You have complete control
+of your eCommerce shop.
 
 = SETUP IN MINUTES =
 
-Complete your shop in minutes with physical and downloadable products or even services. Jigoshop provides you with the features necessary to set up an eCommerce web site lickety-split.
-
-With the option to create a multitude of product types and apply detailed attributes customers can easily refine your catalog, ensuring they find what they're looking for in just a couple of clicks.
+Setup your web store in minutes with an extensive amount of shop settings including base country, currency,
+catalog options, stock management, unlimited tax settings, shipping and payment gateways out of the box.
+Plus there are hundreds of additional extensions to build up Jigoshop to be an even more powerful WP eCommerce
+solution.
 
 = PRODUCT TYPES =
 
+Jigoshop includes several product type options for your eCommerce shop. They include:
+
 * Downloadable or Virtual products
-* Variable products (eg, offer `Size: S,M,L` for one product)
-* Affiliate (External) products (ie, link your `Add to cart` button off-site)
+* Variable products (e.g. offer Size: S,M,L for one product)
+* Affiliate (External) products (i.e. link your Add to cart button off-site)
 * Grouped products
 
 = DETAILED REPORTS =
 
-Inside the custom dashboard you get sortable sales graphs, incoming order / review notifications as well as stats on your stores performance.
+Within the Jigoshop eCommerce plugin are various reporting features to give you real-time insight of your
+shops performance. Features include sortable sales graphs and incoming order/review notifications.
 
-= MANAGE STOCK =
+= STOCK MANAGEMENT =
 
-Manage your stock levels and customer orders easily. Jigoshop has been engineered to make the boring parts of eCommerce, well, less boring!
+Jigoshop has the ability to manage your shops stock. Included is an option to allow Jigoshop to inform you
+of low stock once it reaches your set threshold so that your shop never runs out of stock.
 
-= EXTEND YOUR SHOP =
+= EXTEND YOUR SHOP! =
 
-Extend Jigoshop with Payment Gateways, Shipping Methods, and various other plugins:
+Sure, Jigoshop runs out of the box! But Jigoshop’s functionality doesn’t have end there. We have over
+one hundred extensions for Jigoshop available that will further extend the power of the best eCommerce
+plugin ever! They include more Payment Gateways, more Shipping methods and much more.
 
-http://www.jigoshop.com/product-category/extensions/
+Jigoshop eCommerce strives to maintain its status as the best WordPress eCommerce plugin ever. We hope you’ll
+choose the best to power your eCommerce shop and help us prove to you that we really are the best!
 
-Premium themes optimised for Jigoshop:
+You can take a look at our official extensions here: http://www.jigoshop.com/product-category/extensions/
 
-http://www.jigoshop.com/product-category/themes/
+And our Jigoshop-optimized themes here: http://www.jigoshop.com/product-category/themes/
 
-= MORE INFO =
+== Upgrade Notice ==
 
-Built upon the WordPress core you get all the benefits of this global leading platform: free, easy to use, secure, highly customisable and with a great support community to hold your hand.
-
-Find out more on our official Jigoshop website:
-
-http://www.jigoshop.com/
+[Click here for complete changelog](https://wordpress.org/plugins/jigoshop/changelog/ "Jigoshop Changelog")
 
 == Installation ==
 
@@ -112,6 +123,59 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 4. Standard customer checkout screen
 
 == Changelog ==
+
+= 1.13.3 - 2014-12-01 =
+* Improved: [shipping] variable was divided into [shipping_cost] and [shipping_method].
+* Improved: Order item is now passed to `jigoshop_order_product_title` filter as 3rd argument. Thanks to @ermx
+* Fix: Default emails now install properly on jigoshop update.
+* Fix: Urls for dummy products.
+
+= 1.13.2 - 2014-11-26 =
+* Improved: Additional email variables `[total_tax]`, `[is_local_pickup]`, `[checkout_url]`, `[payment_method]`.
+* Improved: Coupons now can be added or removed in checkout.
+* Fix: Some html errors.
+* Fix: Typo in default email
+* Fix: Removed ex. tax label from subtotal in cart when shop admin decide to show prices without tax.
+* Fix: Generate default emails button no longer generates warning.
+
+= 1.13.1 - 2014-11-21 =
+* Fix: Warnings in email module.
+* Fix: Email templates now installs properly after jigoshop activation.
+
+= 1.13 - 2014-11-21 =
+* New: Ability to select whether to show prices with or without tax in cart.
+* New: Ability to select user when creating new order manually in admin panel.
+* New: Brand, GTIN, MPN fields for product.
+* New: Shortcode product_tag.
+* Improved: Disabled options in select now are hidden.
+* Improved: Stock status shows ':' instead of dash.
+* Improved: Sku variable is no longer showing in emails when sku is disabled.
+* Improved: Shop administrator is able to not set price for variables.
+* Improved: Shop emails are now customizable.
+* Fix: Disappearing items from cart after login.
+
+= 1.12.3 - 2014-10-27 =
+* Improved: Automatic plugin update mechanism uses as low HTTP requests as possible.
+
+= 1.12.2 - 2014-10-17 =
+* Improved: Show plugin updates even when licence is not activated.
+* Improved: Checking for updates is now 5 times faster.
+* Fix: Changing state or country in checkout will properly trigger recalculation of cart taxes.
+* Fix: Countries with not defined states, will properly shown as selected.
+* Fix: Email notifications about product stock status can be properly disabled.
+* Fix: JS problems on admin user profile page.
+* Fix: Date on Reports Page can be properly picked.
+* Fix: Redirecting from my account pages will no longer generate errors.
+* Fix: Worldpay payment page now will be correctly loaded.
+* Fix: Coupon warnings about division by 0.
+* Fix: Adding new tax will show properly buttons which are assigned to country/state select.
+
+= 1.12.1 - 2014-10-07 =
+* Fix: Phone number in order email.
+* Fix: Updated polish translation.
+* Fix: Triggering `jigoshop.cart.update` now properly passes data.
+* Fix: `jigoshop.cart.update` gets called before data is updated (or removed).
+* Fix: Pass properly rounded discount values to PayPal.
 
 = 1.12 - 2014-09-30 =
 * New: User fields in user's profile.
@@ -446,3 +510,552 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 * Languages: Updated .pot file for translators
 * Languages: Updated Brazilian translation courtesy of Raphael Suzuki
 * Languages: Updated Czech translation courtesy of Jaroslav Ondra
+
+== About Jigoshop ==
+
+* <a href="https://www.jigoshop.com/new-tour-page/">Why Should you use Jigoshop?</a>
+* <a href="https://www.jigoshop.com/showcase/">Showcase</a>
+* <a href="https://www.jigoshop.com/documentation/">Documentation</a>
+* <a href="https://www.jigoshop.com/getting-started-guide/">Getting Started Guide</a>
+* <a href="https://www.jigoshop.com/blog/">Blog</a>
+* <a href="https://www.jigoshop.com/contact/">Contact</a>
+
+== Support ==
+
+= About Support =
+
+* <a href="https://www.jigoshop.com/support/">Free Support</a>
+* <a href="https://www.jigoshop.com/compare-support-packages/">Compare Support Packages</a>
+
+= Enterprise Level Support =
+
+* <a href="https://www.jigoshop.com/product/enterprise-level-ad-hoc-emergency-support/">Enterprise Level &#8211; Ad-Hoc Emergency Support</a>
+* <a href="https://www.jigoshop.com/product/ecommerce-ent-basic-support/">Enterprise Level &#8211; Basic Support</a>
+* <a href="https://www.jigoshop.com/product/ent-level-full-website-management/">Enterprise Level &#8211; Full Website Management</a>
+* <a href="https://www.jigoshop.com/product/ecommerce-ent-full-website-support/">Enterprise Level &#8211; Full Website Support</a>
+* <a href="https://www.jigoshop.com/product/ecommerce-ent-premium-support/">Enterprise Level &#8211; Premium Support</a>
+
+= Support for Small Business =
+
+* <a href="https://www.jigoshop.com/product/ecommerce-smb-emergency-support/">SMB Level &#8211; Ad-Hoc Emergency Support</a>
+* <a href="https://www.jigoshop.com/product/ecommerce-smb-basic-support/">SMB Level &#8211; Basic Support</a>
+* <a href="https://www.jigoshop.com/product/ecommerce-smb-full-website-management/">SMB Level &#8211; Full Website Management</a>
+* <a href="https://www.jigoshop.com/product/ecommerce-smb-full-website-support/">SMB Level &#8211; Full Website Support</a>
+* <a href="https://www.jigoshop.com/product/ecommerce-smb-premium-support/">SMB Level &#8211; Premium Support</a>
+
+== Themes ==
+
+= Official Themes =
+
+* <a href="https://www.jigoshop.com/product/corellian/">Corellian</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-reddish/">Jigoshop Reddish</a>
+* <a href="https://www.jigoshop.com/product/jigotheme/">Jigotheme</a>
+* <a href="https://www.jigoshop.com/product/origin/">Origin</a>
+* <a href="https://www.jigoshop.com/product/overload/">Overload</a>
+* <a href="https://www.jigoshop.com/product/serenum/">Serenum</a>
+* <a href="https://www.jigoshop.com/product/stitched/">Stitched</a>
+* <a href="https://www.jigoshop.com/product/trend-shop/">Trend Shop</a>
+
+= External Themes =
+
+* <a href="https://www.jigoshop.com/product/abaris/">Abaris</a>
+* <a href="https://www.jigoshop.com/product/animal-house/">Animal House</a>
+* <a href="https://www.jigoshop.com/product/argo/">Argo</a>
+* <a href="https://www.jigoshop.com/product/aventador-jigoshop-theme/">Aventador Jigoshop Theme</a>
+* <a href="https://www.jigoshop.com/product/bikes-2/">Bikes</a>
+* <a href="https://www.jigoshop.com/product/bolsa/">Bolsa</a>
+* <a href="https://www.jigoshop.com/product/catalog-theme/">Catalog Theme</a>
+* <a href="https://www.jigoshop.com/product/child-care-2/">Child Care</a>
+* <a href="https://www.jigoshop.com/product/earth-nature/">Earth Nature</a>
+* <a href="https://www.jigoshop.com/product/electronic-devices/">Electronic Devices</a>
+* <a href="https://www.jigoshop.com/product/eureka/">Eureka</a>
+* <a href="https://www.jigoshop.com/product/fancytheme/">FancyTheme</a>
+* <a href="https://www.jigoshop.com/product/fashion-store/">Fashion Store</a>
+* <a href="https://www.jigoshop.com/product/fitness/">Fitness</a>
+* <a href="https://www.jigoshop.com/product/greatest-hits/">Greatest Hits</a>
+* <a href="https://www.jigoshop.com/product/hardware/">Hardware</a>
+* <a href="https://www.jigoshop.com/product/hermes-theme/">Hermes Theme</a>
+* <a href="https://www.jigoshop.com/product/lathika-theme/">Lathika Theme</a>
+* <a href="https://www.jigoshop.com/product/mayashop-responsive-theme/">MayaShop &#8211; Responsive Theme</a>
+* <a href="https://www.jigoshop.com/product/modern-crockery/">Modern Crockery</a>
+* <a href="https://www.jigoshop.com/product/mommy-blog/">Mommy Blog</a>
+* <a href="https://www.jigoshop.com/product/outdoor-style/">Outdoor Style</a>
+* <a href="https://www.jigoshop.com/product/prometheus/">Prometheus</a>
+* <a href="https://www.jigoshop.com/product/refined-style-theme/">Refined Style Theme</a>
+* <a href="https://www.jigoshop.com/product/responsive-alternative-clothes-store/">Responsive Alternative Clothes Store</a>
+* <a href="https://www.jigoshop.com/product/responsive-business-cards-store/">Responsive Business Cards Store</a>
+* <a href="https://www.jigoshop.com/product/responsive-clothes-store/">Responsive Clothes Store</a>
+* <a href="https://www.jigoshop.com/product/responsive-furniture-store/">Responsive Furniture Store</a>
+* <a href="https://www.jigoshop.com/product/responsive-tickets-store/">Responsive Tickets Store</a>
+* <a href="https://www.jigoshop.com/product/rustik-theme/">Rustik Theme</a>
+* <a href="https://www.jigoshop.com/product/selene/">Selene</a>
+* <a href="https://www.jigoshop.com/product/shiny-gems/">Shiny Gems</a>
+* <a href="https://www.jigoshop.com/product/shop/">Shop</a>
+* <a href="https://www.jigoshop.com/product/simplethemes-skeleton/">SimpleThemes: Skeleton</a>
+* <a href="https://www.jigoshop.com/product/simplicity-theme/">Simplicity Theme</a>
+* <a href="https://www.jigoshop.com/product/sneakers-addict/">Sneakers Addict</a>
+* <a href="https://www.jigoshop.com/product/sommerce-shop/">Sommerce Shop</a>
+* <a href="https://www.jigoshop.com/product/spares-of-the-highest-quality/">Spares Of The Highest Quality</a>
+* <a href="https://www.jigoshop.com/product/sport-grunge/">Sport Grunge</a>
+* <a href="https://www.jigoshop.com/product/sports-store/">Sports Store</a>
+* <a href="https://www.jigoshop.com/product/storefront-echo/">Storefront Echo</a>
+* <a href="https://www.jigoshop.com/product/supernova/">SuperNova</a>
+* <a href="https://www.jigoshop.com/product/toledo-theme/">Toledo Theme</a>
+* <a href="https://www.jigoshop.com/product/travel-island/">Travel Island</a>
+* <a href="https://www.jigoshop.com/product/trendy-sunglasses/">Trendy Sunglasses</a>
+* <a href="https://www.jigoshop.com/product/wallclassic-theme/">WallClassic Theme</a>
+* <a href="https://www.jigoshop.com/product/wardrobe/">Wardrobe</a>
+* <a href="https://www.jigoshop.com/product/wordpress-sold-theme/">WordPress Sold! Theme</a>
+* <a href="https://www.jigoshop.com/product/zeux/">Zeux</a>
+
+== Extensions ==
+
+= Free Extensions =
+
+* <a href="https://www.jigoshop.com/product/affiliates-jigoshop-integration-light/">Affiliates Integration Light</a>
+* <a href="https://www.jigoshop.com/product/basic-bundle-shipping/">Basic Bundle Shipping</a>
+* <a href="https://www.jigoshop.com/product/bluepay-for-jigoshop/">BluePay for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-catalyst-connect/">Catalyst Connect</a>
+* <a href="https://www.jigoshop.com/product/clickdesk-live-support/">ClickDesk Live Support</a>
+* <a href="https://www.jigoshop.com/product/credimax-payment-gateway/">CrediMax Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/custom-payment-gateway/">Custom Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/dibs-payment-gateway/">DIBS Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/doc-it/">Doc It</a>
+* <a href="https://www.jigoshop.com/product/genesis-connect-for-jigoshop/">Genesis Connect for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/german-full-translation-language-pack/">German Full Translation Language Pack</a>
+* <a href="https://www.jigoshop.com/product/headway-connect/">Headway Connect</a>
+* <a href="https://www.jigoshop.com/product/iadvize-live-chat/">iAdvize Live Chat</a>
+* <a href="https://www.jigoshop.com/product/intuitive-custom-post-order/">Intuitive Custom Post Order</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-and-pagelines-integration/">Jigoshop &#038; PageLines Integration</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-additional-admin-emails/">Jigoshop Additional Admin Emails</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-admin-bar/">Jigoshop Admin Bar</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-basic-weight-shipping/">Jigoshop Basic Weight Shipping</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-csv-product-importer/">Jigoshop CSV Product Importer</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-easy-print-button/">Jigoshop Easy Print Button</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-photos-product-tab/">Jigoshop Photos Product Tab</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-product-add-ons/">Jigoshop Product Add-Ons</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-putler-connector/">Jigoshop Putler Connector</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-smart-send-shipping/">Jigoshop Smart Send Shipping</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-software-addon/">Jigoshop Software Addon</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-statistics-2/">Jigoshop Statistics</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-video-product-tab/">Jigoshop Video Product Tab</a>
+* <a href="https://www.jigoshop.com/product/mailcheck-for-jigoshop/">Mailcheck for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/mailpoet-jigoshop-add/">MailPoet Jigoshop Add-on</a>
+* <a href="https://www.jigoshop.com/product/multi-currency-converter-lite/">Multi Currency Converter Lite</a>
+* <a href="https://www.jigoshop.com/product/pagseguro-payment-gateway/">PagSeguro Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/pinterest/">Pinterest</a>
+* <a href="https://www.jigoshop.com/product/rbk-money-for-jigoshop/">RBK Money for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/robokassa-payment-gateway-for-jigoshop/">Robokassa Payment Gateway for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/shipworks-connector/">ShipWorks Connector</a>
+* <a href="https://www.jigoshop.com/product/skrill/">Skrill</a>
+* <a href="https://www.jigoshop.com/product/suffusion-commerce/">Suffusion Commerce</a>
+* <a href="https://www.jigoshop.com/product/wanttt-com-button/">Wanttt.com Button</a>
+* <a href="https://www.jigoshop.com/product/woocommerce-to-jigoshop-converter/">WooCommerce to Jigoshop Converter</a>
+* <a href="https://www.jigoshop.com/product/wp-e-commerce-to-jigoshop-converter/">WP e-Commerce to Jigoshop Converter</a>
+* <a href="https://www.jigoshop.com/product/wp-menu-cart/">WP Menu Cart</a>
+* <a href="https://www.jigoshop.com/product/wpml-jigoshop-multi-language/">WPML Jigoshop Multi-Language</a>
+* <a href="https://www.jigoshop.com/product/youtube-video-product-tab/">YouTube Video Product Tab</a>
+
+= Translation =
+
+* <a href="https://www.jigoshop.com/product/german-full-translation-language-pack/">German Full Translation Language Pack</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-norway-custom-emails/">Jigoshop Norway Custom Emails</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-price-by-role/">Jigoshop Price by Role</a>
+* <a href="https://www.jigoshop.com/product/wpml-jigoshop-multi-language/">WPML Jigoshop Multi-Language</a>
+
+= Import / Export =
+
+* <a href="https://www.jigoshop.com/product/campaign-monitor/">Campaign Monitor</a>
+* <a href="https://www.jigoshop.com/product/csv-order-and-client-export/">CSV Order and Client Export</a>
+* <a href="https://www.jigoshop.com/product/google-product-feed/">Google Product Feed</a>
+* <a href="https://www.jigoshop.com/product/installation-of-jigoshop-extension/">Installation of Jigoshop Extension</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-csv-product-importer/">Jigoshop CSV Product Importer</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-filtering/">Jigoshop Filtering</a>
+* <a href="https://www.jigoshop.com/product/product-csv-suite/">Jigoshop Official CSV Importer</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-quickbooks-integration/">Jigoshop QuickBooks Integration</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-sorting/">Jigoshop Sorting</a>
+* <a href="https://www.jigoshop.com/product/mailchimp/">MailChimp</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-duplicate-product/">Official Duplicate Product</a>
+* <a href="https://www.jigoshop.com/product/sequential-order-numbers/">Sequential and Custom Order Numbers</a>
+* <a href="https://www.jigoshop.com/product/woocommerce-to-jigoshop-converter/">WooCommerce to Jigoshop Converter</a>
+* <a href="https://www.jigoshop.com/product/wp-e-commerce-to-jigoshop-converter/">WP e-Commerce to Jigoshop Converter</a>
+
+= Other =
+
+* <a href="https://www.jigoshop.com/product/access-coupons/">Access Coupons</a>
+* <a href="https://www.jigoshop.com/product/account-funds/">Account Funds</a>
+* <a href="https://www.jigoshop.com/product/ajax-content-browser/">Ajax Content Browser</a>
+* <a href="https://www.jigoshop.com/product/attach-orders-to-users/">Attach Orders to Users</a>
+* <a href="https://www.jigoshop.com/product/best-tree/">Best Tree</a>
+* <a href="https://www.jigoshop.com/product/bulk-order-change/">Bulk Order Change</a>
+* <a href="https://www.jigoshop.com/product/bulk-update-variations/">Bulk Update Variations</a>
+* <a href="https://www.jigoshop.com/product/buy-selected/">Buy Selected</a>
+* <a href="https://www.jigoshop.com/product/category-pages-and-thumbnails/">Category Pages and Thumbnails</a>
+* <a href="https://www.jigoshop.com/product/checkout-modal-message-box/">Checkout Modal Message Box</a>
+* <a href="https://www.jigoshop.com/product/clickdesk-live-support/">ClickDesk Live Support</a>
+* <a href="https://www.jigoshop.com/product/custom-attributes-tinymce/">Custom Attributes TinyMCE</a>
+* <a href="https://www.jigoshop.com/product/customer-discounts/">Customer Discounts</a>
+* <a href="https://www.jigoshop.com/product/digital-licensing/">Digital Licensing</a>
+* <a href="https://www.jigoshop.com/product/discfoo/">Discfoo</a>
+* <a href="https://www.jigoshop.com/product/end-of-product-sale/">End Of Product Sale</a>
+* <a href="https://www.jigoshop.com/product/extended-category-widget/">Extended Category Widget</a>
+* <a href="https://www.jigoshop.com/product/extended-external-products/">Extended External Products</a>
+* <a href="https://www.jigoshop.com/product/gateway-fees-integration-for-jigoshop/">Gateway Fees Integration for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/genesis-connect-for-jigoshop/">Genesis Connect for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/gravity-forms-integration/">Gravity Forms Integration</a>
+* <a href="https://www.jigoshop.com/product/grouped-products-pro/">Grouped Products Pro</a>
+* <a href="https://www.jigoshop.com/product/iadvize-live-chat/">iAdvize Live Chat</a>
+* <a href="https://www.jigoshop.com/product/intuitive-custom-post-order/">Intuitive Custom Post Order</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-add-custom-button/">Jigoshop Add Custom Button</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-add-redirect-button/">Jigoshop Add Redirect Button</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-add-to-cart-ajax-validation/">Jigoshop Add To Cart Ajax Validation</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-additional-admin-emails/">Jigoshop Additional Admin Emails</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-address-book/">Jigoshop Address Book</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-admin-bar/">Jigoshop Admin Bar</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-bookings/">Jigoshop Bookings</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-catalog-deluxe/">Jigoshop Catalog Deluxe</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-catalog-page-rollover-effect/">Jigoshop Catalog Page Rollover Effect</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-category-slider/">Jigoshop Category Slider</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-convert-complete/">Jigoshop Convert To Complete</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-cookie-bar/">Jigoshop Cookie Bar</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-coupon-purchasers/">Jigoshop Coupon Purchasers</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-currency-converter-widget/">Jigoshop Currency Converter Widget</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-drag-drop-cart/">Jigoshop Drag &#038; Drop Cart</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-duplicate-order/">Jigoshop Duplicate Order</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-filtering/">Jigoshop Filtering</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-multiple-currencies/">Jigoshop Multiple Currencies</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-norway-custom-emails/">Jigoshop Norway Custom Emails</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-partial-orders/">Jigoshop Partial Orders</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-photos-product-tab/">Jigoshop Photos Product Tab</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-post-layout/">JigoShop Post Layout</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-product-add-ons/">Jigoshop Product Add-Ons</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-product-add-ons-premium/">Jigoshop Product Add-Ons Premium</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-product-attributes-on-lists/">Jigoshop Product Attributes On Lists</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-product-comparison/">Jigoshop Product Comparison</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-product-variation-images/">Jigoshop Product Variation Images</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-recaptcha/">Jigoshop reCAPTCHA</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-request-a-quote/">Jigoshop Request A Quote</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-rich-snippets/">Jigoshop Rich Snippets</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-smart-coupons/">Jigoshop Smart Coupons</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-software-addon/">Jigoshop Software Addon</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-sold/">Jigoshop Sold Graphic Icon</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-sorting/">Jigoshop Sorting</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-split-paypal-sales/">Jigoshop Split Paypal Sales</a>
+* <a href="https://www.jigoshop.com/product/learndash-learning-management-platform/">LearnDash Learning Management Platform</a>
+* <a href="https://www.jigoshop.com/product/mailcheck-for-jigoshop/">Mailcheck for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/mailchimp-signup-widget/">MailChimp Signup Widget</a>
+* <a href="https://www.jigoshop.com/product/mailpoet-jigoshop-add/">MailPoet Jigoshop Add-on</a>
+* <a href="https://www.jigoshop.com/product/mini-cart-deluxe/">Mini Cart Deluxe</a>
+* <a href="https://www.jigoshop.com/product/minimum-orders/">Minimum Orders</a>
+* <a href="https://www.jigoshop.com/product/multiple-admin-emails/">Multiple Admin Emails</a>
+* <a href="https://www.jigoshop.com/product/new-product-badge/">New Product Badge</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-duplicate-product/">Official Duplicate Product</a>
+* <a href="https://www.jigoshop.com/product/pdf-invoices-and-packing-slips/">Official PDF Invoices</a>
+* <a href="https://www.jigoshop.com/product/custom-product-tabs/">Official Product Tab Manager</a>
+* <a href="https://www.jigoshop.com/product/password-protect/">Password Protect</a>
+* <a href="https://www.jigoshop.com/product/per-product-shipping/">Per Product Shipping</a>
+* <a href="https://www.jigoshop.com/product/product-accessories-premium/">Product Accessories Premium</a>
+* <a href="https://www.jigoshop.com/product/responsive-swipe-product-slider-and-carousel/">Responsive Swipe Product Slider and Carousel</a>
+* <a href="https://www.jigoshop.com/product/sendloop-signup-widget/">Sendloop Signup Widget</a>
+* <a href="https://www.jigoshop.com/product/shipworks-connector/">ShipWorks Connector</a>
+* <a href="https://www.jigoshop.com/product/subscriptions/">Subscriptions</a>
+* <a href="https://www.jigoshop.com/product/suffusion-commerce/">Suffusion Commerce</a>
+* <a href="https://www.jigoshop.com/product/wp-e-commerce-to-jigoshop-converter/">WP e-Commerce to Jigoshop Converter</a>
+* <a href="https://www.jigoshop.com/product/wp-menu-cart/">WP Menu Cart</a>
+
+= Media =
+
+* <a href="https://www.jigoshop.com/product/ajax-content-browser/">Ajax Content Browser</a>
+* <a href="https://www.jigoshop.com/product/bulk-update-variations/">Bulk Update Variations</a>
+* <a href="https://www.jigoshop.com/product/buy-selected/">Buy Selected</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-catalyst-connect/">Catalyst Connect</a>
+* <a href="https://www.jigoshop.com/product/category-pages-and-thumbnails/">Category Pages and Thumbnails</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-compatible-touch-carousel/">Compatible Touch Carousel</a>
+* <a href="https://www.jigoshop.com/product/custom-attributes-tinymce/">Custom Attributes TinyMCE</a>
+* <a href="https://www.jigoshop.com/product/extended-category-widget/">Extended Category Widget</a>
+* <a href="https://www.jigoshop.com/product/fancy-product-preview/">Fancy Product Preview</a>
+* <a href="https://www.jigoshop.com/product/headway-connect/">Headway Connect</a>
+* <a href="https://www.jigoshop.com/product/iadvize-live-chat/">iAdvize Live Chat</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-and-pagelines-integration/">Jigoshop &#038; PageLines Integration</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-add-to-cart-ajax-validation/">Jigoshop Add To Cart Ajax Validation</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-ajax-layered-nav/">Jigoshop AJAX Layered Nav</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-ajax-private-message/">Jigoshop Ajax Private Message</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-category-slider/">Jigoshop Category Slider</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-currency-converter-widget/">Jigoshop Currency Converter Widget</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-drag-drop-cart/">Jigoshop Drag &#038; Drop Cart</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-html-emails/">Jigoshop HTML Emails</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-list-view/">Jigoshop List View</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-magnify/">Jigoshop Magnify</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-name-your-price-charity-donations/">Jigoshop Name Your Price / Charity / Donations</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-opening-times/">Jigoshop Opening Times</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-photos-product-tab/">Jigoshop Photos Product Tab</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-post-layout/">JigoShop Post Layout</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-product-attributes-images/">Jigoshop Product Attributes Images</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-product-attributes-on-lists/">Jigoshop Product Attributes On Lists</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-product-colorizer/">Jigoshop Product Colorizer</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-products-of-the-month/">Jigoshop Products of the Month</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-qr-codes/">Jigoshop QR Codes</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-quickview/">Jigoshop Quickview</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-recaptcha/">Jigoshop reCAPTCHA</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-rich-snippets/">Jigoshop Rich Snippets</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-smart-coupons/">Jigoshop Smart Coupons</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-sorting/">Jigoshop Sorting</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-video-product-tab/">Jigoshop Video Product Tab</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-zoom-plugin/">Jigoshop Zoom Plugin</a>
+* <a href="https://www.jigoshop.com/product/magic-magnify-for-jigoshop/">Magic Magnify for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/magic-magnify-plus-for-jigoshop/">Magic Magnify Plus for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/magic-thumb-for-jigoshop/">Magic Thumb for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/magic-touch-for-jigoshop/">Magic Touch for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/magic-zoom-for-jigoshop/">Magic Zoom for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/magic-zoom-plus-for-jigoshop/">Magic Zoom Plus for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/minimum-orders/">Minimum Orders</a>
+* <a href="https://www.jigoshop.com/product/custom-product-tabs/">Official Product Tab Manager</a>
+* <a href="https://www.jigoshop.com/product/product-accessories-premium/">Product Accessories Premium</a>
+* <a href="https://www.jigoshop.com/product/product-badges/">Product Badges</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-product-image-watermark/">Product Image Watermark</a>
+* <a href="https://www.jigoshop.com/product/product-slider-carousel/">Product Slider Carousel</a>
+* <a href="https://www.jigoshop.com/product/responsive-swipe-product-slider-and-carousel/">Responsive Swipe Product Slider and Carousel</a>
+* <a href="https://www.jigoshop.com/product/sale-flash-options/">Sale Flash Options</a>
+* <a href="https://www.jigoshop.com/product/sendloop-signup-widget/">Sendloop Signup Widget</a>
+* <a href="https://www.jigoshop.com/product/social-buttons-for-jigoshop/">Social Buttons for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/video-links/">Video Links</a>
+* <a href="https://www.jigoshop.com/product/wp-menu-cart/">WP Menu Cart</a>
+* <a href="https://www.jigoshop.com/product/youtube-video-product-tab/">YouTube Video Product Tab</a>
+* <a href="https://www.jigoshop.com/product/youtube-video-tab/">YouTube Video Tab</a>
+
+= Networking =
+
+* <a href="https://www.jigoshop.com/product/amazon-estore-affiliates-for-jigoshop/">Amazon eStore Affiliates for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/clockwork-sms-notifications-extension/">Clockwork SMS Notifications Extension</a>
+* <a href="https://www.jigoshop.com/product/facebook-products-tab/">Facebook Products Tab</a>
+* <a href="https://www.jigoshop.com/product/german-full-translation-language-pack/">German Full Translation Language Pack</a>
+* <a href="https://www.jigoshop.com/product/google-product-feed/">Google Product Feed</a>
+* <a href="https://www.jigoshop.com/product/iadvize-live-chat/">iAdvize Live Chat</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-ajax-private-message/">Jigoshop Ajax Private Message</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-category-purchasers/">Jigoshop Category Purchasers</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-cookie-bar/">Jigoshop Cookie Bar</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-coupon-share/">Jigoshop Coupon for Share</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-enhanced-search/">Jigoshop Enhanced Search</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-price-by-role/">Jigoshop Price by Role</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-product-enquiry-form/">Jigoshop Product Enquiry Form</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-product-purchasers/">Jigoshop Product Purchasers</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-putler-connector/">Jigoshop Putler Connector</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-smart-coupons/">Jigoshop Smart Coupons</a>
+* <a href="https://www.jigoshop.com/product/mailchimp-signup-widget/">MailChimp Signup Widget</a>
+* <a href="https://www.jigoshop.com/product/mailpoet-jigoshop-add/">MailPoet Jigoshop Add-on</a>
+* <a href="https://www.jigoshop.com/product/pinterest/">Pinterest</a>
+* <a href="https://www.jigoshop.com/product/sendloop/">Sendloop</a>
+* <a href="https://www.jigoshop.com/product/sendloop-signup-widget/">Sendloop Signup Widget</a>
+* <a href="https://www.jigoshop.com/product/social-buttons-for-jigoshop/">Social Buttons for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/social-login/">Social Login</a>
+* <a href="https://www.jigoshop.com/product/subscriptions/">Subscriptions</a>
+* <a href="https://www.jigoshop.com/product/wanttt-com-button/">Wanttt.com Button</a>
+
+= Marketing =
+
+* <a href="https://www.jigoshop.com/product/affiliates-jigoshop-integration-light/">Affiliates Integration Light</a>
+* <a href="https://www.jigoshop.com/product/affiliates-pro-integration-pack/">Affiliates Pro Integration Pack</a>
+* <a href="https://www.jigoshop.com/product/amazon-estore-affiliates-for-jigoshop/">Amazon eStore Affiliates for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/aweber-newsletter-for-jigoshop/">AWeber Newsletter for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/campaign-monitor/">Campaign Monitor</a>
+* <a href="https://www.jigoshop.com/product/discfoo/">Discfoo</a>
+* <a href="https://www.jigoshop.com/product/end-of-product-sale/">End Of Product Sale</a>
+* <a href="https://www.jigoshop.com/product/filtering-premium/">Filtering Premium</a>
+* <a href="https://www.jigoshop.com/product/gravity-forms-integration/">Gravity Forms Integration</a>
+* <a href="https://www.jigoshop.com/product/grouped-products-pro/">Grouped Products Pro</a>
+* <a href="https://www.jigoshop.com/product/intuitive-custom-post-order/">Intuitive Custom Post Order</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-add-custom-button/">Jigoshop Add Custom Button</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-category-purchasers/">Jigoshop Category Purchasers</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-configurable-products/">Jigoshop Configurable Products</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-custom-availability/">Jigoshop Custom Availability</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-html-emails/">Jigoshop HTML Emails</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-linnworks-integration/">Jigoshop Linnworks Integration</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-opening-times/">Jigoshop Opening Times</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-price-on-request/">Jigoshop Price On Request</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-product-accessories/">Jigoshop Product Accessories</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-product-changes-notification/">Jigoshop Product Changes Notification</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-product-comparison/">Jigoshop Product Comparison</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-product-purchasers/">Jigoshop Product Purchasers</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-products-of-the-day/">Jigoshop Products Of The Day</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-products-of-the-month/">Jigoshop Products of the Month</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-putler-connector/">Jigoshop Putler Connector</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-quantity-on-lists/">Jigoshop Quantity On Lists</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-seo-deluxe-plugin/">Jigoshop SEO Deluxe Plugin</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-sold/">Jigoshop Sold Graphic Icon</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-split-paypal-sales/">Jigoshop Split Paypal Sales</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-statistics-2/">Jigoshop Statistics</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-wish-list/">Jigoshop Wish List</a>
+* <a href="https://www.jigoshop.com/product/learndash-learning-management-platform/">LearnDash Learning Management Platform</a>
+* <a href="https://www.jigoshop.com/product/limited-time-deals/">Limited Time Deals</a>
+* <a href="https://www.jigoshop.com/product/mailchimp/">MailChimp</a>
+* <a href="https://www.jigoshop.com/product/mailchimp-signup-widget/">MailChimp Signup Widget</a>
+* <a href="https://www.jigoshop.com/product/mailpoet-jigoshop-add/">MailPoet Jigoshop Add-on</a>
+* <a href="https://www.jigoshop.com/product/new-product-badge/">New Product Badge</a>
+* <a href="https://www.jigoshop.com/product/product-commissions/">Product Commissions</a>
+* <a href="https://www.jigoshop.com/product/random-product-widget/">Random Product Widget</a>
+* <a href="https://www.jigoshop.com/product/responsive-swipe-product-slider-and-carousel/">Responsive Swipe Product Slider and Carousel</a>
+* <a href="https://www.jigoshop.com/product/sale-flash-options/">Sale Flash Options</a>
+* <a href="https://www.jigoshop.com/product/shipworks-connector/">ShipWorks Connector</a>
+* <a href="https://www.jigoshop.com/product/simple-seo-meta-tags/">Simple SEO Meta Tags</a>
+* <a href="https://www.jigoshop.com/product/up-sells-cross-sells/">Up-sells &#038; Cross-sells</a>
+* <a href="https://www.jigoshop.com/product/viral-coupon-for-jigoshop/">Viral Coupon for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/youtube-video-tab/">YouTube Video Tab</a>
+
+= Shipping =
+
+* <a href="https://www.jigoshop.com/product/add-flat-rate-shipping/">Add Flat Rate Shipping</a>
+* <a href="https://www.jigoshop.com/product/australia-post-shipping-calculator/">Australia Post &#8211; Official Shipping Calculator</a>
+* <a href="https://www.jigoshop.com/product/basic-bundle-shipping/">Basic Bundle Shipping</a>
+* <a href="https://www.jigoshop.com/product/bring-shipping-method/">Bring Shipping Method</a>
+* <a href="https://www.jigoshop.com/product/bundle-rate-shipping/">Bundle Rate Shipping</a>
+* <a href="https://www.jigoshop.com/product/checkout-fields-manager/">Checkout Fields Manager</a>
+* <a href="https://www.jigoshop.com/product/fedex-shipping-rates/">Fedex Shipping Rates</a>
+* <a href="https://www.jigoshop.com/product/irish-an-post-shipping-module-for-jigoshop/">Irish An Post Shipping Module for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-basic-weight-shipping/">Jigoshop Basic Weight Shipping</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-delivery-periods/">Jigoshop Delivery Periods</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-delivery-times/">Jigoshop Delivery Times</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-new-zealand-post-shipping/">Jigoshop New Zealand Post Shipping</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-smart-send-shipping/">Jigoshop Smart Send Shipping</a>
+* <a href="https://www.jigoshop.com/product/pdf-invoices-and-packing-slips/">Official PDF Invoices</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-ups-shipping/">Official UPS Shipping</a>
+* <a href="https://www.jigoshop.com/product/per-product-shipping/">Per Product Shipping</a>
+* <a href="https://www.jigoshop.com/product/premium-shipping/">Premium Shipping</a>
+* <a href="https://www.jigoshop.com/product/royal-mail-shipping/">Royal Mail Shipping</a>
+* <a href="https://www.jigoshop.com/product/sequential-order-numbers/">Sequential and Custom Order Numbers</a>
+* <a href="https://www.jigoshop.com/product/shipping-details-plugin-for-jigoshop/">Shipping Details Plugin</a>
+* <a href="https://www.jigoshop.com/product/specific-country-states-delivery/">Specific Country and States Delivery</a>
+* <a href="https://www.jigoshop.com/product/table-rate-shipping/">Table Rate Shipping</a>
+* <a href="https://www.jigoshop.com/product/usps-advanced-shipping/">USPS Advanced Shipping</a>
+
+= Payment Gateways =
+
+* <a href="https://www.jigoshop.com/product/2checkout-payment-form/">2Checkout Payment Form</a>
+* <a href="https://www.jigoshop.com/product/alertpay-gateway/">AlertPay Gateway</a>
+* <a href="https://www.jigoshop.com/product/amazon-fps-payment-gateway/">Amazon FPS Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/anz-egate/">ANZ eGate</a>
+* <a href="https://www.jigoshop.com/product/authorize-net-dpm/">Authorize.Net DPM</a>
+* <a href="https://www.jigoshop.com/product/authorize-net-pro/">Authorize.Net PRO</a>
+* <a href="https://www.jigoshop.com/product/bcash/">Bcash</a>
+* <a href="https://www.jigoshop.com/product/beanstream-payment-gateway/">BeanStream Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/bluepay-for-jigoshop/">BluePay for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/braintree-payment-supports/">Braintree Payment Supports</a>
+* <a href="https://www.jigoshop.com/product/cardsave-payment-gateway-hosted/">CardSave Payment Gateway &#8211; Hosted</a>
+* <a href="https://www.jigoshop.com/product/cardsave-payment-gateway/">CardSave Payment Gateway &#8211; Integrated</a>
+* <a href="https://www.jigoshop.com/product/certoconnec-payment-gateway/">CertoConnect Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/checkout-by-amazon-payment-gateway/">Checkout by Amazon Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/click-buy-payment-gateway/">Click-and-Buy Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/commonwealth-bank-payment-gateway-extension/">Commonwealth Bank Payment Gateway Extension</a>
+* <a href="https://www.jigoshop.com/product/credimax-payment-gateway/">CrediMax Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/custom-payment-gateway/">Custom Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/cybersource-payment-gateway/">CyberSource Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/datacash-payment-gateway/">DataCash Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/dibs-payment-gateway/">DIBS Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/dineromail/">DineroMail</a>
+* <a href="https://www.jigoshop.com/product/directone-payment-gateway/">DirectOne Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/dotpay-payment-gateway/">DotPay Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/dwolla-gateway-for-jigoshop/">Dwolla Gateway for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/ebs-gateway/">EBS Gateway</a>
+* <a href="https://www.jigoshop.com/product/egopay-gateway-for-jigoshop/">EgoPay Gateway for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-epaybg-gateway/">ePay.bg Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-eway-australia-gateway/">eWay Australia Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/eway-new-zealand-payment-gateway/">eWay New Zealand Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/eway-payment-gateway/">eWAY Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/eway-united-kingdom-payment-gateway/">eWay United Kingdom Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/fastway-au-shipping-extension/">Fastway AU Shipping Extension</a>
+* <a href="https://www.jigoshop.com/product/fat-zebra-gateway/">Fat Zebra Gateway</a>
+* <a href="https://www.jigoshop.com/product/firstdata-global-payment-gateway/">FirstData Global Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/freshbooks-for-jigoshop/">Freshbooks for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/gateway-fees-integration-for-jigoshop/">Gateway Fees Integration for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/goemerchant-payment-gateway-for-jigoshop/">GoEmerchant Payment Gateway for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/google-checkout/">Google Checkout</a>
+* <a href="https://www.jigoshop.com/product/gopay-cz-payment-gateway/">GoPay.cz Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/ideal-payment-gateway/">iDEAL Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/intuit-innovative-payment-gateway/">Intuit Innovative Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/ipay88-payment-gateway/">iPay88 Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/wordpress-jigoshop-abn-amro-internetkassa-credit-card-module/">Jigoshop ABN Amro Internetkassa Credit Card Module</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-acceptance-paytool-credit-card-module/">Jigoshop Acceptance PayTool Credit Card Module</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-amazon-simple-gateway/">Jigoshop Amazon Simple Pay Gateway</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-authorize-net-cim-payment-gateway/">Jigoshop Authorize.Net CIM Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-barclaycard-epdq-credit-card-module/">Jigoshop BarclayCard ePDQ Credit Card Module</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-concardis-payengine-credit-card-module/">Jigoshop ConCardis PayEngine Credit Card Module</a>
+* <a href="https://www.jigoshop.com/product/wordpress-jigoshop-ogone-credit-card-module/">Jigoshop Ogone Credit Card Module</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-payjunction-gateway/">Jigoshop PayJunction Gateway</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-paypal-advanced/">Jigoshop PayPal Advanced</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-paypal-express-gateway/">Jigoshop PayPal Express Gateway</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-paypal-payflow-pro-gateway/">Jigoshop PayPal Payflow Pro Gateway</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-postfinance-credit-card-module/">Jigoshop PostFinance Credit Card Module</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-saferpay-credit-card-module/">Jigoshop Saferpay Credit Card Module</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-sagepay-direct/">Jigoshop SagePay Direct</a>
+* <a href="https://www.jigoshop.com/product/klarna-payment-gateway/">Klarna Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/korta-gateway/">Korta Gateway</a>
+* <a href="https://www.jigoshop.com/product/login-pay-amazon/">Login and Pay with Amazon</a>
+* <a href="https://www.jigoshop.com/product/molpay-gateway-for-jigoshop/">MOLPay Gateway for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/moneris-direct-us-gateway/">Moneris Direct US Gateway</a>
+* <a href="https://www.jigoshop.com/product/moneris-eselectplus-payment-gateway/">Moneris eSelectPlus Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/monsterpay-gateway/">MonsterPay gateway</a>
+* <a href="https://www.jigoshop.com/product/mygate-payment-gateway/">MyGate Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/nabtransact-direct-gateway/">NAB Transact Direct Gateway</a>
+* <a href="https://www.jigoshop.com/product/netbanx-payment-gateway/">Netbanx Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/netbilling-payment-gateway/">NETbilling Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/nmi-payments-gateway/">NMI Payments Gateway</a>
+* <a href="https://www.jigoshop.com/product/nochex-payment-gateway/">Nochex Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/offline-credit-card-processing/">Offline Credit Card Processing</a>
+* <a href="https://www.jigoshop.com/product/pagseguro-payment-gateway/">PagSeguro Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/payfast-payment-gateway/">PayFast Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/payleap-payment-gateway-for-jigoshop/">PayLeap Payment Gateway for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/payment-express-dps-hosted/">Payment Express DPS Hosted Gateway</a>
+* <a href="https://www.jigoshop.com/product/payment-express-px-post/">Payment Express PX Post</a>
+* <a href="https://www.jigoshop.com/product/paymentsense-gateway/">PaymentSense Gateway</a>
+* <a href="https://www.jigoshop.com/product/paymill-payment-gateway-for-jigoshop/">Paymill Payment Gateway for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/paypal-digital-goods-gateway/">PayPal Digital Goods Gateway</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-paypal-pro/">PayPal Pro</a>
+* <a href="https://www.jigoshop.com/product/payson-payment-gateway/">Payson Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/paytrace-gateway/">PayTrace Gateway</a>
+* <a href="https://www.jigoshop.com/product/payu-for-czech-republic-payment-gateway/">PayU for Czech Republic Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/payu-payment-gateway/">PayU for Poland Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/payu-latam/">PayU Latam</a>
+* <a href="https://www.jigoshop.com/product/payu-romania/">PayU Romania</a>
+* <a href="https://www.jigoshop.com/product/payu-russia/">PayU Russia</a>
+* <a href="https://www.jigoshop.com/product/payu-turkey/">PayU Turkey</a>
+* <a href="https://www.jigoshop.com/product/payu-ukraine/">PayU Ukraine</a>
+* <a href="https://www.jigoshop.com/product/payway-api-westpac-gateway-for-jigoshop/">PayWay API (Westpac) Gateway for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/payza-payment-gateway/">Payza Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/pin-payments-payment-gateway/">Pin Payments Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/plugn-pay-direct-gateway-for-jigoshop/">Plug&#8217;n Pay Direct Gateway for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/plugn-pay-redirect-gateway-for-jigoshop/">Plug&#8217;n Pay Redirect Gateway for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/przelewy24-payment-gateway/">Przelewy24 Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/psigate-payment-gateway/">PSiGate Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/quantum-payment-gateway/">Quantum Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/quickbooks-payment-gateway/">QuickBooks Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/quickpay-payment-gateway/">QuickPay Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/rbk-money-for-jigoshop/">RBK Money for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/realex-payment-gateway/">Realex Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/robokassa-payment-gateway-for-jigoshop/">Robokassa Payment Gateway for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/sagepay-form/">SagePay Form integration</a>
+* <a href="https://www.jigoshop.com/product/sagepay-go/">SagePay Go</a>
+* <a href="https://www.jigoshop.com/product/sagepay-server-inframe-integration/">SagePay Server Inframe integration</a>
+* <a href="https://www.jigoshop.com/product/sagepay-server-integration/">SagePay Server integration</a>
+* <a href="https://www.jigoshop.com/product/securenet-payment-gateway-for-jigoshop/">SecureNet Payment Gateway for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/sermepa-gateway/">Sermepa Gateway</a>
+* <a href="https://www.jigoshop.com/product/sisow-gateway-for-jigoshop/">Sisow Gateway for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/skrill/">Skrill</a>
+* <a href="https://www.jigoshop.com/product/stripe-for-jigoshop/">Stripe for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/swipe-hq-payment-gateway/">Swipe HQ Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/trustcommerce-payment-gateway/">TrustCommerce Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/usa-epay-gateway/">USA ePay gateway</a>
+* <a href="https://www.jigoshop.com/product/virtual-merchant-gateway/">Virtual Merchant Gateway</a>
+* <a href="https://www.jigoshop.com/product/wirecard-payment-gateway/">Wirecard Payment Gateway</a>
+* <a href="https://www.jigoshop.com/product/wordpress-jigoshop-viveum-credit-card-module/">WordPress Jigoshop Viveum Credit Card Module</a>
+* <a href="https://www.jigoshop.com/product/worldpay-xml-direct-gateway-for-jigoshop/">WorldPay XML Direct Gateway for Jigoshop</a>
+* <a href="https://www.jigoshop.com/product/zaakpay-payment-gateway/">ZaakPay Payment Gateway</a>
+
+= Official Themes =
+
+* <a href="https://www.jigoshop.com/product/corellian/">Corellian</a>
+* <a href="https://www.jigoshop.com/product/jigoshop-reddish/">Jigoshop Reddish</a>
+* <a href="https://www.jigoshop.com/product/jigotheme/">Jigotheme</a>
+* <a href="https://www.jigoshop.com/product/origin/">Origin</a>
+* <a href="https://www.jigoshop.com/product/overload/">Overload</a>
+* <a href="https://www.jigoshop.com/product/serenum/">Serenum</a>
+* <a href="https://www.jigoshop.com/product/stitched/">Stitched</a>
+* <a href="https://www.jigoshop.com/product/trend-shop/">Trend Shop</a>

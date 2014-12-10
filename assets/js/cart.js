@@ -75,7 +75,8 @@ jQuery(function($){
 	$('td.product-quantity')
 		.on('change', 'input.qty', function(){
 			var $parent = $(this).closest('tr');
-			$('.form-cart-items').block({
+			var $form = $('.form-cart-items');
+			$form.block({
 				message: null,
 				overlayCSS: {
 					background: '#fff url(' + jigoshop_params.assets_url + '/assets/images/ajax-loader.gif) no-repeat center',
@@ -92,9 +93,10 @@ jQuery(function($){
 				}
 			})
 				.done(function(result){
-					var $form = $('.form-cart-items');
 					$form.unblock();
 					if(result.success){
+						$form.trigger('jigoshop.cart.update', [$parent, result]);
+
 						if(result.item_price === -1){
 							$parent.remove();
 						} else {
@@ -114,7 +116,6 @@ jQuery(function($){
 						for(var tax in result.tax){
 							$('tr[data-tax="' + tax + '"] .cart-row-tax', $totals).html(result.tax[tax]);
 						}
-						$form.trigger('jigoshop.cart.update', $parent, result);
 					}
 				});
 		})

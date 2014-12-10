@@ -20,9 +20,9 @@
  * Description:         Jigoshop, a WordPress eCommerce plugin that works.
  * Author:              Jigoshop
  * Author URI:          http://www.jigoshop.com
- * Version:             1.13dev
+ * Version:             1.13.4
  * Requires at least:   3.8
- * Tested up to:        4.0
+ * Tested up to:        4.0.1
  * Text Domain:         jigoshop
  * Domain Path:         /languages/
  * DISCLAIMER
@@ -38,10 +38,10 @@
  */
 
 if (!defined('JIGOSHOP_VERSION')) {
-	define('JIGOSHOP_VERSION', '1.13dev');
+	define('JIGOSHOP_VERSION', '1.13.4');
 }
 if (!defined('JIGOSHOP_DB_VERSION')) {
-	define('JIGOSHOP_DB_VERSION', 1409050);
+	define('JIGOSHOP_DB_VERSION', 1411270);
 }
 if (!defined('JIGOSHOP_OPTIONS')) {
 	define('JIGOSHOP_OPTIONS', 'jigoshop_options');
@@ -245,7 +245,7 @@ function jigoshop_admin_toolbar() {
 	$manage_jigoshop = current_user_can('manage_jigoshop');
 	$view_reports = current_user_can('view_jigoshop_reports');
 	$manege_emails = current_user_can('manage_jigoshop_emails');
-	
+
 	if (!is_admin() && ($manage_jigoshop || $manage_products || $manage_orders || $view_reports)) {
 		$wp_admin_bar->add_node(array(
 			'id' => 'jigoshop',
@@ -292,7 +292,7 @@ function jigoshop_admin_toolbar() {
 				'href' => admin_url('admin.php?page=jigoshop_settings'),
 			));
 		}
-		
+
 		if($manege_emails) {
 			$wp_admin_bar->add_node(array(
 				'id' => 'jigoshop_emils',
@@ -589,6 +589,29 @@ function jigoshop_add_style($handle, $src, array $dependencies = array(), array 
 }
 
 /**
+ * Removes style from enqueued list.
+ * Calls filter `jigoshop_remove_style`. If the filter returns empty value the style is omitted.
+ * Available options:
+ *   * page - list of pages to use the style
+ * Options could be extended by plugins.
+ *
+ * @param string $handle Handle name.
+ * @param array $options List of options.
+ */
+function jigoshop_remove_style($handle, array $options = array())
+{
+	$page = isset($options['page']) ? (array)$options['page'] : array('all');
+
+	if (is_jigoshop_page($page)) {
+		$handle = apply_filters('jigoshop_remove_style', $handle, $options);
+
+		if (!empty($handle)) {
+			wp_deregister_style($handle);
+		}
+	}
+}
+
+/**
  * Checks if current page is one of given page types.
  *
  * @param string|array $pages List of page types to check.
@@ -613,6 +636,8 @@ define('JIGOSHOP_PAY', 'pay');
 define('JIGOSHOP_THANK_YOU', 'thanks');
 define('JIGOSHOP_MY_ACCOUNT', 'myaccount');
 define('JIGOSHOP_EDIT_ADDRESS', 'edit_address');
+define('JIGOSHOP_VIEW_ORDER', 'view_order');
+define('JIGOSHOP_CHANGE_PASSWORD', 'change_password');
 define('JIGOSHOP_PRODUCT', 'product');
 define('JIGOSHOP_PRODUCT_CATEGORY', 'product_category');
 define('JIGOSHOP_PRODUCT_LIST', 'product_list');
@@ -633,6 +658,8 @@ function jigoshop_get_available_pages()
 		JIGOSHOP_THANK_YOU,
 		JIGOSHOP_EDIT_ADDRESS,
 		JIGOSHOP_MY_ACCOUNT,
+		JIGOSHOP_VIEW_ORDER,
+		JIGOSHOP_CHANGE_PASSWORD,
 		JIGOSHOP_PRODUCT,
 		JIGOSHOP_PRODUCT_CATEGORY,
 		JIGOSHOP_PRODUCT_TAG,
@@ -662,6 +689,10 @@ function is_jigoshop_single_page($page)
 			return is_page(jigoshop_get_page_id(JIGOSHOP_MY_ACCOUNT));
 		case JIGOSHOP_EDIT_ADDRESS:
 			return is_page(jigoshop_get_page_id(JIGOSHOP_EDIT_ADDRESS));
+		case JIGOSHOP_VIEW_ORDER:
+			return is_page(jigoshop_get_page_id(JIGOSHOP_VIEW_ORDER));
+		case JIGOSHOP_CHANGE_PASSWORD:
+			return is_page(jigoshop_get_page_id(JIGOSHOP_CHANGE_PASSWORD));
 		case JIGOSHOP_PRODUCT:
 			return is_product();
 		case JIGOSHOP_PRODUCT_CATEGORY:
@@ -807,6 +838,9 @@ function jigoshop_admin_scripts()
 		jigoshop_add_script('jigoshop_media', JIGOSHOP_URL.'/assets/js/media.js', array('jquery', 'media-editor'));
 		jigoshop_add_script('jigoshop_blockui', JIGOSHOP_URL.'/assets/js/blockui.js', array('jquery'), array('version' => '2.4.6'));
 		jigoshop_add_script('jigoshop_backend', JIGOSHOP_URL.'/assets/js/backend.js', array('jquery'), array('version' => '1.0'));
+		if($current_screen->base == 'edit-tags') {
+			jigoshop_add_script('jigoshop_draggable_categories', JIGOSHOP_URL.'/assets/js/draggable_categories.js', array('jquery'), array('version' => '1.0'));
+		}
 		jigoshop_add_script('jquery_flot', JIGOSHOP_URL.'/assets/js/jquery.flot.min.js', array('jquery'), array(
 				'version' => '1.0',
 				'page' => array('jigoshop_page_jigoshop_reports', 'toplevel_page_jigoshop')

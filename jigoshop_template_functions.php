@@ -598,7 +598,7 @@ if (!function_exists('jigoshop_external_add_to_cart')) {
 		if ( ! $external_url ) return false;
 
 		?>
-			<form action="" class="cart" method="">
+			<form action="#" class="cart" method="post">
 				<?php do_action('jigoshop_before_add_to_cart_form_button'); ?>
 				<p>
 					<a href="<?php echo esc_url( $external_url ); ?>" rel="nofollow" class="button"><?php _e('Buy product', 'jigoshop'); ?></a>
@@ -751,7 +751,7 @@ if (!function_exists('jigoshop_product_customize_panel')) {
 
 			?>
 
-				<form action="" method="post">
+				<form action="#" method="post">
 
 					<input type="hidden" name="customized_id" value="<?php echo esc_attr( $_product->ID ); ?>" />
 
