@@ -34,6 +34,29 @@ class Interceptor
 	{
 		$this->addEndpoints();
 		$this->wp->addFilter('request', array($this, 'intercept'));
+		$this->wp->addFilter('wp_nav_menu_objects', array($this, 'menu'));
+	}
+
+	/**
+	 * Updates menu items to enable "Shop" item when necessary.
+	 *
+	 * @param $items array Menu items.
+	 * @return array Updated menu items.
+	 */
+	public function menu($items)
+	{
+		if ($this->wp->getQueryParameter('post_type', false) == Types::PRODUCT) {
+			foreach ($items as $item) {
+				/** @var $item \WP_Post */
+				/** @noinspection PhpUndefinedFieldInspection */
+				if ($item->object_id == $this->options->getPageId(Pages::SHOP)) {
+					/** @noinspection PhpUndefinedFieldInspection */
+					$item->classes[] = 'current-menu-item';
+				}
+			}
+		}
+
+		return $items;
 	}
 
 	/**
@@ -130,7 +153,6 @@ class Interceptor
 
 	private function getProductListQuery($request)
 	{
-		// TODO: Think how we are able to "select" Shop in menu.
 		$options = $this->options->get('shopping');
 		return array(
 			'post_type' => Types::PRODUCT,
