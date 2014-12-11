@@ -269,7 +269,12 @@ function install_emails()
 		------------------------------<wbr />------------------------------<wbr />--------------------
 		[shipping_first_name] [shipping_last_name]
 		[shipping_address_1], [shipping_address_2], [shipping_city]
-		[shipping_state], [shipping_country], [shipping_postcode]';
+		[shipping_state], [shipping_country], [shipping_postcode]
+		[customer_note]
+		------------------------------<wbr />------------------------------<wbr />--------------------
+		CUSTOMER NOTE
+		------------------------------<wbr />------------------------------<wbr />--------------------
+		[value][/customer_note]';
 
 	$title = '';
 	$message = '';
