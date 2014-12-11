@@ -354,6 +354,9 @@ function jigoshop_init()
 	jigoshop_payment_gateways::instance(); // Payment gateways class. loads payment methods
 	jigoshop_cart::instance(); // Cart class, uses sessions
 
+	add_filter( 'mce_external_plugins', 'jigoshop_register_shortcode_editor' );
+	add_filter( 'mce_buttons', 'jigoshop_register_shortcode_buttons' );
+
 	if (!is_admin()) {
 		/* Catalog Filters */
 		add_filter('loop-shop-query', create_function('', 'return array("orderby" => "'.$options->get('jigoshop_catalog_sort_orderby').'","order" => "'.$options->get('jigoshop_catalog_sort_direction').'");'));
@@ -832,10 +835,11 @@ function jigoshop_admin_scripts()
 	}
 
 	jigoshop_add_script('jigoshop-select2', JIGOSHOP_URL.'/assets/js/select2.min.js', array('jquery'));
-
+	jigoshop_add_script('jigoshop-editor-shortcodes', JIGOSHOP_URL.'/assets/js/editor-shortcodes.js', array('jquery'));
 
 
 	if (jigoshop_is_admin_page()) {
+
 		wp_enqueue_media();
 		wp_enqueue_script('jquery-ui-sortable');
 		wp_enqueue_script('jquery-ui-datepicker');
@@ -857,6 +861,8 @@ function jigoshop_admin_scripts()
 			)
 		);
 
+
+
 		/**
 		 * Disable autosaves on the order and coupon pages. Prevents the javascript alert when modifying.
 		 * `wp_deregister_script( 'autosave' )` would produce errors, so we use a filter instead.
@@ -866,6 +872,25 @@ function jigoshop_admin_scripts()
 			add_filter('script_loader_src', 'jigoshop_disable_autosave', 10, 2);
 		}
 	}
+}
+
+function jigoshop_register_shortcode_editor( $plugin_array ) {
+	$plugin_array['jigoshopShortcodes'] = JIGOSHOP_URL.'/assets/js/editor-shortcodes.js';
+	return $plugin_array;
+}
+
+function jigoshop_register_shortcode_buttons( $buttons ) {
+
+	array_push( $buttons, "jigoshop_add_cart" );
+	array_push( $buttons, "jigoshop_show_product" );
+	array_push( $buttons, "jigoshop_show_category" );
+	array_push( $buttons, "jigoshop_show_featured_products" );
+	array_push( $buttons, "jigoshop_show_selected_products" );
+	array_push( $buttons, "jigoshop_product_search" );
+	array_push( $buttons, "jigoshop_recent_products" );
+	array_push( $buttons, "jigoshop_sale_products" );
+
+	return $buttons;
 }
 
 /**
