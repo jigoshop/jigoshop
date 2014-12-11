@@ -215,7 +215,7 @@ class jigoshop_dashboard {
 
 				echo '
 				<li>
-					<span class="order-status '.sanitize_title($this_order->status).'">'.ucwords(__($this_order->status, 'jigoshop')).'</span> <a href="'.admin_url('post.php?post='.$order->ID).'&action=edit">#'.$order->ID.'</a>
+					<span class="order-status '.sanitize_title($this_order->status).'">'.ucwords(__($this_order->status, 'jigoshop')).'</span> <a href="'.admin_url('post.php?post='.$order->ID).'&action=edit">#'.$order->get_order_number().'</a>
 					<span class="order-time">'.get_the_time(__('M d, Y', 'jigoshop'), $order->ID).'</span> <span class="order-customer"><a href="'.$user['link'].'">'.$user['name'].'</a></span>
 					<small>'.sizeof($this_order->items).' '._n('Item', 'Items', sizeof($this_order->items), 'jigoshop').', <span class="total-quantity">'.__('Total Quantity', 'jigoshop').' '.$total_items.'</span> <span class="order-cost">'.jigoshop_price($this_order->order_total).'</span></small>
 				</li>';

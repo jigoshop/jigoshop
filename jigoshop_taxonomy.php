@@ -382,7 +382,7 @@ function jigoshop_terms_clauses($clauses, $taxonomies, $args)
 	global $wpdb;
 
 	// wordpress should give us the taxonomies asked when calling the get_terms function
-	if (!in_array('product_cat', (array)$taxonomies)) {
+	if (!in_array('product_cat', (array)$taxonomies) || Jigoshop_Base::get_options()->get('jigoshop_enable_draggable_categories') != 'yes') {
 		return $clauses;
 	}
 
