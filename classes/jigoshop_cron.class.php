@@ -55,10 +55,11 @@ class jigoshop_cron extends Jigoshop_Base {
 			));
 
 			remove_filter( 'posts_where', array( $this, 'orders_filter_when' ));
+			jigoshop_emails::suppress_next_action();
 
 			foreach ( $orders as $index => $order_id ) {
 				$order = new jigoshop_order( $order_id );
-				$order->update_status( 'on-hold', __('Archived due to order being in pending state for a month or longer.', 'jigoshop'), false);
+				$order->update_status( 'on-hold', __('Archived due to order being in pending state for a month or longer.', 'jigoshop'));
 			}
 		}
 
@@ -79,10 +80,11 @@ class jigoshop_cron extends Jigoshop_Base {
 			));
 
 			remove_filter( 'posts_where', array( $this, 'orders_filter_when' ));
+			jigoshop_emails::suppress_next_action();
 
 			foreach ( $orders as $index => $order_id ) {
 				$order = new jigoshop_order( $order_id );
-				$order->update_status( 'completed', __('Completed due to order being in processing state for a month or longer.', 'jigoshop'), false);
+				$order->update_status( 'completed', __('Completed due to order being in processing state for a month or longer.', 'jigoshop'));
 			}
 		}
 	}

@@ -489,7 +489,7 @@ class jigoshop_order extends Jigoshop_Base
 	 * @param bool $call_actions
 	 * @return bool
 	 */
-	public function update_status($new_status_slug, $note = '', $call_actions = true)
+	public function update_status($new_status_slug, $note = '')
 	{
 		if ($this->status === null) {
 			$this->status = 'new';
@@ -500,10 +500,9 @@ class jigoshop_order extends Jigoshop_Base
 			wp_set_object_terms($this->id, array($new_status->slug), 'shop_order_status', false);
 			if ($this->status != $new_status->slug) {
 				// Status was changed
-				if($call_actions) {
-					do_action('order_status_'.$new_status->slug, $this->id);
-					do_action('order_status_'.$this->status.'_to_'.$new_status->slug, $this->id);
-				}
+				do_action('order_status_'.$new_status->slug, $this->id);
+				do_action('order_status_'.$this->status.'_to_'.$new_status->slug, $this->id);
+
 				$this->add_order_note($note.' '.sprintf(__('Order status changed from %s to %s.', 'jigoshop'), __($old_status->name, 'jigoshop'), __($new_status->name, 'jigoshop')));
 				// Date
 				if ($new_status->slug == 'completed') {
