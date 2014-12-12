@@ -448,6 +448,14 @@ class Cart implements OrderInterface
 	}
 
 	/**
+	 * @return float Price of shipping.
+	 */
+	public function getShippingPrice()
+	{
+		return $this->shippingPrice;
+	}
+
+	/**
 	 * Sets shipping method and updates cart totals to reflect it's price.
 	 *
 	 * @param Method $method New shipping method.

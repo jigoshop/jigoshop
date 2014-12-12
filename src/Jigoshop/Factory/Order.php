@@ -192,11 +192,13 @@ class Order implements EntityFactoryInterface
 
 		if (isset($_POST['jigoshop_order']['payment_method'])) {
 			$payment = $this->paymentService->get($_POST['jigoshop_order']['payment_method']);
+			$this->wp->doAction('jigoshop\checkout\set_payment\before', $payment, $order);
 			$order->setPaymentMethod($payment);
 		}
 
 		if (isset($_POST['jigoshop_order']['shipping_method'])) {
 			$shipping = $this->shippingService->get($_POST['jigoshop_order']['shipping_method']);
+			$this->wp->doAction('jigoshop\checkout\set_shipping\before', $shipping, $order);
 			$order->setShippingMethod($shipping, $this->taxService);
 		}
 

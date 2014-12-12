@@ -87,6 +87,8 @@ class Checkout implements PageInterface
 		$wp->addAction('wp_ajax_nopriv_jigoshop_checkout_change_state', array($this, 'ajaxChangeState'));
 		$wp->addAction('wp_ajax_jigoshop_checkout_change_postcode', array($this, 'ajaxChangePostcode'));
 		$wp->addAction('wp_ajax_nopriv_jigoshop_checkout_change_postcode', array($this, 'ajaxChangePostcode'));
+
+		\Integration::initializeGateways();
 	}
 
 	/**
@@ -461,7 +463,7 @@ class Checkout implements PageInterface
 
 	private function getBillingFields(Address $address)
 	{
-		return array(
+		return $this->wp->applyFilters('jigoshop\checkout\billing_fields', array(
 			array(
 				'type' => 'text',
 				'label' => __('First name', 'jigoshop'),
@@ -552,12 +554,12 @@ class Checkout implements PageInterface
 				'size' => 9,
 				'columnSize' => 6,
 			),
-		);
+		));
 	}
 
 	private function getShippingFields(Address $address)
 	{
-		return array(
+		return $this->wp->applyFilters('jigoshop\checkout\shipping_fields', array(
 			array(
 				'type' => 'text',
 				'label' => __('First name', 'jigoshop'),
@@ -624,7 +626,7 @@ class Checkout implements PageInterface
 				'size' => 9,
 				'columnSize' => 6,
 			),
-		);
+		));
 	}
 
 	/**
