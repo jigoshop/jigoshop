@@ -2,6 +2,7 @@
 
 * 1.14.1:
     * Improved: Downloadable products links are showing as hyperlinks.
+    * Fix: Download links now shows only in processing or completed order email notifications.
     * Fix: Reset pending Orders and Complete processing Orders will no longer send emails.
     * Fix: Video played via prettyPhoto now loads properly.
 * 1.14 - 2014-12-11:
