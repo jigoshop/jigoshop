@@ -2,6 +2,7 @@
 
 * 1.14.1:
     * Improved: Downloadable products links are showing as hyperlinks.
+    * Fix: Reset pending Orders and Complete processing Orders will no longer send emails.
 * 1.14 - 2014-12-11:
     * New: Used Coupon column on Orders page.
     * New: Email variables.
