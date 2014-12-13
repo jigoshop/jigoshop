@@ -295,6 +295,7 @@ function jigoshop_edit_order_columns($columns) {
 	$columns["billing_address"]     = __("Billing Address", 'jigoshop');
 	$columns["shipping_address"]    = __("Shipping Address", 'jigoshop');
 	$columns["billing_and_shipping"]= __("Billing & Shipping", 'jigoshop');
+	$columns["order_coupons"]       = __("Used Coupons", 'jigoshop');
 	$columns["total_cost"]          = __("Order Cost", 'jigoshop');
 
     return $columns;
@@ -455,6 +456,13 @@ function jigoshop_custom_order_columns($column) {
             </table>
             <?php
             break;
+	    case 'order_coupons':
+			if(!empty($order->order_discount_coupons)):
+			    foreach($order->order_discount_coupons as $used_coupon): ?>
+			           <p class="order_coupon"><?php echo '#'.$used_coupon['id'].' - '.$used_coupon['code'] ?></p>
+				<?php endforeach;
+			endif;
+		    break;
     }
 }
 

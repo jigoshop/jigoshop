@@ -780,6 +780,17 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 					'yes' => __('Yes', 'jigoshop'),
 				),
 			),
+			array(
+			'name' => __('Use custom product category order', 'jigoshop'),
+			'desc' => '',
+			'tip' => __('This option allows to make custom product category order, by drag and drop method.', 'jigoshop'),
+			'id' => 'jigoshop_enable_draggable_categories',
+			'type' => 'checkbox',
+			'choices' => array(
+				'no' => __('No', 'jigoshop'),
+				'yes' => __('Yes', 'jigoshop'),
+			),
+		),
 			array('name' => __('Jigoshop messages', 'jigoshop'), 'type' => 'title', 'desc' => ''),
 			array(
 				'name' => __('Message disappear time', 'jigoshop'),
