@@ -1,7 +1,5 @@
 <?php
 
-use Jigoshop\Service\CartServiceInterface;
-use Jigoshop\Service\PaymentServiceInterface;
 use Monolog\Registry;
 
 require_once(JIGOSHOP_DIR.'/integration/classes/abstract/jigoshop_base.class.php');
@@ -19,23 +17,12 @@ require_once(JIGOSHOP_DIR.'/integration/gateways/gateways.class.php');
  */
 class Integration
 {
+	/** @var JigoshopContainer */
 	private static $di;
-	/** @var CartServiceInterface */
-	private static $cartService;
-	/** @var \Jigoshop\Core\Messages */
-	private static $messages;
-	/** @var \Jigoshop\Core\Options */
-	private static $options;
-	/** @var \Jigoshop\Core\Options */
-	private static $settings;
 
 	public function __construct(\JigoshopContainer $di)
 	{
 		self::$di = $di;
-		self::$cartService = $di->get('jigoshop.service.cart');
-		self::$messages = $di->get('jigoshop.messages');
-		self::$options = $di->get('jigoshop.options');
-		self::$settings;
 	}
 
 	public static function initializeGateways()
@@ -70,11 +57,19 @@ class Integration
 	}
 
 	/**
-	 * @return PaymentServiceInterface|object
+	 * @return \Jigoshop\Service\PaymentServiceInterface
 	 */
 	public static function getPaymentService()
 	{
 		return self::$di->get('jigoshop.service.payment');
+	}
+
+	/**
+	 * @return \Jigoshop\Service\OrderServiceInterface
+	 */
+	public static function getOrderService()
+	{
+		return self::$di->get('jigoshop.service.order');
 	}
 
 	/**
