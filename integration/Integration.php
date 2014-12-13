@@ -4,6 +4,14 @@ use Jigoshop\Service\CartServiceInterface;
 use Jigoshop\Service\PaymentServiceInterface;
 use Monolog\Registry;
 
+require_once(JIGOSHOP_DIR.'/integration/classes/abstract/jigoshop_base.class.php');
+require_once(JIGOSHOP_DIR.'/integration/classes/jigoshop.class.php');
+require_once(JIGOSHOP_DIR.'/integration/classes/jigoshop_options_interface.php');
+require_once(JIGOSHOP_DIR.'/integration/classes/jigoshop_countries.class.php');
+require_once(JIGOSHOP_DIR.'/integration/classes/jigoshop_request_api.class.php');
+require_once(JIGOSHOP_DIR.'/integration/gateways/gateway.class.php');
+require_once(JIGOSHOP_DIR.'/integration/gateways/gateways.class.php');
+
 /**
  * Integration helper - stores useful services and classes for static access.
  *
@@ -11,15 +19,23 @@ use Monolog\Registry;
  */
 class Integration
 {
-	/** @var PaymentServiceInterface */
-	private static $paymentService;
+	private static $di;
 	/** @var CartServiceInterface */
 	private static $cartService;
+	/** @var \Jigoshop\Core\Messages */
+	private static $messages;
+	/** @var \Jigoshop\Core\Options */
+	private static $options;
+	/** @var \Jigoshop\Core\Options */
+	private static $settings;
 
-	public function __construct(PaymentServiceInterface $paymentService, CartServiceInterface $cartService)
+	public function __construct(\JigoshopContainer $di)
 	{
-		self::$paymentService = $paymentService;
-		self::$cartService = $cartService;
+		self::$di = $di;
+		self::$cartService = $di->get('jigoshop.service.cart');
+		self::$messages = $di->get('jigoshop.messages');
+		self::$options = $di->get('jigoshop.options');
+		self::$settings;
 	}
 
 	public static function initializeGateways()
@@ -29,8 +45,7 @@ class Integration
 		$gateways = apply_filters('jigoshop_payment_gateways', array());
 
 		foreach ($gateways as $gateway) {
-			$object = new $gateway();
-			$service->addMethod(new Integration\Gateway($object));
+			$service->addMethod(new Integration\Gateway($gateway));
 		}
 
 		add_action('jigoshop\checkout\set_payment\before', '\Integration::processGateway');
@@ -54,13 +69,43 @@ class Integration
 		}
 	}
 
+	/**
+	 * @return PaymentServiceInterface|object
+	 */
 	public static function getPaymentService()
 	{
-		return self::$paymentService;
+		return self::$di->get('jigoshop.service.payment');
 	}
 
+	/**
+	 * @return \Jigoshop\Frontend\Cart
+	 */
 	public static function getCart()
 	{
-		return self::$cartService->getCurrent();
+		return self::$di->get('jigoshop.service.cart')->getCurrent();
+	}
+
+	/**
+	 * @return \Jigoshop\Core\Messages
+	 */
+	public static function getMessages()
+	{
+		return self::$di->get('jigoshop.messages');
+	}
+
+	/**
+	 * @return \Jigoshop\Core\Options
+	 */
+	public static function getOptions()
+	{
+		return self::$di->get('jigoshop.options');
+	}
+
+	/**
+	 * @return \Jigoshop\Admin\Settings
+	 */
+	public static function getAdminSettings()
+	{
+		return self::$di->get('jigoshop.admin.settings');
 	}
 }

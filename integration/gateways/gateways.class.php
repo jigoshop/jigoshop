@@ -14,9 +14,36 @@
  * @copyright           Copyright © 2011-2014 Jigoshop.
  * @license             GNU General Public License v3
  */
-class jigoshop_payment_gateways extends Jigoshop_Singleton
+class jigoshop_payment_gateways
 {
 	protected static $gateways = array();
+	private static $instance;
+
+	public static function instance()
+	{
+		if (self::$instance === null) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+
+	}
+
+	public static function reset()
+	{
+		self::$instance = null;
+	}
+
+	public function __clone()
+	{
+		trigger_error("Cloning Singleton's is not allowed.", E_USER_ERROR);
+	}
+
+
+	public function __wakeup()
+	{
+		trigger_error("Unserializing Singleton's is not allowed.", E_USER_ERROR);
+	}
 
 	protected function __construct()
 	{

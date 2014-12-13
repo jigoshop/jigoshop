@@ -2,6 +2,7 @@
 
 namespace Integration;
 
+use Jigoshop\Admin\Settings\PaymentTab;
 use Jigoshop\Entity\Order;
 use Jigoshop\Payment\Method;
 
@@ -9,10 +10,42 @@ class Gateway implements Method
 {
 	/** @var \jigoshop_payment_gateway */
 	private $gateway;
+	/** @var array */
+	private $options;
 
-	public function __construct(\jigoshop_payment_gateway $gateway)
+	public function __construct($gateway)
 	{
-		$this->gateway = $gateway;
+		$this->gateway = new $gateway();
+
+		$settings = \Integration::getOptions();
+		$source = $this->gateway->__get_default_options();
+		$options = array();
+
+		foreach ($source as $sourceOption) {
+			if ($sourceOption['type'] != 'title') {
+				$name = PaymentTab::SLUG.'.'.$this->getId().'.'.$sourceOption['id'];
+				Options::__addTransformation($sourceOption['id'], $name);
+				$option = Helper\Options::parseOption($sourceOption);
+				$option['__name'] = $sourceOption['id'];
+				$option['name'] = '['.$this->getId().']['.$sourceOption['id'].']';
+
+				if (($value = $settings->get($name)) !== null) {
+					switch ($option['type']) {
+						case 'checkbox':
+							$option['checked'] = $value;
+							break;
+						default:
+							$option['value'] = $value;
+					}
+				}
+
+				$options[] = $option;
+			}
+		}
+
+		$this->options = $options;
+		// TODO: Any idea how to initialize all options while instance already created?
+		$this->gateway = new $gateway();
 	}
 
 	/**
@@ -28,7 +61,7 @@ class Gateway implements Method
 	 */
 	public function getId()
 	{
-		return $this->id;
+		return $this->gateway->id;
 	}
 
 	/**
@@ -36,7 +69,16 @@ class Gateway implements Method
 	 */
 	public function getName()
 	{
-		return $this->title;
+		if (is_admin()) {
+			$source = $this->gateway->__get_default_options();
+			if (count($source) > 0 && $source[0]['type'] == 'title') {
+				return $source[0]['name'];
+			}
+
+			return $this->gateway->id;
+		}
+
+		return $this->gateway->title;
 	}
 
 	/**
@@ -44,7 +86,7 @@ class Gateway implements Method
 	 */
 	public function isEnabled()
 	{
-		return $this->enabled;
+		return $this->gateway->enabled;
 	}
 
 	/**
@@ -52,24 +94,7 @@ class Gateway implements Method
 	 */
 	public function getOptions()
 	{
-		$options = array();
-		$source = $this->gateway->__get_default_options();
-
-		foreach ($source as $option) {
-			$options[] = array(
-				'title' => isset($option['name']) ? $option['name'] : false,
-				'name' => isset($option['id']) ? $option['id'] : '',
-				'description' => isset($option['desc']) ? $option['desc'] : false,
-				'tip' => isset($option['tip']) ? $option['tip'] : false,
-				'value' => isset($option['std']) ? $option['std'] : false,
-				'type' => isset($option['type']) ? $option['type'] : 'text',
-				'options' => isset($option['choices']) ? $option['choices'] : array(),
-				// TODO: classes based on 'extra' field
-				// TODO: Some additional options from 'extra' field
-			);
-		}
-
-		return $options;
+		return $this->options;
 	}
 
 	/**
@@ -80,6 +105,12 @@ class Gateway implements Method
 	 */
 	public function validateOptions($settings)
 	{
+		foreach ($this->options as $option) {
+			if ($option['type'] == 'checkbox') {
+				$settings[$option['__name']] = $settings[$option['__name']] == 'on';
+			}
+		}
+
 		return $settings;
 	}
 
