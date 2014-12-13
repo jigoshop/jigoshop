@@ -80,7 +80,7 @@ class Options
 			'only_to_billing' => false,
 			'always_show_shipping' => false,
 			'flat_rate' => array(
-				'enabled' => false,
+				'enabled' => true,
 				'title' => 'Flat rate',
 				'type' => 'per_order',
 				'cost' => 0,
