@@ -20,6 +20,7 @@ class Options
 
 	private $defaults = array(
 		'general' => array(
+			// TODO: Support for setting base state
 			'country' => 'GB',
 			'email' => '',
 			'show_message' => false,
@@ -147,7 +148,7 @@ class Options
 		$this->wp = $wp;
 		$this->_loadOptions();
 		$this->_addImageSizes();
-		$this->wp->addAction('shutdown', array($this, 'saveOptions'));
+//		$this->wp->addAction('shutdown', array($this, 'saveOptions')); // TODO: Figure out if it's needed.
 	}
 
 	public function getImageSizes()
@@ -155,7 +156,7 @@ class Options
 		return $this->wp->applyFilters('jigoshop\image\sizes', array(
 			'shop_tiny' => array(
 				'crop' => $this->wp->applyFilters('jigoshop\image\size\crop', false, 'shop_tiny'),
-				'width' => '36',
+				'width' => '36', // TODO: Use proper constants when Images are added.
 				'height' => '36',
 			),
 			'shop_thumbnail' => array(
@@ -210,6 +211,14 @@ class Options
 	}
 
 	/**
+	 * @return array All default options.
+	 */
+	public function getDefaults()
+	{
+		return $this->defaults;
+	}
+
+	/**
 	 * @param $name string Name of option to update.
 	 * @param $value mixed Value to set.
 	 */
@@ -217,6 +226,30 @@ class Options
 	{
 		$this->options[$name] = $value;
 		$this->dirty = true;
+	}
+
+	/**
+	 * @param $name string Name of option to remove.
+	 * @return bool Whether value was removed.
+	 */
+	public function remove($name)
+	{
+		if (!isset($this->options[$name])) {
+			return false;
+		}
+
+		unset($this->options[$name]);
+		$this->dirty = true;
+		return true;
+	}
+
+	/**
+	 * @param $name string Name of option to check.
+	 * @return bool Whether selected option exists.
+	 */
+	public function exists($name)
+	{
+		return isset($this->options[$name]);
 	}
 
 	private function _addImageSizes()

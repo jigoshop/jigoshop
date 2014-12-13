@@ -148,4 +148,15 @@ class Messages
 		}));
 		session_write_close();
 	}
+
+	/**
+	 * Removes all stored messages.
+	 */
+	public function clear()
+	{
+		$this->notices = array();
+		$this->warnings = array();
+		$this->errors = array();
+		$this->preserveMessages();
+	}
 }

@@ -20,6 +20,7 @@ class JigoshopInit
 	public function __construct()
 	{
 		require_once(JIGOSHOP_DIR.'/vendor/autoload.php');
+		require_once(JIGOSHOP_DIR.'/integration/Integration.php');
 		$loader = new \Symfony\Component\ClassLoader\ClassLoader();
 		$loader->addPrefix('WPAL', JIGOSHOP_DIR.'/vendor/megawebmaster/wpal');
 		$loader->addPrefix('Jigoshop', JIGOSHOP_DIR.'/src');
@@ -142,8 +143,7 @@ class JigoshopInit
 		$this->container->get('jigoshop.cron');
 
 		// Initialize integration layer
-		/** @noinspection PhpParamsInspection */
-		new Integration($this->container->get('jigoshop.service.payment'), $this->container->get('jigoshop.service.cart'));
+		new Integration($this->container);
 
 		if (is_admin()) {
 			/** @var \Jigoshop\Admin\PageResolver $resolver */
