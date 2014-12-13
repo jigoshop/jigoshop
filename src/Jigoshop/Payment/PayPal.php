@@ -163,7 +163,9 @@ class PayPal implements Method, Processable, ContainerAware
 
 		if (!Validation::isEmail($settings['email'])) {
 			$settings['email'] = '';
-			$this->messages->addWarning(__('Email address is not valid.', 'jigoshop'));
+			if ($settings['enabled']) {
+				$this->messages->addWarning(__('Email address is not valid.', 'jigoshop'));
+			}
 		}
 
 		$settings['send_shipping'] = $settings['send_shipping'] == 'on';
@@ -172,7 +174,9 @@ class PayPal implements Method, Processable, ContainerAware
 
 		if (!Validation::isEmail($settings['test_email'])) {
 			$settings['test_email'] = '';
-			$this->messages->addWarning(__('Test email address is not valid.', 'jigoshop'));
+			if ($settings['enabled']) {
+				$this->messages->addWarning(__('Test email address is not valid.', 'jigoshop'));
+			}
 		}
 
 		return $settings;
