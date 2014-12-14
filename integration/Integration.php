@@ -94,6 +94,14 @@ class Integration
 	}
 
 	/**
+	 * @return \Jigoshop\Service\ProductServiceInterface
+	 */
+	public static function getProductService()
+	{
+		return self::$di->get('jigoshop.service.product');
+	}
+
+	/**
 	 * @return \Jigoshop\Core\Emails
 	 */
 	public static function getEmails()

@@ -1,6 +1,6 @@
 <?php
 use Jigoshop\Entity\Customer\CompanyAddress;
-use Jigoshop\Entity\Order\Status;
+use Jigoshop\Entity\Order;
 use Jigoshop\Helper\Country;
 
 /**
@@ -54,13 +54,13 @@ class jigoshop_order extends Jigoshop_Base
 	public $_data = array();
 
 	private static $_statusTransformations = array(
-		'new' => Status::PENDING,
-		'pending' => Status::PENDING,
-		'on-hold' => Status::ON_HOLD,
-		'processing' => Status::PROCESSING,
-		'completed' => Status::COMPLETED,
-		'cancelled' => Status::CANCELLED,
-		'refunded' => Status::REFUNDED,
+		'new' => Order\Status::PENDING,
+		'pending' => Order\Status::PENDING,
+		'on-hold' => Order\Status::ON_HOLD,
+		'processing' => Order\Status::PROCESSING,
+		'completed' => Order\Status::COMPLETED,
+		'cancelled' => Order\Status::CANCELLED,
+		'refunded' => Order\Status::REFUNDED,
 	);
 
 	private $order_data;
@@ -111,10 +111,41 @@ class jigoshop_order extends Jigoshop_Base
 			case 'user_id':
 				return $this->_order->getCustomer()->getId();
 			case 'items':
-				// TODO: Properly return old fashioned items
-				// TODO: Need to have __key - item key
-				// TODO: Store as $_items array with keys as IDs
-				return $this->_order->getItems();
+				if ($this->_items === null) {
+					$this->_items = array();
+					foreach ($this->_order->getItems() as $key => $item) {
+						/** @var $item Order\Item */
+						$product = $item->getProduct();
+						$variationId = '';
+						$variation = array();
+						if ($product instanceof \Jigoshop\Entity\Product\Variable) {
+							$variationId = $item->getMeta('variation_id')->getValue();
+
+							foreach ($product->getVariation($variationId)->getAttributes() as $attribute) {
+								/** @var $attribute \Jigoshop\Entity\Product\Variable\Attribute */
+								if ($attribute->getValue() === '') {
+									$attr = $attribute->getAttribute();
+									$variation[$attr->getId()] = $item->getMeta($attr->getSlug())->getValue();
+								}
+							}
+						}
+
+						$this->_items[$key] = array(
+							'id' => $product->getId(),
+							'variation_id' => $variationId,
+							'variation' => $variation,
+							'customization' => '',
+							'name' => $item->getName(),
+							'qty' => $item->getQuantity(),
+							'cost' => $item->getCost() - $item->getTotalTax(),
+							'cost_inc_tax' => $item->getCost(),
+							'taxrate' => '', // TODO: What about tax rate?
+							'__key' => $key,
+						);
+					}
+				}
+
+				return $this->_items;
 			case 'billing_first_name':
 				return $this->_order->getCustomer()->getBillingAddress()->getFirstName();
 			case 'billing_last_name':
@@ -162,6 +193,8 @@ class jigoshop_order extends Jigoshop_Base
 				return $this->_order->getCustomer()->getShippingAddress()->getState();
 			case 'shipping_method':
 				return $this->_order->getShippingMethod() ? $this->_order->getShippingMethod()->getId() : '';
+			case 'shipping_service':
+				return $this->_order->getShippingMethod() ? $this->_order->getShippingMethod()->getName() : '';
 			case 'payment_method':
 				return $this->_order->getPaymentMethod() ? $this->_order->getPaymentMethod()->getId() : '';
 			case 'payment_method_title':
@@ -169,8 +202,7 @@ class jigoshop_order extends Jigoshop_Base
 			case 'order_subtotal':
 				return $this->_order->getSubtotal();
 			case 'order_discount_subtotal':
-				// TODO: What is this?
-				return $this->_order->getKey();
+				return $this->_order->getSubtotal() - $this->_order->getDiscount();
 			case 'order_shipping':
 				return $this->_order->getShippingPrice();
 			case 'order_discount':
@@ -179,11 +211,30 @@ class jigoshop_order extends Jigoshop_Base
 				// TODO: Save coupons used for order
 				return array();
 			case 'order_tax':
-				// TODO: Probably we need old fashioned tax array
-				return $this->_order->getTax();
+				$source = $this->_order->getTax();
+				$service = Integration::getTaxService();
+
+				$taxes = array();
+				foreach ($source as $class => $value) {
+					$taxes[$class] = array(
+						'amount' => $value,
+						'rate' => $service->getRate($class, $this->_order->getCustomer()),
+						'display' => $service->getLabel($class, $this->_order->getCustomer()),
+						'compound' => false, // TODO: Implement when compound taxes are introduced
+					);
+				}
+
+				$method = $this->_order->getShippingMethod();
+				if ($method !== null) {
+					$source = $this->_order->getShippingTax();
+					foreach ($source as $class => $value) {
+						$taxes[$class][$method->getId().'0'] = $value;
+					}
+				}
+
+				return $taxes;
 			case 'order_shipping_tax':
-				// TODO: Probably we need old fashioned tax array
-				return $this->_order->getShippingTax();
+				return array_reduce($this->_order->getShippingTax(), 'sum');
 			case 'order_total':
 				return $this->_order->getTotal();
 			case 'formatted_billing_address':
@@ -251,8 +302,19 @@ class jigoshop_order extends Jigoshop_Base
 				$this->_order->getCustomer()->getId();
 				break;
 			case 'items':
-				// TODO: Properly reformat old fashioned items
-				// TODO: Need to have __key - item key
+				$productService = Integration::getProductService();
+				$this->_order->removeItems();
+
+				foreach ($value as $oldItem) {
+					$product = $productService->find($oldItem['id']);
+					// Support for automatic variation generation
+					$_POST['variation_id'] = $oldItem['variation_id'];
+					$_POST['attributes'] = $oldItem['variation'];
+					$item = apply_filters('jigoshop\cart\add', null, $product);
+					if ($item !== null) {
+						$this->_order->addItem($item);
+					}
+				}
 				break;
 			case 'billing_first_name':
 				$this->_order->getCustomer()->getBillingAddress()->setFirstName($value);
@@ -332,6 +394,8 @@ class jigoshop_order extends Jigoshop_Base
 					Integration::getMessages()->addError(__('Invalid shipping method.', 'jigoshop'));
 				}
 				break;
+			case 'shipping_service':
+				break;
 			case 'payment_method':
 				try {
 					$method = Integration::getPaymentService()->get($value);
@@ -346,10 +410,10 @@ class jigoshop_order extends Jigoshop_Base
 				$this->_order->setSubtotal($value);
 				break;
 			case 'order_discount_subtotal':
-				// TODO: What is this?
+				_deprecated_argument('order_discount_subtotal', '2.0');
 				break;
 			case 'order_shipping':
-				// TODO: No option to set shipping price - throw an exception?
+				_deprecated_argument('order_shipping', '2.0');
 				break;
 			case 'order_discount':
 				$this->_order->setDiscount($value);
@@ -358,12 +422,15 @@ class jigoshop_order extends Jigoshop_Base
 				// TODO: Coupons used for order
 				break;
 			case 'order_tax':
-				// TODO: Transform old tax array into new one
-				$this->_order->setTax($value);
+				$taxes = array();
+				foreach ($value as $class => $tax) {
+					$taxes[$class] = $tax['amount'];
+				}
+				$this->_order->setTax($taxes);
 				break;
 			case 'order_shipping_tax':
-				// TODO: Transform old tax array into new one
-				$this->_order->setShippingTax($value);
+				_deprecated_argument('order_shipping_tax', '2.0');
+				// TODO: How we are supposed to set shipping tax whereas it's not split into classes?
 				break;
 			case 'order_total':
 				$this->_order->setTotal($value);
@@ -387,12 +454,9 @@ class jigoshop_order extends Jigoshop_Base
 	 */
 	public function populate($result)
 	{
+		$this->_order = Integration::getOrderService()->findForPost($result);
 		// Standard post data
-		$this->modified_date = $result->post_modified;
 		$this->order_data = (array)maybe_unserialize(get_post_meta($this->id, 'order_data', true));
-		$this->shipping_service = (string)$this->_fetch('shipping_service');
-		// array
-		$this->order_total_prices_per_tax_class_ex_tax = $this->_fetch('order_total_prices_per_tax_class_ex_tax');
 	}
 
 	/**
@@ -415,7 +479,7 @@ class jigoshop_order extends Jigoshop_Base
 
 	public static function get_order_statuses_and_names()
 	{
-		$statuses = Status::getStatuses();
+		$statuses = Order\Status::getStatuses();
 		$result = array();
 		foreach (self::$_statusTransformations as $old => $new) {
 			$result[$old] = $statuses[$new];
@@ -512,8 +576,8 @@ class jigoshop_order extends Jigoshop_Base
 
 	public function get_price_ex_tax_for_tax_class($tax_class)
 	{
-		// TODO: Implement
-		return (isset($this->order_total_prices_per_tax_class_ex_tax[$tax_class]) ? jigoshop_price($this->order_total_prices_per_tax_class_ex_tax[$tax_class]) : jigoshop_price(0));
+		_deprecated_function('get_price_ex_tax_for_tax_class', '2.0');
+		return \Jigoshop\Helper\Product::formatPrice(0.0);
 	}
 
 	public function get_subtotal_to_display()
@@ -581,7 +645,7 @@ class jigoshop_order extends Jigoshop_Base
 
 	public function cancel_order($note = '')
 	{
-		$this->_order->setStatus(Status::CANCELLED, $note);
+		$this->_order->setStatus(Order\Status::CANCELLED, $note);
 	}
 
 	public function update_status($new_status_slug, $note = '')
@@ -602,7 +666,7 @@ class jigoshop_order extends Jigoshop_Base
 
 	public function payment_complete()
 	{
-		$this->_order->setStatus(Status::PROCESSING);
+		$this->_order->setStatus(Order\Status::PROCESSING);
 		do_action('jigoshop_payment_complete', $this->_order->getId());
 	}
 
