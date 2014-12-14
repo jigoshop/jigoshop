@@ -51,6 +51,8 @@ class Order implements EntityInterface, OrderInterface
 	/** @var float */
 	private $discount = 0.0;
 	/** @var array */
+	private $coupons = array();
+	/** @var array */
 	private $tax = array();
 	/** @var array */
 	private $shippingTax = array();
@@ -209,6 +211,43 @@ class Order implements EntityInterface, OrderInterface
 	public function setDiscount($discount)
 	{
 		$this->discount = $discount;
+	}
+
+	/**
+	 * @return array List of used coupons codes.
+	 */
+	public function getCoupons()
+	{
+		return $this->coupons;
+	}
+
+	/**
+	 * @param array $coupons New list of used coupons codes.
+	 */
+	public function setCoupons($coupons)
+	{
+		$this->coupons = $coupons;
+	}
+
+	/**
+	 * @param string $coupon New code of used coupon.
+	 */
+	public function addCoupon($coupon)
+	{
+		if (array_search($coupon, $this->coupons) === false) {
+			$this->coupons[] = $coupon;
+		}
+	}
+
+	/**
+	 * @param string $coupon Code to remove.
+	 */
+	public function removeCoupon($coupon)
+	{
+		$key = array_search($coupon, $this->coupons);
+		if ($key !== false) {
+			unset($this->coupons[$key]);
+		}
 	}
 
 	/**
@@ -590,6 +629,7 @@ class Order implements EntityInterface, OrderInterface
 			'total' => $this->total,
 			'subtotal' => $this->subtotal,
 			'discount' => $this->discount,
+			'coupons' => $this->coupons,
 			'shipping_tax' => $this->shippingTax,
 			'status' => $this->status,
 			'update_messages' => $this->updateMessages,
@@ -652,6 +692,9 @@ class Order implements EntityInterface, OrderInterface
 		}
 		if (isset($state['discount'])) {
 			$this->discount = (float)$state['discount'];
+		}
+		if (isset($state['coupons'])) {
+			$this->coupons = unserialize($state['coupons']);
 		}
 
 		$this->total = $this->subtotal + array_reduce($this->tax, function($value, $item){ return $value + $item; }, 0.0)

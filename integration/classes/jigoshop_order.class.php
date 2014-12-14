@@ -208,8 +208,7 @@ class jigoshop_order extends Jigoshop_Base
 			case 'order_discount':
 				return $this->_order->getDiscount();
 			case 'order_discount_coupons':
-				// TODO: Save coupons used for order
-				return array();
+				return $this->_order->getCoupons();
 			case 'order_tax':
 				$source = $this->_order->getTax();
 				$service = Integration::getTaxService();
@@ -419,7 +418,7 @@ class jigoshop_order extends Jigoshop_Base
 				$this->_order->setDiscount($value);
 				break;
 			case 'order_discount_coupons':
-				// TODO: Coupons used for order
+				$this->_order->setCoupons($value);
 				break;
 			case 'order_tax':
 				$taxes = array();
