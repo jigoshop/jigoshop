@@ -2,6 +2,7 @@
 
 namespace Jigoshop\Integration;
 
+use Jigoshop\Integration;
 use Jigoshop\Integration\Admin\Settings\Tab;
 
 class Options implements \Jigoshop_Options_Interface
@@ -34,7 +35,7 @@ class Options implements \Jigoshop_Options_Interface
 			$name = self::$_transformations[$name];
 		}
 
-		\Jigoshop\Integration::getOptions()->update($name, $value);
+		Integration::getOptions()->update($name, $value);
 	}
 
 	public function add_option($name, $value)
@@ -50,7 +51,7 @@ class Options implements \Jigoshop_Options_Interface
 		}
 //		echo '<pre>'; var_dump($name, \Integration::getOptions()->get($name, $default)); echo '</pre>';
 
-		return \Jigoshop\Integration::getOptions()->get($name, $default);
+		return Integration::getOptions()->get($name, $default);
 	}
 
 	public function get_option($name, $default = null)
@@ -64,7 +65,7 @@ class Options implements \Jigoshop_Options_Interface
 			$name = self::$_transformations[$name];
 		}
 
-		\Jigoshop\Integration::getOptions()->update($name, $value);
+		Integration::getOptions()->update($name, $value);
 	}
 
 	public function set_option($name, $value)
@@ -78,7 +79,7 @@ class Options implements \Jigoshop_Options_Interface
 			$name = self::$_transformations[$name];
 		}
 
-		return \Jigoshop\Integration::getOptions()->remove($name);
+		return Integration::getOptions()->remove($name);
 	}
 
 	public function delete_option($name)
@@ -92,7 +93,7 @@ class Options implements \Jigoshop_Options_Interface
 			$name = self::$_transformations[$name];
 		}
 
-		return \Jigoshop\Integration::getOptions()->exists($name);
+		return Integration::getOptions()->exists($name);
 	}
 
 	public function exists_option($name)
@@ -102,7 +103,7 @@ class Options implements \Jigoshop_Options_Interface
 
 	public function install_external_options_tab($tab, $options)
 	{
-		\Jigoshop\Integration::getAdminSettings()->addTab(new Tab($tab, $options));
+		Integration::getAdminSettings()->addTab(new Tab($tab, $options));
 	}
 
 	/**
@@ -133,11 +134,11 @@ class Options implements \Jigoshop_Options_Interface
 
 	public function get_current_options()
 	{
-		return \Jigoshop\Integration::getOptions()->getAll();
+		return Integration::getOptions()->getAll();
 	}
 
 	public function get_default_options()
 	{
-		return \Jigoshop\Integration::getOptions()->getDefaults();
+		return Integration::getOptions()->getDefaults();
 	}
 }

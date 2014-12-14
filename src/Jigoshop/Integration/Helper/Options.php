@@ -58,7 +58,7 @@ class Options
 	{
 		$result = array(
 			'title' => isset($option['name']) ? $option['name'] : false,
-			'name' => self::getName(isset($option['id']) ? $option['id'] : ''),
+			'name' => isset($option['id']) ? $option['id'] : '',
 			'description' => isset($option['desc']) ? $option['desc'] : false,
 			'tip' => isset($option['tip']) ? $option['tip'] : false,
 			'type' => self::getType(isset($option['type']) ? $option['type'] : 'text'),
@@ -88,11 +88,5 @@ class Options
 			default:
 				return $type;
 		}
-	}
-
-	private static function getName($name)
-	{
-		// TODO: Generate names properly
-		return $name;
 	}
 }
