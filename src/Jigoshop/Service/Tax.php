@@ -219,6 +219,27 @@ class Tax implements TaxServiceInterface
 	}
 
 	/**
+	 * @param $taxClass string Tax class to get label for.
+	 * @param Customer|null $customer Customer to calculate taxes for.
+	 * @return string Tax class rate
+	 * @throws Exception When tax class is not found.
+	 */
+	public function getRate($taxClass, $customer = null)
+	{
+		if (!in_array($taxClass, $this->taxClasses)) {
+			throw new Exception(sprintf(__('No tax class: %s', 'jigoshop'), $taxClass));
+		}
+
+		if ($customer === null) {
+			$customer = $this->customers->getCurrent();
+		}
+
+		$definition = $this->fetch($taxClass, $customer->getTaxAddress());
+
+		return $definition['rate'];
+	}
+
+	/**
 	 * Fetches and returns properly formatted list of tax rules.
 	 *
 	 * @return array List of rules.
