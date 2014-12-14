@@ -79,11 +79,51 @@ class Downloadable implements Type
 		$wp->addFilter('jigoshop\emails\order_item', array($this, 'emailLink'), 10, 3);
 //		$wp->addFilter('jigoshop\core\types\variable\subtypes', array($this, 'addVariableSubtype'), 10, 1); // TODO: Enable variable subtypes changing
 		$wp->addAction('template_redirect', array($this, 'downloadFile'), 10, 0);
+		$wp->addAction('jigoshop\order\before\\'.Order\Status::PROCESSING, array($this, 'updateProcessingStatus'));
+		$wp->addFilter('jigoshop\product\reduce_stock_status', array($this, 'reduceStockStatus'), 10, 2);
 
 		$wp->addAction('jigoshop\admin\product\assets', array($this, 'addAssets'), 10, 3);
 		$wp->addFilter('jigoshop\admin\product\menu', array($this, 'addProductMenu'));
 		$wp->addFilter('jigoshop\admin\product\tabs', array($this, 'addProductTab'), 10, 2);
 		$wp->addAction('jigoshop\admin\variation', array($this, 'addVariationFields'), 10, 2);
+	}
+
+	/**
+	 * @param $status string Status name.
+	 * @param $order Order Order to reduce stock for.
+	 * @return string Status to reduce stock for.
+	 */
+	public function reduceStockStatus($status, $order)
+	{
+		$downloadable = true;
+		foreach ($order->getItems() as $item) {
+			/** @var $item Order\Item */
+			$downloadable &= $item->getType() != Entity::TYPE;
+		}
+
+		if ($downloadable) {
+			return Order\Status::COMPLETED;
+		}
+
+		return $status;
+	}
+
+	/**
+	 * Checks whether order is consists of downloadable products only and changes PROCESSING into COMPLETED status.
+	 *
+	 * @param $order Order
+	 */
+	public function updateProcessingStatus($order)
+	{
+		$downloadable = true;
+		foreach ($order->getItems() as $item) {
+			/** @var $item Order\Item */
+			$downloadable &= $item->getType() != Entity::TYPE;
+		}
+
+		if ($downloadable) {
+			$order->setStatus(Order\Status::COMPLETED, __('Complete downloadable only order.', 'jigoshop'));
+		}
 	}
 
 	/**

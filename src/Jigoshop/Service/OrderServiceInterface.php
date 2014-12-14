@@ -69,4 +69,14 @@ interface OrderServiceInterface extends ServiceInterface
 	 * @param $meta Order\Item\Meta Meta to save.
 	 */
 	public function saveItemMeta($item, $meta);
+
+	/**
+	 * Adds a note to the order.
+	 *
+	 * @param $order \Jigoshop\Entity\Order The order.
+	 * @param $note string Note text.
+	 * @param $private bool Is note private?
+	 * @return int Note ID.
+	 */
+	public function addNote($order, $note, $private = true);
 }
