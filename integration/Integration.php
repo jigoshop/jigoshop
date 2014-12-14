@@ -23,6 +23,11 @@ class Integration
 	public function __construct(\JigoshopContainer $di)
 	{
 		self::$di = $di;
+
+		// Email product title support
+		add_filter('jigoshop\emails\product_title', function($value, $product, $item){
+			return apply_filters('jigoshop_order_product_title', $value, $product, $item);
+		}, 10, 3);
 	}
 
 	public static function initializeGateways()
@@ -65,11 +70,35 @@ class Integration
 	}
 
 	/**
+	 * @return \Jigoshop\Service\ShippingServiceInterface
+	 */
+	public static function getShippingService()
+	{
+		return self::$di->get('jigoshop.service.shipping');
+	}
+
+	/**
 	 * @return \Jigoshop\Service\OrderServiceInterface
 	 */
 	public static function getOrderService()
 	{
 		return self::$di->get('jigoshop.service.order');
+	}
+
+	/**
+	 * @return \Jigoshop\Service\TaxServiceInterface
+	 */
+	public static function getTaxService()
+	{
+		return self::$di->get('jigoshop.service.tax');
+	}
+
+	/**
+	 * @return \Jigoshop\Core\Emails
+	 */
+	public static function getEmails()
+	{
+		return self::$di->get('jigoshop.emails');
 	}
 
 	/**

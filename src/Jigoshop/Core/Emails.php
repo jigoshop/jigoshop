@@ -196,6 +196,16 @@ class Emails {
 	}
 
 	/**
+	 * @internal Do not use this method, it will disappear with integration layer!
+	 * @param $order Order The order.
+	 * @return string Items formatted for email.
+	 */
+	public function __formatItems($order)
+	{
+		return $this->formatItems($order);
+	}
+
+	/**
 	 * @param $order Order The order.
 	 * @return string Items formatted for email.
 	 */
@@ -220,7 +230,7 @@ class Emails {
 			/** @var $item Order\Item */
 			$itemResult = '';
 			$product = $item->getProduct();
-			$itemResult .= $item->getQuantity().' x '.html_entity_decode($this->wp->applyFilters('jigoshop_order_product_title', $item->getName(), $product, $item), ENT_QUOTES, 'UTF-8');
+			$itemResult .= $item->getQuantity().' x '.html_entity_decode($this->wp->applyFilters('jigoshop\emails\product_title', $item->getName(), $product, $item), ENT_QUOTES, 'UTF-8');
 
 			if ($product->getSku()) {
 				$itemResult .= ' (#'.$product->getSku().')';
