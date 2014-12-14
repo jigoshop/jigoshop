@@ -88,7 +88,7 @@ class Checkout implements PageInterface
 		$wp->addAction('wp_ajax_jigoshop_checkout_change_postcode', array($this, 'ajaxChangePostcode'));
 		$wp->addAction('wp_ajax_nopriv_jigoshop_checkout_change_postcode', array($this, 'ajaxChangePostcode'));
 
-		\Integration::initializeGateways();
+		\Jigoshop\Integration::initializeGateways();
 	}
 
 	/**

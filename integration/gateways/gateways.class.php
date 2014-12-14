@@ -1,4 +1,6 @@
 <?php
+use Jigoshop\Integration;
+
 /**
  * Jigoshop Payment Gateways class
  *
@@ -72,7 +74,7 @@ class jigoshop_payment_gateways
 	public static function payment_gateways()
 	{
 		return apply_filters('jigoshop_payment_gateways_installed', array_map(function($gateway){
-			/** @var $gateway Integration\Gateway */
+			/** @var $gateway Jigoshop\Integration\Gateway */
 			return $gateway->getGateway();
 		}, Integration::getPaymentService()->getAvailable()));
 	}
@@ -80,7 +82,7 @@ class jigoshop_payment_gateways
 	public static function get_available_payment_gateways()
 	{
 		return apply_filters('jigoshop_available_payment_gateways', array_map(function($gateway){
-			/** @var $gateway Integration\Gateway */
+			/** @var $gateway Jigoshop\Integration\Gateway */
 			return $gateway->getGateway();
 		}, Integration::getPaymentService()->getEnabled()));
 	}
@@ -92,7 +94,7 @@ class jigoshop_payment_gateways
 	public static function get_gateway($id)
 	{
 		try {
-			/** @var Integration\Gateway $gateway */
+			/** @var Jigoshop\Integration\Gateway $gateway */
 			$gateway = Integration::getPaymentService()->get($id);
 
 			return $gateway->getGateway();

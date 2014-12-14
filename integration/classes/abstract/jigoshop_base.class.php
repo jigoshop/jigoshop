@@ -13,8 +13,6 @@
  * @license             GNU General Public License v3
  */
 
-include_once(JIGOSHOP_DIR.'/integration/classes/jigoshop_options_interface.php');
-
 abstract class Jigoshop_Base
 {
 	private static $jigoshop_options;
@@ -28,7 +26,7 @@ abstract class Jigoshop_Base
 	{
 		// default options to Jigoshop_Options if they haven't been set
 		if (self::$jigoshop_options == null) {
-			self::$jigoshop_options = new Integration\Options();
+			self::$jigoshop_options = new Jigoshop\Integration\Options();
 		}
 
 		return self::$jigoshop_options;
@@ -43,7 +41,7 @@ abstract class Jigoshop_Base
 	 */
 	protected static function set_options(Jigoshop_Options_Interface $jigoshop_options)
 	{
-		self::$jigoshop_options = new Integration\Options($jigoshop_options);
+		self::$jigoshop_options = new Jigoshop\Integration\Options($jigoshop_options);
 	}
 
 	protected function add_action($tag, $function_to_add, $priority = 10, $accepted_args = 1)

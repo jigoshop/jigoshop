@@ -1,6 +1,6 @@
 <?php
 
-namespace Integration\Helper;
+namespace Jigoshop\Integration\Helper;
 
 class Options
 {

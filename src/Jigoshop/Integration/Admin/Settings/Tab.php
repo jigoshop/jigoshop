@@ -1,10 +1,10 @@
 <?php
 
-namespace Integration\Admin\Settings;
+namespace Jigoshop\Integration\Admin\Settings;
 
-use Integration\Helper\Options;
 use Jigoshop\Admin\Settings\TabInterface;
 use Jigoshop\Admin\Settings\ValidationException;
+use Jigoshop\Integration\Helper\Options;
 
 class Tab implements TabInterface
 {

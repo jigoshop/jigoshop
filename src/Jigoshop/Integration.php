@@ -1,18 +1,12 @@
 <?php
 
-use Monolog\Registry;
+namespace Jigoshop;
 
-require_once(JIGOSHOP_DIR.'/integration/classes/abstract/jigoshop_base.class.php');
-require_once(JIGOSHOP_DIR.'/integration/classes/jigoshop.class.php');
-require_once(JIGOSHOP_DIR.'/integration/classes/jigoshop_options_interface.php');
-require_once(JIGOSHOP_DIR.'/integration/classes/jigoshop_countries.class.php');
-require_once(JIGOSHOP_DIR.'/integration/classes/jigoshop_request_api.class.php');
-require_once(JIGOSHOP_DIR.'/integration/gateways/gateway.class.php');
-require_once(JIGOSHOP_DIR.'/integration/gateways/gateways.class.php');
+use JigoshopContainer;
+use Monolog\Registry;
 
 /**
  * Integration helper - stores useful services and classes for static access.
- *
  * WARNING: Do NOT use this class, it is useful only as transition for Jigoshop 1.x modules and will be removed in future!
  */
 class Integration
@@ -25,7 +19,7 @@ class Integration
 		self::$di = $di;
 
 		// Email product title support
-		add_filter('jigoshop\emails\product_title', function($value, $product, $item){
+		add_filter('jigoshop\emails\product_title', function ($value, $product, $item){
 			return apply_filters('jigoshop_order_product_title', $value, $product, $item);
 		}, 10, 3);
 	}

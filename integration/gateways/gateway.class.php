@@ -1,4 +1,5 @@
 <?php
+use Jigoshop\Integration;
 
 /**
  * Jigoshop Payment Gateway class

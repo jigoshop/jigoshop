@@ -1,6 +1,7 @@
 <?php
 
 use Jigoshop\Helper\Country;
+use Jigoshop\Integration;
 
 class jigoshop_countries extends \Jigoshop_Base {
 	public static $countries;

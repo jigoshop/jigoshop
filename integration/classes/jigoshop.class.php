@@ -1,4 +1,5 @@
 <?php
+use Jigoshop\Integration;
 
 /**
  * Contains the most low level methods & helpers in Jigoshop

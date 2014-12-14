@@ -1,5 +1,6 @@
 <?php
 
+use Jigoshop\Integration;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -20,11 +21,10 @@ class JigoshopInit
 	public function __construct()
 	{
 		require_once(JIGOSHOP_DIR.'/vendor/autoload.php');
-		require_once(JIGOSHOP_DIR.'/integration/Integration.php'); // TODO: Determine whether to load integration layer
+		require_once(JIGOSHOP_DIR.'/integration/autoload.php'); // TODO: Determine whether to load integration layer
 		$loader = new \Symfony\Component\ClassLoader\ClassLoader();
 		$loader->addPrefix('WPAL', JIGOSHOP_DIR.'/vendor/megawebmaster/wpal');
 		$loader->addPrefix('Jigoshop', JIGOSHOP_DIR.'/src');
-		$loader->addPrefix('Integration', JIGOSHOP_DIR.'/integration');
 		$loader->register();
 
 		// Prepare logger

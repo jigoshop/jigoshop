@@ -1,6 +1,6 @@
 <?php
 
-namespace Integration;
+namespace Jigoshop\Integration;
 
 use Jigoshop\Admin\Settings\PaymentTab;
 use Jigoshop\Entity\Order;
@@ -17,7 +17,7 @@ class Gateway implements Method
 	{
 		$this->gateway = new $gateway();
 
-		$settings = \Integration::getOptions();
+		$settings = \Jigoshop\Integration::getOptions();
 		$source = $this->gateway->__get_default_options();
 		$options = array();
 

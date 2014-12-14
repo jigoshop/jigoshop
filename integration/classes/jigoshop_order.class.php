@@ -2,6 +2,7 @@
 use Jigoshop\Entity\Customer\CompanyAddress;
 use Jigoshop\Entity\Order;
 use Jigoshop\Helper\Country;
+use Jigoshop\Integration;
 
 /**
  * @property int id
@@ -85,7 +86,7 @@ class jigoshop_order extends Jigoshop_Base
 			return false;
 		}
 
-		$service = \Integration::getOrderService();
+		$service = Jigoshop\Integration::getOrderService();
 		$this->_order = $service->find($id);
 
 		if ($this->_order->getId() !== null) {

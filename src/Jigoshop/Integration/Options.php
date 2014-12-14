@@ -1,8 +1,8 @@
 <?php
 
-namespace Integration;
+namespace Jigoshop\Integration;
 
-use Integration\Admin\Settings\Tab;
+use Jigoshop\Integration\Admin\Settings\Tab;
 
 class Options implements \Jigoshop_Options_Interface
 {
@@ -34,7 +34,7 @@ class Options implements \Jigoshop_Options_Interface
 			$name = self::$_transformations[$name];
 		}
 
-		\Integration::getOptions()->update($name, $value);
+		\Jigoshop\Integration::getOptions()->update($name, $value);
 	}
 
 	public function add_option($name, $value)
@@ -50,7 +50,7 @@ class Options implements \Jigoshop_Options_Interface
 		}
 //		echo '<pre>'; var_dump($name, \Integration::getOptions()->get($name, $default)); echo '</pre>';
 
-		return \Integration::getOptions()->get($name, $default);
+		return \Jigoshop\Integration::getOptions()->get($name, $default);
 	}
 
 	public function get_option($name, $default = null)
@@ -64,7 +64,7 @@ class Options implements \Jigoshop_Options_Interface
 			$name = self::$_transformations[$name];
 		}
 
-		\Integration::getOptions()->update($name, $value);
+		\Jigoshop\Integration::getOptions()->update($name, $value);
 	}
 
 	public function set_option($name, $value)
@@ -78,7 +78,7 @@ class Options implements \Jigoshop_Options_Interface
 			$name = self::$_transformations[$name];
 		}
 
-		return \Integration::getOptions()->remove($name);
+		return \Jigoshop\Integration::getOptions()->remove($name);
 	}
 
 	public function delete_option($name)
@@ -92,7 +92,7 @@ class Options implements \Jigoshop_Options_Interface
 			$name = self::$_transformations[$name];
 		}
 
-		return \Integration::getOptions()->exists($name);
+		return \Jigoshop\Integration::getOptions()->exists($name);
 	}
 
 	public function exists_option($name)
@@ -102,7 +102,7 @@ class Options implements \Jigoshop_Options_Interface
 
 	public function install_external_options_tab($tab, $options)
 	{
-		\Integration::getAdminSettings()->addTab(new Tab($tab, $options));
+		\Jigoshop\Integration::getAdminSettings()->addTab(new Tab($tab, $options));
 	}
 
 	/**
@@ -133,11 +133,11 @@ class Options implements \Jigoshop_Options_Interface
 
 	public function get_current_options()
 	{
-		return \Integration::getOptions()->getAll();
+		return \Jigoshop\Integration::getOptions()->getAll();
 	}
 
 	public function get_default_options()
 	{
-		return \Integration::getOptions()->getDefaults();
+		return \Jigoshop\Integration::getOptions()->getDefaults();
 	}
 }
