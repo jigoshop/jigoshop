@@ -517,6 +517,8 @@ class Coupon implements EntityInterface
 
 				return $discount;
 		}
+
+		return 0;
 	}
 
 	/**

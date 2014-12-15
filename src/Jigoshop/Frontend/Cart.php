@@ -252,6 +252,20 @@ class Cart implements OrderInterface
 	}
 
 	/**
+	 * Removes all items, shipping method and associated taxes from the order.
+	 */
+	public function removeItems()
+	{
+		$this->removeShippingMethod();
+		$this->items = array();
+		$this->productSubtotal = 0.0;
+		$this->subtotal = 0.0;
+		$this->total = 0.0;
+		$this->tax = array_map(function() { return 0.0; }, $this->tax);
+		$this->totalTax = null;
+	}
+
+	/**
 	 * Updates quantity of selected item by it's key.
 	 *
 	 * @param $key string Item key in the cart.
@@ -400,6 +414,14 @@ class Cart implements OrderInterface
 	public function getCoupons()
 	{
 		return array_map(function($item){ return $item['object']; }, $this->coupons);
+	}
+
+	/**
+	 * @return bool Whether cart has coupons applied.
+	 */
+	public function hasCoupons()
+	{
+		return !empty($this->coupons);
 	}
 
 	/**

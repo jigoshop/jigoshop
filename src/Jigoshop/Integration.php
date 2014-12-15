@@ -109,6 +109,14 @@ class Integration
 	}
 
 	/**
+	 * @return \Jigoshop\Service\CouponServiceInterface
+	 */
+	public static function getCouponService()
+	{
+		return self::$di->get('jigoshop.service.coupon');
+	}
+
+	/**
 	 * @return \Jigoshop\Core\Emails
 	 */
 	public static function getEmails()
@@ -138,6 +146,14 @@ class Integration
 	public static function getOptions()
 	{
 		return self::$di->get('jigoshop.options');
+	}
+
+	/**
+	 * @return \Jigoshop\Core\Pages
+	 */
+	public static function getPages()
+	{
+		return self::$di->get('jigoshop.pages');
 	}
 
 	/**
