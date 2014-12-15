@@ -21,7 +21,7 @@ class JigoshopInit
 	public function __construct()
 	{
 		require_once(JIGOSHOP_DIR.'/vendor/autoload.php');
-		require_once(JIGOSHOP_DIR.'/integration/autoload.php'); // TODO: Determine whether to load integration layer
+		require_once(JIGOSHOP_DIR.'/integration/autoload.php');
 		$loader = new \Symfony\Component\ClassLoader\ClassLoader();
 		$loader->addPrefix('WPAL', JIGOSHOP_DIR.'/vendor/megawebmaster/wpal');
 		$loader->addPrefix('Jigoshop', JIGOSHOP_DIR.'/src');
