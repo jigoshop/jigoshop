@@ -8,6 +8,7 @@ use Jigoshop\Entity\EntityInterface;
 use Jigoshop\Entity\Order;
 use Jigoshop\Exception;
 use Jigoshop\Factory\Customer as Factory;
+use Jigoshop\Helper\Country;
 use Monolog\Registry;
 use WPAL\Wordpress;
 
@@ -108,6 +109,24 @@ class Customer implements CustomerServiceInterface
 		foreach ($fields as $field => $value) {
 			$this->wp->updateUserMeta($object->getId(), $field, $value);
 		}
+	}
+
+	/**
+	 * Checks whether provided customer needs to be taxed.
+	 *
+	 * @param Entity $customer Customer to check.
+	 * @return boolean Whether customer needs to be taxed.
+	 */
+	public function isTaxable(Entity $customer)
+	{
+		$country = $this->options->get('general.country');
+		$customerCountry = $customer->getTaxAddress()->getCountry();
+
+		if(Country::isEU($country)){
+			return Country::isEU($customerCountry);
+		}
+
+		return ($country == $customerCountry);
 	}
 
 	/**

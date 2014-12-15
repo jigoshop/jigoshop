@@ -88,9 +88,6 @@ class Checkout implements PageInterface
 		$wp->addAction('wp_ajax_nopriv_jigoshop_checkout_change_state', array($this, 'ajaxChangeState'));
 		$wp->addAction('wp_ajax_jigoshop_checkout_change_postcode', array($this, 'ajaxChangePostcode'));
 		$wp->addAction('wp_ajax_nopriv_jigoshop_checkout_change_postcode', array($this, 'ajaxChangePostcode'));
-
-		Integration::initializeGateways();
-		Integration::initializeShipping();
 	}
 
 	/**
@@ -670,7 +667,7 @@ class Checkout implements PageInterface
 	 */
 	private function isAllowedToEnterCheckout()
 	{
-		return $this->options->get('shopping.guest_purchases') && $this->wp->isUserLoggedIn() || $this->options->get('shopping.show_login_form')
+		return $this->options->get('shopping.guest_purchases') || $this->wp->isUserLoggedIn() || $this->options->get('shopping.show_login_form')
 			|| $this->options->get('shopping.allow_registration');
 	}
 

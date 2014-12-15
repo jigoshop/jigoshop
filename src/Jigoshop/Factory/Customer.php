@@ -40,6 +40,8 @@ class Customer implements EntityFactoryInterface
 	 */
 	public function fetch($user)
 	{
+		$state = array();
+
 		if ($user->ID == 0) {
 			$customer = new Entity\Guest();
 
@@ -48,8 +50,6 @@ class Customer implements EntityFactoryInterface
 			}
 		} else {
 			$customer = new Entity();
-
-			$state = array();
 			$meta = $this->wp->getUserMeta($user->ID);
 
 			if (is_array($meta)) {
@@ -65,8 +65,6 @@ class Customer implements EntityFactoryInterface
 
 			$customer->restoreState($state);
 		}
-
-//		echo '<pre>'; var_dump($customer); exit;
 
 		return $this->wp->applyFilters('jigoshop\find\customer', $customer, $state);
 	}

@@ -37,6 +37,8 @@ class PageResolver
 
 	public function getPage(Container $container)
 	{
+		$this->wp->doAction('jigoshop\admin\page_resolver\before');
+
 		if ($this->isProductsList()) {
 			return $container->get('jigoshop.admin.page.products');
 		}

@@ -6,6 +6,7 @@ use Jigoshop\Core\Options;
 use Jigoshop\Core\Pages;
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\Product;
+use Jigoshop\Integration;
 use WPAL\Wordpress;
 
 class Interceptor

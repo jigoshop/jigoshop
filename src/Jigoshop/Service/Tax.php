@@ -133,9 +133,10 @@ class Tax implements TaxServiceInterface
 		$definition = $this->fetch($taxClass, $customer->getTaxAddress());
 
 		// TODO: Support for compound taxes
-		if ($this->taxIncludedInPrice) {
-			return $price * (1 - 1 / (100 + $definition['rate']) * 100);
-		}
+		// TODO: Support for taxes included in price
+//		if ($this->taxIncludedInPrice) {
+//			return $price * (1 - 1 / (100 + $definition['rate']) * 100);
+//		}
 
 		return $definition['rate'] * $price / 100;
 	}

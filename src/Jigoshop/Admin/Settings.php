@@ -174,7 +174,7 @@ class Settings implements PageInterface
 
 	protected function validateField(array $field)
 	{
-		if($field['id'] === null){
+		if(!isset($field['id']) || $field['id'] === null){
 			$field['id'] = Forms::prepareIdFromName($field['name']);
 		}
 		$field['label_for'] = $field['id'];

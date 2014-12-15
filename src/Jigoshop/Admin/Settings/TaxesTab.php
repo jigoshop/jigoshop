@@ -130,6 +130,7 @@ class TaxesTab implements TabInterface
 				'id' => 'classes',
 				'fields' => array(
 					array(
+						'title' => '',
 						'name' => '[classes]',
 						'type' => 'user_defined',
 						'display' => array($this, 'displayClasses'),
@@ -141,6 +142,7 @@ class TaxesTab implements TabInterface
 				'id' => 'rules',
 				'fields' => array(
 					array(
+						'title' => '',
 						'name' => '[rules]',
 						'type' => 'user_defined',
 						'display' => array($this, 'displayRules'),

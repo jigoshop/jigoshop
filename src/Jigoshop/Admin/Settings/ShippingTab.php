@@ -26,8 +26,6 @@ class ShippingTab implements TabInterface
 	{
 		$this->options = $options->get(self::SLUG);
 		$this->shippingService = $shippingService;
-
-		Integration::initializeShipping();
 	}
 
 	/**

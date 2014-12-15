@@ -45,6 +45,8 @@ class PageResolver
 			return null;
 		}
 
+		$this->wp->doAction('jigoshop\page_resolver\before');
+
 		if ($this->pages->isCheckoutThankYou()) {
 			return $container->get('jigoshop.page.checkout.thank_you');
 		}

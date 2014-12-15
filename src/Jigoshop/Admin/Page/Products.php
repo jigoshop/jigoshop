@@ -190,7 +190,7 @@ class Products
 				'count' => $this->getTypeCount($type),
 			);
 		}
-		$currentType = $_GET['product_type'];
+		$currentType = isset($_GET['product_type']) ? $_GET['product_type'] : '';
 
 		Render::output('admin/products/typeFilter', array(
 			'types' => $types,

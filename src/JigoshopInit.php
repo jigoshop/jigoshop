@@ -106,6 +106,9 @@ class JigoshopInit
 		// Configure container before initializing Jigoshop
 		do_action('jigoshop\init', $this->container);
 
+		// Initialize integration layer
+		new Integration($this->container); // TODO: Determine whether to load integration layer
+
 		// Load query interceptor before Jigoshop
 		$interceptor = $this->container->get('jigoshop.query.interceptor');
 
@@ -123,6 +126,7 @@ class JigoshopInit
 		}
 
 		$interceptor->run();
+
 		/** @var \Jigoshop\Core\Options $options */
 		$options = $this->container->get('jigoshop.options');
 		/** @var \WPAL\Wordpress $wp */
@@ -141,9 +145,6 @@ class JigoshopInit
 		$this->container->get('jigoshop.roles');
 		// Initialize Cron
 		$this->container->get('jigoshop.cron');
-
-		// Initialize integration layer
-		new Integration($this->container); // TODO: Determine whether to load integration layer
 
 		if (is_admin()) {
 			/** @var \Jigoshop\Admin\PageResolver $resolver */

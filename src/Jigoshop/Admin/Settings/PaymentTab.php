@@ -25,8 +25,6 @@ class PaymentTab implements TabInterface
 	{
 		$this->options = $options->get(self::SLUG);
 		$this->paymentService = $paymentService;
-
-		Integration::initializeGateways();
 	}
 
 	/**

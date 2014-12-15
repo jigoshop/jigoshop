@@ -13,6 +13,7 @@ class Integration
 {
 	/** @var JigoshopContainer */
 	private static $di;
+	private static $shippingRate;
 
 	public function __construct(\JigoshopContainer $di)
 	{
@@ -22,6 +23,16 @@ class Integration
 		add_filter('jigoshop\emails\product_title', function ($value, $product, $item){
 			return apply_filters('jigoshop_order_product_title', $value, $product, $item);
 		}, 10, 3);
+
+
+		add_action('jigoshop\service\cart', function(){
+			Integration::initializeShipping();
+		});
+		add_action('jigoshop\page_resolver\before', function(){
+			if (Integration::getPages()->isCheckout()) {
+				Integration::initializeGateways();
+			}
+		});
 	}
 
 	public static function initializeGateways()
@@ -66,6 +77,22 @@ class Integration
 		}
 
 //		add_action('jigoshop\checkout\set_shipping\before', '\Integration::processGateway');
+	}
+
+	/**
+	 * @return int
+	 */
+	public static function getShippingRate()
+	{
+		return self::$shippingRate;
+	}
+
+	/**
+	 * @param int $shippingRate
+	 */
+	public static function setShippingRate($shippingRate)
+	{
+		self::$shippingRate = $shippingRate;
 	}
 
 	/**
@@ -114,6 +141,14 @@ class Integration
 	public static function getCouponService()
 	{
 		return self::$di->get('jigoshop.service.coupon');
+	}
+
+	/**
+	 * @return \Jigoshop\Service\CustomerServiceInterface
+	 */
+	public static function getCustomerService()
+	{
+		return self::$di->get('jigoshop.service.customer');
 	}
 
 	/**

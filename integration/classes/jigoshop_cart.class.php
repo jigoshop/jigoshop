@@ -68,74 +68,59 @@ class jigoshop_cart
 
 		self::$total = $cart->getTotal();
 		self::$shipping_total = $cart->getShippingPrice();
-		self::$shipping_tax_total = array_reduce($cart->getShippingTax(), 'sum');
+		self::$shipping_tax_total = array_sum($cart->getShippingTax());
 		self::$discount_total = $cart->getDiscount();
 		self::$subtotal = $cart->getSubtotal();
 		self::$subtotal_ex_tax = $cart->getSubtotal();
 		self::$applied_coupons = $cart->getCoupons();
-		self::$cart_contents_total_ex_tax = array_reduce(
-			array_map(
-				function($item){
-					/** @var $item \Jigoshop\Entity\Order\Item */
-					return $item->getCost();
-				},
-				$cart->getItems()
-			),
-			'sum'
-		);
+		self::$cart_contents_total_ex_tax = array_sum(array_map(
+			function($item){
+				/** @var $item \Jigoshop\Entity\Order\Item */
+				return $item->getCost();
+			},
+			$cart->getItems()
+		));
 		self::$cart_contents_total = self::$cart_contents_total_ex_tax + $cart->getTotalTax();
-		self::$cart_contents_count = array_reduce(
-			array_map(
+		self::$cart_contents_count = array_sum(array_map(
+			function($item){
+				/** @var $item \Jigoshop\Entity\Order\Item */
+				return $item->getQuantity();
+			},
+			$cart->getItems()
+		));
+		self::$cart_contents_weight = array_sum(array_map(
+			function($item){
+				/** @var $item \Jigoshop\Entity\Order\Item */
+				return $item->getQuantity() * $item->getProduct()->getSize()->getWeight();
+			},
+			$cart->getItems()
+		));
+		self::$cart_dl_count = array_sum(array_map(
+			function($item){
+				/** @var $item \Jigoshop\Entity\Order\Item */
+				return $item->getQuantity();
+			},
+			array_filter(
+				$cart->getItems(),
 				function($item){
 					/** @var $item \Jigoshop\Entity\Order\Item */
-					return $item->getQuantity();
-				},
-				$cart->getItems()
-			),
-			'sum'
-		);
-		self::$cart_contents_weight = array_reduce(
-			array_map(
+					return $item->getType() == \Jigoshop\Entity\Product\Downloadable::TYPE;
+				}
+			)
+		));
+		self::$cart_contents_total_ex_dl = array_sum(array_map(
+			function($item){
+				/** @var $item \Jigoshop\Entity\Order\Item */
+				return $item->getCost();
+			},
+			array_filter(
+				$cart->getItems(),
 				function($item){
 					/** @var $item \Jigoshop\Entity\Order\Item */
-					return $item->getQuantity() * $item->getProduct()->getSize()->getWeight();
-				},
-				$cart->getItems()
-			),
-			'sum'
-		);
-		self::$cart_dl_count = array_reduce(
-			array_map(
-				function($item){
-					/** @var $item \Jigoshop\Entity\Order\Item */
-					return $item->getQuantity();
-				},
-				array_filter(
-					$cart->getItems(),
-					function($item){
-						/** @var $item \Jigoshop\Entity\Order\Item */
-						return $item->getType() == \Jigoshop\Entity\Product\Downloadable::TYPE;
-					}
-				)
-			),
-			'sum'
-		);
-		self::$cart_contents_total_ex_dl = array_reduce(
-			array_map(
-				function($item){
-					/** @var $item \Jigoshop\Entity\Order\Item */
-					return $item->getCost();
-				},
-				array_filter(
-					$cart->getItems(),
-					function($item){
-						/** @var $item \Jigoshop\Entity\Order\Item */
-						return $item->getType() != \Jigoshop\Entity\Product\Downloadable::TYPE;
-					}
-				)
-			),
-			'sum'
-		);
+					return $item->getType() != \Jigoshop\Entity\Product\Downloadable::TYPE;
+				}
+			)
+		));
 	}
 
 	private static function reset_totals()

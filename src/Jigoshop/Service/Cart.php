@@ -25,6 +25,8 @@ class Cart implements CartServiceInterface, ContainerAware
 	/** @var Container */
 	private $di;
 
+	private $carts = array();
+
 	public function __construct(Wordpress $wp, Options $options, TaxServiceInterface $taxService, CustomerServiceInterface $customerService)
 	{
 		$this->wp = $wp;
@@ -36,6 +38,7 @@ class Cart implements CartServiceInterface, ContainerAware
 		}
 
 		$this->currentUserCartId = $this->generateCartId();
+		$this->wp->doAction('jigoshop\service\cart');
 	}
 
 	/**
@@ -57,21 +60,25 @@ class Cart implements CartServiceInterface, ContainerAware
 	 */
 	public function get($id)
 	{
-		// TODO: Support for transients?
-		$data = array();
-		if (isset($_SESSION[self::CART][$id])) {
-			$data = unserialize($_SESSION[self::CART][$id]);
+		if (!isset($this->carts[$id])) {
+			// TODO: Support for transients?
+			$data = array();
+			if (isset($_SESSION[self::CART][$id])) {
+				$data = unserialize($_SESSION[self::CART][$id]);
+			}
+
+			/** @var \Jigoshop\Frontend\Cart $cart */
+			$cart = $this->di->get('jigoshop.cart');
+			$cart->initializeFor($this->getCartIdForCurrentUser(), $data);
+
+			if ($cart->getCustomer() === null) {
+				$cart->setCustomer($this->customerService->getCurrent());
+			}
+
+			$this->carts[$id] = $cart;
 		}
 
-		/** @var \Jigoshop\Frontend\Cart $cart */
-		$cart = $this->di->get('jigoshop.cart');
-		$cart->initializeFor($this->getCartIdForCurrentUser(), $data);
-
-		if ($cart->getCustomer() === null) {
-			$cart->setCustomer($this->customerService->getCurrent());
-		}
-
-		return $cart;
+		return $this->carts[$id];
 	}
 
 	/**

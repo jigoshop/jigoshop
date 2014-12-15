@@ -125,13 +125,18 @@ class Options
 			'automatic_complete' => false,
 			'automatic_reset' => false,
 			'force_ssl' => false,
-			'integrations' => array(
+			'integration' => array(
 				'share_this' => '',
 				'google_analytics' => '',
 			),
 			'cache' => 'simple',
 			'pages' => array(
 				'terms' => 0,
+				'shop' => 0,
+				'cart' => 0,
+				'checkout' => 0,
+				'thanks' => 0,
+				'account' => 0,
 			),
 		),
 		'permalinks' => array(

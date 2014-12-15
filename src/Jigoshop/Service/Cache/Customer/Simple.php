@@ -2,6 +2,7 @@
 
 namespace Jigoshop\Service\Cache\Customer;
 
+use Jigoshop\Entity\Customer;
 use Jigoshop\Entity\EntityInterface;
 use Jigoshop\Entity\Order;
 use Jigoshop\Service\CustomerServiceInterface;
@@ -95,5 +96,16 @@ class Simple implements CustomerServiceInterface
 	public function findByQuery($query)
 	{
 		return $this->service->findByQuery($query);
+	}
+
+	/**
+	 * Checks whether provided customer needs to be taxed.
+	 *
+	 * @param Customer $customer Customer to check.
+	 * @return boolean Whether customer needs to be taxed.
+	 */
+	public function isTaxable(Customer $customer)
+	{
+		return $this->service->isTaxable($customer);
 	}
 }

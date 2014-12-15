@@ -93,8 +93,6 @@ class Cart implements PageInterface
 		$wp->addAction('wp_ajax_nopriv_jigoshop_cart_change_state', array($this, 'ajaxChangeState'));
 		$wp->addAction('wp_ajax_jigoshop_cart_change_postcode', array($this, 'ajaxChangePostcode'));
 		$wp->addAction('wp_ajax_nopriv_jigoshop_cart_change_postcode', array($this, 'ajaxChangePostcode'));
-
-		Integration::initializeShipping();
 	}
 
 	/**
@@ -160,6 +158,7 @@ class Cart implements PageInterface
 	private function getAjaxCartResponse(\Jigoshop\Frontend\Cart $cart)
 	{
 		$tax = array();
+		// TODO: There are some problems with taxes and integration layer
 		foreach ($cart->getTax() as $class => $value) {
 			$tax[$class] = array(
 				'label' => $cart->getTaxLabel($class),

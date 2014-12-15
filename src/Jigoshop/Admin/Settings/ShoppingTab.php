@@ -225,6 +225,7 @@ class ShoppingTab implements TabInterface
 		$settings['guest_purchases'] = $settings['guest_purchases'] == 'on';
 		$settings['show_login_form'] = $settings['show_login_form'] == 'on';
 		$settings['allow_registration'] = $settings['allow_registration'] == 'on';
+		$settings['login_for_downloads'] = $settings['login_for_downloads'] == 'on';
 
 		$settings['validate_zip'] = $settings['validate_zip'] == 'on';
 		$settings['restrict_selling_locations'] = $settings['restrict_selling_locations'] == 'on';

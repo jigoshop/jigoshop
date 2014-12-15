@@ -42,4 +42,12 @@ interface CustomerServiceInterface extends ServiceInterface
 	 * @throws Exception
 	 */
 	public function save(EntityInterface $object);
+
+	/**
+	 * Checks whether provided customer needs to be taxed.
+	 *
+	 * @param Customer $customer Customer to check.
+	 * @return boolean Whether customer needs to be taxed.
+	 */
+	public function isTaxable(Customer $customer);
 }
