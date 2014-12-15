@@ -19,6 +19,7 @@ use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
 use Jigoshop\Helper\Validation;
+use Jigoshop\Integration;
 use Jigoshop\Service\CartServiceInterface;
 use Jigoshop\Service\CustomerServiceInterface;
 use Jigoshop\Service\OrderServiceInterface;
@@ -88,7 +89,8 @@ class Checkout implements PageInterface
 		$wp->addAction('wp_ajax_jigoshop_checkout_change_postcode', array($this, 'ajaxChangePostcode'));
 		$wp->addAction('wp_ajax_nopriv_jigoshop_checkout_change_postcode', array($this, 'ajaxChangePostcode'));
 
-		\Jigoshop\Integration::initializeGateways();
+		Integration::initializeGateways();
+		Integration::initializeShipping();
 	}
 
 	/**

@@ -85,6 +85,8 @@ class Options
 			case 'text':
 			case 'longtext':
 				return 'text';
+			case 'radio':
+				return 'select';
 			default:
 				return $type;
 		}

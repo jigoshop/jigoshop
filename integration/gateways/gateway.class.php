@@ -59,11 +59,7 @@ abstract class jigoshop_payment_gateway
 
 	public function is_available()
 	{
-		if ($this->enabled == 'yes') {
-			return true;
-		}
-
-		return false;
+		return $this->enabled;
 	}
 
 	public function set_current()

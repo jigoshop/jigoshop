@@ -55,6 +55,19 @@ class Integration
 		}
 	}
 
+	public static function initializeShipping()
+	{
+		Registry::getInstance('jigoshop')->addDebug('Initializing Jigoshop 1.x shipping methods');
+		$service = self::getShippingService();
+		$methods = apply_filters('jigoshop_shipping_methods', array());
+
+		foreach ($methods as $method) {
+			$service->addMethod(new Integration\Shipping($method));
+		}
+
+//		add_action('jigoshop\checkout\set_shipping\before', '\Integration::processGateway');
+	}
+
 	/**
 	 * @return \Jigoshop\Service\PaymentServiceInterface
 	 */

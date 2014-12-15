@@ -15,6 +15,7 @@ use Jigoshop\Helper\Api;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
+use Jigoshop\Integration;
 use Jigoshop\Service\OrderServiceInterface;
 use Jigoshop\Service\PaymentServiceInterface;
 use Jigoshop\Service\TaxServiceInterface;
@@ -50,7 +51,7 @@ class Pay implements PageInterface
 		$scripts->add('jigoshop.checkout.pay', JIGOSHOP_URL.'/assets/js/shop/checkout/pay.js', array('jquery'));
 		$wp->doAction('jigoshop\checkout\pay\assets', $wp, $styles, $scripts);
 
-		\Jigoshop\Integration::initializeGateways();
+		Integration::initializeGateways();
 	}
 
 	public function action()

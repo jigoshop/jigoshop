@@ -16,6 +16,7 @@ use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
 use Jigoshop\Helper\Validation;
+use Jigoshop\Integration;
 use Jigoshop\Service\CartServiceInterface;
 use Jigoshop\Service\CouponServiceInterface;
 use Jigoshop\Service\CustomerServiceInterface;
@@ -92,6 +93,8 @@ class Cart implements PageInterface
 		$wp->addAction('wp_ajax_nopriv_jigoshop_cart_change_state', array($this, 'ajaxChangeState'));
 		$wp->addAction('wp_ajax_jigoshop_cart_change_postcode', array($this, 'ajaxChangePostcode'));
 		$wp->addAction('wp_ajax_nopriv_jigoshop_cart_change_postcode', array($this, 'ajaxChangePostcode'));
+
+		Integration::initializeShipping();
 	}
 
 	/**

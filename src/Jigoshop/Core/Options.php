@@ -50,6 +50,7 @@ class Options
 			'guest_purchases' => true,
 			'show_login_form' => false,
 			'allow_registration' => false,
+			'login_for_downloads' => true,
 			'validate_zip' => true,
 			'restrict_selling_locations' => false,
 			'selling_locations' => array(),
