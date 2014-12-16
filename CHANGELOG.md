@@ -5,6 +5,7 @@
     * Fix: Download links now shows only in processing or completed order email notifications.
     * Fix: Reset pending Orders and Complete processing Orders will no longer send emails.
     * Fix: Video played via prettyPhoto now loads properly.
+    * Fix: shipping_dropdown.php and payment_methods.php now can be replaced in theme files.
 * 1.14 - 2014-12-11:
     * New: Used Coupon column on Orders page.
     * New: Email variables.
