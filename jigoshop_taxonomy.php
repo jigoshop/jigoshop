@@ -27,12 +27,12 @@ function jigoshop_post_type()
 	$category_base = ($options->get('jigoshop_prepend_shop_page_to_urls') == 'yes') ? trailingslashit($base_slug) : '';
 	$category_slug = ($options->get('jigoshop_product_category_slug')) ? $options->get('jigoshop_product_category_slug') : _x('product-category', 'slug', 'jigoshop');
 	$tag_slug = ($options->get('jigoshop_product_tag_slug')) ? $options->get('jigoshop_product_tag_slug') : _x('product-tag', 'slug', 'jigoshop');
-	$product_base .= ($options->get('jigoshop_product_slug')) ? $options->get('jigoshop_product_slug') : _x('product', 'slug', 'jigoshop');
-	if ($options->get('jigoshop_prepend_category_to_product') == 'yes') {
-		$product_base = '%product_cat%';
-	}
+	$product_base = ($options->get('jigoshop_product_slug')) ? $options->get('jigoshop_product_slug') : _x('product', 'slug', 'jigoshop');
 	if ($options->get('jigoshop_prepend_shop_page_to_product') == 'yes') {
 		$product_base = trailingslashit($base_slug) . $product_base;
+	}
+	if ($options->get('jigoshop_prepend_category_to_product') == 'yes') {
+		$product_base = $category_base . '%product_cat%';
 	}
 
 	register_post_type("product",
