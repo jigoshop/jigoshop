@@ -415,7 +415,7 @@ class jigoshop_order extends Jigoshop_Base
 						}
 						if ($this->get_downloadable_file_url($product_id)) {
 							$return .= PHP_EOL.__('Your download link for this file is:', 'jigoshop');
-							$return .= PHP_EOL.' - '.$this->get_downloadable_file_url($product_id).'';
+							$return .= PHP_EOL.' - '.apply_filters('downloadable_file_url', $this->get_downloadable_file_url($product_id), $_product, $this).'';
 						}
 					}
 				}
@@ -448,9 +448,7 @@ class jigoshop_order extends Jigoshop_Base
 				$user_email = $user_info->user_email;
 			}
 		}
-		$link = add_query_arg('download_file', $item_id, add_query_arg('order', $this->order_key, add_query_arg('email', $user_email, home_url())));
-		$link = apply_filters('downloadable_file_url', '<a href="' .$link. '">' .$link. '</a>', $item_id, $link, $this->id);
-		return $link;
+		return add_query_arg('download_file', $item_id, add_query_arg('order', $this->order_key, add_query_arg('email', $user_email, home_url())));
 	}
 
 	/**  Generates a URL so that a customer can checkout/pay for their (unpaid - pending) order via a link */

@@ -76,6 +76,10 @@ add_action('jigoshop_product_on_backorder_notification', function ($order_id, $p
 	}
 }, 1, 3);
 
+add_filter('downloadable_file_url', function($link, $product, $order){
+	return '<a href="' .$link. '">' .$link. '</a>';
+}, 10, 3);
+
 function get_order_email_arguments($order_id)
 {
 	$options = Jigoshop_Base::get_options();
