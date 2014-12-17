@@ -493,11 +493,6 @@ class Cart implements OrderInterface
 		$totalPrice = $this->wp->applyFilters('jigoshop\order\shipping_price', $this->shippingPrice, $method, $this);
 		$this->total += $totalPrice;
 		$this->shippingTax = $this->wp->applyFilters('jigoshop\order\shipping_tax', $this->shippingTax, $method, $this);
-//		$this->total += $this->shippingPrice + $taxService->calculateShipping($method, $this->shippingPrice, $this->customer);
-//		foreach ($method->getTaxClasses() as $class) {
-//			$this->shippingTax[$class] = $taxService->getShipping($method, $this->shippingPrice, $class, $this->customer);
-//			$this->tax[$class] += $this->shippingTax[$class];
-//		}
 	}
 
 	/**
@@ -510,9 +505,6 @@ class Cart implements OrderInterface
 
 		$this->shippingMethod = null;
 		$this->shippingPrice = 0.0;
-		foreach ($this->shippingTax as $class => $value) {
-			$this->tax[$class] -= $value;
-		}
 		$this->shippingTax = array_map(function() { return 0.0; }, $this->shippingTax);
 	}
 
