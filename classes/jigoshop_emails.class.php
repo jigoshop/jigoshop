@@ -3,6 +3,23 @@
 class jigoshop_emails extends Jigoshop_Base
 {
 	private static $mail_list = array();
+	private static $call_next_action = true;
+
+	public static function suppress_next_action()
+	{
+		self::$call_next_action = false;
+	}
+
+	private static function can_call_next_action()
+	{
+		if(self::$call_next_action == false){
+			self::$call_next_action = true;
+
+			return false;
+		}
+
+		return true;
+	}
 
 	public static function get_mail_list()
 	{
@@ -36,10 +53,15 @@ class jigoshop_emails extends Jigoshop_Base
 
 	public static function send_mail($hook, array $args = array(), $to)
 	{
+		if(self::can_call_next_action() == false){
+			return;
+		}
+
 		$allowed_templates = self::get_options()->get('jigoshop_emails');
 		if (!$allowed_templates[$hook]) {
 			return;
 		}
+
 		foreach ($allowed_templates[$hook] as $post_id) {
 			$post = get_post($post_id);
 			if (!empty($post) && $post->post_status == 'publish') {

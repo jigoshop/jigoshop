@@ -415,7 +415,7 @@ class jigoshop_order extends Jigoshop_Base
 						}
 						if ($this->get_downloadable_file_url($product_id)) {
 							$return .= PHP_EOL.__('Your download link for this file is:', 'jigoshop');
-							$return .= PHP_EOL.' - '.$this->get_downloadable_file_url($product_id).'';
+							$return .= PHP_EOL.' - '.apply_filters('downloadable_file_url', $this->get_downloadable_file_url($product_id), $_product, $this).'';
 						}
 					}
 				}
@@ -448,7 +448,6 @@ class jigoshop_order extends Jigoshop_Base
 				$user_email = $user_info->user_email;
 			}
 		}
-
 		return add_query_arg('download_file', $item_id, add_query_arg('order', $this->order_key, add_query_arg('email', $user_email, home_url())));
 	}
 
@@ -485,6 +484,7 @@ class jigoshop_order extends Jigoshop_Base
 	 *
 	 * @param $new_status_slug string Status to change the order to
 	 * @param string $note Optional note to add
+	 * @param bool $call_actions
 	 * @return bool
 	 */
 	public function update_status($new_status_slug, $note = '')
@@ -500,6 +500,7 @@ class jigoshop_order extends Jigoshop_Base
 				// Status was changed
 				do_action('order_status_'.$new_status->slug, $this->id);
 				do_action('order_status_'.$this->status.'_to_'.$new_status->slug, $this->id);
+
 				$this->add_order_note($note.' '.sprintf(__('Order status changed from %s to %s.', 'jigoshop'), __($old_status->name, 'jigoshop'), __($new_status->name, 'jigoshop')));
 				// Date
 				if ($new_status->slug == 'completed') {
