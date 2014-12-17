@@ -129,7 +129,11 @@ use Jigoshop\Helper\Tax;
 					<td>
 						<ul class="list-group" id="shipping-methods">
 							<?php foreach($shippingMethods as $method): /** @var $method \Jigoshop\Shipping\Method */ ?>
-								<?php Render::output('shop/checkout/shipping/method', array('method' => $method, 'cart' => $cart)); ?>
+								<?php if ($method instanceof \Jigoshop\Shipping\MultipleMethod): ?>
+									<?php Render::output('shop/checkout/shipping/multiple_method', array('method' => $method, 'cart' => $cart)); ?>
+								<?php else: ?>
+									<?php Render::output('shop/checkout/shipping/method', array('method' => $method, 'cart' => $cart)); ?>
+								<?php endif; ?>
 							<?php endforeach; ?>
 						</ul>
 					</td>

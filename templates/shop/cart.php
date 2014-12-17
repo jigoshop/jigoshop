@@ -90,7 +90,11 @@ use Jigoshop\Helper\Tax;
 								</noscript>
 								<ul class="list-group" id="shipping-methods">
 									<?php foreach($shippingMethods as $method): /** @var $method \Jigoshop\Shipping\Method */ ?>
-										<?php Render::output('shop/cart/shipping/method', array('method' => $method, 'cart' => $cart)); ?>
+										<?php if ($method instanceof \Jigoshop\Shipping\MultipleMethod): ?>
+											<?php Render::output('shop/cart/shipping/multiple_method', array('method' => $method, 'cart' => $cart)); ?>
+										<?php else: ?>
+											<?php Render::output('shop/cart/shipping/method', array('method' => $method, 'cart' => $cart)); ?>
+										<?php endif; ?>
 									<?php endforeach; ?>
 								</ul>
 								<div class="panel panel-default">

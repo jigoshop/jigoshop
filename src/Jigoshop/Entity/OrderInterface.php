@@ -110,7 +110,8 @@ interface OrderInterface
 	 * Checks whether given shipping method is set for current cart.
 	 *
 	 * @param $method Method Shipping method to check.
+	 * @param $rate Rate Shipping rate to check.
 	 * @return bool Is the method selected?
 	 */
-	public function hasShippingMethod($method);
+	public function hasShippingMethod($method, $rate = null);
 }

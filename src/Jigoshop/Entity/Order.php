@@ -8,9 +8,9 @@ use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\Order\Status;
 use Jigoshop\Exception;
 use Jigoshop\Payment\Method as PaymentMethod;
-use Jigoshop\Service\TaxServiceInterface;
 use Jigoshop\Shipping\Method;
 use Jigoshop\Shipping\Method as ShippingMethod;
+use Jigoshop\Shipping\Rate;
 use Monolog\Registry;
 use WPAL\Wordpress;
 
@@ -40,6 +40,8 @@ class Order implements EntityInterface, OrderInterface
 	private $items = array();
 	/** @var ShippingMethod */
 	private $shippingMethod;
+	/** @var int */
+	private $shippingMethodRate;
 	/** @var PaymentMethod */
 	private $paymentMethod;
 	/** @var float */
@@ -389,6 +391,7 @@ class Order implements EntityInterface, OrderInterface
 		$this->total -= $this->shippingPrice + array_reduce($this->shippingTax, function($value, $item){ return $value + $item; }, 0.0);
 
 		$this->shippingMethod = null;
+		$this->shippingMethodRate = null;
 		$this->shippingPrice = 0.0;
 		$this->shippingTax = array_map(function() { return 0.0; }, $this->shippingTax);
 	}
@@ -397,12 +400,19 @@ class Order implements EntityInterface, OrderInterface
 	 * Checks whether given shipping method is set for current cart.
 	 *
 	 * @param $method Method Shipping method to check.
+	 * @param $rate Rate Shipping rate to check.
 	 * @return bool Is the method selected?
 	 */
-	public function hasShippingMethod($method)
+	public function hasShippingMethod($method, $rate = null)
 	{
 		if ($this->shippingMethod != null) {
-			return $this->shippingMethod->getId() == $method->getId();
+			if ($this->shippingMethod->getId() == $method->getId()) {
+				if ($rate === null) {
+					return true;
+				}
+
+				return $this->shippingMethodRate === $rate->getId();
+			}
 		}
 
 		return false;
@@ -612,6 +622,7 @@ class Order implements EntityInterface, OrderInterface
 			'shipping' => array(
 				'method' => $this->shippingMethod ? $this->shippingMethod->getState() : false,
 				'price' => $this->shippingPrice,
+				'rate' => $this->shippingMethodRate,
 			),
 			'payment' => $this->paymentMethod ? $this->paymentMethod->getId() : false,
 			'customer_note' => $this->customerNote,
@@ -660,6 +671,7 @@ class Order implements EntityInterface, OrderInterface
 		if (isset($state['shipping']) && is_array($state['shipping'])) {
 			$this->shippingMethod = $state['shipping']['method'];
 			$this->shippingPrice = $state['shipping']['price'];
+			$this->shippingMethodRate = $state['shipping']['rate'];
 		}
 		if (isset($state['payment']) && !empty($state['payment'])) {
 			$this->paymentMethod = $state['payment'];

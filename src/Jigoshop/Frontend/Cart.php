@@ -15,6 +15,7 @@ use Jigoshop\Service\CouponServiceInterface;
 use Jigoshop\Service\ProductServiceInterface;
 use Jigoshop\Service\ShippingServiceInterface;
 use Jigoshop\Shipping\Method;
+use Jigoshop\Shipping\Rate;
 use Monolog\Registry;
 use WPAL\Wordpress;
 
@@ -45,6 +46,8 @@ class Cart implements OrderInterface
 	private $shippingPrice = 0.0;
 	/** @var Method */
 	private $shippingMethod;
+	/** @var int */
+	private $shippingMethodRate;
 	/** @var Customer */
 	private $customer;
 	/** @var float */
@@ -94,6 +97,7 @@ class Cart implements OrderInterface
 		$this->tax = array_map(function(){ return 0.0; }, $this->tax);
 		$this->shippingTax = array_map(function(){ return 0.0; }, $this->shippingTax);
 		$this->shippingMethod = null;
+		$this->shippingMethodRate = null;
 
 		if (!empty($data)) {
 			$this->id = $data['id'];
@@ -105,6 +109,9 @@ class Cart implements OrderInterface
 
 			if (isset($data['shipping_method'])) {
 				$this->setShippingMethod($this->shippingService->findForState($data['shipping_method']));
+			}
+			if (isset($data['shipping_method_rate'])) {
+				$this->shippingMethodRate = $data['shipping_method_rate'];
 			}
 
 			$items = unserialize($data['items']);
@@ -504,6 +511,7 @@ class Cart implements OrderInterface
 		$this->total -= $this->shippingPrice + array_reduce($this->shippingTax, function($value, $item){ return $value + $item; }, 0.0);
 
 		$this->shippingMethod = null;
+		$this->shippingMethodRate = null;
 		$this->shippingPrice = 0.0;
 		$this->shippingTax = array_map(function() { return 0.0; }, $this->shippingTax);
 	}
@@ -518,6 +526,7 @@ class Cart implements OrderInterface
 		return array(
 			'id' => $this->id,
 			'shipping_method' => $this->shippingMethod !== null ? $this->shippingMethod->getState() : null,
+			'shipping_method_rate' => $this->shippingMethodRate,
 			'coupons' => array_map(function($item){
 				/** @var Coupon $coupon */
 				$coupon = $item['object'];
@@ -531,12 +540,19 @@ class Cart implements OrderInterface
 	 * Checks whether given shipping method is set for current cart.
 	 *
 	 * @param $method Method Shipping method to check.
+	 * @param $rate Rate Shipping rate to check.
 	 * @return bool Is the method selected?
 	 */
-	public function hasShippingMethod($method)
+	public function hasShippingMethod($method, $rate = null)
 	{
 		if ($this->shippingMethod !== null) {
-			return $this->shippingMethod->getId() == $method->getId();
+			if ($this->shippingMethod->getId() == $method->getId()) {
+				if ($rate === null) {
+					return true;
+				}
+
+				return $this->shippingMethodRate === $rate->getId();
+			}
 		}
 
 		return false;

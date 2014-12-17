@@ -208,7 +208,7 @@ class Cart
 
   _updateShipping: (shipping, html) ->
     for own shippingClass, value of shipping
-      $method = jQuery("#shipping-#{shippingClass}")
+      $method = jQuery(".shipping-#{shippingClass}")
       if $method.length > 0
         if value > -1
           jQuery('span', $method).html(html[shippingClass].price)
