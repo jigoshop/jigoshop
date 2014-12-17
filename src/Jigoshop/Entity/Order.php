@@ -302,6 +302,7 @@ class Order implements EntityInterface, OrderInterface
 		$this->productSubtotal += $item->getCost();
 		$this->subtotal += $item->getCost();
 		$this->total += $item->getCost() + $item->getTotalTax();
+		$item = $this->wp->applyFilters('jigoshop\order\add_item', $item, $this);
 
 		foreach ($item->getTax() as $class => $tax) {
 			$this->tax[$class] += $tax * $item->getQuantity();
@@ -365,9 +366,8 @@ class Order implements EntityInterface, OrderInterface
 
 	/**
 	 * @param ShippingMethod $method Method used for shipping the order.
-	 * @param TaxServiceInterface $taxService Tax service to calculate tax value of shipping.
 	 */
-	public function setShippingMethod(ShippingMethod $method, TaxServiceInterface $taxService)
+	public function setShippingMethod(ShippingMethod $method)
 	{
 		// TODO: Refactor to abstract between cart and order = AbstractOrder
 		$this->removeShippingMethod();
@@ -375,10 +375,9 @@ class Order implements EntityInterface, OrderInterface
 		$this->shippingMethod = $method;
 		$this->shippingPrice = $method->calculate($this);
 		$this->subtotal += $this->shippingPrice;
-		$this->total += $this->shippingPrice + $taxService->calculateShipping($method, $this->shippingPrice, $this->customer);
-		foreach ($method->getTaxClasses() as $class) {
-			$this->shippingTax[$class] = $taxService->getShipping($method, $this->shippingPrice, $class, $this->customer);
-		}
+		$totalPrice = $this->wp->applyFilters('jigoshop\order\shipping_price', $this->shippingPrice, $method, $this);
+		$this->total += $totalPrice;
+		$this->shippingTax = $this->wp->applyFilters('jigoshop\order\shipping_tax', $this->shippingTax, $method, $this);
 	}
 
 	/**
@@ -575,10 +574,9 @@ class Order implements EntityInterface, OrderInterface
 	 *
 	 * @param $key string Item key in the order.
 	 * @param $quantity int Quantity to set.
-	 * @param $taxService TaxServiceInterface Tax service to calculate taxes.
 	 * @throws Exception When product does not exists or quantity is not numeric.
 	 */
-	public function updateQuantity($key, $quantity, $taxService)
+	public function updateQuantity($key, $quantity)
 	{
 		if (!isset($this->items[$key])) {
 			throw new Exception(__('Item does not exists', 'jigoshop'));
@@ -588,23 +586,14 @@ class Order implements EntityInterface, OrderInterface
 			throw new Exception(__('Quantity has to be numeric value', 'jigoshop'));
 		}
 
+		$item = $this->removeItem($key);
+
 		if ($quantity <= 0) {
-			$this->removeItem($key);
 			return;
 		}
 
-		/** @var Item $item */
-		$item = $this->items[$key];
-		$difference = $quantity - $item->getQuantity();
-		$this->total += ($item->getPrice() + $item->getTax()) * $difference;
-		$this->subtotal += $item->getPrice() * $difference;
-		$this->productSubtotal += $item->getPrice() * $difference;
-
-		foreach ($item->getProduct()->getTaxClasses() as $class) {
-			$this->tax[$class] += $taxService->get($item->getProduct(), $class) * $difference;
-		}
-
 		$item->setQuantity($quantity);
+		$this->addItem($item);
 	}
 
 	/**

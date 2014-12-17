@@ -78,7 +78,6 @@ services:
       - '@wpal'
       - '@jigoshop.options'
       - '@jigoshop.service.product'
-      - '@jigoshop.service.tax'
       - '@jigoshop.service.shipping'
       - '@jigoshop.service.coupon'
       - '@jigoshop.messages'

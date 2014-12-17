@@ -14,7 +14,6 @@ use Jigoshop\Helper\Product as ProductHelper;
 use Jigoshop\Service\CouponServiceInterface;
 use Jigoshop\Service\ProductServiceInterface;
 use Jigoshop\Service\ShippingServiceInterface;
-use Jigoshop\Service\TaxServiceInterface;
 use Jigoshop\Shipping\Method;
 use Monolog\Registry;
 use WPAL\Wordpress;
@@ -27,8 +26,6 @@ class Cart implements OrderInterface
 	private $options;
 	/** @var ProductServiceInterface  */
 	private $productService;
-	/** @var TaxServiceInterface */
-	private $taxService;
 	/** @var ShippingServiceInterface */
 	private $shippingService;
 	/** @var CouponServiceInterface */
@@ -63,13 +60,12 @@ class Cart implements OrderInterface
 	/** @var array */
 	private $coupons = array();
 
-	public function __construct(Wordpress $wp, Options $options, ProductServiceInterface $productService, TaxServiceInterface $taxService,
-		ShippingServiceInterface $shippingService, CouponServiceInterface $couponService, Messages $messages)
+	public function __construct(Wordpress $wp, Options $options, ProductServiceInterface $productService,	ShippingServiceInterface $shippingService,
+		CouponServiceInterface $couponService, Messages $messages)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->productService = $productService;
-		$this->taxService = $taxService;
 		$this->shippingService = $shippingService;
 		$this->couponService = $couponService;
 		$this->messages = $messages;
@@ -108,7 +104,7 @@ class Cart implements OrderInterface
 			}
 
 			if (isset($data['shipping_method'])) {
-				$this->setShippingMethod($this->shippingService->findForState($data['shipping_method']), $this->taxService);
+				$this->setShippingMethod($this->shippingService->findForState($data['shipping_method']));
 			}
 
 			$items = unserialize($data['items']);
@@ -200,13 +196,14 @@ class Cart implements OrderInterface
 			$itemInCart = $this->items[$key];
 			$itemInCart->setQuantity($itemInCart->getQuantity() + $item->getQuantity());
 		} else {
-			$item->setTax($this->taxService->getAll($product));
+			$item = $this->wp->applyFilters('jigoshop\cart\add_item', $item, $this);
 
+			$tax = 0.0;
 			foreach ($item->getTax() as $class => $value) {
 				$this->tax[$class] += $value * $quantity;
+				$tax += $value * $quantity;
 			}
 
-			$tax = $this->taxService->calculate($item);
 			$price = $item->getPrice();
 			// TODO: Support for "Price includes tax"
 //			if ($this->options->get('tax.included')) {
@@ -239,8 +236,8 @@ class Cart implements OrderInterface
 			$this->productSubtotal -= $item->getCost();
 			$this->totalTax = null;
 
-			foreach ($item->getTaxClasses() as $class) {
-				$this->tax[$class] -= $this->taxService->get($item, $class) * $item->getQuantity();
+			foreach ($item->getTax() as $class => $value) {
+				$this->tax[$class] -= $value;
 			}
 
 
@@ -270,10 +267,9 @@ class Cart implements OrderInterface
 	 *
 	 * @param $key string Item key in the cart.
 	 * @param $quantity int Quantity to set.
-	 * @param $taxService TaxServiceInterface Tax service to calculate taxes.
 	 * @throws Exception When product does not exists or quantity is not numeric.
 	 */
-	public function updateQuantity($key, $quantity, $taxService)
+	public function updateQuantity($key, $quantity)
 	{
 		if (!isset($this->items[$key])) {
 			throw new Exception(__('Item does not exists', 'jigoshop'));
@@ -441,6 +437,19 @@ class Cart implements OrderInterface
 	}
 
 	/**
+	 * @return array All tax data combined.
+	 */
+	public function getCombinedTax()
+	{
+		$tax = $this->tax;
+		foreach ($this->shippingTax as $class => $value) {
+			$tax[$class] += $value;
+		}
+
+		return $tax;
+	}
+
+	/**
 	 * @return float Total tax of the order.
 	 */
 	public function getTotalTax()
@@ -450,15 +459,6 @@ class Cart implements OrderInterface
 		}
 
 		return $this->totalTax;
-	}
-
-	/**
-	 * @param $taxClass string Tax class name.
-	 * @return string Label for selected tax class.
-	 */
-	public function getTaxLabel($taxClass)
-	{
-		return $this->taxService->getLabel($taxClass);
 	}
 
 	/**
@@ -481,9 +481,8 @@ class Cart implements OrderInterface
 	 * Sets shipping method and updates cart totals to reflect it's price.
 	 *
 	 * @param Method $method New shipping method.
-	 * @param TaxServiceInterface $taxService Tax service to calculate tax value of shipping.
 	 */
-	public function setShippingMethod(Method $method, TaxServiceInterface $taxService)
+	public function setShippingMethod(Method $method)
 	{
 		// TODO: Refactor to abstract between cart and order = AbstractOrder
 		$this->removeShippingMethod();
@@ -491,11 +490,14 @@ class Cart implements OrderInterface
 		$this->shippingMethod = $method;
 		$this->shippingPrice = $method->calculate($this);
 		$this->subtotal += $this->shippingPrice;
-		$this->total += $this->shippingPrice + $taxService->calculateShipping($method, $this->shippingPrice, $this->customer);
-		foreach ($method->getTaxClasses() as $class) {
-			$this->shippingTax[$class] = $taxService->getShipping($method, $this->shippingPrice, $class, $this->customer);
-			$this->tax[$class] += $this->shippingTax[$class];
-		}
+		$totalPrice = $this->wp->applyFilters('jigoshop\order\shipping_price', $this->shippingPrice, $method, $this);
+		$this->total += $totalPrice;
+		$this->shippingTax = $this->wp->applyFilters('jigoshop\order\shipping_tax', $this->shippingTax, $method, $this);
+//		$this->total += $this->shippingPrice + $taxService->calculateShipping($method, $this->shippingPrice, $this->customer);
+//		foreach ($method->getTaxClasses() as $class) {
+//			$this->shippingTax[$class] = $taxService->getShipping($method, $this->shippingPrice, $class, $this->customer);
+//			$this->tax[$class] += $this->shippingTax[$class];
+//		}
 	}
 
 	/**

@@ -2,6 +2,7 @@
 use Jigoshop\Helper\Forms;
 use Jigoshop\Helper\Product;
 use Jigoshop\Helper\Render;
+use Jigoshop\Helper\Tax;
 
 /**
  * @var $messages \Jigoshop\Core\Messages Messages container.
@@ -138,9 +139,9 @@ use Jigoshop\Helper\Render;
 					<th scope="row"><?php _e('Subtotal', 'jigoshop'); ?></th>
 					<td><?php echo Product::formatPrice($cart->getSubtotal()); ?></td>
 				</tr>
-				<?php foreach ($cart->getTax() as $taxClass => $tax): ?>
+				<?php foreach ($cart->getCombinedTax() as $taxClass => $tax): ?>
 					<tr id="tax-<?php echo $taxClass; ?>"<?php $tax == 0 and print ' style="display: none;"'; ?>>
-						<th scope="row"><?php echo $cart->getTaxLabel($taxClass); ?></th>
+						<th scope="row"><?php echo Tax::getLabel($taxClass); ?></th>
 						<td><?php echo Product::formatPrice($tax); ?></td>
 					</tr>
 				<?php endforeach; ?>

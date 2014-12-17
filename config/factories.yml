@@ -50,7 +50,6 @@ services:
       - '@jigoshop.service.product'
       - '@jigoshop.service.shipping'
       - '@jigoshop.service.payment'
-      - '@jigoshop.service.tax'
   jigoshop.factory.customer:
     class: Jigoshop\Factory\Customer
     arguments:

@@ -18,6 +18,7 @@ use Jigoshop\Helper\Product;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
+use Jigoshop\Helper\Tax;
 use Jigoshop\Helper\Validation;
 use Jigoshop\Integration;
 use Jigoshop\Service\CartServiceInterface;
@@ -25,7 +26,6 @@ use Jigoshop\Service\CustomerServiceInterface;
 use Jigoshop\Service\OrderServiceInterface;
 use Jigoshop\Service\PaymentServiceInterface;
 use Jigoshop\Service\ShippingServiceInterface;
-use Jigoshop\Service\TaxServiceInterface;
 use Jigoshop\Shipping\Method;
 use WPAL\Wordpress;
 
@@ -45,13 +45,11 @@ class Checkout implements PageInterface
 	private $shippingService;
 	/** @var PaymentServiceInterface */
 	private $paymentService;
-	/** @var TaxServiceInterface */
-	private $taxService;
 	/** @var OrderServiceInterface */
 	private $orderService;
 
 	public function __construct(Wordpress $wp, Options $options, Messages $messages, CartServiceInterface $cartService,	CustomerServiceInterface $customerService,
-		ShippingServiceInterface $shippingService, PaymentServiceInterface $paymentService, TaxServiceInterface $taxService, OrderServiceInterface $orderService, Styles $styles, Scripts $scripts)
+		ShippingServiceInterface $shippingService, PaymentServiceInterface $paymentService, OrderServiceInterface $orderService, Styles $styles, Scripts $scripts)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
@@ -60,7 +58,6 @@ class Checkout implements PageInterface
 		$this->customerService = $customerService;
 		$this->shippingService = $shippingService;
 		$this->paymentService = $paymentService;
-		$this->taxService = $taxService;
 		$this->orderService = $orderService;
 
 		$styles->add('jigoshop', JIGOSHOP_URL.'/assets/css/shop.css');
@@ -174,9 +171,9 @@ class Checkout implements PageInterface
 	private function getAjaxCartResponse(Cart $cart)
 	{
 		$tax = array();
-		foreach ($cart->getTax() as $class => $value) {
+		foreach ($cart->getCombinedTax() as $class => $value) {
 			$tax[$class] = array(
-				'label' => $cart->getTaxLabel($class),
+				'label' => Tax::getLabel($class),
 				'value' => Product::formatPrice($value),
 			);
 		}
@@ -192,7 +189,7 @@ class Checkout implements PageInterface
 			'shipping' => $shipping,
 			'subtotal' => $cart->getSubtotal(),
 			'product_subtotal' => $cart->getProductSubtotal(),
-			'tax' => $cart->getTax(),
+			'tax' => $cart->getCombinedTax(),
 			'total' => $cart->getTotal(),
 			'html' => array(
 				'shipping' => array_map(function($item) use ($cart) {

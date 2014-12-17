@@ -92,4 +92,9 @@ interface TaxServiceInterface
 	 * @param $ids array IDs to preserve.
 	 */
 	public function removeAllExcept($ids);
+
+	/**
+	 * Registers all required actions to update prices with taxes.
+	 */
+	public function register();
 }

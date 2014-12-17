@@ -16,7 +16,6 @@ use Jigoshop\Service\CustomerServiceInterface;
 use Jigoshop\Service\PaymentServiceInterface;
 use Jigoshop\Service\ProductServiceInterface;
 use Jigoshop\Service\ShippingServiceInterface;
-use Jigoshop\Service\TaxServiceInterface;
 use WPAL\Wordpress;
 
 class Order implements EntityFactoryInterface
@@ -35,7 +34,7 @@ class Order implements EntityFactoryInterface
 	private $paymentService;
 
 	public function __construct(Wordpress $wp, Options $options, CustomerServiceInterface $customerService, ProductServiceInterface $productService,
-		ShippingServiceInterface $shippingService, PaymentServiceInterface $paymentService, TaxServiceInterface $taxService)
+		ShippingServiceInterface $shippingService, PaymentServiceInterface $paymentService)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
@@ -43,7 +42,6 @@ class Order implements EntityFactoryInterface
 		$this->productService = $productService;
 		$this->shippingService = $shippingService;
 		$this->paymentService = $paymentService;
-		$this->taxService = $taxService;
 	}
 
 	/**
@@ -200,7 +198,7 @@ class Order implements EntityFactoryInterface
 		if (isset($_POST['jigoshop_order']['shipping_method'])) {
 			$shipping = $this->shippingService->get($_POST['jigoshop_order']['shipping_method']);
 			$this->wp->doAction('jigoshop\checkout\set_shipping\before', $shipping, $order);
-			$order->setShippingMethod($shipping, $this->taxService);
+			$order->setShippingMethod($shipping);
 		}
 
 		foreach ($cart->getItems() as $item) {

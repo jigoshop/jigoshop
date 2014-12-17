@@ -10,7 +10,6 @@ services:
       - '@wpal'
       - '@jigoshop.options'
       - '@jigoshop.service.order'
-      - '@jigoshop.service.tax'
       - '@jigoshop.helper.styles'
       - '@jigoshop.helper.scripts'
   jigoshop.admin.page.order:
@@ -22,7 +21,6 @@ services:
       - '@jigoshop.service.product'
       - '@jigoshop.service.customer'
       - '@jigoshop.service.shipping'
-      - '@jigoshop.service.tax'
       - '@jigoshop.helper.styles'
       - '@jigoshop.helper.scripts'
   jigoshop.admin.page.products:

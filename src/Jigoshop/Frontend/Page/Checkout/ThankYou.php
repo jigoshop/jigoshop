@@ -13,8 +13,8 @@ use Jigoshop\Frontend\Page\PageInterface;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
+use Jigoshop\Helper\Tax;
 use Jigoshop\Service\OrderServiceInterface;
-use Jigoshop\Service\TaxServiceInterface;
 use WPAL\Wordpress;
 
 class ThankYou implements PageInterface
@@ -27,17 +27,13 @@ class ThankYou implements PageInterface
 	private $messages;
 	/** @var OrderServiceInterface */
 	private $orderService;
-	/** @var TaxServiceInterface */
-	private $taxService;
 
-	public function __construct(Wordpress $wp, Options $options, Messages $messages, OrderServiceInterface $orderService, TaxServiceInterface $taxService,
-		Styles $styles, Scripts $scripts)
+	public function __construct(Wordpress $wp, Options $options, Messages $messages, OrderServiceInterface $orderService, Styles $styles, Scripts $scripts)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->messages = $messages;
 		$this->orderService = $orderService;
-		$this->taxService = $taxService;
 
 		$styles->add('jigoshop.user.account', JIGOSHOP_URL.'/assets/css/user/account.css');
 		$styles->add('jigoshop.user.account.orders', JIGOSHOP_URL.'/assets/css/user/account/orders.css');
@@ -110,7 +106,6 @@ class ThankYou implements PageInterface
 
 	public function render()
 	{
-		$taxService = $this->taxService;
 		$content = $this->wp->getPostField('post_content', $this->options->getPageId(Pages::THANK_YOU));
 		$order = $this->orderService->find((int)$_REQUEST['order']);
 		if ($order->getKey() != $_REQUEST['key']) {
@@ -124,8 +119,8 @@ class ThankYou implements PageInterface
 			'order' => $order,
 			'showWithTax' => $this->options->get('tax.price_tax') == 'with_tax',
 			'shopUrl' => $this->wp->getPermalink($this->options->getPageId(Pages::SHOP)),
-			'getTaxLabel' => function($taxClass) use ($taxService, $order) {
-				return $taxService->getLabel($taxClass, $order->getCustomer());
+			'getTaxLabel' => function($taxClass) use ($order) {
+				return Tax::getLabel($taxClass, $order->getCustomer());
 			},
 		));
 	}

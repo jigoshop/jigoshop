@@ -3,7 +3,6 @@ namespace Jigoshop\Entity;
 
 use Jigoshop\Entity\Order\Item;
 use Jigoshop\Exception;
-use Jigoshop\Service\TaxServiceInterface;
 use Jigoshop\Shipping\Method;
 
 interface OrderInterface
@@ -40,10 +39,9 @@ interface OrderInterface
 	 *
 	 * @param $key string Item key in the cart.
 	 * @param $quantity int Quantity to set.
-	 * @param $taxService TaxServiceInterface Tax service to calculate taxes.
 	 * @throws Exception When product does not exists or quantity is not numeric.
 	 */
-	public function updateQuantity($key, $quantity, $taxService);
+	public function updateQuantity($key, $quantity);
 
 	/**
 	 * @param $key string Item key.
@@ -82,6 +80,16 @@ interface OrderInterface
 	public function getTax();
 
 	/**
+	 * @return array All tax data combined.
+	 */
+	public function getCombinedTax();
+
+	/**
+	 * @return float Shipping price.
+	 */
+	public function getShippingPrice();
+
+	/**
 	 * @return array List of applied tax classes for shipping with it's values.
 	 */
 	public function getShippingTax();
@@ -95,9 +103,8 @@ interface OrderInterface
 	 * Sets shipping method and updates cart totals to reflect it's price.
 	 *
 	 * @param Method $method New shipping method.
-	 * @param TaxServiceInterface $taxService Tax service to calculate tax value of shipping.
 	 */
-	public function setShippingMethod(Method $method, TaxServiceInterface $taxService);
+	public function setShippingMethod(Method $method);
 
 	/**
 	 * Checks whether given shipping method is set for current cart.

@@ -91,7 +91,7 @@ use Jigoshop\Helper\Render;
 				<th scope="row"><?php _e('Subtotal', 'jigoshop'); ?></th>
 				<td><?php echo Product::formatPrice($order->getSubtotal()); ?></td>
 			</tr>
-			<?php foreach ($order->getTax() as $taxClass => $tax): ?>
+			<?php foreach ($order->getCombinedTax() as $taxClass => $tax): ?>
 				<?php if ($tax > 0): ?>
 					<tr id="tax-<?php echo $taxClass; ?>">
 						<th scope="row"><?php echo $getTaxLabel($taxClass); ?></th>

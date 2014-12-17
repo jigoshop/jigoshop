@@ -3,6 +3,8 @@
 namespace Jigoshop\Service;
 
 use Jigoshop\Entity\Customer;
+use Jigoshop\Entity\Order\Item;
+use Jigoshop\Entity\OrderInterface;
 use Jigoshop\Entity\Product\Attributes;
 use Jigoshop\Entity\Product\Purchasable;
 use Jigoshop\Entity\Product\Taxable;
@@ -30,6 +32,39 @@ class Tax implements TaxServiceInterface
 		$this->taxClasses = $classes;
 		$this->customers = $customers;
 		$this->taxIncludedInPrice = $taxIncludedInPrice;
+	}
+
+	/**
+	 * Registers all required actions to update prices with taxes.
+	 */
+	public function register()
+	{
+		$service = $this;
+		$this->wp->addFilter('jigoshop\admin\order\update_product', function($item, $order) use ($service) {
+			$item->setTax($service->getAll($item, 1, $order->getCustomer()));
+			return $item;
+		}, 10, 2);
+		$this->wp->addFilter('jigoshop\order\shipping_price', function($price, $method, $order) use ($service) {
+			/** @var $order OrderInterface */
+			return $price + $service->calculateShipping($method, $price, $order->getCustomer());
+		}, 10, 3);
+		$this->wp->addFilter('jigoshop\order\shipping_tax', function($taxes, $method, $order) use ($service) {
+			/** @var $order OrderInterface */
+			foreach ($method->getTaxClasses() as $class) {
+				$taxes[$class] = $service->getShipping($method, $order->getShippingPrice(), $class, $order->getCustomer());
+			}
+			return $taxes;
+		}, 10, 3);
+		$this->wp->addFilter('jigoshop\cart\add_item', function($item) use ($service) {
+			/** @var $item Item */
+			$item->setTax($service->getAll($item->getProduct()));
+			return $item;
+		}, 10, 1);
+		$this->wp->addFilter('jigoshop\order\add_item', function($item) use ($service) {
+			/** @var $item Item */
+			$item->setTax($service->getAll($item->getProduct()));
+			return $item;
+		}, 10, 1);
 	}
 
 	/**

@@ -15,6 +15,7 @@ use Jigoshop\Helper\Product;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
+use Jigoshop\Helper\Tax;
 use Jigoshop\Helper\Validation;
 use Jigoshop\Integration;
 use Jigoshop\Service\CartServiceInterface;
@@ -43,16 +44,14 @@ class Cart implements PageInterface
 	private $customerService;
 	/** @var ShippingServiceInterface */
 	private $shippingService;
-	/** @var TaxServiceInterface */
-	private $taxService;
 	/** @var OrderServiceInterface */
 	private $orderService;
 	/** @var CouponServiceInterface */
 	private $couponService;
 
 	public function __construct(Wordpress $wp, Options $options, Messages $messages, CartServiceInterface $cartService, ProductServiceInterface $productService,
-		CustomerServiceInterface $customerService, OrderServiceInterface $orderService, ShippingServiceInterface $shippingService, TaxServiceInterface $taxService,
-		CouponServiceInterface $couponService, Styles $styles, Scripts $scripts)
+		CustomerServiceInterface $customerService, OrderServiceInterface $orderService, ShippingServiceInterface $shippingService, CouponServiceInterface $couponService,
+		Styles $styles, Scripts $scripts)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
@@ -62,7 +61,6 @@ class Cart implements PageInterface
 		$this->customerService = $customerService;
 		$this->shippingService = $shippingService;
 		$this->orderService = $orderService;
-		$this->taxService = $taxService;
 		$this->couponService = $couponService;
 
 		$styles->add('jigoshop.shop', JIGOSHOP_URL.'/assets/css/shop.css');
@@ -159,9 +157,9 @@ class Cart implements PageInterface
 	{
 		$tax = array();
 		// TODO: There are some problems with taxes and integration layer
-		foreach ($cart->getTax() as $class => $value) {
+		foreach ($cart->getCombinedTax() as $class => $value) {
 			$tax[$class] = array(
-				'label' => $cart->getTaxLabel($class),
+				'label' => Tax::getLabel($class),
 				'value' => Product::formatPrice($value),
 			);
 		}
@@ -184,7 +182,7 @@ class Cart implements PageInterface
 			'product_subtotal' => $productSubtotal,
 			'discount' => $cart->getDiscount(),
 			'coupons' => $coupons,
-			'tax' => $cart->getTax(),
+			'tax' => $cart->getCombinedTax(),
 			'total' => $cart->getTotal(),
 			'html' => array(
 				'shipping' => array_map(function($item) use ($cart) {
@@ -263,7 +261,7 @@ class Cart implements PageInterface
 		try {
 			$method = $this->shippingService->get($_POST['method']);
 			$cart = $this->cartService->getCurrent();
-			$cart->setShippingMethod($method, $this->taxService);
+			$cart->setShippingMethod($method);
 			$this->cartService->save($cart);
 
 			$response = $this->getAjaxCartResponse($cart);
@@ -329,7 +327,7 @@ class Cart implements PageInterface
 		$cart = $this->cartService->getCurrent();
 
 		try {
-			$cart->updateQuantity($_POST['item'], (int)$_POST['quantity'], $this->taxService);
+			$cart->updateQuantity($_POST['item'], (int)$_POST['quantity']);
 			$this->cartService->save($cart);
 			$item = $cart->getItem($_POST['item']);
 			// TODO: Support for "Prices includes tax"
@@ -397,7 +395,7 @@ class Cart implements PageInterface
 						if (isset($_POST['jigoshop_order']['shipping_method'])) {
 							// Select shipping method
 							$method = $this->shippingService->get($_POST['jigoshop_order']['shipping_method']);
-							$cart->setShippingMethod($method, $this->taxService);
+							$cart->setShippingMethod($method);
 						}
 
 						if ($cart->getShippingMethod() && !$cart->getShippingMethod()->isEnabled()) {
@@ -445,7 +443,7 @@ class Cart implements PageInterface
 	{
 		if (isset($_POST['cart']) && is_array($_POST['cart'])) {
 			foreach ($_POST['cart'] as $item => $quantity) {
-				$cart->updateQuantity($item, (int)$quantity, $this->taxService);
+				$cart->updateQuantity($item, (int)$quantity);
 			}
 		}
 	}

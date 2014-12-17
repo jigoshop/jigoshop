@@ -66,7 +66,7 @@ use Jigoshop\Helper\Render;
 					<th scope="row"><?php _e('Subtotal', 'jigoshop'); ?></th>
 					<td><?php echo Product::formatPrice($order->getSubtotal()); ?></td>
 				</tr>
-				<?php foreach ($order->getTax() as $taxClass => $tax): //TODO: Fix showing tax after registering ?>
+				<?php foreach ($order->getCombinedTax() as $taxClass => $tax): //TODO: Fix showing tax after registering ?>
 					<?php if ($tax > 0): ?>
 						<tr id="tax-<?php echo $taxClass; ?>">
 							<th scope="row"><?php echo $getTaxLabel($taxClass); ?></th>

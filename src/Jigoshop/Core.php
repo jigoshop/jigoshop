@@ -7,6 +7,7 @@ use Jigoshop\Core\Options;
 use Jigoshop\Core\Pages;
 use Jigoshop\Core\Template;
 use Jigoshop\Helper\Render;
+use Jigoshop\Helper\Tax;
 use WPAL\Wordpress;
 
 class Core
@@ -56,6 +57,11 @@ class Core
 		/** @var \Jigoshop\Api $api */
 		$api = $container->get('jigoshop.api');
 		$api->run();
+
+		/** @var \Jigoshop\Service\TaxServiceInterface $tax */
+		$tax = $container->get('jigoshop.service.tax');
+		$tax->register();
+		Tax::setService($tax);
 
 		// TODO: Install emails if needed
 		$container->get('jigoshop.emails');

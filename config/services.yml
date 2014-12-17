@@ -33,7 +33,6 @@ services:
     arguments:
       - '@wpal'
       - '@jigoshop.options'
-      - '@jigoshop.service.tax'
       - '@jigoshop.service.customer'
     calls:
       - [setContainer, ['@di']]

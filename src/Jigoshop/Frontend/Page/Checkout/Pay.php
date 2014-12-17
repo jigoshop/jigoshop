@@ -15,10 +15,10 @@ use Jigoshop\Helper\Api;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
+use Jigoshop\Helper\Tax;
 use Jigoshop\Integration;
 use Jigoshop\Service\OrderServiceInterface;
 use Jigoshop\Service\PaymentServiceInterface;
-use Jigoshop\Service\TaxServiceInterface;
 use WPAL\Wordpress;
 
 class Pay implements PageInterface
@@ -31,19 +31,16 @@ class Pay implements PageInterface
 	private $messages;
 	/** @var OrderServiceInterface */
 	private $orderService;
-	/** @var TaxServiceInterface */
-	private $taxService;
 	/** @var PaymentServiceInterface */
 	private $paymentService;
 
-	public function __construct(Wordpress $wp, Options $options, Messages $messages, OrderServiceInterface $orderService, TaxServiceInterface $taxService,
-		PaymentServiceInterface $paymentService, Styles $styles, Scripts $scripts)
+	public function __construct(Wordpress $wp, Options $options, Messages $messages, OrderServiceInterface $orderService, PaymentServiceInterface $paymentService,
+		Styles $styles, Scripts $scripts)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->messages = $messages;
 		$this->orderService = $orderService;
-		$this->taxService = $taxService;
 		$this->paymentService = $paymentService;
 
 		$styles->add('jigoshop', JIGOSHOP_URL.'/assets/css/shop.css');
@@ -97,7 +94,6 @@ class Pay implements PageInterface
 
 	public function render()
 	{
-		$taxService = $this->taxService;
 		$order = $this->orderService->find((int)$this->wp->getQueryParameter('pay'));
 
 		$termsUrl = '';
@@ -116,8 +112,8 @@ class Pay implements PageInterface
 			'myAccountUrl' => $accountUrl,
 			'myOrdersUrl' => Api::getEndpointUrl('orders', '', $accountUrl),
 			'paymentMethods' => $this->paymentService->getEnabled(),
-			'getTaxLabel' => function($taxClass) use ($taxService, $order) {
-				return $taxService->getLabel($taxClass, $order->getCustomer());
+			'getTaxLabel' => function($taxClass) use ($order) {
+				return Tax::getLabel($taxClass, $order->getCustomer());
 			},
 		));
 	}

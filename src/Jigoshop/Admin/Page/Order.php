@@ -19,7 +19,6 @@ use Jigoshop\Service\CustomerServiceInterface;
 use Jigoshop\Service\OrderServiceInterface;
 use Jigoshop\Service\ProductServiceInterface;
 use Jigoshop\Service\ShippingServiceInterface;
-use Jigoshop\Service\TaxServiceInterface;
 use Jigoshop\Shipping\Method;
 use WPAL\Wordpress;
 
@@ -37,11 +36,9 @@ class Order
 	private $customerService;
 	/** @var ShippingServiceInterface */
 	private $shippingService;
-	/** @var TaxServiceInterface */
-	private $taxService;
 
 	public function __construct(Wordpress $wp, Options $options, OrderServiceInterface $orderService, ProductServiceInterface $productService,
-		CustomerServiceInterface $customerService, ShippingServiceInterface $shippingService, TaxServiceInterface $taxService, Styles $styles, Scripts $scripts)
+		CustomerServiceInterface $customerService, ShippingServiceInterface $shippingService, Styles $styles, Scripts $scripts)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
@@ -49,7 +46,6 @@ class Order
 		$this->productService = $productService;
 		$this->customerService = $customerService;
 		$this->shippingService = $shippingService;
-		$this->taxService = $taxService;
 
 		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $options, $styles, $scripts){
 			if ($wp->getPostType() == Types::ORDER) {
@@ -150,7 +146,7 @@ class Order
 			$item->setPrice((float)$_POST['price']);
 
 			if ($item->getQuantity() > 0) {
-				$item->setTax($this->taxService->getAll($item, 1, $order->getCustomer()));
+				$item = $this->wp->applyFilters('jigoshop\admin\order\update_product', $item, $order);
 				$order->addItem($item);
 			}
 
@@ -203,7 +199,7 @@ class Order
 			}
 
 			$shippingMethod = $this->shippingService->get($_POST['method']);
-			$order->setShippingMethod($shippingMethod, $this->taxService);
+			$order->setShippingMethod($shippingMethod);
 			$order = $this->rebuildOrder($order);
 			$this->orderService->save($order);
 			$result = $this->getAjaxResponse($order);

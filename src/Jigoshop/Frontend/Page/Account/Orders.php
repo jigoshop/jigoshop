@@ -12,9 +12,9 @@ use Jigoshop\Helper\Api;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
+use Jigoshop\Helper\Tax;
 use Jigoshop\Service\CustomerServiceInterface;
 use Jigoshop\Service\OrderServiceInterface;
-use Jigoshop\Service\TaxServiceInterface;
 use WPAL\Wordpress;
 
 class Orders implements PageInterface
@@ -29,17 +29,14 @@ class Orders implements PageInterface
 	private $customerService;
 	/** @var OrderServiceInterface */
 	private $orderService;
-	/** @var TaxServiceInterface */
-	private $taxService;
 
-	public function __construct(Wordpress $wp, Options $options, CustomerServiceInterface $customerService, OrderServiceInterface $orderService,
-		TaxServiceInterface $taxService, Messages $messages, Styles $styles, Scripts $scripts)
+	public function __construct(Wordpress $wp, Options $options, CustomerServiceInterface $customerService, OrderServiceInterface $orderService, Messages $messages,
+		Styles $styles, Scripts $scripts)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->customerService = $customerService;
 		$this->orderService = $orderService;
-		$this->taxService = $taxService;
 		$this->messages = $messages;
 
 		$styles->add('jigoshop.user.account', JIGOSHOP_URL.'/assets/css/user/account.css');
@@ -63,7 +60,6 @@ class Orders implements PageInterface
 		$accountUrl = $this->wp->getPermalink($this->options->getPageId(Pages::ACCOUNT));
 
 		if (!empty($order) && is_numeric($order)) {
-			$taxService = $this->taxService;
 			$order = $this->orderService->find($order);
 			return Render::get('user/account/orders/single', array(
 				'messages' => $this->messages,
@@ -71,8 +67,8 @@ class Orders implements PageInterface
 				'myAccountUrl' => $accountUrl,
 				'listUrl' => Api::getEndpointUrl('orders', '', $accountUrl),
 				'showWithTax' => $this->options->get('tax.price_tax') == 'with_tax',
-				'getTaxLabel' => function($taxClass) use ($taxService, $order) {
-					return $taxService->getLabel($taxClass, $order->getCustomer());
+				'getTaxLabel' => function($taxClass) use ($order) {
+					return Tax::getLabel($taxClass, $order->getCustomer());
 				},
 			));
 		}

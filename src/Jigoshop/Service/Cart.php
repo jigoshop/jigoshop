@@ -16,8 +16,6 @@ class Cart implements CartServiceInterface, ContainerAware
 
 	/** @var Wordpress */
 	private $wp;
-	/** @var TaxServiceInterface */
-	private $taxService;
 	/** @var CustomerServiceInterface */
 	private $customerService;
 	/** @var string */
@@ -27,10 +25,9 @@ class Cart implements CartServiceInterface, ContainerAware
 
 	private $carts = array();
 
-	public function __construct(Wordpress $wp, Options $options, TaxServiceInterface $taxService, CustomerServiceInterface $customerService)
+	public function __construct(Wordpress $wp, Options $options, CustomerServiceInterface $customerService)
 	{
 		$this->wp = $wp;
-		$this->taxService = $taxService;
 		$this->customerService = $customerService;
 
 		if (!isset($_SESSION[self::CART])) {
@@ -164,7 +161,7 @@ class Cart implements CartServiceInterface, ContainerAware
 		$cart = $this->di->get('jigoshop.cart');
 		$cart->initializeFor($cartId, array());
 		$cart->setCustomer($order->getCustomer());
-		$cart->setShippingMethod($order->getShippingMethod(), $this->taxService);
+		$cart->setShippingMethod($order->getShippingMethod());
 		foreach ($order->getItems() as $item) {
 			$cart->addItem($item);
 		}
