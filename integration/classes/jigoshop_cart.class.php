@@ -634,11 +634,8 @@ class jigoshop_cart
 	{
 		try {
 			$cart = Integration::getCart();
-			$coupons = Integration::getCouponService()->getByCodes(array($coupon_code));
-			foreach ($coupons as $coupon) {
-				/** @var $coupon \Jigoshop\Entity\Coupon */
-				$cart->addCoupon($coupon);
-			}
+			$coupon = Integration::getCouponService()->findByCode($coupon_code);
+			$cart->addCoupon($coupon);
 			Integration::getMessages()->addError(__('Discount coupon applied successfully.', 'jigoshop'));
 
 			return true;

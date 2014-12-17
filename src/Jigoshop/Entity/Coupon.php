@@ -500,7 +500,7 @@ class Coupon implements EntityInterface
 				$discount = 0.0;
 				foreach ($order->getItems() as $item) {
 					/** @var $item Item */
-					if ($this->_productMatchesCoupon($item->getProduct())) {
+					if ($this->productMatchesCoupon($item->getProduct())) {
 						$discount += $item->getQuantity() * $this->amount;
 					}
 				}
@@ -510,7 +510,7 @@ class Coupon implements EntityInterface
 				$discount = 0.0;
 				foreach ($order->getItems() as $item) {
 					/** @var $item Item */
-					if ($this->_productMatchesCoupon($item->getProduct())) {
+					if ($this->productMatchesCoupon($item->getProduct())) {
 						$discount += $this->amount * $item->getCost() / 100;
 					}
 				}
@@ -525,7 +525,7 @@ class Coupon implements EntityInterface
 	 * @param $product Product Product to check.
 	 * @return bool Is product good for the coupon.
 	 */
-	private function _productMatchesCoupon($product) {
+	public function productMatchesCoupon($product) {
 		if (!empty($this->products) && in_array($product->getId(), $this->products)) {
 			return true;
 		} else if (!empty($this->excludedProducts) && !in_array($product->getId(), $this->excludedProducts)) {

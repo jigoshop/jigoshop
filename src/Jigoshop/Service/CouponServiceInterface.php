@@ -28,6 +28,12 @@ interface CouponServiceInterface extends ServiceInterface
 	public function findForPost($post);
 
 	/**
+	 * @param $code string Code of the coupon to find.
+	 * @return \Jigoshop\Entity\Coupon Coupon found.
+	 */
+	public function findByCode($code);
+
+	/**
 	 * @return array List of available coupon types.
 	 */
 	public function getTypes();

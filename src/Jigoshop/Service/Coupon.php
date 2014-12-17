@@ -198,7 +198,17 @@ class Coupon implements CouponServiceInterface
 		$results = $this->findByQuery($query);
 
 		if (count($results) > 0) {
-			return $results[0];
+			/** @var \Jigoshop\Entity\Coupon $coupon */
+			$coupon = $results[0];
+			$time = time();
+
+			if ($coupon->getFrom() !== null && $coupon->getFrom()->getTimestamp() < $time) {
+				return null;
+			}
+			if ($coupon->getTo() !== null && $coupon->getTo()->getTimestamp() > $time) {
+				return null;
+			}
+
 		}
 
 		return null;
