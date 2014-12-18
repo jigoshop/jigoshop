@@ -1081,7 +1081,7 @@ function jigoshop_ajax_update_item_quantity()
 		$item = $items[$_POST['item']];
 		/** @var jigoshop_product $product */
 		$product = $item['data'];
-		$price = apply_filters('jigoshop_product_subtotal_display_in_cart', jigoshop_price($product->get_price_excluding_tax() * $item['quantity']), $item['product_id'], $item);
+		$price = apply_filters('jigoshop_product_subtotal_display_in_cart', jigoshop_price($product->get_defined_price() * $item['quantity']), $item['product_id'], $item);
 	}
 
 	if (jigoshop_cart::show_retail_price()) {

@@ -100,7 +100,12 @@ jQuery(function($){
 						if(result.item_price === -1){
 							$parent.remove();
 						} else {
-							$('td.product-subtotal', $parent).html(result.item_price);
+							if($('td.product-subtotal', $parent)){
+								$('td.product-subtotal', $parent).html(result.item_price);
+							}
+							if($('td.product-total', $parent)){
+								$('td.product-total', $parent).html(result.item_price);
+							}
 						}
 						var $totals = $('div.cart_totals_table');
 						$('.cart-row-subtotal', $totals).html(result.subtotal);
