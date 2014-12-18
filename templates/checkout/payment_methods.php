@@ -4,7 +4,7 @@
 		<?php
 		$available_gateways = jigoshop_payment_gateways::get_available_payment_gateways();
 		if ($available_gateways) :
-			$default_gateway = self::get_options()->get_option('jigoshop_default_gateway');
+			$default_gateway = Jigoshop_Base::get_options()->get_option('jigoshop_default_gateway');
 			if (!empty($default_gateway)) {
 				if (array_key_exists($default_gateway, $available_gateways)) {
 					$temp = $available_gateways[$default_gateway];

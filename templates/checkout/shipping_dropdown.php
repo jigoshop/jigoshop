@@ -3,6 +3,8 @@
  * @var $available_methods array List of available shipping methods.
  */
 ?>
+
+<?php $available_methods = jigoshop_shipping::get_available_shipping_methods(); ?>
 <tr>
 	<td colspan="2"><?php _e('Shipping', 'jigoshop'); ?><br />
 		<small><?php echo _x('To: ', 'shipping destination', 'jigoshop').__(jigoshop_customer::get_shipping_country_or_state(), 'jigoshop'); ?></small>

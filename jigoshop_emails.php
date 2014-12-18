@@ -76,11 +76,16 @@ add_action('jigoshop_product_on_backorder_notification', function ($order_id, $p
 	}
 }, 1, 3);
 
+add_filter('downloadable_file_url', function($link, $product, $order){
+	return '<a href="' .$link. '">' .$link. '</a>';
+}, 10, 3);
+
 function get_order_email_arguments($order_id)
 {
 	$options = Jigoshop_Base::get_options();
 	$order = new jigoshop_order($order_id);
 	$inc_tax = ($options->get('jigoshop_calc_taxes') == 'no') || ($options->get('jigoshop_prices_include_tax') == 'yes');
+	$can_show_links = ($order->status == 'completed' || $order->status == 'processing');
 
 	return apply_filters('jigoshop_order_email_variables', array(
 		'blog_name' => get_bloginfo('name'),
@@ -93,7 +98,7 @@ function get_order_email_arguments($order_id)
 		'shop_phone' => $options->get('jigoshop_company_phone'),
 		'shop_email' => $options->get('jigoshop_company_email'),
 		'customer_note' => $order->customer_note,
-		'order_items' => $order->email_order_items_list(true, true, $inc_tax),
+		'order_items' => $order->email_order_items_list($can_show_links, true, $inc_tax),
 		'subtotal' => $order->get_subtotal_to_display(),
 		'shipping' => $order->get_shipping_to_display(),
 		'shipping_cost' => jigoshop_price($order->order_shipping),

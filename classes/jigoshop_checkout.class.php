@@ -531,7 +531,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 	 */
 	public function checkout_form_payment_methods()
 	{
-		include(JIGOSHOP_DIR.'/templates/checkout/payment_methods.php');
+		jigoshop_get_template('checkout/payment_methods.php');
 	}
 
 	/**
@@ -1125,8 +1125,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 	{
 		if (jigoshop_cart::needs_shipping()){
 			/** @noinspection PhpUnusedLocalVariableInspection */
-			$available_methods = jigoshop_shipping::get_available_shipping_methods();
-			include(JIGOSHOP_DIR.'/templates/checkout/shipping_dropdown.php');
+			jigoshop_get_template('checkout/shipping_dropdown.php');
 		}
 	}
 
