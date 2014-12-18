@@ -193,15 +193,16 @@ class Checkout
     jQuery('#cart-subtotal > td').html(subtotal)
 
   _updateDiscount: (data) ->
-    jQuery('input#jigoshop_coupons').select2('val', data.coupons.split(','))
-    $parent = jQuery('tr#cart-discount')
-    if data.discount > 0
-      jQuery('td', $parent).html(data.html.discount)
-      $parent.show()
-    else
-      $parent.hide()
-    if data.html.coupons?
-      addMessage('warning', data.html.coupons)
+    if data.coupons?
+      jQuery('input#jigoshop_coupons').select2('val', data.coupons.split(','))
+      $parent = jQuery('tr#cart-discount')
+      if data.discount > 0
+        jQuery('td', $parent).html(data.html.discount)
+        $parent.show()
+      else
+        $parent.hide()
+      if data.html.coupons?
+        addMessage('warning', data.html.coupons)
 
   _updateShipping: (shipping, html) ->
     for own shippingClass, value of shipping
