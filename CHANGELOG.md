@@ -1,11 +1,13 @@
 ## Changelog
 
-* 1.15:
+* 1.15 - 2014-12-18:
+    * New: Favicon cart count notification
+    * New: Easy add Jigoshop shortcodes in TinyMCE
     * Improved: Downloadable products links are showing as hyperlinks.
     * Fix: Download links now shows only in processing or completed order email notifications.
     * Fix: Reset pending Orders and Complete processing Orders will no longer send emails.
     * Fix: Video played via prettyPhoto now loads properly.
-    * Fix: shipping_dropdown.php and payment_methods.php now can be replaced in theme files.
+    * Fix: `shipping_dropdown.php` and `payment_methods.php` now can be replaced in theme files.
     * Fix: Product total price after ajax update in cart now is calculated properly.
 * 1.14 - 2014-12-11:
     * New: Used Coupon column on Orders page.
