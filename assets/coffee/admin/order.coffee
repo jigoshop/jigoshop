@@ -32,7 +32,7 @@ class AdminOrder
       type: 'post'
       dataType: 'json'
       data:
-        action: 'jigoshop_cart_select_shipping'
+        action: 'jigoshop.admin.order.change_shipping_method'
         order: $parent.data('order')
         method: $method.val()
         rate: $rate.val()

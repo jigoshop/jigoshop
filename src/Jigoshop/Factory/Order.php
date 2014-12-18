@@ -125,6 +125,7 @@ class Order implements EntityFactoryInterface
 					$state['shipping'] = array(
 						'method' => $this->shippingService->findForState($shipping['method']),
 						'price' => $shipping['price'],
+						'rate' => isset($shipping['rate']) ? $shipping['rate'] : null,
 					);
 				}
 			}
