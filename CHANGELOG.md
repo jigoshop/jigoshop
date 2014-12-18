@@ -1,6 +1,6 @@
 ## Changelog
 
-* 1.14.1:
+* 1.15:
     * Improved: Downloadable products links are showing as hyperlinks.
     * Fix: Download links now shows only in processing or completed order email notifications.
     * Fix: Reset pending Orders and Complete processing Orders will no longer send emails.
