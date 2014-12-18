@@ -2,7 +2,6 @@
 
 namespace Jigoshop\Frontend;
 
-use Jigoshop\Core\Pages;
 use Symfony\Component\DependencyInjection\Container;
 use WPAL\Wordpress;
 
@@ -15,7 +14,7 @@ class PageResolver
 {
 	/** @var \WPAL\Wordpress */
 	private $wp;
-	/** @var \Jigoshop\Core\Pages */
+	/** @var \Jigoshop\Frontend\Pages */
 	private $pages;
 
 	public function __construct(Wordpress $wp, Pages $pages)

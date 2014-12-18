@@ -4,13 +4,13 @@ namespace Jigoshop\Frontend\Page\Checkout;
 
 use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
-use Jigoshop\Core\Pages;
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\Order;
 use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\Product;
 use Jigoshop\Exception;
 use Jigoshop\Frontend\Page\PageInterface;
+use Jigoshop\Frontend\Pages;
 use Jigoshop\Helper\Api;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;

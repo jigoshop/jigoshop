@@ -2,6 +2,7 @@
 
 namespace Jigoshop\Core;
 
+use Jigoshop\Frontend\Pages;
 use Mockery as m;
 
 /**

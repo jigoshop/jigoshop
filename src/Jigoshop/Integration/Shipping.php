@@ -19,8 +19,6 @@ class Shipping implements MultipleMethod
 	private $rates;
 	/** @var int */
 	private $rate;
-	/** @var boolean */
-	private $calculated = false;
 
 	public function __construct($shipping)
 	{

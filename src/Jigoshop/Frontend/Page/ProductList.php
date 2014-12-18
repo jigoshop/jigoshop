@@ -4,8 +4,8 @@ namespace Jigoshop\Frontend\Page;
 
 use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
-use Jigoshop\Core\Pages;
 use Jigoshop\Core\Types;
+use Jigoshop\Frontend\Pages;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
 use Jigoshop\Service\CartServiceInterface;

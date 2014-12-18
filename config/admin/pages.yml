@@ -4,6 +4,7 @@ services:
     class: Jigoshop\Admin\PageResolver
     arguments:
       - '@wpal'
+      - '@jigoshop.admin.pages'
   jigoshop.admin.page.orders:
     class: Jigoshop\Admin\Page\Orders
     arguments:

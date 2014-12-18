@@ -415,14 +415,14 @@ class jigoshop_cart
 
 	public static function get_cart_url()
 	{
-		$url = get_permalink(Integration::getOptions()->getPageId(\Jigoshop\Core\Pages::CART));
+		$url = get_permalink(Integration::getOptions()->getPageId(\Jigoshop\Frontend\Pages::CART));
 		return apply_filters('jigoshop_get_cart_url', $url);
 	}
 
 	public static function get_checkout_url()
 	{
 		$options = Integration::getOptions();
-		$url = get_permalink($options->getPageId(\Jigoshop\Core\Pages::CHECKOUT));
+		$url = get_permalink($options->getPageId(\Jigoshop\Frontend\Pages::CHECKOUT));
 		$url = apply_filters('jigoshop_get_checkout_url', $url);
 
 		if ($options->get('advanced.force_ssl')) {
@@ -434,7 +434,7 @@ class jigoshop_cart
 
 	public static function get_shop_url()
 	{
-		$url = get_permalink(Integration::getOptions()->getPageId(\Jigoshop\Core\Pages::SHOP));
+		$url = get_permalink(Integration::getOptions()->getPageId(\Jigoshop\Frontend\Pages::SHOP));
 		return apply_filters('jigoshop_get_shop_page_id', $url);
 	}
 

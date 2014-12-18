@@ -2,6 +2,7 @@
 use Jigoshop\Admin\Helper\Forms;
 use Jigoshop\Helper\Currency;
 use Jigoshop\Helper\Product;
+use Jigoshop\Helper\Render;
 
 /**
  * @var $order \Jigoshop\Entity\Order The order.
@@ -19,7 +20,11 @@ $orderTax = $order->getTax();
 			<div class="col-sm-9">
 				<ul class="list-group" id="shipping-methods">
 					<?php foreach($shippingMethods as $method): /** @var $method \Jigoshop\Shipping\Method */ ?>
-						<?php \Jigoshop\Helper\Render::output('admin/order/totals/shipping_method', array('method' => $method, 'order' => $order)); ?>
+						<?php if ($method instanceof \Jigoshop\Shipping\MultipleMethod): ?>
+							<?php Render::output('admin/order/totals/shipping/multiple_method', array('method' => $method, 'order' => $order)); ?>
+						<?php else: ?>
+							<?php Render::output('admin/order/totals/shipping/method', array('method' => $method, 'order' => $order)); ?>
+						<?php endif; ?>
 					<?php endforeach; ?>
 				</ul>
 			</div>

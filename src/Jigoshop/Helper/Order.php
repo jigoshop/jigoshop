@@ -3,9 +3,9 @@
 namespace Jigoshop\Helper;
 
 use Jigoshop\Core\Options;
-use Jigoshop\Core\Pages;
 use Jigoshop\Entity\Customer\Guest;
 use Jigoshop\Entity\Order\Status;
+use Jigoshop\Frontend\Pages;
 
 class Order
 {

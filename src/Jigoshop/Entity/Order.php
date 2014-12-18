@@ -406,13 +406,7 @@ class Order implements EntityInterface, OrderInterface
 	public function hasShippingMethod($method, $rate = null)
 	{
 		if ($this->shippingMethod != null) {
-			if ($this->shippingMethod->getId() == $method->getId()) {
-				if ($rate === null) {
-					return true;
-				}
-
-				return $this->shippingMethodRate === $rate->getId();
-			}
+			return $this->shippingMethod->is($method, $rate);
 		}
 
 		return false;
@@ -548,6 +542,10 @@ class Order implements EntityInterface, OrderInterface
 	{
 		$tax = $this->tax;
 		foreach ($this->shippingTax as $class => $value) {
+			if (!isset($tax[$class])) {
+				$tax[$class] = 0.0;
+			}
+
 			$tax[$class] += $value;
 		}
 
@@ -671,7 +669,9 @@ class Order implements EntityInterface, OrderInterface
 		if (isset($state['shipping']) && is_array($state['shipping'])) {
 			$this->shippingMethod = $state['shipping']['method'];
 			$this->shippingPrice = $state['shipping']['price'];
-			$this->shippingMethodRate = $state['shipping']['rate'];
+			if (isset($state['shipping']['rate'])) {
+				$this->shippingMethodRate = $state['shipping']['rate'];
+			}
 		}
 		if (isset($state['payment']) && !empty($state['payment'])) {
 			$this->paymentMethod = $state['payment'];
@@ -682,6 +682,10 @@ class Order implements EntityInterface, OrderInterface
 		if (isset($state['shipping_tax'])) {
 			$tax = unserialize($state['shipping_tax']);
 			foreach ($tax as $class => $value) {
+				if (!isset($this->shippingTax[$class])) {
+					$this->shippingTax[$class] = 0.0;
+				}
+
 				$this->shippingTax[$class] += $value;
 			}
 		}

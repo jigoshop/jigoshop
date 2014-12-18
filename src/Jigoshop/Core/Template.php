@@ -5,6 +5,7 @@ namespace Jigoshop\Core;
 
 use Jigoshop\Exception;
 use Jigoshop\Frontend\Page\PageInterface;
+use Jigoshop\Frontend\Pages;
 use Jigoshop\Helper\Render;
 use Monolog\Registry;
 use WPAL\Wordpress;
@@ -20,7 +21,7 @@ class Template
 	private $wp;
 	/** @var \Jigoshop\Core\Options */
 	private $options;
-	/** @var \Jigoshop\Core\Pages */
+	/** @var \Jigoshop\Frontend\Pages */
 	private $pages;
 	/** @var PageInterface */
 	private $page;

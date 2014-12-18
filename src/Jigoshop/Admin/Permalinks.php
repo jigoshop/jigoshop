@@ -3,8 +3,8 @@
 namespace Jigoshop\Admin;
 
 use Jigoshop\Core\Options;
-use Jigoshop\Core\Pages;
 use Jigoshop\Core\Types;
+use Jigoshop\Frontend\Pages;
 use Jigoshop\Helper\Render;
 use WPAL\Wordpress;
 

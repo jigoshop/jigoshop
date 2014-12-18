@@ -14,12 +14,15 @@ use Jigoshop\Helper\Product as ProductHelper;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
+use Jigoshop\Helper\Tax;
 use Jigoshop\Helper\Validation;
 use Jigoshop\Service\CustomerServiceInterface;
 use Jigoshop\Service\OrderServiceInterface;
 use Jigoshop\Service\ProductServiceInterface;
 use Jigoshop\Service\ShippingServiceInterface;
 use Jigoshop\Shipping\Method;
+use Jigoshop\Shipping\MultipleMethod;
+use Jigoshop\Shipping\Rate;
 use WPAL\Wordpress;
 
 class Order
@@ -199,6 +202,15 @@ class Order
 			}
 
 			$shippingMethod = $this->shippingService->get($_POST['method']);
+
+			if ($shippingMethod instanceof MultipleMethod) {
+				if (!isset($_POST['rate'])) {
+					throw new Exception(__('Method rate is required.', 'jigoshop'));
+				}
+
+				$shippingMethod->setShippingRate((int)$_POST['rate']);
+			}
+
 			$order->setShippingMethod($shippingMethod);
 			$order = $this->rebuildOrder($order);
 			$this->orderService->save($order);
@@ -487,9 +499,32 @@ class Order
 		}
 
 		$shipping = array();
+		$shippingHtml = array();
 		foreach ($this->shippingService->getAvailable() as $method) {
 			/** @var $method Method */
-			$shipping[$method->getId()] = $method->isEnabled() ? $method->calculate($order) : -1;
+			if ($method instanceof MultipleMethod) {
+				/** @var $method MultipleMethod */
+				foreach ($method->getRates() as $rate) {
+					/** @var $rate Rate */
+					$shipping[$method->getId().'-'.$rate->getId()] = $method->isEnabled() ? $rate->calculate($order) : -1;
+
+					if ($method->isEnabled()) {
+						$shippingHtml[$method->getId().'-'.$rate->getId()] = array(
+							'price' => ProductHelper::formatPrice($rate->calculate($order)),
+							'html' => Render::get('admin/order/totals/shipping/rate', array('method' => $method, 'rate' => $rate, 'order' => $order)),
+						);
+					}
+				}
+			} else {
+				$shipping[$method->getId()] = $method->isEnabled() ? $method->calculate($order) : -1;
+
+				if ($method->isEnabled()) {
+					$shippingHtml[$method->getId()] = array(
+						'price' => ProductHelper::formatPrice($method->calculate($order)),
+						'html' => Render::get('admin/order/totals/shipping/method', array('method' => $method, 'order' => $order)),
+					);
+				}
+			}
 		}
 
 		return array(
@@ -500,13 +535,7 @@ class Order
 			'total' => $order->getTotal(),
 			'tax' => $tax,
 			'html' => array(
-				'shipping' => array_map(function($item) use ($order) {
-					/** @var $item Method */
-					return array(
-						'price' => ProductHelper::formatPrice($item->calculate($order)),
-						'html' => Render::get('admin/order/totals/shipping_method', array('method' => $item, 'order' => $order)),
-					);
-				}, $this->shippingService->getEnabled()),
+				'shipping' => $shippingHtml,
 				'product_subtotal' => ProductHelper::formatPrice($order->getProductSubtotal()),
 				'subtotal' => ProductHelper::formatPrice($order->getSubtotal()),
 				'total' => ProductHelper::formatPrice($order->getTotal()),
@@ -522,11 +551,10 @@ class Order
 	private function getTaxes($order)
 	{
 		$result = array();
-		$shippingTax = $order->getShippingTax();
-		foreach ($order->getTax() as $class => $value) {
+		foreach ($order->getCombinedTax() as $class => $value) {
 			$result[$class] = array(
-				'label' => $this->taxService->getLabel($class, $order->getCustomer()),
-				'value' => ProductHelper::formatPrice($value + $shippingTax[$class]),
+				'label' => Tax::getLabel($class, $order->getCustomer()),
+				'value' => ProductHelper::formatPrice($value),
 			);
 		}
 
@@ -546,12 +574,12 @@ class Order
 
 		foreach ($items as $item) {
 			/** @var $item Item */
-			$item->setTax($this->taxService->getAll($item, 1, $order->getCustomer()));
+			$item = $this->wp->applyFilters('jigoshop\admin\order\update_product', $item, $order);
 			$order->addItem($item);
 		}
 
 		if ($method !== null) {
-			$order->setShippingMethod($method, $this->taxService);
+			$order->setShippingMethod($method);
 		}
 
 		return $order;

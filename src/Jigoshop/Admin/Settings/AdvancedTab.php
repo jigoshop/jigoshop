@@ -4,7 +4,7 @@ namespace Jigoshop\Admin\Settings;
 
 use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
-use Jigoshop\Core\Pages;
+use Jigoshop\Frontend\Pages;
 use WPAL\Wordpress;
 
 /**

@@ -25,14 +25,17 @@ class AdminOrder
 
   selectShipping: (e) =>
     $parent = jQuery(e.target).closest('div.jigoshop')
+    $method = jQuery(e.target)
+    $rate = jQuery('.shipping-method-rate', $method.closest('li'))
 
     jQuery.ajax(@params.ajax,
       type: 'post'
       dataType: 'json'
       data:
-        action: 'jigoshop.admin.order.change_shipping_method'
+        action: 'jigoshop_cart_select_shipping'
         order: $parent.data('order')
-        method: jQuery(e.target).val()
+        method: $method.val()
+        rate: $rate.val()
     )
     .done (result) =>
       if result.success? and result.success

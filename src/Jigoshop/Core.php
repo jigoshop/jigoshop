@@ -4,8 +4,8 @@ namespace Jigoshop;
 
 use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
-use Jigoshop\Core\Pages;
 use Jigoshop\Core\Template;
+use Jigoshop\Frontend\Pages;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Tax;
 use WPAL\Wordpress;
@@ -18,7 +18,7 @@ class Core
 	private $options;
 	/** @var \Jigoshop\Core\Messages */
 	private $messages;
-	/** @var \Jigoshop\Core\Pages */
+	/** @var \Jigoshop\Frontend\Pages */
 	private $pages;
 	/** @var \Jigoshop\Core\Template */
 	private $template;

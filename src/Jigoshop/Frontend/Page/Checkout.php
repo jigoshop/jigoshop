@@ -4,7 +4,6 @@ namespace Jigoshop\Frontend\Page;
 
 use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
-use Jigoshop\Core\Pages;
 use Jigoshop\Entity\Customer;
 use Jigoshop\Entity\Customer\Address;
 use Jigoshop\Entity\Customer\CompanyAddress;
@@ -13,6 +12,7 @@ use Jigoshop\Entity\OrderInterface;
 use Jigoshop\Entity\Product\Simple;
 use Jigoshop\Exception;
 use Jigoshop\Frontend\Cart;
+use Jigoshop\Frontend\Pages;
 use Jigoshop\Helper\Country;
 use Jigoshop\Helper\Product;
 use Jigoshop\Helper\Render;

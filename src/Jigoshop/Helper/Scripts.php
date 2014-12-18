@@ -2,7 +2,7 @@
 
 namespace Jigoshop\Helper;
 
-use Jigoshop\Core\Pages;
+use Jigoshop\Frontend\Pages;
 use WPAL\Wordpress;
 
 /**
@@ -13,7 +13,7 @@ use WPAL\Wordpress;
  */
 class Scripts
 {
-	/** @var \Jigoshop\Core\Pages */
+	/** @var \Jigoshop\Frontend\Pages */
 	private $pages;
 	/** @var \WPAL\Wordpress */
 	private $wp;

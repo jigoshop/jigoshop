@@ -3,6 +3,7 @@
 namespace Jigoshop\Core;
 
 use Jigoshop\Core;
+use Jigoshop\Frontend\Pages;
 use Jigoshop\Service\EmailServiceInterface;
 use Monolog\Registry;
 use WPAL\Wordpress;

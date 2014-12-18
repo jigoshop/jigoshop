@@ -41,7 +41,7 @@ services:
     tags:
       - { name: jigoshop.container_aware }
   jigoshop.pages:
-    class: Jigoshop\Core\Pages
+    class: Jigoshop\Frontend\Pages
     arguments:
       - '@wpal'
       - '@jigoshop.options'

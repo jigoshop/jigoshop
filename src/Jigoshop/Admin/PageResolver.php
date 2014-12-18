@@ -15,10 +15,13 @@ class PageResolver
 {
 	/** @var \WPAL\Wordpress */
 	private $wp;
+	/** @var Pages */
+	private $pages;
 
-	public function __construct(Wordpress $wp)
+	public function __construct(Wordpress $wp, Pages $pages)
 	{
 		$this->wp = $wp;
+		$this->pages = $pages;
 	}
 
 	public function resolve(Container $container)
@@ -39,111 +42,34 @@ class PageResolver
 	{
 		$this->wp->doAction('jigoshop\admin\page_resolver\before');
 
-		if ($this->isProductsList()) {
+		if ($this->pages->isProductsList()) {
 			return $container->get('jigoshop.admin.page.products');
 		}
 
-		if ($this->isProduct()) {
+		if ($this->pages->isProduct()) {
 			return $container->get('jigoshop.admin.page.product');
 		}
 
-		if ($this->isOrdersList()) {
+		if ($this->pages->isOrdersList()) {
 			return $container->get('jigoshop.admin.page.orders');
 		}
 
-		if ($this->isOrder()) {
+		if ($this->pages->isOrder()) {
 			return $container->get('jigoshop.admin.page.order');
 		}
 
-		if ($this->isEmail()) {
+		if ($this->pages->isEmail()) {
 			return $container->get('jigoshop.admin.page.email');
 		}
 
-		if ($this->isCouponList()) {
+		if ($this->pages->isCouponList()) {
 			return $container->get('jigoshop.admin.page.coupons');
 		}
 
-		if ($this->isCoupon()) {
+		if ($this->pages->isCoupon()) {
 			return $container->get('jigoshop.admin.page.coupon');
 		}
 
 		return null;
-	}
-
-	private function isProductsList()
-	{
-		$screen = $this->wp->getCurrentScreen();
-
-		if ($screen !== null) {
-			return $screen->post_type === Types::PRODUCT && $screen->id === 'edit-'.Types::PRODUCT;
-		}
-
-		return DOING_AJAX && isset($_POST['action']) && strpos($_POST['action'], 'admin.products') !== false;
-	}
-
-	private function isProduct()
-	{
-		$screen = $this->wp->getCurrentScreen();
-
-		if ($screen !== null) {
-			return $screen->post_type === Types::PRODUCT && $screen->id === Types::PRODUCT;
-		}
-
-		return DOING_AJAX && isset($_POST['action']) && strpos($_POST['action'], 'admin.product') !== false;
-	}
-
-	private function isOrdersList()
-	{
-		$screen = $this->wp->getCurrentScreen();
-
-		if ($screen !== null) {
-			return $screen->post_type === Types::ORDER && $screen->id === 'edit-'.Types::ORDER;
-		}
-
-		return DOING_AJAX && isset($_POST['action']) && strpos($_POST['action'], 'admin.orders') !== false;
-	}
-
-	private function isOrder()
-	{
-		$screen = $this->wp->getCurrentScreen();
-
-		if ($screen !== null) {
-			return $screen->post_type === Types::ORDER && $screen->id === Types::ORDER;
-		}
-
-		return DOING_AJAX && isset($_POST['action']) && strpos($_POST['action'], 'admin.order') !== false;
-	}
-
-	private function isEmail()
-	{
-		$screen = $this->wp->getCurrentScreen();
-
-		if ($screen !== null) {
-			return $screen->post_type === Types::EMAIL && $screen->id === Types::EMAIL;
-		}
-
-		return DOING_AJAX && isset($_POST['action']) && strpos($_POST['action'], 'admin.email') !== false;
-	}
-
-	private function isCouponList()
-	{
-		$screen = $this->wp->getCurrentScreen();
-
-		if ($screen !== null) {
-			return $screen->post_type === Types::COUPON && $screen->id === 'edit-'.Types::COUPON;
-		}
-
-		return DOING_AJAX && isset($_POST['action']) && strpos($_POST['action'], 'admin.coupons') !== false;
-	}
-
-	private function isCoupon()
-	{
-		$screen = $this->wp->getCurrentScreen();
-
-		if ($screen !== null) {
-			return $screen->post_type === Types::COUPON && $screen->id === Types::COUPON;
-		}
-
-		return DOING_AJAX && isset($_POST['action']) && strpos($_POST['action'], 'admin.coupon') !== false;
 	}
 }

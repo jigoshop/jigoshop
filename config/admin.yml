@@ -8,6 +8,11 @@ services:
       - '@jigoshop.admin.permalinks'
       - '@jigoshop.helper.styles'
       - '@jigoshop.helper.scripts'
+  jigoshop.admin.pages:
+    class: Jigoshop\Admin\Pages
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
   jigoshop.admin.dashboard:
     class: Jigoshop\Admin\Dashboard
     arguments:

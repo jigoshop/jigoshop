@@ -1,8 +1,10 @@
 <?php
 
-namespace Jigoshop\Core;
+namespace Jigoshop\Frontend;
 
 use Jigoshop\Core;
+use Jigoshop\Core\Options;
+use Jigoshop\Core\Types;
 use WPAL\Wordpress;
 
 /**

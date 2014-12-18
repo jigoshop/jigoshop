@@ -4,11 +4,11 @@ namespace Jigoshop\Frontend\Page\Account;
 
 use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
-use Jigoshop\Core\Pages;
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\Customer\CompanyAddress;
 use Jigoshop\Entity\Order\Item;
 use Jigoshop\Frontend\Page\PageInterface;
+use Jigoshop\Frontend\Pages;
 use Jigoshop\Helper\Country;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
