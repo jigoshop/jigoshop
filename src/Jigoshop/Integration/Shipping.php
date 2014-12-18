@@ -6,13 +6,21 @@ use Jigoshop\Admin\Settings\ShippingTab;
 use Jigoshop\Entity\OrderInterface;
 use Jigoshop\Integration;
 use Jigoshop\Shipping\Method;
+use Jigoshop\Shipping\MultipleMethod;
+use Jigoshop\Shipping\Rate;
 
-class Shipping implements Method
+class Shipping implements MultipleMethod
 {
 	/** @var \jigoshop_shipping_method */
 	private $shipping;
 	/** @var array */
 	private $options;
+	/** @var array */
+	private $rates;
+	/** @var int */
+	private $rate;
+	/** @var boolean */
+	private $calculated = false;
 
 	public function __construct($shipping)
 	{
@@ -130,7 +138,78 @@ class Shipping implements Method
 	public function calculate(OrderInterface $order)
 	{
 		$this->shipping->calculate_shipping();
+
+		if ($this->rate !== null) {
+			return $this->shipping->get_selected_price($this->rate);
+		}
+
 		return $this->shipping->get_cheapest_price();
+	}
+
+	/**
+	 * Checks whether current method is the one specified with selected rule.
+	 *
+	 * @param Method $method Method to check.
+	 * @param Rate $rate Rate to check.
+	 * @return boolean Is this the method?
+	 */
+	public function is(Method $method, $rate = null)
+	{
+		if ($method->getId() == $this->getId()) {
+			if ($rate != null) {
+				return $rate->getId() == $this->rate;
+			}
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Returns list of available shipping rates.
+	 *
+	 * @return array List of available shipping rates.
+	 */
+	public function getRates()
+	{
+		if ($this->rates === null) {
+			$this->rates = array();
+			$rates = $this->shipping->__get_rates();
+
+			if ($rates === null) {
+				$this->shipping->calculate_shipping();
+				$rates = $this->shipping->__get_rates();
+			}
+
+			foreach ($rates as $id => $source) {
+				$rate = new Rate();
+				$rate->setId($id);
+				$rate->setPrice($source['price']);
+				$rate->setName($source['service']);
+				$rate->setMethod($this);
+				$this->rates[$rate->getId()] = $rate;
+			}
+		}
+
+		return $this->rates;
+	}
+
+	/**
+	 * @param $rate int Rate to use.
+	 */
+	public function setShippingRate($rate)
+	{
+		$this->shipping->set_selected_service_index($rate);
+		$this->rate = $rate;
+	}
+
+	/**
+	 * @return int Currently used rate.
+	 */
+	public function getShippingRate()
+	{
+		return $this->rate;
 	}
 
 	/**
@@ -140,6 +219,20 @@ class Shipping implements Method
 	{
 		return array(
 			'id' => $this->getId(),
+			'rate' => $this->rate,
 		);
+	}
+
+	/**
+	 * Restores shipping method state.
+	 *
+	 * @param array $state State to restore.
+	 */
+	public function restoreState(array $state)
+	{
+		if (isset($state['rate'])) {
+			$this->rate = (int)$state['rate'];
+			$this->shipping->set_selected_service_index($this->rate);
+		}
 	}
 }

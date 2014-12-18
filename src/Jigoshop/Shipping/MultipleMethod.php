@@ -10,4 +10,14 @@ interface MultipleMethod extends Method
 	 * @return array List of available shipping rates.
 	 */
 	public function getRates();
+
+	/**
+	 * @param $rate int Rate to use.
+	 */
+	public function setShippingRate($rate);
+
+	/**
+	 * @return int Currently used rate.
+	 */
+	public function getShippingRate();
 }

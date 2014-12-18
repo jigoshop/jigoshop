@@ -119,4 +119,26 @@ class LocalPickup implements Method
 			'id' => $this->getId(),
 		);
 	}
+
+	/**
+	 * Restores shipping method state.
+	 *
+	 * @param array $state State to restore.
+	 */
+	public function restoreState(array $state)
+	{
+		// Empty
+	}
+
+	/**
+	 * Checks whether current method is the one specified with selected rule.
+	 *
+	 * @param Method $method Method to check.
+	 * @param int $rate Rate to check.
+	 * @return boolean Is this the method?
+	 */
+	public function is(Method $method, $rate = null)
+	{
+		return $method->getId() == $this->getId();
+	}
 }

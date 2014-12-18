@@ -526,7 +526,6 @@ class Cart implements OrderInterface
 		return array(
 			'id' => $this->id,
 			'shipping_method' => $this->shippingMethod !== null ? $this->shippingMethod->getState() : null,
-			'shipping_method_rate' => $this->shippingMethodRate,
 			'coupons' => array_map(function($item){
 				/** @var Coupon $coupon */
 				$coupon = $item['object'];
@@ -546,13 +545,7 @@ class Cart implements OrderInterface
 	public function hasShippingMethod($method, $rate = null)
 	{
 		if ($this->shippingMethod !== null) {
-			if ($this->shippingMethod->getId() == $method->getId()) {
-				if ($rate === null) {
-					return true;
-				}
-
-				return $this->shippingMethodRate === $rate->getId();
-			}
+			return $this->shippingMethod->is($method, $rate);
 		}
 
 		return false;

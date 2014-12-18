@@ -26,6 +26,8 @@ use Jigoshop\Service\ProductServiceInterface;
 use Jigoshop\Service\ShippingServiceInterface;
 use Jigoshop\Service\TaxServiceInterface;
 use Jigoshop\Shipping\Method;
+use Jigoshop\Shipping\MultipleMethod;
+use Jigoshop\Shipping\Rate;
 use WPAL\Wordpress;
 
 class Cart implements PageInterface
@@ -156,7 +158,6 @@ class Cart implements PageInterface
 	private function getAjaxCartResponse(\Jigoshop\Frontend\Cart $cart)
 	{
 		$tax = array();
-		// TODO: There are some problems with taxes and integration layer
 		foreach ($cart->getCombinedTax() as $class => $value) {
 			$tax[$class] = array(
 				'label' => Tax::getLabel($class),
@@ -165,9 +166,31 @@ class Cart implements PageInterface
 		}
 
 		$shipping = array();
+		$shippingHtml = array();
 		foreach ($this->shippingService->getAvailable() as $method) {
 			/** @var $method Method */
-			$shipping[$method->getId()] = $method->isEnabled() ? $method->calculate($cart) : -1;
+			if ($method instanceof MultipleMethod) {
+				foreach ($method->getRates() as $rate) {
+					/** @var $rate Rate */
+					$shipping[$method->getId().'-'.$rate->getId()] = $method->isEnabled() ? $rate->calculate($cart) : -1;
+
+					if ($method->isEnabled()) {
+						$shippingHtml[$method->getId().'-'.$rate->getId()] = array(
+							'price' => Product::formatPrice($rate->calculate($cart)),
+							'html' => Render::get('shop/cart/shipping/rate', array('method' => $method, 'rate' => $rate, 'cart' => $cart)),
+						);
+					}
+				}
+			} else {
+				$shipping[$method->getId()] = $method->isEnabled() ? $method->calculate($cart) : -1;
+
+				if ($method->isEnabled()) {
+					$shippingHtml[$method->getId()] = array(
+						'price' => Product::formatPrice($method->calculate($cart)),
+						'html' => Render::get('shop/cart/shipping/method', array('method' => $method, 'cart' => $cart)),
+					);
+				}
+			}
 		}
 
 		$productSubtotal = $this->options->get('tax.price_tax') == 'with_tax' ? $cart->getProductSubtotal() + $cart->getTotalTax() : $cart->getProductSubtotal();
@@ -185,13 +208,7 @@ class Cart implements PageInterface
 			'tax' => $cart->getCombinedTax(),
 			'total' => $cart->getTotal(),
 			'html' => array(
-				'shipping' => array_map(function($item) use ($cart) {
-					/** @var $item Method  */
-					return array(
-						'price' => Product::formatPrice($item->calculate($cart)),
-						'html' => Render::get('shop/cart/shipping/method', array('method' => $item, 'cart' => $cart)),
-					);
-				}, $this->shippingService->getEnabled()),
+				'shipping' => $shippingHtml,
 				'discount' => Product::formatPrice($cart->getDiscount()),
 				'subtotal' => Product::formatPrice($cart->getSubtotal()),
 				'product_subtotal' => Product::formatPrice($productSubtotal),
@@ -261,6 +278,15 @@ class Cart implements PageInterface
 		try {
 			$method = $this->shippingService->get($_POST['method']);
 			$cart = $this->cartService->getCurrent();
+
+			if ($method instanceof MultipleMethod) {
+				if (!isset($_POST['rate'])) {
+					throw new Exception(__('Method rate is required.', 'jigoshop'));
+				}
+
+				$method->setShippingRate((int)$_POST['rate']);
+			}
+
 			$cart->setShippingMethod($method);
 			$this->cartService->save($cart);
 

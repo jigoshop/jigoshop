@@ -50,6 +50,7 @@ class Shipping implements ShippingServiceInterface
 	public function findForState(array $state)
 	{
 		$method = $this->get($state['id']);
+		$method->restoreState($state);
 		return $method;
 	}
 

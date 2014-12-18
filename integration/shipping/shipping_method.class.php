@@ -14,7 +14,7 @@ use Jigoshop\Integration;
  * @copyright           Copyright © 2011-2014 Jigoshop.
  * @license             GNU General Public License v3
  */
-class jigoshop_shipping_method
+abstract class jigoshop_shipping_method
 {
 	var $id;
 	var $title;
@@ -50,6 +50,17 @@ class jigoshop_shipping_method
 	{
 		return $this->get_default_options();
 	}
+
+	/**
+	 * @internal
+	 * @return array List of all rates added to the method.
+	 */
+	public function __get_rates()
+	{
+		return $this->rates;
+	}
+
+	public abstract function calculate_shipping();
 
 	/**
 	 * Default Option settings for WordPress Settings API using an implementation of the Jigoshop_Options_Interface
@@ -132,11 +143,7 @@ class jigoshop_shipping_method
 
 	public function is_chosen()
 	{
-		if ($this->chosen) {
-			return true;
-		}
-
-		return false;
+		return $this->chosen;
 	}
 
 	public function choose()

@@ -77,12 +77,15 @@ class Checkout
       data: data
 
   selectShipping: =>
+    $method = jQuery('#shipping-calculator input[type=radio]:checked')
+    $rate = jQuery('.shipping-method-rate', $method.closest('li'))
     jQuery.ajax(@params.ajax,
       type: 'post'
       dataType: 'json'
       data:
         action: 'jigoshop_cart_select_shipping'
-        method: jQuery('#shipping-calculator input[type=radio]:checked').val()
+        method: $method.val()
+        rate: $rate.val()
     )
     .done (result) =>
       if result.success

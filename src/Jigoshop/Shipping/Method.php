@@ -46,6 +46,15 @@ interface Method
 	public function validateOptions($settings);
 
 	/**
+	 * Checks whether current method is the one specified with selected rule.
+	 *
+	 * @param Method $method Method to check.
+	 * @param Rate $rate Rate to check.
+	 * @return boolean Is this the method?
+	 */
+	public function is(Method $method, $rate = null);
+
+	/**
 	 * @param OrderInterface $order Order to calculate shipping for.
 	 * @return float Calculates value of shipping for the order.
 	 */
@@ -55,4 +64,11 @@ interface Method
 	 * @return array Minimal state to fully identify shipping method.
 	 */
 	public function getState();
+
+	/**
+	 * Restores shipping method state.
+	 *
+	 * @param array $state State to restore.
+	 */
+	public function restoreState(array $state);
 }

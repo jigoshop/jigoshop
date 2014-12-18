@@ -179,9 +179,31 @@ class Checkout implements PageInterface
 		}
 
 		$shipping = array();
+		$shippingHtml = array();
 		foreach ($this->shippingService->getAvailable() as $method) {
 			/** @var $method Method */
-			$shipping[$method->getId()] = $method->isEnabled() ? $method->calculate($cart) : -1;
+			if ($method instanceof MultipleMethod) {
+				foreach ($method->getRates() as $rate) {
+					/** @var $rate Rate */
+					$shipping[$method->getId().'-'.$rate->getId()] = $method->isEnabled() ? $rate->calculate($cart) : -1;
+
+					if ($method->isEnabled()) {
+						$shippingHtml[$method->getId().'-'.$rate->getId()] = array(
+							'price' => Product::formatPrice($rate->calculate($cart)),
+							'html' => Render::get('shop/cart/shipping/rate', array('method' => $method, 'rate' => $rate, 'cart' => $cart)),
+						);
+					}
+				}
+			} else {
+				$shipping[$method->getId()] = $method->isEnabled() ? $method->calculate($cart) : -1;
+
+				if ($method->isEnabled()) {
+					$shippingHtml[$method->getId()] = array(
+						'price' => Product::formatPrice($method->calculate($cart)),
+						'html' => Render::get('shop/cart/shipping/method', array('method' => $method, 'cart' => $cart)),
+					);
+				}
+			}
 		}
 
 		$response = array(
@@ -192,13 +214,7 @@ class Checkout implements PageInterface
 			'tax' => $cart->getCombinedTax(),
 			'total' => $cart->getTotal(),
 			'html' => array(
-				'shipping' => array_map(function($item) use ($cart) {
-					/** @var $item Method */
-					return array(
-						'price' => Product::formatPrice($item->calculate($cart)),
-						'html' => Render::get('shop/cart/shipping/method', array('method' => $item, 'cart' => $cart)),
-					);
-				}, $this->shippingService->getEnabled()),
+				'shipping' => $shippingHtml,
 				'subtotal' => Product::formatPrice($cart->getSubtotal()),
 				'product_subtotal' => Product::formatPrice($cart->getProductSubtotal()),
 				'tax' => $tax,
