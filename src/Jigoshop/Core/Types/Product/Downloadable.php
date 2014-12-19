@@ -98,7 +98,7 @@ class Downloadable implements Type
 		$downloadable = true;
 		foreach ($order->getItems() as $item) {
 			/** @var $item Order\Item */
-			$downloadable &= $item->getType() != Entity::TYPE;
+			$downloadable &= $item->getType() == Entity::TYPE;
 		}
 
 		if ($downloadable) {
@@ -118,7 +118,7 @@ class Downloadable implements Type
 		$downloadable = true;
 		foreach ($order->getItems() as $item) {
 			/** @var $item Order\Item */
-			$downloadable &= $item->getType() != Entity::TYPE;
+			$downloadable &= $item->getType() == Entity::TYPE;
 		}
 
 		if ($downloadable) {
