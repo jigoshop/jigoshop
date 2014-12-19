@@ -21,7 +21,7 @@ class Gateway implements Method
 
 		$settings = Integration::getOptions();
 		$source = $this->gateway->__get_default_options();
-		$options = array();
+		$this->options = array();
 
 		foreach ($source as $sourceOption) {
 			if ($sourceOption['type'] != 'title') {
@@ -41,13 +41,11 @@ class Gateway implements Method
 					}
 				}
 
-				$options[] = $option;
+				$this->options[] = $option;
 			}
 		}
 
-		$this->options = $options;
-		// TODO: Any idea how to initialize all options while instance already created?
-		$this->gateway = new $gateway();
+		$this->gateway->__construct();
 	}
 
 	/**

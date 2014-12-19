@@ -26,7 +26,7 @@ class Shipping implements MultipleMethod
 
 		$settings = Integration::getOptions();
 		$source = $this->shipping->__get_default_options();
-		$options = array();
+		$this->options = array();
 
 		foreach ($source as $sourceOption) {
 			if ($sourceOption['type'] != 'title') {
@@ -46,13 +46,11 @@ class Shipping implements MultipleMethod
 					}
 				}
 
-				$options[] = $option;
+				$this->options[] = $option;
 			}
 		}
 
-		$this->options = $options;
-		// TODO: Any idea how to initialize all options while instance already created?
-		$this->shipping = new $shipping();
+		$this->shipping->__construct();
 	}
 
 	/**
