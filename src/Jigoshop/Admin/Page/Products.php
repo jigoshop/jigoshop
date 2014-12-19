@@ -98,7 +98,7 @@ class Products
 		$product = $this->productService->find($post->ID);
 		switch ($column) {
 			case 'thumbnail':
-				echo ProductHelper::getFeaturedImage($product);
+				echo ProductHelper::getFeaturedImage($product, Options::IMAGE_THUMBNAIL);
 				break;
 			case 'price':
 				echo ProductHelper::getPriceHtml($product);

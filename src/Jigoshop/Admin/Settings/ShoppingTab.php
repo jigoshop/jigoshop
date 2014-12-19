@@ -177,7 +177,7 @@ class ShoppingTab implements TabInterface
 						'name' => '[unpaid_orders_number]',
 						'title' => __('Number of unpaid orders in My Account', 'jigoshop'),
 						'type' => 'number',
-						'checked' => $this->options['unpaid_orders_number'],
+						'value' => $this->options['unpaid_orders_number'],
 					),
 				),
 			),
