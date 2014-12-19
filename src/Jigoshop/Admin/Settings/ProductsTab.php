@@ -145,55 +145,92 @@ class ProductsTab implements TabInterface
 			),
 			array(
 				'title' => __('Images', 'jigoshop'),
+				'description' => __('Changing any of those settings will affect image sizes on your page. If you have cropping enabled you will need to regenerate thumbnails.', 'jigoshop'),
 				'id' => 'images',
 				'fields' => array(
 					array(
 						'name' => '[images][tiny][width]',
 						'title' => __('Tiny image width', 'jigoshop'),
+						'tip' => __('Used in cart for product image.', 'jigoshop'),
 						'type' => 'number',
 						'value' => $this->options['images']['tiny']['width'],
 					),
 					array(
 						'name' => '[images][tiny][height]',
 						'title' => __('Tiny image height', 'jigoshop'),
+						'tip' => __('Used in cart for product image.', 'jigoshop'),
 						'type' => 'number',
 						'value' => $this->options['images']['tiny']['height'],
 					),
 					array(
+						'name' => '[images][tiny][crop]',
+						'title' => __('Crop tiny image', 'jigoshop'),
+						'tip' => __('Leave disabled to scale images proportionally, enable to do real cropping.', 'jigoshop'),
+						'type' => 'checkbox',
+						'checked' => $this->options['images']['tiny']['crop'],
+					),
+					array(
 						'name' => '[images][thumbnail][width]',
 						'title' => __('Thumbnail image width', 'jigoshop'),
+						'tip' => __('Used in single product view for other images thumbnails.', 'jigoshop'),
 						'type' => 'number',
 						'value' => $this->options['images']['thumbnail']['width'],
 					),
 					array(
 						'name' => '[images][thumbnail][height]',
 						'title' => __('Thumbnail image height', 'jigoshop'),
+						'tip' => __('Used in single product view for other images thumbnails.', 'jigoshop'),
 						'type' => 'number',
 						'value' => $this->options['images']['thumbnail']['height'],
 					),
 					array(
-						'name' => '[images][catalog][width]',
-						'title' => __('Catalog image width', 'jigoshop'),
-						'type' => 'number',
-						'value' => $this->options['images']['catalog']['width'],
+						'name' => '[images][thumbnail][crop]',
+						'title' => __('Crop thumbnail image', 'jigoshop'),
+						'tip' => __('Leave disabled to scale images proportionally, enable to do real cropping.', 'jigoshop'),
+						'type' => 'checkbox',
+						'checked' => $this->options['images']['thumbnail']['crop'],
 					),
 					array(
-						'name' => '[images][catalog][height]',
-						'title' => __('Catalog image height', 'jigoshop'),
+						'name' => '[images][small][width]',
+						'title' => __('Small image width', 'jigoshop'),
+						'tip' => __('Used in catalog for product thumbnails.', 'jigoshop'),
 						'type' => 'number',
-						'value' => $this->options['images']['catalog']['height'],
+						'value' => $this->options['images']['small']['width'],
+					),
+					array(
+						'name' => '[images][small][height]',
+						'title' => __('Small image height', 'jigoshop'),
+						'tip' => __('Used in catalog for product thumbnails.', 'jigoshop'),
+						'type' => 'number',
+						'value' => $this->options['images']['small']['height'],
+					),
+					array(
+						'name' => '[images][small][crop]',
+						'title' => __('Crop small image', 'jigoshop'),
+						'tip' => __('Leave disabled to scale images proportionally, enable to do real cropping.', 'jigoshop'),
+						'type' => 'checkbox',
+						'checked' => $this->options['images']['small']['crop'],
 					),
 					array(
 						'name' => '[images][large][width]',
 						'title' => __('Large image width', 'jigoshop'),
+						'tip' => __('Used in single product view for featured image.', 'jigoshop'),
 						'type' => 'number',
 						'value' => $this->options['images']['large']['width'],
 					),
 					array(
 						'name' => '[images][large][height]',
 						'title' => __('Large image height', 'jigoshop'),
+						'tip' => __('Used in single product view for featured image.', 'jigoshop'),
 						'type' => 'number',
 						'value' => $this->options['images']['large']['height'],
+					),
+					array(
+						'name' => '[images][large][crop]',
+						'title' => __('Crop large image', 'jigoshop'),
+						'tip' => __('Leave disabled to scale images proportionally, enable to do real cropping.', 'jigoshop'),
+						'type' => 'checkbox',
+						'checked' => $this->options['images']['large']['crop'],
 					),
 				),
 			),
@@ -231,6 +268,27 @@ class ProductsTab implements TabInterface
 		$settings['notify_low_stock'] = $settings['notify_low_stock'] == 'on';
 		$settings['notify_out_of_stock'] = $settings['notify_out_of_stock'] == 'on';
 		$settings['notify_on_backorders'] = $settings['notify_on_backorders'] == 'on';
+
+		$settings['images']['tiny'] = array(
+			'width' => (int)$settings['images']['tiny']['width'],
+			'height' => (int)$settings['images']['tiny']['height'],
+			'crop' => $settings['images']['tiny']['crop'] == 'on',
+		);
+		$settings['images']['thumbnail'] = array(
+			'width' => (int)$settings['images']['thumbnail']['width'],
+			'height' => (int)$settings['images']['thumbnail']['height'],
+			'crop' => $settings['images']['thumbnail']['crop'] == 'on',
+		);
+		$settings['images']['small'] = array(
+			'width' => (int)$settings['images']['small']['width'],
+			'height' => (int)$settings['images']['small']['height'],
+			'crop' => $settings['images']['small']['crop'] == 'on',
+		);
+		$settings['images']['large'] = array(
+			'width' => (int)$settings['images']['large']['width'],
+			'height' => (int)$settings['images']['large']['height'],
+			'crop' => $settings['images']['large']['crop'] == 'on',
+		);
 
 		return $settings;
 	}

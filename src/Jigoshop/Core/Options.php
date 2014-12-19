@@ -15,6 +15,11 @@ class Options
 {
 	const NAME = 'jigoshop';
 
+	const IMAGE_TINY = 'shop_tiny';
+	const IMAGE_THUMBNAIL = 'shop_thumbnail';
+	const IMAGE_SMALL = 'shop_small';
+	const IMAGE_LARGE = 'shop_large';
+
 	/** @var Wordpress */
 	private $wp;
 
@@ -69,18 +74,22 @@ class Options
 				'tiny' => array(
 					'width' => 36,
 					'height' => 36,
+					'crop' => false,
 				),
 				'thumbnail' => array(
 					'width' => 90,
 					'height' => 90,
+					'crop' => false,
 				),
-				'catalog' => array(
+				'small' => array(
 					'width' => 150,
 					'height' => 150,
+					'crop' => false,
 				),
 				'large' => array(
 					'width' => 300,
 					'height' => 300,
+					'crop' => false,
 				),
 			),
 		),
@@ -181,26 +190,27 @@ class Options
 
 	public function getImageSizes()
 	{
+		$sizes = $this->get('products.images');
 		return $this->wp->applyFilters('jigoshop\image\sizes', array(
-			'shop_tiny' => array(
-				'crop' => $this->wp->applyFilters('jigoshop\image\size\crop', false, 'shop_tiny'),
-				'width' => '36', // TODO: Use proper constants when Images are added.
-				'height' => '36',
+			self::IMAGE_TINY => array(
+				'crop' => $this->wp->applyFilters('jigoshop\image\size\crop', $sizes['tiny']['crop'], self::IMAGE_TINY),
+				'width' => $sizes['tiny']['width'],
+				'height' => $sizes['tiny']['height'],
 			),
-			'shop_thumbnail' => array(
-				'crop' => $this->wp->applyFilters('jigoshop\image\size\crop', false, 'shop_thumbnail'),
-				'width' => '90',
-				'height' => '90',
+			self::IMAGE_THUMBNAIL => array(
+				'crop' => $this->wp->applyFilters('jigoshop\image\size\crop', $sizes['thumbnail']['crop'], self::IMAGE_THUMBNAIL),
+				'width' => $sizes['thumbnail']['width'],
+				'height' => $sizes['thumbnail']['height'],
 			),
-			'shop_small' => array(
-				'crop' => $this->wp->applyFilters('jigoshop\image\size\crop', false, 'shop_small'),
-				'width' => '150',
-				'height' => '150',
+			self::IMAGE_SMALL => array(
+				'crop' => $this->wp->applyFilters('jigoshop\image\size\crop', $sizes['small']['crop'], self::IMAGE_SMALL),
+				'width' => $sizes['small']['width'],
+				'height' => $sizes['small']['height'],
 			),
-			'shop_large' => array(
-				'crop' => $this->wp->applyFilters('jigoshop\image\size\crop', false, 'shop_large'),
-				'width' => '300',
-				'height' => '300',
+			self::IMAGE_LARGE => array(
+				'crop' => $this->wp->applyFilters('jigoshop\image\size\crop', $sizes['large']['crop'], self::IMAGE_LARGE),
+				'width' => $sizes['large']['width'],
+				'height' => $sizes['large']['height'],
 			),
 		));
 	}
