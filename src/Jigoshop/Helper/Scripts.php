@@ -70,4 +70,27 @@ class Scripts
 			wp_localize_script($handle, $variable, $value);
 		}
 	}
+
+	/**
+	 * Removes script from enqueued list.
+	 * Calls filter `jigoshop_remove_script`. If the filter returns empty value the script is omitted.
+	 * Available options:
+	 *   * page - list of pages to use the script
+	 * Options could be extended by plugins.
+	 *
+	 * @param string $handle Handle name.
+	 * @param array $options List of options.
+	 */
+	public function remove($handle, $options)
+	{
+		$page = isset($options['page']) ? (array)$options['page'] : array('all');
+
+		if ($this->pages->isOneOf($page)) {
+			$handle = $this->wp->applyFilters('jigoshop\script\remove', $handle, $options);
+
+			if (!empty($handle)) {
+				$this->wp->wpDeregisterScript($handle);
+			}
+		}
+	}
 }

@@ -202,6 +202,22 @@ class Integration
 	}
 
 	/**
+	 * @return \Jigoshop\Helper\Styles
+	 */
+	public static function getStyles()
+	{
+		return self::$di->get('jigoshop.helper.styles');
+	}
+
+	/**
+	 * @return \Jigoshop\Helper\Scripts
+	 */
+	public static function getScripts()
+	{
+		return self::$di->get('jigoshop.helper.scripts');
+	}
+
+	/**
 	 * @return \Jigoshop\Frontend\Pages
 	 */
 	public static function getPages()
