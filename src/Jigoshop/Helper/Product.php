@@ -140,7 +140,7 @@ class Product
 	 * @param string $size
 	 * @return string
 	 */
-	public static function getFeaturedImage(Entity\Product $product, $size = 'admin_product_list')
+	public static function getFeaturedImage(Entity\Product $product, $size = Options::IMAGE_SMALL)
 	{
 		if (self::hasFeaturedImage($product)) {
 			return get_the_post_thumbnail($product->getId(), $size);
@@ -174,7 +174,7 @@ class Product
 	 * @param string $size
 	 * @return string
 	 */
-	public static function getImagePlaceholder($size = 'admin_product_list')
+	public static function getImagePlaceholder($size = Options::IMAGE_SMALL)
 	{
 		$size = self::getImageSize($size);
 

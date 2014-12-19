@@ -2,6 +2,7 @@
 
 namespace Jigoshop\Service;
 
+use Jigoshop\Core\Options;
 use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\Product;
 use Jigoshop\Entity\Product\Attribute;
@@ -70,9 +71,10 @@ interface ProductServiceInterface extends ServiceInterface
 
 	/**
 	 * @param Product $product Product to find thumbnails for.
+	 * @param string $size Size for images.
 	 * @return array List of thumbnails attached to the product.
 	 */
-	public function getThumbnails(Product $product);
+	public function getThumbnails(Product $product, $size = Options::IMAGE_THUMBNAIL);
 
 	/**
 	 * Finds and returns list of available attributes.

@@ -2,6 +2,7 @@
 
 namespace Jigoshop\Service\Cache\Product;
 
+use Jigoshop\Core\Options;
 use Jigoshop\Entity\EntityInterface;
 use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\Product;
@@ -139,9 +140,10 @@ class Simple implements ProductServiceInterface
 
 	/**
 	 * @param Product $product Product to find thumbnails for.
+	 * @param string $size Size for images.
 	 * @return array List of thumbnails attached to the product.
 	 */
-	public function getThumbnails(Product $product)
+	public function getThumbnails(Product $product, $size = Options::IMAGE_THUMBNAIL)
 	{
 		// TODO: Implement getThumbnails() method.
 		return $this->service->getThumbnails($product);

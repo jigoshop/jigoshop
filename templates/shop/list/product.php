@@ -1,4 +1,5 @@
 <?php
+use Jigoshop\Core\Options;
 use Jigoshop\Helper\Product;
 
 /**
@@ -12,7 +13,7 @@ use Jigoshop\Helper\Product;
 		<?php if (Product::isOnSale($product)): ?>
 			<span class="on-sale"><?php _e('Sale!', 'jigoshop'); ?></span>
 		<?php endif; ?>
-		<?php echo Product::getFeaturedImage($product, 'shop_small'); ?>
+		<?php echo Product::getFeaturedImage($product, Options::IMAGE_SMALL); ?>
 	</a>
 	<a href="<?php echo $product->getLink(); ?>">
 		<?php do_action('jigoshop\shop\list\product\before_title', $product); ?>

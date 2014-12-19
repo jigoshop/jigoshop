@@ -2,6 +2,7 @@
 
 namespace Jigoshop\Service;
 
+use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\EntityInterface;
 use Jigoshop\Entity\Order\Item;
@@ -307,9 +308,10 @@ class Product implements ProductServiceInterface
 
 	/**
 	 * @param \Jigoshop\Entity\Product $product Product to find thumbnails for.
+	 * @param string $size Size for images.
 	 * @return array List of thumbnails attached to the product.
 	 */
-	public function getThumbnails(\Jigoshop\Entity\Product $product)
+	public function getThumbnails(\Jigoshop\Entity\Product $product, $size = Options::IMAGE_THUMBNAIL)
 	{
 		$query = new \WP_Query();
 		$args = array(
@@ -329,7 +331,7 @@ class Product implements ProductServiceInterface
 			$thumbnails[$thumbnail->ID] = array(
 				'title' => $thumbnail->post_title,
 				'url' => $this->wp->wpGetAttachmentUrl($thumbnail->ID),
-				'image' => $this->wp->wpGetAttachmentImage($thumbnail->ID, 'shop_thumbnail'),
+				'image' => $this->wp->wpGetAttachmentImage($thumbnail->ID, $size),
 			);
 		}
 

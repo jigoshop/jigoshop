@@ -119,9 +119,9 @@ class Product implements PageInterface
 	public function productImages($product)
 	{
 		$imageClasses = apply_filters('jigoshop\product\image_classes', array(), $product);
-		$featured = ProductHelper::getFeaturedImage($product, 'shop_large');
+		$featured = ProductHelper::getFeaturedImage($product, Options::IMAGE_LARGE);
 		$featuredUrl = ProductHelper::hasFeaturedImage($product) ? $this->wp->wpGetAttachmentUrl($this->wp->getPostThumbnailId($product->getId())) : '';
-		$thumbnails = $this->productService->getThumbnails($product);
+		$thumbnails = $this->productService->getThumbnails($product, Options::IMAGE_THUMBNAIL);
 
 		Render::output('shop/product/images', array(
 			'product' => $product,
