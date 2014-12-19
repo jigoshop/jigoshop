@@ -1,5 +1,7 @@
 ## Changelog
 
+* 1.15.1:
+    * Fix: Fatal error on cart page.
 * 1.15 - 2014-12-18:
     * New: Favicon cart count notification
     * New: Easy add Jigoshop shortcodes in TinyMCE
