@@ -105,4 +105,26 @@ class Pages
 
 		return DOING_AJAX && isset($_POST['action']) && strpos($_POST['action'], 'admin.coupon') !== false;
 	}
+
+	public function isDashboard()
+	{
+		$screen = $this->wp->getCurrentScreen();
+
+		if ($screen !== null) {
+			return $screen->id == 'toplevel_page_'.Dashboard::NAME;
+		}
+
+		return DOING_AJAX && isset($_POST['action']) && strpos($_POST['action'], 'admin.dashboard') !== false;
+	}
+
+	public function isSettings()
+	{
+		$screen = $this->wp->getCurrentScreen();
+
+		if ($screen !== null) {
+			return $screen->id == Dashboard::NAME.'_page_'.Settings::NAME;
+		}
+
+		return DOING_AJAX && isset($_POST['action']) && strpos($_POST['action'], 'admin.settings') !== false;
+	}
 }

@@ -204,7 +204,7 @@ class Dashboard implements PageInterface
 			/** @var $order Order */
 			$day = strtotime($order->getCreatedAt()->format('Y-m-d'));
 			$orderCountsData[$day] += 1;
-			$orderAmountsData[$day] += $order->getSubtotal() + $order->getShippingMethod();
+			$orderAmountsData[$day] += $order->getSubtotal() + $order->getShippingPrice();
 		}
 
 		foreach ($orderCountsData as $day => $value) {

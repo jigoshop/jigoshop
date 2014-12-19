@@ -34,10 +34,11 @@ class Integration
 			}
 		});
 		add_action('jigoshop\admin\page_resolver\before', function(){
-			if (Integration::getAdminPages()->isOrdersList()) {
+			$pages = Integration::getAdminPages();
+			if ($pages->isOrdersList() || $pages->isSettings()) {
 				Integration::initializeGateways();
 			}
-			if (Integration::getAdminPages()->isOrder()) {
+			if ($pages->isDashboard() || $pages->isOrder()) {
 				Integration::initializeGateways();
 				Integration::initializeShipping();
 			}
@@ -158,6 +159,14 @@ class Integration
 	public static function getCustomerService()
 	{
 		return self::$di->get('jigoshop.service.customer');
+	}
+
+	/**
+	 * @return \Jigoshop\Core
+	 */
+	public static function getCore()
+	{
+		return self::$di->get('jigoshop');
 	}
 
 	/**
