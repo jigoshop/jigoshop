@@ -349,7 +349,7 @@ class PayPal implements Method, Processable, ContainerAware
 			$args['amount_'.$item_loop] = number_format($order->getShippingPrice(), $this->decimals);
 		}
 
-		$args['tax'] = $args['tax_cart'] = number_format($order->getTotalTax(), $this->decimals);
+		$args['tax'] = $args['tax_cart'] = number_format($order->getTotalCombinedTax(), $this->decimals);
 		$args['discount_amount_cart'] = number_format($order->getDiscount(), $this->decimals);
 
 		if($this->settings['force_payment'] && $order->getTotal() == 0){

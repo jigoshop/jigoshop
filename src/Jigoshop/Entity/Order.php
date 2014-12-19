@@ -578,6 +578,15 @@ class Order implements EntityInterface, OrderInterface
 	}
 
 	/**
+	 * @return float Total, combined tax of the order (includes shipping tax).
+	 */
+	public function getTotalCombinedTax()
+	{
+		// TODO: Speed improvement
+		return array_sum($this->getCombinedTax());
+	}
+
+	/**
 	 * Updates quantity of selected item by it's key.
 	 *
 	 * @param $key string Item key in the order.
