@@ -24,9 +24,21 @@ class GeneralTab implements TabInterface
 	{
 		$this->options = $options->get(self::SLUG);
 		$wp->addAction('admin_enqueue_scripts', function() use ($scripts){
-			if (!isset($_GET['tab']) || $_GET['tab'] == GeneralTab::SLUG) {
-				$scripts->add('jigoshop.admin.settings.general', JIGOSHOP_URL.'/assets/js/admin/settings/general.js', array('jquery'), array('page' => 'jigoshop_page_jigoshop_settings'));
+			if (!isset($_GET['tab']) || $_GET['tab'] != GeneralTab::SLUG) {
+				return;
 			}
+
+			$states = array();
+			foreach (Country::getAllStates() as $country => $stateList) {
+				foreach ($stateList as $code => $state) {
+					$states[$country][] = array('id' => $code, 'text' => $state);
+				}
+			}
+
+			$scripts->add('jigoshop.admin.settings.general', JIGOSHOP_URL.'/assets/js/admin/settings/general.js', array('jquery'), array('page' => 'jigoshop_page_jigoshop_settings'));
+			$scripts->localize('jigoshop.admin.settings.general', 'jigoshop_admin_general', array(
+				'states' => $states,
+			));
 		});
 	}
 
@@ -57,11 +69,20 @@ class GeneralTab implements TabInterface
 				'id' => 'main',
 				'fields' => array(
 					array(
+						'id' => 'country',
 						'name' => '[country]',
-						'title' => __('Shop location', 'jigoshop'),
+						'title' => __('Shop location (country)', 'jigoshop'),
 						'type' => 'select',
 						'value' => $this->options['country'],
 						'options' => Country::getAll(),
+					),
+					array(
+						'id' => 'state',
+						'name' => '[state]',
+						'title' => __('Shop location (state)', 'jigoshop'),
+						'type' => 'select',
+						'type' => 'text',
+						'value' => $this->options['state'],
 					),
 					array(
 						'name' => '[email]',

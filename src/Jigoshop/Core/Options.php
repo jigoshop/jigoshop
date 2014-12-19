@@ -25,8 +25,8 @@ class Options
 
 	private $defaults = array(
 		'general' => array(
-			// TODO: Support for setting base state
 			'country' => 'GB',
+			'state' => '',
 			'email' => '',
 			'show_message' => false,
 			'message' => 'Demo store',

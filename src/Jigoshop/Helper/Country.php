@@ -825,7 +825,6 @@ class Country
 		return self::$cache['countries'];
 	}
 
-
 	/**
 	 * Returns list of all allowed countries with translated names.
 	 *

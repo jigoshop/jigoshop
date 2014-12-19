@@ -67,7 +67,7 @@ class Core
 		$container->get('jigoshop.emails');
 
 		// TODO: Why this is required? :/
-		$this->wp->flushRewriteRules();
+		$this->wp->flushRewriteRules(false);
 		$this->wp->doAction('jigoshop\run');
 	}
 
