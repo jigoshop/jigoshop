@@ -88,6 +88,11 @@ class TaxesTab implements TabInterface
 	 */
 	public function getSections()
 	{
+		$classes = array();
+		foreach ($this->options['classes'] as $class) {
+			$classes[$class['class']] = $class['label'];
+		}
+
 		return array(
 			array(
 				'title' => __('Main', 'jigoshop'),
@@ -149,6 +154,27 @@ class TaxesTab implements TabInterface
 					),
 				),
 			),
+			array(
+				'title' => __('New products', 'jigoshop'),
+				'description' => __('This section defines default tax settings for new products.', 'jigoshop'),
+				'id' => 'defaults',
+				'fields' => array(
+					array(
+						'title' => __('Is taxable?', 'jigoshop'),
+						'name' => '[defaults][taxable]',
+						'type' => 'checkbox',
+						'checked' => $this->options['defaults']['taxable'],
+					),
+					array(
+						'title' => __('Tax classes', 'jigoshop'),
+						'name' => '[defaults][classes]',
+						'type' => 'select',
+						'multiple' => true,
+						'options' => $classes,
+						'value' => $this->options['defaults']['classes'],
+					),
+				),
+			),
 		);
 	}
 
@@ -196,6 +222,11 @@ class TaxesTab implements TabInterface
 				'label' => $classes['label'][$key],
 			);
 		}
+
+		$settings['defaults']['taxable'] = $settings['defaults']['taxable'] == 'on';
+		$settings['defaults']['classes'] = array_filter($settings['defaults']['classes'], function($class) use ($classes) {
+			return in_array($class, $classes['class']);
+		});
 
 		if (!isset($settings['rules'])) {
 			$settings['rules'] = array('id' => array());

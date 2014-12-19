@@ -74,6 +74,10 @@ class Options
 			'classes' => array(
 				array('label' => 'Standard', 'class' => 'standard'),
 			),
+			'defaults' => array(
+				'taxable' => true,
+				'classes' => array('standard'),
+			),
 		),
 		'shipping' => array(
 			'enabled' => true,
