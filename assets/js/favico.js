@@ -465,7 +465,6 @@
 				return null;
 			}
 			elm.setAttribute('type', 'image/png');
-			0
 			return elm;
 		};
 		link.setIcon = function(canvas) {

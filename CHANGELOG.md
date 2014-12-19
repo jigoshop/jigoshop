@@ -1,6 +1,6 @@
 ## Changelog
 
-* 1.15.1:
+* 1.15.1 - 2014-12-19:
     * Fix: Fatal error on cart page.
     * Fix: JS error in favicon cart notification.
 * 1.15 - 2014-12-18:
