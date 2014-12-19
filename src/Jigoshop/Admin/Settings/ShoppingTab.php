@@ -173,6 +173,12 @@ class ShoppingTab implements TabInterface
 						'type' => 'checkbox',
 						'checked' => $this->options['login_for_downloads'],
 					),
+					array(
+						'name' => '[unpaid_orders_number]',
+						'title' => __('Number of unpaid orders in My Account', 'jigoshop'),
+						'type' => 'number',
+						'checked' => $this->options['unpaid_orders_number'],
+					),
 				),
 			),
 			array(

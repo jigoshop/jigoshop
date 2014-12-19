@@ -63,7 +63,6 @@ class Simple implements OrderServiceInterface
 	 */
 	public function findByQuery($query)
 	{
-		// TODO: Check on various occasions if this is sufficient as hashing method.
 		$hash = hash('md5', serialize($query->query_vars));
 
 		if (!isset($this->queries[$hash])) {

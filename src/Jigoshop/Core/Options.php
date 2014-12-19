@@ -56,6 +56,7 @@ class Options
 			'show_login_form' => false,
 			'allow_registration' => false,
 			'login_for_downloads' => true,
+			'unpaid_orders_number' => 5,
 			'validate_zip' => true,
 			'restrict_selling_locations' => false,
 			'selling_locations' => array(),
@@ -185,7 +186,6 @@ class Options
 		$this->wp = $wp;
 		$this->_loadOptions();
 		$this->_addImageSizes();
-//		$this->wp->addAction('shutdown', array($this, 'saveOptions')); // TODO: Figure out if it's needed.
 	}
 
 	public function getImageSizes()

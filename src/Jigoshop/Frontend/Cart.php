@@ -366,7 +366,6 @@ class Cart implements OrderInterface
 			throw new Exception(sprintf(__('Cannot apply coupon "%s". Order total more than %s.'), $coupon->getCode(), ProductHelper::formatPrice($coupon->getOrderTotalMaximum())));
 		}
 
-		// TODO: Ask if applying individual use coupon we should discard all other or warn that it cannot be applied?
 		if ($coupon->isIndividualUse()) {
 			$this->removeAllCouponsExcept(array());
 		}
