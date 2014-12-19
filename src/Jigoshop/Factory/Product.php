@@ -65,10 +65,15 @@ class Product implements EntityFactoryInterface
 		}
 
 		$class = $this->types[$type];
+		/** @var \Jigoshop\Entity\Product $instance */
 		$instance = new $class($this->wp);
+
 		if ($instance instanceof Purchasable) {
 			$instance->getStock()->setManage($this->options->get('products.manage_stock'));
 		}
+
+		$instance->setTaxable($this->options->get('tax.defaults.taxable'));
+		$instance->setTaxClasses($this->options->get('tax.defaults.classes'));
 
 		return $instance;
 	}

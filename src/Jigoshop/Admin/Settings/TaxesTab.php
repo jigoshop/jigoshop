@@ -211,8 +211,9 @@ class TaxesTab implements TabInterface
 	 */
 	public function validate(array $settings)
 	{
-		$settings['before_coupons'] = $settings['before_coupons'] == 'on';
-		$settings['included'] = $settings['included'] == 'on';
+		// TODO: Re-enable
+//		$settings['before_coupons'] = $settings['before_coupons'] == 'on';
+//		$settings['included'] = $settings['included'] == 'on';
 		$settings['shipping'] = $settings['shipping'] == 'on';
 		$classes = $settings['classes'];
 		$settings['classes'] = array();
