@@ -121,10 +121,14 @@ class Pages
 	{
 		$screen = $this->wp->getCurrentScreen();
 
-		if ($screen !== null) {
-			return $screen->id == Dashboard::NAME.'_page_'.Settings::NAME;
+		if (!empty($_POST) && isset($_POST['option_page']) && $_POST['option_page'] == Settings::NAME) {
+			return true;
 		}
 
-		return DOING_AJAX && isset($_POST['action']) && strpos($_POST['action'], 'admin.settings') !== false;
+		if ($screen !== null && $screen->id == Dashboard::NAME.'_page_'.Settings::NAME) {
+			return true;
+		}
+
+		return defined('DOING_AJAX') && DOING_AJAX && isset($_POST['action']) && strpos($_POST['action'], 'admin.settings') !== false;
 	}
 }

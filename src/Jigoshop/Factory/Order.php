@@ -111,15 +111,17 @@ class Order implements EntityFactoryInterface
 			$state['customer_note'] = $post->post_excerpt;
 			$state['status'] = $post->post_status;
 			$state['created_at'] = strtotime($post->post_date);
-			// Customer must be unserialized twice "thanks" to WordPress second serialization.
-			$state['customer'] = unserialize(unserialize($state['customer']));
+			if (isset($state['customer'])) {
+				// Customer must be unserialized twice "thanks" to WordPress second serialization.
+				$state['customer'] = unserialize(unserialize($state['customer']));
+			}
 			// TODO: Think on lazy loading of items.
 			$state['items'] = $this->getItems($post->ID);
 			$state['product_subtotal'] = array_reduce($state['items'], function($value, $item){
 				/** @var $item Entity\Item */
 				return $value + $item->getCost();
 			}, 0.0);
-			if ($state['shipping']) {
+			if (isset($state['shipping'])) {
 				$shipping = unserialize($state['shipping']);
 				if (!empty($shipping['method'])) {
 					$state['shipping'] = array(
@@ -129,10 +131,12 @@ class Order implements EntityFactoryInterface
 					);
 				}
 			}
-			if ($state['payment']) {
+			if (isset($state['payment'])) {
 				$state['payment'] = $this->paymentService->get($state['payment']);
 			}
-			$state['subtotal'] = (float)$state['subtotal'];
+			if (isset($state['subtotal'])) {
+				$state['subtotal'] = (float)$state['subtotal'];
+			}
 
 			$order->restoreState($state);
 		}

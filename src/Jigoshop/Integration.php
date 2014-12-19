@@ -2,6 +2,7 @@
 
 namespace Jigoshop;
 
+use Jigoshop\Entity\Order;
 use JigoshopContainer;
 use Monolog\Registry;
 
@@ -14,6 +15,8 @@ class Integration
 	/** @var JigoshopContainer */
 	private static $di;
 	private static $shippingRate;
+	/** @var Order */
+	private static $currentOrder;
 
 	public function __construct(\JigoshopContainer $di)
 	{
@@ -29,7 +32,8 @@ class Integration
 			Integration::initializeShipping();
 		});
 		add_action('jigoshop\page_resolver\before', function(){
-			if (Integration::getPages()->isCheckout()) {
+			$pages = Integration::getPages();
+			if ($pages->isCart() || $pages->isCheckout() || $pages->isCheckoutThankYou()) {
 				Integration::initializeGateways();
 			}
 		});
@@ -43,6 +47,16 @@ class Integration
 				Integration::initializeShipping();
 			}
 		});
+		add_filter('jigoshop\pay\render', function($render, $order){
+			/** @var $order Order */
+			if (isset($_GET['receipt'])) {
+				ob_start();
+				do_action('receipt_'.$_GET['receipt'], $order->getId());
+				return ob_get_clean();
+			}
+
+			return $render;
+		}, 10, 2);
 	}
 
 	public static function initializeGateways()
@@ -55,7 +69,7 @@ class Integration
 			$service->addMethod(new Integration\Gateway($gateway));
 		}
 
-		add_action('jigoshop\checkout\set_payment\before', '\Integration::processGateway');
+		add_action('jigoshop\checkout\set_payment\before', '\Jigoshop\Integration::processGateway');
 	}
 
 	/**
@@ -86,7 +100,7 @@ class Integration
 			$service->addMethod(new Integration\Shipping($method));
 		}
 
-//		add_action('jigoshop\checkout\set_shipping\before', '\Integration::processGateway');
+//		add_action('jigoshop\checkout\set_shipping\before', '\Jigoshop\Integration::processGateway');
 	}
 
 	/**
@@ -239,5 +253,18 @@ class Integration
 	public static function getAdminSettings()
 	{
 		return self::$di->get('jigoshop.admin.settings');
+	}
+
+	public static function setCurrentOrder($order)
+	{
+		self::$currentOrder = $order;
+	}
+
+	/**
+	 * @return Order
+	 */
+	public static function getCurrentOrder()
+	{
+		return self::$currentOrder;
 	}
 }

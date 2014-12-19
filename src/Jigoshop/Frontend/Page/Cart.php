@@ -386,7 +386,8 @@ class Cart implements PageInterface
 		if (isset($_REQUEST['action'])) {
 			switch ($_REQUEST['action']) {
 				case 'cancel_order':
-					if (!$this->wp->getHelpers()->verifyNonce($_REQUEST['cancel_order'], 'cancel_order')) {
+					$nonce = isset($_REQUEST['cancel_order']) ? $_REQUEST['cancel_order'] : $_REQUEST['nonce'];
+					if (!$this->wp->getHelpers()->verifyNonce($nonce, 'cancel_order')) {
 						$order = $this->orderService->find((int)$_REQUEST['id']);
 
 						if ($order->getKey() != $_REQUEST['key']) {
@@ -396,7 +397,7 @@ class Cart implements PageInterface
 
 						$order->setStatus(Status::CANCELLED);
 						$this->orderService->save($order);
-						$cart = $this->cartService->createFromOrder($this->cartService->getCartIdForCurrentUser(),$order);
+						$cart = $this->cartService->createFromOrder($this->cartService->getCartIdForCurrentUser(), $order);
 						$this->cartService->save($cart);
 						$this->messages->addNotice(__('The order has been cancelled', 'jigoshop'));
 					}

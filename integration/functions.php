@@ -54,3 +54,23 @@ function jigoshop_remove_style($handle, array $options = array())
 	$styles = \Jigoshop\Integration::getStyles();
 	$styles->remove($handle, $options);
 }
+
+function jigoshop_get_page_id($page)
+{
+	$options = \Jigoshop\Integration::getOptions();
+
+	if ($page == 'pay') {
+		$page = 'checkout';
+
+		add_filter('jigoshop_get_return_url', function() use ($options) {
+			$order = \Jigoshop\Integration::getCurrentOrder();
+
+			$link = \Jigoshop\Helper\Api::getEndpointUrl('pay', $order->getId(), get_permalink($options->get('advanced.pages.checkout')));
+			$link = add_query_arg(array('receipt' => $order->getPaymentMethod()->getId()), $link);
+
+			return $link;
+		}, 9999);
+	}
+
+	return $options->get('advanced.pages.'.$page);
+}

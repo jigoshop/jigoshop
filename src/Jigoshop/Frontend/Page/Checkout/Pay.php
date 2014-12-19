@@ -33,6 +33,8 @@ class Pay implements PageInterface
 	private $orderService;
 	/** @var PaymentServiceInterface */
 	private $paymentService;
+	/** @var boolean */
+	private $render;
 
 	public function __construct(Wordpress $wp, Options $options, Messages $messages, OrderServiceInterface $orderService, PaymentServiceInterface $paymentService,
 		Styles $styles, Scripts $scripts)
@@ -53,7 +55,7 @@ class Pay implements PageInterface
 	{
 		$order = $this->orderService->find((int)$this->wp->getQueryParameter('pay'));
 
-		if ($order->getKey() !==$_GET['key']) {
+		if ($order->getKey() !== $_GET['key']) {
 			$this->messages->addError(__('Invalid security key. Unable to process order.', 'jigoshop'));
 			$this->wp->redirectTo($this->options->getPageId(Pages::ACCOUNT));
 		}
@@ -95,6 +97,15 @@ class Pay implements PageInterface
 	public function render()
 	{
 		$order = $this->orderService->find((int)$this->wp->getQueryParameter('pay'));
+		$render = $this->wp->applyFilters('jigoshop\pay\render', '', $order);
+
+		if (!empty($render)) {
+			return Render::get('shop/checkout/payment', array(
+				'messages' => $this->messages,
+				'content' => $render,
+				'order' => $order,
+			));
+		}
 
 		$termsUrl = '';
 		$termsPage = $this->options->get('advanced.pages.terms');

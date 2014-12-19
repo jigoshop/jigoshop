@@ -34,7 +34,7 @@ class PageResolver
 			$this->wp->addAction('current_screen', function () use ($container, $that){
 				$page = $that->getPage($container);
 				$container->set('jigoshop.page.current', $page);
-			});
+			}, 1);
 		}
 	}
 

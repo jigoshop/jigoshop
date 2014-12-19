@@ -1,5 +1,6 @@
 <?php
 
+require_once('constants.php');
 require_once('functions.php');
 $loader = new \Symfony\Component\ClassLoader\MapClassLoader(array(
 	'Jigoshop_Options_Interface' => JIGOSHOP_DIR.'/integration/classes/jigoshop_options_interface.php',

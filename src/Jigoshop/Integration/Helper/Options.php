@@ -83,6 +83,7 @@ class Options
 	{
 		switch ($type) {
 			case 'text':
+			case 'midtext':
 			case 'longtext':
 				return 'text';
 			case 'radio':

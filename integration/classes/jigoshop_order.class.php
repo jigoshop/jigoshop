@@ -86,7 +86,7 @@ class jigoshop_order extends Jigoshop_Base
 			return false;
 		}
 
-		$service = Jigoshop\Integration::getOrderService();
+		$service = Integration::getOrderService();
 		$this->_order = $service->find($id);
 
 		if ($this->_order->getId() !== null) {
@@ -668,6 +668,7 @@ class jigoshop_order extends Jigoshop_Base
 	{
 		$this->_order->setStatus(Order\Status::PROCESSING);
 		do_action('jigoshop_payment_complete', $this->_order->getId());
+		Integration::getOrderService()->save($this->_order);
 	}
 
 	public function reduce_order_stock()

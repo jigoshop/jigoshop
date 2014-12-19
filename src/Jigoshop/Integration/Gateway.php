@@ -135,6 +135,10 @@ class Gateway implements Method
 	{
 		$result = $this->gateway->process_payment($order->getId());
 
+		if ($result === false) {
+			throw new Exception(__('Payment failed.', 'jigoshop'));
+		}
+
 		// Redirect to success/confirmation/payment page
 		if (isset($result['result']) && $result['result'] == 'success') {
 			return $result['redirect'];
