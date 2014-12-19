@@ -386,8 +386,7 @@ class Cart implements PageInterface
 		if (isset($_REQUEST['action'])) {
 			switch ($_REQUEST['action']) {
 				case 'cancel_order':
-					$nonce = isset($_REQUEST['cancel_order']) ? $_REQUEST['cancel_order'] : $_REQUEST['nonce'];
-					if (!$this->wp->getHelpers()->verifyNonce($nonce, 'cancel_order')) {
+					if ($this->wp->getHelpers()->verifyNonce($_REQUEST['nonce'], 'cancel_order')) {
 						$order = $this->orderService->find((int)$_REQUEST['id']);
 
 						if ($order->getKey() != $_REQUEST['key']) {
