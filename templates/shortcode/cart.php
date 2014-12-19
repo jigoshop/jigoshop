@@ -190,7 +190,7 @@ $options = Jigoshop_Base::get_options();
 							<th class="cart-row-subtotal-title"><?php _e('Subtotal', 'jigoshop'); ?></th>
 							<?php
 							$price = jigoshop_cart::$cart_contents_total_ex_tax + jigoshop_cart::$shipping_total;
-							$price = self::get_options()->get('jigoshop_show_prices_with_tax') == 'yes'? jigoshop_price($price, array('ex_tax_label' => 1)) : jigoshop_price($price);
+							$price = Jigoshop_Base::get_options()->get('jigoshop_show_prices_with_tax') == 'yes'? jigoshop_price($price, array('ex_tax_label' => 1)) : jigoshop_price($price);
 							?>
 							<td class="cart-row-subtotal"><?php echo $price; ?></td>
 						</tr>
