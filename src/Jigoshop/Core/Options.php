@@ -65,6 +65,24 @@ class Options
 			'notify_low_stock' => false,
 			'notify_out_of_stock' => true,
 			'notify_on_backorders' => false,
+			'images' => array(
+				'tiny' => array(
+					'width' => 36,
+					'height' => 36,
+				),
+				'thumbnail' => array(
+					'width' => 90,
+					'height' => 90,
+				),
+				'catalog' => array(
+					'width' => 150,
+					'height' => 150,
+				),
+				'large' => array(
+					'width' => 300,
+					'height' => 300,
+				),
+			),
 		),
 		'tax' => array(
 			'before_coupons' => false,

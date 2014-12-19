@@ -143,31 +143,60 @@ class ProductsTab implements TabInterface
 //					),
 				),
 			),
-			// TODO: Add images section
-//			array(
-//				'title' => __('Images', 'jigoshop'),
-//				'id' => 'images',
-//				'fields' => array(
-//					array(
-//						'name' => '[guest_purchases]',
-//						'title' => __('Allow guest purchases', 'jigoshop'),
-//						'type' => 'checkbox',
-//						'checked' => $this->options['guest_purchases'],
-//					),
-//					array(
-//						'name' => '[show_login_form]',
-//						'title' => __('Show login form', 'jigoshop'),
-//						'type' => 'checkbox',
-//						'checked' => $this->options['show_login_form'],
-//					),
-//					array(
-//						'name' => '[allow_registration]',
-//						'title' => __('Allow registration', 'jigoshop'),
-//						'type' => 'checkbox',
-//						'checked' => $this->options['show_login_form'],
-//					),
-//				),
-//			),
+			array(
+				'title' => __('Images', 'jigoshop'),
+				'id' => 'images',
+				'fields' => array(
+					array(
+						'name' => '[images][tiny][width]',
+						'title' => __('Tiny image width', 'jigoshop'),
+						'type' => 'number',
+						'value' => $this->options['images']['tiny']['width'],
+					),
+					array(
+						'name' => '[images][tiny][height]',
+						'title' => __('Tiny image height', 'jigoshop'),
+						'type' => 'number',
+						'value' => $this->options['images']['tiny']['height'],
+					),
+					array(
+						'name' => '[images][thumbnail][width]',
+						'title' => __('Thumbnail image width', 'jigoshop'),
+						'type' => 'number',
+						'value' => $this->options['images']['thumbnail']['width'],
+					),
+					array(
+						'name' => '[images][thumbnail][height]',
+						'title' => __('Thumbnail image height', 'jigoshop'),
+						'type' => 'number',
+						'value' => $this->options['images']['thumbnail']['height'],
+					),
+					array(
+						'name' => '[images][catalog][width]',
+						'title' => __('Catalog image width', 'jigoshop'),
+						'type' => 'number',
+						'value' => $this->options['images']['catalog']['width'],
+					),
+					array(
+						'name' => '[images][catalog][height]',
+						'title' => __('Catalog image height', 'jigoshop'),
+						'type' => 'number',
+						'value' => $this->options['images']['catalog']['height'],
+					),
+					array(
+						'name' => '[images][large][width]',
+						'title' => __('Large image width', 'jigoshop'),
+						'type' => 'number',
+						'value' => $this->options['images']['large']['width'],
+					),
+					array(
+						'name' => '[images][large][height]',
+						'title' => __('Large image height', 'jigoshop'),
+						'type' => 'number',
+						'value' => $this->options['images']['large']['height'],
+					),
+				),
+			),
 		);
 	}
 
