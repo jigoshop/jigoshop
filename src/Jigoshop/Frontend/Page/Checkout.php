@@ -361,6 +361,7 @@ class Checkout implements PageInterface
 				}
 
 				$this->orderService->save($order);
+				$this->cartService->remove($cart);
 
 				$url = '';
 				if ($isPaymentRequired) {
@@ -373,7 +374,6 @@ class Checkout implements PageInterface
 					$url = $this->wp->getHelpers()->addQueryArg(array('order' => $order->getId(), 'key' => $order->getKey()), $url);
 				}
 
-				$this->cartService->remove($cart);
 				$this->wp->wpRedirect($url);
 				exit;
 			} catch(Exception $e) {
