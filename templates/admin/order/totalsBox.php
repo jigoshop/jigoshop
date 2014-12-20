@@ -13,7 +13,7 @@ $orderTax = $order->getTax();
 ?>
 <div class="jigoshop jigoshop-totals" data-order="<?php echo $order->getId(); ?>">
 	<div class="form-horizontal">
-		<div class="form-group">
+		<div class="form-group<?php $order->isShippingRequired() ? '' : ' not-active'; ?>">
 			<label for="order_shipping" class="col-sm-2 control-label">
 				<?php echo __('Shipping', 'jigoshop'); ?>
 			</label>

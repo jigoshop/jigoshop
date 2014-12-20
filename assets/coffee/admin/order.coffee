@@ -90,6 +90,7 @@ class AdminOrder
         jQuery('#product-subtotal', $parent).html(data.html.product_subtotal)
         @_updateTotals(data.html.total, data.html.subtotal)
         @_updateTaxes(data.tax, data.html.tax)
+        # TODO: Show shipping methods if required
 
   updateItem: (e) =>
     e.preventDefault()

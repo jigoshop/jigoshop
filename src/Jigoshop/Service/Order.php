@@ -159,6 +159,8 @@ class Order implements OrderServiceInterface
 
 		if (isset($fields['items'])) {
 			// TODO: Check again if we have enough stock
+			// TODO: Fix automatic shipping selection for downloadable orders
+			// TODO: Fix moving to trash removes status?
 
 			$existing = array_map(function($item){
 				/** @var $item Item */
@@ -200,16 +202,16 @@ class Order implements OrderServiceInterface
 				}
 			}
 
-			if ($object->getStatus() == Status::COMPLETED) {
-				$object->setCompletedAt();
-			}
-
 			$reduceStatus = $this->wp->applyFilters('jigoshop\product\reduce_stock_status', Status::PROCESSING, $object);
 			if ($object->getStatus() == $reduceStatus) {
 				foreach ($object->getItems() as $item) {
 					/** @var \Jigoshop\Entity\Order\Item $item */
 					$this->wp->doAction('jigoshop\product\sold', $item->getProduct(), $item->getQuantity(), $item);
 				}
+			}
+
+			if ($object->getStatus() == Status::COMPLETED) {
+				$object->setCompletedAt();
 			}
 
 			unset($fields['items']);

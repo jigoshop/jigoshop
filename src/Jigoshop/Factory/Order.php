@@ -16,6 +16,7 @@ use Jigoshop\Service\CustomerServiceInterface;
 use Jigoshop\Service\PaymentServiceInterface;
 use Jigoshop\Service\ProductServiceInterface;
 use Jigoshop\Service\ShippingServiceInterface;
+use Jigoshop\Shipping\MultipleMethod;
 use WPAL\Wordpress;
 
 class Order implements EntityFactoryInterface
@@ -83,9 +84,20 @@ class Order implements EntityFactoryInterface
 		}
 
 		// TODO: Think on lazy loading of items.
+		$order->removeItems();
 		$items = $this->getItems($id);
 		foreach ($items as $item) {
 			$order->addItem($item);
+		}
+
+		if (isset($_POST['order']['shipping'])) {
+			$method = $this->shippingService->get($_POST['order']['shipping']);
+
+			if ($method instanceof MultipleMethod && isset($_POST['order']['shipping_rate'])) {
+				$method->setShippingRate($_POST['order']['shipping_rate']);
+			}
+
+			$order->setShippingMethod($method);
 		}
 
 		return $order;

@@ -413,6 +413,25 @@ class Order implements EntityInterface, OrderInterface
 	}
 
 	/**
+	 * Checks whether at least one item requires shipping.
+	 *
+	 * @return bool Is shipping required for the cart?
+	 */
+	public function isShippingRequired()
+	{
+		$required = false;
+		foreach ($this->items as $item) {
+			/** @var $item Item */
+			$product = $item->getProduct();
+			if ($product instanceof Product\Shippable) {
+				$required |= $product->isShippable();
+			}
+		}
+
+		return $required;
+	}
+
+	/**
 	 * @return string Current order status.
 	 */
 	public function getStatus()

@@ -102,16 +102,20 @@ class Order
 				throw new Exception(__('Product not found.', 'jigoshop'));
 			}
 
+			/** @var Item $item */
 			$item = $this->wp->applyFilters('jigoshop\cart\add', null, $product);
 
 			if ($item === null) {
 				throw new Exception(__('Product cannot be added to the order.', 'jigoshop'));
 			}
 
+			$key = $this->productService->generateItemKey($item);
+			$item->setKey($key);
+
 			$order->addItem($item);
 			$this->orderService->save($order);
 
-			$row = Render::get('admin/order/item', array(
+			$row = Render::get('admin/order/item/'.$item->getType(), array(
 				'item' => $item,
 			));
 
