@@ -41,7 +41,9 @@ class Tax implements TaxServiceInterface
 	{
 		$service = $this;
 		$this->wp->addFilter('jigoshop\admin\order\update_product', function($item, $order) use ($service) {
-			$item->setTax($service->getAll($item, 1, $order->getCustomer()));
+			if ($item->getProduct()->isTaxable()) {
+				$item->setTax($service->getAll($item, 1, $order->getCustomer()));
+			}
 			return $item;
 		}, 10, 2);
 		$this->wp->addFilter('jigoshop\order\shipping_price', function($price, $method, $order) use ($service) {
@@ -57,12 +59,16 @@ class Tax implements TaxServiceInterface
 		}, 10, 3);
 		$this->wp->addFilter('jigoshop\cart\add_item', function($item) use ($service) {
 			/** @var $item Item */
-			$item->setTax($service->getAll($item->getProduct()));
+			if ($item->getProduct()->isTaxable()) {
+				$item->setTax($service->getAll($item->getProduct()));
+			}
 			return $item;
 		}, 10, 1);
 		$this->wp->addFilter('jigoshop\order\add_item', function($item) use ($service) {
 			/** @var $item Item */
-			$item->setTax($service->getAll($item->getProduct()));
+			if ($item->getProduct()->isTaxable()) {
+				$item->setTax($service->getAll($item->getProduct()));
+			}
 			return $item;
 		}, 10, 1);
 	}
