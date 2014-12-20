@@ -145,6 +145,7 @@ abstract class Attribute
 	 */
 	public function addOption(Attribute\Option $option)
 	{
+		$option->setAttribute($this);
 		$this->options[$option->getId()] = $option;
 	}
 

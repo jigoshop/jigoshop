@@ -5,6 +5,7 @@ namespace Jigoshop;
 use Jigoshop\Core\Options;
 use Jigoshop\Entity\Order;
 use Jigoshop\Entity\Product;
+use Jigoshop\Service\ProductServiceInterface;
 use WPAL\Wordpress;
 
 /**
@@ -18,12 +19,15 @@ class Migration
 	private static $wp;
 	/** @var Options */
 	private static $options;
+	/** @var ProductServiceInterface */
+	private static $productService;
 	private static $taxClasses = array();
 
-	public function __construct(Wordpress $wp, Options $options)
+	public function __construct(Wordpress $wp, Options $options, ProductServiceInterface $productService)
 	{
 		self::$wp = $wp;
 		self::$options = $options;
+		self::$productService = $productService;
 	}
 
 	public static function migrateOptions()
@@ -67,15 +71,86 @@ class Migration
 					$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->postmeta} (post_id, meta_key, meta_value) VALUES (%d, %s, %s)", array($products[$i]['ID'], 'sales_enabled', true)));
 				}
 
-				$wpdb->query($wpdb->prepare(
-					"UPDATE {$wpdb->postmeta} SET meta_value = %s WHERE meta_key = %s AND meta_id = %d",
-					array(
-						self::_transformProductMeta($products[$i]['meta_key'], $products[$i]['meta_value']),
-						self::_transformProductMetaKey($products[$i]['meta_key']),
-						$products[$i]['meta_id'],
-					)
-				));
+				// Custom product attributes support
+				if ($products[$i]['meta_key'] == 'product_attributes') {
+					$attributes = unserialize($products[$i]['meta_value']);
+					$attributes = array_filter($attributes, function($item){
+						return $item['is_taxonomy'] == false;
+					});
+
+					foreach ($attributes as $slug => $source) {
+						$attribute = self::$productService->createAttribute(Product\Attribute\Text::TYPE);
+						$attribute->setSlug($slug);
+						$attribute->setLabel($source['name']);
+						$attribute->setVisible($source['visible']);
+						$attribute->setLocal(true);
+
+						self::$productService->saveAttribute($attribute);
+
+						$wpdb->insert($wpdb->prefix.'jigoshop_product_attribute', array(
+							'product_id' => $product['ID'],
+							'attribute_id' => $attribute->getId(),
+							'value' => $source['value'],
+						));
+					}
+				}
+
+				$key = self::_transformProductMetaKey($products[$i]['meta_key']);
+
+				if (!empty($key)) {
+					$wpdb->query($wpdb->prepare(
+						"UPDATE {$wpdb->postmeta} SET meta_value = %s WHERE meta_key = %s AND meta_id = %d",
+						array(
+							self::_transformProductMeta($products[$i]['meta_key'], $products[$i]['meta_value']),
+							$key,
+							$products[$i]['meta_id'],
+						)
+					));
+				}
 				$i++;
+			}
+		}
+
+		// Migrate global product attributes
+		$attributes = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}jigoshop_attribute_taxonomies");
+		foreach ($attributes as $source) {
+			$attribute = self::$productService->createAttribute(self::_getAttributeType($source));
+			$attribute->setLabel($source->attribute_label);
+			$attribute->setSlug($source->attribute_name);
+			$attribute->setVisible(true);
+			$attribute->setLocal(false);
+
+			$options = $wpdb->get_results("
+				SELECT t.name, t.slug, tr.object_id FROM {$wpdb->terms} t
+					LEFT JOIN {$wpdb->term_taxonomy} tt ON tt.term_id = t.term_id
+					LEFT JOIN {$wpdb->term_relationships} tr ON tr.term_taxonomy_id = tt.term_taxonomy_id
+				 	WHERE tt.taxonomy = 'pa_{$source->attribute_name}'
+		  ");
+			$productAttribute = array();
+			foreach ($options as $sourceOption) {
+				$option = new Product\Attribute\Option();
+				$option->setLabel($sourceOption->name);
+				$option->setValue($sourceOption->slug);
+				$attribute->addOption($option);
+				$productAttribute[$source->object_id][] = $sourceOption->slug;
+			}
+
+			self::$productService->saveAttribute($attribute);
+
+			foreach ($productAttribute as $productId => $values) {
+				$value = array();
+				foreach ($attribute->getOptions() as $option) {
+					/** @var $option Product\Attribute\Option */
+					if (in_array($option->getValue(), $values)) {
+						$value[] = $option->getId();
+					}
+				}
+
+				$wpdb->insert($wpdb->prefix.'jigoshop_product_attribute', array(
+					'product_id' => $productId,
+					'attribute_id' => $attribute->getId(),
+					'value' => join('|', $value),
+				));
 			}
 		}
 
@@ -187,8 +262,22 @@ class Migration
 				return 'url';
 			case 'download_limit':
 				return 'limit';
+			case 'product_attributes':
+				return false;
 			default:
 				return $key;
+		}
+	}
+
+	private static function _getAttributeType($source)
+	{
+		switch ($source->attribute_type) {
+			case 'multiselect':
+				return Product\Attribute\Multiselect::TYPE;
+			case 'select':
+				return Product\Attribute\Select::TYPE;
+			default:
+				return Product\Attribute\Text::TYPE;
 		}
 	}
 }

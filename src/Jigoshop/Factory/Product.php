@@ -215,7 +215,6 @@ class Product implements EntityFactoryInterface
 				$option->setId($results[$i]['option_id']);
 				$option->setLabel($results[$i]['option_label']);
 				$option->setValue($results[$i]['option_value']);
-				$option->setAttribute($attribute);
 				$attribute->addOption($option);
 			}
 
@@ -262,7 +261,6 @@ class Product implements EntityFactoryInterface
 					$option->setId($results[$i]['option_id']);
 					$option->setLabel($results[$i]['option_label']);
 					$option->setValue($results[$i]['option_value']);
-					$option->setAttribute($attribute);
 					$attribute->addOption($option);
 				}
 

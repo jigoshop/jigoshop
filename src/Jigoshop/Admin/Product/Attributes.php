@@ -155,7 +155,6 @@ class Attributes implements PageInterface
 			$option = $attribute->removeOption($_POST['id']);
 		} else {
 			$option = new Attribute\Option();
-			$option->setAttribute($attribute);
 		}
 
 		$option->setLabel(trim(htmlspecialchars(strip_tags($_POST['label']))));
