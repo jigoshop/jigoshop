@@ -159,8 +159,6 @@ class Order implements OrderServiceInterface
 
 		if (isset($fields['items'])) {
 			// TODO: Check again if we have enough stock
-			// TODO: Fix automatic shipping selection for downloadable orders
-			// TODO: Fix moving to trash removes status?
 
 			$existing = array_map(function($item){
 				/** @var $item Item */
