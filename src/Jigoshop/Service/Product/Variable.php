@@ -50,21 +50,10 @@ class Variable implements VariableServiceInterface
 				/** @var Product\Variable\Variation $variation */
 				if ($variation->getProduct() === null) {
 					$variation->setProduct($this->_createVariableProduct($variation, $object));
+					$variation->setId($variation->getProduct()->getId());
 				}
 
 				$this->productService->save($variation->getProduct());
-
-				$data = array(
-					'parent_id' => $variation->getParent()->getId(),
-					'product_id' => $variation->getProduct()->getId(),
-				);
-
-				if ($variation->getId()) {
-					$wpdb->update($wpdb->prefix.'jigoshop_product_variation', $data, array('id' => $variation->getId()));
-				} else {
-					$wpdb->insert($wpdb->prefix.'jigoshop_product_variation', $data);
-					$variation->setId($wpdb->insert_id);
-				}
 
 				foreach ($variation->getAttributes() as $attribute) {
 					/** @var Product\Variable\Attribute $attribute */

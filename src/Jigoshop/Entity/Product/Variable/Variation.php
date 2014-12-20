@@ -92,6 +92,7 @@ class Variation
 	 */
 	public function addAttribute($attribute)
 	{
+		$attribute->setVariation($this);
 		$this->attributes[$attribute->getAttribute()->getId()] = $attribute;
 	}
 

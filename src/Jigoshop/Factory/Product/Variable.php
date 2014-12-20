@@ -72,29 +72,25 @@ class Variable
 	{
 		$wpdb = $this->wp->getWPDB();
 		$query = $wpdb->prepare("
-			SELECT * FROM {$wpdb->prefix}jigoshop_product_variation pv
-				LEFT JOIN {$wpdb->prefix}jigoshop_product_variation_attribute pva ON pv.id = pva.variation_id
-				WHERE pv.parent_id = %d AND pv.id = %d
-		", array($product->getId(), $variationId));
+			SELECT * FROM {$wpdb->prefix}jigoshop_product_variation_attribute pva
+				WHERE pva.variation_id = %d
+		", array($variationId));
 		$results = $wpdb->get_results($query, ARRAY_A);
 
-		$i = 0;
-		$endI = count($results);
 		$variation = new VariableProduct\Variation();
-		$variation->setId((int)$results[$i]['id']);
+		$variation->setId($variationId);
 		$variation->setParent($product);
-		$variation->setProduct($this->productService->find($results[$i]['product_id'])); // TODO: Maybe some kind of fetching together?
+		$variation->setProduct($this->productService->find($variationId));
 
-		while ($i < $endI && $results[$i]['id'] == $variation->getId()) {
-			if ($results[$i]['attribute_id'] !== null) {
-				$attribute = new VariableProduct\Attribute(VariableProduct\Attribute::VARIATION_ATTRIBUTE_EXISTS);
-				$attribute->setVariation($variation);
-				$attribute->setAttribute($product->getAttribute($results[$i]['attribute_id']));
-				$attribute->setValue($results[$i]['value']);
-				$variation->addAttribute($attribute);
-			}
+		$results = array_filter($results, function($item){
+			return $item['attribute_id'] !== null;
+		});
 
-			$i++;
+		foreach ($results as $source) {
+			$attribute = new VariableProduct\Attribute(VariableProduct\Attribute::VARIATION_ATTRIBUTE_EXISTS);
+			$attribute->setAttribute($product->getAttribute($source['attribute_id']));
+			$attribute->setValue($source['value']);
+			$variation->addAttribute($attribute);
 		}
 
 		return $variation;
@@ -108,28 +104,29 @@ class Variable
 	{
 		$wpdb = $this->wp->getWPDB();
 		$query = $wpdb->prepare("
-			SELECT * FROM {$wpdb->prefix}jigoshop_product_variation pv
-				LEFT JOIN {$wpdb->prefix}jigoshop_product_variation_attribute pva ON pv.id = pva.variation_id
-				WHERE pv.parent_id = %d
-		", array($product->getId()));
+			SELECT pv.ID, pva.* FROM {$wpdb->posts} pv
+				LEFT JOIN {$wpdb->prefix}jigoshop_product_variation_attribute pva ON pv.ID = pva.variation_id
+				WHERE pv.post_parent = %d AND pv.post_type = %s
+		", array($product->getId(), \Jigoshop\Core\Types\Product\Variable::TYPE));
 		$results = $wpdb->get_results($query, ARRAY_A);
 		$variations = array();
 
+		$results = array_filter($results, function($item){
+			return $item['attribute_id'] !== null;
+		});
+
 		for ($i = 0, $endI = count($results); $i < $endI;) {
 			$variation = new VariableProduct\Variation();
-			$variation->setId((int)$results[$i]['id']);
+			$variation->setId((int)$results[$i]['ID']);
 			$variation->setParent($product);
-			$variation->setProduct($this->productService->find($results[$i]['product_id'])); // TODO: Maybe some kind of fetching together?
+			$variation->setProduct($this->productService->find($results[$i]['ID'])); // TODO: Maybe some kind of fetching together?
 
-			while ($i < $endI && $results[$i]['id'] == $variation->getId()) {
-				if ($results[$i]['attribute_id'] !== null) {
-					$attribute = new VariableProduct\Attribute(VariableProduct\Attribute::VARIATION_ATTRIBUTE_EXISTS);
-					$attribute->setVariation($variation);
-					$attribute->setAttribute($product->getAttribute($results[$i]['attribute_id']));
-					$attribute->setValue($results[$i]['value']);
-					$variation->addAttribute($attribute);
-				}
-
+			while ($i < $endI && $results[$i]['ID'] == $variation->getId()) {
+				$attribute = new VariableProduct\Attribute(VariableProduct\Attribute::VARIATION_ATTRIBUTE_EXISTS);
+				$attribute->setVariation($variation);
+				$attribute->setAttribute($product->getAttribute($results[$i]['attribute_id']));
+				$attribute->setValue($results[$i]['value']);
+				$variation->addAttribute($attribute);
 				$i++;
 			}
 
