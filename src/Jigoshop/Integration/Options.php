@@ -106,6 +106,11 @@ class Options implements \Jigoshop_Options_Interface
 		}
 	}
 
+	public static function __getTransformations()
+	{
+		return self::$_transformations;
+	}
+
 	public static function __addTransformation($from, $to)
 	{
 		self::$_transformations[$from] = $to;
