@@ -165,7 +165,11 @@ class Variable extends Product implements Shippable, Saleable
 	public function getStateToSave()
 	{
 		$toSave = parent::getStateToSave();
-		$toSave['sales'] = $this->sales;
+
+		$toSave['sales_enabled'] = $this->sales->isEnabled();
+		$toSave['sales_from'] = $this->sales->getFrom()->getTimestamp();
+		$toSave['sales_to'] = $this->sales->getTo()->getTimestamp();
+		$toSave['sales_price'] = $this->sales->getPrice();
 
 		return $toSave;
 	}
@@ -177,15 +181,17 @@ class Variable extends Product implements Shippable, Saleable
 	{
 		parent::restoreState($state);
 
-		if (isset($state['sales']) && !empty($state['sales'])) {
-			if (is_array($state['sales'])) {
-				$this->sales->setEnabled($state['sales']['enabled'] == 'on');
-				$this->sales->setFromTime($state['sales']['from']);
-				$this->sales->setToTime($state['sales']['to']);
-				$this->sales->setPrice($state['sales']['price']);
-			} else {
-				$this->sales = unserialize($state['sales']);
-			}
+		if (isset($state['sales_enabled'])) {
+			$this->sales->setEnabled($state['sales_enabled']);
+		}
+		if (isset($state['sales_from'])) {
+			$this->sales->setFromTime($state['sales_from']);
+		}
+		if (isset($state['sales_to'])) {
+			$this->sales->setToTime($state['sales_to']);
+		}
+		if (isset($state['sales_price'])) {
+			$this->sales->setPrice($state['sales_price']);
 		}
 	}
 

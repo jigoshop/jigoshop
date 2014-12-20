@@ -458,7 +458,11 @@ abstract class Product implements EntityInterface, Product\Taxable
 			}
 		}
 
-		$toSave['size'] = $this->size;
+		$toSave['size_weight'] = $this->size->getWeight();
+		$toSave['size_width'] = $this->size->getWidth();
+		$toSave['size_height'] = $this->size->getHeight();
+		$toSave['size_length'] = $this->size->getLength();
+
 		$toSave['attributes'] = $this->attributes;
 
 		return $toSave;
@@ -508,15 +512,17 @@ abstract class Product implements EntityInterface, Product\Taxable
 		if (isset($state['tax_classes'])) {
 			$this->taxClasses = $state['tax_classes'];
 		}
-		if (isset($state['size']) && !empty($state['size'])) {
-			if( is_array($state['size'])) {
-				$this->size->setWidth($state['size']['width']);
-				$this->size->setHeight($state['size']['height']);
-				$this->size->setLength($state['size']['length']);
-				$this->size->setWeight($state['size']['weight']);
-			} else {
-				$this->size = unserialize($state['size']);
-			}
+		if (isset($state['size_weight'])) {
+			$this->size->setWeight($state['size_weight']);
+		}
+		if (isset($state['size_width'])) {
+			$this->size->setWidth($state['size_width']);
+		}
+		if (isset($state['size_height'])) {
+			$this->size->setHeight($state['size_height']);
+		}
+		if (isset($state['size_length'])) {
+			$this->size->setLength($state['size_length']);
 		}
 
 		if (isset($state['attributes'])) {
