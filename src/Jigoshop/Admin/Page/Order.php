@@ -7,7 +7,7 @@ use Jigoshop\Core\Types;
 use Jigoshop\Entity\Customer;
 use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\OrderInterface;
-use Jigoshop\Entity\Product;
+use Jigoshop\Entity\Product as ProductEntity;
 use Jigoshop\Exception;
 use Jigoshop\Helper\Country;
 use Jigoshop\Helper\Product as ProductHelper;
@@ -20,9 +20,7 @@ use Jigoshop\Service\CustomerServiceInterface;
 use Jigoshop\Service\OrderServiceInterface;
 use Jigoshop\Service\ProductServiceInterface;
 use Jigoshop\Service\ShippingServiceInterface;
-use Jigoshop\Shipping\Method;
-use Jigoshop\Shipping\MultipleMethod;
-use Jigoshop\Shipping\Rate;
+use Jigoshop\Shipping;
 use WPAL\Wordpress;
 
 class Order
@@ -95,7 +93,7 @@ class Order
 				throw new Exception(__('Order not found.', 'jigoshop'));
 			}
 
-			/** @var Product|Product\Purchasable $product */
+			/** @var ProductEntity|ProductEntity\Purchasable $product */
 			$product = $this->productService->find((int)$_POST['product']);
 
 			if ($product->getId() === null) {
@@ -207,7 +205,7 @@ class Order
 
 			$shippingMethod = $this->shippingService->get($_POST['method']);
 
-			if ($shippingMethod instanceof MultipleMethod) {
+			if ($shippingMethod instanceof Shipping\MultipleMethod) {
 				if (!isset($_POST['rate'])) {
 					throw new Exception(__('Method rate is required.', 'jigoshop'));
 				}
@@ -505,11 +503,11 @@ class Order
 		$shipping = array();
 		$shippingHtml = array();
 		foreach ($this->shippingService->getAvailable() as $method) {
-			/** @var $method Method */
-			if ($method instanceof MultipleMethod) {
-				/** @var $method MultipleMethod */
+			/** @var $method Shipping\Method */
+			if ($method instanceof Shipping\MultipleMethod) {
+				/** @var $method Shipping\MultipleMethod */
 				foreach ($method->getRates() as $rate) {
-					/** @var $rate Rate */
+					/** @var $rate Shipping\Rate */
 					$shipping[$method->getId().'-'.$rate->getId()] = $method->isEnabled() ? $rate->calculate($order) : -1;
 
 					if ($method->isEnabled()) {

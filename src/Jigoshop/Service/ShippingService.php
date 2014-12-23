@@ -3,14 +3,15 @@
 namespace Jigoshop\Service;
 
 use Jigoshop\Exception;
-use Jigoshop\Payment\Method;
+use Jigoshop\Frontend\Cart;
+use Jigoshop\Shipping\Method;
 
 /**
- * Service for managing payment methods.
+ * Service for managing shipping methods.
  *
  * @package Jigoshop\Service
  */
-class Payment implements PaymentServiceInterface
+class ShippingService implements ShippingServiceInterface
 {
 	private $methods = array();
 
@@ -34,10 +35,46 @@ class Payment implements PaymentServiceInterface
 	public function get($id)
 	{
 		if (!isset($this->methods[$id])) {
-			throw new Exception(sprintf(__('Payment gateway "%s" does not exists', 'jigoshop'), $id));
+			throw new Exception(sprintf(__('Method "%s" does not exists', 'jigoshop'), $id));
 		}
 
 		return $this->methods[$id];
+	}
+
+	/**
+	 * Finds item specified by state.
+	 *
+	 * @param array $state State of the method to be found.
+	 * @return Method Method found.
+	 */
+	public function findForState(array $state)
+	{
+		$method = $this->get($state['id']);
+		$method->restoreState($state);
+		return $method;
+	}
+
+	/**
+	 * Finds and returns ID of cheapest available shipping method.
+	 *
+	 * @param Cart $cart Cart to calculate method prices for.
+	 * @return string ID of cheapest shipping method.
+	 */
+	public function getCheapest(Cart $cart)
+	{
+		$cheapest = null;
+		$cheapestPrice = PHP_INT_MAX;
+
+		foreach ($this->getEnabled() as $method) {
+			/** @var Method $method */
+			$price = $method->calculate($cart);
+
+			if ($price < $cheapestPrice) {
+				$cheapest = $method;
+			}
+		}
+
+		return $cheapest;
 	}
 
 	/**

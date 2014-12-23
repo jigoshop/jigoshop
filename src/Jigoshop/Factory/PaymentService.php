@@ -3,7 +3,7 @@
 namespace Jigoshop\Factory;
 
 use Jigoshop\Core\Options;
-use Jigoshop\Service\Payment as Service;
+use Jigoshop\Service\PaymentService as Service;
 use WPAL\Wordpress;
 
 class PaymentService

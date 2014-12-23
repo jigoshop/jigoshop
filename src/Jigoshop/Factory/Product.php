@@ -69,6 +69,7 @@ class Product implements EntityFactoryInterface
 		$instance = new $class($this->wp);
 
 		if ($instance instanceof Purchasable) {
+			/** @var \Jigoshop\Entity\Product\Purchasable $instance */
 			$instance->getStock()->setManage($this->options->get('products.manage_stock'));
 		}
 
@@ -305,6 +306,8 @@ class Product implements EntityFactoryInterface
 				return new Attribute\Select($exists);
 			case Attribute\Text::TYPE:
 				return new Attribute\Text($exists);
+			default:
+				return $this->wp->applyFilters('jigoshop\factory\product\create_attribute', null, $type, $exists);
 		}
 	}
 }

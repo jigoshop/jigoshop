@@ -5,11 +5,11 @@ namespace Jigoshop\Service;
 use Jigoshop\Core\ContainerAware;
 use Jigoshop\Core\Options;
 use Jigoshop\Entity\Order;
-use Jigoshop\Frontend\Cart as CartContainer;
+use Jigoshop\Frontend\Cart;
 use Symfony\Component\DependencyInjection\Container;
 use WPAL\Wordpress;
 
-class Cart implements CartServiceInterface, ContainerAware
+class CartService implements CartServiceInterface, ContainerAware
 {
 	const CART = 'jigoshop_cart';
 	const CART_ID = 'jigoshop_cart_id';
@@ -53,7 +53,7 @@ class Cart implements CartServiceInterface, ContainerAware
 	 * If cart is not found - returns new empty one.
 	 *
 	 * @param $id string Id of cart to fetch.
-	 * @return CartContainer Prepared cart instance.
+	 * @return Cart Prepared cart instance.
 	 */
 	public function get($id)
 	{
@@ -82,7 +82,7 @@ class Cart implements CartServiceInterface, ContainerAware
 	 * Find and fetches cart for current user.
 	 * If cart is not found - returns new empty one.
 	 *
-	 * @return CartContainer Prepared cart instance.
+	 * @return Cart Prepared cart instance.
 	 */
 	public function getCurrent()
 	{
@@ -92,9 +92,9 @@ class Cart implements CartServiceInterface, ContainerAware
 	/**
 	 * Saves cart for current user.
 	 *
-	 * @param CartContainer $cart Cart to save.
+	 * @param Cart $cart Cart to save.
 	 */
-	public function save(CartContainer $cart)
+	public function save(Cart $cart)
 	{
 		// TODO: Support for transients?
 		$cart->recalculateCoupons();
@@ -104,9 +104,9 @@ class Cart implements CartServiceInterface, ContainerAware
 	/**
 	 * Removes cart.
 	 *
-	 * @param CartContainer $cart Cart to remove.
+	 * @param Cart $cart Cart to remove.
 	 */
-	public function remove(CartContainer $cart)
+	public function remove(Cart $cart)
 	{
 		// TODO: Support for transients?
 		if (isset($_SESSION[self::CART][$cart->getId()])) {
@@ -153,7 +153,7 @@ class Cart implements CartServiceInterface, ContainerAware
 	 *
 	 * @param $cartId string Cart ID to use.
 	 * @param $order Order Order to base cart on.
-	 * @return CartContainer The cart.
+	 * @return Cart The cart.
 	 */
 	public function createFromOrder($cartId, $order)
 	{

@@ -7,6 +7,8 @@ use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\Product;
+use Jigoshop\Exception;
+use Jigoshop\Frontend\NotEnoughStockException;
 use Jigoshop\Frontend\Pages;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
@@ -47,8 +49,9 @@ abstract class AbstractProductList implements PageInterface
 	public function action()
 	{
 		if (isset($_POST['action']) && $_POST['action'] == 'add-to-cart') {
+			$product = $this->productService->find($_POST['item']);
+
 			try {
-				$product = $this->productService->find($_POST['item']);
 				$item = $this->wp->applyFilters('jigoshop\cart\add', null, $product);
 
 				if ($item === null) {
@@ -104,21 +107,6 @@ abstract class AbstractProductList implements PageInterface
 			'messages' => $this->messages,
 			'title' => $this->getTitle(),
 		));
-	}
-
-	/**
-	 * @param $product Product|Product\Purchasable The product to format.
-	 * @return Item Prepared item.
-	 */
-	private function formatItem($product)
-	{
-		$item = new Item();
-		$item->setName($product->getName());
-		$item->setPrice($product->getPrice());
-		$item->setQuantity(1);
-		$item->setProduct($product);
-
-		return $item;
 	}
 
 	public abstract function getTitle();

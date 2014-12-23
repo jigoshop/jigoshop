@@ -6,7 +6,6 @@ use Jigoshop\Entity\Customer;
 use Jigoshop\Entity\EntityInterface;
 use Jigoshop\Entity\Order;
 use Jigoshop\Service\CustomerServiceInterface;
-use Jigoshop\Service\Entity;
 use Jigoshop\Service\Exception;
 
 class Simple implements CustomerServiceInterface

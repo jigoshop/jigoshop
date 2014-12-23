@@ -232,9 +232,10 @@ class Product
 	public function ajaxFindProduct()
 	{
 		try {
+			$products = array();
+
 			if (isset($_POST['query'])) {
 				$query = trim(htmlspecialchars(strip_tags($_POST['query'])));
-				$products = array();
 				if (!empty($query)) {
 					$products = $this->productService->findLike($query);
 				}
@@ -250,7 +251,7 @@ class Product
 			$result = array(
 				'success' => true,
 				'results' => array_map(function ($item){
-					/** @var $item Product */
+					/** @var $item \Jigoshop\Entity\Product */
 					return array(
 						'id' => $item->getId(),
 						'text' => $item->getName(),

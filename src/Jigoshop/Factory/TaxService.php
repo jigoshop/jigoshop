@@ -4,7 +4,7 @@ namespace Jigoshop\Factory;
 
 use Jigoshop\Core\Options;
 use Jigoshop\Service\CustomerServiceInterface;
-use Jigoshop\Service\Tax as Service;
+use Jigoshop\Service\TaxService as Service;
 use WPAL\Wordpress;
 
 class TaxService

@@ -5,7 +5,6 @@ namespace Jigoshop\Service\Cache\Product\Variable;
 use Jigoshop\Entity\EntityInterface;
 use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\Product;
-use Jigoshop\Service\Attribute;
 use Jigoshop\Service\Product\VariableServiceInterface;
 
 /**

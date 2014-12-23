@@ -4,7 +4,7 @@ namespace Jigoshop\Admin\Page;
 
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
-use Jigoshop\Entity\Product;
+use Jigoshop\Entity\Product as ProductEntity;
 use Jigoshop\Helper\Formatter;
 use Jigoshop\Helper\Product as ProductHelper;
 use Jigoshop\Helper\Render;
@@ -122,13 +122,13 @@ class Products
 				if($product->isVisible()){
 					echo '<br /><strong>'.__('Visible in', 'jigoshop').'</strong>: ';
 					switch($product->getVisibility()){
-						case Product::VISIBILITY_SEARCH:
+						case ProductEntity::VISIBILITY_SEARCH:
 							echo __('Search only', 'jigoshop');
 							break;
-						case Product::VISIBILITY_CATALOG:
+						case ProductEntity::VISIBILITY_CATALOG:
 							echo __('Catalog only', 'jigoshop');
 							break;
-						case Product::VISIBILITY_PUBLIC:
+						case ProductEntity::VISIBILITY_PUBLIC:
 							echo __('Catalog and search', 'jigoshop');
 							break;
 					}

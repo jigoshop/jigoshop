@@ -7,10 +7,8 @@ use Jigoshop\Entity\Customer\Guest;
 use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\Order\Status;
 use Jigoshop\Exception;
-use Jigoshop\Payment\Method as PaymentMethod;
-use Jigoshop\Shipping\Method;
-use Jigoshop\Shipping\Method as ShippingMethod;
-use Jigoshop\Shipping\Rate;
+use Jigoshop\Payment;
+use Jigoshop\Shipping;
 use Monolog\Registry;
 use WPAL\Wordpress;
 
@@ -38,11 +36,11 @@ class Order implements EntityInterface, OrderInterface
 	private $customer;
 	/** @var array */
 	private $items = array();
-	/** @var ShippingMethod */
+	/** @var Shipping\Method */
 	private $shippingMethod;
 	/** @var int */
 	private $shippingMethodRate;
-	/** @var PaymentMethod */
+	/** @var Payment\Method */
 	private $paymentMethod;
 	/** @var float */
 	private $productSubtotal;
@@ -335,7 +333,7 @@ class Order implements EntityInterface, OrderInterface
 	}
 
 	/**
-	 * @return PaymentMethod Payment gateway object.
+	 * @return Payment\Method Payment gateway object.
 	 */
 	public function getPaymentMethod()
 	{
@@ -343,7 +341,7 @@ class Order implements EntityInterface, OrderInterface
 	}
 
 	/**
-	 * @param PaymentMethod $payment Method used to pay.
+	 * @param Payment\Method $payment Method used to pay.
 	 */
 	public function setPaymentMethod($payment)
 	{
@@ -359,7 +357,7 @@ class Order implements EntityInterface, OrderInterface
 	}
 
 	/**
-	 * @return ShippingMethod Shipping method.
+	 * @return Shipping\Method Shipping method.
 	 */
 	public function getShippingMethod()
 	{
@@ -367,9 +365,9 @@ class Order implements EntityInterface, OrderInterface
 	}
 
 	/**
-	 * @param ShippingMethod $method Method used for shipping the order.
+	 * @param Shipping\Method $method Method used for shipping the order.
 	 */
-	public function setShippingMethod(ShippingMethod $method)
+	public function setShippingMethod(Shipping\Method $method)
 	{
 		// TODO: Refactor to abstract between cart and order = AbstractOrder
 		$this->removeShippingMethod();
@@ -399,8 +397,8 @@ class Order implements EntityInterface, OrderInterface
 	/**
 	 * Checks whether given shipping method is set for current cart.
 	 *
-	 * @param $method Method Shipping method to check.
-	 * @param $rate Rate Shipping rate to check.
+	 * @param $method Shipping\Method Shipping method to check.
+	 * @param $rate Shipping\Rate Shipping rate to check.
 	 * @return bool Is the method selected?
 	 */
 	public function hasShippingMethod($method, $rate = null)

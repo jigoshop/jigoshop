@@ -55,9 +55,10 @@ class Product implements PageInterface
 	public function action()
 	{
 		if (isset($_POST['action']) && $_POST['action'] == 'add-to-cart') {
+			$post = $this->wp->getGlobalPost();
+			$product = $this->productService->findForPost($post);
+
 			try {
-				$post = $this->wp->getGlobalPost();
-				$product = $this->productService->findForPost($post);
 				$item = $this->wp->applyFilters('jigoshop\cart\add', null, $product);
 
 				if ($item === null) {
@@ -77,6 +78,7 @@ class Product implements PageInterface
 					case 'checkout':
 						$url = $this->wp->getPermalink($this->options->getPageId(Pages::CHECKOUT));
 						break;
+					/** @noinspection PhpMissingBreakStatementInspection */
 					case 'product_list':
 						$url = $this->wp->getPermalink($this->options->getPageId(Pages::SHOP));
 					case 'product':
@@ -176,21 +178,5 @@ class Product implements PageInterface
 			'product' => $product,
 			'currentTab' => $currentTab,
 		));
-	}
-
-
-	/**
-	 * @param $product \Jigoshop\Entity\Product|\Jigoshop\Entity\Product\Purchasable The product to format.
-	 * @return Item Prepared item.
-	 */
-	private function formatItem($product)
-	{
-		$item = new Item();
-		$item->setName($product->getName());
-		$item->setPrice($product->getPrice());
-		$item->setQuantity((int)$_POST['quantity']);
-		$item->setProduct($product);
-
-		return $item;
 	}
 }

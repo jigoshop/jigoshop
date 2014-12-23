@@ -8,7 +8,7 @@ use Jigoshop\Factory\Product\Variable as Factory;
 use Jigoshop\Service\ProductServiceInterface;
 use WPAL\Wordpress;
 
-class Variable implements VariableServiceInterface
+class VariableService implements VariableServiceInterface
 {
 	/** @var Wordpress */
 	private $wp;
@@ -101,6 +101,7 @@ class Variable implements VariableServiceInterface
 	private function _createVariableProduct($variation, $product)
 	{
 		$variableId = $this->createVariablePost($variation);
+		/** @var Product|Product\Purchasable $variableProduct */
 		$variableProduct = $this->productService->find($variableId);
 		$variableProduct->setVisibility(Product::VISIBILITY_NONE);
 		$variableProduct->setTaxable($product->isTaxable());

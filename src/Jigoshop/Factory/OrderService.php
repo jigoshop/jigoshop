@@ -4,7 +4,7 @@ namespace Jigoshop\Factory;
 
 use Jigoshop\Core\Options;
 use Jigoshop\Service\Cache\Order\Simple as SimpleCache;
-use Jigoshop\Service\Order as Service;
+use Jigoshop\Service\OrderService as Service;
 use Jigoshop\Service\OrderServiceInterface;
 use WPAL\Wordpress;
 

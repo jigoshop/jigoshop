@@ -16,7 +16,7 @@ use WPAL\Wordpress;
  *
  * @package Jigoshop\Service
  */
-class Coupon implements CouponServiceInterface
+class CouponService implements CouponServiceInterface
 {
 	/** @var Wordpress */
 	private $wp;

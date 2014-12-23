@@ -2,6 +2,7 @@
 
 namespace Jigoshop\Service\Cache\Cart;
 
+use Jigoshop\Entity\Order;
 use Jigoshop\Frontend\Cart;
 use Jigoshop\Service\CartServiceInterface;
 
@@ -82,5 +83,17 @@ class Simple implements CartServiceInterface
 	public function getCartIdForCurrentUser()
 	{
 		return $this->service->getCartIdForCurrentUser();
+	}
+
+	/**
+	 * Creates cart from order ID.
+	 *
+	 * @param $cartId string Cart ID to use.
+	 * @param $order Order Order to base cart on.
+	 * @return Cart The cart.
+	 */
+	public function createFromOrder($cartId, $order)
+	{
+		return $this->createFromOrder($cartId, $order);
 	}
 }

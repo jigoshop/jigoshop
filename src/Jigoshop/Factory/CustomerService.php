@@ -4,7 +4,7 @@ namespace Jigoshop\Factory;
 
 use Jigoshop\Core\Options;
 use Jigoshop\Service\Cache\Customer\Simple as SimpleCache;
-use Jigoshop\Service\Customer as Service;
+use Jigoshop\Service\CustomerService as Service;
 use WPAL\Wordpress;
 
 class CustomerService

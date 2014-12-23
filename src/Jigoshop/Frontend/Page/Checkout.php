@@ -11,10 +11,10 @@ use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\OrderInterface;
 use Jigoshop\Entity\Product\Simple;
 use Jigoshop\Exception;
-use Jigoshop\Frontend\Cart;
+use Jigoshop\Frontend\Cart as CartEntity;
 use Jigoshop\Frontend\Pages;
 use Jigoshop\Helper\Country;
-use Jigoshop\Helper\Product;
+use Jigoshop\Helper\Product as ProductHelper;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
@@ -27,6 +27,8 @@ use Jigoshop\Service\OrderServiceInterface;
 use Jigoshop\Service\PaymentServiceInterface;
 use Jigoshop\Service\ShippingServiceInterface;
 use Jigoshop\Shipping\Method;
+use Jigoshop\Shipping\MultipleMethod;
+use Jigoshop\Shipping\Rate;
 use WPAL\Wordpress;
 
 class Checkout implements PageInterface
@@ -145,10 +147,10 @@ class Checkout implements PageInterface
 	 * Prepares and returns array of updated data for location change requests.
 	 *
 	 * @param Customer $customer The customer (for location).
-	 * @param Cart $cart Current cart.
+	 * @param CartEntity $cart Current cart.
 	 * @return array
 	 */
-	private function getAjaxLocationResponse(Customer $customer, Cart $cart)
+	private function getAjaxLocationResponse(Customer $customer, CartEntity $cart)
 	{
 		$response = $this->getAjaxCartResponse($cart);
 		$address = $customer->getShippingAddress();
@@ -165,16 +167,16 @@ class Checkout implements PageInterface
 	 *
 	 * Prepares and returns response array for cart update requests.
 	 *
-	 * @param Cart $cart Current cart.
+	 * @param CartEntity $cart Current cart.
 	 * @return array
 	 */
-	private function getAjaxCartResponse(Cart $cart)
+	private function getAjaxCartResponse(CartEntity $cart)
 	{
 		$tax = array();
 		foreach ($cart->getCombinedTax() as $class => $value) {
 			$tax[$class] = array(
 				'label' => Tax::getLabel($class),
-				'value' => Product::formatPrice($value),
+				'value' => ProductHelper::formatPrice($value),
 			);
 		}
 
@@ -183,13 +185,14 @@ class Checkout implements PageInterface
 		foreach ($this->shippingService->getAvailable() as $method) {
 			/** @var $method Method */
 			if ($method instanceof MultipleMethod) {
+				/** @var $method MultipleMethod */
 				foreach ($method->getRates() as $rate) {
 					/** @var $rate Rate */
 					$shipping[$method->getId().'-'.$rate->getId()] = $method->isEnabled() ? $rate->calculate($cart) : -1;
 
 					if ($method->isEnabled()) {
 						$shippingHtml[$method->getId().'-'.$rate->getId()] = array(
-							'price' => Product::formatPrice($rate->calculate($cart)),
+							'price' => ProductHelper::formatPrice($rate->calculate($cart)),
 							'html' => Render::get('shop/cart/shipping/rate', array('method' => $method, 'rate' => $rate, 'cart' => $cart)),
 						);
 					}
@@ -199,7 +202,7 @@ class Checkout implements PageInterface
 
 				if ($method->isEnabled()) {
 					$shippingHtml[$method->getId()] = array(
-						'price' => Product::formatPrice($method->calculate($cart)),
+						'price' => ProductHelper::formatPrice($method->calculate($cart)),
 						'html' => Render::get('shop/cart/shipping/method', array('method' => $method, 'cart' => $cart)),
 					);
 				}
@@ -215,10 +218,10 @@ class Checkout implements PageInterface
 			'total' => $cart->getTotal(),
 			'html' => array(
 				'shipping' => $shippingHtml,
-				'subtotal' => Product::formatPrice($cart->getSubtotal()),
-				'product_subtotal' => Product::formatPrice($cart->getProductSubtotal()),
+				'subtotal' => ProductHelper::formatPrice($cart->getSubtotal()),
+				'product_subtotal' => ProductHelper::formatPrice($cart->getProductSubtotal()),
 				'tax' => $tax,
-				'total' => Product::formatPrice($cart->getTotal()),
+				'total' => ProductHelper::formatPrice($cart->getTotal()),
 			),
 		);
 
@@ -661,7 +664,9 @@ class Checkout implements PageInterface
 			/** @var $item Item */
 			switch ($item->getType()) {
 				case Simple::TYPE:
-					if ($item->getProduct()->isShippable()) {
+					/** @var \Jigoshop\Entity\Product|\Jigoshop\Entity\Product\Shippable $product */
+					$product = $item->getProduct();
+					if ($product->isShippable()) {
 						return true;
 					}
 					break;
@@ -688,10 +693,10 @@ class Checkout implements PageInterface
 	/**
 	 * Checks whether user is allowed to see checkout page.
 	 *
-	 * @param Cart $cart The cart.
+	 * @param CartEntity $cart The cart.
 	 * @return bool Is user allowed to enter checkout page?
 	 */
-	private function isAllowedToCheckout(Cart $cart)
+	private function isAllowedToCheckout(CartEntity $cart)
 	{
 		return $this->options->get('shopping.guest_purchases') || $this->wp->isUserLoggedIn()
 			|| ($this->options->get('shopping.allow_registration') && $cart->getCustomer()->getId() > 0);

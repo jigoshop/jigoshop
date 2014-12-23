@@ -15,7 +15,7 @@ use WPAL\Wordpress;
  *
  * @package Jigoshop\Service
  */
-class Email implements EmailServiceInterface
+class EmailService implements EmailServiceInterface
 {
 	/** @var Wordpress */
 	private $wp;

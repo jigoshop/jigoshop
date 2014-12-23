@@ -18,7 +18,7 @@ use WPAL\Wordpress;
  * @package Jigoshop\Service
  * @author Amadeusz Starzykiewicz
  */
-class Product implements ProductServiceInterface
+class ProductService implements ProductServiceInterface
 {
 	/** @var \WPAL\Wordpress */
 	private $wp;

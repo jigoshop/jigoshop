@@ -1,11 +1,11 @@
 parameters: ~
 services:
   jigoshop.service.order:
-    class: Jigoshop\Service\Order
+    class: Jigoshop\Service\OrderService
     factory_service: jigoshop.factory.order_service
     factory_method: getService
   jigoshop.service.product:
-    class: Jigoshop\Service\Product
+    class: Jigoshop\Service\ProductService
     factory_service: jigoshop.factory.product_service
     factory_method: getService
   jigoshop.service.product.variable:
@@ -13,19 +13,19 @@ services:
     factory_service: jigoshop.factory.variable_product_service
     factory_method: getService
   jigoshop.service.tax:
-    class: Jigoshop\Service\Tax
+    class: Jigoshop\Service\TaxService
     factory_service: jigoshop.factory.tax_service
     factory_method: getService
   jigoshop.service.customer:
-    class: Jigoshop\Service\Customer
+    class: Jigoshop\Service\CustomerService
     factory_service: jigoshop.factory.customer_service
     factory_method: getService
   jigoshop.service.shipping:
-    class: Jigoshop\Service\Shipping
+    class: Jigoshop\Service\ShippingService
     factory_service: jigoshop.factory.shipping_service
     factory_method: getService
   jigoshop.service.payment:
-    class: Jigoshop\Service\Payment
+    class: Jigoshop\Service\PaymentService
     factory_service: jigoshop.factory.payment_service
     factory_method: getService
   jigoshop.service.cart:
@@ -39,7 +39,7 @@ services:
     tags:
       - { name: jigoshop.container_aware }
   jigoshop.service.email:
-    class: Jigoshop\Service\Email
+    class: Jigoshop\Service\EmailService
     arguments:
       - '@wpal'
       - '@jigoshop.options'

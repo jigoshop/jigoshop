@@ -17,7 +17,7 @@ use WPAL\Wordpress;
  *
  * @package Jigoshop\Service
  */
-class Customer implements CustomerServiceInterface
+class CustomerService implements CustomerServiceInterface
 {
 	/** @var Wordpress */
 	private $wp;

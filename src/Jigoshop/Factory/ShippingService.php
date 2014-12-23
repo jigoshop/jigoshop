@@ -3,7 +3,7 @@
 namespace Jigoshop\Factory;
 
 use Jigoshop\Core\Options;
-use Jigoshop\Service\Shipping as Service;
+use Jigoshop\Service\ShippingService as Service;
 use WPAL\Wordpress;
 
 class ShippingService

@@ -374,7 +374,7 @@ class PayPal implements Method, Processable, ContainerAware
 			// 'custom' holds post ID (Order ID)
 			if (!empty($posted['custom']) && !empty($posted['txn_type']) && !empty($posted['invoice'])) {
 				$accepted_types = array('cart', 'instant', 'express_checkout', 'web_accept', 'masspay', 'send_money', 'subscr_payment');
-				/** @var \Jigoshop\Service\Order $service */
+				/** @var \Jigoshop\Service\OrderService $service */
 				$service = $this->di->get('jigoshop.service.order');
 				$order = $service->find((int)$posted['custom']);
 

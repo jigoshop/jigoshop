@@ -4,7 +4,6 @@ namespace Jigoshop\Factory;
 
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
-use Jigoshop\Entity\Coupon;
 use Jigoshop\Entity\Customer\Address;
 use Jigoshop\Entity\Customer\CompanyAddress;
 use Jigoshop\Entity\Order as Entity;
@@ -224,7 +223,7 @@ class Order implements EntityFactoryInterface
 
 		$order->setDiscount($cart->getDiscount());
 		$order->setCoupons(array_map(function($coupon){
-			/** @var $coupon Coupon */
+			/** @var $coupon \Jigoshop\Entity\Coupon */
 			return $coupon->getCode();
 		}, $cart->getCoupons()));
 

@@ -6,7 +6,6 @@ use Jigoshop\Core\Options;
 use Jigoshop\Entity\EntityInterface;
 use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\Product;
-use Jigoshop\Service\Attribute;
 use Jigoshop\Service\ProductServiceInterface;
 
 /**
@@ -193,7 +192,7 @@ class Simple implements ProductServiceInterface
 	 * If attribute is not found - returns null.
 	 *
 	 * @param int $id Attribute ID.
-	 * @return Attribute
+	 * @return Product\Attribute
 	 */
 	public function getAttribute($id)
 	{
@@ -205,7 +204,7 @@ class Simple implements ProductServiceInterface
 	 * Creates new attribute for selected type.
 	 *
 	 * @param int $type Attribute type.
-	 * @return Attribute
+	 * @return Product\Attribute
 	 */
 	public function createAttribute($type)
 	{

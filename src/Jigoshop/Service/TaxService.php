@@ -3,6 +3,7 @@
 namespace Jigoshop\Service;
 
 use Jigoshop\Entity\Customer;
+use Jigoshop\Entity\Order;
 use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\OrderInterface;
 use Jigoshop\Entity\Product\Attributes;
@@ -16,7 +17,7 @@ use WPAL\Wordpress;
  *
  * @package Jigoshop\Service
  */
-class Tax implements TaxServiceInterface
+class TaxService implements TaxServiceInterface
 {
 	/** @var \WPAL\Wordpress */
 	private $wp;
@@ -41,6 +42,8 @@ class Tax implements TaxServiceInterface
 	{
 		$service = $this;
 		$this->wp->addFilter('jigoshop\admin\order\update_product', function($item, $order) use ($service) {
+			/** @var $order OrderInterface */
+			/** @var $item Order\Item */
 			if ($item->getProduct()->isTaxable()) {
 				$item->setTax($service->getAll($item, 1, $order->getCustomer()));
 			}
@@ -52,6 +55,7 @@ class Tax implements TaxServiceInterface
 		}, 10, 3);
 		$this->wp->addFilter('jigoshop\order\shipping_tax', function($taxes, $method, $order) use ($service) {
 			/** @var $order OrderInterface */
+			/** @var $method Method */
 			foreach ($method->getTaxClasses() as $class) {
 				$taxes[$class] = $service->getShipping($method, $order->getShippingPrice(), $class, $order->getCustomer());
 			}

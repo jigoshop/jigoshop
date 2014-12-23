@@ -5,7 +5,7 @@ namespace Jigoshop\Factory\Product;
 use Jigoshop\Core\Options;
 use Jigoshop\Factory\Product as ProductFactory;
 use Jigoshop\Service\Cache\Product\Variable\Simple as SimpleCache;
-use Jigoshop\Service\Product\Variable as Service;
+use Jigoshop\Service\Product\VariableService as Service;
 use Jigoshop\Service\ProductServiceInterface;
 use WPAL\Wordpress;
 
