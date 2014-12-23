@@ -5,8 +5,7 @@ namespace Jigoshop\Service;
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\EntityInterface;
-use Jigoshop\Entity\Order\Item;
-use Jigoshop\Entity\Order\Status;
+use Jigoshop\Entity\Order;
 use Jigoshop\Factory\Order as Factory;
 use Jigoshop\Frontend\Cart;
 use WPAL\Wordpress;
@@ -39,7 +38,7 @@ class OrderService implements OrderServiceInterface
 	 * Finds order specified by ID.
 	 *
 	 * @param $id int Order ID.
-	 * @return \Jigoshop\Entity\Order
+	 * @return Order
 	 */
 	public function find($id)
 	{
@@ -93,13 +92,13 @@ class OrderService implements OrderServiceInterface
 	 */
 	public function save(EntityInterface $object)
 	{
-		if (!($object instanceof \Jigoshop\Entity\Order)) {
+		if (!($object instanceof Order)) {
 			throw new Exception('Trying to save not an order!');
 		}
 
 		$this->wp->doAction('jigoshop\order\before\\'.$object->getStatus(), $object);
 
-		/** @var \Jigoshop\Entity\Order $object */
+		/** @var Order $object */
 		$object->setUpdatedAt(new \DateTime());
 
 		if (!$object->getNumber()) {
@@ -146,8 +145,8 @@ class OrderService implements OrderServiceInterface
 		if (isset($fields['update_messages']) && !empty($fields['update_messages'])) {
 			foreach ($fields['update_messages'] as $messages) {
 				$this->wp->doAction('jigoshop\order\\'.$messages['old_status'].'_to_'.$messages['new_status'], $object);
-				$this->addNote($object, sprintf(__('%sOrder status changed from %s to %s.', 'jigoshop'), $messages['message'], Status::getName($messages['old_status']),
-					Status::getName($messages['new_status'])));
+				$this->addNote($object, sprintf(__('%sOrder status changed from %s to %s.', 'jigoshop'), $messages['message'], Order\Status::getName($messages['old_status']),
+					Order\Status::getName($messages['new_status'])));
 			}
 			unset($fields['update_messages']);
 		}
@@ -161,13 +160,13 @@ class OrderService implements OrderServiceInterface
 			// TODO: Check again if we have enough stock
 
 			$existing = array_map(function($item){
-				/** @var $item Item */
+				/** @var $item Order\Item */
 				return $item->getId();
 			}, $fields['items']);
 			$this->removeAllExcept($object->getId(), $existing);
 
 			foreach ($fields['items'] as $item) {
-				/** @var $item Item */
+				/** @var $item Order\Item */
 				$data = array(
 					'order_id' => $object->getId(),
 					'product_id' => $item->getProduct() ? $item->getProduct()->getId() : null,
@@ -195,12 +194,12 @@ class OrderService implements OrderServiceInterface
 				}
 
 				foreach ($item->getAllMeta() as $meta) {
-					/** @var $meta Item\Meta */
+					/** @var $meta Order\Item\Meta */
 					$this->saveItemMeta($item, $meta);
 				}
 			}
 
-			$reduceStatus = $this->wp->applyFilters('jigoshop\product\reduce_stock_status', Status::PROCESSING, $object);
+			$reduceStatus = $this->wp->applyFilters('jigoshop\product\reduce_stock_status', Order\Status::PROCESSING, $object);
 			if ($object->getStatus() == $reduceStatus) {
 				foreach ($object->getItems() as $item) {
 					/** @var \Jigoshop\Entity\Order\Item $item */
@@ -208,7 +207,7 @@ class OrderService implements OrderServiceInterface
 				}
 			}
 
-			if ($object->getStatus() == Status::COMPLETED) {
+			if ($object->getStatus() == Order\Status::COMPLETED) {
 				$object->setCompletedAt();
 			}
 
@@ -246,8 +245,8 @@ class OrderService implements OrderServiceInterface
 	/**
 	 * Saves item meta value to database.
 	 *
-	 * @param $item Item Item of the meta.
-	 * @param $meta Item\Meta Meta to save.
+	 * @param $item Order\Item Item of the meta.
+	 * @param $meta Order\Item\Meta Meta to save.
 	 */
 	public function saveItemMeta($item, $meta)
 	{
@@ -262,7 +261,7 @@ class OrderService implements OrderServiceInterface
 	/**
 	 * Adds a note to the order.
 	 *
-	 * @param $order \Jigoshop\Entity\Order The order.
+	 * @param $order Order The order.
 	 * @param $note string Note text.
 	 * @param $private bool Is note private?
 	 * @return int Note ID.
@@ -334,8 +333,8 @@ class OrderService implements OrderServiceInterface
 			return $where;
 		};
 
-		$statuses = Status::getStatuses();
-//		unset($statuses[Status::CREATED], $statuses[Status::CANCELLED], $statuses[Status::REFUNDED]);
+		$statuses = Order\Status::getStatuses();
+//		unset($statuses[Order\Status::CREATED], $statuses[Order\Status::CANCELLED], $statuses[Order\Status::REFUNDED]);
 
 		$this->wp->addFilter('posts_where', $restriction);
 		$query = new \WP_Query(array(
@@ -359,7 +358,7 @@ class OrderService implements OrderServiceInterface
 	{
 		$this->wp->addFilter('posts_where', array($this, 'ordersFilter'));
 		$query = new \WP_Query(array(
-			'post_status' => Status::PENDING,
+			'post_status' => Order\Status::PENDING,
 			'post_type' => Types::ORDER,
 			'suppress_filters' => false,
 			'fields' => 'ids',
@@ -377,7 +376,7 @@ class OrderService implements OrderServiceInterface
 	{
 		$this->wp->addFilter('posts_where', array($this, 'ordersFilter'));
 		$query = new \WP_Query(array(
-			'post_status' => Status::PROCESSING,
+			'post_status' => Order\Status::PROCESSING,
 			'post_type' => Types::ORDER,
 			'suppress_filters' => false,
 			'fields' => 'ids',
@@ -429,7 +428,7 @@ class OrderService implements OrderServiceInterface
 	public function findForUser($userId)
 	{
 		$query = new \WP_Query(array(
-			'post_status' => array_keys(Status::getStatuses()),
+			'post_status' => array_keys(Order\Status::getStatuses()),
 			'post_type' => Types::ORDER,
 			'suppress_filters' => false,
 			'fields' => 'ids',
@@ -447,7 +446,7 @@ class OrderService implements OrderServiceInterface
 	}
 
 	/**
-	 * @param $object \Jigoshop\Entity\Order
+	 * @param $object Order
 	 * @return string Random order key.
 	 */
 	private function generateOrderKey($object)
@@ -457,6 +456,7 @@ class OrderService implements OrderServiceInterface
 		$min = 0;
 		$max = count($keys)-1;
 		$source = time().$this->wp->getCurrentUserId();
+		$keys = array_map(function($item){ return is_array($item) ? serialize($item) : $item; }, $keys);
 
 		for ($i = 0; $i < 5; $i++) {
 			$source .= $fields[$keys[rand($min, $max)]];
