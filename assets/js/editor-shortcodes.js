@@ -1,4 +1,5 @@
 (function() {
+ if(typeof tinymce == 'undefined') return;
  tinymce.create('tinymce.plugins.jigoshopShortcodes', {
     init : function(ed, url) {
 
