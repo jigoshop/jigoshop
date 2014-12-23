@@ -3,6 +3,7 @@
 namespace Jigoshop\Core\Types\Product;
 
 use Jigoshop\Entity\Order\Item;
+use Jigoshop\Entity\Product;
 use Jigoshop\Entity\Product\Simple as Entity;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
@@ -51,7 +52,24 @@ class Simple implements Type
 	{
 		$wp->addFilter('jigoshop\cart\add', array($this, 'addToCart'), 10, 2);
 		$wp->addFilter('jigoshop\core\types\variable\subtypes', array($this, 'addVariableSubtype'), 10, 1);
+		$wp->addFilter('jigoshop\product\is_out_of_stock', array($this, 'isOutOfStock'), 10, 2);
 		$wp->addAction('jigoshop\admin\product\assets', array($this, 'addAssets'), 10, 3);
+	}
+
+	/**
+	 * @param $status bool Current status.
+	 * @param $item Item Item to check.
+	 * @return bool Whether the product is out of stock.
+	 */
+	public function isOutOfStock($status, $item)
+	{
+		if ($item->getType() == Entity::TYPE) {
+			/** @var Entity $product */
+			$product = $item->getProduct();
+			return $product->getStock()->getStock() == 0;
+		}
+
+		return $status;
 	}
 
 	/**
