@@ -9,7 +9,7 @@ services:
     factory_service: jigoshop.factory.product_service
     factory_method: getService
   jigoshop.service.product.variable:
-    class: Jigoshop\Service\Product\Variable
+    class: Jigoshop\Service\Product\VariableService
     factory_service: jigoshop.factory.variable_product_service
     factory_method: getService
   jigoshop.service.tax:
@@ -29,7 +29,7 @@ services:
     factory_service: jigoshop.factory.payment_service
     factory_method: getService
   jigoshop.service.cart:
-    class: Jigoshop\Service\Cart
+    class: Jigoshop\Service\CartService
     arguments:
       - '@wpal'
       - '@jigoshop.options'
@@ -45,7 +45,7 @@ services:
       - '@jigoshop.options'
       - '@jigoshop.factory.email'
   jigoshop.service.coupon:
-    class: Jigoshop\Service\Coupon
+    class: Jigoshop\Service\CouponService
     arguments:
       - '@wpal'
       - '@jigoshop.options'
