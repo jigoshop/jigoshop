@@ -68,8 +68,8 @@ gulp.task 'clean-deploy', ->
   .pipe rimraf()
 
 gulp.task 'dist', ['clean-deploy', 'default'], ->
-  gulp.src ['./assets/**/*', '!assets/{bower,coffee,less}', '!assets/{bower,coffee,less}/**', './cache',
-            './config/**/*', './languages/**/*', './src/**/*', './templates/**/*', './log', './CHANGELOG.md',
+  gulp.src ['./assets/**/*', '!assets/{bower,coffee,less}', '!assets/{bower,coffee,less}/**', './cache', './integration/**/*',
+            './config/**/*', './languages/**/*', './src/**/*', './templates/**/*', './log', './vendor/**/*', './CHANGELOG.md',
             './CONTRIBUTING.md', 'LICENCE.md', 'README.md', 'jigoshop.php'], {base: './'}
     .pipe gulp.dest('dist/')
 
