@@ -20,9 +20,9 @@
  * Description:         Jigoshop, a WordPress eCommerce plugin that works.
  * Author:              Jigoshop
  * Author URI:          http://www.jigoshop.com
- * Version:             1.15
+ * Version:             1.15.1
  * Requires at least:   3.8
- * Tested up to:        4.0.1
+ * Tested up to:        4.1
  * Text Domain:         jigoshop
  * Domain Path:         /languages/
  * DISCLAIMER
@@ -38,7 +38,7 @@
  */
 
 if (!defined('JIGOSHOP_VERSION')) {
-	define('JIGOSHOP_VERSION', '1.15');
+	define('JIGOSHOP_VERSION', '1.15.1');
 }
 if (!defined('JIGOSHOP_DB_VERSION')) {
 	define('JIGOSHOP_DB_VERSION', 1411270);
@@ -193,6 +193,7 @@ include_once('jigoshop_actions.php');
 
 // Plugins
 include_once('plugins/jigoshop-web-optimization-system/jigoshop-web-optimization.php');
+include_once('plugins/jigoshop-cart-favicon-count/jigoshop-cart-favicon-count.php');
 
 /**
  * IIS compat fix/fallback
@@ -735,7 +736,6 @@ function jigoshop_frontend_scripts()
 	}
 
 	wp_enqueue_script('jquery');
-	jigoshop_add_script('jigoshop_favicon', JIGOSHOP_URL.'/assets/js/favico.js', array('jquery'));
 	jigoshop_add_script('jigoshop_global', JIGOSHOP_URL.'/assets/js/global.js', array('jquery'), array('in_footer' => true));
 
 	if ($options->get('jigoshop_disable_fancybox') == 'no') {
@@ -753,7 +753,7 @@ function jigoshop_frontend_scripts()
 		'in_footer' => true,
 		'page' => array(JIGOSHOP_CHECKOUT, JIGOSHOP_CART, JIGOSHOP_EDIT_ADDRESS)
 	));
-	
+
 
 	/* Script.js variables */
 	// TODO: clean this up, a lot aren't even used anymore, do away with it
@@ -775,7 +775,6 @@ function jigoshop_frontend_scripts()
 		'is_checkout' => (is_page(jigoshop_get_page_id('checkout')) || is_page(jigoshop_get_page_id('pay'))),
 		'error_hide_time' => Jigoshop_Base::get_options()->get('jigoshop_error_disappear_time', 8000),
 		'message_hide_time' => Jigoshop_Base::get_options()->get('jigoshop_message_disappear_time', 4000),
-		'favicon_count'	=> jigoshop_cart::$cart_contents_count
 	);
 
 	if (isset(jigoshop_session::instance()->min_price)) {

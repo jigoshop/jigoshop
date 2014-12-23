@@ -223,17 +223,4 @@ jQuery(function($) {
 	if(initial_change){
 		initial_change.change();
 	}
-
-	//JigoShop Favicon Cart Count
-	 var favico = new Favico({
-		bgColor : '#d00',
-		textColor : '#fff',
-		fontFamily : 'sans-serif',
-		fontStyle : 'bold',
-		position : 'down',
-		type : 'circle',
-		animation : 'slide',
-	 });
-
-	 favico.badge(jigoshop_params.favicon_count);
 });
