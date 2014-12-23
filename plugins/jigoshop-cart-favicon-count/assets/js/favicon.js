@@ -1,24 +1,3 @@
-/**
- * @license MIT
- * @fileOverview Favico animations
- * @author Miroslav Magda, http://blog.ejci.net
- * @version 0.3.5
- */
-/**
- * Create new favico instance
- * @param {Object} Options
- * @return {Object} Favico object
- * @example
- * var favico = new Favico({
- *    bgColor : '#d00',
- *    textColor : '#fff',
- *    fontFamily : 'sans-serif',
- *    fontStyle : 'bold',
- *    position : 'down',
- *    type : 'circle',
- *    animation : 'slide',
- * });
- */
 (function() {
 	var Favico = (function(opt) {
 		'use strict';
@@ -80,7 +59,9 @@
 			}
 			_opt.type = (type['' + _opt.type]) ? _opt.type : _def.type;
 			_orig = link.getIcon();
-			if (_orig == null)return;
+			if (_orig == null){
+				return;
+			}
 			//create temp canvas
 			_canvas = document.createElement('canvas');
 			//create temp image
@@ -438,11 +419,8 @@
 			var url = '';
 			//get link element
 			var getLink = function() {
-				var link = document.getElementsByTagName('head')[0].getElementsByTagName('link');
-				for (var l = link.length, i = (l - 1); i >= 0; i--) {
-					if ((/(^|\s)icon(\s|$)/i).test(link[i].getAttribute('rel'))) {
-						return link[i];
-					}
+				if(document.getElementById('jigoshop_favicon')){
+					return document.getElementById('jigoshop_favicon')
 				}
 				return false;
 			};
@@ -814,3 +792,18 @@
 		this.Favico = Favico;
 	}
 })();
+
+jQuery(document).ready(function() {
+	var favico = new Favico({
+		bgColor: '#' + favicon_params.bg_color,
+		textColor: '#' + favicon_params.text_color,
+		fontFamily: 'sans-serif',
+		fontStyle: 'bold',
+		position: favicon_params.position,
+		type: 'circle',
+		animation: 'slide'
+	});
+	if(favicon_params.favicon_count > 0){
+		favico.badge(favicon_params.favicon_count);
+	}
+});
