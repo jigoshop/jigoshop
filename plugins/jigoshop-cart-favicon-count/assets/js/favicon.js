@@ -60,7 +60,6 @@
 			_opt.type = (type['' + _opt.type]) ? _opt.type : _def.type;
 			_orig = link.getIcon();
 			if (_orig == null){
-				console.log('empty');
 				return;
 			}
 			//create temp canvas
@@ -420,12 +419,6 @@
 			var url = '';
 			//get link element
 			var getLink = function() {
-				/*var link = document.getElementByID('head')[0].getElementsByTagName('link');
-				for (var l = link.length, i = (l - 1); i >= 0; i--) {
-					if ((/(^|\s)icon(\s|$)/i).test(link[i].getAttribute('rel'))) {
-						return link[i];
-					}
-				}*/
 				if(document.getElementById('jigoshop_favicon')){
 					return document.getElementById('jigoshop_favicon')
 				}
