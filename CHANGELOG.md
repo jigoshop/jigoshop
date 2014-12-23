@@ -2,7 +2,7 @@
 
 * 1.15.2 - 2014-12-23:
     * Fix: JS error in tinymce shortcodes.
-    * Improved: Rewrited facicon cart count module.
+    * Improved: Rewrited favicon cart count module.
 * 1.15.1 - 2014-12-19:
     * Fix: Fatal error on cart page.
     * Fix: JS error in favicon cart notification.

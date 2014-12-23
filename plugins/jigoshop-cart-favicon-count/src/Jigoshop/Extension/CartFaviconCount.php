@@ -7,7 +7,7 @@ class CartFaviconCount
 	public function __construct(){
 		if(is_admin())
 		{
-			\Jigoshop_Base::get_options()->install_external_options_tab(__('Cart Favicon', 'jigoshop_cart_favicon_count'), $this->admin_settings());
+			\Jigoshop_Base::get_options()->install_external_options_tab(__('Cart Favicon', 'jigoshop_cart_favicon_count'), $this->adminSettings());
 			add_action('admin_enqueue_scripts', array($this, 'adminScripts'));
 			add_action('admin_enqueue_scripts', array($this, 'adminStyles'));
 		}
@@ -17,7 +17,7 @@ class CartFaviconCount
 		}
 	}
 
-	public function admin_settings(){
+	public function adminSettings(){
 		return array(
 			array(
 				'name' => __('Cart Favicon', 'jigoshop_cart_favicon_count'),
@@ -93,18 +93,12 @@ class CartFaviconCount
 
 	public function adminScripts() {
 		jigoshop_add_script('favicon', JIGOSHOP_CART_FAVICON_COUNT_URL.'/vendor/js/colpick.js', array('jquery'));
-		jigoshop_add_script('colpick', JIGOSHOP_CART_FAVICON_COUNT_URL.'/assets/js/colpick.js', array('jquery'));
+		jigoshop_add_script('colpick', JIGOSHOP_CART_FAVICON_COUNT_URL.'/assets/js/init-colpick.js', array('jquery'));
 	}
 
 	public function adminStyles() {
 		jigoshop_add_style('favicon', JIGOSHOP_CART_FAVICON_COUNT_URL.'/vendor/css/colpick.css');
-		jigoshop_add_style('colpick', JIGOSHOP_CART_FAVICON_COUNT_URL.'/assets/css/colpick.css');
-	}
-
-	public function displayColpick() {
-		ob_start();
-
-		return ob_get_clean();
+		jigoshop_add_style('colpick', JIGOSHOP_CART_FAVICON_COUNT_URL.'/assets/css/init-colpick.css');
 	}
 
 	public function displayFileUpload() {
