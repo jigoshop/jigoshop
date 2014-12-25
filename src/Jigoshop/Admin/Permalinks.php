@@ -4,7 +4,7 @@ namespace Jigoshop\Admin;
 
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
-use Jigoshop\Frontend\Pages;
+use Jigoshop\Frontend\Pages as FrontendPages;
 use Jigoshop\Helper\Render;
 use WPAL\Wordpress;
 
@@ -82,7 +82,7 @@ class Permalinks
 		$permalink = $helpers->trailingslashit($this->options->get('permalinks.product'));
 
 		// Get shop page
-		$shopPageId = $this->options->getPageId(Pages::SHOP);
+		$shopPageId = $this->options->getPageId(FrontendPages::SHOP);
 		$base = urldecode(($shopPageId > 0 && $this->wp->getPost($shopPageId)) ? $this->wp->getPageUri($shopPageId) : _x('shop', 'default-slug', 'jigoshop'));
 		$productBase = _x('product', 'default-slug', 'jigoshop');
 
@@ -136,7 +136,7 @@ class Permalinks
 			$permalinks['product'] = $helpers->untrailingslashit($product_permalink);
 
 			// Shop base may require verbose page rules if nesting pages
-			$shopPageId = $this->options->getPageId(Pages::SHOP);
+			$shopPageId = $this->options->getPageId(FrontendPages::SHOP);
 			$shop_permalink = urldecode(($shopPageId > 0 && $this->wp->getPost($shopPageId)) ? $this->wp->getPageUri($shopPageId) : _x('shop', 'default-slug', 'jigoshop'));
 			if ($shopPageId && trim($permalinks['product'], '/') === $shop_permalink) {
 				$permalinks['verbose'] = true;
