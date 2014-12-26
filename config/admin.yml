@@ -13,6 +13,11 @@ services:
     arguments:
       - '@wpal'
       - '@jigoshop.options'
+  jigoshop.admin.permalinks:
+    class: Jigoshop\Admin\Permalinks
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
   jigoshop.admin.dashboard:
     class: Jigoshop\Admin\Dashboard
     arguments:
@@ -24,15 +29,20 @@ services:
       - '@jigoshop.helper.scripts'
     tags:
       - { name: jigoshop.admin.page }
-  jigoshop.admin.permalinks:
-    class: Jigoshop\Admin\Permalinks
-    arguments:
-      - '@wpal'
-      - '@jigoshop.options'
 #  jigoshop.admin.reports:
 #    class: Jigoshop\Admin\Reports
 #    tags:
 #      - { name: jigoshop.admin.page }
+  jigoshop.admin.migration:
+    class: Jigoshop\Admin\Migration
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.messages'
+      - '@jigoshop.helper.styles'
+      - '@jigoshop.helper.scripts'
+    tags:
+      - { name: jigoshop.admin.page }
   jigoshop.admin.settings:
     class: Jigoshop\Admin\Settings
     arguments:

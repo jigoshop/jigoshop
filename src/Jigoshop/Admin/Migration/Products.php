@@ -1,50 +1,58 @@
 <?php
 
-namespace Jigoshop;
+namespace Jigoshop\Admin\Migration;
 
-use Jigoshop\Core\Options;
-use Jigoshop\Entity\Order;
 use Jigoshop\Entity\Product;
+use Jigoshop\Entity\Product\Attribute\Multiselect;
+use Jigoshop\Entity\Product\Attribute\Option;
+use Jigoshop\Entity\Product\Attribute\Select;
+use Jigoshop\Entity\Product\Attribute\Text;
+use Jigoshop\Entity\Product\Attributes\StockStatus;
+use Jigoshop\Helper\Render;
 use Jigoshop\Service\ProductServiceInterface;
 use WPAL\Wordpress;
 
-/**
- * Migration helper - transforms Jigoshop 1.x entities into Jigoshop 2.x ones.
- *
- * WARNING: Do NOT use this class, it is useful only as transition for Jigoshop 1.x and will be removed in future!
- */
-class Migration
+class Products implements Tool
 {
+	const ID = 'jigoshop_products_migration';
+
 	/** @var Wordpress */
-	private static $wp;
-	/** @var Options */
-	private static $options;
+	private $wp;
+	/** @var \Jigoshop\Core\Options */
+	private $options;
 	/** @var ProductServiceInterface */
-	private static $productService;
-	private static $taxClasses = array();
+	private $productService;
+	private $taxClasses = array();
 
-	public function __construct(Wordpress $wp, Options $options, ProductServiceInterface $productService)
+	public function __construct(Wordpress $wp, \Jigoshop\Core\Options $options, ProductServiceInterface $productService)
 	{
-		self::$wp = $wp;
-		self::$options = $options;
-		self::$productService = $productService;
+		$this->wp = $wp;
+		$this->options = $options;
+		$this->productService = $productService;
 	}
 
-	public static function migrateOptions()
+	/**
+	 * @return string Tool ID.
+	 */
+	public function getId()
 	{
-		$options = self::$wp->getOption('jigoshop_options');
-		$transformations = \Jigoshop_Base::get_options()->__getTransformations();
-
-		foreach ($transformations as $old => $new) {
-			self::$options->update($new, $options[$old]);
-		}
-
-		// TODO: How to migrate plugin options?
+		return self::ID;
 	}
 
-	public static function migrateProducts()
+	/**
+	 * Shows migration tool in Migration tab.
+	 */
+	public function display()
 	{
-		$wpdb = self::$wp->getWPDB();
+		Render::output('admin/migration/products', array());
+	}
+
+	/**
+	 * Migrates data from old format to new one.
+	 */
+	public function migrate()
+	{
+		$wpdb = $this->wp->getWPDB();
 
 		// Update product_cat into product_category
 		$wpdb->query($wpdb->prepare("UPDATE {$wpdb->term_taxonomy} SET taxonomy = %s WHERE taxonomy = %s", array('product_category', 'product_cat')));
@@ -52,7 +60,7 @@ class Migration
 		$query = $wpdb->prepare("
 			SELECT DISTINCT p.ID, pm.* FROM {$wpdb->posts} p
 			LEFT JOIN {$wpdb->postmeta} pm ON pm.post_id = p.ID
-				WHERE p.post_type IN (%s, %s) p.post_status <> %s pm.meta_key",
+				WHERE p.post_type IN (%s, %s) AND p.post_status <> %s",
 			array('product', 'product_variation', 'auto-draft'));
 		$products = $wpdb->get_results($query);
 
@@ -62,10 +70,9 @@ class Migration
 			// Add product types
 			$types = wp_get_object_terms($product['ID'], 'product_type');
 			$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->postmeta} VALUES (NULL, %d, %s, %s)", array($product['ID'], 'type', $types[0]->slug)));
-			$i++;
 
 			// Update columns
-			while ($i < $endI && $products[$i]['ID'] == $product['ID']) {
+			do {
 				// Sales support
 				if ($products[$i]['meta_key'] == 'sale_price' && !empty($products[$i]['meta_value'])) {
 					$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->postmeta} (post_id, meta_key, meta_value) VALUES (%d, %s, %s)", array($products[$i]['ID'], 'sales_enabled', true)));
@@ -79,13 +86,13 @@ class Migration
 					});
 
 					foreach ($attributes as $slug => $source) {
-						$attribute = self::$productService->createAttribute(Product\Attribute\Text::TYPE);
+						$attribute = $this->productService->createAttribute(Text::TYPE);
 						$attribute->setSlug($slug);
 						$attribute->setLabel($source['name']);
 						$attribute->setVisible($source['visible']);
 						$attribute->setLocal(true);
 
-						self::$productService->saveAttribute($attribute);
+						$this->productService->saveAttribute($attribute);
 
 						$wpdb->insert($wpdb->prefix.'jigoshop_product_attribute', array(
 							'product_id' => $product['ID'],
@@ -95,26 +102,27 @@ class Migration
 					}
 				}
 
-				$key = self::_transformProductMetaKey($products[$i]['meta_key']);
+				$key = $this->_transformKey($products[$i]['meta_key']);
 
 				if (!empty($key)) {
 					$wpdb->query($wpdb->prepare(
 						"UPDATE {$wpdb->postmeta} SET meta_value = %s WHERE meta_key = %s AND meta_id = %d",
 						array(
-							self::_transformProductMeta($products[$i]['meta_key'], $products[$i]['meta_value']),
+							$this->_transform($products[$i]['meta_key'], $products[$i]['meta_value']),
 							$key,
 							$products[$i]['meta_id'],
 						)
 					));
 				}
+
 				$i++;
-			}
+			} while ($i < $endI && $products[$i]['ID'] == $product['ID']);
 		}
 
 		// Migrate global product attributes
 		$attributes = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}jigoshop_attribute_taxonomies");
 		foreach ($attributes as $source) {
-			$attribute = self::$productService->createAttribute(self::_getAttributeType($source));
+			$attribute = $this->productService->createAttribute($this->_getAttributeType($source));
 			$attribute->setLabel($source->attribute_label);
 			$attribute->setSlug($source->attribute_name);
 			$attribute->setVisible(true);
@@ -128,19 +136,19 @@ class Migration
 		  ");
 			$productAttribute = array();
 			foreach ($options as $sourceOption) {
-				$option = new Product\Attribute\Option();
+				$option = new Option();
 				$option->setLabel($sourceOption->name);
 				$option->setValue($sourceOption->slug);
 				$attribute->addOption($option);
 				$productAttribute[$source->object_id][] = $sourceOption->slug;
 			}
 
-			self::$productService->saveAttribute($attribute);
+			$this->productService->saveAttribute($attribute);
 
 			foreach ($productAttribute as $productId => $values) {
 				$value = array();
 				foreach ($attribute->getOptions() as $option) {
-					/** @var $option Product\Attribute\Option */
+					/** @var $option Option */
 					if (in_array($option->getValue(), $values)) {
 						$value[] = $option->getId();
 					}
@@ -155,25 +163,25 @@ class Migration
 		}
 
 		// Add found tax classes
-		$currentTaxClasses = self::$options->get('tax.classes');
+		$currentTaxClasses = $this->options->get('tax.classes');
 		$currentTaxClassesKeys = array_map(function($item){
 			return $item['class'];
 		}, $currentTaxClasses);
-		self::$taxClasses = array_filter(array_unique(self::$taxClasses), function($item) use ($currentTaxClassesKeys){
+		$this->taxClasses = array_filter(array_unique($this->taxClasses), function($item) use ($currentTaxClassesKeys){
 			return !in_array($item, $currentTaxClassesKeys);
 		});
 
-		foreach (self::$taxClasses as $class) {
+		foreach ($this->taxClasses as $class) {
 			$currentTaxClasses[] = array(
 				'label' => ucfirst($class),
 				'class' => $class,
 			);
 		}
 
-		self::$options->update('tax.classes', $currentTaxClasses);
+		$this->options->update('tax.classes', $currentTaxClasses);
 	}
 
-	private static function _transformProductMeta($key, $value)
+	private function _transform($key, $value)
 	{
 		switch ($key) {
 			case 'visibility':
@@ -205,7 +213,7 @@ class Migration
 						$taxClass = 'standard';
 					}
 
-					self::$taxClasses[] = $taxClass;
+					$this->taxClasses[] = $taxClass;
 					$result[] = $taxClass;
 				}
 
@@ -213,25 +221,25 @@ class Migration
 			case 'stock_status':
 				switch ($value) {
 					case 'outofstock':
-						return Product\Attributes\StockStatus::OUT_STOCK;
+						return StockStatus::OUT_STOCK;
 					default:
-						return Product\Attributes\StockStatus::IN_STOCK;
+						return StockStatus::IN_STOCK;
 				}
 			case 'backorders':
 				switch ($value) {
 					case 'notify':
-						return Product\Attributes\StockStatus::BACKORDERS_NOTIFY;
+						return StockStatus::BACKORDERS_NOTIFY;
 					case 'yes':
-						return Product\Attributes\StockStatus::BACKORDERS_ALLOW;
+						return StockStatus::BACKORDERS_ALLOW;
 					default:
-						return Product\Attributes\StockStatus::BACKORDERS_FORBID;
+						return StockStatus::BACKORDERS_FORBID;
 				}
 			default:
 				return $value;
 		}
 	}
 
-	private static function _transformProductMetaKey($key)
+	private function _transformKey($key)
 	{
 		switch ($key) {
 			case 'tax_status':
@@ -269,15 +277,15 @@ class Migration
 		}
 	}
 
-	private static function _getAttributeType($source)
+	private function _getAttributeType($source)
 	{
 		switch ($source->attribute_type) {
 			case 'multiselect':
-				return Product\Attribute\Multiselect::TYPE;
+				return Multiselect::TYPE;
 			case 'select':
-				return Product\Attribute\Select::TYPE;
+				return Select::TYPE;
 			default:
-				return Product\Attribute\Text::TYPE;
+				return Text::TYPE;
 		}
 	}
 }

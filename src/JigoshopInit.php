@@ -57,11 +57,13 @@ class JigoshopInit
 			$builder->addCompilerPass(new Jigoshop\Shipping\CompilerPass());
 			$builder->addCompilerPass(new Jigoshop\Admin\CompilerPass());
 			$builder->addCompilerPass(new Jigoshop\Admin\Settings\CompilerPass());
+			$builder->addCompilerPass(new Jigoshop\Admin\Migration\CompilerPass());
 
 			$loader = new YamlFileLoader($builder, new FileLocator(JIGOSHOP_DIR.'/config'));
 			$loader->load('admin.yml');
-			$loader->load('admin/settings.yml');
+			$loader->load('admin/migration.yml');
 			$loader->load('admin/pages.yml');
+			$loader->load('admin/settings.yml');
 			$loader->load('factories.yml');
 			$loader->load('helpers.yml');
 			$loader->load('main.yml');

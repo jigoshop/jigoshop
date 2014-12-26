@@ -1,11 +1,14 @@
 <?php
 
-namespace Jigoshop\Migration;
+namespace Jigoshop\Admin\Migration;
 
+use Jigoshop\Helper\Render;
 use WPAL\Wordpress;
 
-class Options
+class Options implements Tool
 {
+	const ID = 'jigoshop_options_migration';
+
 	/** @var Wordpress */
 	private $wp;
 	/** @var Options */
@@ -17,6 +20,25 @@ class Options
 		$this->options = $options;
 	}
 
+	/**
+	 * @return string Tool ID.
+	 */
+	public function getId()
+	{
+		return self::ID;
+	}
+
+	/**
+	 * Shows migration tool in Migration tab.
+	 */
+	public function display()
+	{
+		Render::output('admin/migration/options', array());
+	}
+
+	/**
+	 * Migrates data from old format to new one.
+	 */
 	public function migrate()
 	{
 		$options = $this->wp->getOption('jigoshop_options');

@@ -1,29 +1,50 @@
 <?php
 
-namespace Jigoshop\Migration;
+namespace Jigoshop\Admin\Migration;
 
-use Jigoshop\Core\Options;
 use Jigoshop\Entity\Coupon;
 use Jigoshop\Entity\Product;
+use Jigoshop\Helper\Render;
 use Jigoshop\Service\CouponServiceInterface;
 use WPAL\Wordpress;
 
-class Coupons
+class Coupons implements Tool
 {
+	const ID = 'jigoshop_coupons_migration';
+
 	/** @var Wordpress */
 	private $wp;
-	/** @var Options */
+	/** @var \Jigoshop\Core\Options */
 	private $options;
 	/** @var CouponServiceInterface */
 	private $couponService;
 
-	public function __construct(Wordpress $wp, Options $options, CouponServiceInterface $couponService)
+	public function __construct(Wordpress $wp, \Jigoshop\Core\Options $options, CouponServiceInterface $couponService)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->couponService = $couponService;
 	}
 
+	/**
+	 * @return string Tool ID.
+	 */
+	public function getId()
+	{
+		return self::ID;
+	}
+
+	/**
+	 * Shows migration tool in Migration tab.
+	 */
+	public function display()
+	{
+		Render::output('admin/migration/coupons', array());
+	}
+
+	/**
+	 * Migrates data from old format to new one.
+	 */
 	public function migrate()
 	{
 		$wpdb = $this->wp->getWPDB();

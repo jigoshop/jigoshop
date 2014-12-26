@@ -1,0 +1,25 @@
+parameters: ~
+services:
+  jigoshop.admin.migration.options:
+    class: Jigoshop\Admin\Migration\Options
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+    tags:
+      - { name: jigoshop.admin.migration }
+  jigoshop.admin.migration.coupons:
+    class: Jigoshop\Admin\Migration\Coupons
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.service.coupon'
+    tags:
+      - { name: jigoshop.admin.migration }
+  jigoshop.admin.migration.products:
+    class: Jigoshop\Admin\Migration\Products
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.service.product'
+    tags:
+      - { name: jigoshop.admin.migration }
