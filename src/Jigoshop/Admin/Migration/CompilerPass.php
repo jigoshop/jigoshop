@@ -31,6 +31,13 @@ class CompilerPass implements CompilerPassInterface
 
 		// If no migration tools - remove tab
 		if (empty($tools)) {
+			$definition = $container->getDefinition('jigoshop.admin');
+			$calls = array_filter($definition->getMethodCalls(), function($call){
+				/** @var Reference $reference */
+				$reference = $call[1][0];
+				return (string)$reference != 'jigoshop.admin.migration';
+			});
+			$definition->setMethodCalls($calls);
 			$container->removeDefinition('jigoshop.admin.migration');
 			return;
 		}
