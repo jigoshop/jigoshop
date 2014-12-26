@@ -134,7 +134,19 @@ class Orders implements Tool
 						// TODO: Tax migration
 						break;
 					case 'customer_user':
-						// TODO: Update user data with customer ID
+						$customer = $this->wp->getPostMeta($order['ID'], 'customer', true);
+
+						if ($customer !== false) {
+							/** @var Customer $customer */
+							$customer = unserialize($customer);
+							/** @var \WP_User $user */
+							$user = $this->wp->getUserBy('id', $orders[$i]['meta_value']);
+							$customer->setId($user->ID);
+							$customer->setLogin($user->get('login'));
+							$customer->setEmail($user->get('user_email'));
+							$customer->setName($user->get('display_name'));
+							$wpdb->query($wpdb->prepare("UPDATE {$wpdb->postmeta} SET meta_value = %d WHERE post_id = %d AND meta_key = %s", array(serialize($customer), $orders[$i]['meta_id'], 'customer')));
+						}
 						break;
 					case 'order_items':
 						// TODO: Migrate order items
