@@ -15,6 +15,7 @@ use Jigoshop\Helper\Render;
 				<?php _e('Class', 'jigoshop'); ?>
 				<a href="#" data-toggle="tooltip" class="badge" data-placement="top" title="<?php _e('Tax classes needs to be saved first before updating rules.', 'jigoshop'); ?>">?</a>
 			</th>
+			<th scope="col"><?php _e('Is compound?', 'jigoshop'); ?></th>
 			<th scope="col"><?php _e('Rate', 'jigoshop'); ?></th>
 			<th scope="col"><?php _e('Country', 'jigoshop'); ?></th>
 			<th scope="col"><?php _e('State', 'jigoshop'); ?></th>

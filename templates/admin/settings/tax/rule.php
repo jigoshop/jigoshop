@@ -27,6 +27,13 @@ use Jigoshop\Core\Options;
 	)); ?>
 	</td>
 	<td>
+	<?php Forms::checkbox(array(
+		'id' => 'tax_rule_compound_'.$rule['id'],
+		'name' => Options::NAME.'[rules][compound][]',
+		'checked' => $rule['is_compound'],
+	)); ?>
+	</td>
+	<td>
 	<?php Forms::text(array(
 		'id' => 'tax_rule_rate_'.$rule['id'],
 		'name' => Options::NAME.'[rules][rate][]',

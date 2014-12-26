@@ -58,7 +58,7 @@ class TaxesTab implements TabInterface
 			$scripts->localize('jigoshop.admin.settings.taxes', 'jigoshop_admin_taxes', array(
 				'new_class' => Render::get('admin/settings/tax/class', array('class' => array('label' => '', 'class' => ''))),
 				'new_rule' => Render::get('admin/settings/tax/rule', array(
-					'rule' => array('id' => 0, 'label' => '', 'class' => '', 'rate' => '', 'country' => '', 'states' => array(), 'postcodes' => array()),
+					'rule' => array('id' => 0, 'label' => '', 'class' => '', 'is_compound' => false, 'rate' => '', 'country' => '', 'states' => array(), 'postcodes' => array()),
 					'classes' => $classes,
 					'countries' => $countries,
 				)),

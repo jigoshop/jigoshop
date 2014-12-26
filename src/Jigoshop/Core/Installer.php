@@ -89,6 +89,7 @@ class Installer
 				class VARCHAR(255) NOT NULL,
 				label VARCHAR(255) NOT NULL,
 				rate DOUBLE NOT NULL,
+				is_compund INT NOT NULL DEFAULT 0,
 				PRIMARY KEY id (id)
 			) {$collate};
 		";

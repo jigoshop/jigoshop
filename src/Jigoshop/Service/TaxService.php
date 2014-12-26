@@ -295,7 +295,7 @@ class TaxService implements TaxServiceInterface
 		if ($this->rules === null) {
 			$wpdb = $this->wp->getWPDB();
 			$query = "
-				SELECT t.id, t.class, t.label, t.rate, tl.country, tl.state, tl.postcode FROM {$wpdb->prefix}jigoshop_tax t
+				SELECT t.id, t.class, t.label, t.is_compound, t.rate, tl.country, tl.state, tl.postcode FROM {$wpdb->prefix}jigoshop_tax t
 			  LEFT JOIN {$wpdb->prefix}jigoshop_tax_location tl ON tl.tax_id = t.id
 				ORDER BY t.id
 			";
@@ -329,6 +329,7 @@ class TaxService implements TaxServiceInterface
 			'rate' => (float)$item['rate'],
 			'label' => $item['label'],
 			'class' => $item['class'],
+			'is_compound' => $item['is_compound'] == 1,
 			'country' => $item['country'],
 			'states' => array(),
 			'postcodes' => array(),
