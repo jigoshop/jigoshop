@@ -73,6 +73,8 @@ class Orders implements Tool
 
 		for ($i = 0, $endI = count($orders); $i < $endI;) {
 			$order = $orders[$i];
+			$orderTaxClasses = array();
+			$orderTax = 0.0;
 
 			// Update central order data
 			$status = $this->wp->getTheTerms($order['ID'], 'shop_order_status');
@@ -131,7 +133,18 @@ class Orders implements Tool
 						$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->postmeta} (post_id, meta_key, meta_value) VALUES (%d, %s, %s)", array($order['ID'], 'total', $data['order_total'])));
 
 						// Migrate order tax
-						// TODO: Tax migration
+						$taxes = $this->_parseTaxes($data['order_tax']);
+						foreach ($taxes as $class => $info) {
+							if ($class == '*') {
+								$orderTaxClasses[] = 'standard';
+							} else {
+								$orderTaxClasses[] = $class;
+							}
+
+							$orderTax += $info['amount'];
+						}
+
+						$orderTaxClasses = array_unique($orderTaxClasses);
 						break;
 					case 'customer_user':
 						$customer = $this->wp->getPostMeta($order['ID'], 'customer', true);
@@ -152,6 +165,9 @@ class Orders implements Tool
 						// TODO: Migrate order items
 						break;
 				}
+
+				// TODO: Check if order tax is properly reduced
+
 				$i++;
 			} while ($i < $endI && $orders[$i]['ID'] == $order['ID']);
 		}
@@ -216,5 +232,27 @@ class Orders implements Tool
 		$customer->setShippingAddress($address);
 
 		return $customer;
+	}
+
+	private function _parseTaxes($order_tax)
+	{
+		$taxes = explode('|', $order_tax);
+
+		foreach($taxes as $tax){
+			@list($class, $taxInfo) = explode(':', $tax);
+			if($taxInfo !== null){
+				$taxInfo = explode(',', $taxInfo);
+				foreach($taxInfo as $info){
+					$value = explode('^', $info);
+					if(in_array($value[0], array('rate', 'display', 'compound'))){
+						$taxClasses[$class][$value[0]] = (sizeof($value) > 1 ? ($value[0] == 'compound' && $value[1] == null ? false : $value[1]) : ($value[0] == 'compound' ? false : ''));
+					} else {
+						$taxClasses[$class][$value[0]] = (sizeof($value) > 1 ? ($data['order_tax_divisor'] > 0 ? $value[1] / $data['order_tax_divisor'] : $value[1]) : '');
+					}
+				}
+			}
+		}
+
+		return $taxClasses;
 	}
 }
