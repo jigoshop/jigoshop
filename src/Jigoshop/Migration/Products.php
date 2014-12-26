@@ -49,10 +49,9 @@ class Products
 			// Add product types
 			$types = wp_get_object_terms($product['ID'], 'product_type');
 			$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->postmeta} VALUES (NULL, %d, %s, %s)", array($product['ID'], 'type', $types[0]->slug)));
-			$i++;
 
 			// Update columns
-			while ($i < $endI && $products[$i]['ID'] == $product['ID']) {
+			do {
 				// Sales support
 				if ($products[$i]['meta_key'] == 'sale_price' && !empty($products[$i]['meta_value'])) {
 					$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->postmeta} (post_id, meta_key, meta_value) VALUES (%d, %s, %s)", array($products[$i]['ID'], 'sales_enabled', true)));
@@ -94,8 +93,9 @@ class Products
 						)
 					));
 				}
+
 				$i++;
-			}
+			} while ($i < $endI && $products[$i]['ID'] == $product['ID']);
 		}
 
 		// Migrate global product attributes
