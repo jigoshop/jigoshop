@@ -2,11 +2,15 @@
 
 namespace Jigoshop\Admin\Migration;
 
+use Jigoshop\Core\Messages;
 use Jigoshop\Entity\Customer;
 use Jigoshop\Entity\Order\Status;
 use Jigoshop\Entity\Product;
+use Jigoshop\Exception;
 use Jigoshop\Helper\Render;
 use Jigoshop\Service\OrderServiceInterface;
+use Jigoshop\Service\PaymentServiceInterface;
+use Jigoshop\Service\ShippingServiceInterface;
 use WPAL\Wordpress;
 
 class Orders implements Tool
@@ -17,14 +21,24 @@ class Orders implements Tool
 	private $wp;
 	/** @var \Jigoshop\Core\Options */
 	private $options;
+	/** @var Messages */
+	private $messages;
 	/** @var OrderServiceInterface */
 	private $orderService;
+	/** @var ShippingServiceInterface */
+	private $shippingService;
+	/** @var PaymentServiceInterface */
+	private $paymentService;
 
-	public function __construct(Wordpress $wp, \Jigoshop\Core\Options $options, OrderServiceInterface $orderService)
+	public function __construct(Wordpress $wp, \Jigoshop\Core\Options $options, Messages $messages, OrderServiceInterface $orderService, ShippingServiceInterface $shippingService,
+		PaymentServiceInterface $paymentService)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
+		$this->messages = $messages;
 		$this->orderService = $orderService;
+		$this->shippingService = $shippingService;
+		$this->paymentService = $paymentService;
 	}
 
 	/**
@@ -86,9 +100,38 @@ class Orders implements Tool
 
 						// Migrate customer
 						$customer = $this->_migrateCustomer($data);
-						$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->postmeta} (post_id, meta_key, meta_value) VALUES (%d, %s, %s)", array($orders[$i]['ID'], 'customer', serialize($customer))));
+						$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->postmeta} (post_id, meta_key, meta_value) VALUES (%d, %s, %s)", array($order['ID'], 'customer', serialize($customer))));
 
-						// TODO: Migrate other data
+						// Migrate coupons
+						$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->postmeta} (post_id, meta_key, meta_value) VALUES (%d, %s, %s)", array($order['ID'], 'coupons', $data['order_discount_coupons'])));
+
+						// Migrate shipping method
+						try {
+							$method = $this->shippingService->get($data['shipping_method']);
+							$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->postmeta} (post_id, meta_key, meta_value) VALUES (%d, %s, %s)", array($order['ID'], 'shipping',	array(
+								'method' => $method->getState(),
+								'price' => $data['order_shipping'],
+								'rate' => '', // TODO: Where to get shipping rate?
+							))));
+						} catch (Exception $e) {
+							$this->messages->addWarning(sprintf(__('Shipping method "%s" not found. Order with ID "%d" has no shipping method now.'), $data['shipping_method'], $order['ID']));
+						}
+
+						// Migrate payment method
+						try {
+							$method = $this->paymentService->get($data['payment_method']);
+							$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->postmeta} (post_id, meta_key, meta_value) VALUES (%d, %s, %s)", array($order['ID'], 'payment',	$method->getId())));
+						} catch (Exception $e) {
+							$this->messages->addWarning(sprintf(__('Payment method "%s" not found. Order with ID "%d" has no payment method now.'), $data['payment_method'], $order['ID']));
+						}
+
+						// Migrate order totals
+						$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->postmeta} (post_id, meta_key, meta_value) VALUES (%d, %s, %s)", array($order['ID'], 'subtotal', $data['order_subtotal'])));
+						$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->postmeta} (post_id, meta_key, meta_value) VALUES (%d, %s, %s)", array($order['ID'], 'discount', $data['order_discount'])));
+						$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->postmeta} (post_id, meta_key, meta_value) VALUES (%d, %s, %s)", array($order['ID'], 'total', $data['order_total'])));
+
+						// Migrate order tax
+						// TODO: Tax migration
 						break;
 					case 'customer_user':
 						// TODO: Update user data with customer ID
