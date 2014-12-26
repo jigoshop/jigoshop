@@ -5,7 +5,7 @@ use Jigoshop\Helper\Product;
 /**
  * @var $method \Jigoshop\Shipping\MultipleMethod Method to display.
  * @var $rate \Jigoshop\Shipping\Rate Rate to display.
- * @var $cart \Jigoshop\Frontend\Cart Current cart.
+ * @var $cart \Jigoshop\Entity\Cart Current cart.
  */
 ?>
 <li class="list-group-item shipping-<?php echo $method->getId(); ?>-<?php echo $rate->getId(); ?>">

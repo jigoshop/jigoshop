@@ -2,8 +2,8 @@
 
 namespace Jigoshop\Service;
 
+use Jigoshop\Entity\Cart;
 use Jigoshop\Entity\Order;
-use Jigoshop\Frontend\Cart;
 
 /**
  * Interface for cart handling service.

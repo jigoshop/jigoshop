@@ -4,11 +4,11 @@ namespace Jigoshop\Factory;
 
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
+use Jigoshop\Entity\Cart;
 use Jigoshop\Entity\Customer\Address;
 use Jigoshop\Entity\Customer\CompanyAddress;
 use Jigoshop\Entity\Order as Entity;
 use Jigoshop\Exception;
-use Jigoshop\Frontend\Cart;
 use Jigoshop\Helper\Country;
 use Jigoshop\Helper\Validation;
 use Jigoshop\Service\CustomerServiceInterface;
@@ -99,6 +99,8 @@ class Order implements EntityFactoryInterface
 			$order->setShippingMethod($method);
 		}
 
+		$order = $this->wp->applyFilters('jigoshop\factory\order\create', $order);
+
 		return $order;
 	}
 
@@ -162,6 +164,7 @@ class Order implements EntityFactoryInterface
 	 */
 	public function fromCart(Cart $cart)
 	{
+		// TODO: Improve this method as Cart is an Order now
 		$customer = $cart->getCustomer();
 		$customer->selectTaxAddress($this->options->get('taxes.shipping') ? 'shipping' : 'billing');
 		$address = $this->createAddress($_POST['jigoshop_order']['billing']);

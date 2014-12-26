@@ -147,13 +147,13 @@ class Installer
 		}
 
 		$query = "
-			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}jigoshop_order_item_tax (
-				item_id INT,
+			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}jigoshop_order_tax (
+				order_id BIGINT(20) UNSIGNED,
 				tax_class VARCHAR(255) NOT NULL,
 				rate decimal(9,4) NOT NULL,
 				is_compund INT NOT NULL DEFAULT 0,
-				PRIMARY KEY id (item_id, tax_class),
-				FOREIGN KEY order_item (item_id) REFERENCES {$wpdb->prefix}jigoshop_order_item (id) ON DELETE CASCADE
+				PRIMARY KEY id (order_id, tax_class),
+				FOREIGN KEY order (order_id) REFERENCES {$wpdb->posts} (ID) ON DELETE CASCADE
 			) {$collate};
 		";
 		if (!$wpdb->query($query)) {

@@ -10,6 +10,7 @@ use Jigoshop\Exception;
 use Jigoshop\Helper\Render;
 use Jigoshop\Service\OrderServiceInterface;
 use Jigoshop\Service\PaymentServiceInterface;
+use Jigoshop\Service\ProductServiceInterface;
 use Jigoshop\Service\ShippingServiceInterface;
 use WPAL\Wordpress;
 
@@ -29,9 +30,11 @@ class Orders implements Tool
 	private $shippingService;
 	/** @var PaymentServiceInterface */
 	private $paymentService;
+	/** @var ProductServiceInterface */
+	private $productService;
 
 	public function __construct(Wordpress $wp, \Jigoshop\Core\Options $options, Messages $messages, OrderServiceInterface $orderService, ShippingServiceInterface $shippingService,
-		PaymentServiceInterface $paymentService)
+		PaymentServiceInterface $paymentService, ProductServiceInterface $productService)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
@@ -39,6 +42,7 @@ class Orders implements Tool
 		$this->orderService = $orderService;
 		$this->shippingService = $shippingService;
 		$this->paymentService = $paymentService;
+		$this->productService = $productService;
 	}
 
 	/**
@@ -73,8 +77,6 @@ class Orders implements Tool
 
 		for ($i = 0, $endI = count($orders); $i < $endI;) {
 			$order = $orders[$i];
-			$orderTaxClasses = array();
-			$orderTax = 0.0;
 
 			// Update central order data
 			$status = $this->wp->getTheTerms($order['ID'], 'shop_order_status');
@@ -131,20 +133,6 @@ class Orders implements Tool
 						$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->postmeta} (post_id, meta_key, meta_value) VALUES (%d, %s, %s)", array($order['ID'], 'subtotal', $data['order_subtotal'])));
 						$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->postmeta} (post_id, meta_key, meta_value) VALUES (%d, %s, %s)", array($order['ID'], 'discount', $data['order_discount'])));
 						$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->postmeta} (post_id, meta_key, meta_value) VALUES (%d, %s, %s)", array($order['ID'], 'total', $data['order_total'])));
-
-						// Migrate order tax
-						$taxes = $this->_parseTaxes($data['order_tax']);
-						foreach ($taxes as $class => $info) {
-							if ($class == '*') {
-								$orderTaxClasses[] = 'standard';
-							} else {
-								$orderTaxClasses[] = $class;
-							}
-
-							$orderTax += $info['amount'];
-						}
-
-						$orderTaxClasses = array_unique($orderTaxClasses);
 						break;
 					case 'customer_user':
 						$customer = $this->wp->getPostMeta($order['ID'], 'customer', true);
@@ -162,11 +150,76 @@ class Orders implements Tool
 						}
 						break;
 					case 'order_items':
-						// TODO: Migrate order items
+						$data = unserialize($orders[$i]['meta_value']);
+
+						foreach ($data as $itemData) {
+							$product = $this->productService->find($itemData['id']);
+
+							$tax = 0.0;
+							$taxRate = 0;
+							$price = $itemData['cost']/$itemData['qty'];
+							if (!empty($itemData['taxrate']) && $itemData['taxrate'] > 0) {
+								$tax = $price * $itemData['taxrate'] / 100;
+								$taxRate = $itemData['taxrate'];
+							} else if ($itemData['cost'] < $itemData['cost_inc_tax']) {
+								$tax = ($itemData['cost_inc_tax'] - $itemData['cost'])/$itemData['qty'];
+								$taxRate = $tax / $itemData['cost'];
+							}
+
+							$wpdb->insert($wpdb->prefix.'jigoshop_order_item', $wpdb->prepare(
+								"INSERT INTO {$wpdb->prefix}jigoshop_order_item (order_id, product_id, product_type, title, price, tax, quantity, cost) VALUES (%d, %d, %s, %s, %s, %s, %d, %s)",
+								array(
+									'order_id' => $order['ID'],
+									'product_id' => $product->getId(),
+									'product_type' => $product->getType(),
+									'title' => $itemData['name'],
+									'price' => $price,
+									'tax' => $tax,
+									'quantity' => $itemData['qty'],
+									'cost' => $itemData['cost']
+								)
+							));
+							$itemId = $wpdb->insert_id;
+
+							if (!empty($itemData['variation_id'])) {
+								$wpdb->query($wpdb->prepare(
+									"INSERT INTO {$wpdb->prefix}jigoshop_order_item_meta (item_id, meta_key, meta_value) VALUES (%d, %s, %s)",
+									array($itemId, 'variation_id', $itemData['variation_id'])
+								));
+
+								/** @var Product\Variable\Variation $variationProduct */
+								/** @var Product\Variable $product */
+								$variationProduct = $product->getVariation($itemData['variation_id']);
+								foreach ($itemData['variation'] as $variation => $variationValue) {
+									$variation = str_replace('tax_', '', $variation);
+									$attribute = $this->getAttribute($variationProduct, $variation);
+
+									if ($attribute === null) {
+										$this->messages->addWarning(sprintf(__('Attribute "%s" not found for variation ID "%d".', 'jigoshop'), $variation, $variationProduct->getId()));
+										continue;
+									}
+
+									$option = $this->getAttributeOption($attribute, $variationValue);
+
+									if ($option === null) {
+										$this->messages->addWarning(sprintf(__('Attribute "%s" option "%s" not found for variation ID "%d".', 'jigoshop'), $variation, $variationValue, $variationProduct->getId()));
+										continue;
+									}
+
+									$wpdb->query($wpdb->prepare(
+										"INSERT INTO {$wpdb->prefix}jigoshop_order_item_meta (item_id, meta_key, meta_value) VALUES (%d, %s, %s)",
+										array($itemId, $attribute->getAttribute()->getId(), $option->getId())
+									));
+								}
+							}
+
+							$wpdb->query($wpdb->prepare(
+								"INSERT INTO {$wpdb->prefix}jigoshop_order_item_tax (item_id, tax_class, rate, is_compound) VALUES (%d, %s, %d, %d)",
+								array($itemId, 'imported', $taxRate, false)
+							));
+						}
 						break;
 				}
-
-				// TODO: Check if order tax is properly reduced
 
 				$i++;
 			} while ($i < $endI && $orders[$i]['ID'] == $order['ID']);
@@ -234,25 +287,37 @@ class Orders implements Tool
 		return $customer;
 	}
 
-	private function _parseTaxes($order_tax)
+	/**
+	 * @param $variationProduct Product\Variable\Variation Variation to search.
+	 * @param $variation string Attribute slug to find.
+	 * @return Product\Variable\Attribute|null Attribute found.
+	 */
+	private function getAttribute($variationProduct, $variation)
 	{
-		$taxes = explode('|', $order_tax);
-
-		foreach($taxes as $tax){
-			@list($class, $taxInfo) = explode(':', $tax);
-			if($taxInfo !== null){
-				$taxInfo = explode(',', $taxInfo);
-				foreach($taxInfo as $info){
-					$value = explode('^', $info);
-					if(in_array($value[0], array('rate', 'display', 'compound'))){
-						$taxClasses[$class][$value[0]] = (sizeof($value) > 1 ? ($value[0] == 'compound' && $value[1] == null ? false : $value[1]) : ($value[0] == 'compound' ? false : ''));
-					} else {
-						$taxClasses[$class][$value[0]] = (sizeof($value) > 1 ? ($data['order_tax_divisor'] > 0 ? $value[1] / $data['order_tax_divisor'] : $value[1]) : '');
-					}
-				}
+		foreach ($variationProduct->getAttributes() as $attribute) {
+			/** @var $attribute Product\Variable\Attribute */
+			if ($attribute->getAttribute()->getSlug() == $variation) {
+				return $attribute;
 			}
 		}
 
-		return $taxClasses;
+		return null;
+	}
+
+	/**
+	 * @param $attribute Product\Variable\Attribute Attribute to search.
+	 * @param $value string Option to find.
+	 * @return \Jigoshop\Entity\Product\Attribute\Option|null Option found.
+	 */
+	private function getAttributeOption($attribute, $value)
+	{
+		foreach ($attribute->getAttribute()->getOptions() as $option) {
+			/** @var $option Product\Attribute\Option */
+			if ($option->getValue() == $value) {
+				return $option;
+			}
+		}
+
+		return null;
 	}
 }

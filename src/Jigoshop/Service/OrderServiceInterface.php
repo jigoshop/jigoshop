@@ -2,8 +2,8 @@
 
 namespace Jigoshop\Service;
 
+use Jigoshop\Entity\Cart;
 use Jigoshop\Entity\Order;
-use Jigoshop\Frontend\Cart;
 
 /**
  * Orders service interface.
@@ -23,8 +23,10 @@ interface OrderServiceInterface extends ServiceInterface
 
 	/**
 	 * Prepares order based on cart.
-	 *
-	 * @param Cart $cart Cart to fetch data from.
+
+
+*
+*@param \Jigoshop\Entity\Cart $cart Cart to fetch data from.
 	 * @return Order Prepared order.
 	 */
 	public function createFromCart(Cart $cart);

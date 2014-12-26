@@ -4,10 +4,10 @@ namespace Jigoshop\Service;
 
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
+use Jigoshop\Entity\Cart;
 use Jigoshop\Entity\EntityInterface;
 use Jigoshop\Entity\Order;
 use Jigoshop\Factory\Order as Factory;
-use Jigoshop\Frontend\Cart;
 use WPAL\Wordpress;
 
 /**
@@ -96,6 +96,8 @@ class OrderService implements OrderServiceInterface
 			throw new Exception('Trying to save not an order!');
 		}
 
+		// TODO: Improve saving order with tax definitions
+
 		$this->wp->doAction('jigoshop\order\before\\'.$object->getStatus(), $object);
 
 		/** @var Order $object */
@@ -173,7 +175,7 @@ class OrderService implements OrderServiceInterface
 					'product_type' => $item->getType(),
 					'title' => $item->getName(),
 					'price' => $item->getPrice(),
-					'tax' => $item->getTotalTax(),
+					'tax' => $item->getTax(),
 					'quantity' => $item->getQuantity(),
 					'cost' => $item->getCost(),
 				);

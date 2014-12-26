@@ -2,8 +2,8 @@
 
 namespace Jigoshop\Service;
 
+use Jigoshop\Entity\Cart;
 use Jigoshop\Exception;
-use Jigoshop\Frontend\Cart;
 use Jigoshop\Shipping\Method;
 
 /**
@@ -56,8 +56,10 @@ class ShippingService implements ShippingServiceInterface
 
 	/**
 	 * Finds and returns ID of cheapest available shipping method.
-	 *
-	 * @param Cart $cart Cart to calculate method prices for.
+
+
+*
+*@param \Jigoshop\Entity\Cart $cart Cart to calculate method prices for.
 	 * @return string ID of cheapest shipping method.
 	 */
 	public function getCheapest(Cart $cart)

@@ -2,6 +2,9 @@
 namespace Jigoshop\Service;
 
 use Jigoshop\Entity\Customer;
+use Jigoshop\Entity\Order;
+use Jigoshop\Entity\Order\Item;
+use Jigoshop\Entity\OrderInterface;
 use Jigoshop\Entity\Product\Attributes;
 use Jigoshop\Entity\Product\Purchasable;
 use Jigoshop\Entity\Product\Taxable;
@@ -16,43 +19,43 @@ use Jigoshop\Shipping\Method;
 interface TaxServiceInterface
 {
 	/**
-	 * @param $product Taxable|Purchasable Product to calculate tax for.
+	 * Finds and returns available tax definitions for selected parameters.
+	 *
+	 * @param $taxClass string Tax class.
+	 * @param $address Customer\Address Address to fetch data for.
+	 * @return array Tax definition.
+	 */
+	public function getDefinition($taxClass, Customer\Address $address);
+
+	/**
+	 * @param $item Order\Item Order item to calculate tax for.
+	 * @param $order OrderInterface The order.
 	 * @return float Overall tax value.
 	 */
-	public function calculate(Taxable $product);
+	public function calculate(Order\Item $item, OrderInterface $order);
 
 	/**
-	 * @param $product Purchasable Product to calculate tax for.
-	 * @param $taxClass string Tax class.
-	 * @throws Exception When tax class is not found.
-	 * @return float Tax value for selected tax class.
-	 */
-	public function get(Purchasable $product, $taxClass);
-
-	/**
-	 * @param $product Taxable|Purchasable Product to calculate tax for.
-	 * @param int $quantity Quantity of the product.
-	 * @param Customer|null $customer Customer to calculate taxes for.
+	 * @param $item Item Order item to calculate tax for.
+	 * @param $order OrderInterface The order.
 	 * @return array List of tax values per tax class.
 	 */
-	public function getAll(Taxable $product, $quantity = 1, Customer $customer = null);
+	public function get(Item $item, OrderInterface $order);
 
 	/**
 	 * @param Method $method Method to calculate tax for.
+	 * @param OrderInterface $order Order with the shipping method.
 	 * @param $price float Price calculated for current cart.
-	 * @param Customer $customer Customer to fetch shipping for.
 	 * @return float Overall tax value.
 	 */
-	public function calculateShipping(Method $method, $price, Customer $customer = null);
+	public function calculateForShipping(Method $method, OrderInterface $order, $price);
 
 	/**
 	 * @param Method $method Method to calculate tax for.
+	 * @param OrderInterface $order Order with the shipping method.
 	 * @param $price float Price calculated for current cart.
-	 * @param $taxClass string Tax class.
-	 * @param Customer $customer Customer to fetch shipping for.
-	 * @return float Tax value for selected tax class.
+	 * @return array List of tax values per tax class.
 	 */
-	public function getShipping(Method $method, $price, $taxClass, Customer $customer = null);
+	public function getForShipping(Method $method, OrderInterface $order, $price);
 
 	/**
 	 * @return array List of available tax classes.

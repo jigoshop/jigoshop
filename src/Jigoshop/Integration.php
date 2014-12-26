@@ -192,7 +192,7 @@ class Integration
 	}
 
 	/**
-	 * @return \Jigoshop\Frontend\Cart
+	 * @return \Jigoshop\Entity\Cart
 	 */
 	public static function getCart()
 	{

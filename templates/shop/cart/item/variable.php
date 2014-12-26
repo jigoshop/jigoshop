@@ -3,7 +3,7 @@ use Jigoshop\Helper\Order;
 use Jigoshop\Helper\Product;
 
 /**
- * @var $cart \Jigoshop\Frontend\Cart Cart object.
+ * @var $cart \Jigoshop\Entity\Cart Cart object.
  * @var $key string Cart item key.
  * @var $item \Jigoshop\Entity\Order\Item Cart item to display.
  * @var $showWithTax bool Whether to show product price with or without tax.
@@ -14,7 +14,7 @@ $product = $item->getProduct();
 $variation = $product->getVariation($item->getMeta('variation_id')->getValue());
 $url = apply_filters('jigoshop\cart\product_url', get_permalink($product->getId()), $key);
 // TODO: Support for "Prices includes tax"
-$price = $showWithTax ? $item->getPrice() + $item->getTotalTax() / $item->getQuantity() : $item->getPrice();
+$price = $showWithTax ? $item->getPrice() + $item->getTax() / $item->getQuantity() : $item->getPrice();
 ?>
 <tr data-id="<?php echo $key; ?>" data-product="<?php echo $product->getId(); ?>">
 	<td class="product-remove">

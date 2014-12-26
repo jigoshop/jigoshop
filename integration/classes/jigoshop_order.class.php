@@ -138,7 +138,7 @@ class jigoshop_order extends Jigoshop_Base
 							'customization' => '',
 							'name' => $item->getName(),
 							'qty' => $item->getQuantity(),
-							'cost' => $item->getCost() - $item->getTotalTax(),
+							'cost' => $item->getCost() - $item->getTax(),
 							'cost_inc_tax' => $item->getCost(),
 							'taxrate' => '', // TODO: What about tax rate?
 							'__key' => $key,

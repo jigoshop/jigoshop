@@ -127,14 +127,16 @@ class Cart implements PageInterface
 
 	/**
 	 * Abstraction for location update response.
-	 *
+
 	 * Prepares and returns array of updated data for location change requests.
-	 *
-	 * @param Customer $customer The customer (for location).
-	 * @param \Jigoshop\Frontend\Cart $cart Current cart.
+
+
+*
+*@param Customer $customer The customer (for location).
+	 * @param \Jigoshop\Entity\Cart $cart Current cart.
 	 * @return array
 	 */
-	private function getAjaxLocationResponse(Customer $customer, \Jigoshop\Frontend\Cart $cart)
+	private function getAjaxLocationResponse(Customer $customer, \Jigoshop\Entity\Cart $cart)
 	{
 		$response = $this->getAjaxCartResponse($cart);
 		$address = $customer->getShippingAddress();
@@ -148,13 +150,15 @@ class Cart implements PageInterface
 
 	/**
 	 * Abstraction for cart update response.
-	 *
+
 	 * Prepares and returns response array for cart update requests.
-	 *
-	 * @param \Jigoshop\Frontend\Cart $cart Current cart.
+
+
+*
+*@param \Jigoshop\Entity\Cart $cart Current cart.
 	 * @return array
 	 */
-	private function getAjaxCartResponse(\Jigoshop\Frontend\Cart $cart)
+	private function getAjaxCartResponse(\Jigoshop\Entity\Cart $cart)
 	{
 		$tax = array();
 		foreach ($cart->getCombinedTax() as $class => $value) {
@@ -357,7 +361,7 @@ class Cart implements PageInterface
 			$this->cartService->save($cart);
 			$item = $cart->getItem($_POST['item']);
 			// TODO: Support for "Prices includes tax"
-			$price = $this->options->get('tax.price_tax') == 'with_tax' ? $item->getPrice() + $item->getTotalTax() / $item->getQuantity() : $item->getPrice();
+			$price = $this->options->get('tax.price_tax') == 'with_tax' ? $item->getPrice() + $item->getTax() / $item->getQuantity() : $item->getPrice();
 
 			$response = $this->getAjaxCartResponse($cart);
 			// Add some additional fields
@@ -465,7 +469,7 @@ class Cart implements PageInterface
 		}
 	}
 
-	private function updateQuantities(\Jigoshop\Frontend\Cart $cart)
+	private function updateQuantities(\Jigoshop\Entity\Cart $cart)
 	{
 		if (isset($_POST['cart']) && is_array($_POST['cart'])) {
 			foreach ($_POST['cart'] as $item => $quantity) {

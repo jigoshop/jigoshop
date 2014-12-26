@@ -4,7 +4,7 @@ use Jigoshop\Helper\Product;
 
 /**
  * @var $method \Jigoshop\Shipping\Method Method to display.
- * @var $cart \Jigoshop\Frontend\Cart Current cart.
+ * @var $cart \Jigoshop\Entity\Cart Current cart.
  */
 ?>
 <li class="list-group-item shipping-<?php echo $method->getId(); ?>">

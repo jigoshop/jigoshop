@@ -2,8 +2,8 @@
 
 namespace Jigoshop\Service;
 
+use Jigoshop\Entity\Cart;
 use Jigoshop\Exception;
-use Jigoshop\Frontend\Cart;
 use Jigoshop\Shipping\Method;
 
 /**

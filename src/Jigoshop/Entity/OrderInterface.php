@@ -80,6 +80,16 @@ interface OrderInterface
 	public function getTax();
 
 	/**
+	 * @return array Tax definitions.
+	 */
+	public function getTaxDefinitions();
+
+	/**
+	 * @param array $taxDefinitions New tax definitions.
+	 */
+	public function setTaxDefinitions($taxDefinitions);
+
+	/**
 	 * @return array All tax data combined.
 	 */
 	public function getCombinedTax();

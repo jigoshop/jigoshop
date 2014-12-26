@@ -55,6 +55,8 @@ class Order implements EntityInterface, OrderInterface
 	/** @var array */
 	private $tax = array();
 	/** @var array */
+	private $taxDefinitions = array();
+	/** @var array */
 	private $shippingTax = array();
 	/** @var float */
 	private $totalTax;
@@ -214,6 +216,24 @@ class Order implements EntityInterface, OrderInterface
 	}
 
 	/**
+	 * @param float $discount New discount for the order.
+	 */
+	public function addDiscount($discount)
+	{
+		$this->discount += $discount;
+		$this->total -= $discount;
+	}
+
+	/**
+	 * @param float $discount Discount to remove from the order.
+	 */
+	public function removeDiscount($discount)
+	{
+		$this->discount -= $discount;
+		$this->total += $discount;
+	}
+
+	/**
 	 * @return array List of used coupons codes.
 	 */
 	public function getCoupons()
@@ -251,46 +271,19 @@ class Order implements EntityInterface, OrderInterface
 	}
 
 	/**
-	 * @return array List of items bought.
+	 * @return array Tax definitions.
 	 */
-	public function getItems()
+	public function getTaxDefinitions()
 	{
-		return $this->items;
+		return $this->taxDefinitions;
 	}
 
 	/**
-	 * Removes all items, shipping method and associated taxes from the order.
+	 * @param array $taxDefinitions New tax definitions.
 	 */
-	public function removeItems()
+	public function setTaxDefinitions($taxDefinitions)
 	{
-		$this->removeShippingMethod();
-		$this->items = array();
-		$this->productSubtotal = 0.0;
-		$this->subtotal = 0.0;
-		$this->total = 0.0;
-		$this->tax = array_map(function() { return 0.0; }, $this->tax);
-		$this->totalTax = null;
-	}
-
-	/**
-	 * Returns item of selected key.
-	 *
-	 * @param $item string Item key to fetch.
-	 * @return Item Order item.
-	 * @throws Exception When item is not found.
-	 */
-	public function getItem($item)
-	{
-		if (!isset($this->items[$item])) {
-			if (WP_DEBUG) {
-				throw new Exception(sprintf(__('No item with ID %d in order %d', 'jigoshop'), $item, $this->id));
-			}
-
-			Registry::getInstance('jigoshop')->addWarning(sprintf('No item with ID %d in order %d', $item, $this->id));
-			return null;
-		}
-
-		return $this->items[$item];
+		$this->taxDefinitions = $taxDefinitions;
 	}
 
 	/**
@@ -301,35 +294,87 @@ class Order implements EntityInterface, OrderInterface
 		$this->items[$item->getKey()] = $item;
 		$this->productSubtotal += $item->getCost();
 		$this->subtotal += $item->getCost();
-		$this->total += $item->getCost() + $item->getTotalTax();
-		$item = $this->wp->applyFilters('jigoshop\order\add_item', $item, $this);
-
-		foreach ($item->getTax() as $class => $tax) {
-			$this->tax[$class] += $tax * $item->getQuantity();
-		}
+		$this->total += $item->getCost() + $item->getTax();
+		$this->wp->doAction('jigoshop\order\add_item', $item, $this);
 		$this->totalTax = null;
 	}
 
 	/**
-	 * @param $item int Item ID to remove.
+	 * @param $key string Item key to remove.
 	 * @return Item Removed item.
 	 */
-	public function removeItem($item)
+	public function removeItem($key)
 	{
-		$item = $this->items[$item];
-
-		/** @var Item $item */
-		$this->productSubtotal -= $item->getCost();
-		$this->subtotal -= $item->getCost();
-		$this->total -= $item->getCost() + $item->getTotalTax();
-
-		foreach ($item->getTax() as $class => $tax) {
-			$this->tax[$class] -= $tax * $item->getQuantity();
+		if (isset($this->items[$key])) {
+			// TODO: Support for "Price includes tax"
+			/** @var Item $item */
+			$item = $this->items[$key];
+			$this->total -= $item->getCost() + $item->getTax();
+			$this->subtotal -= $item->getCost();
+			$this->productSubtotal -= $item->getCost();
+			$this->totalTax = null;
+			$this->wp->doAction('jigoshop\order\remove_item', $item, $this);
+			unset($this->items[$key]);
+			return $item;
 		}
 
+		return null;
+	}
+
+	/**
+	 * Returns item of selected key.
+	 *
+	 * @param $key string Item key to fetch.
+	 * @return Item Order item.
+	 * @throws Exception When item is not found.
+	 */
+	public function getItem($key)
+	{
+		if (!isset($this->items[$key])) {
+			if (WP_DEBUG) {
+				throw new Exception(sprintf(__('No item with ID %d in order %d', 'jigoshop'), $key, $this->id));
+			}
+
+			Registry::getInstance('jigoshop')->addWarning(sprintf('No item with ID %d in order %d', $key, $this->id));
+			return null;
+		}
+
+		return $this->items[$key];
+	}
+
+	/**
+	 * Returns whether order contains selected item by it's key.
+	 *
+	 * @param $key string Item key to find.
+	 * @return bool Whether order has the item.
+	 */
+	public function hasItem($key)
+	{
+		return isset($this->items[$key]);
+	}
+
+	/**
+	 * Removes all items, shipping method and associated taxes from the order.
+	 */
+	public function removeItems()
+	{
+		$this->removeShippingMethod();
+		$this->items = array();
+		$this->coupons = array();
+		$this->productSubtotal = 0.0;
+		$this->subtotal = 0.0;
+		$this->total = 0.0;
+		$this->discount = 0.0;
+		$this->tax = array_map(function() { return 0.0; }, $this->tax);
 		$this->totalTax = null;
-		unset($this->items[$item->getId()]);
-		return $item;
+	}
+
+	/**
+	 * @return array List of items bought.
+	 */
+	public function getItems()
+	{
+		return $this->items;
 	}
 
 	/**
@@ -369,7 +414,6 @@ class Order implements EntityInterface, OrderInterface
 	 */
 	public function setShippingMethod(Shipping\Method $method)
 	{
-		// TODO: Refactor to abstract between cart and order = AbstractOrder
 		$this->removeShippingMethod();
 
 		$this->shippingMethod = $method;
@@ -379,6 +423,15 @@ class Order implements EntityInterface, OrderInterface
 		$this->total += $totalPrice;
 		$this->shippingTax = $this->wp->applyFilters('jigoshop\order\shipping_tax', $this->shippingTax, $method, $this);
 	}
+
+	/**
+	 * @param int $shippingMethodRate
+	 */
+	public function setShippingMethodRate($shippingMethodRate)
+	{
+		$this->shippingMethodRate = $shippingMethodRate;
+	}
+
 
 	/**
 	 * Removes shipping method and associated taxes from the order.
@@ -537,6 +590,19 @@ class Order implements EntityInterface, OrderInterface
 	}
 
 	/**
+	 * Updates stored tax array with provided values.
+	 *
+	 * @param array $tax Tax divided by classes.
+	 */
+	public function updateTaxes(array $tax)
+	{
+		$this->totalTax = null;
+		foreach ($tax as $class => $value) {
+			$this->tax[$class] += $value;
+		}
+	}
+
+	/**
 	 * @return array List of applied tax classes for shipping with it's values.
 	 */
 	public function getShippingTax()
@@ -570,25 +636,12 @@ class Order implements EntityInterface, OrderInterface
 	}
 
 	/**
-	 * Updates stored tax array with provided values.
-	 *
-	 * @param array $tax Tax divided by classes.
-	 */
-	public function updateTaxes(array $tax)
-	{
-		$this->totalTax = null;
-		foreach ($tax as $class => $value) {
-			$this->tax[$class] += $value;
-		}
-	}
-
-	/**
 	 * @return float Total tax of the order.
 	 */
 	public function getTotalTax()
 	{
 		if ($this->totalTax === null) {
-			$this->totalTax = array_reduce($this->tax, function($value, $item){ return $value + $item; }, 0.0);;
+			$this->totalTax = array_sum($this->tax);
 		}
 
 		return $this->totalTax;

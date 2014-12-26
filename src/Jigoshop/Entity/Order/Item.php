@@ -25,10 +25,10 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 	private $quantity = 0;
 	/** @var float */
 	private $price = 0.0;
-	/** @var array */
-	private $tax = array();
 	/** @var float */
-	private $totalTax = 0.0;
+	private $tax = 0.0;
+	/** @var array */
+	private $taxClasses = array();
 	/** @var Product|Product\Purchasable|Product\Shippable */
 	private $product;
 	/** @var string */
@@ -125,28 +125,19 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 	}
 
 	/**
-	 * @return array Tax data (per item).
+	 * @return float Total tax.
 	 */
 	public function getTax()
 	{
-		return $this->tax;
+		return $this->tax * $this->quantity;
 	}
 
 	/**
-	 * @param array $tax New tax data (per item).
+	 * @param float $tax New tax value.
 	 */
 	public function setTax($tax)
 	{
 		$this->tax = $tax;
-		$this->totalTax = array_reduce($tax, function($value, $item) { return $value + $item; }, 0.0);
-	}
-
-	/**
-	 * @return float Total tax of whole quantity.
-	 */
-	public function getTotalTax()
-	{
-		return $this->totalTax * $this->quantity;
 	}
 
 	/**
@@ -173,6 +164,7 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 	{
 		$this->product = $product;
 		$this->type = $product->getType();
+		$this->taxClasses = $product->getTaxClasses();
 	}
 
 	/**
@@ -188,7 +180,7 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 	 */
 	public function getTaxClasses()
 	{
-		return array_keys($this->tax);
+		return $this->taxClasses;
 	}
 
 	/**
@@ -259,7 +251,8 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 			'type' => $this->type,
 			'quantity' => $this->quantity,
 			'price' => $this->price,
-			'tax' => serialize($this->tax),
+			'tax' => $this->tax,
+			'tax_classes' => serialize($this->taxClasses),
 			'product' => $this->product->getState(),
 			'meta' => serialize($this->meta),
 		));
@@ -284,8 +277,8 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 		$this->type = $data['type'];
 		$this->quantity = $data['quantity'];
 		$this->price = $data['price'];
-		$this->tax = unserialize($data['tax']);
-		$this->totalTax = array_reduce($this->tax, function($value, $tax){ return $value + $tax; }, 0.0);
+		$this->tax = $data['tax'];
+		$this->taxClasses = unserialize($data['tax_classes']);
 		$this->meta = unserialize($data['meta']);
 		// TODO: How to properly unserialize product?
 		$this->product = $data['product'];

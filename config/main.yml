@@ -72,7 +72,7 @@ services:
       - '@jigoshop.options'
       - '@jigoshop.pages'
   jigoshop.cart:
-    class: Jigoshop\Frontend\Cart
+    class: Jigoshop\Entity\Cart
     scope: prototype
     arguments:
       - '@wpal'

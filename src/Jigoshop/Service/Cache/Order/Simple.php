@@ -2,9 +2,9 @@
 
 namespace Jigoshop\Service\Cache\Order;
 
+use Jigoshop\Entity\Cart;
 use Jigoshop\Entity\EntityInterface;
 use Jigoshop\Entity\Order;
-use Jigoshop\Frontend\Cart;
 use Jigoshop\Service\OrderServiceInterface;
 
 /**
@@ -86,8 +86,10 @@ class Simple implements OrderServiceInterface
 
 	/**
 	 * Prepares order based on cart.
-	 *
-	 * @param Cart $cart Cart to fetch data from.
+
+
+*
+*@param \Jigoshop\Entity\Cart $cart Cart to fetch data from.
 	 * @return Order Prepared order.
 	 */
 	public function createFromCart(Cart $cart)

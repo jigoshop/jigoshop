@@ -2,13 +2,12 @@
 
 namespace Jigoshop\Service;
 
+use Jigoshop\Entity\Cart;
 use Jigoshop\Entity\Customer;
 use Jigoshop\Entity\Order;
 use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\OrderInterface;
 use Jigoshop\Entity\Product\Attributes;
-use Jigoshop\Entity\Product\Purchasable;
-use Jigoshop\Entity\Product\Taxable;
 use Jigoshop\Shipping\Method;
 use WPAL\Wordpress;
 
@@ -41,100 +40,85 @@ class TaxService implements TaxServiceInterface
 	public function register()
 	{
 		$service = $this;
+		$this->wp->addFilter('jigoshop\service\cart\before_initialize', function($cart) use ($service) {
+			/** @var $cart OrderInterface */
+			$cart->setTaxDefinitions($service->getDefinitions($cart));
+			return $cart;
+		}, 10, 1);
+		$this->wp->addFilter('jigoshop\factory\order\create', function($order) use ($service) {
+			/** @var $order OrderInterface */
+			$order->setTaxDefinitions($service->getDefinitions($order));
+			return $order;
+		}, 10, 1);
+		$this->wp->addAction('jigoshop\order\add_item', function($item, $order) use ($service) {
+			/** @var $item Order\Item */
+			/** @var $order Order */
+			if ($item->getProduct()->isTaxable()) {
+				$item->setTax($service->calculate($item, $order));
+				$order->updateTaxes($service->get($item, $order));
+			}
+			return $item;
+		}, 10, 2);
+		$this->wp->addAction('jigoshop\order\remove_item', function($item, $order) use ($service) {
+			/** @var $item Order\Item */
+			/** @var $order Order */
+			if ($item->getProduct()->isTaxable()) {
+				$taxes = array_map(function($tax){ return -$tax; }, $service->get($item, $order));
+				$order->updateTaxes($taxes);
+			}
+			return $item;
+		}, 10, 2);
 		$this->wp->addFilter('jigoshop\admin\order\update_product', function($item, $order) use ($service) {
 			/** @var $order OrderInterface */
 			/** @var $item Order\Item */
 			if ($item->getProduct()->isTaxable()) {
-				$item->setTax($service->getAll($item, 1, $order->getCustomer()));
+				$item->setTax($service->calculate($item, $order));
 			}
 			return $item;
 		}, 10, 2);
 		$this->wp->addFilter('jigoshop\order\shipping_price', function($price, $method, $order) use ($service) {
 			/** @var $order OrderInterface */
-			return $price + $service->calculateShipping($method, $price, $order->getCustomer());
+			// TODO: Check if method is taxable?
+			return $price + $service->calculateForShipping($method, $order, $price);
 		}, 10, 3);
 		$this->wp->addFilter('jigoshop\order\shipping_tax', function($taxes, $method, $order) use ($service) {
 			/** @var $order OrderInterface */
 			/** @var $method Method */
-			foreach ($method->getTaxClasses() as $class) {
-				$taxes[$class] = $service->getShipping($method, $order->getShippingPrice(), $class, $order->getCustomer());
-			}
-			return $taxes;
+			// TODO: Check if method is taxable?
+			return $service->getForShipping($method, $order, $order->getShippingPrice());
 		}, 10, 3);
-		$this->wp->addFilter('jigoshop\cart\add_item', function($item) use ($service) {
-			/** @var $item Item */
-			if ($item->getProduct()->isTaxable()) {
-				$item->setTax($service->getAll($item->getProduct()));
-			}
-			return $item;
-		}, 10, 1);
-		$this->wp->addFilter('jigoshop\order\add_item', function($item) use ($service) {
-			/** @var $item Item */
-			if ($item->getProduct()->isTaxable()) {
-				$item->setTax($service->getAll($item->getProduct()));
-			}
-			return $item;
-		}, 10, 1);
 	}
 
 	/**
-	 * @param Taxable|Purchasable $product Product to calculate tax for.
+	 * @param $item Order\Item Order item to calculate tax for.
+	 * @param $order OrderInterface The order.
 	 * @return float Overall tax value.
 	 */
-	public function calculate(Taxable $product)
+	public function calculate(Order\Item $item, OrderInterface $order)
 	{
-		$tax = 0.0;
-		foreach ($product->getTaxClasses() as $taxClass) {
-			$tax += $this->get($product, $taxClass);
-		}
-
-		// TODO: Support for compound taxes
-
-		return $tax;
+		return array_sum($this->get($item, $order));
 	}
 
 	/**
-	 * @param $product Purchasable Product to calculate tax for.
-	 * @param $taxClass string Tax class.
-	 * @param Customer|null $customer Customer to calculate taxes for.
-	 * @return float Tax value for selected tax class.
-	 */
-	public function get(Purchasable $product, $taxClass, $customer = null)
-	{
-		if (!in_array($taxClass, $this->taxClasses)) {
-			throw new Exception(sprintf('No tax class: %s', $taxClass));
-		}
-
-		if ($customer === null) {
-			$customer = $this->customers->getCurrent();
-		}
-
-		$definition = $this->fetch($taxClass, $customer->getTaxAddress());
-
-		// TODO: Support for compound taxes
-		if ($this->taxIncludedInPrice) {
-			return $product->getPrice() * (1 - 1 / (100 + $definition['rate']) * 100);
-		}
-
-		return $definition['rate'] * $product->getPrice() / 100;
-	}
-
-	/**
-	 * @param $product Taxable|Purchasable Product to calculate tax for.
-	 * @param int $quantity Quantity of the product.
-	 * @param Customer|null $customer Address to calculate taxes for.
+	 * @param $item Item Order item to calculate tax for.
+	 * @param $order OrderInterface The order.
 	 * @return array List of tax values per tax class.
 	 */
-	public function getAll(Taxable $product, $quantity = 1, Customer $customer = null)
+	public function get(Item $item, OrderInterface $order)
 	{
 		$tax = array();
+		$definitions = $order->getTaxDefinitions();
 
-		if ($customer === null) {
-			$customer = $this->customers->getCurrent();
-		}
+		foreach ($item->getTaxClasses() as $class) {
+			if (!isset($definitions[$class])) {
+				throw new Exception(sprintf('No tax class: %s', $class));
+			}
 
-		foreach ($product->getTaxClasses() as $class) {
-			$tax[$class] = $this->get($product, $class, $customer) * $quantity;
+			$definition = $definitions[$class];
+
+			// TODO: Support for compound taxes
+			// TODO: Support for prices included in tax
+			$tax[$class] = $definition['rate'] * $item->getCost() / 100;
 		}
 
 		return array_filter($tax);
@@ -142,60 +126,65 @@ class TaxService implements TaxServiceInterface
 
 	/**
 	 * @param Method $method Method to calculate tax for.
+	 * @param OrderInterface $order Order with the shipping method.
 	 * @param $price float Price calculated for current cart.
-	 * @param Customer $customer Customer to fetch shipping for.
 	 * @return float Overall tax value.
 	 */
-	public function calculateShipping(Method $method, $price, Customer $customer = null)
+	public function calculateForShipping(Method $method, OrderInterface $order, $price)
 	{
-		$tax = 0.0;
-		foreach ($method->getTaxClasses() as $taxClass) {
-			$tax += $this->getShipping($method, $price, $taxClass, $customer);
-		}
-
-		// TODO: Support for compound taxes
-
-		return $tax;
+		return array_sum($this->getForShipping($method, $order, $price));
 	}
 
 	/**
 	 * @param Method $method Method to calculate tax for.
+	 * @param OrderInterface $order Order with the shipping method.
 	 * @param $price float Price calculated for current cart.
-	 * @param $taxClass string Tax class.
-	 * @param Customer $customer Customer to fetch shipping for.
-	 * @return float Tax value for selected tax class.
+	 * @return array List of tax values per tax class.
 	 */
-	public function getShipping(Method $method, $price, $taxClass, Customer $customer = null)
+	public function getForShipping(Method $method, OrderInterface $order, $price)
 	{
-		if (!in_array($taxClass, $this->taxClasses)) {
-			throw new Exception(sprintf('No tax class: %s', $taxClass));
+		$tax = array();
+		$definitions = $order->getTaxDefinitions();
+
+		foreach ($method->getTaxClasses() as $class) {
+			if (!isset($definitions[$class])) {
+				throw new Exception(sprintf('No tax class: %s', $class));
+			}
+
+			$definition = $definitions[$class];
+
+			// TODO: Support for compound taxes
+			// TODO: Support for prices included in tax
+			$tax[$class] = $definition['rate'] * $price / 100;
 		}
 
-		if ($customer === null) {
-			$customer = $this->customers->getCurrent();
+		return array_filter($tax);
+	}
+
+	/**
+	 * @param $order OrderInterface The order.
+	 * @return array List of tax values per tax class.
+	 */
+	public function getDefinitions(OrderInterface $order)
+	{
+		$definitions = array();
+		foreach ($this->taxClasses as $class) {
+			$definitions[$class] = $this->getDefinition($class, $order->getCustomer()->getTaxAddress());
 		}
 
-		$definition = $this->fetch($taxClass, $customer->getTaxAddress());
-
-		// TODO: Support for compound taxes
-		// TODO: Support for taxes included in price
-//		if ($this->taxIncludedInPrice) {
-//			return $price * (1 - 1 / (100 + $definition['rate']) * 100);
-//		}
-
-		return $definition['rate'] * $price / 100;
+		return $definitions;
 	}
 
 	/**
 	 * Finds and returns available tax definitions for selected parameters.
 	 *
 	 * @param $taxClass string Tax class.
-	 * @param $address \Jigoshop\Entity\Customer\Address Address to fetch data for.
+	 * @param $address Customer\Address Address to fetch data for.
 	 * @return array Tax definition.
 	 */
-	protected function fetch($taxClass, Customer\Address $address)
+	public function getDefinition($taxClass, Customer\Address $address)
 	{
-		// TODO: Remember downloaded data for each customer separately
+		// TODO: Remember downloaded data for each address separately
 		// TODO: Probably it will be good idea to update getRules() call to fetch and format only proper rules for the customer
 		$rules = array_filter($this->getRules(), function($item) use ($taxClass, $address) {
 			return $item['class'] == $taxClass &&
@@ -259,7 +248,7 @@ class TaxService implements TaxServiceInterface
 			$customer = $this->customers->getCurrent();
 		}
 
-		$definition = $this->fetch($taxClass, $customer->getTaxAddress());
+		$definition = $this->getDefinition($taxClass, $customer->getTaxAddress());
 
 		return sprintf('%s (%s%%)', $definition['label'], $definition['rate']);
 	}
@@ -280,7 +269,7 @@ class TaxService implements TaxServiceInterface
 			$customer = $this->customers->getCurrent();
 		}
 
-		$definition = $this->fetch($taxClass, $customer->getTaxAddress());
+		$definition = $this->getDefinition($taxClass, $customer->getTaxAddress());
 
 		return $definition['rate'];
 	}

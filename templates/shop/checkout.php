@@ -7,7 +7,7 @@ use Jigoshop\Helper\Tax;
 /**
  * @var $messages \Jigoshop\Core\Messages Messages container.
  * @var $content string Contents of cart page
- * @var $cart \Jigoshop\Frontend\Cart Cart object.
+ * @var $cart \Jigoshop\Entity\Cart Cart object.
  * @var $customer \Jigoshop\Entity\Customer Current customer.
  * @var $shippingMethods array List of available shipping methods.
  * @var $paymentMethods array List of available payment methods.

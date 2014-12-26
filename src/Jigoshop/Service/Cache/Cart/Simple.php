@@ -2,8 +2,8 @@
 
 namespace Jigoshop\Service\Cache\Cart;
 
+use Jigoshop\Entity\Cart;
 use Jigoshop\Entity\Order;
-use Jigoshop\Frontend\Cart;
 use Jigoshop\Service\CartServiceInterface;
 
 class Simple implements CartServiceInterface

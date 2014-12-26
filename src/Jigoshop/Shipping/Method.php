@@ -3,7 +3,6 @@
 namespace Jigoshop\Shipping;
 
 use Jigoshop\Entity\OrderInterface;
-use Jigoshop\Frontend\Cart;
 
 /**
  * Shipping method interface.
