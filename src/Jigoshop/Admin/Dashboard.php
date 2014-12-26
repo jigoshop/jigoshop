@@ -2,6 +2,7 @@
 
 namespace Jigoshop\Admin;
 
+use Jigoshop\Admin;
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\Order;
@@ -65,7 +66,7 @@ class Dashboard implements PageInterface
 	/** @return string Parent of the page string. */
 	public function getParent()
 	{
-		return 'jigoshop';
+		return Admin::MENU;
 	}
 
 	/** @return string Required capability to view the page. */

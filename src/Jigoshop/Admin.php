@@ -19,6 +19,8 @@ use WPAL\Wordpress;
  */
 class Admin
 {
+	const MENU = 'jigoshop';
+
 	/** @var \WPAL\Wordpress */
 	private $wp;
 	/** @var array */
@@ -87,7 +89,7 @@ class Admin
 		$this->wp->addMenuPage(__('Jigoshop'), __('Jigoshop'), 'manage_jigoshop', 'jigoshop', array($this->dashboard, 'display'), null, 55);
 		foreach ($this->pages['jigoshop'] as $page) {
 			/** @var $page PageInterface */
-			$this->wp->addSubmenuPage('jigoshop', $page->getTitle(), $page->getTitle(), $page->getCapability(), $page->getMenuSlug(), array($page, 'display'));
+			$this->wp->addSubmenuPage(self::MENU, $page->getTitle(), $page->getTitle(), $page->getCapability(), $page->getMenuSlug(), array($page, 'display'));
 		}
 
 		foreach ($this->pages['products'] as $page) {
@@ -108,9 +110,9 @@ class Admin
 	 */
 	public function afterMenu()
 	{
-//		$this->wp->addSubmenuPage('jigoshop', $this->settings->getTitle(), $this->settings->getTitle(), $this->settings->getCapability(),
+//		$this->wp->addSubmenuPage(self::MENU, $this->settings->getTitle(), $this->settings->getTitle(), $this->settings->getCapability(),
 //			$this->settings->getMenuSlug(), array($this->settings, 'display'));
-//		$this->wp->addSubmenuPage('jigoshop', $this->systemInfo->getTitle(), $this->systemInfo->getTitle(), $this->systemInfo->getCapability(),
+//		$this->wp->addSubmenuPage(self::MENU, $this->systemInfo->getTitle(), $this->systemInfo->getTitle(), $this->systemInfo->getCapability(),
 //			$this->systemInfo->getMenuSlug(), array($this->systemInfo, 'display'));
 
 		$this->wp->doAction('jigoshop\admin\after_menu');

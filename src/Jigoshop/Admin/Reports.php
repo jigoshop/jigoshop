@@ -2,6 +2,8 @@
 
 namespace Jigoshop\Admin;
 
+use Jigoshop\Admin;
+
 /**
  * Jigoshop reports admin page.
  *
@@ -20,7 +22,7 @@ class Reports implements PageInterface
 	/** @return string Parent of the page string. */
 	public function getParent()
 	{
-		return 'jigoshop';
+		return Admin::MENU;
 	}
 
 	/**

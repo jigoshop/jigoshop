@@ -2,6 +2,7 @@
 
 namespace Jigoshop\Admin;
 
+use Jigoshop\Admin;
 use Jigoshop\Helper\Render;
 use WPAL\Wordpress;
 
@@ -32,7 +33,7 @@ class SystemInfo implements PageInterface
 	/** @return string Parent of the page string. */
 	public function getParent()
 	{
-		return 'jigoshop';
+		return Admin::MENU;
 	}
 
 	/**

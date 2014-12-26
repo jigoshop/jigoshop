@@ -2,6 +2,7 @@
 
 namespace Jigoshop\Admin;
 
+use Jigoshop\Admin;
 use Jigoshop\Admin\Helper\Forms;
 use Jigoshop\Admin\Settings\GeneralTab;
 use Jigoshop\Admin\Settings\OwnerTab;
@@ -76,7 +77,7 @@ class Settings implements PageInterface
 	/** @return string Parent of the page string. */
 	public function getParent()
 	{
-		return 'jigoshop';
+		return Admin::MENU;
 	}
 
 	/**
