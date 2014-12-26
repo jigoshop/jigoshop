@@ -146,6 +146,20 @@ class Installer
 		}
 
 		$query = "
+			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}jigoshop_order_item_tax (
+				item_id INT,
+				tax_class VARCHAR(255) NOT NULL,
+				rate decimal(9,4) NOT NULL,
+				is_compund INT NOT NULL DEFAULT 0,
+				PRIMARY KEY id (item_id, tax_class),
+				FOREIGN KEY order_item (item_id) REFERENCES {$wpdb->prefix}jigoshop_order_item (id) ON DELETE CASCADE
+			) {$collate};
+		";
+		if (!$wpdb->query($query)) {
+			Registry::getInstance('jigoshop')->addCritical(sprintf('Unable to create table "%s". Error: "%s".', 'jigoshop_order_item_meta', $wpdb->last_error));
+		}
+
+		$query = "
 			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}jigoshop_attribute (
 				id INT(9) NOT NULL AUTO_INCREMENT,
 				is_local INT UNSIGNED DEFAULT 1,
