@@ -778,6 +778,9 @@ class Order implements EntityInterface, OrderInterface
 		if (isset($state['coupons'])) {
 			$this->coupons = unserialize($state['coupons']);
 		}
+		if (isset($state['tax_definitions'])) {
+			$this->taxDefinitions = $state['tax_definitions'];
+		}
 
 		$this->total = $this->subtotal + array_reduce($this->tax, function($value, $item){ return $value + $item; }, 0.0)
 			+ array_reduce($this->shippingTax, function($value, $item){ return $value + $item; }, 0.0) - $this->discount;

@@ -96,8 +96,6 @@ class OrderService implements OrderServiceInterface
 			throw new Exception('Trying to save not an order!');
 		}
 
-		// TODO: Improve saving order with tax definitions
-
 		$this->wp->doAction('jigoshop\order\before\\'.$object->getStatus(), $object);
 
 		/** @var Order $object */
@@ -187,14 +185,6 @@ class OrderService implements OrderServiceInterface
 					$item->setId($wpdb->insert_id);
 				}
 
-				foreach ($item->getTax() as $class => $value) {
-					$wpdb->replace($wpdb->prefix.'jigoshop_order_item_meta', array(
-						'item_id' => $item->getId(),
-						'meta_key' => 'tax_'.$class,
-						'meta_value' => $value,
-					));
-				}
-
 				foreach ($item->getAllMeta() as $meta) {
 					/** @var $meta Order\Item\Meta */
 					$this->saveItemMeta($item, $meta);
@@ -220,6 +210,7 @@ class OrderService implements OrderServiceInterface
 			$this->wp->updatePostMeta($object->getId(), $field, $this->wp->getHelpers()->escSql($value));
 		}
 
+		$this->wp->doAction('jigoshop\service\order\save', $object, $created);
 		$this->wp->doAction('jigoshop\order\after\\'.$object->getStatus(), $object);
 		$notifyLowStock = $this->options->get('products.notify_low_stock');
 		$notifyOutOfStock = $this->options->get('products.notify_out_of_stock');
@@ -458,7 +449,7 @@ class OrderService implements OrderServiceInterface
 		$min = 0;
 		$max = count($keys)-1;
 		$source = time().$this->wp->getCurrentUserId();
-		$keys = array_map(function($item){ return is_array($item) ? serialize($item) : $item; }, $keys);
+		$fields = array_map(function($item){ return is_array($item) ? serialize($item) : $item; }, $fields);
 
 		for ($i = 0; $i < 5; $i++) {
 			$source .= $fields[$keys[rand($min, $max)]];

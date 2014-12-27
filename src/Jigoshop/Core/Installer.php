@@ -48,7 +48,7 @@ class Installer
 
 	public function install()
 	{
-		$db = $this->wp->getOption('jigoshop_database_version');
+		$db = false;//$this->wp->getOption('jigoshop_database_version');
 
 		if ($db === false) {
 			Registry::getInstance('jigoshop')->addNotice('Installing Jigoshop.');
@@ -151,13 +151,13 @@ class Installer
 				order_id BIGINT(20) UNSIGNED,
 				tax_class VARCHAR(255) NOT NULL,
 				rate decimal(9,4) NOT NULL,
-				is_compund INT NOT NULL DEFAULT 0,
+				is_compound INT NOT NULL DEFAULT 0,
 				PRIMARY KEY id (order_id, tax_class),
-				FOREIGN KEY order (order_id) REFERENCES {$wpdb->posts} (ID) ON DELETE CASCADE
+				FOREIGN KEY post_order (order_id) REFERENCES {$wpdb->posts} (ID) ON DELETE CASCADE
 			) {$collate};
 		";
 		if (!$wpdb->query($query)) {
-			Registry::getInstance('jigoshop')->addCritical(sprintf('Unable to create table "%s". Error: "%s".', 'jigoshop_order_item_meta', $wpdb->last_error));
+			Registry::getInstance('jigoshop')->addCritical(sprintf('Unable to create table "%s". Error: "%s".', 'jigoshop_order_tax', $wpdb->last_error));
 		}
 
 		$query = "

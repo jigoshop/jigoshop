@@ -82,6 +82,8 @@ class Order implements EntityFactoryInterface
 			}
 		}
 
+		$order = $this->wp->applyFilters('jigoshop\factory\order\create\after_customer', $order);
+
 		// TODO: Think on lazy loading of items.
 		$order->removeItems();
 		$items = $this->getItems($id);
@@ -99,8 +101,6 @@ class Order implements EntityFactoryInterface
 			$order->setShippingMethod($method);
 		}
 
-		$order = $this->wp->applyFilters('jigoshop\factory\order\create', $order);
-
 		return $order;
 	}
 
@@ -113,6 +113,8 @@ class Order implements EntityFactoryInterface
 	public function fetch($post)
 	{
 		$order = new Entity($this->wp, $this->options->get('tax.classes'));
+		/** @var Entity $order */
+		$order = $this->wp->applyFilters('jigoshop\factory\order\fetch\before', $order);
 		$state = array();
 
 		if($post){
@@ -121,13 +123,16 @@ class Order implements EntityFactoryInterface
 			}, $this->wp->getPostMeta($post->ID));
 
 			$order->setId($post->ID);
+			if (isset($state['customer'])) {
+				// Customer must be unserialized twice "thanks" to WordPress second serialization.
+				$order->setCustomer(unserialize(unserialize($state['customer'])));
+				unset($state['customer']);
+			}
+			/** @var Entity $order */
+			$order = $this->wp->applyFilters('jigoshop\factory\order\fetch\after_customer', $order);
 			$state['customer_note'] = $post->post_excerpt;
 			$state['status'] = $post->post_status;
 			$state['created_at'] = strtotime($post->post_date);
-			if (isset($state['customer'])) {
-				// Customer must be unserialized twice "thanks" to WordPress second serialization.
-				$state['customer'] = unserialize(unserialize($state['customer']));
-			}
 			// TODO: Think on lazy loading of items.
 			$state['items'] = $this->getItems($post->ID);
 			$state['product_subtotal'] = array_reduce($state['items'], function($value, $item){
@@ -164,7 +169,6 @@ class Order implements EntityFactoryInterface
 	 */
 	public function fromCart(Cart $cart)
 	{
-		// TODO: Improve this method as Cart is an Order now
 		$customer = $cart->getCustomer();
 		$customer->selectTaxAddress($this->options->get('taxes.shipping') ? 'shipping' : 'billing');
 		$address = $this->createAddress($_POST['jigoshop_order']['billing']);
@@ -203,8 +207,8 @@ class Order implements EntityFactoryInterface
 			throw new Exception($error);
 		}
 
-		$order = new Entity($this->wp, $this->options->get('tax.classes'));
-		$order->setCustomer($customer);
+		$order = $cart;
+		$order->setId(false);
 		$order->setCustomerNote(trim(htmlspecialchars(strip_tags($_POST['jigoshop_order']['note']))));
 		$order->setStatus(Entity\Status::PENDING);
 
@@ -219,16 +223,6 @@ class Order implements EntityFactoryInterface
 			$this->wp->doAction('jigoshop\checkout\set_shipping\before', $shipping, $order);
 			$order->setShippingMethod($shipping);
 		}
-
-		foreach ($cart->getItems() as $item) {
-			$order->addItem($item);
-		}
-
-		$order->setDiscount($cart->getDiscount());
-		$order->setCoupons(array_map(function($coupon){
-			/** @var $coupon \Jigoshop\Entity\Coupon */
-			return $coupon->getCode();
-		}, $cart->getCoupons()));
 
 		return $order;
 	}
@@ -281,7 +275,6 @@ class Order implements EntityFactoryInterface
 		$items = array();
 
 		for ($i = 0, $endI = count($results); $i < $endI;) {
-			$tax = array();
 			$id = $results[$i]['id'];
 			$product = $this->productService->find($results[$i]['product_id']);
 			$item = new Entity\Item();
@@ -289,20 +282,16 @@ class Order implements EntityFactoryInterface
 			$item->setName($results[$i]['title']);
 			$item->setQuantity($results[$i]['quantity']);
 			$item->setPrice($results[$i]['price']);
+			$item->setTax($results[$i]['tax']);
 
 			while ($i < $endI && $results[$i]['id'] == $id) {
-				if (strpos($results[$i]['meta_key'], 'tax_') !== false) {
-					$tax[str_replace('tax_', '', $results[$i]['meta_key'])] = $results[$i]['meta_value'];
-				} else {
-					$meta = new Entity\Item\Meta();
-					$meta->setKey($results[$i]['meta_key']);
-					$meta->setValue($results[$i]['meta_value']);
-					$item->addMeta($meta);
-				}
+				$meta = new Entity\Item\Meta();
+				$meta->setKey($results[$i]['meta_key']);
+				$meta->setValue($results[$i]['meta_value']);
+				$item->addMeta($meta);
 				$i++;
 			}
 
-			$item->setTax($tax);
 			$product = $this->wp->applyFilters('jigoshop\factory\order\find_product', $product, $item);
 			$item->setProduct($product);
 			$item->setKey($this->productService->generateItemKey($item));

@@ -364,7 +364,7 @@ class Checkout implements PageInterface
 				}
 
 				$this->orderService->save($order);
-				Integration::setCurrentOrder($order);
+				Integration::setCurrentOrder($order); // TODO: Remove Integration call with event
 				$this->cartService->remove($cart);
 
 				$url = '';
