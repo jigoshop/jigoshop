@@ -169,7 +169,9 @@ class Order implements EntityFactoryInterface
 	 */
 	public function fromCart(Cart $cart)
 	{
-		$customer = $cart->getCustomer();
+		$order = clone $cart;
+		$order->setId(false);
+		$customer = $order->getCustomer();
 		$customer->selectTaxAddress($this->options->get('taxes.shipping') ? 'shipping' : 'billing');
 		$address = $this->createAddress($_POST['jigoshop_order']['billing']);
 		$customer->setBillingAddress($address);
@@ -207,8 +209,6 @@ class Order implements EntityFactoryInterface
 			throw new Exception($error);
 		}
 
-		$order = $cart;
-		$order->setId(false);
 		$order->setCustomerNote(trim(htmlspecialchars(strip_tags($_POST['jigoshop_order']['note']))));
 		$order->setStatus(Entity\Status::PENDING);
 
