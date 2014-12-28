@@ -54,6 +54,17 @@ class Products implements Tool
 	{
 		$wpdb = $this->wp->getWPDB();
 
+		// Register product type taxonomy to fetch old product types
+		$this->wp->registerTaxonomy('product_type',
+			array('product'),
+			array(
+				'hierarchical' => false,
+				'show_ui' => false,
+				'query_var' => true,
+				'show_in_nav_menus' => false,
+			)
+		);
+
 		// Update product_cat into product_category
 		$wpdb->query($wpdb->prepare("UPDATE {$wpdb->term_taxonomy} SET taxonomy = %s WHERE taxonomy = %s", array('product_category', 'product_cat')));
 
@@ -68,19 +79,19 @@ class Products implements Tool
 			$product = $products[$i];
 
 			// Add product types
-			$types = wp_get_object_terms($product['ID'], 'product_type');
-			$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->postmeta} VALUES (NULL, %d, %s, %s)", array($product['ID'], 'type', $types[0]->slug)));
+			$types = $this->wp->getTheTerms($product->ID, 'product_type');
+			$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->postmeta} VALUES (NULL, %d, %s, %s)", array($product->ID, 'type', $types[0]->slug)));
 
 			// Update columns
 			do {
 				// Sales support
-				if ($products[$i]['meta_key'] == 'sale_price' && !empty($products[$i]['meta_value'])) {
-					$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->postmeta} (post_id, meta_key, meta_value) VALUES (%d, %s, %s)", array($products[$i]['ID'], 'sales_enabled', true)));
+				if ($products[$i]->meta_key == 'sale_price' && !empty($products[$i]->meta_value)) {
+					$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->postmeta} (post_id, meta_key, meta_value) VALUES (%d, %s, %s)", array($product->ID, 'sales_enabled', true)));
 				}
 
 				// Custom product attributes support
-				if ($products[$i]['meta_key'] == 'product_attributes') {
-					$attributes = unserialize($products[$i]['meta_value']);
+				if ($products[$i]->meta_key == 'product_attributes') {
+					$attributes = unserialize($products[$i]->meta_value);
 					$attributes = array_filter($attributes, function($item){
 						return $item['is_taxonomy'] == false;
 					});
@@ -95,28 +106,28 @@ class Products implements Tool
 						$this->productService->saveAttribute($attribute);
 
 						$wpdb->insert($wpdb->prefix.'jigoshop_product_attribute', array(
-							'product_id' => $product['ID'],
+							'product_id' => $product->ID,
 							'attribute_id' => $attribute->getId(),
 							'value' => $source['value'],
 						));
 					}
 				}
 
-				$key = $this->_transformKey($products[$i]['meta_key']);
+				$key = $this->_transformKey($products[$i]->meta_key);
 
 				if (!empty($key)) {
 					$wpdb->query($wpdb->prepare(
-						"UPDATE {$wpdb->postmeta} SET meta_value = %s WHERE meta_key = %s AND meta_id = %d",
+						"UPDATE {$wpdb->postmeta} SET meta_value = %s, meta_key = %s WHERE meta_id = %d",
 						array(
-							$this->_transform($products[$i]['meta_key'], $products[$i]['meta_value']),
+							$this->_transform($products[$i]->meta_key, $products[$i]->meta_value),
 							$key,
-							$products[$i]['meta_id'],
+							$products[$i]->meta_id,
 						)
 					));
 				}
 
 				$i++;
-			} while ($i < $endI && $products[$i]['ID'] == $product['ID']);
+			} while ($i < $endI && $products[$i]->ID == $product->ID);
 		}
 
 		// Migrate global product attributes
@@ -134,13 +145,21 @@ class Products implements Tool
 					LEFT JOIN {$wpdb->term_relationships} tr ON tr.term_taxonomy_id = tt.term_taxonomy_id
 				 	WHERE tt.taxonomy = 'pa_{$source->attribute_name}'
 		  ");
+
 			$productAttribute = array();
+			$createdOptions = array();
 			foreach ($options as $sourceOption) {
-				$option = new Option();
-				$option->setLabel($sourceOption->name);
-				$option->setValue($sourceOption->slug);
-				$attribute->addOption($option);
-				$productAttribute[$source->object_id][] = $sourceOption->slug;
+				if (!in_array($sourceOption->slug, $createdOptions)) {
+					$option = new Option();
+					$option->setLabel($sourceOption->name);
+					$option->setValue($sourceOption->slug);
+					$attribute->addOption($option);
+					$createdOptions[] = $sourceOption->slug;
+				}
+
+				if (isset($sourceOption->object_id)) {
+					$productAttribute[$sourceOption->object_id][] = $sourceOption->slug;
+				}
 			}
 
 			$this->productService->saveAttribute($attribute);
@@ -159,6 +178,8 @@ class Products implements Tool
 					'attribute_id' => $attribute->getId(),
 					'value' => join('|', $value),
 				));
+
+				// TODO: Save attribute meta like "is_variable" and "is_visible".
 			}
 		}
 
