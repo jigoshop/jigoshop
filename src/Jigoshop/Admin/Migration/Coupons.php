@@ -52,7 +52,7 @@ class Coupons implements Tool
 		$query = $wpdb->prepare("
 			SELECT DISTINCT p.ID, pm.* FROM {$wpdb->posts} p
 			LEFT JOIN {$wpdb->postmeta} pm ON pm.post_id = p.ID
-				WHERE p.post_type IN (%s, %s) AND p.post_status <> %s",
+				WHERE p.post_type IN (%s) AND p.post_status <> %s",
 			array('shop_coupon', 'auto-draft'));
 		$coupons = $wpdb->get_results($query);
 
@@ -61,20 +61,20 @@ class Coupons implements Tool
 
 			// Update columns
 			do {
-				$key = $this->_transformKey($coupons[$i]['meta_key']);
+				$key = $this->_transformKey($coupons[$i]->meta_key);
 
 				if (!empty($key)) {
 					$wpdb->query($wpdb->prepare(
 						"UPDATE {$wpdb->postmeta} SET meta_value = %s WHERE meta_key = %s AND meta_id = %d",
 						array(
-							$this->_transform($coupons[$i]['meta_key'], $coupons[$i]['meta_value']),
+							$this->_transform($coupons[$i]->meta_key, $coupons[$i]->meta_value),
 							$key,
-							$coupons[$i]['meta_id'],
+							$coupons[$i]->meta_id,
 						)
 					));
 				}
 				$i++;
-			} while ($i < $endI && $coupons[$i]['ID'] == $coupon['ID']);
+			} while ($i < $endI && $coupons[$i]->ID == $coupon->ID);
 		}
 	}
 
