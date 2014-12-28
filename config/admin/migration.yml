@@ -5,6 +5,7 @@ services:
     arguments:
       - '@wpal'
       - '@jigoshop.options'
+      - '@jigoshop.service.tax'
     tags:
       - { name: jigoshop.admin.migration }
   jigoshop.admin.migration.coupons:
