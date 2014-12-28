@@ -262,8 +262,20 @@ class Options
 	 */
 	public function update($name, $value)
 	{
-		$this->options[$name] = $value;
+		$this->_update(explode('.', $name), $this->options, $value);
 		$this->dirty = true;
+	}
+
+	private function _update(array $names, array &$options, $value)
+	{
+		$name = array_shift($names);
+
+		if (empty($names)) {
+			$options[$name] = $value;
+			return;
+		}
+
+		$this->_update($names, $options[$name], $value);
 	}
 
 	/**
