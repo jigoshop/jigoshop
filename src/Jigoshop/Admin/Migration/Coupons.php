@@ -16,14 +16,11 @@ class Coupons implements Tool
 	private $wp;
 	/** @var \Jigoshop\Core\Options */
 	private $options;
-	/** @var CouponServiceInterface */
-	private $couponService;
 
-	public function __construct(Wordpress $wp, \Jigoshop\Core\Options $options, CouponServiceInterface $couponService)
+	public function __construct(Wordpress $wp, \Jigoshop\Core\Options $options)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
-		$this->couponService = $couponService;
 	}
 
 	/**
@@ -65,7 +62,7 @@ class Coupons implements Tool
 
 				if (!empty($key)) {
 					$wpdb->query($wpdb->prepare(
-						"UPDATE {$wpdb->postmeta} SET meta_value = %s WHERE meta_key = %s AND meta_id = %d",
+						"UPDATE {$wpdb->postmeta} SET meta_value = %s, meta_key = %s WHERE meta_id = %d;",
 						array(
 							$this->_transform($coupons[$i]->meta_key, $coupons[$i]->meta_value),
 							$key,

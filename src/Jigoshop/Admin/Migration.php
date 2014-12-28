@@ -102,6 +102,7 @@ class Migration implements PageInterface
 			$this->wp->doAction('jigoshop\migration\before', $tool);
 			$tool->migrate();
 			$this->messages->addNotice(__('Migration complete', 'jigoshop'));
+			$this->wp->wpRedirect($this->wp->adminUrl('admin.php?page='.self::NAME));
 		}
 	}
 

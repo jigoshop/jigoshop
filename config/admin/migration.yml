@@ -13,7 +13,13 @@ services:
     arguments:
       - '@wpal'
       - '@jigoshop.options'
-      - '@jigoshop.service.coupon'
+    tags:
+      - { name: jigoshop.admin.migration }
+  jigoshop.admin.migration.emails:
+    class: Jigoshop\Admin\Migration\Emails
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
     tags:
       - { name: jigoshop.admin.migration }
   jigoshop.admin.migration.products:
