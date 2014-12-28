@@ -69,11 +69,21 @@ class Coupon implements EntityFactoryInterface
 			$coupon->setTitle($post->post_title);
 			$coupon->setCode($post->post_name);
 
-			$state['products'] = unserialize($state['products']);
-			$state['excluded_products'] = unserialize($state['excluded_products']);
-			$state['categories'] = unserialize($state['categories']);
-			$state['excluded_categories'] = unserialize($state['excluded_categories']);
-			$state['payment_methods'] = unserialize($state['payment_methods']);
+			if (isset($state['products'])) {
+				$state['products'] = unserialize($state['products']);
+			}
+			if (isset($state['excluded_products'])) {
+				$state['excluded_products'] = unserialize($state['excluded_products']);
+			}
+			if (isset($state['categories'])) {
+				$state['categories'] = unserialize($state['categories']);
+			}
+			if (isset($state['excluded_categories'])) {
+				$state['excluded_categories'] = unserialize($state['excluded_categories']);
+			}
+			if (isset($state['payment_methods'])) {
+				$state['payment_methods'] = unserialize($state['payment_methods']);
+			}
 
 			$coupon->restoreState($state);
 		}
