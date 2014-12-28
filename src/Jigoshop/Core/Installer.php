@@ -48,7 +48,7 @@ class Installer
 
 	public function install()
 	{
-		$db = false;//$this->wp->getOption('jigoshop_database_version');
+		$db = $this->wp->getOption('jigoshop_database_version');
 
 		if ($db === false) {
 			Registry::getInstance('jigoshop')->addNotice('Installing Jigoshop.');
@@ -278,6 +278,13 @@ class Installer
 
 	private function _installEmails()
 	{
+		$wpdb = $this->wp->getWPDB();
+		$hasEmails = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = %s", array(Types::EMAIL))) > 0;
+
+		if ($hasEmails) {
+			return;
+		}
+
 		$default_emails = array(
 			'new_order_admin_notification',
 			'customer_order_status_pending_to_processing',
@@ -288,7 +295,7 @@ class Installer
 			'send_customer_invoice',
 			'low_stock_notification',
 			'no_stock_notification',
-			'product_on_backorder_notification'
+			'product_on_backorders_notification'
 		);
 		$invoice = '==============================<wbr />==============================
 		Order details:
@@ -387,21 +394,21 @@ class Installer
 				'comment_status' => 'closed',
 			);
 			$post_id = $this->wp->wpInsertPost($post_data);
-			$this->wp->updatePostMeta($post_id, 'general.email_subject', $title);
+			$this->wp->updatePostMeta($post_id, 'subject', $title);
 			if ($email == 'new_order_admin_notification') {
 				$this->emailService->addTemplate($post_id, array(
 					'admin_order_status_pending_to_processing',
 					'admin_order_status_pending_to_completed',
 					'admin_order_status_pending_to_on_hold'
 				));
-				$this->wp->updatePostMeta($post_id, 'general.email_actions', array(
+				$this->wp->updatePostMeta($post_id, 'actions', array(
 					'admin_order_status_pending_to_processing',
 					'admin_order_status_pending_to_completed',
 					'admin_order_status_pending_to_on_hold'
 				));
 			} else {
 				$this->emailService->addTemplate($post_id, array($email));
-				$this->wp->updatePostMeta($post_id, 'general.email_actions', array($email));
+				$this->wp->updatePostMeta($post_id, 'actions', array($email));
 			}
 		}
 	}
