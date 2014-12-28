@@ -84,6 +84,14 @@ class Variable implements Type
 	}
 
 	/**
+	 * @param array $allowedSubtypes
+	 */
+	public function setAllowedSubtypes($allowedSubtypes)
+	{
+		$this->allowedSubtypes = $allowedSubtypes;
+	}
+
+	/**
 	 * Initializes product type.
 	 *
 	 * @param Wordpress $wp WordPress Abstraction Layer
@@ -109,10 +117,10 @@ class Variable implements Type
 		$that = $this;
 		$wp->addAction('jigoshop\run', function() use ($that, $wp, $enabledTypes){
 			$allowedSubtypes = $wp->applyFilters('jigoshop\core\types\variable\subtypes', array());
-			$that->allowedSubtypes = array_filter($enabledTypes, function($type) use ($allowedSubtypes){
+			$that->setAllowedSubtypes(array_filter($enabledTypes, function($type) use ($allowedSubtypes){
 				/** @var $type Type */
 				return in_array($type->getId(), $allowedSubtypes);
-			});
+			}));
 		});
 	}
 
