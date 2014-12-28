@@ -74,6 +74,7 @@ class Products implements Tool
 				WHERE p.post_type IN (%s, %s) AND p.post_status <> %s",
 			array('product', 'product_variation', 'auto-draft'));
 		$products = $wpdb->get_results($query);
+		$globalAttributes = array();
 
 		for ($i = 0, $endI = count($products); $i < $endI;) {
 			$product = $products[$i];
@@ -92,6 +93,9 @@ class Products implements Tool
 				// Custom product attributes support
 				if ($products[$i]->meta_key == 'product_attributes') {
 					$attributes = unserialize($products[$i]->meta_value);
+					$globalAttributes = array_replace_recursive($globalAttributes, array_filter($attributes, function($item){
+						return $item['is_taxonomy'] == true;
+					}));
 					$attributes = array_filter($attributes, function($item){
 						return $item['is_taxonomy'] == false;
 					});
@@ -134,8 +138,9 @@ class Products implements Tool
 		$attributes = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}jigoshop_attribute_taxonomies");
 		foreach ($attributes as $source) {
 			$attribute = $this->productService->createAttribute($this->_getAttributeType($source));
-			$attribute->setLabel($source->attribute_label);
-			$attribute->setSlug($source->attribute_name);
+			$label = !empty($source->attribute_label) ? $source->attribute_label : $source->attribute_name;
+			$attribute->setLabel($label);
+			$attribute->setSlug($this->wp->getHelpers()->sanitizeTitle($source->attribute_name));
 			$attribute->setVisible(true);
 			$attribute->setLocal(false);
 
@@ -148,7 +153,7 @@ class Products implements Tool
 
 			$productAttribute = array();
 			$createdOptions = array();
-			foreach ($options as $sourceOption) {
+			foreach ($options as $k => $sourceOption) {
 				if (!in_array($sourceOption->slug, $createdOptions)) {
 					$option = new Option();
 					$option->setLabel($sourceOption->name);
@@ -179,7 +184,25 @@ class Products implements Tool
 					'value' => join('|', $value),
 				));
 
-				// TODO: Save attribute meta like "is_variable" and "is_visible".
+				if (isset($globalAttributes[$attribute->getSlug()])) {
+					$data = array(
+						'product_id' => $productId,
+						'attribute_id' => $attribute->getId(),
+						'meta_key' => 'is_visible',
+						'meta_value' => $globalAttributes[$attribute->getSlug()]['visible'] ? true : false,
+					);
+					$wpdb->insert($wpdb->prefix.'jigoshop_product_attribute_meta', $data);
+
+					if ($globalAttributes[$attribute->getSlug()]['variation']) {
+						$data = array(
+							'product_id' => $productId,
+							'attribute_id' => $attribute->getId(),
+							'meta_key' => 'is_variable',
+							'meta_value' => true,
+						);
+						$wpdb->insert($wpdb->prefix.'jigoshop_product_attribute_meta', $data);
+					}
+				}
 			}
 		}
 

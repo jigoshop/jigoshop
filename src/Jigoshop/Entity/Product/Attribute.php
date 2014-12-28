@@ -146,7 +146,12 @@ abstract class Attribute
 	public function addOption(Attribute\Option $option)
 	{
 		$option->setAttribute($this);
-		$this->options[$option->getId()] = $option;
+		// Ability to add multiple new options
+		$id = $option->getId();
+		if (empty($id)) {
+			$id = hash('md5', $option->getLabel());
+		}
+		$this->options[$id] = $option;
 	}
 
 	/**
