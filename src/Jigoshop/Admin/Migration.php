@@ -99,6 +99,7 @@ class Migration implements PageInterface
 		if (isset($this->tools[$id])) {
 			/** @var Tool $tool */
 			$tool = $this->tools[$id];
+			$this->wp->doAction('jigoshop\migration\before', $tool);
 			$tool->migrate();
 			$this->messages->addNotice(__('Migration complete', 'jigoshop'));
 		}

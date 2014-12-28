@@ -27,7 +27,10 @@ class Integration
 			return apply_filters('jigoshop_order_product_title', $value, $product, $item);
 		}, 10, 3);
 
-
+		add_action('jigoshop\migration\before', function(){
+			Integration::initializeGateways();
+			Integration::initializeShipping();
+		});
 		add_action('jigoshop\service\cart', function(){
 			Integration::initializeShipping();
 		});
