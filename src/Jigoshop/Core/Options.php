@@ -275,6 +275,10 @@ class Options
 			return;
 		}
 
+		if (!isset($options[$name])) {
+			$options[$name] = array();
+		}
+
 		$this->_update($names, $options[$name], $value);
 	}
 
