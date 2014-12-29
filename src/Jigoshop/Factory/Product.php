@@ -265,20 +265,16 @@ class Product implements EntityFactoryInterface
 					$attribute->addOption($option);
 				}
 
-				if (empty($fields)) {
-					while ($i < $endI && $results[$i]['id'] == $attribute->getId() && $results[$i]['option_id'] == $option->getId()) {
-						if ($results[$i]['meta_id'] !== null) {
-							$field = new Attribute\Field();
-							$field->setId($results[$i]['meta_id']);
-							$field->setKey($results[$i]['meta_key']);
-							$field->setValue($results[$i]['meta_value']);
-							$field->setAttribute($attribute);
-							$fields[$results[$i]['meta_key']] = $field;
-						}
-
-						$i++;
+				while ($i < $endI && $results[$i]['id'] == $attribute->getId() && $results[$i]['option_id'] == $option->getId()) {
+					if ($results[$i]['meta_id'] !== null && !isset($fields[$results[$i]['meta_key']])) {
+						$field = new Attribute\Field();
+						$field->setId($results[$i]['meta_id']);
+						$field->setKey($results[$i]['meta_key']);
+						$field->setValue($results[$i]['meta_value']);
+						$field->setAttribute($attribute);
+						$fields[$results[$i]['meta_key']] = $field;
 					}
-				} else {
+
 					$i++;
 				}
 			}

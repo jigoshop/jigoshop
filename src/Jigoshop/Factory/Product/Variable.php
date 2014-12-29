@@ -109,6 +109,7 @@ class Variable
 				WHERE pv.post_parent = %d AND pv.post_type = %s
 		", array($product->getId(), \Jigoshop\Core\Types\Product\Variable::TYPE));
 		$results = $wpdb->get_results($query, ARRAY_A);
+//		echo '<pre>'; var_dump($results); exit;
 		$variations = array();
 
 		$results = array_filter($results, function($item){

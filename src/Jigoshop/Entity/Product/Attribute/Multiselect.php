@@ -47,7 +47,11 @@ class Multiselect extends Attribute implements Variable
 	 */
 	public function setValue($value)
 	{
-		$this->value = array_filter(explode('|', $value));
+		if (is_array($value)) {
+			$this->value = $value;
+		} else {
+			$this->value = array_filter(explode('|', $value));
+		}
 	}
 
 	/**
