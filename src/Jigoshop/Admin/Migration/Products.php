@@ -86,7 +86,10 @@ class Products implements Tool
 		for ($i = 0, $endI = count($products); $i < $endI;) {
 			$product = $products[$i];
 			$productIds[] = $product->ID;
-			$productAttributes[$product->ID] = array();
+			$productAttributes[$product->ID] = array(
+				'attributes' => array(),
+				'variations' => array(),
+			);
 
 			// Add product types
 			$types = $this->wp->getTheTerms($product->ID, 'product_type');
@@ -106,7 +109,7 @@ class Products implements Tool
 					$attributeData = unserialize($products[$i]->meta_value);
 
 					foreach ($attributeData as $slug => $source) {
-						$productAttributes[$product->ID][$slug] = array(
+						$productAttributes[$product->ID]['attributes'][$slug] = array(
 							'is_visible' => $source['visible'],
 							'is_variable' => isset($source['variation']) && $source['variation'] == true,
 							'values' => $source['value'],
@@ -127,12 +130,12 @@ class Products implements Tool
 				}
 
 				// Product variation data
-//				if ($products[$i]->meta_key == 'variation_data') {
-//					$attributes = unserialize($products[$i]->meta_value);
-//					foreach ($attributes as $attribute => $value) {
-//						// TODO
-//					}
-//				}
+				if ($products[$i]->meta_key == 'variation_data') {
+					$variations = unserialize($products[$i]->meta_value);
+					foreach ($variations as $variation => $value) {
+						$productAttributes[$product->ID]['variations'][str_replace('tax_', '', $variation)] = $value;
+					}
+				}
 
 				$key = $this->_transformKey($products[$i]->meta_key);
 
@@ -177,8 +180,8 @@ class Products implements Tool
 
 			// Add attribute to the products
 			foreach ($productIds as $id) {
-				if (isset($productAttributes[$id][$attribute->getSlug()])) {
-					$data = $productAttributes[$id][$attribute->getSlug()];
+				if (isset($productAttributes[$id]['attributes'][$attribute->getSlug()])) {
+					$data = $productAttributes[$id]['attributes'][$attribute->getSlug()];
 					$value = array();
 					if (is_array($data['values'])) {
 						foreach ($attribute->getOptions() as $option) {
@@ -216,6 +219,22 @@ class Products implements Tool
 						);
 						$wpdb->insert($wpdb->prefix.'jigoshop_product_attribute_meta', $query);
 					}
+				}
+			}
+		}
+
+		foreach ($productIds as $id) {
+			foreach ($productAttributes[$id]['variations'] as $taxonomy => $value) {
+				$attribute = $attributes[$taxonomy];
+				$option = $this->_findOption($attribute->getOptions(), $value);
+
+				if ($option !== null) {
+					$query = array(
+						'variation_id' => $id,
+						'attribute_id' => $attribute->getId(),
+						'value' => $option,
+					);
+					$wpdb->insert($wpdb->prefix.'jigoshop_product_variation_attribute', $query);
 				}
 			}
 		}
@@ -346,5 +365,17 @@ class Products implements Tool
 			default:
 				return Text::TYPE;
 		}
+	}
+
+	private function _findOption($options, $value)
+	{
+		foreach ($options as $option) {
+			/** @var $option Option */
+			if ($option->getValue() == $value) {
+				return $option->getId();
+			}
+		}
+
+		return null;
 	}
 }
