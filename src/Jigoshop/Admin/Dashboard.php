@@ -261,23 +261,23 @@ class Dashboard implements PageInterface
 		if (file_exists(ABSPATH.WPINC.'/class-simplepie.php')) {
 			include_once(ABSPATH.WPINC.'/class-simplepie.php');
 
-			$rss = $this->wp->fetchFeed('http://www.jigoshop.com/feed');
+			$wp = $this->wp;
+			$rss = $wp->fetchFeed('http://www.jigoshop.com/feed');
 			$items = array();
 
-			if (!$this->wp->isWpError($rss)) {
+			if (!$wp->isWpError($rss)) {
 				$maxItems = $rss->get_item_quantity(5);
 				$rssItems = $rss->get_items(0, $maxItems);
 
 				if ($maxItems > 0) {
-					$that = $this;
-					$items = array_map(function ($item) use ($that) {
+					$items = array_map(function ($item) use ($wp) {
 						/** @var $item \SimplePie_Item */
 						$date = $item->get_date('U');
 
 						return array(
-							'title' => $that->wp->getHelpers()->wptexturize($item->get_title()),
+							'title' => $wp->getHelpers()->wptexturize($item->get_title()),
 							'link' => $item->get_permalink(),
-							'date' => (abs(time() - $date)) < 86400 ? sprintf(__('%s ago', 'jigoshop'), $that->wp->humanTimeDiff($date)) : date(__('F jS Y', 'jigoshop'), $date),
+							'date' => (abs(time() - $date)) < 86400 ? sprintf(__('%s ago', 'jigoshop'), $wp->humanTimeDiff($date)) : date(__('F jS Y', 'jigoshop'), $date),
 						);
 					}, $rssItems);
 				}
