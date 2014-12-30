@@ -27,14 +27,6 @@ interface CustomerServiceInterface extends ServiceInterface
 	public function findAll();
 
 	/**
-	 * Saves product to database.
-	 *
-	 * @param EntityInterface $object Customer to save.
-	 * @throws Exception
-	 */
-	public function save(EntityInterface $object);
-
-	/**
 	 * Checks whether provided customer needs to be taxed.
 	 *
 	 * @param Customer $customer Customer to check.
