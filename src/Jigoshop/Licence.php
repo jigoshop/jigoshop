@@ -81,6 +81,11 @@ class Licence
 		add_action('in_plugin_update_message-'.$this->plugin_slug, array($this, 'updateMessage'), 10, 2);
 	}
 
+	public static function __getPlugins()
+	{
+		return self::$plugins;
+	}
+
 	/**
 	 * Is Licence Active for this plugin
 	 * All plugins should call this early in their existance to check if their licence is valid

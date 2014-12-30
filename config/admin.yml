@@ -33,6 +33,16 @@ services:
 #    class: Jigoshop\Admin\Reports
 #    tags:
 #      - { name: jigoshop.admin.page }
+  jigoshop.admin.licences:
+    class: Jigoshop\Admin\Licences
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.messages'
+      - '@jigoshop.helper.styles'
+      - '@jigoshop.helper.scripts'
+    tags:
+      - { name: jigoshop.admin.page }
   jigoshop.admin.migration:
     class: Jigoshop\Admin\Migration
     arguments:

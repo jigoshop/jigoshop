@@ -3,6 +3,12 @@
 namespace Jigoshop\Admin;
 
 use Jigoshop\Admin;
+use Jigoshop\Core\Messages;
+use Jigoshop\Core\Options;
+use Jigoshop\Helper\Scripts;
+use Jigoshop\Helper\Styles;
+use Jigoshop\Licence;
+use WPAL\Wordpress;
 
 /**
  * Jigoshop licences admin page.
@@ -11,6 +17,39 @@ use Jigoshop\Admin;
  */
 class Licences implements PageInterface
 {
+	const NAME = 'jigoshop_licences';
+
+	/** @var \WPAL\Wordpress */
+	private $wp;
+	/** @var Options */
+	private $options;
+	/** @var Messages */
+	private $messages;
+	// TODO: Remove these variables
+	private $validator_token = 'jigoshop-licence-validator';
+	private $validator_prefix = 'jigoshop_licence_validator_';
+
+	public function __construct(Wordpress $wp, Options $options, Messages $messages, Styles $styles, Scripts $scripts)
+	{
+		$this->wp = $wp;
+		$this->options = $options;
+		$this->messages = $messages;
+
+		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $styles, $scripts) {
+			// Weed out all admin pages except the Jigoshop Settings page hits
+			if (!in_array($wp->getPageNow(), array('admin.php', 'options.php'))) {
+				return;
+			}
+
+			$screen = $wp->getCurrentScreen();
+			if ($screen->base != 'jigoshop_page_'.Licences::NAME) {
+				return;
+			}
+
+//			$styles->add('jigoshop.admin.licences', JIGOSHOP_URL.'/assets/css/admin/settings.css');
+		});
+	}
+
 	/**
 	 * @return string Title of page.
 	 */
@@ -38,7 +77,7 @@ class Licences implements PageInterface
 	 */
 	public function getMenuSlug()
 	{
-		return 'jigoshop_licences';
+		return self::NAME;
 	}
 
 	/**
@@ -50,7 +89,7 @@ class Licences implements PageInterface
 		$messages = array();
 
 		// getting new keys after they were updated
-		$keys = $this->get_keys();
+		$keys = $this->getKeys();
 
 		?>
 		<div class="wrap">
@@ -66,12 +105,12 @@ class Licences implements PageInterface
 			</p>
 
 			<form name="<?php echo $this->validator_token; ?>-login" id="<?php echo $this->validator_token; ?>-login"
-			      action="<?php echo admin_url('admin.php?page='.$this->validator_token); ?>" method="post">
+			      action="<?php echo admin_url('admin.php?page='.self::NAME); ?>" method="post">
 				<?php wp_nonce_field($this->validator_token.'-nonce', $this->validator_prefix.'nonce'); ?>
 				<fieldset>
 					<table class="form-table">
 						<tbody>
-						<?php foreach (self::$plugins as $plugin_identifier => $info) :
+						<?php foreach (Licence::__getPlugins() as $plugin_identifier => $info) :
 							$value = !empty($keys[$plugin_identifier]['licence_key']) ? $keys[$plugin_identifier]['licence_key'] : '';
 							$email = !empty($keys[$plugin_identifier]['email']) ? $keys[$plugin_identifier]['email'] : '';
 							if (!empty($_POST['licence_keys'][$plugin_identifier])) {
@@ -112,5 +151,28 @@ class Licences implements PageInterface
 			</form>
 		</div>
 	<?php
+	}
+
+	/**
+	 * Returns a set of licence keys for this site from the options table
+	 *
+	 * @return array
+	 */
+	private function getKeys()
+	{
+		return get_option($this->validator_prefix.'licence_keys');
+	}
+
+	/**
+	 * Gets the email address of the currently logged in user
+	 *
+	 * @return string
+	 */
+	private function get_current_user_email()
+	{
+		$current_user = wp_get_current_user();
+
+		/** @noinspection PhpUndefinedFieldInspection */
+		return $current_user->user_email;
 	}
 }
