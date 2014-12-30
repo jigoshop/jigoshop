@@ -1,4 +1,6 @@
 <?php
+use Jigoshop\Helper\Product;
+
 /**
  * @var $lowStock array List of products with low stock.
  * @var $outOfStock array List of products out of stock.
@@ -10,7 +12,7 @@
 	<?php if (count($lowStock) > 0): ?>
 		<ol>
 			<?php foreach ($lowStock as $item): /** @var $item \Jigoshop\Entity\Product|\Jigoshop\Entity\Product\Purchasable */ ?>
-				<li><a href="<?php echo get_edit_post_link($item->getId()); ?>"><?php echo $item->getName(); ?></a> <span><?php printf(__('Stock: %d', 'jigoshop'), $item->getStock()->getStock()); ?></span></li>
+				<li><a href="<?php echo get_edit_post_link($item->getId()); ?>"><?php echo $item->getName(); ?></a> <span><?php printf(__('Stock: %d', 'jigoshop'), Product::getStock($item)); ?></span></li>
 			<?php endforeach; ?>
 		</ol>
 	<?php else: ?>
