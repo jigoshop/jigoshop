@@ -163,6 +163,10 @@ class Cart extends Order
 
 		$item = $this->removeItem($key);
 
+		if ($item === null) {
+			throw new Exception(__('Item not found.', 'jigoshop'));
+		}
+
 		if ($quantity <= 0) {
 			return;
 		}

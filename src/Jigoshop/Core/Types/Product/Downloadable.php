@@ -219,6 +219,11 @@ class Downloadable implements Type
 				}
 
 				$item = $order->getItem($itemKey);
+
+				if ($item === null) {
+					throw new Exception(__('Product not found.', 'jigoshop'));
+				}
+
 				if ($item->getType() !== Product\Downloadable::TYPE) {
 					throw new Exception(__('Invalid file to download.', 'jigoshop'));
 				}

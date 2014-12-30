@@ -147,6 +147,11 @@ class Order
 			}
 
 			$item = $order->removeItem($_POST['product']);
+
+			if ($item === null) {
+				throw new Exception(__('Item not found.', 'jigoshop'));
+			}
+
 			$item->setQuantity((int)$_POST['quantity']);
 			$item->setPrice((float)$_POST['price']);
 

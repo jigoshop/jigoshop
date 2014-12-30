@@ -675,6 +675,10 @@ class jigoshop_cart
 		$return = '';
 		$item = Integration::getCart()->getItem($cart_item['__key']);
 
+		if ($item === null) {
+			return $return;
+		}
+
 		$product = $item->getProduct();
 		if (!$flat) {
 			if ($product instanceof \Jigoshop\Entity\Product\Variable) {

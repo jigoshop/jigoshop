@@ -360,6 +360,11 @@ class Cart implements PageInterface
 			$cart->updateQuantity($_POST['item'], (int)$_POST['quantity']);
 			$this->cartService->save($cart);
 			$item = $cart->getItem($_POST['item']);
+
+			if ($item === null) {
+				throw new Exception(__('Item not found.', 'jigoshop'));
+			}
+
 			// TODO: Support for "Prices includes tax"
 			$price = $this->options->get('tax.price_tax') == 'with_tax' ? $item->getPrice() + $item->getTax() / $item->getQuantity() : $item->getPrice();
 
