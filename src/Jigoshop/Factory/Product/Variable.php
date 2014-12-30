@@ -90,7 +90,10 @@ class Variable
 			$attribute = new VariableProduct\Attribute(VariableProduct\Attribute::VARIATION_ATTRIBUTE_EXISTS);
 			$attribute->setAttribute($product->getAttribute($source['attribute_id']));
 			$attribute->setValue($source['value']);
-			$variation->addAttribute($attribute);
+
+			if ($attribute->getAttribute() !== null) {
+				$variation->addAttribute($attribute);
+			}
 		}
 
 		return $variation;
@@ -127,7 +130,10 @@ class Variable
 				$attribute->setVariation($variation);
 				$attribute->setAttribute($product->getAttribute($results[$i]['attribute_id']));
 				$attribute->setValue($results[$i]['value']);
-				$variation->addAttribute($attribute);
+
+				if ($attribute->getAttribute() !== null) {
+					$variation->addAttribute($attribute);
+				}
 				$i++;
 			}
 
