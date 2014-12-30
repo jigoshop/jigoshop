@@ -18,7 +18,10 @@ use Jigoshop\Helper\Render;
 			<th scope="col"><?php _e('Is compound?', 'jigoshop'); ?></th>
 			<th scope="col"><?php _e('Rate', 'jigoshop'); ?></th>
 			<th scope="col"><?php _e('Country', 'jigoshop'); ?></th>
-			<th scope="col"><?php _e('State', 'jigoshop'); ?></th>
+			<th scope="col">
+				<?php _e('State', 'jigoshop'); ?>
+				<a href="#" data-toggle="tooltip" class="badge" data-placement="top" title="<?php _e('You can enter more states separating them with comma.', 'jigoshop'); ?>">?</a>
+			</th>
 			<th scope="col">
 				<?php _e('Postcodes', 'jigoshop'); ?>
 				<a href="#" data-toggle="tooltip" class="badge" data-placement="top" title="<?php _e('Enter list of postcodes, separating with comma.', 'jigoshop'); ?>">?</a>

@@ -58,6 +58,7 @@ class Options implements Tool
 
 		// Migrate tax rules
 		foreach ($options['jigoshop_tax_rates'] as $key => $rate) {
+			// TODO: Improve with merging states
 			$this->taxService->save(array(
 				'id' => '0',
 				'rate' => $rate['rate'],

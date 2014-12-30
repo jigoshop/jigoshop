@@ -82,6 +82,10 @@ class Template
 			$template = 'woothemes';
 		}
 
+		if (!file_exists(JIGOSHOP_DIR.'/templates/layout'.$template.'.php')) {
+			$template = 'default';
+		}
+
 		Render::output('layout/'.$template, array(
 			'content' => $content,
 		));
