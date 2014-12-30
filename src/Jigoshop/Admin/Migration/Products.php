@@ -108,23 +108,25 @@ class Products implements Tool
 				if ($products[$i]->meta_key == 'product_attributes') {
 					$attributeData = unserialize($products[$i]->meta_value);
 
-					foreach ($attributeData as $slug => $source) {
-						$productAttributes[$product->ID]['attributes'][$slug] = array(
-							'is_visible' => $source['visible'],
-							'is_variable' => isset($source['variation']) && $source['variation'] == true,
-							'values' => $source['value'],
-						);
+					if (is_array($attributeData)) {
+						foreach ($attributeData as $slug => $source) {
+							$productAttributes[$product->ID]['attributes'][$slug] = array(
+								'is_visible' => $source['visible'],
+								'is_variable' => isset($source['variation']) && $source['variation'] == true,
+								'values' => $source['value'],
+							);
 
-						if (!isset($attributes[$slug])) {
-							$type = isset($globalAttributes[$slug]) ? $this->_getAttributeType($globalAttributes[$slug]) : Text::TYPE;
-							$label = isset($globalAttributes[$slug]) ? !empty($globalAttributes[$slug]->attribute_label) ? $globalAttributes[$slug]->attribute_label : $globalAttributes[$slug]->attribute_name : $source['name'];
+							if (!isset($attributes[$slug])) {
+								$type = isset($globalAttributes[$slug]) ? $this->_getAttributeType($globalAttributes[$slug]) : Text::TYPE;
+								$label = isset($globalAttributes[$slug]) ? !empty($globalAttributes[$slug]->attribute_label) ? $globalAttributes[$slug]->attribute_label : $globalAttributes[$slug]->attribute_name : $source['name'];
 
-							$attribute = $this->productService->createAttribute($type);
-							$attribute->setSlug($slug);
-							$attribute->setLabel($label);
-							$attribute->setLocal($source['is_taxonomy'] != true);
+								$attribute = $this->productService->createAttribute($type);
+								$attribute->setSlug($slug);
+								$attribute->setLabel($label);
+								$attribute->setLocal($source['is_taxonomy'] != true);
 
-							$attributes[$slug] = $attribute;
+								$attributes[$slug] = $attribute;
+							}
 						}
 					}
 				}
@@ -225,6 +227,11 @@ class Products implements Tool
 
 		foreach ($productIds as $id) {
 			foreach ($productAttributes[$id]['variations'] as $taxonomy => $value) {
+				if (!isset($attributes[$taxonomy])) {
+					// TODO: Log error?
+					continue;
+				}
+
 				$attribute = $attributes[$taxonomy];
 				$option = $this->_findOption($attribute->getOptions(), $value);
 
