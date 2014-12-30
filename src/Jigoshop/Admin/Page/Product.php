@@ -94,11 +94,11 @@ class Product
 		}
 
 		$attributes = array(
-			'' => '',
+			'' => array('label' => '',),
 		);
 		foreach($this->productService->findAllAttributes() as $attribute) {
 			/** @var $attribute Attribute */
-			$attributes[$attribute->getId()] = $attribute->getLabel();
+			$attributes[$attribute->getId()] = array('label' => $attribute->getLabel(), 'disabled' => $product->hasAttribute($attribute->getId()));
 		}
 
 		$tabs = $this->wp->applyFilters('jigoshop\admin\product\tabs', array(

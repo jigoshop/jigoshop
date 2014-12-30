@@ -183,6 +183,23 @@ class Forms
 
 		$field['description'] = esc_html($field['description']);
 
+		// Support simple format for options
+		if (!empty($field['options'])) {
+			$firstElement = reset($field['options']);
+
+			if (!is_array($firstElement)) {
+				foreach ($field['options'] as $option => $label) {
+					$field['options'][$option] = array('label' => $label);
+				}
+			} else if (!isset($firstElement['label']) && !isset($firstElement['items'])) { // TODO: Is this sufficient?
+				foreach ($field['options'] as $option => $items) {
+					foreach ($items as $suboption => $sublabel) {
+						$field['options'][$option]['items'][$suboption] = array('label' => $sublabel);
+					}
+				}
+			}
+		}
+
 		Render::output(static::$selectTemplate, $field);
 	}
 

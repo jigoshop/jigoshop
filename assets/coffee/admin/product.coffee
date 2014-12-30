@@ -54,6 +54,10 @@ class AdminProduct
   addAttribute: (event) =>
     event.preventDefault()
     $parent = jQuery('#product-attributes')
+    $attribute = jQuery('#new-attribute')
+    value = $attribute.val()
+    $attribute.select2('val', '')
+    jQuery("option[value=#{value}]", $attribute).attr('disabled', 'disabled')
     jQuery.ajax
       url: @params.ajax
       type: 'post'
@@ -61,7 +65,7 @@ class AdminProduct
       data:
         action: 'jigoshop.admin.product.save_attribute'
         product_id: $parent.closest('.jigoshop').data('id')
-        attribute_id: jQuery('#new-attribute').val()
+        attribute_id: value
     .done (data) ->
       if data.success? and data.success
         jQuery(data.html).hide().appendTo($parent).slideDown()
@@ -113,6 +117,7 @@ class AdminProduct
     event.preventDefault()
     if confirm(@params.i18n.confirm_remove)
       $parent = jQuery(event.target).closest('li')
+      jQuery('option[value=' + $parent.data('id') + ']', jQuery('#new-attribute')).removeAttr('disabled')
       jQuery.ajax
         url: @params.ajax
         type: 'post'

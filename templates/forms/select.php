@@ -26,14 +26,14 @@ use Jigoshop\Helper\Render;
 	<div class="col-sm-<?php echo $size; ?>">
 		<select id="<?php echo $id; ?>" name="<?php echo $name; ?>" class="form-control <?php echo join(' ', $classes); ?>" placeholder="<?php echo $placeholder; ?>"<?php $multiple and print ' multiple="multiple"'; ?><?php $disabled and print ' disabled'; ?>>
 			<?php foreach($options as $option => $item): ?>
-				<?php if(is_array($item)): ?>
+				<?php if(isset($item['items'])): ?>
 					<optgroup label="<?php echo $option; ?>">
-						<?php foreach($item as $subvalue => $sublabel): ?>
-							<?php Render::output('forms/select/option', array('label' => $sublabel, 'value' => $subvalue, 'current' => $value)); ?>
+						<?php foreach($item['items'] as $subvalue => $subitem): $subitem['disabled'] = isset($subitem['disabled']) && $subitem['disabled'] ? true : false; ?>
+							<?php Render::output('forms/select/option', array('label' => $subitem['label'], 'disabled' => $subitem['disabled'], 'value' => $subvalue, 'current' => $value)); ?>
 						<?php endforeach; ?>
 					</optgroup>
-				<?php else: ?>
-					<?php Render::output('forms/select/option', array('label' => $item, 'value' => $option, 'current' => $value)); ?>
+				<?php else: $item['disabled'] = isset($item['disabled']) && $item['disabled'] ? true : false; ?>
+					<?php Render::output('forms/select/option', array('label' => $item['label'], 'disabled' => $item['disabled'], 'value' => $option, 'current' => $value)); ?>
 				<?php endif; ?>
 			<?php endforeach; ?>
 		</select>
