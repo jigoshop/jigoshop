@@ -5,6 +5,7 @@ namespace Jigoshop\Admin\Product;
 use Jigoshop\Admin\PageInterface;
 use Jigoshop\Core\Messages;
 use Jigoshop\Entity\Product\Attribute;
+use Jigoshop\Exception;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
@@ -66,46 +67,52 @@ class Attributes implements PageInterface
 
 	public function ajaxSaveAttribute()
 	{
-		$errors = array();
-		if (!isset($_POST['label']) || empty($_POST['label'])) {
-			$errors[] = __('Attribute label is not set.', 'jigoshop');
-		}
-		if (!isset($_POST['type']) || !in_array($_POST['type'], array_keys(Attribute::getTypes()))) {
-			$errors[] = __('Attribute type is not valid.', 'jigoshop');
-		}
+		try {
+			$errors = array();
+			if (!isset($_POST['label']) || empty($_POST['label'])) {
+				$errors[] = __('Attribute label is not set.', 'jigoshop');
+			}
+			if (!isset($_POST['type']) || !in_array($_POST['type'], array_keys(Attribute::getTypes()))) {
+				$errors[] = __('Attribute type is not valid.', 'jigoshop');
+			}
 
-		if (!empty($errors)) {
+			if (!empty($errors)) {
+				throw new Exception(join('<br/>', $errors));
+			}
+
+			$attribute = $this->productService->createAttribute((int)$_POST['type']);
+
+			if (isset($_POST['id']) && is_numeric($_POST['id'])) {
+				$baseAttribute = $this->productService->getAttribute((int)$_POST['id']);
+				$attribute->setId($baseAttribute->getId());
+				$attribute->setOptions($baseAttribute->getOptions());
+			}
+
+			$attribute->setLabel(trim(htmlspecialchars(strip_tags($_POST['label']))));
+
+			if (isset($_POST['slug']) && !empty($_POST['slug'])) {
+				$attribute->setSlug(trim(htmlspecialchars(strip_tags($_POST['slug']))));
+			} else {
+				$attribute->setSlug($this->wp->getHelpers()->sanitizeTitle($attribute->getLabel()));
+			}
+
+			$this->productService->saveAttribute($attribute);
+
+			echo json_encode(array(
+				'success' => true,
+				'html' => Render::get('admin/product_attributes/attribute', array(
+					'id' => $attribute->getId(),
+					'attribute' => $attribute,
+					'types' => Attribute::getTypes(),
+				)),
+			));
+		} catch (Exception $e) {
 			echo json_encode(array(
 				'success' => false,
-				'error' => join('<br/>', $errors),
+				'error' => $e->getMessage(),
 			));
-			exit;
 		}
 
-		if (isset($_POST['id']) && is_numeric($_POST['id'])) {
-			$attribute = $this->productService->getAttribute((int)$_POST['id']);
-		} else {
-			$attribute = $this->productService->createAttribute((int)$_POST['type']);
-		}
-
-		$attribute->setLabel(trim(htmlspecialchars(strip_tags($_POST['label']))));
-
-		if (isset($_POST['slug']) && !empty($_POST['slug'])) {
-			$attribute->setSlug(trim(htmlspecialchars(strip_tags($_POST['slug']))));
-		} else {
-			$attribute->setSlug($this->wp->getHelpers()->sanitizeTitle($attribute->getLabel()));
-		}
-
-		$this->productService->saveAttribute($attribute);
-
-		echo json_encode(array(
-			'success' => true,
-			'html' => Render::get('admin/product_attributes/attribute', array(
-				'id' => $attribute->getId(),
-				'attribute' => $attribute,
-				'types' => Attribute::getTypes(),
-			)),
-		));
 		exit;
 	}
 
