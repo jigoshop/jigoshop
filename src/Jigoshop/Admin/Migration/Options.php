@@ -47,6 +47,8 @@ class Options implements Tool
 	{
 		$options = $this->wp->getOption('jigoshop_options');
 		$transformations = \Jigoshop_Base::get_options()->__getTransformations();
+		$transformations = $this->_addShippingTransformations($transformations);
+		$transformations = $this->_addPaymentTransformations($transformations);
 
 		foreach ($transformations as $old => $new) {
 			$value = $this->_transform($old, $options[$old]);
@@ -100,8 +102,66 @@ class Options implements Tool
 				}, $value));
 			case 'jigoshop_tax_rates':
 				return null;
+			case 'jigoshop_free_shipping_enabled':
+				return $value == 'yes';
+			case 'jigoshop_local_pickup_enabled':
+				return $value == 'yes';
+			case 'jigoshop_flat_rate_enabled':
+				return $value == 'yes';
+			case 'jigoshop_cheque_enabled':
+				return $value == 'yes';
+			case 'jigoshop_cod_enabled':
+				return $value == 'yes';
+			case 'jigoshop_paypal_enabled':
+				return $value == 'yes';
+			case 'jigoshop_paypal_force_payment':
+				return $value == 'yes';
+			case 'jigoshop_paypal_testmode':
+				return $value == 'yes';
+			case 'jigoshop_paypal_send_shipping':
+				return $value == 'yes';
 			default:
 				return $value;
 		}
+	}
+
+	private function _addShippingTransformations($transformations)
+	{
+		return array_merge($transformations, array(
+			'jigoshop_free_shipping_enabled' => 'shipping.free_shipping.enabled',
+			'jigoshop_free_shipping_title' => 'shipping.free_shipping.title',
+			'jigoshop_free_shipping_minimum_amount' => 'shipping.free_shipping.minimum',
+			'jigoshop_free_shipping_availability' => 'shipping.free_shipping.available_for',
+			'jigoshop_free_shipping_countries' => 'shipping.free_shipping.countries',
+			'jigoshop_local_pickup_enabled' => 'shipping.local_pickup.enabled',
+			'jigoshop_flat_rate_enabled' => 'shipping.flat_rate.enabled',
+			'jigoshop_flat_rate_title' => 'shipping.flat_rate.title',
+			'jigoshop_flat_rate_availability' => 'shipping.flat_rate.available_for',
+			'jigoshop_flat_rate_countries' => 'shipping.flat_rate.countries',
+			'jigoshop_flat_rate_type' => 'shipping.flat_rate.type',
+//			'jigoshop_flat_rate_tax_status' => 'shipping.flat_rate.enabled', // TODO: Shipping tax status
+			'jigoshop_flat_rate_cost' => 'shipping.flat_rate.cost',
+			'jigoshop_flat_rate_handling_fee' => 'shipping.flat_rate.fee',
+		));
+	}
+
+	private function _addPaymentTransformations($transformations)
+	{
+		return array_merge($transformations, array(
+			'jigoshop_cheque_enabled' => 'payment.cheque.enabled',
+			'jigoshop_cheque_title' => 'payment.cheque.title',
+			'jigoshop_cheque_description' => 'payment.cheque.description',
+			'jigoshop_cod_enabled' => 'payment.on_delivery.enabled',
+			'jigoshop_cod_title' => 'payment.on_delivery.title',
+			'jigoshop_cod_description' => 'payment.on_delivery.description',
+			'jigoshop_paypal_enabled' => 'payment.paypal.enabled',
+			'jigoshop_paypal_title' => 'payment.paypal.title',
+			'jigoshop_paypal_description' => 'payment.paypal.description',
+			'jigoshop_paypal_email' => 'payment.paypal.email',
+			'jigoshop_paypal_force_payment' => 'payment.paypal.force_payment',
+			'jigoshop_paypal_testmode' => 'payment.paypal.test_mode',
+			'jigoshop_sandbox_email' => 'payment.paypal.test_email',
+			'jigoshop_paypal_send_shipping' => 'payment.paypal.send_shipping',
+		));
 	}
 }

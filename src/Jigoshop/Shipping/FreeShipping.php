@@ -73,6 +73,7 @@ class FreeShipping implements Method
 	 */
 	public function getName()
 	{
+		// TODO: Add support for custom shipping title
 		return __('Free shipping', 'jigoshop');
 	}
 
