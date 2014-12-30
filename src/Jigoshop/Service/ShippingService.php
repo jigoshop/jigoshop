@@ -4,6 +4,7 @@ namespace Jigoshop\Service;
 
 use Jigoshop\Entity\Cart;
 use Jigoshop\Exception;
+use Jigoshop\Shipping\Dummy;
 use Jigoshop\Shipping\Method;
 
 /**
@@ -35,7 +36,11 @@ class ShippingService implements ShippingServiceInterface
 	public function get($id)
 	{
 		if (!isset($this->methods[$id])) {
-			throw new Exception(sprintf(__('Method "%s" does not exists', 'jigoshop'), $id));
+			if (WP_DEBUG) {
+				throw new Exception(sprintf(__('Method "%s" does not exists', 'jigoshop'), $id));
+			}
+
+			return new Dummy($id);
 		}
 
 		return $this->methods[$id];

@@ -3,6 +3,7 @@
 namespace Jigoshop\Service;
 
 use Jigoshop\Exception;
+use Jigoshop\Payment\Dummy;
 use Jigoshop\Payment\Method;
 
 /**
@@ -34,7 +35,11 @@ class PaymentService implements PaymentServiceInterface
 	public function get($id)
 	{
 		if (!isset($this->methods[$id])) {
-			throw new Exception(sprintf(__('Payment gateway "%s" does not exists', 'jigoshop'), $id));
+			if (WP_DEBUG) {
+				throw new Exception(sprintf(__('Payment gateway "%s" does not exists', 'jigoshop'), $id));
+			}
+
+			return new Dummy($id);
 		}
 
 		return $this->methods[$id];

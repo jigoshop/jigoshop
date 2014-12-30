@@ -56,6 +56,7 @@ interface Method
 	/**
 	 * @param OrderInterface $order Order to calculate shipping for.
 	 * @return float Calculates value of shipping for the order.
+	 * @throws Exception On error.
 	 */
 	public function calculate(OrderInterface $order);
 
