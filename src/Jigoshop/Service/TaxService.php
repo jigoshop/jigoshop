@@ -8,6 +8,7 @@ use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\OrderInterface;
 use Jigoshop\Entity\Product\Attributes;
 use Jigoshop\Shipping\Method;
+use Monolog\Registry;
 use WPAL\Wordpress;
 
 /**
@@ -142,7 +143,9 @@ class TaxService implements TaxServiceInterface
 
 		foreach ($item->getTaxClasses() as $class) {
 			if (!isset($definitions[$class])) {
-				throw new Exception(sprintf('No tax class: %s', $class));
+				Registry::getInstance('jigoshop')->addInfo(sprintf('No tax class: %s', $class));
+				$tax[$class] = 0.0;
+				continue;
 			}
 
 			$definition = $definitions[$class];
