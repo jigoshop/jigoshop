@@ -25,22 +25,6 @@ interface ProductServiceInterface extends ServiceInterface
 	public function addType($type, $class);
 
 	/**
-	 * Finds item specified by ID.
-	 *
-	 * @param $id int The ID.
-	 * @return Product
-	 */
-	public function find($id);
-
-	/**
-	 * Finds item for specified WordPress post.
-	 *
-	 * @param $post \WP_Post WordPress post.
-	 * @return Product Item found.
-	 */
-	public function findForPost($post);
-
-	/**
 	 * Finds item specified by state.
 	 *
 	 * @param array $state State of the product to be found.

@@ -14,14 +14,6 @@ use Jigoshop\Entity\Order;
 interface OrderServiceInterface extends ServiceInterface
 {
 	/**
-	 * Finds item specified by ID.
-	 *
-	 * @param $id int The ID.
-	 * @return Order
-	 */
-	public function find($id);
-
-	/**
 	 * Prepares order based on cart.
 
 
@@ -30,14 +22,6 @@ interface OrderServiceInterface extends ServiceInterface
 	 * @return Order Prepared order.
 	 */
 	public function createFromCart(Cart $cart);
-
-	/**
-	 * Finds item for specified WordPress post.
-	 *
-	 * @param $post \WP_Post WordPress post.
-	 * @return Order Item found.
-	 */
-	public function findForPost($post);
 
 	/**
 	 * Finds orders for specified user.

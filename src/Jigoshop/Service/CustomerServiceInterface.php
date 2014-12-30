@@ -5,7 +5,6 @@ use Jigoshop\Entity\Customer;
 use Jigoshop\Entity\EntityInterface;
 use Jigoshop\Entity\Order;
 
-
 /**
  * Customer service.
  *
@@ -19,14 +18,6 @@ interface CustomerServiceInterface extends ServiceInterface
 	 * @return \Jigoshop\Entity\Customer Current customer entity.
 	 */
 	public function getCurrent();
-
-	/**
-	 * Finds single user with specified ID.
-	 *
-	 * @param $id int Customer ID.
-	 * @return \Jigoshop\Entity\Customer Customer for selected ID.
-	 */
-	public function find($id);
 
 	/**
 	 * Finds and fetches all available WordPress users.

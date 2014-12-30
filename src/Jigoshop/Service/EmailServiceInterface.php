@@ -1,10 +1,6 @@
 <?php
 namespace Jigoshop\Service;
 
-use Jigoshop\Entity\Email;
-use Jigoshop\Entity\EntityInterface;
-
-
 /**
  * Email service.
  *
@@ -16,22 +12,6 @@ interface EmailServiceInterface extends ServiceInterface
 	 * Suppresses sending next email.
 	 */
 	public function suppressNextEmail();
-
-	/**
-	 * Finds item specified by ID.
-	 *
-	 * @param $id int The ID.
-	 * @return Email
-	 */
-	public function find($id);
-
-	/**
-	 * Finds item for specified WordPress post.
-	 *
-	 * @param $post \WP_Post WordPress post.
-	 * @return Email Item found.
-	 */
-	public function findForPost($post);
 
 	/**
 	 * @return array List of registered mails with accepted arguments.
