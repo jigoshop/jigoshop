@@ -52,6 +52,14 @@ class Tab implements TabInterface
 	 */
 	public function validate(array $settings)
 	{
+		foreach ($this->sections as $section) {
+			foreach ($section['fields'] as $field) {
+				if (isset($field['update'])) {
+					$settings[$field['name']] = call_user_func_array($field['update'], $field);
+				}
+			}
+		}
+
 		return $settings;
 	}
 }

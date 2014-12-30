@@ -109,6 +109,9 @@ class Gateway implements Method
 			if ($option['type'] == 'checkbox') {
 				$settings[$option['__name']] = $settings[$option['__name']] == 'on';
 			}
+			if (isset($option['update'])) {
+				$settings[$option['__name']] = call_user_func_array($option['update'], $option);
+			}
 		}
 
 		return $settings;
