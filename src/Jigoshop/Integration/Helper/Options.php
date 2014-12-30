@@ -2,6 +2,8 @@
 
 namespace Jigoshop\Integration\Helper;
 
+use Jigoshop\Helper\Country;
+
 class Options
 {
 	/**
@@ -67,16 +69,41 @@ class Options
 			// TODO: Some additional options from 'extra' field
 		);
 
+		if (in_array($option['type'], array('multi_select_countries', 'single_select_country'))) {
+			$result['options'] = Country::getAll();
+		}
+		if ($option['type'] == 'single_select_page') {
+			$result['options'] = self::_getPages();
+		}
+		if (in_array($option['type'], array('multi_select_countries', 'multicheck'))) {
+			$result['multiple'] = true;
+		}
+
 		switch ($result['type']) {
 			case 'checkbox':
 				$result['value'] = 'on';
 				$result['checked'] = isset($option['std']) ? $option['std'] === 'yes' : false;
 				break;
+			case 'user_defined':
+				$result['display'] = $option['display'];
+				$result['update'] = $option['update'];
 			default:
 				$result['value'] = isset($option['std']) ? $option['std'] : false;
 		}
 
 		return $result;
+	}
+
+	private static function _getPages()
+	{
+		$pages = array();
+		foreach (get_pages() as $page) {
+			$pages[$page->ID] = $page->post_title;
+		}
+
+		$pages[0] = __('None', 'jigoshop');
+
+		return $pages;
 	}
 
 	private static function getType($type)
@@ -86,8 +113,19 @@ class Options
 			case 'midtext':
 			case 'longtext':
 				return 'text';
+			case 'integer':
+			case 'natural':
+			case 'decimal':
+			case 'range':
+				return 'number';
 			case 'radio':
+			case 'multicheck':
+			case 'multi_select_countries':
+			case 'single_select_country':
+			case 'single_select_page':
 				return 'select';
+			case 'codeblock':
+				return 'textarea';
 			default:
 				return $type;
 		}

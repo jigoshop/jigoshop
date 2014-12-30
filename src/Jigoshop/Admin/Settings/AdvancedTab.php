@@ -268,7 +268,7 @@ class AdvancedTab implements TabInterface, ContainerAware
 	private function _getPages()
 	{
 		$pages = array();
-		foreach (get_pages() as $page) {
+		foreach ($this->wp->getPages() as $page) {
 			$pages[$page->ID] = $page->post_title;
 		}
 
