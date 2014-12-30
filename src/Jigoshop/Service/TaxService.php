@@ -40,14 +40,15 @@ class TaxService implements TaxServiceInterface
 	{
 		// TODO: Calculate taxes AFTER all discounts!
 		$service = $this;
-		$this->wp->addFilter('jigoshop\service\cart\before_initialize', function($cart) use ($service) {
+		$wp = $this->wp;
+		$wp->addFilter('jigoshop\service\cart\before_initialize', function($cart) use ($service) {
 			/** @var $cart OrderInterface */
 			$cart->setTaxDefinitions($service->getDefinitions($cart));
 			return $cart;
 		}, 10, 1);
-		$this->wp->addFilter('jigoshop\factory\order\fetch\after_customer', function($order) use ($service) {
+		$wp->addFilter('jigoshop\factory\order\fetch\after_customer', function($order) use ($wp) {
 			/** @var $order Order */
-			$wpdb = $service->wp->getWPDB();
+			$wpdb = $wp->getWPDB();
 			$tax = array();
 			$results = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}jigoshop_order_tax jot WHERE jot.order_id = %d", array($order->getId())));
 
@@ -62,14 +63,14 @@ class TaxService implements TaxServiceInterface
 			$order->setTaxDefinitions($tax);
 			return $order;
 		}, 10, 1);
-		$this->wp->addFilter('jigoshop\factory\order\create\after_customer', function($order) use ($service) {
+		$wp->addFilter('jigoshop\factory\order\create\after_customer', function($order) use ($service) {
 			/** @var $order OrderInterface */
 			$order->setTaxDefinitions($service->getDefinitions($order));
 			return $order;
 		}, 10, 1);
-		$this->wp->addAction('jigoshop\service\order\save', function($order) use ($service) {
+		$wp->addAction('jigoshop\service\order\save', function($order) use ($wp) {
 			/** @var $order Order */
-			$wpdb = $service->wp->getWPDB();
+			$wpdb = $wp->getWPDB();
 			foreach ($order->getTaxDefinitions() as $class => $definition) {
 				$data = array(
 					'order_id' => $order->getId(),
@@ -80,7 +81,7 @@ class TaxService implements TaxServiceInterface
 				$wpdb->replace($wpdb->prefix.'jigoshop_order_tax', $data);
 			};
 		}, 10, 1);
-		$this->wp->addAction('jigoshop\order\add_item', function($item, $order) use ($service) {
+		$wp->addAction('jigoshop\order\add_item', function($item, $order) use ($service) {
 			/** @var $item Order\Item */
 			/** @var $order Order */
 			if ($item->getProduct()->isTaxable()) {
@@ -89,7 +90,7 @@ class TaxService implements TaxServiceInterface
 			}
 			return $item;
 		}, 10, 2);
-		$this->wp->addAction('jigoshop\order\remove_item', function($item, $order) use ($service) {
+		$wp->addAction('jigoshop\order\remove_item', function($item, $order) use ($service) {
 			/** @var $item Order\Item */
 			/** @var $order Order */
 			if ($item->getProduct()->isTaxable()) {
@@ -98,18 +99,18 @@ class TaxService implements TaxServiceInterface
 			}
 			return $item;
 		}, 10, 2);
-		$this->wp->addFilter('jigoshop\order\shipping_price', function($price, $method, $order) use ($service) {
+		$wp->addFilter('jigoshop\order\shipping_price', function($price, $method, $order) use ($service) {
 			/** @var $order OrderInterface */
 			// TODO: Check if method is taxable?
 			return $price + $service->calculateForShipping($method, $order, $price);
 		}, 10, 3);
-		$this->wp->addFilter('jigoshop\order\shipping_tax', function($taxes, $method, $order) use ($service) {
+		$wp->addFilter('jigoshop\order\shipping_tax', function($taxes, $method, $order) use ($service) {
 			/** @var $order OrderInterface */
 			/** @var $method Method */
 			// TODO: Check if method is taxable?
 			return $service->getForShipping($method, $order, $order->getShippingPrice());
 		}, 10, 3);
-		$this->wp->addFilter('jigoshop\admin\order\update_product', function($item, $order) use ($service) {
+		$wp->addFilter('jigoshop\admin\order\update_product', function($item, $order) use ($service) {
 			/** @var $order OrderInterface */
 			/** @var $item Order\Item */
 			if ($item->getProduct()->isTaxable()) {
