@@ -108,9 +108,9 @@ class Installer
 			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}jigoshop_tax_location (
 				id INT NOT NULL AUTO_INCREMENT,
 				tax_id INT NOT NULL,
-				country VARCHAR(255) NOT NULL,
-				state VARCHAR(255),
-				postcode VARCHAR(255),
+				country VARCHAR(50) NOT NULL,
+				state VARCHAR(50),
+				postcode VARCHAR(20),
 				PRIMARY KEY id (id),
 				FOREIGN KEY tax (tax_id) REFERENCES {$wpdb->prefix}jigoshop_tax (id) ON DELETE CASCADE,
 				UNIQUE KEY tax_definition (tax_id, country, state, postcode)
