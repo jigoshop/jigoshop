@@ -38,6 +38,7 @@ class TaxService implements TaxServiceInterface
 	 */
 	public function register()
 	{
+		// TODO: Calculate taxes AFTER all discounts!
 		$service = $this;
 		$this->wp->addFilter('jigoshop\service\cart\before_initialize', function($cart) use ($service) {
 			/** @var $cart OrderInterface */

@@ -57,3 +57,4 @@ services:
       - '@jigoshop.messages'
     tags:
       - { name: jigoshop.admin.settings.tab }
+      - { name: jigoshop.container_aware }

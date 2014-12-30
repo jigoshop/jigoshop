@@ -115,7 +115,7 @@ class Orders implements Tool
 							$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->postmeta} (post_id, meta_key, meta_value) VALUES (%d, %s, %s)", array($order['ID'], 'shipping',	array(
 								'method' => $method->getState(),
 								'price' => $data['order_shipping'],
-								'rate' => '', // TODO: Where to get shipping rate?
+								'rate' => '', // Rates are stored nowhere - so no rate here
 							))));
 						} catch (Exception $e) {
 							$this->messages->addWarning(sprintf(__('Shipping method "%s" not found. Order with ID "%d" has no shipping method now.'), $data['shipping_method'], $order['ID']));

@@ -63,7 +63,6 @@ class Core
 		$tax->register();
 		Tax::setService($tax);
 
-		// TODO: Install emails if needed
 		$container->get('jigoshop.emails');
 
 		// TODO: Why this is required? :/

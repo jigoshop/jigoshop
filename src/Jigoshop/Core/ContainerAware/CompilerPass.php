@@ -1,10 +1,9 @@
 <?php
 
-namespace Jigoshop\ContainerAware;
+namespace Jigoshop\Core\ContainerAware;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
@@ -28,9 +27,8 @@ class CompilerPass implements CompilerPassInterface
 		}
 
 		$services = $container->findTaggedServiceIds('jigoshop.container_aware');
-		foreach($services as $service){
-			/** @var $service Definition */
-			$service->addMethodCall('setContainer', array(new Reference('di')));
+		foreach($services as $service => $parameters){
+			$container->getDefinition($service)->addMethodCall('setContainer', array(new Reference('di')));
 		}
 	}
 }

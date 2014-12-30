@@ -54,7 +54,13 @@ class Installer
 			Registry::getInstance('jigoshop')->addNotice('Installing Jigoshop.');
 			$this->_createTables();
 			$this->_createPages();
-			$this->_installEmails();
+
+			$wpdb = $this->wp->getWPDB();
+			$hasEmails = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = %s", array(Types::EMAIL))) > 0;
+
+			if (!$hasEmails) {
+				$this->installEmails();
+			}
 
 			foreach ($this->initializers as $initializer) {
 				/** @var $initializer Core\Installer\Initializer */
@@ -276,15 +282,11 @@ class Installer
 		$this->options->update('advanced.pages.'.$slug, $page_id);
 	}
 
-	private function _installEmails()
+	/**
+	 * Creates all Jigoshop e-mails.
+	 */
+	public function installEmails()
 	{
-		$wpdb = $this->wp->getWPDB();
-		$hasEmails = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = %s", array(Types::EMAIL))) > 0;
-
-		if ($hasEmails) {
-			return;
-		}
-
 		$default_emails = array(
 			'new_order_admin_notification',
 			'customer_order_status_pending_to_processing',
@@ -378,7 +380,7 @@ class Installer
 					$title = '[[shop_name]] Product out of stock';
 					$message = '#[product_id] [product_name] ([sku]) is out of stock.';
 					break;
-				case 'product_on_backorder_notification' :
+				case 'product_on_backorders_notification' :
 					$post_title = 'Product on backorder notification';
 					$title = '[[shop_name]] Product Backorder on Order: [order_number].';
 					$message = '#[product_id] [product_name] ([sku]) was found to be on backorder.<br/>'.$invoice;

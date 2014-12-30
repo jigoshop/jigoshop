@@ -34,8 +34,6 @@ services:
       - '@wpal'
       - '@jigoshop.options'
       - '@jigoshop.service.customer'
-    calls:
-      - [setContainer, ['@di']]
     tags:
       - { name: jigoshop.container_aware }
   jigoshop.service.email:

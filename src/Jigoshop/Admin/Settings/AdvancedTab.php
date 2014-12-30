@@ -2,9 +2,12 @@
 
 namespace Jigoshop\Admin\Settings;
 
+use Jigoshop\Core\ContainerAware;
 use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
 use Jigoshop\Frontend\Pages;
+use Jigoshop\Helper\Render;
+use Symfony\Component\DependencyInjection\Container;
 use WPAL\Wordpress;
 
 /**
@@ -12,7 +15,7 @@ use WPAL\Wordpress;
  *
  * @package Jigoshop\Admin\Settings
  */
-class AdvancedTab implements TabInterface
+class AdvancedTab implements TabInterface, ContainerAware
 {
 	const SLUG = 'advanced';
 
@@ -26,6 +29,8 @@ class AdvancedTab implements TabInterface
 	private $messages;
 	/** @var array */
 	private $caches;
+	/** @var \JigoshopContainer */
+	private $di;
 
 	public function __construct(Wordpress $wp, Options $options, Messages $messages)
 	{
@@ -134,6 +139,15 @@ class AdvancedTab implements TabInterface
 						'value' => $this->settings['cache'],
 						'options' => $this->caches,
 					),
+					array(
+						'name' => '[install_emails]',
+						'title' => __('Create default emails', 'jigoshop'),
+						'description' => __('Creates default emails for Jigoshop email system.', 'jigoshop'),
+						'type' => 'user_defined',
+						'display' => function(){
+							Render::output('admin/settings/create_emails', array());
+						},
+					),
 				),
 			),
 			array(
@@ -197,6 +211,13 @@ class AdvancedTab implements TabInterface
 	 */
 	public function validate(array $settings)
 	{
+		if (isset($settings['install_emails'])) {
+			unset($settings['install_emails']);
+			$this->di->get('jigoshop.installer')->installEmails();
+			$this->messages->addNotice(__('Emails created.', 'jigoshop'));
+			return;
+		}
+
 		$settings['automatic_complete'] = $settings['automatic_complete'] == 'on';
 		$settings['automatic_reset'] = $settings['automatic_reset'] == 'on';
 		$settings['force_ssl'] = $settings['force_ssl'] == 'on';
@@ -252,5 +273,15 @@ class AdvancedTab implements TabInterface
 		}
 
 		return $pages;
+	}
+
+	/**
+	 * Sets container for every container aware service.
+	 *
+	 * @param Container $container
+	 */
+	public function setContainer(Container $container)
+	{
+		$this->di = $container;
 	}
 }

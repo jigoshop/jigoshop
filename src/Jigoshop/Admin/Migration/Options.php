@@ -57,17 +57,28 @@ class Options implements Tool
 		}
 
 		// Migrate tax rules
-		foreach ($options['jigoshop_tax_rates'] as $key => $rate) {
-			// TODO: Improve with merging states
-			$this->taxService->save(array(
+		$options['jigoshop_tax_rates'] = array_values($options['jigoshop_tax_rates']);
+		for ($i = 0, $endI = count($options['jigoshop_tax_rates']); $i < $endI;) {
+			$rateDate = array(
 				'id' => '0',
-				'rate' => $rate['rate'],
-				'label' => empty($rate['label']) ? __('Tax', 'jigoshop') : $rate['label'],
-				'class' => $rate['class'] == '*' ? 'standard' : $rate['class'], // TODO: Check how other classes are used
-				'country' => $rate['country'],
-				'states' => $rate['state'],
+				'rate' => $options['jigoshop_tax_rates'][$i]['rate'],
+				'label' => empty($options['jigoshop_tax_rates'][$i]['label']) ? __('Tax', 'jigoshop') : $options['jigoshop_tax_rates'][$i]['label'],
+				'class' => $options['jigoshop_tax_rates'][$i]['class'] == '*' ? 'standard' : $options['jigoshop_tax_rates'][$i]['class'], // TODO: Check how other classes are used
+				'country' => $options['jigoshop_tax_rates'][$i]['country'],
+				'states' => $options['jigoshop_tax_rates'][$i]['state'],
 				'postcodes' => '',
-			));
+			);
+			$i++;
+
+			while ($i < $endI && $options['jigoshop_tax_rates'][$i]['rate'] == $rateDate['rate'] && $options['jigoshop_tax_rates'][$i]['country'] == $rateDate['country']) {
+				if (!empty($options['jigoshop_tax_rates'][$i]['state'])) {
+					$rateDate['states'] .= ','.$options['jigoshop_tax_rates'][$i]['state'];
+				}
+
+				$i++;
+			}
+
+			$this->taxService->save($rateDate);
 		}
 
 		// TODO: How to migrate plugin options?
