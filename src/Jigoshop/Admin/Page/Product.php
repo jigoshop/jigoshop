@@ -158,8 +158,10 @@ class Product
 
 			if ($product->hasAttribute((int)$_POST['attribute_id'])) {
 				$attribute = $product->removeAttribute((int)$_POST['attribute_id']);
+				$attributeExists = true;
 			} else {
 				$attribute = $this->productService->getAttribute((int)$_POST['attribute_id']);
+				$attributeExists = false;
 			}
 
 			if ($attribute === null) {
@@ -168,6 +170,8 @@ class Product
 
 			if (isset($_POST['value'])) {
 				$attribute->setValue(trim(htmlspecialchars(strip_tags($_POST['value']))));
+			} else if ($attributeExists) {
+				throw new Exception(sprintf(__('Attribute "%s" already exists.', 'jigoshop'), $attribute->getLabel()));
 			}
 
 			if (isset($_POST['options']) && isset($_POST['options']['display'])) {
