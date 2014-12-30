@@ -182,7 +182,7 @@ class External extends Product implements Purchasable, Saleable
 			$this->url = $state['url'];
 		}
 		if (isset($state['sales_enabled'])) {
-			$this->sales->setEnabled($state['sales_enabled']);
+			$this->sales->setEnabled((bool)$state['sales_enabled']);
 		}
 		if (isset($state['sales_from'])) {
 			$this->sales->setFromTime($state['sales_from']);
