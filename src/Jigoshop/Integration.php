@@ -60,6 +60,10 @@ class Integration
 
 			return $render;
 		}, 10, 2);
+		add_filter('jigoshop\checkout\order', function($order){
+			Integration::setCurrentOrder($order);
+			return $order;
+		}, 10, 1);
 	}
 
 	public static function initializeGateways()

@@ -84,7 +84,6 @@ class Order implements EntityFactoryInterface
 
 		$order = $this->wp->applyFilters('jigoshop\factory\order\create\after_customer', $order);
 
-		// TODO: Think on lazy loading of items.
 		$order->removeItems();
 		$items = $this->getItems($id);
 		foreach ($items as $item) {
@@ -133,7 +132,6 @@ class Order implements EntityFactoryInterface
 			$state['customer_note'] = $post->post_excerpt;
 			$state['status'] = $post->post_status;
 			$state['created_at'] = strtotime($post->post_date);
-			// TODO: Think on lazy loading of items.
 			$state['items'] = $this->getItems($post->ID);
 			$state['product_subtotal'] = array_reduce($state['items'], function($value, $item){
 				/** @var $item Entity\Item */

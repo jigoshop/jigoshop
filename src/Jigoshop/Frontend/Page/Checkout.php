@@ -8,6 +8,7 @@ use Jigoshop\Entity\Cart as CartEntity;
 use Jigoshop\Entity\Customer;
 use Jigoshop\Entity\Customer\Address;
 use Jigoshop\Entity\Customer\CompanyAddress;
+use Jigoshop\Entity\Order;
 use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\OrderInterface;
 use Jigoshop\Entity\Product\Simple;
@@ -364,7 +365,8 @@ class Checkout implements PageInterface
 				}
 
 				$this->orderService->save($order);
-				Integration::setCurrentOrder($order); // TODO: Remove Integration call with event
+				/** @var Order $order */
+				$order = $this->wp->applyFilters('jigoshop\checkout\order', $order);
 				$this->cartService->remove($cart);
 
 				$url = '';
