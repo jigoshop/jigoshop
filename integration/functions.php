@@ -74,3 +74,33 @@ function jigoshop_get_page_id($page)
 
 	return $options->get('advanced.pages.'.$page);
 }
+
+function jigoshop_get_image_size($size)
+{
+	if (is_array($size)) {
+		return $size;
+	}
+
+	$options = \Jigoshop\Integration::getOptions();
+
+	switch ($size) {
+		case 'admin_product_list':
+			return array(32, 32);
+			break;
+		case 'shop_tiny':
+			$image_size = $options->get('products.images.tiny');
+			break;
+		case 'shop_thumbnail':
+			$image_size = $options->get('products.images.thumbnail');
+			break;
+		case 'shop_large':
+			$image_size = $options->get('products.images.large');
+			break;
+		case 'shop_small':
+		default:
+			$image_size = $options->get('products.images.small');
+			break;
+	}
+
+	return array($image_size['width'], $image_size['height']);
+}
