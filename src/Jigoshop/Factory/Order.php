@@ -5,8 +5,7 @@ namespace Jigoshop\Factory;
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\Cart;
-use Jigoshop\Entity\Customer\Address;
-use Jigoshop\Entity\Customer\CompanyAddress;
+use Jigoshop\Entity\Customer as CustomerEntity;
 use Jigoshop\Entity\Order as Entity;
 use Jigoshop\Exception;
 use Jigoshop\Helper\Country;
@@ -71,7 +70,9 @@ class Order implements EntityFactoryInterface
 			}
 
 			if (!empty($_POST['order']['customer'])) {
-				$order->setCustomer($this->customerService->find($_POST['order']['customer']));
+				/** @var CustomerEntity $customer */
+				$customer = $this->customerService->find($_POST['order']['customer']);
+				$order->setCustomer($customer);
 			}
 
 			if (isset($_POST['order']['billing_address'])) {
@@ -228,13 +229,13 @@ class Order implements EntityFactoryInterface
 	private function createAddress($data)
 	{
 		if (!empty($data['company'])) {
-			$address = new CompanyAddress();
+			$address = new CustomerEntity\CompanyAddress();
 			$address->setCompany($data['company']);
 			if (isset($data['euvatno'])) {
 				$address->setVatNumber($data['euvatno']);
 			}
 		} else {
-			$address = new Address();
+			$address = new CustomerEntity\Address();
 		}
 
 		$address->setFirstName($data['first_name']);
@@ -300,7 +301,7 @@ class Order implements EntityFactoryInterface
 	}
 
 	/**
-	 * @param $address Address
+	 * @param $address CustomerEntity\Address
 	 * @return array
 	 */
 	private function validateAddress($address)

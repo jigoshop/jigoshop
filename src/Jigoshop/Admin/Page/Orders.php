@@ -4,7 +4,7 @@ namespace Jigoshop\Admin\Page;
 
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
-use Jigoshop\Entity\Order\Status;
+use Jigoshop\Entity\Order as Entity;
 use Jigoshop\Helper\Order as OrderHelper;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
@@ -46,7 +46,7 @@ class Orders
 	{
 		if ($this->wp->getPostType() === Types::ORDER) {
 			if (!isset($vars['post_status'])) {
-				$vars['post_status'] = array_keys(Status::getStatuses());
+				$vars['post_status'] = array_keys(Entity\Status::getStatuses());
 			}
 		}
 
@@ -75,6 +75,7 @@ class Orders
 			return;
 		}
 
+		/** @var Entity $order */
 		$order = $this->orderService->findForPost($post);
 		switch ($column) {
 			case 'status':
@@ -134,8 +135,8 @@ class Orders
 
 	function statusFilters($views)
 	{
-		$current = (isset($_GET['post_status']) && Status::exists($_GET['post_status'])) ? $_GET['post_status'] : '';
-		$statuses = Status::getStatuses();
+		$current = (isset($_GET['post_status']) && Entity\Status::exists($_GET['post_status'])) ? $_GET['post_status'] : '';
+		$statuses = Entity\Status::getStatuses();
 		$counts = $this->wp->wpCountPosts(Types::ORDER, 'readable');
 
 		$dates = isset($_GET['m']) ? '&amp;m='.$_GET['m'] : '';

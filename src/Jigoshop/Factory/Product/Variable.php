@@ -80,7 +80,9 @@ class Variable
 		$variation = new VariableProduct\Variation();
 		$variation->setId($variationId);
 		$variation->setParent($product);
-		$variation->setProduct($this->productService->find($variationId));
+		/** @var Product $variableProduct */
+		$variableProduct = $this->productService->find($variationId);
+		$variation->setProduct($variableProduct);
 
 		$results = array_filter($results, function($item){
 			return $item['attribute_id'] !== null;
@@ -112,7 +114,6 @@ class Variable
 				WHERE pv.post_parent = %d AND pv.post_type = %s
 		", array($product->getId(), \Jigoshop\Core\Types\Product\Variable::TYPE));
 		$results = $wpdb->get_results($query, ARRAY_A);
-//		echo '<pre>'; var_dump($results); exit;
 		$variations = array();
 
 		$results = array_filter($results, function($item){
@@ -123,7 +124,9 @@ class Variable
 			$variation = new VariableProduct\Variation();
 			$variation->setId((int)$results[$i]['ID']);
 			$variation->setParent($product);
-			$variation->setProduct($this->productService->find($results[$i]['ID'])); // TODO: Maybe some kind of fetching together?
+			/** @var Product $variableProduct */
+			$variableProduct = $this->productService->find($results[$i]['ID']);
+			$variation->setProduct($variableProduct); // TODO: Maybe some kind of fetching together?
 
 			while ($i < $endI && $results[$i]['ID'] == $variation->getId()) {
 				$attribute = new VariableProduct\Attribute(VariableProduct\Attribute::VARIATION_ATTRIBUTE_EXISTS);

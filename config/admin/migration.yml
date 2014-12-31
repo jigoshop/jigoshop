@@ -30,3 +30,15 @@ services:
       - '@jigoshop.service.product'
     tags:
       - { name: jigoshop.admin.migration }
+  jigoshop.admin.migration.orders:
+    class: Jigoshop\Admin\Migration\Orders
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.messages'
+      - '@jigoshop.service.order'
+      - '@jigoshop.service.shipping'
+      - '@jigoshop.service.payment'
+      - '@jigoshop.service.product'
+    tags:
+      - { name: jigoshop.admin.migration }
