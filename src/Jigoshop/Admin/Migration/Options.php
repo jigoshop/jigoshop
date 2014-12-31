@@ -120,6 +120,14 @@ class Options implements Tool
 				return $value == 'yes';
 			case 'jigoshop_paypal_send_shipping':
 				return $value == 'yes';
+			case 'jigoshop_use_wordpress_tiny_crop':
+				return $value == 'yes';
+			case 'jigoshop_use_wordpress_thumbnail_crop':
+				return $value == 'yes';
+			case 'jigoshop_use_wordpress_catalog_crop':
+				return $value == 'yes';
+			case 'jigoshop_use_wordpress_featured_crop':
+				return $value == 'yes';
 			default:
 				return $value;
 		}
