@@ -33,8 +33,6 @@ class Pay implements PageInterface
 	private $orderService;
 	/** @var PaymentServiceInterface */
 	private $paymentService;
-	/** @var boolean */
-	private $render;
 
 	public function __construct(Wordpress $wp, Options $options, Messages $messages, OrderServiceInterface $orderService, PaymentServiceInterface $paymentService,
 		Styles $styles, Scripts $scripts)
@@ -53,6 +51,7 @@ class Pay implements PageInterface
 
 	public function action()
 	{
+		/** @var Order $order */
 		$order = $this->orderService->find((int)$this->wp->getQueryParameter('pay'));
 
 		if ($order->getKey() !== $_GET['key']) {
@@ -96,6 +95,7 @@ class Pay implements PageInterface
 
 	public function render()
 	{
+		/** @var Order $order */
 		$order = $this->orderService->find((int)$this->wp->getQueryParameter('pay'));
 		$render = $this->wp->applyFilters('jigoshop\pay\render', '', $order);
 
@@ -124,7 +124,7 @@ class Pay implements PageInterface
 			'myOrdersUrl' => Api::getEndpointUrl('orders', '', $accountUrl),
 			'paymentMethods' => $this->paymentService->getEnabled(),
 			'getTaxLabel' => function($taxClass) use ($order) {
-				return Tax::getLabel($taxClass, $order->getCustomer());
+				return Tax::getLabel($taxClass, $order);
 			},
 		));
 	}

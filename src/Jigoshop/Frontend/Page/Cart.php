@@ -163,7 +163,7 @@ class Cart implements PageInterface
 		$tax = array();
 		foreach ($cart->getCombinedTax() as $class => $value) {
 			$tax[$class] = array(
-				'label' => Tax::getLabel($class),
+				'label' => Tax::getLabel($class, $cart),
 				'value' => Product::formatPrice($value),
 			);
 		}

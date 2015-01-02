@@ -7,6 +7,7 @@ use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\Order;
 use Jigoshop\Entity\Order\Item;
+use Jigoshop\Entity\OrderInterface;
 use Jigoshop\Entity\Product;
 use Jigoshop\Frontend\Page\PageInterface;
 use Jigoshop\Frontend\Pages;
@@ -64,6 +65,7 @@ class ThankYou implements PageInterface
 			return;
 		}
 
+		/** @var Order $order */
 		$order = $this->orderService->find((int)$_REQUEST['order']);
 		if ($order->getKey() != $_REQUEST['key']) {
 			return;
@@ -112,6 +114,7 @@ class ThankYou implements PageInterface
 	public function render()
 	{
 		$content = $this->wp->getPostField('post_content', $this->options->getPageId(Pages::THANK_YOU));
+		/** @var Order $order */
 		$order = $this->orderService->find((int)$_REQUEST['order']);
 		if ($order->getKey() != $_REQUEST['key']) {
 			$this->messages->addError(__('Invalid security key. The order was processed.', 'jigoshop'));
@@ -125,7 +128,7 @@ class ThankYou implements PageInterface
 			'showWithTax' => $this->options->get('tax.price_tax') == 'with_tax',
 			'shopUrl' => $this->wp->getPermalink($this->options->getPageId(Pages::SHOP)),
 			'getTaxLabel' => function($taxClass) use ($order) {
-				return Tax::getLabel($taxClass, $order->getCustomer());
+				return Tax::getLabel($taxClass, $order);
 			},
 		));
 	}

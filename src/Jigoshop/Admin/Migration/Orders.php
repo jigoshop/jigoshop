@@ -7,6 +7,7 @@ use Jigoshop\Entity\Customer;
 use Jigoshop\Entity\Order\Status;
 use Jigoshop\Entity\Product;
 use Jigoshop\Exception;
+use Jigoshop\Factory\Product\Variable;
 use Jigoshop\Helper\Render;
 use Jigoshop\Service\OrderServiceInterface;
 use Jigoshop\Service\PaymentServiceInterface;
@@ -182,6 +183,7 @@ class Orders implements Tool
 						break;
 					case 'order_items':
 						$data = unserialize($orders[$i]->meta_value);
+						$globalTaxRate = 0.0;
 
 						foreach ($data as $itemData) {
 							/** @var Product $product */
@@ -198,6 +200,8 @@ class Orders implements Tool
 								$taxRate = $tax / $itemData['cost'];
 							}
 
+							$globalTaxRate += $taxRate;
+
 							$wpdb->insert($wpdb->prefix.'jigoshop_order_item', array(
 								'order_id' => $order->ID,
 								'product_id' => $product->getId(),
@@ -210,7 +214,7 @@ class Orders implements Tool
 							));
 							$itemId = $wpdb->insert_id;
 
-							if (!empty($itemData['variation_id'])) {
+							if (!empty($itemData['variation_id']) && $product instanceof Variable) {
 								$wpdb->query($wpdb->prepare(
 									"INSERT INTO {$wpdb->prefix}jigoshop_order_item_meta (item_id, meta_key, meta_value) VALUES (%d, %s, %s)",
 									array($itemId, 'variation_id', $itemData['variation_id'])
@@ -241,27 +245,18 @@ class Orders implements Tool
 									));
 								}
 							}
-
-							$wpdb->query($wpdb->prepare(
-								"INSERT INTO {$wpdb->prefix}jigoshop_order_item_tax (item_id, tax_class, rate, is_compound) VALUES (%d, %s, %d, %d)",
-								array($itemId, 'imported', $taxRate, false)
-							));
 						}
+
+						$wpdb->query($wpdb->prepare(
+							"INSERT INTO {$wpdb->prefix}jigoshop_order_tax (order_id, tax_class, rate, is_compound) VALUES (%d, %s, %d, %d)",
+							array($order->ID, 'standard', $globalTaxRate/count($data), false)
+						));
 						break;
 				}
 
 				$i++;
 			} while ($i < $endI && $orders[$i]->ID == $order->ID);
 		}
-
-		// Add imported tax class
-		$currentTaxClasses = $this->options->get('tax.classes');
-		$currentTaxClasses[] = array(
-			'label' => __('Imported from Jigoshop 1.x', 'jigoshop'),
-			'class' => 'imported',
-		);
-		$this->options->update('tax.classes', $currentTaxClasses);
-		$this->options->saveOptions();
 	}
 
 	private function _transformStatus($status)

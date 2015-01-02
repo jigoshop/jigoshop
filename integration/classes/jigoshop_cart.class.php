@@ -517,7 +517,7 @@ class jigoshop_cart
 
 		if (isset($taxes[$tax_class]) && $taxes[$tax_class] > 0) {
 			$service = Integration::getTaxService();
-			$return = $service->getLabel($tax_class, $cart->getCustomer());
+			$return = $service->getLabel($tax_class, $cart);
 
 			if (!Integration::getOptions()->get('shipping.calculator') && Integration::getPages()->isCart()) {
 				$return .= '<small>'.sprintf(__('estimated for: %s', 'jigoshop'), \Jigoshop\Helper\Country::getName($cart->getCustomer()->getTaxAddress()->getCountry())).'</small>';

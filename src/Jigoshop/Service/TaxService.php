@@ -270,44 +270,54 @@ class TaxService implements TaxServiceInterface
 
 	/**
 	 * @param $taxClass string Tax class to get label for.
-	 * @param Customer|null $customer Customer to calculate taxes for.
+	 * @param OrderInterface $order Order to calculate taxes for.
 	 * @return string Tax class label
 	 * @throws Exception When tax class is not found.
 	 */
-	public function getLabel($taxClass, $customer = null)
+	public function getLabel($taxClass, $order)
 	{
 		if (!in_array($taxClass, $this->taxClasses)) {
-			throw new Exception(sprintf(__('No tax class: %s', 'jigoshop'), $taxClass));
+			if (WP_DEBUG) {
+				throw new Exception(sprintf(__('No tax class: %s', 'jigoshop'), $taxClass));
+			}
+
+			return $taxClass;
 		}
 
-		if ($customer === null) {
-			$customer = $this->customers->getCurrent();
+		$definitions = $order->getTaxDefinitions();
+
+		if (!isset($definitions[$taxClass])) {
+			$definitions[$taxClass] = $this->getDefinition($taxClass, $order->getCustomer()->getTaxAddress());
 		}
 
-		$definition = $this->getDefinition($taxClass, $customer->getTaxAddress());
+		$label = !empty($definitions[$taxClass]['label']) ? $definitions[$taxClass]['label'] : $taxClass;
 
-		return sprintf('%s (%s%%)', $definition['label'], $definition['rate']);
+		return sprintf('%s (%s%%)', $label, $definitions[$taxClass]['rate']);
 	}
 
 	/**
 	 * @param $taxClass string Tax class to get label for.
-	 * @param Customer|null $customer Customer to calculate taxes for.
+	 * @param OrderInterface $order Order to calculate taxes for.
 	 * @return string Tax class rate
 	 * @throws Exception When tax class is not found.
 	 */
-	public function getRate($taxClass, $customer = null)
+	public function getRate($taxClass, $order)
 	{
 		if (!in_array($taxClass, $this->taxClasses)) {
-			throw new Exception(sprintf(__('No tax class: %s', 'jigoshop'), $taxClass));
+			if (WP_DEBUG) {
+				throw new Exception(sprintf(__('No tax class: %s', 'jigoshop'), $taxClass));
+			}
+
+			return $taxClass;
 		}
 
-		if ($customer === null) {
-			$customer = $this->customers->getCurrent();
+		$definitions = $order->getTaxDefinitions();
+
+		if (!isset($definitions[$taxClass])) {
+			$definitions[$taxClass] = $this->getDefinition($taxClass, $order->getCustomer()->getTaxAddress());
 		}
 
-		$definition = $this->getDefinition($taxClass, $customer->getTaxAddress());
-
-		return $definition['rate'];
+		return $definitions[$taxClass]['rate'];
 	}
 
 	/**

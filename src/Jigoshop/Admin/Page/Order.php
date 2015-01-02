@@ -560,7 +560,7 @@ class Order
 		$result = array();
 		foreach ($order->getCombinedTax() as $class => $value) {
 			$result[$class] = array(
-				'label' => Tax::getLabel($class, $order->getCustomer()),
+				'label' => Tax::getLabel($class, $order),
 				'value' => ProductHelper::formatPrice($value),
 			);
 		}

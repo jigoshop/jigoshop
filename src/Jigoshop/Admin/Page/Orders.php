@@ -102,8 +102,8 @@ class Orders
 			case 'total':
 				Render::output('admin/orders/totals', array(
 					'order' => $order,
-					'getTaxLabel' => function($taxClass) {
-						return Tax::getLabel($taxClass);
+					'getTaxLabel' => function($taxClass) use ($order) {
+						return Tax::getLabel($taxClass, $order);
 					},
 				));
 				break;

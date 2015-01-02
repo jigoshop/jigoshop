@@ -6,10 +6,7 @@ use Jigoshop\Entity\Order;
 use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\OrderInterface;
 use Jigoshop\Entity\Product\Attributes;
-use Jigoshop\Entity\Product\Purchasable;
-use Jigoshop\Entity\Product\Taxable;
 use Jigoshop\Shipping\Method;
-
 
 /**
  * Service calculating tax value for products.
@@ -64,19 +61,19 @@ interface TaxServiceInterface
 
 	/**
 	 * @param $taxClass string Tax class to get label for.
-	 * @param Customer|null $customer Customer to calculate taxes for.
+	 * @param OrderInterface $order Order to calculate taxes for.
 	 * @return string Tax class label
 	 * @throws Exception When tax class is not found.
 	 */
-	public function getLabel($taxClass, $customer = null);
+	public function getLabel($taxClass, $order);
 
 	/**
 	 * @param $taxClass string Tax class to get label for.
-	 * @param Customer|null $customer Customer to calculate taxes for.
+	 * @param OrderInterface $order Order to calculate taxes for.
 	 * @return string Tax class rate
 	 * @throws Exception When tax class is not found.
 	 */
-	public function getRate($taxClass, $customer = null);
+	public function getRate($taxClass, $order);
 
 	/**
 	 * Fetches and returns properly formatted list of tax rules.

@@ -5,7 +5,7 @@ namespace Jigoshop\Frontend\Page\Account;
 use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
-use Jigoshop\Entity\Order\Item;
+use Jigoshop\Entity\Order as Entity;
 use Jigoshop\Frontend\Page\PageInterface;
 use Jigoshop\Frontend\Pages;
 use Jigoshop\Helper\Api;
@@ -61,6 +61,7 @@ class Orders implements PageInterface
 
 		if (!empty($order) && is_numeric($order)) {
 			$order = $this->orderService->find($order);
+			/** @var Entity $order */
 			return Render::get('user/account/orders/single', array(
 				'messages' => $this->messages,
 				'order' => $order,
@@ -68,7 +69,7 @@ class Orders implements PageInterface
 				'listUrl' => Api::getEndpointUrl('orders', '', $accountUrl),
 				'showWithTax' => $this->options->get('tax.price_tax') == 'with_tax',
 				'getTaxLabel' => function($taxClass) use ($order) {
-					return Tax::getLabel($taxClass, $order->getCustomer());
+					return Tax::getLabel($taxClass, $order);
 				},
 			));
 		}

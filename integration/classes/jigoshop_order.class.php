@@ -218,8 +218,8 @@ class jigoshop_order extends Jigoshop_Base
 				foreach ($source as $class => $value) {
 					$taxes[$class] = array(
 						'amount' => $value,
-						'rate' => $service->getRate($class, $this->_order->getCustomer()),
-						'display' => $service->getLabel($class, $this->_order->getCustomer()),
+						'rate' => $service->getRate($class, $this->_order),
+						'display' => $service->getLabel($class, $this->_order),
 						'compound' => false, // TODO: Implement when compound taxes are introduced
 					);
 				}
@@ -549,7 +549,7 @@ class jigoshop_order extends Jigoshop_Base
 	public function get_tax_class_for_display($tax_class)
 	{
 		$service = Integration::getTaxService();
-		return $service->getLabel($tax_class, $this->_order->getCustomer());
+		return $service->getLabel($tax_class, $this->_order);
 	}
 
 	public function show_tax_entry($tax_class)

@@ -146,7 +146,7 @@ use Jigoshop\Helper\Tax;
 					</tr>
 					<?php foreach ($cart->getCombinedTax() as $taxClass => $tax): ?>
 						<tr id="tax-<?php echo $taxClass; ?>"<?php $tax == 0 and print ' style="display: none;"'; ?>>
-							<th scope="row"><?php echo Tax::getLabel($taxClass); ?></th>
+							<th scope="row"><?php echo Tax::getLabel($taxClass, $cart); ?></th>
 							<td><?php echo Product::formatPrice($tax); ?></td>
 						</tr>
 					<?php endforeach; ?>
