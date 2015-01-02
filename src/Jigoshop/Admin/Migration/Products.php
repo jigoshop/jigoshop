@@ -156,7 +156,19 @@ class Products implements Tool
 			} while ($i < $endI && $products[$i]->ID == $product->ID);
 		}
 
-		foreach ($attributes as $attribute) {
+		foreach ($globalAttributes as $slug => $attributeData) {
+			$type = $this->_getAttributeType($attributeData);
+			$label = !empty($attributeData->attribute_label) ? $attributeData->attribute_label : $attributeData->attribute_name;
+
+			$attribute = $this->productService->createAttribute($type);
+			$attribute->setSlug($slug);
+			$attribute->setLabel($label);
+			$attribute->setLocal(false);
+
+			$attributes[$slug] = $attribute;
+		}
+
+		foreach ($attributes as $slug => $attribute) {
 			/** @var $attribute Product\Attribute */
 			if (!$attribute->isLocal()) {
 				// Fetch options if attribute is a taxonomy
