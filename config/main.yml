@@ -1,4 +1,9 @@
-parameters: ~
+parameters:
+  jigoshop.widgets:
+    best_seller:
+      class: \Jigoshop\Widget\BestSellers
+      calls:
+        - ['setProductService', 'jigoshop.service.product']
 services:
   wpal:
     class: WPAL\Wordpress
@@ -10,6 +15,7 @@ services:
       - '@jigoshop.messages'
       - '@jigoshop.pages'
       - '@jigoshop.template'
+      - '%jigoshop.widgets%'
   jigoshop.installer:
     class: Jigoshop\Core\Installer
     arguments:
