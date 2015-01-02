@@ -451,8 +451,8 @@ class Checkout implements PageInterface
 		$content = $this->wp->getPostField('post_content', $this->options->getPageId(Pages::CHECKOUT));
 		$cart = $this->cartService->getCurrent();
 
-		$billingFields = $this->wp->applyFilters('jigoshop\checkout\billing_fields', $this->getBillingFields($cart->getCustomer()->getBillingAddress()));
-		$shippingFields = $this->wp->applyFilters('jigoshop\checkout\shipping_fields', $this->getShippingFields($cart->getCustomer()->getShippingAddress()));
+		$billingFields = $this->getBillingFields($cart->getCustomer()->getBillingAddress());
+		$shippingFields = $this->getShippingFields($cart->getCustomer()->getShippingAddress());
 
 		$termsUrl = '';
 		$termsPage = $this->options->get('advanced.pages.terms');
