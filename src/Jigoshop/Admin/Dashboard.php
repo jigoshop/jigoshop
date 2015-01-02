@@ -197,7 +197,16 @@ class Dashboard implements PageInterface
 		$previousMonth = ($selectedMonth == 1) ? 12 : $selectedMonth - 1;
 
 		$orders = $this->orderService->findFromMonth($selectedMonth, $selectedYear);
-		$days = range(strtotime($selectedYear.'-'.$selectedMonth.'-01'), time(), 24 * 3600);
+
+		$currentTime = strtotime($selectedYear.'-'.$selectedMonth.'-01');
+		$time = time();
+
+		if ($currentTime > $time + 24*3600) {
+			$days = range($currentTime, $time, 24 * 3600);
+		} else {
+			$days = array($currentTime);
+		}
+
 		$orderAmountsData = $orderCountsData = array_fill_keys($days, 0);
 		$orderAmounts = $orderCounts = array();
 
