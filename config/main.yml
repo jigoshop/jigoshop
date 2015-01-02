@@ -4,6 +4,12 @@ parameters:
       class: \Jigoshop\Widget\BestSellers
       calls:
         - ['setProductService', 'jigoshop.service.product']
+    cart:
+      class: \Jigoshop\Widget\Cart
+      calls:
+        - ['setPages', 'jigoshop.pages']
+        - ['setOptions', 'jigoshop.options']
+        - ['setCart', 'jigoshop.service.cart']
 services:
   wpal:
     class: WPAL\Wordpress
