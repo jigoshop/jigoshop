@@ -128,6 +128,47 @@ class Options implements Tool
 				return $value == 'yes';
 			case 'jigoshop_use_wordpress_featured_crop':
 				return $value == 'yes';
+			case 'jigoshop_force_ssl_checkout':
+				return $value == 'yes';
+			case 'jigoshop_enable_guest_checkout':
+				return $value == 'yes';
+			case 'jigoshop_enable_guest_login':
+				return $value == 'yes';
+			case 'jigoshop_enable_signup_form':
+				return $value == 'yes';
+			case 'jigoshop_reset_pending_orders':
+				return $value == 'yes';
+			case 'jigoshop_complete_processing_orders':
+				return $value == 'yes';
+			case 'jigoshop_downloads_require_login':
+				return $value == 'yes';
+			case 'jigoshop_currency_pos':
+				switch($value) {
+					case 'left':
+						return '%1$s%3$s';
+					case 'left_space':
+						return '%1$s %3$s';
+					case 'right':
+						return '%3$s%1$s';
+					case 'right_space':
+						return '%3$s %1$s';
+					case 'left_code':
+						return '%2$s%3$s';
+					case 'left_code_space':
+						return '%2$s %3$s';
+					case 'right_code':
+						return '%3$s%2$s';
+					case 'right_code_space':
+						return '%3$s %2$s';
+					case 'symbol_code':
+						return '%1$s%3$s%2$s';
+					case 'symbol_code_space':
+						return '%1$s %3$s %2$s';
+					case 'code_symbol':
+						return '%2$s%3$s%1$s';
+					case 'code_symbol_space':
+						return '%2$s %3$s %1$s';
+				}
 			default:
 				return $value;
 		}
