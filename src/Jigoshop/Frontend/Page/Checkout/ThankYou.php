@@ -35,6 +35,7 @@ class ThankYou implements PageInterface
 		$this->messages = $messages;
 		$this->orderService = $orderService;
 
+		$styles->add('jigoshop.shop', JIGOSHOP_URL.'/assets/css/shop.css');
 		$styles->add('jigoshop.user.account', JIGOSHOP_URL.'/assets/css/user/account.css');
 		$styles->add('jigoshop.user.account.orders', JIGOSHOP_URL.'/assets/css/user/account/orders.css');
 		$styles->add('jigoshop.user.account.orders.single', JIGOSHOP_URL.'/assets/css/user/account/orders/single.css');
@@ -102,6 +103,10 @@ class ThankYou implements PageInterface
 
 	public function action()
 	{
+		if (!isset($_REQUEST['order']) || !isset($_REQUEST['key'])) {
+			$this->messages->addNotice(__('No order to display.', 'jigoshop'));
+			$this->wp->redirectTo($this->options->getPageId(Pages::SHOP));
+		}
 	}
 
 	public function render()

@@ -218,12 +218,14 @@ class OrderService implements OrderServiceInterface
 		if ($notifyLowStock || $notifyOutOfStock) {
 			$threshold = $this->options->get('products.low_stock_threshold');
 			foreach ($object->getItems() as $item) {
-				if ($notifyOutOfStock && $this->wp->applyFilters('jigoshop\product\is_out_of_stock', false, $item)) {
+				$stock = $this->wp->applyFilters('jigoshop\product\get_stock', false, $item);
+
+				if ($notifyOutOfStock && $stock !== false && $stock == 0) {
 					$product = $item->getProduct();
 					$this->wp->doAction('jigoshop\product\out_of_stock', $product);
 					continue;
 				}
-				if ($notifyLowStock && $product->getStock()->getStock() <= $threshold) {
+				if ($notifyLowStock && $stock !== false && $stock <= $threshold) {
 					$this->wp->doAction('jigoshop\product\low_stock', $product);
 				}
 			}

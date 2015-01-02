@@ -103,7 +103,7 @@ class Variable implements Type
 		$wp->addFilter('jigoshop\cart\generate_item_key', array($this, 'generateItemKey'), 10, 2);
 		$wp->addFilter('jigoshop\checkout\is_shipping_required', array($this, 'isShippingRequired'), 10, 2);
 		$wp->addAction('jigoshop\product\assets', array($this, 'addFrontendAssets'), 10, 3);
-		$wp->addFilter('jigoshop\product\is_out_of_stock', array($this, 'isOutOfStock'), 10, 2);
+		$wp->addFilter('jigoshop\product\get_stock', array($this, 'getStock'), 10, 2);
 
 		$wp->addAction('jigoshop\admin\product\assets', array($this, 'addAdminAssets'), 10, 3);
 		$wp->addAction('jigoshop\admin\product\attribute\options', array($this, 'addVariableAttributeOptions'));
@@ -125,21 +125,21 @@ class Variable implements Type
 	}
 
 	/**
-	 * @param $status bool Current status.
-	 * @param $item Order\Item Item to check.
+	 * @param $stock bool|int Current stock value.
+	 * @param $item Item Item to check.
 	 * @return bool Whether the product is out of stock.
 	 */
-	public function isOutOfStock($status, $item)
+	public function getStock($stock, $item)
 	{
 		if ($item->getType() == Product\Variable::TYPE) {
 			/** @var Product\Variable $product */
 			$product = $item->getProduct();
 			$variation = $product->getVariation($item->getMeta('variation_id')->getValue());
 
-			return $variation->getProduct()->getStock()->getStock() == 0;
+			return $variation->getProduct()->getStock()->getStock();
 		}
 
-		return $status;
+		return $stock;
 	}
 
 	/**
