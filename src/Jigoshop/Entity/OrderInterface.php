@@ -8,11 +8,6 @@ use Jigoshop\Shipping\Method;
 interface OrderInterface
 {
 	/**
-	 * @return string Order ID.
-	 */
-	public function getId();
-
-	/**
 	 * @return Customer The customer.
 	 */
 	public function getCustomer();
