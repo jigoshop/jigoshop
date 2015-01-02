@@ -291,6 +291,10 @@ class Orders implements Tool
 			$customer = unserialize(unserialize($customer));
 		}
 
+		if (!($customer instanceof Customer)) {
+			$customer = new Customer();
+		}
+
 		if (!empty($data['billing_company'])) {
 			$address = new Customer\CompanyAddress();
 			$address->setCompany($data['billing_company']);
