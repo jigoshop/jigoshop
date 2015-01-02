@@ -51,7 +51,7 @@ class Installer
 		$db = $this->wp->getOption('jigoshop_database_version');
 
 		if ($db === false) {
-			Registry::getInstance('jigoshop')->addNotice('Installing Jigoshop.');
+			Registry::getInstance(JIGOSHOP_LOGGER)->addNotice('Installing Jigoshop.');
 			$this->_createTables();
 			$this->_createPages();
 
@@ -100,7 +100,7 @@ class Installer
 			) {$collate};
 		";
 		if (!$wpdb->query($query)) {
-			Registry::getInstance('jigoshop')->addCritical(sprintf('Unable to create table "%s". Error: "%s".', 'jigoshop_tax', $wpdb->last_error));
+			Registry::getInstance(JIGOSHOP_LOGGER)->addCritical(sprintf('Unable to create table "%s". Error: "%s".', 'jigoshop_tax', $wpdb->last_error));
 			echo __('Unable to create Jigoshop tables.', 'jigoshop'); exit;
 		}
 
@@ -117,7 +117,7 @@ class Installer
 			) {$collate};
 		";
 		if (!$wpdb->query($query)) {
-			Registry::getInstance('jigoshop')->addCritical(sprintf('Unable to create table "%s". Error: "%s".', 'jigoshop_tax_location', $wpdb->last_error));
+			Registry::getInstance(JIGOSHOP_LOGGER)->addCritical(sprintf('Unable to create table "%s". Error: "%s".', 'jigoshop_tax_location', $wpdb->last_error));
 			echo __('Unable to create Jigoshop tables.', 'jigoshop'); exit;
 		}
 
@@ -138,7 +138,7 @@ class Installer
 			) {$collate};
 		";
 		if (!$wpdb->query($query)) {
-			Registry::getInstance('jigoshop')->addCritical(sprintf('Unable to create table "%s". Error: "%s".', 'jigoshop_order_item', $wpdb->last_error));
+			Registry::getInstance(JIGOSHOP_LOGGER)->addCritical(sprintf('Unable to create table "%s". Error: "%s".', 'jigoshop_order_item', $wpdb->last_error));
 			echo __('Unable to create Jigoshop tables.', 'jigoshop'); exit;
 		}
 
@@ -152,7 +152,7 @@ class Installer
 			) {$collate};
 		";
 		if (!$wpdb->query($query)) {
-			Registry::getInstance('jigoshop')->addCritical(sprintf('Unable to create table "%s". Error: "%s".', 'jigoshop_order_item_meta', $wpdb->last_error));
+			Registry::getInstance(JIGOSHOP_LOGGER)->addCritical(sprintf('Unable to create table "%s". Error: "%s".', 'jigoshop_order_item_meta', $wpdb->last_error));
 			echo __('Unable to create Jigoshop tables.', 'jigoshop'); exit;
 		}
 
@@ -167,7 +167,7 @@ class Installer
 			) {$collate};
 		";
 		if (!$wpdb->query($query)) {
-			Registry::getInstance('jigoshop')->addCritical(sprintf('Unable to create table "%s". Error: "%s".', 'jigoshop_order_tax', $wpdb->last_error));
+			Registry::getInstance(JIGOSHOP_LOGGER)->addCritical(sprintf('Unable to create table "%s". Error: "%s".', 'jigoshop_order_tax', $wpdb->last_error));
 			echo __('Unable to create Jigoshop tables.', 'jigoshop'); exit;
 		}
 
@@ -182,7 +182,7 @@ class Installer
 			) {$collate};
 		";
 		if (!$wpdb->query($query)) {
-			Registry::getInstance('jigoshop')->addCritical(sprintf('Unable to create table "%s". Error: "%s".', 'jigoshop_attribute', $wpdb->last_error));
+			Registry::getInstance(JIGOSHOP_LOGGER)->addCritical(sprintf('Unable to create table "%s". Error: "%s".', 'jigoshop_attribute', $wpdb->last_error));
 			echo __('Unable to create Jigoshop tables.', 'jigoshop'); exit;
 		}
 
@@ -198,7 +198,7 @@ class Installer
 			) {$collate};
 		";
 		if (!$wpdb->query($query)) {
-			Registry::getInstance('jigoshop')->addCritical(sprintf('Unable to create table "%s". Error: "%s".', 'jigoshop_attribute_option', $wpdb->last_error));
+			Registry::getInstance(JIGOSHOP_LOGGER)->addCritical(sprintf('Unable to create table "%s". Error: "%s".', 'jigoshop_attribute_option', $wpdb->last_error));
 			echo __('Unable to create Jigoshop tables.', 'jigoshop'); exit;
 		}
 
@@ -213,7 +213,7 @@ class Installer
 			) {$collate};
 		";
 		if (!$wpdb->query($query)) {
-			Registry::getInstance('jigoshop')->addCritical(sprintf('Unable to create table "%s". Error: "%s".', 'jigoshop_product_attribute', $wpdb->last_error));
+			Registry::getInstance(JIGOSHOP_LOGGER)->addCritical(sprintf('Unable to create table "%s". Error: "%s".', 'jigoshop_product_attribute', $wpdb->last_error));
 			echo __('Unable to create Jigoshop tables.', 'jigoshop'); exit;
 		}
 
@@ -229,7 +229,7 @@ class Installer
 			) {$collate};
 		";
 		if (!$wpdb->query($query)) {
-			Registry::getInstance('jigoshop')->addCritical(sprintf('Unable to create table "%s". Error: "%s".', 'jigoshop_product_attribute_meta', $wpdb->last_error));
+			Registry::getInstance(JIGOSHOP_LOGGER)->addCritical(sprintf('Unable to create table "%s". Error: "%s".', 'jigoshop_product_attribute_meta', $wpdb->last_error));
 			echo __('Unable to create Jigoshop tables.', 'jigoshop'); exit;
 		}
 
@@ -273,7 +273,7 @@ class Installer
 		$page_id = $wpdb->get_var($wpdb->prepare("SELECT ID FROM {$wpdb->posts} WHERE post_name = %s AND post_status = 'publish' AND post_status <> 'trash' LIMIT 1", $slug));
 
 		if (!$page_id) {
-			Registry::getInstance('jigoshop')->addDebug(sprintf('Installing page "%s".', $slug));
+			Registry::getInstance(JIGOSHOP_LOGGER)->addDebug(sprintf('Installing page "%s".', $slug));
 			$data['post_name'] = $slug;
 			$page_id = $this->wp->wpInsertPost($data);
 		}

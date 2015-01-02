@@ -79,7 +79,7 @@ class Cart extends Order
 					$key = $this->productService->generateItemKey($item);
 
 					if ($key != $item->getKey()) {
-						Registry::getInstance('jigoshop')->addWarning(sprintf('Initializing cart: item "%d" has invalid key ("%s" instead of "%s").', $item->getId(), $item->getKey(), $key));
+						Registry::getInstance(JIGOSHOP_LOGGER)->addWarning(sprintf('Initializing cart: item "%d" has invalid key ("%s" instead of "%s").', $item->getId(), $item->getKey(), $key));
 					}
 
 					$item->setKey($key);
@@ -96,7 +96,9 @@ class Cart extends Order
 			if (isset($data['coupons'])) {
 				foreach ($data['coupons'] as $couponId) {
 					try {
-						$this->addCoupon($this->couponService->find($couponId));
+						/** @var Coupon $coupon */
+						$coupon = $this->couponService->find($couponId);
+						$this->addCoupon($coupon);
 					} catch (Exception $e) {
 						$this->messages->addWarning($e->getMessage(), false);
 					}

@@ -7,6 +7,10 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
+if (!defined('JIGOSHOP_LOGGER')) {
+	define('JIGOSHOP_LOGGER', 'jigoshop');
+}
+
 /**
  * Class initializing and loading of all required files.
  *
@@ -29,7 +33,7 @@ class JigoshopInit
 		$loader->register();
 
 		// Prepare logger
-		$logger = new \Monolog\Logger('jigoshop');
+		$logger = new \Monolog\Logger(JIGOSHOP_LOGGER);
 		if (WP_DEBUG) {
 			$logger->pushHandler(new \Monolog\Handler\StreamHandler(JIGOSHOP_DIR.'/log/jigoshop.debug.log', \Monolog\Logger::DEBUG));
 		}
@@ -94,15 +98,17 @@ class JigoshopInit
 	}
 
 	/**
-	 * Initializes Jigoshop.
-	 * Sets properly class loader and prepares Jigoshop to start, then sets up external plugins.
-	 * Calls `jigoshop\plugins\configure` action with \JigoshopContainer object as parameter - you need to add your extension configuration to the container there.
+	 * Loads Jigoshop.
+	 * Prepares Jigoshop to start, then sets up external plugins.
+	 * Calls `jigoshop\init` action with \JigoshopContainer object as parameter - you need to add your extension configuration to the container there.
+	 * Also loads Jigoshop 1.x integration layer if necessary.
 	 */
-	public function init()
+	public function load()
 	{
 		// Override default translations with custom .mo's found in wp-content/languages/jigoshop first.
 		load_textdomain('jigoshop', WP_LANG_DIR.'/jigoshop/'.get_locale().'.mo');
 		load_plugin_textdomain('jigoshop', false, JIGOSHOP_DIR.'/languages/');
+		\Monolog\Registry::getInstance(JIGOSHOP_LOGGER)->addDebug('Loading Jigoshop.');
 
 		// Add links in Plugins page
 		add_filter('plugin_action_links_'.JIGOSHOP_BASE_NAME, array($this, 'pluginLinks'));
@@ -112,7 +118,14 @@ class JigoshopInit
 
 		// Initialize integration layer
 		new Integration($this->container); // TODO: Determine whether to load integration layer
+	}
 
+	/**
+	 * Initializes Jigoshop.
+	 */
+	public function init()
+	{
+		\Monolog\Registry::getInstance(JIGOSHOP_LOGGER)->addDebug('Initialising Jigoshop.');
 		// Load query interceptor before Jigoshop
 		$interceptor = $this->container->get('jigoshop.query.interceptor');
 
@@ -125,7 +138,7 @@ class JigoshopInit
 				});
 			}
 
-			\Monolog\Registry::getInstance('jigoshop')->addEmergency('Invalid query interceptor instance in Jigoshop. Unable to proceed.');
+			\Monolog\Registry::getInstance(JIGOSHOP_LOGGER)->addEmergency('Invalid query interceptor instance in Jigoshop. Unable to proceed.');
 			return;
 		}
 

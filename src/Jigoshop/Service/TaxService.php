@@ -143,7 +143,7 @@ class TaxService implements TaxServiceInterface
 
 		foreach ($item->getTaxClasses() as $class) {
 			if (!isset($definitions[$class])) {
-				Registry::getInstance('jigoshop')->addInfo(sprintf('No tax class: %s', $class));
+				Registry::getInstance(JIGOSHOP_LOGGER)->addInfo(sprintf('No tax class: %s', $class));
 				$tax[$class] = 0.0;
 				continue;
 			}

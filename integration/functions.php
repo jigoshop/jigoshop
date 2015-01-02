@@ -113,3 +113,11 @@ function jigoshop_disable_autosave($src, $handle)
 
 	return '';
 }
+
+function get_jigoshop_currency_symbol()
+{
+	$currency = \Jigoshop\Helper\Currency::code();
+	$currency_symbol = \Jigoshop\Helper\Currency::symbol();
+
+	return apply_filters('jigoshop_currency_symbol', $currency_symbol, $currency);
+}

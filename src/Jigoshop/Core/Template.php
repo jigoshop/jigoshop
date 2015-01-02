@@ -71,7 +71,7 @@ class Template
 				throw new Exception('Page object should already be set for Jigoshop pages, but none found.');
 			}
 
-			Registry::getInstance('jigoshop')->addCritical('Page object should already be set for Jigoshop pages, but none found.');
+			Registry::getInstance(JIGOSHOP_LOGGER)->addCritical('Page object should already be set for Jigoshop pages, but none found.');
 			return false;
 		}
 

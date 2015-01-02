@@ -36,7 +36,7 @@ class Product implements Post
 					throw new Exception(sprintf(__('Invalid type definition! Offending class: "%s".', 'jigoshop'), $typeClass));
 				}
 
-				Registry::getInstance('jigoshop')->addWarning(sprintf('Invalid type definition! Offending class: "%s".', $typeClass));
+				Registry::getInstance(JIGOSHOP_LOGGER)->addWarning(sprintf('Invalid type definition! Offending class: "%s".', $typeClass));
 				continue;
 			}
 

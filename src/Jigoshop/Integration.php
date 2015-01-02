@@ -68,7 +68,7 @@ class Integration
 
 	public static function initializeGateways()
 	{
-		Registry::getInstance('jigoshop')->addDebug('Initializing Jigoshop 1.x gateways');
+		Registry::getInstance(JIGOSHOP_LOGGER)->addDebug('Initializing Jigoshop 1.x gateways');
 		$service = self::getPaymentService();
 		$gateways = apply_filters('jigoshop_payment_gateways', array());
 
@@ -86,7 +86,7 @@ class Integration
 	{
 		if ($method instanceof Integration\Gateway) {
 			$gateway = $method->getGateway();
-			Registry::getInstance('jigoshop')->addDebug(sprintf('Processing Jigoshop 1.x gateway "%s".', $method->getId()));
+			Registry::getInstance(JIGOSHOP_LOGGER)->addDebug(sprintf('Processing Jigoshop 1.x gateway "%s".', $method->getId()));
 			$cart = self::getCart();
 
 			if ($gateway->process_gateway($cart->getSubtotal(), $cart->getShippingPrice(), $cart->getDiscount())) {
@@ -99,7 +99,7 @@ class Integration
 
 	public static function initializeShipping()
 	{
-		Registry::getInstance('jigoshop')->addDebug('Initializing Jigoshop 1.x shipping methods');
+		Registry::getInstance(JIGOSHOP_LOGGER)->addDebug('Initializing Jigoshop 1.x shipping methods');
 		$service = self::getShippingService();
 		$methods = apply_filters('jigoshop_shipping_methods', array());
 

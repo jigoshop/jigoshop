@@ -256,14 +256,14 @@ class Validation
 			return true;
 		}
 
-		Registry::getInstance('jigoshop')->addDebug(sprintf('Validating postcode "%s" for country "%s"', $postcode, $country));
+		Registry::getInstance(JIGOSHOP_LOGGER)->addDebug(sprintf('Validating postcode "%s" for country "%s"', $postcode, $country));
 
 		switch ($country) {
 			case 'GB':
 				return self::isGreatBritainPostcode($postcode);
 			default:
 				$regex = '/^'.self::$postcodes[$country].'$/';
-				Registry::getInstance('jigoshop')->addDebug(sprintf('Validation regex: %s', $regex));
+				Registry::getInstance(JIGOSHOP_LOGGER)->addDebug(sprintf('Validation regex: %s', $regex));
 				$match = preg_match($regex, $postcode);
 				if ($match !== 1) {
 					return false;

@@ -127,5 +127,6 @@ if($memory_limit < JIGOSHOP_REQUIRED_WP_MEMORY*1024*1024){
 
 require_once(JIGOSHOP_DIR.'/src/JigoshopInit.php');
 $jigoshop = new JigoshopInit();
+add_action('plugins_loaded', array($jigoshop, 'load'), 0);
 add_action('init', array($jigoshop, 'init'), 0);
 register_activation_hook(__FILE__, array($jigoshop, 'update'));

@@ -141,7 +141,7 @@ class CustomerService implements CustomerServiceInterface
 			throw new Exception('Customer service do not support fetching for post - users are not stored this way.');
 		}
 
-		Registry::getInstance('jigoshop')->addWarning('Invalid call to Jigoshop\Service\Customer::findForPost() method.');
+		Registry::getInstance(JIGOSHOP_LOGGER)->addWarning('Invalid call to Jigoshop\Service\Customer::findForPost() method.');
 		return null;
 	}
 
@@ -157,7 +157,7 @@ class CustomerService implements CustomerServiceInterface
 			throw new Exception('Customer service do not support fetching by query - users are not stored like posts.');
 		}
 
-		Registry::getInstance('jigoshop')->addWarning('Invalid call to Jigoshop\Service\Customer::findByQuery() method.');
+		Registry::getInstance(JIGOSHOP_LOGGER)->addWarning('Invalid call to Jigoshop\Service\Customer::findByQuery() method.');
 		return null;
 	}
 }

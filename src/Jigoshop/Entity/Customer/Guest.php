@@ -19,7 +19,7 @@ class Guest extends Customer
 			throw new Exception(__('Guest customer cannot be updated!', 'jigoshop'));
 		}
 
-		Registry::getInstance('jigoshop')->addDebug('Guest customer cannot be updated!');
+		Registry::getInstance(JIGOSHOP_LOGGER)->addDebug('Guest customer cannot be updated!');
 	}
 
 	public function getLogin()
@@ -33,7 +33,7 @@ class Guest extends Customer
 			throw new Exception(__('Guest customer cannot be updated!', 'jigoshop'));
 		}
 
-		Registry::getInstance('jigoshop')->addDebug('Guest customer cannot be updated!');
+		Registry::getInstance(JIGOSHOP_LOGGER)->addDebug('Guest customer cannot be updated!');
 	}
 
 	public function getName()
@@ -47,7 +47,7 @@ class Guest extends Customer
 			throw new Exception(__('Guest customer cannot be updated!', 'jigoshop'));
 		}
 
-		Registry::getInstance('jigoshop')->addDebug('Guest customer cannot be updated!');
+		Registry::getInstance(JIGOSHOP_LOGGER)->addDebug('Guest customer cannot be updated!');
 	}
 
 	public function __toString()

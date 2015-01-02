@@ -107,7 +107,7 @@ class Forms
 				throw new Exception('Field "%s" must have a name!', serialize($field));
 			}
 
-			Registry::getInstance('jigoshop')->addCritical('Field must have a name!', array('field' => $field));
+			Registry::getInstance(JIGOSHOP_LOGGER)->addCritical('Field must have a name!', array('field' => $field));
 			return;
 		}
 
@@ -169,7 +169,7 @@ class Forms
 				throw new Exception(sprintf('Field "%s" must have a name!', serialize($field)));
 			}
 
-			Registry::getInstance('jigoshop')->addCritical('Field must have a name!', array('field' => $field));
+			Registry::getInstance(JIGOSHOP_LOGGER)->addCritical('Field must have a name!', array('field' => $field));
 			return;
 		}
 
@@ -248,7 +248,7 @@ class Forms
 				throw new Exception(sprintf('Field "%s" must have a name!', serialize($field)));
 			}
 
-			Registry::getInstance('jigoshop')->addCritical('Field must have a name!', array('field' => $field));
+			Registry::getInstance(JIGOSHOP_LOGGER)->addCritical('Field must have a name!', array('field' => $field));
 			return;
 		}
 
@@ -302,7 +302,7 @@ class Forms
 				throw new Exception(sprintf('Field "%s" must have a name!', serialize($field)));
 			}
 
-			Registry::getInstance('jigoshop')->addCritical('Field must have a name!', array('field' => $field));
+			Registry::getInstance(JIGOSHOP_LOGGER)->addCritical('Field must have a name!', array('field' => $field));
 			return;
 		}
 
@@ -342,7 +342,7 @@ class Forms
 				throw new Exception(sprintf('Field "%s" must have a name!', serialize($field)));
 			}
 
-			Registry::getInstance('jigoshop')->addCritical('Field must have a name!', array('field' => $field));
+			Registry::getInstance(JIGOSHOP_LOGGER)->addCritical('Field must have a name!', array('field' => $field));
 			return;
 		}
 
@@ -395,7 +395,7 @@ class Forms
 				throw new Exception(sprintf('Field "%s" must have a name!', serialize($field)));
 			}
 
-			Registry::getInstance('jigoshop')->addCritical('Field must have a name!', array('field' => $field));
+			Registry::getInstance(JIGOSHOP_LOGGER)->addCritical('Field must have a name!', array('field' => $field));
 			return;
 		}
 

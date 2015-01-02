@@ -45,7 +45,7 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method
 					$rate = $this->retrieve_rate_from_response($xml_response);
 
 					if ($this->has_error()) {
-						\Monolog\Registry::getInstance('jigoshop')->addDebug($xml_response);
+						\Monolog\Registry::getInstance(JIGOSHOP_LOGGER)->addDebug($xml_response);
 					}
 
 					$this->add_rate($rate, $current_service);
@@ -64,7 +64,7 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method
 				$services = $this->get_services_from_response($xml_response);
 
 				if (empty($services)) {
-					\Monolog\Registry::getInstance('jigoshop')->addDebug($xml_response);
+					\Monolog\Registry::getInstance(JIGOSHOP_LOGGER)->addDebug($xml_response);
 				}
 
 				foreach ($services as $current_service) {

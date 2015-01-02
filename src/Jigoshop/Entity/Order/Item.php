@@ -101,7 +101,7 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 	public function setQuantity($quantity)
 	{
 		if ($quantity < 0) {
-			Registry::getInstance('jigoshop')->addCritical('Item quantity cannot be below 0');
+			Registry::getInstance(JIGOSHOP_LOGGER)->addCritical('Item quantity cannot be below 0');
 			throw new Exception(__('Item quantity cannot be below 0', 'jigoshop'));
 		}
 

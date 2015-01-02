@@ -335,7 +335,7 @@ class Order implements EntityInterface, OrderInterface
 				throw new Exception(sprintf(__('No item with ID %d in order %d', 'jigoshop'), $key, $this->id));
 			}
 
-			Registry::getInstance('jigoshop')->addWarning(sprintf('No item with ID %d in order %d', $key, $this->id));
+			Registry::getInstance(JIGOSHOP_LOGGER)->addWarning(sprintf('No item with ID %d in order %d', $key, $this->id));
 			return null;
 		}
 

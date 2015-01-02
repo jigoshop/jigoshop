@@ -39,7 +39,7 @@ class Product implements EntityFactoryInterface
 				throw new Exception(sprintf(__('Product of type "%s" already exists.', 'jigoshop'), $type));
 			}
 
-			Registry::getInstance('jigoshop')->addWarning(sprintf('Product of type "%s" already exists.', $type));
+			Registry::getInstance(JIGOSHOP_LOGGER)->addWarning(sprintf('Product of type "%s" already exists.', $type));
 			return;
 		}
 
@@ -60,7 +60,7 @@ class Product implements EntityFactoryInterface
 				throw new Exception(sprintf('Product type "%s" does not exists.', $type));
 			}
 
-			Registry::getInstance('jigoshop')->addWarning(sprintf('Product type "%s" does not exists.', $type));
+			Registry::getInstance(JIGOSHOP_LOGGER)->addWarning(sprintf('Product type "%s" does not exists.', $type));
 			$type = Simple::TYPE;
 		}
 

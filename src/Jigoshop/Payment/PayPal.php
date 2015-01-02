@@ -474,7 +474,7 @@ class PayPal implements Method, Processable, ContainerAware
 			return true;
 		}
 
-		Registry::getInstance('jigoshop')->addWarning('Received invalid response from PayPal!', array('response' => $response));
+		Registry::getInstance(JIGOSHOP_LOGGER)->addWarning('Received invalid response from PayPal!', array('response' => $response));
 
 		return false;
 	}
