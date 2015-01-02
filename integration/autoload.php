@@ -9,6 +9,7 @@ $loader = new \Symfony\Component\ClassLoader\MapClassLoader(array(
 	'Jigoshop_Forms' => JIGOSHOP_DIR.'/integration/classes/jigoshop_forms.class.php',
 	'jigoshop' => JIGOSHOP_DIR.'/integration/classes/jigoshop.class.php',
 	'jigoshop_cart' => JIGOSHOP_DIR.'/integration/classes/jigoshop_cart.class.php',
+	'jigoshop_checkout' => JIGOSHOP_DIR.'/integration/classes/jigoshop_checkout.class.php',
 	'jigoshop_countries' => JIGOSHOP_DIR.'/integration/classes/jigoshop_countries.class.php',
 	'jigoshop_customer' => JIGOSHOP_DIR.'/integration/classes/jigoshop_customer.class.php',
 	'jigoshop_forms' => JIGOSHOP_DIR.'/integration/classes/jigoshop_forms.class.php',
