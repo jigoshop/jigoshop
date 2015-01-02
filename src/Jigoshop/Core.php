@@ -13,6 +13,7 @@ use WPAL\Wordpress;
 class Core
 {
 	const VERSION = '2.0-beta5';
+	const WIDGET_CACHE = 'jigoshop_widget_cache';
 
 	/** @var \Jigoshop\Core\Options */
 	private $options;
@@ -24,14 +25,17 @@ class Core
 	private $template;
 	/** @var \WPAL\Wordpress */
 	private $wp;
+	/** @var array */
+	private $widgets;
 
-	public function __construct(Wordpress $wp, Options $options, Messages $messages, Pages $pages, Template $template)
+	public function __construct(Wordpress $wp, Options $options, Messages $messages, Pages $pages, Template $template, $widgets = array())
 	{
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->messages = $messages;
 		$this->pages = $pages;
 		$this->template = $template;
+		$this->widgets = $widgets;
 
 		$wp->wpEnqueueScript('jquery');
 	}
@@ -43,12 +47,13 @@ class Core
 	 */
 	public function run(\JigoshopContainer $container)
 	{
-		$this->wp->addFilter('template_include', array($this->template, 'process'));
-		$this->wp->addFilter('template_redirect', array($this->template, 'redirect'));
-		$this->wp->addAction('jigoshop\shop\content\before', array($this, 'displayCustomMessage'));
-		$this->wp->addAction('wp_head', array($this, 'googleAnalyticsTracking'), 9990);
+		$wp = $this->wp;
+		$wp->addFilter('template_include', array($this->template, 'process'));
+		$wp->addFilter('template_redirect', array($this->template, 'redirect'));
+		$wp->addAction('jigoshop\shop\content\before', array($this, 'displayCustomMessage'));
+		$wp->addAction('wp_head', array($this, 'googleAnalyticsTracking'), 9990);
 		// Action for limiting WordPress feed from using order notes.
-		$this->wp->addAction('comment_feed_where', function($where){
+		$wp->addAction('comment_feed_where', function($where){
 			return $where." AND comment_type <> 'order_note'";
 		});
 
@@ -64,6 +69,21 @@ class Core
 		Tax::setService($tax);
 
 		$container->get('jigoshop.emails');
+
+		$widgets = $this->widgets;
+		$wp->addAction('widgets_init', function() use ($wp, $container, $widgets) {
+			foreach ($widgets as $widget) {
+				$class = $widget['class'];
+				register_widget($class);
+//				$wp->registerWidget($class);
+				if (isset($widget['calls'])) {
+					foreach ($widget['calls'] as $call) {
+						list($method, $argument) = $call;
+						$class::$method($container->get($argument));
+					}
+				}
+			}
+		});
 
 		// TODO: Why this is required? :/
 		$this->wp->flushRewriteRules(false);
