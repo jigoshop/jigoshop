@@ -14,12 +14,12 @@ $product = $variation->getProduct();
 	<h4 class="list-group-item-heading">
 		<button type="button" class="remove-variation btn btn-default pull-right" title="<?php _e('Remove', 'jigoshop'); ?>"><span class="glyphicon glyphicon-remove"></span></button>
 		<button type="button" class="show-variation btn btn-default pull-right" title="<?php _e('Show', 'jigoshop'); ?>"><span class="glyphicon glyphicon-collapse-down"></span></button>
-		<?php foreach($attributes as $attribute): /** @var $attribute Attribute */?>
+		<?php foreach($attributes as $attribute): /** @var $attribute Attribute */ $value = $variation->getAttribute($attribute->getId());?>
 			<?php Forms::select(array(
 				'name' => 'product[variation]['.$variation->getId().'][attribute]['.$attribute->getId().']',
 				'classes' => array('variation-attribute'),
 				'placeholder' => $attribute->getLabel(),
-				'value' => $variation->getAttribute($attribute->getId())->getValue(),
+				'value' => $value !== null ? $value->getValue() : '',
 				'options' => ProductHelper::getSelectOption($attribute->getOptions(), sprintf(__('Any of %s', 'jigoshop'), $attribute->getLabel())),
 				'size' => 12,
 			)); ?>
