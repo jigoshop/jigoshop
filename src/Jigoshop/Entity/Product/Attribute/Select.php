@@ -34,8 +34,6 @@ class Select extends Attribute
 	 */
 	public function printValue()
 	{
-		/** @var Option $option */
-		$option = $this->options[$this->value];
-		return $option->getLabel();
+		return $this->getLabel();
 	}
 }
