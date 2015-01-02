@@ -104,3 +104,12 @@ function jigoshop_get_image_size($size)
 
 	return array($image_size['width'], $image_size['height']);
 }
+
+function jigoshop_disable_autosave($src, $handle)
+{
+	if ('autosave' != $handle) {
+		return $src;
+	}
+
+	return '';
+}
