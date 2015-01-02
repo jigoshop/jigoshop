@@ -209,7 +209,7 @@ class AdvancedTab implements TabInterface, ContainerAware
 	 * @return array Sanitized and validated output.
 	 * @throws ValidationException When some items are not valid.
 	 */
-	public function validate(array $settings)
+	public function validate($settings)
 	{
 		if (isset($settings['install_emails'])) {
 			unset($settings['install_emails']);

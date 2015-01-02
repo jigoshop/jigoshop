@@ -244,7 +244,7 @@ class ProductsTab implements TabInterface
 	 * @return array Sanitized and validated output.
 	 * @throws ValidationException When some items are not valid.
 	 */
-	public function validate(array $settings)
+	public function validate($settings)
 	{
 		if (!in_array($settings['weight_unit'], array_keys($this->weightUnit))) {
 			$this->messages->addWarning(sprintf(__('Invalid weight unit: "%s". Value set to %s.', 'jigoshop'), $settings['weight_unit'], $this->weightUnit['kg']));

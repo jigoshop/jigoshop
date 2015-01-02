@@ -212,7 +212,7 @@ class ShoppingTab implements TabInterface
 	 * @return array Sanitized and validated output.
 	 * @throws ValidationException When some items are not valid.
 	 */
-	public function validate(array $settings)
+	public function validate($settings)
 	{
 		$settings['catalog_per_page'] = (int)$settings['catalog_per_page'];
 		if ($settings['catalog_per_page'] <= 0) {

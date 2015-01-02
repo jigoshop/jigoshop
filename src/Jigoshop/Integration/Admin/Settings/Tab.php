@@ -50,8 +50,12 @@ class Tab implements TabInterface
 	 * @return array Sanitized and validated output.
 	 * @throws ValidationException When some items are not valid.
 	 */
-	public function validate(array $settings)
+	public function validate($settings)
 	{
+		if (!is_array($settings)) {
+			$settings = array();
+		}
+
 		foreach ($this->sections as $section) {
 			foreach ($section['fields'] as $field) {
 				if (isset($field['update'])) {

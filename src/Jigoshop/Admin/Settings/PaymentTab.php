@@ -69,7 +69,7 @@ class PaymentTab implements TabInterface
 	 * @return array Sanitized and validated output.
 	 * @throws ValidationException When some items are not valid.
 	 */
-	public function validate(array $settings)
+	public function validate($settings)
 	{
 		foreach ($this->paymentService->getAvailable() as $method) {
 			/** @var $method Method */

@@ -80,7 +80,6 @@ class GeneralTab implements TabInterface
 						'id' => 'state',
 						'name' => '[state]',
 						'title' => __('Shop location (state)', 'jigoshop'),
-						'type' => 'select',
 						'type' => 'text',
 						'value' => $this->options['state'],
 					),
@@ -220,7 +219,7 @@ class GeneralTab implements TabInterface
 	 * @return array Sanitized and validated output.
 	 * @throws ValidationException When some items are not valid.
 	 */
-	public function validate(array $settings)
+	public function validate($settings)
 	{
 		$settings['show_message'] = $settings['show_message'] == 'on';
 		return $settings;

@@ -110,7 +110,7 @@ class ShippingTab implements TabInterface
 	 * @return array Sanitized and validated output.
 	 * @throws ValidationException When some items are not valid.
 	 */
-	public function validate(array $settings)
+	public function validate($settings)
 	{
 		$settings['enabled'] = $settings['enabled'] == 'on';
 		$settings['calculator'] = $settings['calculator'] == 'on';
