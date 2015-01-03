@@ -10,6 +10,10 @@ parameters:
         - ['setPages', 'jigoshop.pages']
         - ['setOptions', 'jigoshop.options']
         - ['setCart', 'jigoshop.service.cart']
+    featured_products:
+      class: \Jigoshop\Widget\FeaturedProducts
+      calls:
+        - ['setProductService', 'jigoshop.service.product']
 services:
   wpal:
     class: WPAL\Wordpress
