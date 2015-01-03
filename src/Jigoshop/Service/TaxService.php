@@ -102,14 +102,21 @@ class TaxService implements TaxServiceInterface
 		}, 10, 2);
 		$wp->addFilter('jigoshop\order\shipping_price', function($price, $method, $order) use ($service) {
 			/** @var $order OrderInterface */
-			// TODO: Check if method is taxable?
-			return $price + $service->calculateForShipping($method, $order, $price);
+			/** @var $method Method */
+			if ($method->isTaxable()) {
+				return $price + $service->calculateForShipping($method, $order, $price);
+			}
+
+			return $price;
 		}, 10, 3);
 		$wp->addFilter('jigoshop\order\shipping_tax', function($taxes, $method, $order) use ($service) {
 			/** @var $order OrderInterface */
 			/** @var $method Method */
-			// TODO: Check if method is taxable?
-			return $service->getForShipping($method, $order, $order->getShippingPrice());
+			if ($method->isTaxable()) {
+				return $service->getForShipping($method, $order, $order->getShippingPrice());
+			}
+
+			return $taxes;
 		}, 10, 3);
 		$wp->addFilter('jigoshop\admin\order\update_product', function($item, $order) use ($service) {
 			/** @var $order OrderInterface */

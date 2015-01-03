@@ -142,7 +142,6 @@ class Dashboard implements PageInterface
 	public function recentOrders()
 	{
 		/** @noinspection PhpUnusedLocalVariableInspection */
-		// TODO: Replace \WP_Query in order to make Jigoshop testable
 		$statuses = Order\Status::getStatuses();
 		unset($statuses[Order\Status::CANCELLED], $statuses[Order\Status::REFUNDED]);
 		$orders = $this->orderService->findByQuery(new \WP_Query(array(

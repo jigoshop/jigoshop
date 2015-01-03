@@ -142,6 +142,8 @@ class Options implements Tool
 				return $value == 'yes';
 			case 'jigoshop_downloads_require_login':
 				return $value == 'yes';
+			case 'jigoshop_flat_rate_tax_status':
+				return $value == 'taxable';
 			case 'jigoshop_currency_pos':
 				switch($value) {
 					case 'left':
@@ -188,7 +190,7 @@ class Options implements Tool
 			'jigoshop_flat_rate_availability' => 'shipping.flat_rate.available_for',
 			'jigoshop_flat_rate_countries' => 'shipping.flat_rate.countries',
 			'jigoshop_flat_rate_type' => 'shipping.flat_rate.type',
-//			'jigoshop_flat_rate_tax_status' => 'shipping.flat_rate.enabled', // TODO: Shipping tax status
+			'jigoshop_flat_rate_tax_status' => 'shipping.flat_rate.is_taxable',
 			'jigoshop_flat_rate_cost' => 'shipping.flat_rate.cost',
 			'jigoshop_flat_rate_handling_fee' => 'shipping.flat_rate.fee',
 		));

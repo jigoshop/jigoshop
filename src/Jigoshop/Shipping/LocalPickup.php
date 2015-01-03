@@ -66,6 +66,14 @@ class LocalPickup implements Method
 	}
 
 	/**
+	 * @return bool Whether current method is taxable.
+	 */
+	public function isTaxable()
+	{
+		return false;
+	}
+
+	/**
 	 * @return array List of options to display on Shipping settings page.
 	 */
 	public function getOptions()

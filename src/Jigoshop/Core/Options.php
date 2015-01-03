@@ -116,6 +116,7 @@ class Options
 				'enabled' => true,
 				'title' => 'Flat rate',
 				'type' => 'per_order',
+				'is_taxable' => true,
 				'cost' => 0,
 				'fee' => 0,
 				'available_for' => 'all',

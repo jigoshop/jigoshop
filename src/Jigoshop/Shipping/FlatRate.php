@@ -99,6 +99,14 @@ class FlatRate implements Method
 	}
 
 	/**
+	 * @return bool Whether current method is taxable.
+	 */
+	public function isTaxable()
+	{
+		return $this->options['is_taxable'];
+	}
+
+	/**
 	 * @return array List of options to display on Shipping settings page.
 	 */
 	public function getOptions()
@@ -122,6 +130,12 @@ class FlatRate implements Method
 				'type' => 'select',
 				'value' => $this->options['type'],
 				'options' => $this->types,
+			),
+			array(
+				'name' => sprintf('[%s][is_taxable]', self::NAME),
+				'title' => __('Is taxable?', 'jigoshop'),
+				'type' => 'checkbox',
+				'checked' => $this->options['is_taxable'],
 			),
 			array(
 				'name' => sprintf('[%s][cost]', self::NAME),
@@ -165,6 +179,7 @@ class FlatRate implements Method
 	public function validateOptions($settings)
 	{
 		$settings['enabled'] = $settings['enabled'] == 'on';
+		$settings['is_taxable'] = $settings['is_taxable'] == 'on';
 
 		if (!in_array($settings['type'], array_keys($this->types))) {
 			$settings['type'] = $this->options['type'];

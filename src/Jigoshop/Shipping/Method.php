@@ -27,6 +27,11 @@ interface Method
 	public function isEnabled();
 
 	/**
+	 * @return bool Whether current method is taxable.
+	 */
+	public function isTaxable();
+
+	/**
 	 * @return array List of options to display on Shipping settings page.
 	 */
 	public function getOptions();
