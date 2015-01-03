@@ -60,6 +60,15 @@ abstract class jigoshop_shipping_method
 		return $this->rates;
 	}
 
+	/**
+	 * @internal
+	 * @return string Tax status of the method.
+	 */
+	public function __get_tax_status()
+	{
+		return $this->tax_status;
+	}
+
 	public abstract function calculate_shipping();
 
 	/**

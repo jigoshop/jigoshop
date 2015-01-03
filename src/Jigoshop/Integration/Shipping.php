@@ -234,4 +234,12 @@ class Shipping implements MultipleMethod
 			$this->shipping->set_selected_service_index($this->rate);
 		}
 	}
+
+	/**
+	 * @return bool Whether current method is taxable.
+	 */
+	public function isTaxable()
+	{
+		return $this->shipping->__get_tax_status() == 'taxable';
+	}
 }
