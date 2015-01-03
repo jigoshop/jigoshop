@@ -20,6 +20,10 @@ parameters:
       class: \Jigoshop\Widget\RandomProducts
       calls:
         - ['setProductService', 'jigoshop.service.product']
+    recent_products:
+      class: \Jigoshop\Widget\RecentProducts
+      calls:
+        - ['setProductService', 'jigoshop.service.product']
     top_rated:
       class: \Jigoshop\Widget\TopRated
       calls:
