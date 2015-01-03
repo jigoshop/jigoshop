@@ -115,7 +115,6 @@ class ProductService implements ProductServiceInterface
 
 	/**
 	 * Finds items specified using WordPress query.
-	 * TODO: Replace \WP_Query in order to make Jigoshop testable
 	 *
 	 * @param $query \WP_Query WordPress query.
 	 * @return array Collection of found items.
@@ -125,7 +124,7 @@ class ProductService implements ProductServiceInterface
 		$results = $query->get_posts();
 		$products = array();
 
-		// TODO: Maybe it is good to optimize this to fetch all found products data at once?
+		// TODO: Maybe it is good to optimize this to fetch all found products at once?
 		foreach ($results as $product) {
 			$products[] = $this->findForPost($product);
 		}
@@ -244,7 +243,6 @@ class ProductService implements ProductServiceInterface
 	 */
 	public function findOutOfStock($number)
 	{
-		// TODO: Replace \WP_Query in order to make Jigoshop testable
 		$query = new \WP_Query(array(
 			'post_type' => Types::PRODUCT,
 			'post_status' => 'publish',
@@ -273,7 +271,6 @@ class ProductService implements ProductServiceInterface
 	 */
 	public function findLowStock($threshold, $number)
 	{
-		// TODO: Replace \WP_Query in order to make Jigoshop testable
 		$query = new \WP_Query(array(
 			'post_type' => Types::PRODUCT,
 			'post_status' => 'publish',

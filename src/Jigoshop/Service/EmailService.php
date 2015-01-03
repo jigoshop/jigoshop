@@ -81,7 +81,7 @@ class EmailService implements EmailServiceInterface
 		$results = $query->get_posts();
 		$emails = array();
 
-		// TODO: Maybe it is good to optimize this to fetch all found products data at once?
+		// TODO: Maybe it is good to optimize this to fetch all found emails at once?
 		foreach ($results as $email) {
 			$emails[] = $this->findForPost($email);
 		}

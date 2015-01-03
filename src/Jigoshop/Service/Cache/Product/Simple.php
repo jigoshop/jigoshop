@@ -18,6 +18,10 @@ class Simple implements ProductServiceInterface
 	private $objects = array();
 	private $queries = array();
 	private $states = array();
+	private $thumbnails = array();
+	private $attributes;
+	private $productAttributes = array();
+	private $attributesCount;
 
 	/** @var \Jigoshop\Service\ProductServiceInterface */
 	private $service;
@@ -106,6 +110,8 @@ class Simple implements ProductServiceInterface
 	{
 		$this->queries = array();
 		$this->objects[$object->getId()] = $object;
+		unset($this->thumbnails[$object->getId()]);
+		unset($this->productAttributes[$object->getId()]);
 		$this->service->save($object);
 	}
 
@@ -143,8 +149,11 @@ class Simple implements ProductServiceInterface
 	 */
 	public function getThumbnails(Product $product, $size = Options::IMAGE_THUMBNAIL)
 	{
-		// TODO: Implement getThumbnails() method.
-		return $this->service->getThumbnails($product);
+		if (!isset($this->thumbnails[$product->getId()])) {
+			$this->thumbnails[$product->getId()] = $this->service->getThumbnails($product);
+		}
+
+		return $this->thumbnails[$product->getId()];
 	}
 
 	/**
@@ -171,8 +180,11 @@ class Simple implements ProductServiceInterface
 	 */
 	public function findAllAttributes()
 	{
-		// TODO: Implement findAllAttributes() method.
-		return $this->service->findAllAttributes();
+		if ($this->attributes === null) {
+			$this->attributes = $this->service->findAllAttributes();
+		}
+
+		return $this->attributes;
 	}
 
 	/**
@@ -183,8 +195,11 @@ class Simple implements ProductServiceInterface
 	 */
 	public function getAttributes($productId)
 	{
-		// TODO: Implement getAttributes() method.
-		return $this->service->getAttributes($productId);
+		if (!isset($this->productAttributes[$productId])) {
+			$this->productAttributes[$productId] = $this->service->getAttributes($productId);
+		}
+
+		return $this->productAttributes[$productId];
 	}
 
 	/**
@@ -196,8 +211,11 @@ class Simple implements ProductServiceInterface
 	 */
 	public function getAttribute($id)
 	{
-		// TODO: Implement getAttribute() method.
-		return $this->service->getAttribute($id);
+		if (!isset($this->attributes[$id])) {
+			$this->attributes[$id] = $this->service->getAttribute($id);
+		}
+
+		return $this->attributes[$id];
 	}
 
 	/**
@@ -219,8 +237,9 @@ class Simple implements ProductServiceInterface
 	 */
 	public function saveAttribute(Product\Attribute $attribute)
 	{
-		// TODO: Implement saveAttribute() method.
-		return $this->service->saveAttribute($attribute);
+		$result = $this->service->saveAttribute($attribute);
+		$this->attributes[$attribute->getId()] = $attribute;
+		return $result;
 	}
 
 	/**
@@ -230,7 +249,7 @@ class Simple implements ProductServiceInterface
 	 */
 	public function removeAttribute($id)
 	{
-		// TODO: Implement removeAttribute() method.
+		unset($this->attributes[$id]);
 		return $this->service->removeAttribute($id);
 	}
 
@@ -252,7 +271,14 @@ class Simple implements ProductServiceInterface
 	 */
 	public function countAttributes()
 	{
-		// TODO: Implement countAttributes() method.
-		return $this->service->countAttributes();
+		if (!empty($this->attributes)) {
+			return count($this->attributes);
+		}
+
+		if ($this->attributesCount === null) {
+			$this->attributesCount = $this->service->countAttributes();
+		}
+
+		return $this->attributesCount;
 	}
 }

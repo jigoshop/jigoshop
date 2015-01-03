@@ -58,7 +58,7 @@ class Simple implements VariableServiceInterface
 	 */
 	public function removeVariation($variation)
 	{
-		// TODO: Implement removeVariation() method.
+		unset($this->objects[$variation->getId()]);
 		$this->service->removeVariation($variation);
 	}
 }

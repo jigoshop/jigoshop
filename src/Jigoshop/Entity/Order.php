@@ -61,6 +61,8 @@ class Order implements EntityInterface, OrderInterface
 	/** @var float */
 	private $totalTax;
 	/** @var float */
+	private $totalCombinedTax;
+	/** @var float */
 	private $shippingPrice = 0.0;
 	/** @var string */
 	private $status = Status::PENDING;
@@ -80,6 +82,7 @@ class Order implements EntityInterface, OrderInterface
 		$this->createdAt = new \DateTime();
 		$this->updatedAt = new \DateTime();
 		$this->totalTax = null;
+		$this->totalCombinedTax = null;
 
 		foreach ($taxClasses as $class) {
 			$this->tax[$class['class']] = 0.0;
@@ -297,6 +300,7 @@ class Order implements EntityInterface, OrderInterface
 		$this->wp->doAction('jigoshop\order\add_item', $item, $this);
 		$this->total += $item->getCost() + $item->getTax();
 		$this->totalTax = null;
+		$this->totalCombinedTax = null;
 	}
 
 	/**
@@ -314,6 +318,7 @@ class Order implements EntityInterface, OrderInterface
 			$this->subtotal -= $item->getCost();
 			$this->productSubtotal -= $item->getCost();
 			$this->totalTax = null;
+			$this->totalCombinedTax = null;
 			unset($this->items[$key]);
 			return $item;
 		}
@@ -367,6 +372,7 @@ class Order implements EntityInterface, OrderInterface
 		$this->discount = 0.0;
 		$this->tax = array_map(function() { return 0.0; }, $this->tax);
 		$this->totalTax = null;
+		$this->totalCombinedTax = null;
 	}
 
 	/**
@@ -421,6 +427,7 @@ class Order implements EntityInterface, OrderInterface
 		$this->subtotal += $this->shippingPrice;
 		$this->shippingTax = $this->wp->applyFilters('jigoshop\order\shipping_tax', $this->shippingTax, $method, $this);
 		$this->total += $this->wp->applyFilters('jigoshop\order\shipping_price', $this->shippingPrice, $method, $this);
+		$this->totalCombinedTax = null;
 	}
 
 	/**
@@ -444,6 +451,7 @@ class Order implements EntityInterface, OrderInterface
 		$this->shippingMethodRate = null;
 		$this->shippingPrice = 0.0;
 		$this->shippingTax = array_map(function() { return 0.0; }, $this->shippingTax);
+		$this->totalCombinedTax = null;
 	}
 
 	/**
@@ -585,6 +593,7 @@ class Order implements EntityInterface, OrderInterface
 	public function setTax($tax)
 	{
 		$this->totalTax = null;
+		$this->totalCombinedTax = null;
 		$this->tax = $tax;
 	}
 
@@ -596,6 +605,7 @@ class Order implements EntityInterface, OrderInterface
 	public function updateTaxes(array $tax)
 	{
 		$this->totalTax = null;
+		$this->totalCombinedTax = null;
 		foreach ($tax as $class => $value) {
 			$this->tax[$class] += $value;
 		}
@@ -614,6 +624,7 @@ class Order implements EntityInterface, OrderInterface
 	 */
 	public function setShippingTax($shippingTax)
 	{
+		$this->totalCombinedTax = null;
 		$this->shippingTax = $shippingTax;
 	}
 
@@ -651,8 +662,11 @@ class Order implements EntityInterface, OrderInterface
 	 */
 	public function getTotalCombinedTax()
 	{
-		// TODO: Speed improvement
-		return array_sum($this->getCombinedTax());
+		if ($this->totalCombinedTax === null) {
+			$this->totalCombinedTax = array_sum($this->getCombinedTax());
+		}
+
+		return $this->totalCombinedTax;
 	}
 
 	/**

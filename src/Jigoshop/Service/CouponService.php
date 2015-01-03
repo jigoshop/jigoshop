@@ -74,7 +74,7 @@ class CouponService implements CouponServiceInterface
 		$results = $query->get_posts();
 		$coupons = array();
 
-		// TODO: Maybe it is good to optimize this to fetch all found products data at once?
+		// TODO: Maybe it is good to optimize this to fetch all found coupons at once?
 		foreach ($results as $coupon) {
 			$coupons[] = $this->findForPost($coupon);
 		}

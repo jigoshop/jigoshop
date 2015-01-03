@@ -64,7 +64,6 @@ class OrderService implements OrderServiceInterface
 
 	/**
 	 * Finds order specified using WordPress query.
-	 * TODO: Replace \WP_Query in order to make Jigoshop testable
 	 *
 	 * @param $query \WP_Query WordPress query.
 	 * @return array Collection of found orders
@@ -76,7 +75,7 @@ class OrderService implements OrderServiceInterface
 
 		$results = $query->get_posts();
 		$that = $this;
-		// TODO: Maybe it is good to optimize this to fetch all found orders data at once?
+		// TODO: Maybe it is good to optimize this to fetch all found orders at once?
 		$orders = array_map(function ($order) use ($that){
 			return $that->find($order);
 		}, $results);

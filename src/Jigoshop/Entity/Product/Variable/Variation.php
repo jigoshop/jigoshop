@@ -20,6 +20,8 @@ class Variation
 	private $product;
 	/** @var array */
 	private $attributes = array();
+	/** @var string Cache for title */
+	private $title;
 
 	/**
 	 * @return int
@@ -38,21 +40,24 @@ class Variation
 	}
 
 	/**
-	 * TODO: Speed improvements.
 	 * @return string Variation title.
 	 */
 	public function getTitle()
 	{
 		// TODO: Title changing description in docs
-		return sprintf(_x('%s (%s)', 'product_variation', 'jigoshop'), $this->parent->getName(), join(', ', array_filter(array_map(function($item){
-			/** @var $item Attribute */
-			$value = $item->getValue();
-			if (is_numeric($value) && $value > 0) {
-				return sprintf(_x('%s: %s', 'product_variation', 'jigoshop'), $item->getAttribute()->getLabel(), $item->getAttribute()->getOption($value)->getLabel());
-			}
+		if ($this->title === null) {
+			$this->title = sprintf(_x('%s (%s)', 'product_variation', 'jigoshop'), $this->parent->getName(), join(', ', array_filter(array_map(function ($item){
+				/** @var $item Attribute */
+				$value = $item->getValue();
+				if (is_numeric($value) && $value > 0) {
+					return sprintf(_x('%s: %s', 'product_variation', 'jigoshop'), $item->getAttribute()->getLabel(), $item->getAttribute()->getOption($value)->getLabel());
+				}
 
-			return '';
-		}, $this->attributes))));
+				return '';
+			}, $this->attributes))));
+		}
+
+		return $this->title;
 	}
 
 	/**
@@ -68,6 +73,7 @@ class Variation
 	 */
 	public function setParent($parent)
 	{
+		$this->title = null;
 		$this->parent = $parent;
 	}
 
@@ -92,6 +98,7 @@ class Variation
 	 */
 	public function addAttribute($attribute)
 	{
+		$this->title = null;
 		$attribute->setVariation($this);
 		$this->attributes[$attribute->getAttribute()->getId()] = $attribute;
 	}
