@@ -16,6 +16,10 @@ parameters:
         - ['setProductService', 'jigoshop.service.product']
     product_search:
       class: \Jigoshop\Widget\ProductSearch
+    top_rated:
+      class: \Jigoshop\Widget\TopRated
+      calls:
+        - ['setProductService', 'jigoshop.service.product']
 services:
   wpal:
     class: WPAL\Wordpress
