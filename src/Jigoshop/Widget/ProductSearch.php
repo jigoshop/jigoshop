@@ -8,10 +8,6 @@ class ProductSearch extends \WP_Widget
 {
 	const ID = 'jigoshop_product_search';
 
-	/**
-	 * Constructor
-	 * Setup the widget with the available options
-	 */
 	public function __construct()
 	{
 		$options = array(
@@ -24,7 +20,6 @@ class ProductSearch extends \WP_Widget
 
 		// Add own hidden fields to filter
 //		add_filter('jigoshop_get_hidden_fields', array($this, 'hiddenFields'));
-
 	}
 
 	public function hiddenFields($fields)

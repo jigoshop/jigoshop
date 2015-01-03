@@ -13,6 +13,6 @@
 			<input type="checkbox" name="rememberme" value="forever"> <?php _e('Remember me', 'jigoshop'); ?>
 		</label>
 	</div>
-	<button type="submit" name="wp-submit" value="Log in" class="btn btn-default"><?php _e('Log in', 'jigoshop'); ?></button>
+	<button type="submit" name="wp-submit" value="<?php _e('Log in', 'jigoshop'); ?>" class="btn btn-default"><?php _e('Log in', 'jigoshop'); ?></button>
 	<input type="hidden" value="<?php echo get_permalink(); ?>" name="redirect_to">
 </form>

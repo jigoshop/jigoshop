@@ -20,6 +20,10 @@ parameters:
       class: \Jigoshop\Widget\TopRated
       calls:
         - ['setProductService', 'jigoshop.service.product']
+    user_login:
+      class: \Jigoshop\Widget\UserLogin
+      calls:
+        - ['setOptions', 'jigoshop.options']
 services:
   wpal:
     class: WPAL\Wordpress
