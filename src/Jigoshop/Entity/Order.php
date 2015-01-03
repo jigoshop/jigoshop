@@ -294,8 +294,8 @@ class Order implements EntityInterface, OrderInterface
 		$this->items[$item->getKey()] = $item;
 		$this->productSubtotal += $item->getCost();
 		$this->subtotal += $item->getCost();
-		$this->total += $item->getCost() + $item->getTax();
 		$this->wp->doAction('jigoshop\order\add_item', $item, $this);
+		$this->total += $item->getCost() + $item->getTax();
 		$this->totalTax = null;
 	}
 
@@ -309,11 +309,11 @@ class Order implements EntityInterface, OrderInterface
 			// TODO: Support for "Price includes tax"
 			/** @var Item $item */
 			$item = $this->items[$key];
+			$this->wp->doAction('jigoshop\order\remove_item', $item, $this);
 			$this->total -= $item->getCost() + $item->getTax();
 			$this->subtotal -= $item->getCost();
 			$this->productSubtotal -= $item->getCost();
 			$this->totalTax = null;
-			$this->wp->doAction('jigoshop\order\remove_item', $item, $this);
 			unset($this->items[$key]);
 			return $item;
 		}
@@ -419,9 +419,8 @@ class Order implements EntityInterface, OrderInterface
 		$this->shippingMethod = $method;
 		$this->shippingPrice = $method->calculate($this);
 		$this->subtotal += $this->shippingPrice;
-		$totalPrice = $this->wp->applyFilters('jigoshop\order\shipping_price', $this->shippingPrice, $method, $this);
-		$this->total += $totalPrice;
 		$this->shippingTax = $this->wp->applyFilters('jigoshop\order\shipping_tax', $this->shippingTax, $method, $this);
+		$this->total += $this->wp->applyFilters('jigoshop\order\shipping_price', $this->shippingPrice, $method, $this);
 	}
 
 	/**

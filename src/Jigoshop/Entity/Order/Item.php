@@ -101,8 +101,12 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 	public function setQuantity($quantity)
 	{
 		if ($quantity < 0) {
+			if (WP_DEBUG) {
+				throw new Exception(__('Item quantity cannot be below 0', 'jigoshop'));
+			}
+
 			Registry::getInstance(JIGOSHOP_LOGGER)->addCritical('Item quantity cannot be below 0');
-			throw new Exception(__('Item quantity cannot be below 0', 'jigoshop'));
+			$quantity = 0;
 		}
 
 		$this->quantity = $quantity;
@@ -129,7 +133,7 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 	 */
 	public function getTax()
 	{
-		return $this->tax * $this->quantity;
+		return $this->tax;
 	}
 
 	/**

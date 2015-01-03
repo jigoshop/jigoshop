@@ -7,6 +7,7 @@ use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\Coupon;
 use Jigoshop\Entity\Customer;
+use Jigoshop\Entity\Order;
 use Jigoshop\Entity\Order\Status;
 use Jigoshop\Exception;
 use Jigoshop\Frontend\Pages;
@@ -367,8 +368,8 @@ class Cart implements PageInterface
 
 			// TODO: Support for "Prices includes tax"
 			$price = $this->options->get('tax.price_tax') == 'with_tax' ? $item->getPrice() + $item->getTax() / $item->getQuantity() : $item->getPrice();
-
 			$response = $this->getAjaxCartResponse($cart);
+
 			// Add some additional fields
 			$response['item_price'] = $price;
 			$response['item_subtotal'] = $price * $item->getQuantity();
@@ -397,6 +398,7 @@ class Cart implements PageInterface
 			switch ($_REQUEST['action']) {
 				case 'cancel_order':
 					if ($this->wp->getHelpers()->verifyNonce($_REQUEST['nonce'], 'cancel_order')) {
+						/** @var Order $order */
 						$order = $this->orderService->find((int)$_REQUEST['id']);
 
 						if ($order->getKey() != $_REQUEST['key']) {
