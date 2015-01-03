@@ -58,7 +58,7 @@ class TaxesTab implements TabInterface
 			$scripts->localize('jigoshop.admin.settings.taxes', 'jigoshop_admin_taxes', array(
 				'new_class' => Render::get('admin/settings/tax/class', array('class' => array('label' => '', 'class' => ''))),
 				'new_rule' => Render::get('admin/settings/tax/rule', array(
-					'rule' => array('id' => 0, 'label' => '', 'class' => '', 'is_compound' => false, 'rate' => '', 'country' => '', 'states' => array(), 'postcodes' => array()),
+					'rule' => array('id' => '', 'label' => '', 'class' => '', 'is_compound' => false, 'rate' => '', 'country' => '', 'states' => array(), 'postcodes' => array()),
 					'classes' => $classes,
 					'countries' => $countries,
 				)),
@@ -227,10 +227,16 @@ class TaxesTab implements TabInterface
 
 		$this->taxService->removeAllExcept($settings['rules']['id']);
 
+		$currentKey = 0;
 		foreach ($settings['rules']['id'] as $key => $id) {
+			if (empty($id) && $settings['rules']['compound'][$key+1] == 'on') {
+				$currentKey++;
+			}
+
 			$this->taxService->save(array(
 				'id' => $id,
 				'rate' => $settings['rules']['rate'][$key],
+				'is_compound' => $settings['rules']['compound'][$key+$currentKey] == 'on',
 				'label' => $settings['rules']['label'][$key],
 				'class' => $settings['rules']['class'][$key],
 				'country' => $settings['rules']['country'][$key],

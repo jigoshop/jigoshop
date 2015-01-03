@@ -55,6 +55,7 @@ class TaxService implements TaxServiceInterface
 
 			foreach ($results as $result) {
 				$tax[$result->tax_class] = array(
+					'label' => $result->label,
 					'rate' => (float)$result->rate,
 					'is_compound' => $result->is_compound,
 					'class' => $result->tax_class,
@@ -75,6 +76,7 @@ class TaxService implements TaxServiceInterface
 			foreach ($order->getTaxDefinitions() as $class => $definition) {
 				$data = array(
 					'order_id' => $order->getId(),
+					'label' => $definition['label'],
 					'tax_class' => $class,
 					'rate' => $definition['rate'],
 					'is_compound' => $definition['is_compound'],
@@ -147,6 +149,9 @@ class TaxService implements TaxServiceInterface
 	{
 		$tax = array();
 		$definitions = $order->getTaxDefinitions();
+		$cost = $item->getCost();
+		$standard = array();
+		$compound = array();
 
 		foreach ($item->getTaxClasses() as $class) {
 			if (!isset($definitions[$class])) {
@@ -155,11 +160,22 @@ class TaxService implements TaxServiceInterface
 				continue;
 			}
 
-			$definition = $definitions[$class];
+			$standard[$class] = $definitions[$class];
 
-			// TODO: Support for compound taxes
+			if ($definitions['__compound__'.$class]) {
+				$compound[$class] = $definitions['__compound__'.$class];
+			}
+		}
+
+		foreach ($standard as $class => $definition) {
 			// TODO: Support for prices included in tax
-			$tax[$class] = $definition['rate'] * $item->getCost() / 100;
+			$tax[$class] = $definition['rate'] * $cost / 100;
+		}
+
+		$cost += array_sum($tax);
+		foreach ($compound as $class => $definition) {
+			// TODO: Support for prices included in tax
+			$tax['__compound__'.$class] += $definition['rate'] * $cost / 100;
 		}
 
 		return array_filter($tax);
@@ -186,6 +202,8 @@ class TaxService implements TaxServiceInterface
 	{
 		$tax = array();
 		$definitions = $order->getTaxDefinitions();
+		$standard = array();
+		$compound = array();
 
 		foreach ($method->getTaxClasses() as $class) {
 			if (!isset($definitions[$class])) {
@@ -194,11 +212,22 @@ class TaxService implements TaxServiceInterface
 				continue;
 			}
 
-			$definition = $definitions[$class];
+			$standard[$class] = $definitions[$class];
 
-			// TODO: Support for compound taxes
+			if ($definitions['__compound__'.$class]) {
+				$compound[$class] = $definitions['__compound__'.$class];
+			}
+		}
+
+		foreach ($standard as $class => $definition) {
 			// TODO: Support for prices included in tax
 			$tax[$class] = $definition['rate'] * $price / 100;
+		}
+
+		$price += array_sum($tax);
+		foreach ($compound as $class => $definition) {
+			// TODO: Support for prices included in tax
+			$tax['__compound__'.$class] += $definition['rate'] * $price / 100;
 		}
 
 		return array_filter($tax);
@@ -212,7 +241,12 @@ class TaxService implements TaxServiceInterface
 	{
 		$definitions = array();
 		foreach ($this->taxClasses as $class) {
-			$definitions[$class] = $this->getDefinition($class, $order->getCustomer()->getTaxAddress());
+			$definition = $this->getDefinition($class, $order->getCustomer()->getTaxAddress());
+			$definitions[$class] = $definition['standard'];
+
+			if (isset($definition['compound'])) {
+				$definitions['__compound__'.$class] = $definition['compound'];
+			}
 		}
 
 		return $definitions;
@@ -227,6 +261,7 @@ class TaxService implements TaxServiceInterface
 	 */
 	public function getDefinition($taxClass, Customer\Address $address)
 	{
+		$taxClass = str_replace('__compound__', '', $taxClass);
 		// TODO: Remember downloaded data for each address separately
 		// TODO: Probably it will be good idea to update getRules() call to fetch and format only proper rules for the customer
 		$rules = array_filter($this->getRules(), function($item) use ($taxClass, $address) {
@@ -237,7 +272,9 @@ class TaxService implements TaxServiceInterface
 			;
 		});
 
-		usort($rules, function($a, $b){
+		$standard = array_filter($rules, function($rule){ return !$rule['is_compound']; });
+		$compound = array_filter($rules, function($rule){ return $rule['is_compound']; });
+		$comparator = function($a, $b){
 			$aRate = 0;
 			$bRate = 0;
 
@@ -262,9 +299,12 @@ class TaxService implements TaxServiceInterface
 			}
 
 			return $bRate - $aRate;
-		});
+		};
 
-		return array_shift($rules);
+		usort($standard, $comparator);
+		usort($compound, $comparator);
+
+		return array('standard' => array_shift($standard), 'compound' => array_shift($compound));
 	}
 
 	/**
@@ -283,18 +323,18 @@ class TaxService implements TaxServiceInterface
 	 */
 	public function getLabel($taxClass, $order)
 	{
-		if (!in_array($taxClass, $this->taxClasses)) {
+		$definitions = $order->getTaxDefinitions();
+
+		if (!isset($definitions[$taxClass])) {
+			$definitions[$taxClass] = $this->getDefinition($taxClass, $order->getCustomer()->getTaxAddress());
+		}
+
+		if (!isset($definitions[$taxClass])) {
 			if (WP_DEBUG) {
 				throw new Exception(sprintf(__('No tax class: %s', 'jigoshop'), $taxClass));
 			}
 
 			return $taxClass;
-		}
-
-		$definitions = $order->getTaxDefinitions();
-
-		if (!isset($definitions[$taxClass])) {
-			$definitions[$taxClass] = $this->getDefinition($taxClass, $order->getCustomer()->getTaxAddress());
 		}
 
 		$label = !empty($definitions[$taxClass]['label']) ? $definitions[$taxClass]['label'] : $taxClass;
@@ -396,21 +436,19 @@ class TaxService implements TaxServiceInterface
 	public function save(array $rule)
 	{
 		$wpdb = $this->wp->getWPDB();
+		$data = array(
+			'class' => $rule['class'],
+			'label' => $rule['label'],
+			'rate' => (float)$rule['rate'],
+			'is_compound' => $rule['is_compound'],
+		);
 
 		// Process main rule data
-		if ($rule['id'] == '0') {
-			$wpdb->insert($wpdb->prefix.'jigoshop_tax', array(
-				'class' => $rule['class'],
-				'label' => $rule['label'],
-				'rate' => (float)$rule['rate'],
-			));
+		if ($rule['id'] === '') {
+			$wpdb->insert($wpdb->prefix.'jigoshop_tax', $data);
 			$rule['id'] = $wpdb->insert_id;
 		} else {
-			$wpdb->update($wpdb->prefix.'jigoshop_tax', array(
-				'class' => $rule['class'],
-				'label' => $rule['label'],
-				'rate' => (float)$rule['rate'],
-			), array(
+			$wpdb->update($wpdb->prefix.'jigoshop_tax', $data, array(
 				'id' => $rule['id'],
 			));
 		}

@@ -248,8 +248,8 @@ class Orders implements Tool
 						}
 
 						$wpdb->query($wpdb->prepare(
-							"INSERT INTO {$wpdb->prefix}jigoshop_order_tax (order_id, tax_class, rate, is_compound) VALUES (%d, %s, %d, %d)",
-							array($order->ID, 'standard', $globalTaxRate/count($data), false)
+							"INSERT INTO {$wpdb->prefix}jigoshop_order_tax (order_id, label, tax_class, rate, is_compound) VALUES (%d, %s, %s, %d, %d)",
+							array($order->ID, __('Standard', 'jigoshop'), 'standard', $globalTaxRate/count($data), false)
 						));
 						break;
 				}

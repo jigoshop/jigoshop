@@ -13,7 +13,7 @@ class Cart extends \WP_Widget
 
 	/** @var Pages */
 	private static $pages;
-	/** @var \Jigoshop\Entity\Cart */
+	/** @var CartServiceInterface */
 	private static $cart;
 	/** @var Options */
 	private static $options;
@@ -41,7 +41,7 @@ class Cart extends \WP_Widget
 	 */
 	public static function setCart($cart)
 	{
-		self::$cart = $cart->getCurrent();
+		self::$cart = $cart;
 	}
 
 	/**
@@ -75,7 +75,7 @@ class Cart extends \WP_Widget
 
 		Render::output('widget/cart/widget', array_merge($args, array(
 			'title' => $title,
-			'cart' => self::$cart,
+			'cart' => self::$cart->getCurrent(),
 			'cart_url' => get_permalink(self::$options->getPageId(\Jigoshop\Frontend\Pages::CART)),
 			'checkout_url' => get_permalink(self::$options->getPageId(\Jigoshop\Frontend\Pages::CHECKOUT)),
 		)));

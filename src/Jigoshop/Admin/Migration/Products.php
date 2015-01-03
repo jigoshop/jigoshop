@@ -240,7 +240,6 @@ class Products implements Tool
 		foreach ($productIds as $id) {
 			foreach ($productAttributes[$id]['variations'] as $taxonomy => $value) {
 				if (!isset($attributes[$taxonomy])) {
-					// TODO: Log error?
 					continue;
 				}
 

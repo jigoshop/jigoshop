@@ -159,6 +159,7 @@ class Installer
 		$query = "
 			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}jigoshop_order_tax (
 				order_id BIGINT(20) UNSIGNED,
+				label VARCHAR(255) NOT NULL,
 				tax_class VARCHAR(255) NOT NULL,
 				rate decimal(9,4) NOT NULL,
 				is_compound INT NOT NULL DEFAULT 0,
