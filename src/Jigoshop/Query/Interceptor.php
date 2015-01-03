@@ -155,7 +155,7 @@ class Interceptor
 	private function getProductListQuery($request)
 	{
 		$options = $this->options->get('shopping');
-		return array(
+		$result = array(
 			'post_type' => Types::PRODUCT,
 			'post_status' => 'publish',
 			'ignore_sticky_posts' => true,
@@ -171,5 +171,11 @@ class Interceptor
 				),
 			),
 		);
+
+		if (isset($request['s'])) {
+			$result['s'] = $request['s'];
+		}
+
+		return $result;
 	}
 }
