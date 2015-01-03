@@ -136,6 +136,7 @@ class Shipping implements MultipleMethod
 	 */
 	public function calculate(OrderInterface $order)
 	{
+		\jigoshop_cart::__fillCart($order);
 		$this->shipping->calculate_shipping();
 
 		if ($this->rate !== null) {

@@ -60,13 +60,6 @@ class Cart extends Order
 				$this->setCustomer($customer);
 			}
 
-			if (isset($data['shipping_method'])) {
-				$this->setShippingMethod($this->shippingService->findForState($data['shipping_method']));
-			}
-			if (isset($data['shipping_method_rate'])) {
-				$this->setShippingMethodRate($data['shipping_method_rate']);
-			}
-
 			$items = unserialize($data['items']);
 //			$taxIncludedInPrice = $this->options->get('tax.included');
 
@@ -91,6 +84,13 @@ class Cart extends Order
 
 					$this->addItem($item);
 				}
+			}
+
+			if (isset($data['shipping_method'])) {
+				$this->setShippingMethod($this->shippingService->findForState($data['shipping_method']));
+			}
+			if (isset($data['shipping_method_rate'])) {
+				$this->setShippingMethodRate($data['shipping_method_rate']);
 			}
 
 			if (isset($data['coupons'])) {

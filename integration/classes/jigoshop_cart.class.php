@@ -61,39 +61,40 @@ class jigoshop_cart
 //		self::$cart_contents = (array)jigoshop_session::instance()->cart;
 	}
 
-	private static function calculate_cart_total()
+	/**
+	 * @internal This method is used in integration layer to properly fill cart data.
+	 * @param \Jigoshop\Entity\Order $order Order/cart to fill data from.
+	 */
+	public static function __fillCart(\Jigoshop\Entity\Order $order)
 	{
-		// New cart keeps all values synchronized all the time
-		$cart = Integration::getCart();
-
-		self::$total = $cart->getTotal();
-		self::$shipping_total = $cart->getShippingPrice();
-		self::$shipping_tax_total = array_sum($cart->getShippingTax());
-		self::$discount_total = $cart->getDiscount();
-		self::$subtotal = $cart->getSubtotal();
-		self::$subtotal_ex_tax = $cart->getSubtotal();
-		self::$applied_coupons = $cart->getCoupons();
+		self::$total = $order->getTotal();
+		self::$shipping_total = $order->getShippingPrice();
+		self::$shipping_tax_total = array_sum($order->getShippingTax());
+		self::$discount_total = $order->getDiscount();
+		self::$subtotal = $order->getSubtotal();
+		self::$subtotal_ex_tax = $order->getSubtotal();
+		self::$applied_coupons = $order->getCoupons();
 		self::$cart_contents_total_ex_tax = array_sum(array_map(
 			function($item){
 				/** @var $item \Jigoshop\Entity\Order\Item */
 				return $item->getCost();
 			},
-			$cart->getItems()
+			$order->getItems()
 		));
-		self::$cart_contents_total = self::$cart_contents_total_ex_tax + $cart->getTotalTax();
+		self::$cart_contents_total = self::$cart_contents_total_ex_tax + $order->getTotalTax();
 		self::$cart_contents_count = array_sum(array_map(
 			function($item){
 				/** @var $item \Jigoshop\Entity\Order\Item */
 				return $item->getQuantity();
 			},
-			$cart->getItems()
+			$order->getItems()
 		));
 		self::$cart_contents_weight = array_sum(array_map(
 			function($item){
 				/** @var $item \Jigoshop\Entity\Order\Item */
 				return $item->getQuantity() * $item->getProduct()->getSize()->getWeight();
 			},
-			$cart->getItems()
+			$order->getItems()
 		));
 		self::$cart_dl_count = array_sum(array_map(
 			function($item){
@@ -101,7 +102,7 @@ class jigoshop_cart
 				return $item->getQuantity();
 			},
 			array_filter(
-				$cart->getItems(),
+				$order->getItems(),
 				function($item){
 					/** @var $item \Jigoshop\Entity\Order\Item */
 					return $item->getType() == \Jigoshop\Entity\Product\Downloadable::TYPE;
@@ -114,13 +115,20 @@ class jigoshop_cart
 				return $item->getCost();
 			},
 			array_filter(
-				$cart->getItems(),
+				$order->getItems(),
 				function($item){
 					/** @var $item \Jigoshop\Entity\Order\Item */
 					return $item->getType() != \Jigoshop\Entity\Product\Downloadable::TYPE;
 				}
 			)
 		));
+	}
+
+	private static function calculate_cart_total()
+	{
+		// New cart keeps all values synchronized all the time
+		$cart = Integration::getCart();
+		self::__fillCart($cart);
 	}
 
 	private static function reset_totals()
