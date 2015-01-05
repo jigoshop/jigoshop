@@ -58,7 +58,11 @@ class Options implements Tool
 			}
 		}
 
-		// Migrate tax rules
+		// Migrate tax rates
+		if (!is_array($options['jigoshop_tax_rates'])) {
+			$options['jigoshop_tax_rates'] = array();
+		}
+
 		$options['jigoshop_tax_rates'] = array_values($options['jigoshop_tax_rates']);
 		for ($i = 0, $endI = count($options['jigoshop_tax_rates']); $i < $endI;) {
 			$rateDate = array(
