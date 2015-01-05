@@ -4,6 +4,7 @@ namespace Jigoshop\Admin\Settings;
 
 use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
+use Jigoshop\Entity\Product\Attributes\StockStatus;
 use WPAL\Wordpress;
 
 /**
@@ -23,6 +24,8 @@ class ProductsTab implements TabInterface
 	private $weightUnit;
 	/** @var array */
 	private $dimensionUnit;
+	/** @var array */
+	private $stockStatuses;
 
 	public function __construct(Wordpress $wp, Options $options, Messages $messages)
 	{
@@ -36,6 +39,10 @@ class ProductsTab implements TabInterface
 		$this->dimensionUnit = array(
 			'cm' => __('Centimeters', 'jigoshop'),
 			'in' => __('Inches', 'jigoshop'),
+		);
+		$this->stockStatuses = array(
+			StockStatus::IN_STOCK => __('In stock', 'jigoshop'),
+			StockStatus::OUT_STOCK => __('Out of stock', 'jigoshop'),
 		);
 	}
 
@@ -91,6 +98,14 @@ class ProductsTab implements TabInterface
 						'description' => __("You can always disable management per item, it's just default value.", 'jigoshop'),
 						'type' => 'checkbox',
 						'checked' => $this->options['manage_stock'],
+					),
+					array(
+						'name' => '[stock_status]',
+						'title' => __('Stock status', 'jigoshop'),
+						'description' => __('This option allows you to change default stock status for new products.', 'jigoshop'),
+						'type' => 'select',
+						'value' => $this->options['stock_status'],
+						'options' => $this->stockStatuses,
 					),
 					array(
 						'name' => '[show_stock]',
@@ -253,6 +268,10 @@ class ProductsTab implements TabInterface
 		if (!in_array($settings['dimensions_unit'], array_keys($this->dimensionUnit))) {
 			$this->messages->addWarning(sprintf(__('Invalid dimensions unit: "%s". Value set to %s.', 'jigoshop'), $settings['dimensions_unit'], $this->dimensionUnit['cm']));
 			$settings['dimensions_unit'] = 'cm';
+		}
+		if (!in_array($settings['stock_status'], array_keys($this->stockStatuses))) {
+			$this->messages->addWarning(sprintf(__('Invalid default stock status: "%s". Value set to %s.', 'jigoshop'), $settings['stock_status'], $this->stockStatuses[StockStatus::IN_STOCK]));
+			$settings['stock_status'] = StockStatus::IN_STOCK;
 		}
 
 		$settings['manage_stock'] = $settings['manage_stock'] == 'on';

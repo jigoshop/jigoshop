@@ -71,6 +71,7 @@ class Product implements EntityFactoryInterface
 		if ($instance instanceof Purchasable) {
 			/** @var \Jigoshop\Entity\Product\Purchasable $instance */
 			$instance->getStock()->setManage($this->options->get('products.manage_stock'));
+			$instance->getStock()->setStatus($this->options->get('products.stock_status'));
 		}
 
 		$instance->setTaxable($this->options->get('tax.defaults.taxable'));

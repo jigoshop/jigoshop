@@ -64,7 +64,7 @@ class Options
 		'products' => array(
 			'weight_unit' => 'kg',
 			'dimensions_unit' => 'cm',
-			'manage_stock' => true,
+			'manage_stock' => false,
 			'show_stock' => true,
 			'low_stock_threshold' => 2,
 			'hide_out_of_stock' => false,
@@ -95,9 +95,8 @@ class Options
 			),
 		),
 		'tax' => array(
-			'before_coupons' => false,
 			'included' => false,
-			'price_tax' => 'with_tax',
+			'price_tax' => 'without_tax',
 			'shipping' => false,
 			'classes' => array(
 				array('label' => 'Standard', 'class' => 'standard'),
