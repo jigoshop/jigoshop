@@ -220,7 +220,7 @@ class Optimization
 
 	private function get_source_path($src)
 	{
-		return preg_replace('@'.str_replace('http', 'http(s)?', WP_CONTENT_URL).'@', WP_CONTENT_DIR, $src);
+		return preg_replace('@'.str_replace(array('http://', 'https://'), '', WP_CONTENT_URL).'@', WP_CONTENT_DIR, str_replace(array('http://', 'https://'), '',$src));
 	}
 
 	/**
@@ -303,6 +303,7 @@ class Optimization
 		if(!$manager->has($handle) && $src && $this->check_style_dependencies($dependencies))
 		{
 			$manager->set($handle, new FileAsset($this->get_source_path($src)));
+
 			foreach($pages as $page)
 			{
 				$this->_styles[$page][] = '@'.$handle;

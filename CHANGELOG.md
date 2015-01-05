@@ -1,5 +1,8 @@
 ## Changelog
 
+* 1.15.3:
+    * Fix: Missing vendor files.
+    * Fix: JWOS for ssl websites.
 * 1.15.2 - 2014-12-23:
     * Fix: JS error in tinymce shortcodes.
     * Improved: Rewrote favicon cart count module.
