@@ -2,6 +2,7 @@
 
 require_once('constants.php');
 require_once('functions.php');
+require_once('widgets.php');
 $loader = new \Symfony\Component\ClassLoader\MapClassLoader(array(
 	'Jigoshop_Options_Interface' => JIGOSHOP_DIR.'/integration/classes/jigoshop_options_interface.php',
 	'Jigoshop_Base' => JIGOSHOP_DIR.'/integration/classes/abstract/jigoshop_base.class.php',
