@@ -29,10 +29,7 @@ if ($title) {
 			<?php echo Product::getFeaturedImage($item->getProduct(), Options::IMAGE_TINY); ?>
 			<span class="js_widget_product_title"><?php echo $item->getProduct()->getName(); ?></span>
 		</a>
-		<?php
-		// Displays variations and cart item meta
-		echo jigoshop_cart::get_item_data($value);
-		?>
+		<?php	echo Product::getItemData($item);	?>
 		<span class="js_widget_product_price"><?php echo $item->getQuantity().' &times; '.Product::formatPrice($item->getPrice()); ?></span>
 	</li>
 	<?php endforeach; ?>

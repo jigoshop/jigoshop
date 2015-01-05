@@ -3,6 +3,7 @@
 namespace Jigoshop\Helper;
 
 use Jigoshop\Core\Options;
+use Jigoshop\Core\Types\Product\Variable;
 use Jigoshop\Entity;
 
 class Product
@@ -276,5 +277,27 @@ class Product
 			'variation' => $variation,
 			'item' => $item,
 		));
+	}
+
+	/**
+	 * Returns HTML for product data.
+	 *
+	 * Calls `jigoshop\helper\product\item_data` filter with current data and order item.
+	 *
+	 * @param Entity\Order\Item $item Item to display data for.
+	 * @return string HTML data of the item.
+	 */
+	public static function getItemData(Entity\Order\Item $item)
+	{
+		$data = '';
+
+		if ($item->getType() == Entity\Product\Variable::TYPE) {
+			/** @var Entity\Product\Variable $product */
+			$product = $item->getProduct();
+			$variation = $product->getVariation($item->getMeta('variation_id')->getValue());
+			$data .= self::getVariation($variation, $item);
+		}
+
+		return apply_filters('jigoshop\helper\product\item_data', $data, $item);
 	}
 }
