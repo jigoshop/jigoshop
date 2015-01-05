@@ -1,0 +1,87 @@
+.widget.jigoshop_price_filter {
+  .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
+    border: 1px solid #fcefa1;
+    background: #fbf9ee url(../../images/icons/ui-glass-55.png) 50% 50% repeat-x;
+    color: #363636
+  }
+  .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+    border: 1px solid #d3d3d3;
+    background: #e6e6e6 url(../../images/icons/ui-glass-75.png) 50% 50% repeat-x;
+    font-weight: 400;
+    color: #555555
+  }
+
+  .ui-slider {
+    position: relative;
+    text-align: left;
+
+    .ui-slider-handle {
+      position: absolute;
+      z-index: 2;
+      width: 1.2em;
+      height: 1.2em;
+      cursor: default
+    }
+
+    .ui-slider-range {
+      position: absolute;
+      z-index: 1;
+      font-size: .7em;
+      display: block;
+      border: 0;
+      background-position: 0 0
+    }
+  }
+
+  .ui-slider-horizontal {
+    height: .8em;
+
+    .ui-slider-handle {
+      top: -.3em;
+      margin-left: -.6em;
+    }
+    .ui-slider-range {
+      top: 0;
+      height: 100%;
+    }
+    .ui-slider-range-min {
+      left: 0;
+    }
+    .ui-slider-range-max {
+      right: 0;
+    }
+  }
+
+  .price_slider_wrapper {
+    .button {
+      float: right;
+      margin: 0 !important;
+    }
+
+    .price_slider {
+      margin: 1em .6em .6em;
+
+      .ui-slider-handle {
+        outline: 0 !important;
+      }
+    }
+
+    .price_slider_amount {
+      overflow: hidden;
+      line-height: 2em;
+    }
+
+    .ui-widget-content {
+      border: 1px solid #aaaaaa;
+      background: #ffffff url(../../images/icons/ui-glass-55.png) 50% 50% repeat-x;
+      color: #222222;
+    }
+
+    .ui-widget-header {
+      border: 1px solid #aaaaaa;
+      background: #cccccc url(../../images/icons/ui-highlight.png) 50% 50% repeat-x;
+      color: #222222;
+      font-weight: 700;
+    }
+  }
+}

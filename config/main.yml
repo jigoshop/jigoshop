@@ -14,6 +14,11 @@ parameters:
       class: \Jigoshop\Widget\FeaturedProducts
       calls:
         - ['setProductService', 'jigoshop.service.product']
+    price_filter:
+      class: \Jigoshop\Widget\PriceFilter
+      calls:
+        - ['setPages', 'jigoshop.pages']
+        - ['setStyles', 'jigoshop.helper.styles']
     product_search:
       class: \Jigoshop\Widget\ProductSearch
     products_on_sale:

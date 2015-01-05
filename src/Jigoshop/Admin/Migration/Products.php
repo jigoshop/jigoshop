@@ -38,7 +38,7 @@ class Products implements Tool
 			$address->setCountry($this->options->get('general.country'));
 			$address->setState($this->options->get('general.state'));
 
-			$this->taxes = $this->taxService->getDefinitions($address);
+			$this->taxes = $taxService->getDefinitions($address);
 		}
 	}
 
