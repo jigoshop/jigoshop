@@ -6,7 +6,7 @@ use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\Order\Item;
-use Jigoshop\Entity\Product;
+use Jigoshop\Entity\Product as Entity;
 use Jigoshop\Exception;
 use Jigoshop\Frontend\NotEnoughStockException;
 use Jigoshop\Frontend\Pages;
@@ -49,6 +49,7 @@ abstract class AbstractProductList implements PageInterface
 	public function action()
 	{
 		if (isset($_POST['action']) && $_POST['action'] == 'add-to-cart') {
+			/** @var Entity $product */
 			$product = $this->productService->find($_POST['item']);
 
 			try {
@@ -86,9 +87,14 @@ abstract class AbstractProductList implements PageInterface
 					exit;
 				}
 			} catch(NotEnoughStockException $e) {
-				$message = $this->options->get('products.show_stock')
-					? sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order. We only have %d available at this time. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'), $product->getName(), $e->getMessage())
-					: sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'), $product->getName());
+				if ($e->getStock() == 0) {
+					$message = sprintf(__('Sorry, we do not have "%s" in stock.', 'jigoshop'), $product->getName());
+				} else if ($this->options->get('products.show_stock')) {
+					$message = sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order. We only have %d available at this time. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'), $product->getName(), $e->getStock());
+				} else {
+					$message = sprintf(__('Sorry, we do not have enough "%s" in stock to fulfill your order. Please edit your cart and try again. We apologize for any inconvenience caused.', 'jigoshop'), $product->getName());
+				}
+
 				$this->messages->addError($message);
 			} catch(Exception $e) {
 				$this->messages->addError(sprintf(__('A problem ocurred when adding to cart: %s', 'jigoshop'), $e->getMessage()), false);
