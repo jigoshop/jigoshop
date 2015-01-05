@@ -5,7 +5,7 @@ Tags: 2checkout, 2co, affiliate, authorize, cart, checkout, commerce, coupons, e
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=sales%40jigoshop%2ecom&lc=US&item_name=Jigoshop%20%2d%20Wordpress%2eorg%20donation%20link&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
 Requires at least: 3.8
 Tested up to: 4.1
-Stable tag: 1.15.2
+Stable tag: 1.15.3
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -123,6 +123,10 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 4. Standard customer checkout screen
 
 == Changelog ==
+
+= 1.15.3 - 2015-01-06 =
+* Fix: Missing vendor files.
+* Fix: JWOS for ssl websites.
 
 = 1.15.2 - 2014-12-23 =
 * Fix: JS error in tinymce shortcodes.

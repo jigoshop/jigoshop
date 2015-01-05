@@ -1,6 +1,6 @@
 ## Changelog
 
-* 1.15.3:
+* 1.15.3 - 2015-01-06:
     * Fix: Missing vendor files.
     * Fix: JWOS for ssl websites.
 * 1.15.2 - 2014-12-23:
