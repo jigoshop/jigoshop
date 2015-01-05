@@ -44,7 +44,7 @@ class TaxService implements TaxServiceInterface
 		$wp = $this->wp;
 		$wp->addFilter('jigoshop\service\cart\before_initialize', function($cart) use ($service) {
 			/** @var $cart OrderInterface */
-			$cart->setTaxDefinitions($service->getDefinitions($cart));
+			$cart->setTaxDefinitions($service->getDefinitions($cart->getCustomer()->getTaxAddress()));
 			return $cart;
 		}, 10, 1);
 		$wp->addFilter('jigoshop\factory\order\fetch\after_customer', function($order) use ($wp) {
@@ -67,7 +67,7 @@ class TaxService implements TaxServiceInterface
 		}, 10, 1);
 		$wp->addFilter('jigoshop\factory\order\create\after_customer', function($order) use ($service) {
 			/** @var $order OrderInterface */
-			$order->setTaxDefinitions($service->getDefinitions($order));
+			$order->setTaxDefinitions($service->getDefinitions($order->getCustomer()->getTaxAddress()));
 			return $order;
 		}, 10, 1);
 		$wp->addAction('jigoshop\service\order\save', function($order) use ($wp) {
@@ -234,14 +234,14 @@ class TaxService implements TaxServiceInterface
 	}
 
 	/**
-	 * @param $order OrderInterface The order.
+	 * @param $address Customer\Address The order.
 	 * @return array List of tax values per tax class.
 	 */
-	public function getDefinitions(OrderInterface $order)
+	public function getDefinitions(Customer\Address $address)
 	{
 		$definitions = array();
 		foreach ($this->taxClasses as $class) {
-			$definition = $this->getDefinition($class, $order->getCustomer()->getTaxAddress());
+			$definition = $this->getDefinition($class, $address);
 			$definitions[$class] = $definition['standard'];
 
 			if (isset($definition['compound'])) {
@@ -298,13 +298,13 @@ class TaxService implements TaxServiceInterface
 				$bRate += 1;
 			}
 
-			return $bRate - $aRate;
+			return $aRate - $bRate;
 		};
 
 		usort($standard, $comparator);
 		usort($compound, $comparator);
 
-		return array('standard' => array_shift($standard), 'compound' => array_shift($compound));
+		return array('standard' => array_pop($standard), 'compound' => array_pop($compound));
 	}
 
 	/**

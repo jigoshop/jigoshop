@@ -2,6 +2,7 @@
 
 namespace Jigoshop\Admin\Migration;
 
+use Jigoshop\Entity\Customer;
 use Jigoshop\Entity\Product;
 use Jigoshop\Entity\Product\Attribute\Multiselect;
 use Jigoshop\Entity\Product\Attribute\Option;
@@ -10,6 +11,7 @@ use Jigoshop\Entity\Product\Attribute\Text;
 use Jigoshop\Entity\Product\Attributes\StockStatus;
 use Jigoshop\Helper\Render;
 use Jigoshop\Service\ProductServiceInterface;
+use Jigoshop\Service\TaxServiceInterface;
 use WPAL\Wordpress;
 
 class Products implements Tool
@@ -22,13 +24,22 @@ class Products implements Tool
 	private $options;
 	/** @var ProductServiceInterface */
 	private $productService;
+	private $taxes = array();
 	private $taxClasses = array();
 
-	public function __construct(Wordpress $wp, \Jigoshop\Core\Options $options, ProductServiceInterface $productService)
+	public function __construct(Wordpress $wp, \Jigoshop\Core\Options $options, ProductServiceInterface $productService, TaxServiceInterface $taxService)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->productService = $productService;
+
+		if ($this->options->get('tax.included')) {
+			$address = new Customer\Address();
+			$address->setCountry($this->options->get('general.country'));
+			$address->setState($this->options->get('general.state'));
+
+			$this->taxes = $this->taxService->getDefinitions($address);
+		}
 	}
 
 	/**
@@ -97,6 +108,9 @@ class Products implements Tool
 				$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->postmeta} VALUES (NULL, %d, %s, %s)", array($product->ID, 'type', $types[0]->slug)));
 			}
 
+			$regularPrice = 0.0;
+			$taxClasses = array();
+
 			// Update columns
 			do {
 				// Sales support
@@ -142,10 +156,19 @@ class Products implements Tool
 				$key = $this->_transformKey($products[$i]->meta_key);
 
 				if ($key !== null) {
+					$value = $this->_transform($products[$i]->meta_key, $products[$i]->meta_value);
+
+					if ($key == 'regular_price') {
+						$regularPrice = $value;
+					}
+					if ($key == 'tax_classes') {
+						$taxClasses = $value;
+					}
+
 					$wpdb->query($wpdb->prepare(
 						"UPDATE {$wpdb->postmeta} SET meta_value = %s, meta_key = %s WHERE meta_id = %d",
 						array(
-							$this->_transform($products[$i]->meta_key, $products[$i]->meta_value),
+							$value,
 							$key,
 							$products[$i]->meta_id,
 						)
@@ -154,6 +177,29 @@ class Products implements Tool
 
 				$i++;
 			} while ($i < $endI && $products[$i]->ID == $product->ID);
+
+			// Update regular price if it includes tax
+			if (!empty($this->taxes)) {
+				foreach ($taxClasses as $taxClass) {
+					if (isset($this->taxes['__compound__'.$taxClass])) {
+						$regularPrice = $regularPrice / (100 + $this->taxes['__compound__'.$taxClass]['rate']) * 100;
+					}
+				}
+				foreach ($taxClasses as $taxClass) {
+					if (isset($this->taxes[$taxClass])) {
+						$regularPrice = $regularPrice / (100 + $this->taxes[$taxClass]['rate']) * 100;
+					}
+				}
+
+				$wpdb->query($wpdb->prepare(
+					"UPDATE {$wpdb->postmeta} SET meta_value = %s WHERE meta_key = %s AND post_id = %d",
+					array(
+						$regularPrice,
+						'regular_price',
+						$product->ID,
+					)
+				));
+			}
 		}
 
 		foreach ($globalAttributes as $slug => $attributeData) {
