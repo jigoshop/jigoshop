@@ -84,19 +84,15 @@ class Interceptor
 	private function parseRequest($request)
 	{
 		if ($this->isCart($request)) {
-			return $request;
+			return $this->wp->applyFilters('jigoshop\query\cart', $request, $request);
 		}
 
 		if ($this->isProductCategory($request)) {
-			$query = $this->getProductListQuery($request);
-			$query[Types\ProductCategory::NAME] = $request[Types\ProductCategory::NAME];
-			return $query;
+			return $this->getProductCategoryListQuery($request);
 		}
 
 		if ($this->isProductTag($request)) {
-			$query = $this->getProductListQuery($request);
-			$query[Types\ProductTag::NAME] = $request[Types\ProductTag::NAME];
-			return $query;
+			return $this->getProductTagListQuery($request);
 		}
 
 		if ($this->isProductList($request)) {
@@ -104,16 +100,11 @@ class Interceptor
 		}
 
 		if ($this->isProduct($request)) {
-			return array(
-				'name' => $request['product'],
-				'post_type' => Types::PRODUCT,
-				'post_status' => 'publish',
-				'posts_per_page' => 1,
-			);
+			return $this->getProductQuery($request);
 		}
 
 		if ($this->isAccount($request)) {
-			return $request;
+			return $this->wp->applyFilters('jigoshop\query\account', $request, $request);
 		}
 
 		return $request;
@@ -154,6 +145,41 @@ class Interceptor
 
 	private function getProductListQuery($request)
 	{
+		$result = $this->_getProductListBaseQuery($request);
+
+		return $this->wp->applyFilters('jigoshop\query\product_list', $result, $request);
+	}
+
+	private function getProductCategoryListQuery($request)
+	{
+		$result = $this->_getProductListBaseQuery($request);
+		$result[Types\ProductCategory::NAME] = $request[Types\ProductCategory::NAME];
+
+		return $this->wp->applyFilters('jigoshop\query\product_category_list', $result, $request);
+	}
+
+	private function getProductTagListQuery($request)
+	{
+		$result = $this->_getProductListBaseQuery($request);
+		$result[Types\ProductTag::NAME] = $request[Types\ProductTag::NAME];
+
+		return $this->wp->applyFilters('jigoshop\query\product_tag_list', $result, $request);
+	}
+
+	private function getProductQuery($request)
+	{
+		$result = array(
+			'name' => $request['product'],
+			'post_type' => Types::PRODUCT,
+			'post_status' => 'publish',
+			'posts_per_page' => 1,
+		);
+
+		return $this->wp->applyFilters('jigoshop\query\product', $result, $request);
+	}
+
+	private function _getProductListBaseQuery($request)
+	{
 		$options = $this->options->get('shopping');
 		$result = array(
 			'post_type' => Types::PRODUCT,
@@ -172,10 +198,11 @@ class Interceptor
 			),
 		);
 
+		// Support for search queries
 		if (isset($request['s'])) {
 			$result['s'] = $request['s'];
 		}
 
-		return $result;
+		return $this->wp->applyFilters('jigoshop\query\product_list_base', $result, $request);
 	}
 }

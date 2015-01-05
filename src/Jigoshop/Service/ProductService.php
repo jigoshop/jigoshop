@@ -69,7 +69,7 @@ class ProductService implements ProductServiceInterface
 			$post = $this->wp->getPost($id);
 		}
 
-		return $this->factory->fetch($post);
+		return $this->wp->applyFilters('jigoshop\service\product\find', $this->factory->fetch($post), $id);
 	}
 
 	/**
@@ -80,7 +80,7 @@ class ProductService implements ProductServiceInterface
 	 */
 	public function findForPost($post)
 	{
-		return $this->factory->fetch($post);
+		return $this->wp->applyFilters('jigoshop\service\product\find_for_post', $this->factory->fetch($post), $post);
 	}
 
 	/**
@@ -94,7 +94,7 @@ class ProductService implements ProductServiceInterface
 		$post = $this->wp->getPost($state['id']);
 		$product = $this->factory->fetch($post);
 		$product->restoreState($state);
-		return $product;
+		return $this->wp->applyFilters('jigoshop\service\product\find_for_state', $product, $state);
 	}
 
 	/**
@@ -110,7 +110,7 @@ class ProductService implements ProductServiceInterface
 			's' => $name,
 		));
 
-		return $this->findByQuery($query);
+		return $this->wp->applyFilters('jigoshop\service\product\find_like', $this->findByQuery($query), $name);
 	}
 
 	/**
@@ -129,7 +129,7 @@ class ProductService implements ProductServiceInterface
 			$products[] = $this->findForPost($product);
 		}
 
-		return $products;
+		return $this->wp->applyFilters('jigoshop\service\product\find_by_query', $products, $query);
 	}
 
 	/**
