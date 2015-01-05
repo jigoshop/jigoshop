@@ -11,6 +11,8 @@ class External extends Product implements Purchasable, Saleable
 	const TYPE = 'external';
 
 	/** @var float */
+	private $price;
+	/** @var float */
 	private $regularPrice = 0.0;
 	/** @var string */
 	private $url;
@@ -124,6 +126,10 @@ class External extends Product implements Purchasable, Saleable
 
 	private function calculatePrice()
 	{
+		if ($this->price !== null && $this->price >= 0) {
+			return $this->price;
+		}
+
 		$price = $this->regularPrice;
 
 		if ($this->sales !== null && $this->sales->isEnabled()) {
@@ -175,6 +181,9 @@ class External extends Product implements Purchasable, Saleable
 	{
 		parent::restoreState($state);
 
+		if (isset($state['price'])) {
+			$this->price = (float)$state['price'];
+		}
 		if (isset($state['regular_price'])) {
 			$this->regularPrice = (float)$state['regular_price'];
 		}

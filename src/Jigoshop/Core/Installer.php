@@ -48,11 +48,12 @@ class Installer
 
 	public function install()
 	{
-		$db = $this->wp->getOption('jigoshop_database_version');
+		$db = false;//$this->wp->getOption('jigoshop_database_version');
 
 		if ($db === false) {
 			Registry::getInstance(JIGOSHOP_LOGGER)->addNotice('Installing Jigoshop.');
 			$this->_createTables();
+			$this->_createProcedures();
 			$this->_createPages();
 
 			$wpdb = $this->wp->getWPDB();
@@ -414,5 +415,51 @@ class Installer
 				$this->wp->updatePostMeta($post_id, 'actions', array($email));
 			}
 		}
+	}
+
+	private function _createProcedures()
+	{
+		$wpdb = $this->wp->getWPDB();
+		$wpdb->hide_errors();
+
+		$query = "
+			CREATE FUNCTION jigoshop_price(product_id INT) RETURNS DECIMAL(12,4) DETERMINISTIC
+			BEGIN
+				DECLARE on_sale TINYINT DEFAULT 0;
+				DECLARE sale_price DECIMAL(12,4) DEFAULT -1;
+				DECLARE sale_price_value VARCHAR(255) DEFAULT '';
+				DECLARE sale_from INT DEFAULT 0;
+				DECLARE sale_to INT DEFAULT 0;
+				DECLARE regular_price DECIMAL(12,4) DEFAULT -1;
+
+				SELECT CAST(meta_value AS DECIMAL(12,4)) INTO regular_price FROM {$wpdb->postmeta} WHERE post_id = product_id AND meta_key = 'regular_price';
+				SELECT meta_value INTO on_sale FROM {$wpdb->postmeta} WHERE post_id = product_id AND meta_key = 'sales_enabled';
+				SELECT meta_value INTO sale_from FROM {$wpdb->postmeta} WHERE post_id = product_id AND meta_key = 'sales_from';
+				SELECT meta_value INTO sale_to FROM {$wpdb->postmeta} WHERE post_id = product_id AND meta_key = 'sales_to';
+
+				IF on_sale = 1 AND (sale_from = 0 OR sale_from <= UNIX_TIMESTAMP()) AND (sale_to = 0 OR sale_to >= UNIX_TIMESTAMP()) THEN
+					SELECT meta_value INTO sale_price_value FROM {$wpdb->postmeta} WHERE post_id = product_id AND meta_key = 'sales_price';
+					IF POSITION('%' IN sale_price_value) > 0 THEN
+						SET sale_price_value = LEFT(sale_price_value, CHAR_LENGTH(sale_price)-1);
+						SET sale_price = CAST(sale_price_value AS DECIMAL(12,4));
+						SET sale_price = regular_price * (1 - sale_price / 100);
+					ELSE
+						SET sale_price = CAST(sale_price_value AS DECIMAL(12,4));
+						SET sale_price = regular_price - sale_price;
+					END IF;
+				END IF;
+				IF sale_price > 0 AND sale_price < regular_price THEN
+					RETURN sale_price;
+				ELSE
+					RETURN regular_price;
+				END IF;
+			END
+		";
+		if (!$wpdb->query($query)) {
+			Registry::getInstance(JIGOSHOP_LOGGER)->addCritical(sprintf('Unable to create procedure "%s". Error: "%s".', 'jigoshop_price', $wpdb->last_error));
+			echo __('Unable to create Jigoshop procedures.', 'jigoshop'); exit;
+		}
+
+		$wpdb->show_errors();
 	}
 }

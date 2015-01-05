@@ -140,6 +140,7 @@ class Product implements EntityFactoryInterface
 			}, $this->wp->getPostMeta($post->ID));
 
 			$state['attributes'] = $this->getAttributes($post->ID);
+			$state['price'] = $this->getPrice($post->ID);
 			$state['id'] = $post->ID;
 			$state['name'] = $post->post_title;
 			$state['description'] = $this->wp->getHelpers()->parsePostBody($post->post_content);
@@ -154,6 +155,12 @@ class Product implements EntityFactoryInterface
 		}
 
 		return $this->wp->applyFilters('jigoshop\find\product', $product, $state);
+	}
+
+	private function getPrice($id)
+	{
+		$wpdb = $this->wp->getWPDB();
+		return $wpdb->get_var($wpdb->prepare("SELECT jigoshop_price(%d);", array($id)));
 	}
 
 	private function getTerms($id, $taxonomy, $items = null)
