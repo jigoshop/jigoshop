@@ -74,8 +74,7 @@ class Core
 		$wp->addAction('widgets_init', function() use ($wp, $container, $widgets) {
 			foreach ($widgets as $widget) {
 				$class = $widget['class'];
-				register_widget($class);
-//				$wp->registerWidget($class);
+				$wp->registerWidget($class);
 				if (isset($widget['calls'])) {
 					foreach ($widget['calls'] as $call) {
 						list($method, $argument) = $call;
@@ -87,7 +86,7 @@ class Core
 
 		// TODO: Why this is required? :/
 		$this->wp->flushRewriteRules(false);
-		$this->wp->doAction('jigoshop\run');
+		$this->wp->doAction('jigoshop\run', $container);
 	}
 
 	/**
