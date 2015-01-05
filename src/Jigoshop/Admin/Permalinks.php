@@ -97,7 +97,8 @@ class Permalinks
 			'structures' => $structures,
 			'shopPageId' => $shopPageId,
 			'base' => $base,
-			'productBase' => $productBase
+			'productBase' => $productBase,
+			'homeUrl' => $this->wp->getHomeUrl(),
 		));
 	}
 
