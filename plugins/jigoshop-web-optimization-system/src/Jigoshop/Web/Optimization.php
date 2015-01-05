@@ -220,7 +220,7 @@ class Optimization
 
 	private function get_source_path($src)
 	{
-		return preg_replace('@'.str_replace('http', 'http(s)?', WP_CONTENT_URL).'@', WP_CONTENT_DIR, $src);
+		return str_replace(str_replace(array('http://', 'https://'), '', WP_CONTENT_URL), WP_CONTENT_DIR, str_replace(array('http://', 'https://'), '', $src);
 	}
 
 	/**
