@@ -167,6 +167,14 @@ class Integration
 	}
 
 	/**
+	 * @return \Jigoshop\Service\CartServiceInterface
+	 */
+	public static function getCartService()
+	{
+		return self::$di->get('jigoshop.service.cart');
+	}
+
+	/**
 	 * @return \Jigoshop\Service\CouponServiceInterface
 	 */
 	public static function getCouponService()
