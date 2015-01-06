@@ -48,7 +48,7 @@ class OrderService implements OrderServiceInterface
 			$post = $this->wp->getPost($id);
 		}
 
-		return $this->factory->fetch($post);
+		return $this->wp->applyFilters('jigoshop\service\order\find', $this->factory->fetch($post), $id);
 	}
 
 	/**
@@ -59,7 +59,7 @@ class OrderService implements OrderServiceInterface
 	 */
 	public function findForPost($post)
 	{
-		return $this->factory->fetch($post);
+		return $this->wp->applyFilters('jigoshop\service\order\find_for_post', $this->factory->fetch($post), $post);
 	}
 
 	/**
@@ -80,7 +80,7 @@ class OrderService implements OrderServiceInterface
 			return $that->find($order);
 		}, $results);
 
-		return $orders;
+		return $this->wp->applyFilters('jigoshop\service\order\find_by_query', $orders, $query);
 	}
 
 	/**
@@ -276,6 +276,7 @@ class OrderService implements OrderServiceInterface
 			'comment_approved' => true
 		);
 
+		$comment = $this->wp->applyFilters('jigoshop\service\order\add_note', $comment, $order, $note, $private);
 		$comment_id = $this->wp->wpInsertComment($comment);
 		$this->wp->addCommentMeta($comment_id, 'private', $private);
 
@@ -290,7 +291,7 @@ class OrderService implements OrderServiceInterface
 	 */
 	public function createFromCart(Cart $cart)
 	{
-		return $this->factory->fromCart($cart);
+		return $this->wp->applyFilters('jigoshop\service\order\create_from_cart', $this->factory->fromCart($cart), $cart);
 	}
 
 	/**
@@ -327,12 +328,9 @@ class OrderService implements OrderServiceInterface
 			return $where;
 		};
 
-		$statuses = Order\Status::getStatuses();
-//		unset($statuses[Order\Status::CREATED], $statuses[Order\Status::CANCELLED], $statuses[Order\Status::REFUNDED]);
-
 		$this->wp->addFilter('posts_where', $restriction);
 		$query = new \WP_Query(array(
-			'post_status' => array_keys($statuses),
+			'post_status' => array(Order\Status::COMPLETED),
 			'post_type' => Types::ORDER,
 			'order' => 'DESC',
 			'orderby' => 'post_date',
@@ -410,7 +408,10 @@ class OrderService implements OrderServiceInterface
 	private function getNextOrderNumber()
 	{
 		$wpdb = $this->wp->getWPDB();
-		return $wpdb->get_var($wpdb->prepare("SELECT MAX(ID)+1 FROM {$wpdb->posts} WHERE post_type = %s", array(Types::ORDER)));
+		return $this->wp->applyFilters('jigoshop\service\order\next_order_number', $wpdb->get_var($wpdb->prepare(
+			"SELECT MAX(ID)+1 FROM {$wpdb->posts} WHERE post_type = %s",
+			array(Types::ORDER)
+		)));
 	}
 
 	/**
@@ -436,7 +437,7 @@ class OrderService implements OrderServiceInterface
 				),
 			),
 		));
-		return $this->findByQuery($query);
+		return $this->wp->applyFilters('jigoshop\service\order\find_for_user', $this->findByQuery($query), $userId);
 	}
 
 	/**
