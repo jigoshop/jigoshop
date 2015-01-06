@@ -20,7 +20,8 @@ use Jigoshop\Helper\Render;
 	<?php wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false); ?>
 
 	<div class="tab-content">
-		<form method="post" action="admin.php?page=jigoshop_reports">
+		<form method="get" action="admin.php">
+			<input type="hidden" name="page" value="jigoshop_reports" />
 			<p>
 				<label for="from"><?php _e('From:', 'jigoshop'); ?></label>
 				<input class="date-pick" type="date" name="start_date" id="from" value="<?php echo esc_attr(date('Y-m-d', $start_date)); ?>" />

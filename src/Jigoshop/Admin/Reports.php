@@ -100,12 +100,12 @@ class Reports implements PageInterface
 	 */
 	public function display()
 	{
-		$startDate = $this->startDate = !empty($_POST['start_date'])
-			? strtotime($_POST['start_date'])
+		$startDate = $this->startDate = !empty($_GET['start_date'])
+			? strtotime($_GET['start_date'])
 			: strtotime(date('Ymd', strtotime(date('Ym', time()).'01')));
 
-		$endDate = $this->endDate = !empty($_POST['end_date'])
-			? strtotime($_POST['end_date'])
+		$endDate = $this->endDate = !empty($_GET['end_date'])
+			? strtotime($_GET['end_date'])
 			: strtotime(date('Ymd', time()));
 
 		$restriction = function( $where = '' ) use ($startDate, $endDate) {
