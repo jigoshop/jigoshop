@@ -137,6 +137,9 @@ class Reports implements PageInterface
 			function() use ($reports) {
 				$reports->mostSold();
 			},
+			function() use ($reports) {
+				$reports->totalNewCustomers();
+			},
 		);
 
 		Render::output('admin/reports', array(
@@ -260,6 +263,32 @@ class Reports implements PageInterface
 			'sales' => $sales,
 			'chart' => $data,
 			'total_sales' => $totalChart,
+		));
+	}
+
+	public function totalNewCustomers()
+	{
+		$after = date('Y-m-d', $this->startDate);
+		$before = date('Y-m-d', strtotime('+1 day', $this->endDate));
+
+		$restriction = function($query) use ($before, $after){
+			/** @var $wpdb \wpdb */
+			global $wpdb;
+			/** @var $query \WP_User_Query */
+			$query->query_where .= $wpdb->prepare(" AND {$wpdb->users}.user_registered BETWEEN %s AND %s", array($before, $after));
+		};
+
+		add_action('pre_user_query', $restriction);
+		$query = new \WP_User_Query(array(
+			'fields' => 'ids',
+			'role' => 'customer',
+		));
+		$totalCustomers = $query->get_total();
+		remove_action('pre_user_query', $restriction);
+
+		Render::output('admin/reports/total_new_customers', array(
+			'orders' => $this->orders,
+			'total_customers' => $totalCustomers,
 		));
 	}
 }
