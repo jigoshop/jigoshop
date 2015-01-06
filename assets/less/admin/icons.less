@@ -49,30 +49,34 @@
       position: relative;
 
       &:before {
-        background-position: 0 -22px;
+        background-position: 0 -80px;
         width: 13px;
         height: 13px;
         left: 13px;
         top: 7px;
       }
     }
+
     .wp-first-item {
+      // Dashboard
+      & a:before {
+        background-position: 0 -22px;
+      }
+
       // Reports
-//      & + li a:before {
-//        background-position: 0 -42px;
-//      }
+      & + li a:before {
+        background-position: 0 -42px;
+      }
+
+      // System Info
+      & + li + li + li a:before {
+        background-position: 0 -99px;
+      }
+
       // Coupons
 //      & + li + li a:before {
 //        background-position: 0 -61px;
 //      }
-      // Settings
-      & + li a:before {
-        background-position: 0 -80px;
-      }
-      // System Info
-      & + li + li a:before {
-        background-position: 0 -99px;
-      }
     }
   }
 }

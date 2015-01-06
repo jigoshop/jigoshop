@@ -33,48 +33,53 @@ mark {
   display: inline-block;
 }
 
-body.toplevel_page_jigoshop {
-  &, #wpcontent {
-    background-color: #e7ece3 !important;
-  }
+body.toplevel_page_jigoshop  #wpcontent {
+  background-color: #e7ece3 !important;
 }
 
-div.pages ul.pages li {
-  a {
-    position: relative;
-  }
+div.pages ul.pages {
+  li {
+    a {
+      position: relative;
+    }
 
-  // Dashboard
-  a:before {
-    background: url(../../images/icons.png) -27px -21px no-repeat;
-    content: "";
-    width: 19px;
-    height: 19px;
-    position: absolute;
-    left: 13px;
-    top: 14px;
-    text-indent: -9999999px;
-    padding: 0;
+    // Dashboard
+    a:before {
+      background: url(../../images/icons.png) -27px -21px no-repeat;
+      content: "";
+      width: 19px;
+      height: 19px;
+      position: absolute;
+      left: 13px;
+      top: 14px;
+      text-indent: -9999999px;
+      padding: 0;
+    }
   }
 
   // Reports
-  //& + li a:before {
-  //  background-position: -27px -40px;
-  //}
+  & > li + li > a:before {
+    background-position: -27px -40px;
+  }
 
   // Coupons
-  //& + li a:before {
-  //  background-position: -27px -63px;
-  //}
+  //  & + li a:before {
+  //    background-position: -27px -63px;
+  //  }
 
   // Settings
-  & + li a:before {
+  & > li + li + li > a:before {
     background-position: -27px -83px;
   }
 
   // System Info
-  & + li + li a:before {
+  & > li + li + li + li > a:before {
     background-position: -27px -103px;
+  }
+
+  // Others
+  & > li + li + li + li + li > a:before {
+    background-position: -27px -83px;
   }
 
   //&:last-child a:before {

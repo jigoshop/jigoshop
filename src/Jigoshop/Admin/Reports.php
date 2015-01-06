@@ -52,6 +52,13 @@ class Reports implements PageInterface
 				return;
 			}
 
+			$wp->wpEnqueueScript('common');
+			$wp->wpEnqueueScript('wp-lists');
+			$wp->wpEnqueueScript('postbox');
+			$wp->wpEnqueueScript('jquery-ui-datepicker');
+
+			$styles->add('jigoshop.admin.reports', JIGOSHOP_URL.'/assets/css/admin/reports.css');
+			$styles->add('jigoshop.jquery.ui', JIGOSHOP_URL.'/assets/css/jquery-ui.css');
 			$scripts->add('jigoshop.flot', JIGOSHOP_URL.'/assets/js/flot/jquery.flot.min.js', array('jquery'));
 			$scripts->add('jigoshop.flot.time', JIGOSHOP_URL.'/assets/js/flot/jquery.flot.time.min.js', array('jquery', 'jigoshop.flot'));
 			$scripts->add('jigoshop.flot.pie', JIGOSHOP_URL.'/assets/js/flot/jquery.flot.pie.min.js', array('jquery', 'jigoshop.flot'));
@@ -93,10 +100,6 @@ class Reports implements PageInterface
 	 */
 	public function display()
 	{
-		$this->wp->wpEnqueueScript('common');
-		$this->wp->wpEnqueueScript('wp-lists');
-		$this->wp->wpEnqueueScript('postbox');
-
 		$startDate = $this->startDate = !empty($_POST['start_date'])
 			? strtotime($_POST['start_date'])
 			: strtotime(date('Ymd', strtotime(date('Ym', time()).'01')));

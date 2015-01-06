@@ -39,6 +39,22 @@ services:
       - '@jigoshop.service.order'
       - '@jigoshop.helper.styles'
       - '@jigoshop.helper.scripts'
+  jigoshop.admin.settings:
+    class: Jigoshop\Admin\Settings
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.messages'
+      - '@jigoshop.helper.styles'
+      - '@jigoshop.helper.scripts'
+    tags:
+      - { name: jigoshop.admin.page }
+  jigoshop.admin.system_info:
+    class: Jigoshop\Admin\SystemInfo
+    arguments:
+      - '@wpal'
+    tags:
+      - { name: jigoshop.admin.page }
   jigoshop.admin.licences:
     class: Jigoshop\Admin\Licences
     arguments:
@@ -57,22 +73,6 @@ services:
       - '@jigoshop.messages'
       - '@jigoshop.helper.styles'
       - '@jigoshop.helper.scripts'
-    tags:
-      - { name: jigoshop.admin.page }
-  jigoshop.admin.settings:
-    class: Jigoshop\Admin\Settings
-    arguments:
-      - '@wpal'
-      - '@jigoshop.options'
-      - '@jigoshop.messages'
-      - '@jigoshop.helper.styles'
-      - '@jigoshop.helper.scripts'
-    tags:
-      - { name: jigoshop.admin.page }
-  jigoshop.admin.system_info:
-    class: Jigoshop\Admin\SystemInfo
-    arguments:
-      - '@wpal'
     tags:
       - { name: jigoshop.admin.page }
   jigoshop.admin.product.attributes:
