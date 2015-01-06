@@ -134,6 +134,9 @@ class Reports implements PageInterface
 			function() use ($reports) {
 				$reports->topEarners();
 			},
+			function() use ($reports) {
+				$reports->mostSold();
+			},
 		);
 
 		Render::output('admin/reports', array(
@@ -190,14 +193,14 @@ class Reports implements PageInterface
 			foreach ($order->getItems() as $item) {
 				/** @var $item Order\Item */
 				if (!isset($sales[$item->getProduct()->getId()])) {
-					$sales[$item->getProduct()->getId()] = array(
+					$sales[$item->getName()] = array(
 						'product' => $item->getProduct(),
 						'value' => 0.0,
 					);
 					$chart[$item->getName()] = 0;
 				}
 
-				$sales[$item->getProduct()->getId()]['value'] += $item->getCost();
+				$sales[$item->getName()]['value'] += $item->getCost();
 				$totalSales += $item->getCost();
 				$chart[$item->getName()] += $item->getQuantity();
 				$totalChart += $item->getQuantity();
@@ -217,6 +220,46 @@ class Reports implements PageInterface
 			'sales' => $sales,
 			'chart' => $data,
 			'total_sales' => $totalSales,
+		));
+	}
+
+	public function mostSold()
+	{
+		$sales = array();
+		$chart = array();
+		$totalChart = 0;
+
+		foreach ($this->orders as $order) {
+			/** @var $order Order */
+			foreach ($order->getItems() as $item) {
+				/** @var $item Order\Item */
+				if (!isset($sales[$item->getProduct()->getId()])) {
+					$sales[$item->getName()] = array(
+						'product' => $item->getProduct(),
+						'value' => 0.0,
+					);
+					$chart[$item->getName()] = 0;
+				}
+
+				$sales[$item->getName()]['value'] += $item->getQuantity();
+				$chart[$item->getName()] += $item->getQuantity();
+				$totalChart += $item->getQuantity();
+			}
+		}
+
+		$data = array();
+		foreach ($chart as $product => $quantity) {
+			$data[] = array(
+				'label' => $product,
+				'data' => round($quantity/$totalChart, 3)*100,
+			);
+		}
+
+		Render::output('admin/reports/most_sold', array(
+			'orders' => $this->orders,
+			'sales' => $sales,
+			'chart' => $data,
+			'total_sales' => $totalChart,
 		));
 	}
 }
