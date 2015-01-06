@@ -138,7 +138,13 @@ class Options implements \Jigoshop_Options_Interface
 			$name = self::$_transformations[$name];
 		}
 
-		return Integration::getOptions()->get($name, $default);
+		$value = Integration::getOptions()->get($name, $default);
+
+		if (is_bool($value)) {
+			return $value ? 'yes' : 'no';
+		}
+
+		return $value;
 	}
 
 	public function get_option($name, $default = null)

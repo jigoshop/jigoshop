@@ -32,7 +32,7 @@ class Shipping implements MultipleMethod
 			if ($sourceOption['type'] != 'title') {
 				$name = ShippingTab::SLUG.'.'.$this->getId().'.'.$sourceOption['id'];
 				Options::__addTransformation($sourceOption['id'], $name);
-				$option = Helper\Options::parseOption($sourceOption);
+				$option = Helper\Options::parseOption($this->getId(), $sourceOption);
 				$option['__name'] = $sourceOption['id'];
 				$option['name'] = '['.$this->getId().']['.$sourceOption['id'].']';
 

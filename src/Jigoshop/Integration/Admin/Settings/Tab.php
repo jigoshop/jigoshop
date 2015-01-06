@@ -16,7 +16,7 @@ class Tab implements TabInterface
 	public function __construct($tab, $options)
 	{
 		$this->title = $tab;
-		$this->sections = Options::parse($options);
+		$this->sections = Options::parse(sanitize_title($this->title), $options);
 	}
 
 	/**
@@ -58,8 +58,11 @@ class Tab implements TabInterface
 
 		foreach ($this->sections as $section) {
 			foreach ($section['fields'] as $field) {
+				if ($field['type'] == 'checkbox') {
+					$settings[$field['__name']] = $settings[$field['__name']] == 'on';
+				}
 				if (isset($field['update'])) {
-					$settings[$field['name']] = call_user_func_array($field['update'], $field);
+					$settings[$field['__name']] = call_user_func_array($field['update'], $field);
 				}
 			}
 		}

@@ -27,7 +27,7 @@ class Gateway implements Method
 			if ($sourceOption['type'] != 'title') {
 				$name = PaymentTab::SLUG.'.'.$this->getId().'.'.$sourceOption['id'];
 				Options::__addTransformation($sourceOption['id'], $name);
-				$option = Helper\Options::parseOption($sourceOption);
+				$option = Helper\Options::parseOption($this->getId(), $sourceOption);
 				$option['__name'] = $sourceOption['id'];
 				$option['name'] = '['.$this->getId().']['.$sourceOption['id'].']';
 

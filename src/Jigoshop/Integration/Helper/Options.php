@@ -3,38 +3,40 @@
 namespace Jigoshop\Integration\Helper;
 
 use Jigoshop\Helper\Country;
+use Jigoshop\Integration;
 
 class Options
 {
 	/**
 	 * Parses Jigoshop 1.x options array into Jigoshop 2.x format.
 	 *
-	 * @param array $options Source options array.
+	 * @param string $id ID of the tab options are for.
+	 * @param array $source Source options array.
 	 * @return array Formatted options array.
 	 */
-	public static function parse(array $options)
+	public static function parse($id, array $source)
 	{
 		// Divide options array into sections
 		$sections = array();
 		$mainSection = array();
-		for ($i = 0, $endI = count($options); $i < $endI;) {
-			if ($options[$i]['type'] == 'title') {
+		for ($i = 0, $endI = count($source); $i < $endI;) {
+			if ($source[$i]['type'] == 'title') {
 				// Found section
 				$section = array(
-					'id' => isset($options[$i]['id']) ? $options[$i]['id'] : sanitize_title($options[$i]['name']),
-					'title' => $options[$i]['name'],
+					'id' => isset($source[$i]['id']) ? $source[$i]['id'] : sanitize_title($source[$i]['name']),
+					'title' => $source[$i]['name'],
 					'fields' => array(),
 				);
 				$i++;
 
-				while ($i < $endI && $options[$i]['type'] != 'title') {
-					$section['fields'][] = self::parseOption($options[$i]);
+				while ($i < $endI && $source[$i]['type'] != 'title') {
+					$section['fields'][] = self::parseOption($id, $source[$i]);
 					$i++;
 				}
 
 				$sections[] = $section;
 			} else {
-				$mainSection[] = self::parseOption($options[$i]);
+				$mainSection[] = self::parseOption($id, $source[$i]);
 				$i++;
 			}
 		}
@@ -53,14 +55,15 @@ class Options
 	/**
 	 * Parses single Jigoshop 1.x option into Jigoshop 2.x format.
 	 *
+	 * @param string $id ID of the tab options are for.
 	 * @param $option array Option to convert.
 	 * @return array Formatted option.
 	 */
-	public static function parseOption($option)
+	public static function parseOption($id, $option)
 	{
 		$result = array(
 			'title' => isset($option['name']) ? $option['name'] : false,
-			'name' => isset($option['id']) ? $option['id'] : '',
+			'__name' => isset($option['id']) ? $option['id'] : '',
 			'description' => isset($option['desc']) ? $option['desc'] : false,
 			'tip' => isset($option['tip']) ? $option['tip'] : false,
 			'type' => self::getType(isset($option['type']) ? $option['type'] : 'text'),
@@ -68,6 +71,8 @@ class Options
 			// TODO: classes based on 'extra' field
 			// TODO: Some additional options from 'extra' field
 		);
+
+		$result['name'] = '['.$result['__name'].']';
 
 		if (in_array($option['type'], array('multi_select_countries', 'single_select_country'))) {
 			$result['options'] = Country::getAll();
@@ -82,13 +87,13 @@ class Options
 		switch ($result['type']) {
 			case 'checkbox':
 				$result['value'] = 'on';
-				$result['checked'] = isset($option['std']) ? $option['std'] === 'yes' : false;
+				$result['checked'] = Integration::getOptions()->get($id.'.'.$result['__name'], isset($option['std']) ? $option['std'] == 'yes' : false);
 				break;
 			case 'user_defined':
 				$result['display'] = $option['display'];
 				$result['update'] = $option['update'];
 			default:
-				$result['value'] = isset($option['std']) ? $option['std'] : false;
+				$result['value'] = Integration::getOptions()->get($id.'.'.$result['__name'], isset($option['std']) ? $option['std'] : false);
 		}
 
 		return $result;
