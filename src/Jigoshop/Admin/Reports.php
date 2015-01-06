@@ -143,6 +143,9 @@ class Reports implements PageInterface
 			function() use ($reports) {
 				$reports->totalOrders();
 			},
+			function() use ($reports) {
+				$reports->totalSales();
+			},
 		));
 
 		Render::output('admin/reports', array(
@@ -300,6 +303,17 @@ class Reports implements PageInterface
 		Render::output('admin/reports/total_orders', array(
 			'orders' => $this->orders,
 			'total_orders' => count($this->orders),
+		));
+	}
+
+	public function totalSales()
+	{
+		Render::output('admin/reports/total_sales', array(
+			'orders' => $this->orders,
+			'total_sales' => array_sum(array_map(function($order){
+				/** @var $order Order */
+				return $order->getTotal();
+			}, $this->orders)),
 		));
 	}
 }

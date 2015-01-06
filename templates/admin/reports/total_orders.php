@@ -1,7 +1,7 @@
 <?php
 /**
  * @var $orders array List of currently processed orders.
- * @var $total_orders int Number of new customers.
+ * @var $total_orders int Number of completed orders.
  */
 ?>
 <div class="span3 thumbnail">
