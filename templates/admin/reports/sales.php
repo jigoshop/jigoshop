@@ -1,11 +1,12 @@
 <?php
 /**
+ * @var $orders array List of currently processed orders.
  * @var $orderCounts array Order counts for each day to display in chart.
  * @var $orderAmounts array Order amounts for each day to display in chart.
  */
-// TODO: Improve links to use constants
 ?>
-<div class="stats" id="jigoshop-stats">
+<div class="stats thumbnail main-graph" id="jigoshop-stats">
+	<h1><?php _e('Sales','jigoshop'); ?></h1>
 	<div class="inside">
 		<div id="jigoshop-monthly-report" style="width:100%; height:300px; position:relative;"></div>
 		<script type="text/javascript">
@@ -111,3 +112,4 @@
 		</script>
 	</div>
 </div>
+<br class="clear"/>

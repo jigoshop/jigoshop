@@ -5,6 +5,7 @@ namespace Jigoshop\Admin;
 use Jigoshop\Admin;
 use Jigoshop\Core\Messages;
 use Jigoshop\Core\Types;
+use Jigoshop\Entity\Order;
 use Jigoshop\Entity\Order\Status;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
@@ -53,6 +54,7 @@ class Reports implements PageInterface
 
 			$scripts->add('jigoshop.flot', JIGOSHOP_URL.'/assets/js/flot/jquery.flot.min.js', array('jquery'));
 			$scripts->add('jigoshop.flot.time', JIGOSHOP_URL.'/assets/js/flot/jquery.flot.time.min.js', array('jquery', 'jigoshop.flot'));
+			$scripts->add('jigoshop.flot.pie', JIGOSHOP_URL.'/assets/js/flot/jquery.flot.pie.min.js', array('jquery', 'jigoshop.flot'));
 		});
 	}
 
@@ -124,12 +126,20 @@ class Reports implements PageInterface
 		$this->orders = $this->orderService->findByQuery($query);
 		$this->wp->removeFilter('posts_where', $restriction);
 
-		$this->wp->addMetaBox('jigoshop_reports_sales', __('Sales', 'jigoshop'), array($this, 'sales'), 'jigoshop-reports', 'normal', 'core');
-//		$this->wp->addMetaBox('jigoshop_reports_', __('', 'jigoshop'), array($this, ''), 'jigoshop-reports', 'normal', 'core');
+		$reports = $this;
+		$boxes = array(
+			function() use ($reports) {
+				$reports->sales();
+			},
+			function() use ($reports) {
+				$reports->topEarners();
+			},
+		);
 
 		Render::output('admin/reports', array(
 			'messages' => $this->messages,
 			'orders' => $this->orders,
+			'boxes' => $boxes,
 			'start_date' => $startDate,
 			'end_date' => $endDate,
 		));
@@ -165,6 +175,48 @@ class Reports implements PageInterface
 			'orders' => $this->orders,
 			'orderCounts' => $orderCounts,
 			'orderAmounts' => $orderAmounts,
+		));
+	}
+
+	public function topEarners()
+	{
+		$sales = array();
+		$chart = array();
+		$totalSales = 0.0;
+		$totalChart = 0;
+
+		foreach ($this->orders as $order) {
+			/** @var $order Order */
+			foreach ($order->getItems() as $item) {
+				/** @var $item Order\Item */
+				if (!isset($sales[$item->getProduct()->getId()])) {
+					$sales[$item->getProduct()->getId()] = array(
+						'product' => $item->getProduct(),
+						'value' => 0.0,
+					);
+					$chart[$item->getName()] = 0;
+				}
+
+				$sales[$item->getProduct()->getId()]['value'] += $item->getCost();
+				$totalSales += $item->getCost();
+				$chart[$item->getName()] += $item->getQuantity();
+				$totalChart += $item->getQuantity();
+			}
+		}
+
+		$data = array();
+		foreach ($chart as $product => $quantity) {
+			$data[] = array(
+				'label' => $product,
+				'data' => round($quantity/$totalChart, 3)*100,
+			);
+		}
+
+		Render::output('admin/reports/top_earners', array(
+			'orders' => $this->orders,
+			'sales' => $sales,
+			'chart' => $data,
+			'total_sales' => $totalSales,
 		));
 	}
 }
