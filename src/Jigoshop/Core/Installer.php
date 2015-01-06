@@ -422,6 +422,9 @@ class Installer
 		$wpdb = $this->wp->getWPDB();
 		$wpdb->hide_errors();
 
+		$query = "DROP FUNCTION IF EXISTS jigoshop_price";
+		$wpdb->query($query);
+
 		$query = "
 			CREATE FUNCTION jigoshop_price(product_id INT) RETURNS DECIMAL(12,4) DETERMINISTIC
 			BEGIN
