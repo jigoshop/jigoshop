@@ -29,10 +29,16 @@ services:
       - '@jigoshop.helper.scripts'
     tags:
       - { name: jigoshop.admin.page }
-#  jigoshop.admin.reports:
-#    class: Jigoshop\Admin\Reports
-#    tags:
-#      - { name: jigoshop.admin.page }
+  jigoshop.admin.reports:
+    class: Jigoshop\Admin\Reports
+    tags:
+      - { name: jigoshop.admin.page }
+    arguments:
+      - '@wpal'
+      - '@jigoshop.messages'
+      - '@jigoshop.service.order'
+      - '@jigoshop.helper.styles'
+      - '@jigoshop.helper.scripts'
   jigoshop.admin.licences:
     class: Jigoshop\Admin\Licences
     arguments:
