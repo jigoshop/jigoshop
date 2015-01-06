@@ -101,7 +101,7 @@ use Jigoshop\Helper\Tax;
 									<div class="panel-heading">
 										<h3 class="panel-title">
 											<?php _e('Select your destination', 'jigoshop'); ?>
-											<button class="btn btn-default pull-right close"><?php _e('Close', 'jigoshop'); ?></button>
+											<button class="btn btn-default pull-right close" title="<?php _e('Close', 'jigoshop'); ?>"><span class="glyphicon glyphicon-remove"></span></button>
 										</h3>
 									</div>
 									<div class="panel-body">
