@@ -186,7 +186,7 @@ class Downloadable implements Type
 	public function emailLink($result, $item, $order)
 	{
 		$product = $item->getProduct();
-		if ($product instanceof Product\Downloadable) {
+		if ($product instanceof Product\Downloadable && in_array($order->getStatus(), array(Order\Status::COMPLETED, Order\Status::PROCESSING))) {
 			$url = Api::getEndpointUrl('download-file', $order->getKey().'.'.$order->getId().'.'.$item->getKey());
 
 			$result .= PHP_EOL.__('Your download link for this file is:', 'jigoshop');

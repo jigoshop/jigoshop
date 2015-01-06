@@ -152,6 +152,7 @@ class Emails {
 		$shippingAddress = $order->getCustomer()->getShippingAddress();
 
 		return $this->wp->applyFilters('jigoshop\emails\order_variables', array(
+			'blog_name' => $this->wp->getBloginfo('name'),
 			'order_number' => $order->getNumber(),
 			'order_date' => $this->wp->getHelpers()->dateI18n($this->wp->getOption('date_format')),
 			'shop_name' => $this->options->get('general.company_name'),
@@ -164,7 +165,8 @@ class Emails {
 			'order_items' => $this->formatItems($order),
 			'subtotal' => ProductHelper::formatPrice($order->getSubtotal()),
 			'shipping' => ProductHelper::formatPrice($order->getShippingPrice()),
-			'shipping_cost' => $order->getShippingPrice(),
+			'shipping_cost' => ProductHelper::formatPrice($order->getShippingPrice()),
+			'shipping_cost_raw' => $order->getShippingPrice(),
 			'shipping_method' => $order->getShippingMethod(),
 			'discount' => ProductHelper::formatPrice($order->getDiscount()),
 			'total_tax' => ProductHelper::formatPrice($order->getTotalTax()),
@@ -180,7 +182,9 @@ class Emails {
 			'billing_postcode' => $billingAddress->getPostcode(),
 			'billing_city' => $billingAddress->getCity(),
 			'billing_country' => Country::getName($billingAddress->getCountry()),
+			'billing_country_raw' => $billingAddress->getCountry(),
 			'billing_state' => Country::hasStates($billingAddress->getCountry()) ? Country::getStateName($billingAddress->getCountry(), $billingAddress->getState()) : $billingAddress->getState(),
+			'billing_state_raw' => $billingAddress->getState(),
 			'billing_email' => $billingAddress->getEmail(),
 			'billing_phone' => $billingAddress->getPhone(),
 			'shipping_first_name' => $shippingAddress->getFirstName(),
@@ -191,7 +195,9 @@ class Emails {
 			'shipping_postcode' => $shippingAddress->getPostcode(),
 			'shipping_city' => $shippingAddress->getCity(),
 			'shipping_country' => Country::getName($shippingAddress->getCountry()),
+			'shipping_country_raw' => $shippingAddress->getCountry(),
 			'shipping_state' => Country::hasStates($shippingAddress->getCountry()) ? Country::getStateName($shippingAddress->getCountry(), $shippingAddress->getState()) : $shippingAddress->getState(),
+			'shipping_state_raw' => $shippingAddress->getState(),
 		),$order);
 	}
 
@@ -264,6 +270,7 @@ class Emails {
 	private function getOrderEmailArgumentsDescription()
 	{
 		return apply_filters('jigoshop_order_email_variables_description', array(
+			'blog_name' => __('Blog Name', 'jigoshop'),
 			'order_number' => __('Order Number', 'jigoshop'),
 			'order_date' => __('Order Date', 'jigoshop'),
 			'shop_name' => __('Shop Name', 'jigoshop'),
@@ -277,6 +284,7 @@ class Emails {
 			'subtotal' => __('Subtotal', 'jigoshop'),
 			'shipping' => __('Shipping Price and Method', 'jigoshop'),
 			'shipping_cost' => __('Shipping Cost', 'jigoshop'),
+			'shipping_cost_raw' => __('Raw Shipping Cost', 'jigoshop'),
 			'shipping_method' => __('Shipping Method', 'jigoshop'),
 			'discount' => __('Discount Price', 'jigoshop'),
 			'total_tax' => __('Total Tax', 'jigoshop'),
@@ -292,7 +300,9 @@ class Emails {
 			'billing_postcode' => __('Billing Postcode', 'jigoshop'),
 			'billing_city' => __('Billing City', 'jigoshop'),
 			'billing_country' => __('Billing Country', 'jigoshop'),
+			'billing_country_raw' => __('Raw Billing Country', 'jigoshop'),
 			'billing_state' => __('Billing State', 'jigoshop'),
+			'billing state_raw' => __('Raw Billing State', 'jigoshop'),
 			'billing_email' => __('Billing Email', 'jigoshop'),
 			'billing_phone' => __('Billing Phone    ', 'jigoshop'),
 			'shipping_first_name' => __('Shipping First Name', 'jigoshop'),
@@ -303,7 +313,9 @@ class Emails {
 			'shipping_postcode' => __('Shipping Postcode', 'jigoshop'),
 			'shipping_city' => __('Shipping City', 'jigoshop'),
 			'shipping_country' => __('Shipping Country', 'jigoshop'),
+			'shipping_country_raw' => __('Raw Shipping Country', 'jigoshop'),
 			'shipping_state' => __('Shipping State', 'jigoshop'),
+			'shipping state_raw' => __('Raw Shipping State', 'jigoshop'),
 		));
 	}
 
@@ -314,6 +326,7 @@ class Emails {
 	private function getStockEmailArguments($product)
 	{
 		return array(
+			'blog_name' => $this->wp->getBloginfo('name'),
 			'shop_name' => $this->options->get('general.company_name'),
 			'shop_address_1' => $this->options->get('general.company_address_1'),
 			'shop_address_2' => $this->options->get('general.company_address_2'),
@@ -329,6 +342,7 @@ class Emails {
 	private function getStockEmailArgumentsDescription()
 	{
 		return array(
+			'blog_name' => __('Blog Name', 'jigoshop'),
 			'shop_name' => __('Shop Name', 'jigoshop'),
 			'shop_address_1' => __('Shop Address part 1', 'jigoshop'),
 			'shop_address_2' => __('Shop Address part 2', 'jigoshop'),
