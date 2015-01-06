@@ -135,12 +135,12 @@ class Orders implements Tool
 						$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->postmeta} (post_id, meta_key, meta_value) VALUES (%d, %s, %s)", array($order->ID, 'customer', serialize(serialize($customer)))));
 
 						// Migrate coupons
-						$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->postmeta} (post_id, meta_key, meta_value) VALUES (%d, %s, %s)", array($order->ID, 'coupons', $data['order_discount_coupons'])));
+						$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->postmeta} (post_id, meta_key, meta_value) VALUES (%d, %s, %s)", array($order->ID, 'coupons', $data['order_discount_coupons']))); // TODO: HERE
 
 						// Migrate shipping method
 						try {
 							$method = $this->shippingService->get($data['shipping_method']);
-							$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->postmeta} (post_id, meta_key, meta_value) VALUES (%d, %s, %s)", array($order->ID, 'shipping',	serialize(array(
+							$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->postmeta} (post_id, meta_key, meta_value) VALUES (%d, %s, %s)", array($order->ID, 'shipping', serialize(array(
 								'method' => $method->getState(),
 								'price' => $data['order_shipping'],
 								'rate' => '', // Rates are stored nowhere - so no rate here
@@ -217,7 +217,7 @@ class Orders implements Tool
 							if (!empty($itemData['variation_id']) && $product instanceof Variable) {
 								$wpdb->query($wpdb->prepare(
 									"INSERT INTO {$wpdb->prefix}jigoshop_order_item_meta (item_id, meta_key, meta_value) VALUES (%d, %s, %s)",
-									array($itemId, 'variation_id', $itemData['variation_id'])
+									array($itemId, 'variation_id', $itemData['variation_id']) // TODO: HERE
 								));
 
 								/** @var Product\Variable\Variation $variationProduct */

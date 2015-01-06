@@ -127,7 +127,7 @@ class Reports implements PageInterface
 		$this->wp->removeFilter('posts_where', $restriction);
 
 		$reports = $this;
-		$boxes = array(
+		$boxes = $this->wp->applyFilters('jigoshop\admin\reports\boxes', array(
 			function() use ($reports) {
 				$reports->sales();
 			},
@@ -140,7 +140,10 @@ class Reports implements PageInterface
 			function() use ($reports) {
 				$reports->totalNewCustomers();
 			},
-		);
+			function() use ($reports) {
+				$reports->totalOrders();
+			},
+		));
 
 		Render::output('admin/reports', array(
 			'messages' => $this->messages,
@@ -289,6 +292,14 @@ class Reports implements PageInterface
 		Render::output('admin/reports/total_new_customers', array(
 			'orders' => $this->orders,
 			'total_customers' => $totalCustomers,
+		));
+	}
+
+	public function totalOrders()
+	{
+		Render::output('admin/reports/total_orders', array(
+			'orders' => $this->orders,
+			'total_orders' => count($this->orders),
 		));
 	}
 }
