@@ -162,7 +162,7 @@ class TaxService implements TaxServiceInterface
 
 			$standard[$class] = $definitions[$class];
 
-			if ($definitions['__compound__'.$class]) {
+			if (isset($definitions['__compound__'.$class])) {
 				$compound[$class] = $definitions['__compound__'.$class];
 			}
 		}
