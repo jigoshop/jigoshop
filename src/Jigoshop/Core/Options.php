@@ -2,6 +2,7 @@
 
 namespace Jigoshop\Core;
 
+use Jigoshop\Entity\Product\Attributes\StockStatus;
 use WPAL\Wordpress;
 
 /**
@@ -65,6 +66,7 @@ class Options
 			'weight_unit' => 'kg',
 			'dimensions_unit' => 'cm',
 			'manage_stock' => false,
+			'stock_status' => StockStatus::IN_STOCK,
 			'show_stock' => true,
 			'low_stock_threshold' => 2,
 			'hide_out_of_stock' => false,
