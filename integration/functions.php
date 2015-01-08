@@ -1,5 +1,7 @@
 <?php
 
+use Jigoshop\Frontend\Pages;
+
 function jigowatt_clean($var)
 {
 	return strip_tags(stripslashes(trim($var)));
@@ -120,4 +122,116 @@ function get_jigoshop_currency_symbol()
 	$currency_symbol = \Jigoshop\Helper\Currency::symbol();
 
 	return apply_filters('jigoshop_currency_symbol', $currency_symbol, $currency);
+}
+
+
+/**
+ * Evaluates to true only on the Shop page, not Product categories and tags
+ * Note:is used to replace is_page( jigoshop_get_page_id( 'shop' ) )
+ *
+ * @return bool
+ * @since 0.9.9
+ */
+function is_shop()
+{
+	return Pages::isShop();
+}
+
+/**
+ * Evaluates to true only on the Single Product Page
+ *
+ * @return bool
+ * @since 0.9.9
+ */
+function is_product()
+{
+	return Pages::isProduct();
+}
+
+/**
+ * Evaluates to true only on Shop, Product Category, and Product Tag pages
+ *
+ * @return bool
+ * @since 0.9.9
+ */
+function is_product_list()
+{
+	return Pages::isProductList();
+}
+
+/**
+ * Evaluates to true only on the Category Pages
+ *
+ * @return bool
+ * @since 0.9.9
+ */
+function is_product_category()
+{
+	return Pages::isProductCategory();
+}
+
+/**
+ * Evaluates to true only on the Tag Pages
+ *
+ * @return bool
+ * @since 0.9.9
+ */
+function is_product_tag()
+{
+	return Pages::isProductTag();
+}
+
+/**
+ * Evaluates to true only on the Order Tracking page
+ *
+ * @return bool
+ * @since 0.9.9.1
+ */
+function is_order_tracker()
+{
+	return Pages::isOrderTracker();
+}
+
+/**
+ * Evaluates to true only on the Cart page
+ *
+ * @return bool
+ * @since 0.9.8
+ */
+function is_cart()
+{
+	return Pages::isCart();
+}
+
+/**
+ * Evaluates to true only on the Checkout or Pay pages
+ *
+ * @return bool
+ * @since 0.9.8
+ */
+function is_checkout()
+{
+	return Pages::isCheckout();
+}
+
+/**
+ * Evaluates to true only on the main Account or any sub-account pages
+ *
+ * @return bool
+ * @since 0.9.9.1
+ */
+function is_account()
+{
+	return Pages::isAccount();
+}
+
+/**
+ * Evaluates to true for all Jigoshop pages
+ *
+ * @return bool
+ * @since 0.9.9
+ */
+function is_jigoshop()
+{
+	return Pages::isJigoshop();
 }
