@@ -182,13 +182,15 @@ class Shipping implements MultipleMethod
 				$rates = $this->shipping->__get_rates();
 			}
 
-			foreach ($rates as $id => $source) {
-				$rate = new Rate();
-				$rate->setId($id);
-				$rate->setPrice($source['price']);
-				$rate->setName($source['service']);
-				$rate->setMethod($this);
-				$this->rates[$rate->getId()] = $rate;
+			if (is_array($rates)) {
+				foreach ($rates as $id => $source) {
+					$rate = new Rate();
+					$rate->setId($id);
+					$rate->setPrice($source['price']);
+					$rate->setName($source['service']);
+					$rate->setMethod($this);
+					$this->rates[$rate->getId()] = $rate;
+				}
 			}
 		}
 
