@@ -29,6 +29,8 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 	private $tax = 0.0;
 	/** @var array */
 	private $taxClasses = array();
+	/** @var int */
+	private $productId;
 	/** @var Product|Product\Purchasable|Product\Shippable */
 	private $product;
 	/** @var string */
@@ -154,6 +156,14 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 	}
 
 	/**
+	 * @return int ID of the product.
+	 */
+	public function getProductId()
+	{
+		return $this->productId;
+	}
+
+	/**
 	 * @return Product|Product\Purchasable|null The product.
 	 */
 	public function getProduct()
@@ -166,6 +176,7 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 	 */
 	public function setProduct(Product $product)
 	{
+		$this->productId = $product->getId();
 		$this->product = $product;
 		$this->type = $product->getType();
 		$this->taxClasses = $product->getTaxClasses();

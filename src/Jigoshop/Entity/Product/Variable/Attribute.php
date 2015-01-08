@@ -93,8 +93,9 @@ class Attribute
 
 	/**
 	 * @param $item Item
+	 * @return string
 	 */
-	public function printValue($item)
+	public function getItemValue($item)
 	{
 		if ($this->value !== '') {
 			$value = $this->value;
@@ -102,6 +103,14 @@ class Attribute
 			$value = $item->getMeta($this->attribute->getSlug())->getValue();
 		}
 
-		echo $this->getAttribute()->getOption($value)->getLabel();
+		return $this->getAttribute()->getOption($value)->getLabel();
+	}
+
+	/**
+	 * @param $item Item
+	 */
+	public function printValue($item)
+	{
+		echo $this->getItemValue($item);
 	}
 }

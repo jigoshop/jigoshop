@@ -56,9 +56,29 @@ class jigoshop_cart
 
 	public static function get_cart_from_session()
 	{
-//		$cart = Integration::getCart();
-		// TODO: Any idea of how to keep cart_contents on par with Cart?
-//		self::$cart_contents = (array)jigoshop_session::instance()->cart;
+	}
+
+	/**
+	 * @param $item \Jigoshop\Entity\Order\Item
+	 * @return array Prepared variation data.
+	 */
+	private static function __prepareVariation($item)
+	{
+		if ($item->getType() != \Jigoshop\Entity\Product\Variable::TYPE) {
+			return array();
+		}
+
+		/** @var \Jigoshop\Entity\Product\Variable $product */
+		$product = $item->getProduct();
+		$variation = $product->getVariation($item->getMeta('variation_id')->getValue());
+		$data = array();
+
+		foreach ($variation->getAttributes() as $attribute) {
+			/** @var $attribute \Jigoshop\Entity\Product\Variable\Attribute */
+			$data[$attribute->getAttribute()->getSlug()] = $attribute->getItemValue($item);
+		}
+
+		return $data;
 	}
 
 	/**
@@ -414,11 +434,24 @@ class jigoshop_cart
 
 	public static function get_cart()
 	{
-		if (empty(self::$cart_contents)) {
-			self::get_cart_from_session();
+		$cart = Integration::getCart();
+		$contents = array();
+
+		foreach ($cart->getItems() as $key => $item) {
+			/** @var $item \Jigoshop\Entity\Order\Item */
+			$contents[$key] = array(
+				'data' => new jigoshop_product($item->getProduct()),
+				'product_id' => $item->getProductId(),
+				'variation' => self::__prepareVariation($item),
+				'quantity' => $item->getQuantity(),
+				'unit_price' => $item->getPrice(),
+				'tax' => $item->getTax(),
+				'discount' => 0,
+				'price_includes_tax' => 'no',
+			);
 		}
 
-		return self::$cart_contents;
+		return $contents;
 	}
 
 	public static function get_cart_url()

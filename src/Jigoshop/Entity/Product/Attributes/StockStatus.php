@@ -83,6 +83,14 @@ class StockStatus implements \Serializable
 	}
 
 	/**
+	 * @param int $stock Value to add to stock.
+	 */
+	public function modifyStock($stock)
+	{
+		$this->stock += $stock;
+	}
+
+	/**
 	 * @return string Backorders status.
 	 */
 	public function getAllowBackorders()
