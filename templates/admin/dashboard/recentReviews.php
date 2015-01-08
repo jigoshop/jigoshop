@@ -8,18 +8,18 @@
 		<ul>
 			<?php foreach ($comments as $comment): $rating = get_comment_meta($comment->comment_ID, 'rating', true); ?>
 				<li>
-					<?= get_avatar($comment->comment_author, '32'); ?>
-					<div class="star-rating" title="<?= esc_attr($rating); ?>">
-						<span style="width:<?= ($rating * 16); ?>px"><?= $rating.' '.__('out of 5', 'jigoshop'); ?></span>
+					<?php echo get_avatar($comment->comment_author, '32'); ?>
+					<div class="star-rating" title="<?php echo esc_attr($rating); ?>">
+						<span style="width:<?php echo ($rating * 16); ?>px"><?php echo $rating.' '.__('out of 5', 'jigoshop'); ?></span>
 					</div>
 					<h4 class="meta"><a
-							href="<?= get_permalink($comment->ID); ?>#comment-<?= $comment->comment_ID; ?>"><?= $comment->post_title; ?></a><?= __(' reviewed by ', 'jigoshop'); ?> <?= strip_tags($comment->comment_author); ?>
+							href="<?php echo get_permalink($comment->ID); ?>#comment-<?php echo $comment->comment_ID; ?>"><?php echo $comment->post_title; ?></a><?php echo __(' reviewed by ', 'jigoshop'); ?> <?php echo strip_tags($comment->comment_author); ?>
 					</h4>
-					<blockquote><?= strip_tags($comment->comment_excerpt); ?> [...]</blockquote>
+					<blockquote><?php echo strip_tags($comment->comment_excerpt); ?> [...]</blockquote>
 				</li>
 			<?php endforeach; ?>
 		</ul>
 	<?php else: ?>
-		<p><?= __('There are no product reviews yet.', 'jigoshop'); ?></p>
+		<p><?php echo __('There are no product reviews yet.', 'jigoshop'); ?></p>
 	<?php endif; ?>
 </div>

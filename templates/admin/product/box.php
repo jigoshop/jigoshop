@@ -32,15 +32,19 @@ $isHidden = function($options) use ($product) {
 		)); ?>
 		<ul class="jigoshop_product_data nav nav-tabs" role="tablist">
 			<?php foreach ($menu as $id => $options): ?>
-			<li class="<?= $id; ?><?php $id == $current_tab and print ' active'; ?><?php $isHidden($options) and print ' not-active' ?>">
-				<a href="#<?= $id; ?>" data-toggle="tab"><?= $options['label']; ?></a>
+			<li class="<?php echo $id; ?><?php $id == $current_tab and print ' active'; ?><?php $isHidden($options) and print ' not-active' ?>">
+				<a href="#<?php echo $id; ?>" data-toggle="tab"><?php echo $options['label']; ?></a>
 			</li>
 			<?php endforeach; ?>
 		</ul>
 		<div class="tab-content">
 			<?php foreach($tabs as $id => $environment): ?>
-			<div class="tab-pane fade<?php $id == $current_tab and print ' in active'; ?>" id="<?= $id; ?>">
-				<?php Render::output('admin/product/box/'.$id, $environment); ?>
+			<div class="tab-pane fade<?php $id == $current_tab and print ' in active'; ?>" id="<?php echo $id; ?>">
+				<?php if (is_array($environment)): ?>
+					<?php Render::output('admin/product/box/'.$id, $environment); ?>
+				<?php else: ?>
+					<?php echo $environment; ?>
+				<?php endif; ?>
 			</div>
 			<?php endforeach; ?>
 		</div>

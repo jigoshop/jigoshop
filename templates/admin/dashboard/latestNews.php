@@ -6,9 +6,9 @@
 <?php if (count($items) > 0): ?>
 	<ul>
 		<?php foreach ($items as $item): ?>
-			<li><a href="<?= esc_url($item['link']); ?>"><?= $item['title']; ?></a> &ndash; <span class="rss-date"><?= $item['date']; ?></span></li>
+			<li><a href="<?php echo esc_url($item['link']); ?>"><?php echo $item['title']; ?></a> &ndash; <span class="rss-date"><?php echo $item['date']; ?></span></li>
 		<?php endforeach; ?>
 	</ul>
 <?php else: ?>
-	<p class="notice"><?= __('No items found.', 'jigoshop'); ?></p>
+	<p class="notice"><?php echo __('No items found.', 'jigoshop'); ?></p>
 <?php endif; ?>

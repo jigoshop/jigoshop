@@ -3,6 +3,7 @@
 namespace Jigoshop;
 
 use Jigoshop\Entity\Order;
+use Jigoshop\Entity\Product;
 use Jigoshop\Frontend\Pages;
 use JigoshopContainer;
 use Monolog\Registry;
@@ -64,6 +65,41 @@ class Integration
 			Integration::setCurrentOrder($order);
 			return $order;
 		}, 10, 1);
+
+		// Admin product page integration
+		add_filter('jigoshop\admin\product\menu', function($menu){
+			ob_start();
+			do_action('jigoshop_product_write_panel_tabs');
+			$tabs = ob_get_clean();
+
+			$data = array();
+			preg_match_all('@<a href=(\'|")#(.+?)(\'|")>(.*?)</a>@', $tabs, $data);
+
+			foreach ($data[2] as $key => $id) {
+				$menu[$id] = array('label' => $data[4][$key], 'visible' => true);
+			}
+
+			return $menu;
+		});
+		add_filter('jigoshop\admin\product\tabs', function($tabs){
+			ob_start();
+			do_action('jigoshop_product_write_panels');
+			$panels = ob_get_clean();
+
+			$data = array();
+			preg_match_all('@<div id=(\'|")(.+?)(\'|").*?class=(\'|").*?jigoshop_options_panel.*?(\'|").*?>(.*?)</div>@', str_replace("\n", '', $panels), $data);
+
+			foreach ($data[2] as $key => $id) {
+				$tabs[$id] = $data[6][$key];
+			}
+
+			return $tabs;
+		});
+		add_action('jigoshop\service\product\save', function($product){
+			/** @var $product Product */
+			do_action('jigoshop_process_product_meta', $product->getId());
+			do_action('jigoshop_process_product_meta_'.$product->getType(), $product->getId());
+		});
 	}
 
 	public static function initializeGateways()
