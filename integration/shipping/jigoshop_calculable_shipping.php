@@ -26,7 +26,7 @@ abstract class jigoshop_calculable_shipping extends jigoshop_shipping_method
 		$services_to_use = $this->filter_services();
 		$this->has_error = false;
 
-		if (!$options->get('shipping.calculator') && !Integration::getPages()->isCheckout()) {
+		if (!$options->get('shipping.calculator') && !\Jigoshop\Frontend\Pages::isCheckout()) {
 			Integration::getMessages()->addError(__('Please proceed to checkout to get shipping estimates', 'jigoshop'));
 			return;
 		}

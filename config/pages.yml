@@ -9,7 +9,6 @@ services:
     class: Jigoshop\Frontend\PageResolver
     arguments:
       - '@wpal'
-      - '@jigoshop.pages'
   jigoshop.page.product_list:
     class: Jigoshop\Frontend\Page\ProductList
     arguments:

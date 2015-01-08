@@ -3,7 +3,6 @@
 namespace Jigoshop\Frontend;
 
 use Jigoshop\Core;
-use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
 use WPAL\Wordpress;
 
@@ -28,15 +27,12 @@ class Pages
 	const ALL = 'all';
 
 	/** @var \Jigoshop\Core\Options */
-	private $options;
-	/** @var \WPAL\Wordpress */
-	private $wp;
-	private $cache = array();
+	private static $options;
+	private static $cache = array();
 
-	public function __construct(Wordpress $wp, Options $options)
+	public static function setOptions($options)
 	{
-		$this->wp = $wp;
-		$this->options = $options;
+		self::$options = $options;
 	}
 
 	/**
@@ -44,7 +40,7 @@ class Pages
 	 *
 	 * @return array List of supported pages.
 	 */
-	public function getAvailable()
+	public static function getAvailable()
 	{
 		return array(
 			self::CART,
@@ -66,13 +62,13 @@ class Pages
 	 * @return bool Is current page one of provided?
 	 * @since 2.0
 	 */
-	public function isOneOf($pages)
+	public static function isOneOf($pages)
 	{
 		$result = false;
 		$pages = is_array($pages) ? $pages : array($pages);
 
 		foreach ($pages as $page) {
-			$result = $result || $this->is($page);
+			$result = $result || self::is($page);
 		}
 
 		return $result;
@@ -85,27 +81,27 @@ class Pages
 	 * @return bool Is current page the one from name?
 	 * @since 2.0
 	 */
-	public function is($page)
+	public static function is($page)
 	{
 		switch ($page) {
 			case self::CART:
-				return $this->isCart();
+				return self::isCart();
 			case self::CHECKOUT:
-				return $this->isCheckout();
+				return self::isCheckout();
 			case self::PRODUCT:
-				return $this->isProduct();
+				return self::isProduct();
 			case self::PRODUCT_CATEGORY:
-				return $this->isProductCategory();
+				return self::isProductCategory();
 			case self::PRODUCT_LIST:
-				return $this->isProductList();
+				return self::isProductList();
 			case self::PRODUCT_TAG:
-				return $this->isProductTag();
+				return self::isProductTag();
 			case self::ACCOUNT:
-				return $this->isAccount();
+				return self::isAccount();
 			case self::ALL:
 				return true;
 			default:
-				return $this->isAdminPage($page);
+				return self::isAdminPage($page);
 		}
 	}
 
@@ -115,15 +111,15 @@ class Pages
 	 * @return bool
 	 * @since 2.0
 	 */
-	public function isCart()
+	public static function isCart()
 	{
-		if (!isset($this->cache[self::CART])) {
-			$page = $this->options->getPageId(self::CART);
-			$this->cache[self::CART] = $page !== false && $this->wp->isPage($page);
-			$this->cache[self::CART] |= $this->isAjax() && strpos($_REQUEST['action'], 'cart') !== false;
+		if (!isset(self::$cache[self::CART])) {
+			$page = self::$options->getPageId(self::CART);
+			self::$cache[self::CART] = $page !== false && is_page($page);
+			self::$cache[self::CART] |= self::isAjax() && strpos($_REQUEST['action'], 'cart') !== false;
 		}
 
-		return $this->cache[self::CART];
+		return self::$cache[self::CART];
 	}
 
 	/**
@@ -132,15 +128,15 @@ class Pages
 	 * @return bool
 	 * @since 2.0
 	 */
-	public function isCheckout()
+	public static function isCheckout()
 	{
-		if (!isset($this->cache[self::CHECKOUT])) {
-			$page = $this->options->getPageId(self::CHECKOUT);
-			$this->cache[self::CHECKOUT] = $page !== false && $this->wp->isPage($page);
-			$this->cache[self::CHECKOUT] |= $this->isAjax() && strpos($_REQUEST['action'], 'checkout') !== false;
+		if (!isset(self::$cache[self::CHECKOUT])) {
+			$page = self::$options->getPageId(self::CHECKOUT);
+			self::$cache[self::CHECKOUT] = $page !== false && is_page($page);
+			self::$cache[self::CHECKOUT] |= self::isAjax() && strpos($_REQUEST['action'], 'checkout') !== false;
 		}
 
-		return $this->cache[self::CHECKOUT];
+		return self::$cache[self::CHECKOUT];
 	}
 
 	/**
@@ -149,15 +145,15 @@ class Pages
 	 * @return bool
 	 * @since 2.0
 	 */
-	public function isCheckoutThankYou()
+	public static function isCheckoutThankYou()
 	{
-		if (!isset($this->cache[self::THANK_YOU])) {
-			$page = $this->options->getPageId(self::THANK_YOU);
-			$this->cache[self::THANK_YOU] = $page !== false && $this->wp->isPage($page);
-			$this->cache[self::THANK_YOU] |= $this->isAjax() && strpos($_REQUEST['action'], 'thank_you') !== false;
+		if (!isset(self::$cache[self::THANK_YOU])) {
+			$page = self::$options->getPageId(self::THANK_YOU);
+			self::$cache[self::THANK_YOU] = $page !== false && is_page($page);
+			self::$cache[self::THANK_YOU] |= self::isAjax() && strpos($_REQUEST['action'], 'thank_you') !== false;
 		}
 
-		return $this->cache[self::THANK_YOU];
+		return self::$cache[self::THANK_YOU];
 	}
 
 	/**
@@ -166,14 +162,14 @@ class Pages
 	 * @return bool
 	 * @since 2.0
 	 */
-	public function isCheckoutPay()
+	public static function isCheckoutPay()
 	{
-		if (!isset($this->cache['checkout-pay'])) {
-			$wp = $this->wp->getWp();
-			$this->cache['checkout-pay'] = $this->isCheckout() && isset($wp->query_vars['pay']);
+		if (!isset(self::$cache['checkout-pay'])) {
+			global $wp;
+			self::$cache['checkout-pay'] = self::isCheckout() && isset($wp->query_vars['pay']);
 		}
 
-		return $this->cache['checkout-pay'];
+		return self::$cache['checkout-pay'];
 	}
 
 	/**
@@ -182,13 +178,13 @@ class Pages
 	 * @return bool
 	 * @since 2.0
 	 */
-	public function isProduct()
+	public static function isProduct()
 	{
-		if (!isset($this->cache[self::PRODUCT])) {
-			$this->cache[self::PRODUCT] =  $this->wp->isSingular(array(Types::PRODUCT));
+		if (!isset(self::$cache[self::PRODUCT])) {
+			self::$cache[self::PRODUCT] =  is_singular(array(Types::PRODUCT));
 		}
 
-		return $this->cache[self::PRODUCT];
+		return self::$cache[self::PRODUCT];
 	}
 
 	/**
@@ -197,13 +193,13 @@ class Pages
 	 * @return bool
 	 * @since 2.0
 	 */
-	public function isProductCategory()
+	public static function isProductCategory()
 	{
-		if (!isset($this->cache[self::PRODUCT_CATEGORY])) {
-			$this->cache[self::PRODUCT_CATEGORY] =  $this->wp->isTax(Types::PRODUCT_CATEGORY);
+		if (!isset(self::$cache[self::PRODUCT_CATEGORY])) {
+			self::$cache[self::PRODUCT_CATEGORY] =  is_tax(Types::PRODUCT_CATEGORY);
 		}
 
-		return $this->cache[self::PRODUCT_CATEGORY];
+		return self::$cache[self::PRODUCT_CATEGORY];
 	}
 
 	/**
@@ -212,17 +208,17 @@ class Pages
 	 * @return bool
 	 * @since 2.0
 	 */
-	public function isProductList()
+	public static function isProductList()
 	{
-		if (!isset($this->cache[self::PRODUCT_LIST])) {
-			$page = $this->options->getPageId(self::SHOP);
-			$this->cache[self::PRODUCT_LIST] = $this->wp->isPostTypeArchive(Types::PRODUCT) ||
-				($page !== false && $this->wp->isPage($page)) ||
-				$this->isProductCategory() ||
-				$this->isProductTag();
+		if (!isset(self::$cache[self::PRODUCT_LIST])) {
+			$page = self::$options->getPageId(self::SHOP);
+			self::$cache[self::PRODUCT_LIST] = is_post_type_archive(Types::PRODUCT) ||
+				($page !== false && is_page($page)) ||
+				self::isProductCategory() ||
+				self::isProductTag();
 		}
 
-		return $this->cache[self::PRODUCT_LIST];
+		return self::$cache[self::PRODUCT_LIST];
 	}
 
 	/**
@@ -231,13 +227,13 @@ class Pages
 	 * @return bool
 	 * @since 2.0
 	 */
-	public function isProductTag()
+	public static function isProductTag()
 	{
-		if (!isset($this->cache[self::PRODUCT_TAG])) {
-			$this->cache[self::PRODUCT_TAG] =  $this->wp->isTax(Types::PRODUCT_TAG);
+		if (!isset(self::$cache[self::PRODUCT_TAG])) {
+			self::$cache[self::PRODUCT_TAG] =  is_tax(Types::PRODUCT_TAG);
 		}
 
-		return $this->cache[self::PRODUCT_TAG];
+		return self::$cache[self::PRODUCT_TAG];
 	}
 
 	/**
@@ -246,14 +242,14 @@ class Pages
 	 * @return bool
 	 * @since 2.0
 	 */
-	public function isAccount()
+	public static function isAccount()
 	{
-		if (!isset($this->cache[self::ACCOUNT])) {
-			$page = $this->options->getPageId(self::ACCOUNT);
-			$this->cache[self::ACCOUNT] = $page !== false && $this->wp->isPage($page);
+		if (!isset(self::$cache[self::ACCOUNT])) {
+			$page = self::$options->getPageId(self::ACCOUNT);
+			self::$cache[self::ACCOUNT] = $page !== false && is_page($page);
 		}
 
-		return $this->cache[self::ACCOUNT];
+		return self::$cache[self::ACCOUNT];
 	}
 
 	/**
@@ -262,14 +258,14 @@ class Pages
 	 * @return bool
 	 * @since 2.0
 	 */
-	public function isAccountEditAddress()
+	public static function isAccountEditAddress()
 	{
-		if (!isset($this->cache['account-edit-address'])) {
-			$wp = $this->wp->getWp();
-			$this->cache['account-edit-address'] = $this->isAccount() && isset($wp->query_vars['edit-address']);
+		if (!isset(self::$cache['account-edit-address'])) {
+			global $wp;
+			self::$cache['account-edit-address'] = self::isAccount() && isset($wp->query_vars['edit-address']);
 		}
 
-		return $this->cache['account-edit-address'];
+		return self::$cache['account-edit-address'];
 	}
 
 	/**
@@ -278,14 +274,14 @@ class Pages
 	 * @return bool
 	 * @since 2.0
 	 */
-	public function isAccountChangePassword()
+	public static function isAccountChangePassword()
 	{
-		if (!isset($this->cache['account-change-password'])) {
-			$wp = $this->wp->getWp();
-			$this->cache['account-change-password'] = $this->isAccount() && isset($wp->query_vars['change-password']);
+		if (!isset(self::$cache['account-change-password'])) {
+			global $wp;
+			self::$cache['account-change-password'] = self::isAccount() && isset($wp->query_vars['change-password']);
 		}
 
-		return $this->cache['account-change-password'];
+		return self::$cache['account-change-password'];
 	}
 
 	/**
@@ -294,14 +290,14 @@ class Pages
 	 * @return bool
 	 * @since 2.0
 	 */
-	public function isAccountOrders()
+	public static function isAccountOrders()
 	{
-		if (!isset($this->cache['account-orders'])) {
-			$wp = $this->wp->getWp();
-			$this->cache['account-orders'] = $this->isAccount() && isset($wp->query_vars['orders']);
+		if (!isset(self::$cache['account-orders'])) {
+			global $wp;
+			self::$cache['account-orders'] = self::isAccount() && isset($wp->query_vars['orders']);
 		}
 
-		return $this->cache['account-orders'];
+		return self::$cache['account-orders'];
 	}
 
 	/**
@@ -310,14 +306,14 @@ class Pages
 	 * @return bool
 	 * @since 2.0
 	 */
-	public function isOrderTracker()
+	public static function isOrderTracker()
 	{
-		if (!isset($this->cache[self::ORDER_TRACKING])) {
-			$page = $this->options->getPageId(self::ORDER_TRACKING);
-			$this->cache[self::ORDER_TRACKING] = $page !== false && $this->wp->isPage($page);
+		if (!isset(self::$cache[self::ORDER_TRACKING])) {
+			$page = self::$options->getPageId(self::ORDER_TRACKING);
+			self::$cache[self::ORDER_TRACKING] = $page !== false && is_page($page);
 		}
 
-		return $this->cache[self::ORDER_TRACKING];
+		return self::$cache[self::ORDER_TRACKING];
 	}
 
 	/**
@@ -325,35 +321,35 @@ class Pages
 	 * @return boolean Is current page selected one?
 	 * @since 2.0
 	 */
-	public function isAdminPage($page)
+	public static function isAdminPage($page)
 	{
-		if (!isset($this->cache[$page])) {
-			$this->cache[$page] = $this->getAdminPage() == $page;
+		if (!isset(self::$cache[$page])) {
+			self::$cache[$page] = self::getAdminPage() == $page;
 		}
 
-		return $this->cache[$page];
+		return self::$cache[$page];
 	}
 
 	/**
 	 * @return string|bool Currently displayed admin page slug or false.
 	 */
-	public function getAdminPage()
+	public static function getAdminPage()
 	{
-		$currentScreen = $this->wp->getCurrentScreen();
+		global $current_screen;
 
-		if ($currentScreen === null) {
+		if ($current_screen === null) {
 			return false;
 		}
 
 		//		if (in_array($currentScreen->post_type, array(Types::PRODUCT, Types::ORDER, Types::COUPON), true)) {
-		if (in_array($currentScreen->post_type, array(Types::PRODUCT, Types::ORDER), true)) {
-			return $currentScreen->post_type;
+		if (in_array($current_screen->post_type, array(Types::PRODUCT, Types::ORDER), true)) {
+			return $current_screen->post_type;
 		}
-		if (strpos($currentScreen->id, 'jigoshop') !== false) {
-			return $currentScreen->id;
+		if (strpos($current_screen->id, 'jigoshop') !== false) {
+			return $current_screen->id;
 		}
-		if (strpos($currentScreen->base, 'jigoshop_page') !== false) {
-			return $currentScreen->base;
+		if (strpos($current_screen->base, 'jigoshop_page') !== false) {
+			return $current_screen->base;
 		}
 
 		return false;
@@ -365,9 +361,9 @@ class Pages
 	 * @return bool
 	 * @since 2.0
 	 */
-	public function isJigoshop()
+	public static function isJigoshop()
 	{
-		return $this->isShop() || $this->isAccount() || $this->isCart() || $this->isCheckout() || $this->isOrderTracker() || $this->isCheckoutThankYou();
+		return self::isShop() || self::isAccount() || self::isCart() || self::isCheckout() || self::isOrderTracker();
 	}
 
 	/**
@@ -376,12 +372,12 @@ class Pages
 	 * @return bool
 	 * @since 2.0
 	 */
-	public function isShop()
+	public static function isShop()
 	{
-		return $this->isProductList() || $this->isProduct() || $this->isProductCategory() || $this->isProductTag();
+		return self::isProductList() || self::isProduct() || self::isProductCategory() || self::isProductTag();
 	}
 
-	public function isAjax()
+	public static function isAjax()
 	{
 		if (defined('DOING_AJAX') && strpos($_REQUEST['action'], 'jigoshop') !== false) {
 			return true;

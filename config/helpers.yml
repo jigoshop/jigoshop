@@ -4,9 +4,7 @@ services:
     class: Jigoshop\Helper\Styles
     arguments:
       - '@wpal'
-      - '@jigoshop.pages'
   jigoshop.helper.scripts:
     class: Jigoshop\Helper\Scripts
     arguments:
       - '@wpal'
-      - '@jigoshop.pages'

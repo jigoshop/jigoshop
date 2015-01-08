@@ -20,7 +20,6 @@ add_action('widgets_init', function(){
 	register_widget('Jigoshop_Widget_Cart');
 	Jigoshop_Widget_Cart::setCart(Integration::getCartService());
 	Jigoshop_Widget_Cart::setOptions(Integration::getOptions());
-	Jigoshop_Widget_Cart::setPages(Integration::getPages());
 	register_widget('Jigoshop_Widget_Featured_Products');
 	Jigoshop_Widget_Featured_Products::setProductService(Integration::getProductService());
 	register_widget('Jigoshop_Widget_Product_Search');

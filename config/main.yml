@@ -7,7 +7,6 @@ parameters:
     cart:
       class: \Jigoshop\Widget\Cart
       calls:
-        - ['setPages', 'jigoshop.pages']
         - ['setOptions', 'jigoshop.options']
         - ['setCart', 'jigoshop.service.cart']
     featured_products:
@@ -17,7 +16,6 @@ parameters:
     price_filter:
       class: \Jigoshop\Widget\PriceFilter
       calls:
-        - ['setPages', 'jigoshop.pages']
         - ['setStyles', 'jigoshop.helper.styles']
     product_search:
       class: \Jigoshop\Widget\ProductSearch
@@ -50,7 +48,6 @@ services:
       - '@wpal'
       - '@jigoshop.options'
       - '@jigoshop.messages'
-      - '@jigoshop.pages'
       - '@jigoshop.template'
       - '%jigoshop.widgets%'
   jigoshop.installer:
@@ -83,11 +80,6 @@ services:
       - '@wpal'
     tags:
       - { name: jigoshop.container_aware }
-  jigoshop.pages:
-    class: Jigoshop\Frontend\Pages
-    arguments:
-      - '@wpal'
-      - '@jigoshop.options'
   jigoshop.messages:
     class: Jigoshop\Core\Messages
     arguments:
@@ -104,7 +96,6 @@ services:
     class: Jigoshop\Core\Assets
     arguments:
       - '@wpal'
-      - '@jigoshop.pages'
       - '@jigoshop.options'
       - '@jigoshop.helper.styles'
       - '@jigoshop.helper.scripts'
@@ -113,7 +104,6 @@ services:
     arguments:
       - '@wpal'
       - '@jigoshop.options'
-      - '@jigoshop.pages'
   jigoshop.cart:
     class: Jigoshop\Entity\Cart
     scope: prototype

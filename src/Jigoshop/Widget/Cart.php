@@ -11,8 +11,6 @@ class Cart extends \WP_Widget
 {
 	const ID = 'jigoshop_cart';
 
-	/** @var Pages */
-	private static $pages;
 	/** @var CartServiceInterface */
 	private static $cart;
 	/** @var Options */
@@ -26,14 +24,6 @@ class Cart extends \WP_Widget
 		);
 
 		parent::__construct(self::ID, __('Jigoshop: Cart', 'jigoshop'), $options);
-	}
-
-	/**
-	 * @param $pages Pages
-	 */
-	public static function setPages($pages)
-	{
-		self::$pages = $pages;
 	}
 
 	/**
@@ -61,7 +51,7 @@ class Cart extends \WP_Widget
 	public function widget($args, $instance)
 	{
 		// Hide widget if page is the cart or checkout
-		if (self::$pages->isCart() || self::$pages->isCheckout()) {
+		if (Pages::isCart() || Pages::isCheckout()) {
 			return;
 		}
 

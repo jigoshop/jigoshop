@@ -153,6 +153,7 @@ class JigoshopInit
 		Jigoshop\Helper\Product::setOptions($options);
 		Jigoshop\Helper\Order::setOptions($options);
 		Jigoshop\Entity\Order\Status::setWordpress($wp);
+		Jigoshop\Frontend\Pages::setOptions($options);
 
 		/** @var \Jigoshop\Core $jigoshop */
 		$jigoshop = $this->container->get('jigoshop');

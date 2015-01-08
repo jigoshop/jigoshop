@@ -14,13 +14,10 @@ class PageResolver
 {
 	/** @var \WPAL\Wordpress */
 	private $wp;
-	/** @var \Jigoshop\Frontend\Pages */
-	private $pages;
 
-	public function __construct(Wordpress $wp, Pages $pages)
+	public function __construct(Wordpress $wp)
 	{
 		$this->wp = $wp;
-		$this->pages = $pages;
 	}
 
 	public function resolve(Container $container)
@@ -40,57 +37,57 @@ class PageResolver
 
 	public function getPage(Container $container)
 	{
-		if (!$this->pages->isJigoshop() && !$this->pages->isAjax()) {
+		if (!Pages::isJigoshop() && !Pages::isAjax()) {
 			return null;
 		}
 
 		$this->wp->doAction('jigoshop\page_resolver\before');
 
-		if ($this->pages->isCheckoutThankYou()) {
+		if (Pages::isCheckoutThankYou()) {
 			return $container->get('jigoshop.page.checkout.thank_you');
 		}
 
-		if ($this->pages->isCheckoutPay()) {
+		if (Pages::isCheckoutPay()) {
 			return $container->get('jigoshop.page.checkout.pay');
 		}
 
-		if ($this->pages->isCheckout()) {
+		if (Pages::isCheckout()) {
 			return $container->get('jigoshop.page.checkout');
 		}
 
-		if ($this->pages->isCart()) {
+		if (Pages::isCart()) {
 			return $container->get('jigoshop.page.cart');
 		}
 
-		if ($this->pages->isProductCategory()) {
+		if (Pages::isProductCategory()) {
 			return $container->get('jigoshop.page.product_category_list');
 		}
 
-		if ($this->pages->isProductTag()) {
+		if (Pages::isProductTag()) {
 			return $container->get('jigoshop.page.product_tag_list');
 		}
 
-		if ($this->pages->isProductList()) {
+		if (Pages::isProductList()) {
 			return $container->get('jigoshop.page.product_list');
 		}
 
-		if ($this->pages->isProduct()) {
+		if (Pages::isProduct()) {
 			return $container->get('jigoshop.page.product');
 		}
 
-		if ($this->pages->isAccountOrders()) {
+		if (Pages::isAccountOrders()) {
 			return $container->get('jigoshop.page.account.orders');
 		}
 
-		if ($this->pages->isAccountEditAddress()) {
+		if (Pages::isAccountEditAddress()) {
 			return $container->get('jigoshop.page.account.edit_address');
 		}
 
-		if ($this->pages->isAccountChangePassword()) {
+		if (Pages::isAccountChangePassword()) {
 			return $container->get('jigoshop.page.account.change_password');
 		}
 
-		if ($this->pages->isAccount()) {
+		if (Pages::isAccount()) {
 			return $container->get('jigoshop.page.account');
 		}
 	}

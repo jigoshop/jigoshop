@@ -19,8 +19,6 @@ class Core
 	private $options;
 	/** @var \Jigoshop\Core\Messages */
 	private $messages;
-	/** @var \Jigoshop\Frontend\Pages */
-	private $pages;
 	/** @var \Jigoshop\Core\Template */
 	private $template;
 	/** @var \WPAL\Wordpress */
@@ -28,12 +26,11 @@ class Core
 	/** @var array */
 	private $widgets;
 
-	public function __construct(Wordpress $wp, Options $options, Messages $messages, Pages $pages, Template $template, $widgets = array())
+	public function __construct(Wordpress $wp, Options $options, Messages $messages, Template $template, $widgets = array())
 	{
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->messages = $messages;
-		$this->pages = $pages;
 		$this->template = $template;
 		$this->widgets = $widgets;
 
@@ -131,7 +128,7 @@ class Core
 	 */
 	public function displayCustomMessage()
 	{
-		if ($this->options->get('general.show_message') && $this->pages->isJigoshop()){
+		if ($this->options->get('general.show_message') && Frontend\Pages::isJigoshop()){
 			Render::output('shop/custom_message', array(
 				'message' => $this->options->get('general.message'),
 			));

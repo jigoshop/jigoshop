@@ -8,15 +8,12 @@ use Jigoshop\Entity\Product;
 use Jigoshop\Frontend\Pages;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Styles;
-use Jigoshop\Service\ProductServiceInterface;
 use WPAL\Wordpress;
 
 class PriceFilter extends \WP_Widget
 {
 	const ID = 'jigoshop_price_filter';
 
-	/** @var Pages */
-	private static $pages;
 	/** @var Styles */
 	private static $styles;
 	/** @var float */
@@ -43,11 +40,6 @@ class PriceFilter extends \WP_Widget
 
 		// Add own hidden fields to filter
 //		add_filter('jigoshop_get_hidden_fields', array($this, 'hiddenFields'));
-	}
-
-	public static function setPages($pages)
-	{
-		self::$pages = $pages;
 	}
 
 	public static function setStyles($styles)
@@ -104,7 +96,7 @@ class PriceFilter extends \WP_Widget
 	 */
 	public function widget($args, $instance)
 	{
-		if (!self::$pages->isProductList()) {
+		if (!Pages::isProductList()) {
 			return;
 		}
 

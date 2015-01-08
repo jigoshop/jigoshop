@@ -3,6 +3,7 @@
 namespace Jigoshop;
 
 use Jigoshop\Entity\Order;
+use Jigoshop\Frontend\Pages;
 use JigoshopContainer;
 use Monolog\Registry;
 
@@ -35,8 +36,7 @@ class Integration
 			Integration::initializeShipping();
 		});
 		add_action('jigoshop\page_resolver\before', function(){
-			$pages = Integration::getPages();
-			if ($pages->isCart() || $pages->isCheckout() || $pages->isCheckoutThankYou()) {
+			if (Pages::isCart() || Pages::isCheckout() || Pages::isCheckoutThankYou()) {
 				Integration::initializeGateways();
 			}
 		});

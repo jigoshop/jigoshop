@@ -21,16 +21,13 @@ class Template
 	private $wp;
 	/** @var \Jigoshop\Core\Options */
 	private $options;
-	/** @var \Jigoshop\Frontend\Pages */
-	private $pages;
 	/** @var PageInterface */
 	private $page;
 
-	public function __construct(Wordpress $wp, Options $options, Pages $pages)
+	public function __construct(Wordpress $wp, Options $options)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
-		$this->pages = $pages;
 	}
 
 	/**
@@ -62,7 +59,7 @@ class Template
 	 */
 	public function process($template)
 	{
-		if (!$this->pages->isJigoshop()) {
+		if (!Pages::isJigoshop()) {
 			return $template;
 		}
 

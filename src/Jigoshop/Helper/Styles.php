@@ -13,15 +13,12 @@ use WPAL\Wordpress;
  */
 class Styles
 {
-	/** @var \Jigoshop\Frontend\Pages */
-	private $pages;
 	/** @var \WPAL\Wordpress */
 	private $wp;
 
-	public function __construct(Wordpress $wp, Pages $pages)
+	public function __construct(Wordpress $wp)
 	{
 		$this->wp = $wp;
-		$this->pages = $pages;
 	}
 
 	/**
@@ -43,7 +40,7 @@ class Styles
 	{
 		$page = isset($options['page']) ? (array)$options['page'] : array('all');
 
-		if ($this->pages->isOneOf($page)) {
+		if (Pages::isOneOf($page)) {
 			$handle = $this->wp->applyFilters('jigoshop\style\add', $handle, $src, $dependencies, $options);
 
 			if (!empty($handle)) {
@@ -68,7 +65,7 @@ class Styles
 	{
 		$page = isset($options['page']) ? (array)$options['page'] : array('all');
 
-		if ($this->pages->isOneOf($page)) {
+		if (Pages::isOneOf($page)) {
 			$handle = $this->wp->applyFilters('jigoshop\style\remove', $handle, $options);
 
 			if (!empty($handle)) {
