@@ -131,6 +131,14 @@ abstract class Attribute
 	}
 
 	/**
+	 * @return bool Whether attribute has options attached.
+	 */
+	public function hasOptions()
+	{
+		return !empty($this->options);
+	}
+
+	/**
 	 * @param array $options Mew set of available options.
 	 */
 	public function setOptions($options)
@@ -204,6 +212,11 @@ abstract class Attribute
 	public function getValue()
 	{
 		return $this->value;
+	}
+
+	public function hasValue()
+	{
+		return !empty($this->value);
 	}
 
 	/**

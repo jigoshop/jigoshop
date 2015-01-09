@@ -379,9 +379,11 @@ class jigoshop_product extends Jigoshop_Base
 	 */
 	public function get_availability()
 	{
-		// TODO: Properly update
-		// Do not display initial availability if we aren't managing stock or if variable or grouped
-		if (self::get_options()->get('jigoshop_manage_stock') != 'yes' || $this->is_type(array('grouped', 'variable'))) {
+		if (!($this->__product instanceof Product\Purchasable)) {
+			return false;
+		}
+
+		if (!$this->__product->getStock()->getManage()) {
 			return false;
 		}
 
@@ -396,8 +398,7 @@ class jigoshop_product extends Jigoshop_Base
 			// Check if we allow backorders
 			if ($this->stock <= 0 && $this->backorders_allowed()) {
 				$notice['availability'] = __('Available for order', 'jigoshop');
-			} else if (self::get_options()->get('jigoshop_show_stock') == 'yes' && !$this->has_child() && $this->stock > 0) {
-				// Check if we want user to get how many items is available
+			} else if (Integration::getOptions()->get('products.show_stock') && $this->stock > 0) {
 				$notice['availability'] .= ': '.$this->stock.' '.__(' available', 'jigoshop');
 			}
 		} else {
@@ -408,7 +409,7 @@ class jigoshop_product extends Jigoshop_Base
 		return apply_filters('jigoshop_product_availability', $notice, $this);
 	}
 
-	public function is_in_stock($below_stock_threshold = false)
+	public function is_in_stock()
 	{
 		if ($this->__product instanceof Product\Purchasable) {
 			return (
@@ -429,7 +430,7 @@ class jigoshop_product extends Jigoshop_Base
 	{
 		if ($this->is_type('variable')) {
 			// TODO: Return properly variation based on product's one.
-			return new jigoshop_product_variation($id);
+			return null;//new jigoshop_product_variation($id);
 		}
 
 		// TODO: Requires grouped product support
@@ -555,10 +556,8 @@ class jigoshop_product extends Jigoshop_Base
 
 	public function get_percentage_sale()
 	{
-		if ($this->is_on_sale()) {
-			// 100% - sale price percentage over regular price
-			// TODO: Properly implement.
-			$percentage = 100 - (($this->sale_price / $this->regular_price) * 100);
+		if ($this->__product instanceof Product\Purchasable && $this->is_on_sale()) {
+			$percentage = 100 - ($this->__product->getPrice() / $this->__product->getRegularPrice() * 100);
 
 			// Round & return
 			return round($percentage).'%';
@@ -578,7 +577,6 @@ class jigoshop_product extends Jigoshop_Base
 			return 0.0;
 		}
 
-		// TODO: Add getRegularPrice() to Purchasable?
 		return $this->__product->getRegularPrice();
 	}
 
@@ -587,7 +585,7 @@ class jigoshop_product extends Jigoshop_Base
 	 *
 	 * @param mixed
 	 */
-	public function adjust_price($new_price)
+	public function adjust_price()
 	{
 		_deprecated_function('adjust_price', '2.0');
 	}
@@ -688,72 +686,59 @@ class jigoshop_product extends Jigoshop_Base
 	 **/
 	public function list_attributes()
 	{
-		// TODO: Refactor
 		// Check that we have some attributes that are visible
 		if (!($this->has_attributes() || $this->has_dimensions() || $this->has_weight())) {
 			return false;
 		}
 
+		$options = Integration::getOptions();
 		// Start the html output
 		$html = '<table class="shop_attributes">';
 
 		// Output weight if we have it
-		if (self::get_options()->get('jigoshop_enable_weight') == 'yes' && $this->get_weight()) {
-			$html .= '<tr><th>'.__('Weight', 'jigoshop').'</th><td>'.$this->get_weight().self::get_options()->get('jigoshop_weight_unit').'</td></tr>';
+		if ($this->get_weight()) {
+			$html .= '<tr><th>'.__('Weight', 'jigoshop').'</th><td>'.$this->get_weight().$options->get('products.weight_unit').'</td></tr>';
 		}
 
 		// Output dimensions if we have it
-		if (self::get_options()->get('jigoshop_enable_dimensions') == 'yes') {
-			if ($this->get_length()) {
-				$html .= '<tr><th>'.__('Length', 'jigoshop').'</th><td>'.$this->get_length().self::get_options()->get('jigoshop_dimension_unit').'</td></tr>';
-			}
-			if ($this->get_width()) {
-				$html .= '<tr><th>'.__('Width', 'jigoshop').'</th><td>'.$this->get_width().self::get_options()->get('jigoshop_dimension_unit').'</td></tr>';
-			}
-			if ($this->get_height()) {
-				$html .= '<tr><th>'.__('Height', 'jigoshop').'</th><td>'.$this->get_height().self::get_options()->get('jigoshop_dimension_unit').'</td></tr>';
-			}
+		if ($this->get_length()) {
+			$html .= '<tr><th>'.__('Length', 'jigoshop').'</th><td>'.$this->get_length().$options->get('products.dimensions_unit').'</td></tr>';
+		}
+		if ($this->get_width()) {
+			$html .= '<tr><th>'.__('Width', 'jigoshop').'</th><td>'.$this->get_width().$options->get('products.dimensions_unit').'</td></tr>';
+		}
+		if ($this->get_height()) {
+			$html .= '<tr><th>'.__('Height', 'jigoshop').'</th><td>'.$this->get_height().$options->get('products.dimensions_unit').'</td></tr>';
 		}
 
-		$attributes = $this->get_attributes();
-		foreach ($attributes as $attr) {
-
-			// If attribute is invisible skip
-			if (empty($attr['visible'])) {
+		foreach ($this->__product->getAttributes() as $attr) {
+			/** @var $attr Product\Attribute */
+			if (!$attr->isVisible()) {
 				continue;
 			}
 
 			// Get Title & Value from attribute array
-			$name = $this->attribute_label('pa_'.$attr['name']);
+			$name = $attr->getLabel();
 			$value = null;
 
-			if ((bool)$attr['is_taxonomy']) {
-
-				// Get the taxonomy terms
-				$product_terms = wp_get_object_terms($this->ID, 'pa_'.sanitize_title($attr['name']), array('orderby' => 'slug'));
-
-				if (is_wp_error($product_terms)) {
-					jigoshop_log("product::list_attributes() - Attribute for invalid taxonomy = ".$attr['name']);
-					continue;
-				}
-
-				// Convert them into a array to be imploded
+			if ($attr->hasOptions()) {
 				$terms = array();
 
-				foreach ($product_terms as $term) {
-					$terms[] = '<span class="val_'.$term->slug.'">'.$term->name.'</span>';
+				foreach ($attr->getOptions() as $option) {
+					/** @var $option Product\Attribute\Option */
+					$terms[] = '<span class="val_'.$option->getId().'">'.$option->getLabel().'</span>';
 				}
 
 				$value = apply_filters('jigoshop_product_attribute_value_taxonomy', implode(', ', $terms), $terms, $attr);
 			} else {
-				$value = apply_filters('jigoshop_product_attribute_value_custom', wptexturize($attr['value']), $attr);
+				$value = apply_filters('jigoshop_product_attribute_value_custom', wptexturize($attr->getValue()), $attr);
 			}
 
 			// Generate the remaining html
 			$html .= "
-			<tr class=\"attr_".$attr['name']."\">
-				<th>$name</th>
-				<td>$value</td>
+			<tr class=\"attr_".$attr->getSlug()."\">
+				<th>{$name}</th>
+				<td>{$value}</td>
 			</tr>";
 		}
 
@@ -823,108 +808,34 @@ class jigoshop_product extends Jigoshop_Base
 		return apply_filters('jigoshop_attribute_label', ucfirst($name));
 	}
 
-	/**
-	 * Returns an array of available values for attributes used in product variations
-	 * TODO: Note that this is 'variable product' specific, and should be moved to separate class
-	 * with all 'variable product' logic form other methods in this class.
-	 *
-	 * @return array Two dimensional array of attributes and their available values
-	 */
 	function get_available_attributes_variations()
 	{
-		// TODO: Refactor
-		if (!$this->is_type('variable') || !$this->has_child()) {
+		if (!($this->__product instanceof Product\Variable)) {
 			return array();
 		}
 
-		$attributes = $this->get_attributes();
-
-		if (!is_array($attributes)) {
-			return array();
-		}
-
-		$available_attributes = array();
-		$children = $this->get_children();
-
+		$result = array();
+		$attributes = $this->__product->getVariableAttributes();
 
 		foreach ($attributes as $attribute) {
+			/** @var $attribute Product\Attribute */
+			$result[$attribute->getLabel()] = array();
 
-			// If we don't have any variations
-			if (!$attribute['variation']) {
-				continue;
-			}
-
-			$values = array();
-
-			$attr_name = 'tax_'.sanitize_title($attribute['name']);
-
-			foreach ($children as $child) {
-
-				// Check if variation is disabled
-				if (get_post_status($child) != 'publish') {
-					continue;
-				}
-
-				// Get the variation & all attributes associated
-				$child = $this->get_child($child);
-				$options = $child->get_variation_attributes();
-
-				if (is_array($options)) {
-					foreach ($options as $key => $value) {
-						if ($key == $attr_name) {
-							$values[] = $value;
-						}
-					}
-				}
-			}
-
-			//empty value indicates that all options for given attribute are available
-			if (in_array('', $values)) {
-
-				if ($attribute['is_taxonomy']) {
-					$options = array();
-					$terms = wp_get_object_terms($this->ID, 'pa_'.sanitize_title($attribute['name']), array('orderby' => 'slug'));
-
-					foreach ($terms as $term) {
-						$options[] = $term->slug;
-					}
-				} else {
-					$options = explode(',', $attribute['value']);
-				}
-
-				$options = array_map('trim', $options);
-				$values = array_unique($options);
-
+			if ($attribute->hasValue()) {
+				$result[$attribute->getLabel()][] = $attribute->getOption($attribute->getValue())->getValue();
 			} else {
-
-				if (!$attribute['is_taxonomy']) {
-					$options = explode(',', $attribute['value']);
-					$options = array_map('trim', $options);
-					$values = array_intersect($options, $values);
+				foreach ($attribute->getOptions() as $option) {
+					/** @var $option Product\Attribute\Option */
+					$result[$attribute->getLabel()][] = $option->getValue();
 				}
-
-				$values = array_unique($values);
 			}
-
-			$values = array_unique($values);
-			asort($values);
-			$available_attributes[$attribute['name']] = $values;
 		}
 
-		return $available_attributes;
+		return $result;
 	}
 
-	/**
-	 * Gets the default attributes for a variable product.
-	 *
-	 * @return array
-	 */
 	function get_default_attributes()
 	{
-
-		$default = isset($this->meta['_default_attributes'][0]) ? $this->meta['_default_attributes'][0] : '';
-
-		return apply_filters('jigoshop_product_default_attributes', (array)maybe_unserialize($default), $this);
+		return array();
 	}
-
 }
