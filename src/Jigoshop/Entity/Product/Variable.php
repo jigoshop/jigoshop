@@ -30,7 +30,8 @@ class Variable extends Product implements Shippable, Saleable
 	{
 		return array_reduce($this->variations, function($value, $item){
 			/** @var $item Item */
-			return $value & ($item->getProduct() instanceof Shippable && $item->getProduct()->isShippable());
+			$product = $item->getProduct();
+			return $value & ($product instanceof Shippable && $product->isShippable());
 		}, true);
 	}
 

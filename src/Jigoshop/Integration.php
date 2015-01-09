@@ -23,6 +23,11 @@ class Integration
 	public function __construct(\JigoshopContainer $di)
 	{
 		self::$di = $di;
+		add_action('jigoshop\run', function($di){
+			/** @var $di \JigoshopContainer */
+			\jigoshop_product::__setProductService($di->get('jigoshop.service.product'));
+			\jigoshop_product::__setTaxService($di->get('jigoshop.service.tax'));
+		});
 
 		// Email product title support
 		add_filter('jigoshop\emails\product_title', function ($value, $product, $item){

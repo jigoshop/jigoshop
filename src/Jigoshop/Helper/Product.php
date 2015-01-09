@@ -3,7 +3,7 @@
 namespace Jigoshop\Helper;
 
 use Jigoshop\Core\Options;
-use Jigoshop\Core\Types\Product\Variable;
+use Jigoshop\Core\Types;
 use Jigoshop\Entity;
 
 class Product
@@ -82,6 +82,7 @@ class Product
 				/** @var $product Entity\Product\Variable */
 				$price = $product->getLowestPrice();
 				$formatted = self::formatPrice($price);
+				// TODO: If every variation has the same price - do not add "From: ..."
 
 				if ($price !== '') {
 					return sprintf(__('From: %s', 'jigoshop'), $formatted);
@@ -105,7 +106,8 @@ class Product
 			return '';
 		}
 
-		switch($product->getType()){
+		/**@var $product Entity\Product */
+		switch ($product->getType()){
 			case Entity\Product\Simple::TYPE:
 			case Entity\Product\Downloadable::TYPE:
 				/** @var $product Entity\Product\Simple */
@@ -299,5 +301,92 @@ class Product
 		}
 
 		return apply_filters('jigoshop\helper\product\item_data', $data, $item);
+	}
+
+	public static function getRating(Entity\Product $product)
+	{
+		/** @var $wpdb \wpdb */
+		global $wpdb;
+
+		// TODO: Join count and ratings query
+		$count = $wpdb->get_var($wpdb->prepare("
+			SELECT COUNT(meta_value) FROM $wpdb->commentmeta
+			LEFT JOIN $wpdb->comments ON $wpdb->commentmeta.comment_id = $wpdb->comments.comment_ID
+			WHERE meta_key = 'rating'
+			AND comment_post_ID = %d
+			AND comment_approved = '1'
+			AND meta_value > 0
+		", $product->getId()));
+
+		$ratings = $wpdb->get_var($wpdb->prepare("
+			SELECT SUM(meta_value) FROM $wpdb->commentmeta
+			LEFT JOIN $wpdb->comments ON $wpdb->commentmeta.comment_id = $wpdb->comments.comment_ID
+			WHERE meta_key = 'rating'
+			AND comment_post_ID = %d
+			AND comment_approved = '1'
+		", $product->getId()));
+
+		// If we don't have any posts
+		if (!(bool)$count) {
+			return false;
+		}
+
+		// Figure out the average rating
+		return round($ratings / $count, 2);
+	}
+
+	public static function getRatingHtml(Entity\Product $product, $location = '')
+	{
+		$rating = self::getRating($product);
+		if ($location) {
+			$location = '_'.$location;
+		}
+		$star_size = apply_filters('jigoshop_star_rating_size'.$location, 16);
+
+		return '<div class="star-rating" title="'.sprintf(__('Rated %s out of 5', 'jigoshop'), $rating).'"><span style="width:'.($rating * $star_size).'px"><span class="rating">'.$rating.'</span> '.__('out of 5', 'jigoshop').'</span></div>';
+	}
+
+	public static function getRelated(Entity\Product $product, $limit = 5)
+	{
+		$cats = array_map(function($category){ return $category['id']; }, $product->getCategories());
+		$tags = array_map(function($tag){ return $tag['id']; }, $product->getTags());
+
+		// Only get related posts that are in stock & visible
+		$query = array(
+			'posts_per_page' => $limit,
+			'post__not_in' => array($product->getId()),
+			'post_type' => Types::PRODUCT,
+			'fields' => 'ids',
+			'orderby' => 'rand',
+			'meta_query' => array(
+				array(
+					'key' => 'visibility',
+					'value' => array(Entity\Product::VISIBILITY_CATALOG, Entity\Product::VISIBILITY_PUBLIC),
+					'compare' => 'IN',
+				),
+			),
+			'tax_query' => array(
+				'relation' => 'OR',
+			),
+		);
+
+		if (!empty($cats)) {
+			$query['tax_query'][] = array(
+				'taxonomy' => Types::PRODUCT_CATEGORY,
+				'field' => 'id',
+				'terms' => $cats
+			);
+		}
+		if (!empty($tags)) {
+			$query['tax_query'][] = array(
+				'taxonomy' => Types::PRODUCT_TAG,
+				'field' => 'id',
+				'terms' => $tags
+			);
+		}
+
+		// TODO: Should we use ProductService for that?
+		$query = new \WP_Query($query);
+		return $query->get_posts();
 	}
 }

@@ -19,6 +19,11 @@ interface Purchasable
 	public function getPrice();
 
 	/**
+	 * @return float Regular product price.
+	 */
+	public function getRegularPrice();
+
+	/**
 	 * Returns stock data.
 	 *
 	 * @return Attributes\StockStatus Current stock status.

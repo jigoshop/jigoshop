@@ -7,6 +7,7 @@ use Jigoshop\Core\Options;
 use Jigoshop\Entity\Customer;
 use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\Product;
+use Jigoshop\Entity\Product\Attributes\StockStatus;
 use Jigoshop\Exception;
 use Jigoshop\Frontend\NotEnoughStockException;
 use Jigoshop\Helper\Product as ProductHelper;
@@ -128,11 +129,8 @@ class Cart extends Order
 			throw new Exception(__('Quantity has to be positive number', 'jigoshop'));
 		}
 
-		if ($product instanceof Product\Purchasable && $product->getStock()->getManage()) {
-			// TODO: Check for backorders!
-			if ($quantity > $product->getStock()->getStock()) {
-				throw new NotEnoughStockException($product->getStock()->getStock());
-			}
+		if ($product instanceof Product\Purchasable && !$this->checkStock($product, $quantity)) {
+			throw new NotEnoughStockException($product->getStock()->getStock());
 		}
 
 		$key = $this->productService->generateItemKey($item);
@@ -301,5 +299,23 @@ class Cart extends Order
 				// TODO: Some idea how to report this to the user?
 			}
 		}
+	}
+
+	/**
+	 * @param $product Product\Purchasable
+	 * @param $quantity int
+	 * @return bool
+	 */
+	private function checkStock($product, $quantity)
+	{
+		if (!$product->getStock()->getManage()) {
+			return $product->getStock()->getStatus() == StockStatus::IN_STOCK;
+		}
+
+		if (in_array($product->getStock()->getAllowBackorders(), array(StockStatus::BACKORDERS_ALLOW, StockStatus::BACKORDERS_NOTIFY))) {
+			return true;
+		}
+
+		return $quantity >= $product->getStock()->getStock();
 	}
 }

@@ -23,20 +23,41 @@ interface TaxServiceInterface
 	 * @return array Tax definition.
 	 */
 	public function getDefinition($taxClass, Customer\Address $address);
+	/**
+	 * @param $address Customer\Address The order.
+	 * @return array List of tax values per tax class.
+	 */
+	public function getDefinitions(Customer\Address $address);
+
+	/**
+	 * @param float $price Price to tax.
+	 * @param array $taxClasses List of applied tax classes.
+	 * @param array $definitions List of tax definitions to use.
+	 * @return float Overall tax value.
+	 */
+	public function calculate($price, array $taxClasses, array $definitions);
+
+	/**
+	 * @param float $price Price to tax.
+	 * @param array $taxClasses List of applied tax classes.
+	 * @param array $definitions List of tax definitions to use.
+	 * @return array List of tax values per tax class.
+	 */
+	public function get($price, array $taxClasses, array $definitions);
 
 	/**
 	 * @param $item Order\Item Order item to calculate tax for.
 	 * @param $order OrderInterface The order.
 	 * @return float Overall tax value.
 	 */
-	public function calculate(Order\Item $item, OrderInterface $order);
+	public function calculateForOrder(Order\Item $item, OrderInterface $order);
 
 	/**
 	 * @param $item Item Order item to calculate tax for.
 	 * @param $order OrderInterface The order.
 	 * @return array List of tax values per tax class.
 	 */
-	public function get(Item $item, OrderInterface $order);
+	public function getForOrder(Item $item, OrderInterface $order);
 
 	/**
 	 * @param Method $method Method to calculate tax for.

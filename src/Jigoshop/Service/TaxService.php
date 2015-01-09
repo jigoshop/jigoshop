@@ -88,8 +88,8 @@ class TaxService implements TaxServiceInterface
 			/** @var $item Order\Item */
 			/** @var $order Order */
 			if ($item->getProduct()->isTaxable()) {
-				$item->setTax($service->calculate($item, $order));
-				$order->updateTaxes($service->get($item, $order));
+				$item->setTax($service->calculateForOrder($item, $order));
+				$order->updateTaxes($service->getForOrder($item, $order));
 			}
 			return $item;
 		}, 10, 2);
@@ -97,7 +97,7 @@ class TaxService implements TaxServiceInterface
 			/** @var $item Order\Item */
 			/** @var $order Order */
 			if ($item->getProduct()->isTaxable()) {
-				$taxes = array_map(function($tax){ return -$tax; }, $service->get($item, $order));
+				$taxes = array_map(function($tax){ return -$tax; }, $service->getForOrder($item, $order));
 				$order->updateTaxes($taxes);
 			}
 			return $item;
@@ -124,36 +124,37 @@ class TaxService implements TaxServiceInterface
 			/** @var $order OrderInterface */
 			/** @var $item Order\Item */
 			if ($item->getProduct()->isTaxable()) {
-				$item->setTax($service->calculate($item, $order));
+				$item->setTax($service->calculateForOrder($item, $order));
 			}
 			return $item;
 		}, 10, 2);
 	}
 
 	/**
-	 * @param $item Order\Item Order item to calculate tax for.
-	 * @param $order OrderInterface The order.
+	 * @param float $price Price to tax.
+	 * @param array $taxClasses List of applied tax classes.
+	 * @param array $definitions List of tax definitions to use.
 	 * @return float Overall tax value.
 	 */
-	public function calculate(Order\Item $item, OrderInterface $order)
+	public function calculate($price, array $taxClasses, array $definitions)
 	{
-		return array_sum($this->get($item, $order));
+		return array_sum($this->get($price, $taxClasses, $definitions));
 	}
 
 	/**
-	 * @param $item Item Order item to calculate tax for.
-	 * @param $order OrderInterface The order.
+	 * @param float $price Price to tax.
+	 * @param array $taxClasses List of applied tax classes.
+	 * @param array $definitions List of tax definitions to use.
 	 * @return array List of tax values per tax class.
 	 */
-	public function get(Item $item, OrderInterface $order)
+	public function get($price, array $taxClasses, array $definitions)
 	{
 		$tax = array();
-		$definitions = $order->getTaxDefinitions();
-		$cost = $item->getCost();
+		$cost = $price;
 		$standard = array();
 		$compound = array();
 
-		foreach ($item->getTaxClasses() as $class) {
+		foreach ($taxClasses as $class) {
 			if (!isset($definitions[$class])) {
 				Registry::getInstance(JIGOSHOP_LOGGER)->addInfo(sprintf('No tax class: %s', $class));
 				$tax[$class] = 0.0;
@@ -182,6 +183,26 @@ class TaxService implements TaxServiceInterface
 	}
 
 	/**
+	 * @param $item Order\Item Order item to calculate tax for.
+	 * @param $order OrderInterface The order.
+	 * @return float Overall tax value.
+	 */
+	public function calculateForOrder(Order\Item $item, OrderInterface $order)
+	{
+		return array_sum($this->getForOrder($item, $order));
+	}
+
+	/**
+	 * @param $item Item Order item to calculate tax for.
+	 * @param $order OrderInterface The order.
+	 * @return array List of tax values per tax class.
+	 */
+	public function getForOrder(Item $item, OrderInterface $order)
+	{
+		return $this->get($item->getCost(), $item->getTaxClasses(), $order->getTaxDefinitions());
+	}
+
+	/**
 	 * @param Method $method Method to calculate tax for.
 	 * @param OrderInterface $order Order with the shipping method.
 	 * @param $price float Price calculated for current cart.
@@ -200,37 +221,7 @@ class TaxService implements TaxServiceInterface
 	 */
 	public function getForShipping(Method $method, OrderInterface $order, $price)
 	{
-		$tax = array();
-		$definitions = $order->getTaxDefinitions();
-		$standard = array();
-		$compound = array();
-
-		foreach ($method->getTaxClasses() as $class) {
-			if (!isset($definitions[$class])) {
-				Registry::getInstance(JIGOSHOP_LOGGER)->addInfo(sprintf('No tax class: %s', $class));
-				$tax[$class] = 0.0;
-				continue;
-			}
-
-			$standard[$class] = $definitions[$class];
-
-			if ($definitions['__compound__'.$class]) {
-				$compound[$class] = $definitions['__compound__'.$class];
-			}
-		}
-
-		foreach ($standard as $class => $definition) {
-			// TODO: Support for prices included in tax
-			$tax[$class] = $definition['rate'] * $price / 100;
-		}
-
-		$price += array_sum($tax);
-		foreach ($compound as $class => $definition) {
-			// TODO: Support for prices included in tax
-			$tax['__compound__'.$class] += $definition['rate'] * $price / 100;
-		}
-
-		return array_filter($tax);
+		return $this->get($price, $method->getTaxClasses(), $order->getTaxDefinitions());
 	}
 
 	/**
