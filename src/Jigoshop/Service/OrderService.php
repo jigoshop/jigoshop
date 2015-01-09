@@ -121,6 +121,7 @@ class OrderService implements OrderServiceInterface
 
 			$object->setId($post);
 			$created = true;
+			$this->wp->doAction('jigoshop\service\order\new', $post);
 		}
 
 		if (!$object->getKey()) {

@@ -133,6 +133,11 @@ class Cart extends Order
 			throw new NotEnoughStockException($product->getStock()->getStock());
 		}
 
+		$isValid = $this->wp->applyFilters('jigoshop\cart\validate_new_item', true, $product->getId(), $item->getQuantity());
+		if (!$isValid) {
+			throw new Exception(__('Could not add to cart.', 'jigoshop'));
+		}
+
 		$key = $this->productService->generateItemKey($item);
 		$item->setKey($key);
 		if ($this->hasItem($key)) {
@@ -140,6 +145,7 @@ class Cart extends Order
 			$itemInCart = $this->getItem($key);
 			$itemInCart->setQuantity($itemInCart->getQuantity() + $item->getQuantity());
 		} else {
+			$item = $this->wp->applyFilters('jigoshop\cart\new_item', $item);
 			parent::addItem($item);
 		}
 	}

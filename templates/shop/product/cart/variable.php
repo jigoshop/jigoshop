@@ -8,6 +8,7 @@ use Jigoshop\Helper\Product;
 ?>
 <form action="" method="post" class="form" role="form">
 	<input type="hidden" name="action" value="add-to-cart" />
+	<?php do_action('jigoshop\template\product\before_cart', $product); ?>
 	<?php foreach ($product->getVariableAttributes() as $attribute): /** @var $attribute \Jigoshop\Entity\Product\Attribute */ ?>
 		<?php \Jigoshop\Helper\Forms::select(array(
 			'name' => 'attributes['.$attribute->getId().']',

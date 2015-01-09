@@ -473,6 +473,8 @@ abstract class Product implements EntityInterface, Product\Taxable
 	 */
 	public function restoreState(array $state)
 	{
+		$state = $this->wp->applyFilters('jigoshop\product\restore_state', $state);
+
 		if (isset($state['id'])) {
 			$this->id = $state['id'];
 		}

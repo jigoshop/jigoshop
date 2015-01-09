@@ -75,6 +75,7 @@ class Integration
 		add_filter('jigoshop\admin\product\menu', function($menu){
 			ob_start();
 			do_action('jigoshop_product_write_panel_tabs');
+			do_action('product_write_panel_tabs');
 			$tabs = ob_get_clean();
 
 			$data = array();
@@ -89,6 +90,7 @@ class Integration
 		add_filter('jigoshop\admin\product\tabs', function($tabs){
 			ob_start();
 			do_action('jigoshop_product_write_panels');
+			do_action('product_write_panels');
 			$panels = ob_get_clean();
 
 			$data = array();
@@ -104,6 +106,47 @@ class Integration
 			/** @var $product Product */
 			do_action('jigoshop_process_product_meta', $product->getId());
 			do_action('jigoshop_process_product_meta_'.$product->getType(), $product->getId());
+		});
+
+		// Product support
+		add_filter('jigoshop\product\restore_state', function($state){
+			$id = isset($state['id']) ? $state['id'] : 0;
+
+			if (isset($state['regular_price'])) {
+				$state['regular_price'] = apply_filters('jigoshop_product_get_regular_price', $state['regular_price'], $id);
+			}
+
+			return $state;
+		});
+		add_action('jigoshop\product\tabs', function($currentTab){
+			do_action('jigoshop_product_tabs', $currentTab);
+		});
+		add_action('jigoshop\product\tab_panels', function(){
+			do_action('jigoshop_product_tab_panels');
+		}, 10, 0);
+		add_action('jigoshop\product\summary', function($product){
+			global $post;
+			do_action('jigoshop_template_single_summary', $post, new \jigoshop_product($product));
+		});
+		add_filter('jigoshop\helper\product\get_price_html', function($html, $price, $product){
+			return apply_filters('jigoshop_product_get_price_html', $html, new \jigoshop_product($product), $price);
+		}, 10, 3);
+		add_filter('jigoshop\cart\validate_new_item', function($value, $id, $quantity){
+			return apply_filters('jigoshop_add_to_cart_validation', $value, $id, $quantity);
+		}, 10, 3);
+		add_filter('jigoshop\product\get_price', function($price, $product){
+			return apply_filters('jigoshop_product_get_price', $price, $product->getId());
+		}, 10, 2);
+		add_action('jigoshop\product\tabs\general', function(){
+			return do_action('jigoshop_product_pricing_options');
+		}, 10, 0);
+		add_action('jigoshop\template\product\before_cart', function(){
+			return do_action('jigoshop_before_add_to_cart_form_button');
+		}, 10, 0);
+
+		// Orders support
+		add_action('jigoshop\service\order\new', function($id){
+			do_action('jigoshop_new_order', $id);
 		});
 	}
 

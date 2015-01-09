@@ -62,6 +62,8 @@ class Product
 	 */
 	public static function getPriceHtml(Entity\Product $product)
 	{
+		$result = '';
+
 		switch($product->getType()){
 			case Entity\Product\Simple::TYPE:
 			case Entity\Product\External::TYPE:
@@ -77,7 +79,8 @@ class Product
 					}
 				}
 
-				return self::formatPrice($product->getPrice());
+				$result = self::formatPrice($product->getPrice());
+				break;
 			case Entity\Product\Variable::TYPE:
 				/** @var $product Entity\Product\Variable */
 				$price = $product->getLowestPrice();
@@ -85,13 +88,15 @@ class Product
 				// TODO: If every variation has the same price - do not add "From: ..."
 
 				if ($price !== '') {
-					return sprintf(__('From: %s', 'jigoshop'), $formatted);
+					$result = sprintf(__('From: %s', 'jigoshop'), $formatted);
+				} else {
+					$result = $formatted;
 				}
-
-				return $formatted;
 			default:
-				return apply_filters('jigoshop\helper\product\get_price', '', $product);
+				$result = apply_filters('jigoshop\helper\product\get_price', '', $product);
 		}
+
+		return apply_filters('jigoshop\helper\product\get_price_html', $result, $price, $product);
 	}
 
 	/**

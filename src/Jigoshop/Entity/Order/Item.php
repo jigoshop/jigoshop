@@ -115,6 +115,14 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 	}
 
 	/**
+	 * @return float Regular product price.
+	 */
+	public function getRegularPrice()
+	{
+		return $this->price;
+	}
+
+	/**
 	 * @return float Single item price.
 	 */
 	public function getPrice()
