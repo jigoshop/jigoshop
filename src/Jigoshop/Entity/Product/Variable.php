@@ -98,10 +98,10 @@ class Variable extends Product implements Shippable, Saleable
 	 */
 	public function getLowestPrice()
 	{
-		$prices = array_map(function($item){
+		$prices = array_filter(array_map(function($item){
 			/** @var $item Product\Variable\Variation */
 			return $item->getProduct()->getPrice();
-		}, $this->variations);
+		}, $this->variations));
 		return !empty($prices) ? min($prices) : '';
 	}
 
@@ -110,10 +110,10 @@ class Variable extends Product implements Shippable, Saleable
 	 */
 	public function getHighestPrice()
 	{
-		$prices = array_map(function($item){
+		$prices = array_filter(array_map(function($item){
 			/** @var $item Product\Variable\Variation */
 			return $item->getProduct()->getPrice();
-		}, $this->variations);
+		}, $this->variations));
 		return !empty($prices) ? max($prices) : '';
 	}
 

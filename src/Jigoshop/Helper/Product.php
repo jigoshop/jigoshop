@@ -62,7 +62,14 @@ class Product
 	 */
 	public static function getPriceHtml(Entity\Product $product)
 	{
-		$result = '';
+		if (!$product instanceof Entity\Product\Purchasable) {
+			return '';
+		}
+
+		$price = $product->getRegularPrice();
+		if (empty($price)) {
+			return __('Price not announced', 'jigoshop');
+		}
 
 		switch($product->getType()){
 			case Entity\Product\Simple::TYPE:
@@ -71,10 +78,10 @@ class Product
 				/** @var $product Entity\Product\Simple */
 				if ( self::isOnSale($product)) {
 					if (strpos($product->getSales()->getPrice(), '%') !== false) {
-						return '<del>'.self::formatPrice($product->getRegularPrice()).'</del>'.self::formatPrice($product->getPrice()).'
+						return '<del>'.self::formatPrice($price).'</del>'.self::formatPrice($product->getPrice()).'
 						<ins>'.sprintf(__('%s off!', 'jigoshop'), $product->getSales()->getPrice()).'</ins>';
 					} else {
-						return '<del>'.self::formatPrice($product->getRegularPrice()).'</del>
+						return '<del>'.self::formatPrice($price).'</del>
 						<ins>'.self::formatPrice($product->getPrice()).'</ins>';
 					}
 				}
@@ -92,6 +99,7 @@ class Product
 				} else {
 					$result = $formatted;
 				}
+				break;
 			default:
 				$result = apply_filters('jigoshop\helper\product\get_price', '', $product);
 		}
@@ -255,6 +263,13 @@ class Product
 	 */
 	public static function printAddToCartForm($product, $template)
 	{
+		if ($product instanceof Entity\Product\Purchasable) {
+			$price = $product->getRegularPrice();
+			if (empty($price)) {
+				return;
+			}
+		}
+
 		switch($product->getType()){
 			case Entity\Product\Simple::TYPE:
 				Render::output("shop/{$template}/cart/simple", array('product' => $product));
