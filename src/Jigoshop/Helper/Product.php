@@ -281,6 +281,12 @@ class Product
 				Render::output("shop/{$template}/cart/external", array('product' => $product));
 				break;
 			case Entity\Product\Variable::TYPE:
+				/** @var $product Entity\Product\Variable */
+				$price = $product->getLowestPrice();
+				if (empty($price)) {
+					return;
+				}
+
 				Render::output("shop/{$template}/cart/variable", array('product' => $product));
 				break;
 			default:

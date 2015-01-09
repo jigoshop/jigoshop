@@ -28,6 +28,9 @@ class ProductVariable
           proper = @VARIATION_NOT_EXISTS
           break
       if proper == @VARIATION_EXISTS
+        if not definition.price
+          proper = @VARIATION_NOT_EXISTS
+          continue
         jQuery('p.price > span', $buttons).html(definition.html.price)
         jQuery('#variation-id').val(id)
         $buttons.slideDown()

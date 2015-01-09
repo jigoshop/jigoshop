@@ -38,6 +38,7 @@ $product = $variation->getProduct();
 		Forms::text(array(
 			'name' => 'product[variation]['.$variation->getId().'][product][regular_price]',
 			'label' => __('Price', 'jigoshop'),
+			'placeholder' => __('Price not announced', 'jigoshop'),
 			'value' => $product->getPrice(),
 		));
 		?>

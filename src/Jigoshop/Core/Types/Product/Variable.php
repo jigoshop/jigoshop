@@ -413,6 +413,13 @@ class Variable implements Type
 
 			$variation = $product->removeVariation((int)$_POST['variation_id']);
 			foreach ($_POST['attributes'] as $attribute => $value) {
+				if (!$variation->hasAttribute($attribute)) {
+					continue;
+					// TODO: Properly add attributes
+//					$attr = $this->productService->getAttribute($attribute);
+//					$variation->addAttribute();
+				}
+
 				$variation->getAttribute($attribute)->setValue(trim(htmlspecialchars(strip_tags($value))));
 			}
 
