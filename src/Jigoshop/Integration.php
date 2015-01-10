@@ -118,10 +118,10 @@ class Integration
 
 			return $state;
 		});
-		add_action('jigoshop\product\tabs', function($currentTab){
+		add_action('jigoshop\template\product\tabs', function($currentTab){
 			do_action('jigoshop_product_tabs', $currentTab);
 		});
-		add_action('jigoshop\product\tab_panels', function(){
+		add_action('jigoshop\template\product\tab_panels', function(){
 			do_action('jigoshop_product_tab_panels');
 		}, 10, 0);
 		add_action('jigoshop\product\summary', function($product){

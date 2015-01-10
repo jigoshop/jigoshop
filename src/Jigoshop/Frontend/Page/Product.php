@@ -46,8 +46,8 @@ class Product implements PageInterface
 		$scripts->add('jigoshop.shop.product', JIGOSHOP_URL.'/assets/js/shop/product.js', array('jquery', 'jigoshop.vendors'));
 		$this->wp->addAction('jigoshop\product\before_summary', array($this, 'productImages'), 10, 1);
 		$this->wp->addAction('jigoshop\product\after_summary', array($this, 'productTabs'), 10, 1);
-		$this->wp->addAction('jigoshop\product\tab_panels', array($this, 'productAttributes'), 10, 2);
-		$this->wp->addAction('jigoshop\product\tab_panels', array($this, 'productDescription'), 10, 2);
+		$this->wp->addAction('jigoshop\template\product\tab_panels', array($this, 'productAttributes'), 10, 2);
+		$this->wp->addAction('jigoshop\template\product\tab_panels', array($this, 'productDescription'), 10, 2);
 		$this->wp->doAction('jigoshop\product\assets', $wp, $styles, $scripts);
 	}
 
@@ -151,6 +151,7 @@ class Product implements PageInterface
 		if ($product->getDescription()) {
 			$tabs['description'] = __('Description', 'jigoshop');
 		}
+
 		$tabs = $this->wp->applyFilters('jigoshop\product\tabs', $tabs);
 		$availableTabs = array_keys($tabs);
 
