@@ -337,12 +337,12 @@ class PayPal implements Method, Processable, ContainerAware
 
 			$args['item_name_'.$item_loop] = $title;
 			$args['quantity_'.$item_loop] = $item->getQuantity();
-			//Apparently, PayPal did not like "28.4525" as the amount. Changing that to "28.45" fixed the issue.
+			// Apparently, PayPal did not like "28.4525" as the amount. Changing that to "28.45" fixed the issue.
 			$args['amount_'.$item_loop] = number_format($this->wp->applyFilters('jigoshop\paypal\item_price', $item->getPrice(), $item), $this->decimals);
 		}
 
 		// Shipping Cost
-		if($this->options->get('shipping.enabled') && $this->settings['send_shipping'] && $order->getShippingPrice() > 0){
+		if($this->options->get('shipping.enabled') && $order->getShippingPrice() > 0){
 			$item_loop++;
 			$args['item_name_'.$item_loop] = __('Shipping cost', 'jigoshop');
 			$args['quantity_'.$item_loop] = '1';
@@ -392,13 +392,13 @@ class PayPal implements Method, Processable, ContainerAware
 							if (!in_array(strtolower($posted['txn_type']), $accepted_types)) {
 								// Put this order on-hold for manual checking
 								$order->setStatus(Order\Status::ON_HOLD, sprintf(__('PayPal Validation Error: Unknown "txn_type" of "%s" for Order ID: %s.', 'jigoshop'), $posted['txn_type'], $posted['custom']));
-
-								return;
+								break;
 							}
 
 							if ($order->getNumber() !== $posted['invoice']) {
 								// Put this order on-hold for manual checking
 								$order->setStatus(Order\Status::ON_HOLD, sprintf(__('PayPal Validation Error: Order Invoice Number does NOT match PayPal posted invoice (%s) for Order ID: .', 'jigoshop'), $posted['invoice'], $posted['custom']));
+								$service->save($order);
 								exit;
 							}
 
@@ -406,18 +406,21 @@ class PayPal implements Method, Processable, ContainerAware
 							if (number_format($order->getTotal(), $this->decimals, '.', '') != $posted['mc_gross']) {
 								// Put this order on-hold for manual checking
 								$order->setStatus(Order\Status::ON_HOLD, sprintf(__('PayPal Validation Error: Payment amounts do not match initial order (gross %s).', 'jigoshop'), $posted['mc_gross']));
+								$service->save($order);
 								exit;
 							}
 
 							if (strcasecmp(trim($posted['business']), trim($merchant)) != 0) {
 								// Put this order on-hold for manual checking
 								$order->setStatus(Order\Status::ON_HOLD, sprintf(__('PayPal Validation Error: Payment Merchant email received does not match PayPal Gateway settings. (%s)', 'jigoshop'), $posted['business']));
+								$service->save($order);
 								exit;
 							}
 
 							if ($posted['mc_currency'] != $this->options->get('general.currency')) {
 								// Put this order on-hold for manual checking
 								$order->setStatus(Order\Status::ON_HOLD, sprintf(__('PayPal Validation Error: Payment currency received (%s) does not match Shop currency.', 'jigoshop'), $posted['mc_currency']));
+								$service->save($order);
 								exit;
 							}
 
@@ -439,6 +442,8 @@ class PayPal implements Method, Processable, ContainerAware
 							// No action
 							break;
 					}
+
+					$service->save($order);
 				}
 			}
 		}
