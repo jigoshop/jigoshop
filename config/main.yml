@@ -104,6 +104,11 @@ services:
     arguments:
       - '@wpal'
       - '@jigoshop.options'
+  jigoshop.web.optimization:
+    class: Jigoshop\Web\Optimization
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
   jigoshop.cart:
     class: Jigoshop\Entity\Cart
     scope: prototype

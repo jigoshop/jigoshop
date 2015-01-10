@@ -58,3 +58,11 @@ services:
     tags:
       - { name: jigoshop.admin.settings.tab }
       - { name: jigoshop.container_aware }
+  jigoshop.admin.settings.optimization:
+    class: Jigoshop\Admin\Settings\OptimizationTab
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.helper.scripts'
+    tags:
+      - { name: jigoshop.admin.settings.tab }

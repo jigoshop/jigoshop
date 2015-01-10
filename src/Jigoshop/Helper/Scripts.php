@@ -61,7 +61,7 @@ class Scripts
 	 */
 	public function localize($handle, $variable, array $value)
 	{
-		$handle = apply_filters('jigoshop\script\localize', $handle, $value, $value);
+		$handle = apply_filters('jigoshop\script\localize', $handle, $variable, $value);
 
 		if (!empty($handle)) {
 			wp_localize_script($handle, $variable, $value);

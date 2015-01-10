@@ -66,6 +66,7 @@ class Core
 		Tax::setService($tax);
 
 		$container->get('jigoshop.emails');
+		$container->get('jigoshop.web.optimization');
 
 		$widgets = $this->widgets;
 		$wp->addAction('widgets_init', function() use ($wp, $container, $widgets) {
