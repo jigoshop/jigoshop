@@ -34,7 +34,7 @@ class Optimization
 
 	public function __construct(Wordpress $wp, Options $options)
 	{
-		if($options->get('optimization.enabled'))
+		if($options->get('advanced.wos.enabled'))
 		{
 			// TODO: Do we need to get factory from container?
 			$filterManager = new FilterManager();

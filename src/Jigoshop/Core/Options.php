@@ -164,6 +164,9 @@ class Options
 				'google_analytics' => '',
 			),
 			'cache' => 'simple',
+			'wos' => array(
+				'enabled' => true,
+			),
 			'pages' => array(
 				'terms' => 0,
 				'shop' => 0,
