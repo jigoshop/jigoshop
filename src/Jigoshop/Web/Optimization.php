@@ -96,7 +96,8 @@ class Optimization
 		$manager = $this->_factory->getAssetManager();
 
 		// Check if this is external source
-		if (strpos($src, WP_CONTENT_URL) === false) {
+		$src = str_replace(array('http://', 'https://'), '', $src);
+		if (strpos($src, str_replace(array('http://', 'https://'), '', WP_CONTENT_URL)) === false) {
 			return $src;
 		}
 
@@ -164,7 +165,7 @@ class Optimization
 
 	private function getSourcePath($src)
 	{
-		return str_replace(str_replace(array('http://', 'https://'), '', WP_CONTENT_URL), WP_CONTENT_DIR, str_replace(array('http://', 'https://'), '', $src));
+		return str_replace(str_replace(array('http://', 'https://'), '', WP_CONTENT_URL), WP_CONTENT_DIR, $src);
 	}
 
 	/**
@@ -246,7 +247,8 @@ class Optimization
 		$manager = $this->_factory->getAssetManager();
 
 		// Check if this is external source
-		if (strpos($src, WP_CONTENT_URL) === false) {
+		$src = str_replace(array('http://', 'https://'), '', $src);
+		if (strpos($src, str_replace(array('http://', 'https://'), '', WP_CONTENT_URL)) === false) {
 			return $src;
 		}
 
