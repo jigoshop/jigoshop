@@ -23,7 +23,7 @@ if ($title) {
 			<?php echo Product::getFeaturedImage($product, Options::IMAGE_TINY); ?>
 			<span class="js_widget_product_title"><?php echo $product->getName(); ?></span>
 		</a>
-		<?php // TODO: RATING ?>
+		<?php echo Product::getRatingHtml(Product::getRating($product)); ?> ?>
 		<span class="js_widget_product_price"><?php echo Product::getPriceHtml($product); ?></span>
 	</li>
 	<?php endforeach; ?>

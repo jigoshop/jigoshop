@@ -357,7 +357,6 @@ class Product
 			return false;
 		}
 
-		// Figure out the average rating
 		return round($ratings / $count, 2);
 	}
 
