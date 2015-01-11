@@ -161,7 +161,7 @@ class Products
 		}
 
 		$current = isset($_GET[Types::PRODUCT_CATEGORY]) ? $_GET[Types::PRODUCT_CATEGORY] : '';
-		$walker = new Products\CategoryWalker($this->wp);
+		$walker = new \Jigoshop\Web\CategoryWalker($this->wp, 'admin/products/categoryFilter/item');
 
 		Render::output('admin/products/categoryFilter', array(
 			'terms' => $terms,

@@ -5,7 +5,7 @@ use Jigoshop\Helper\Forms;
 /**
  * @var $terms array List of available categories.
  * @var $current string Currently selected type.
- * @var $walker \Jigoshop\Admin\Page\Products\CategoryWalker Walker for displaying categories.
+ * @var $walker \Jigoshop\Web\CategoryWalker Walker for displaying categories.
  * @var $query array Query to fetch categories.
  */
 ?>

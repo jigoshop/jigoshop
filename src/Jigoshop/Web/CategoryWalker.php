@@ -1,6 +1,6 @@
 <?php
 
-namespace Jigoshop\Admin\Page\Products;
+namespace Jigoshop\Web;
 
 use Jigoshop\Core\Types;
 use Jigoshop\Helper\Render;
@@ -14,9 +14,15 @@ class CategoryWalker extends \Walker_CategoryDropdown
 	public $tree_type = 'category';
 	public $db_fields = array('parent' => 'parent', 'id' => 'term_id', 'slug' => 'slug');
 
-	public function __construct(Wordpress $wp)
+	/** @var Wordpress */
+	private $wp;
+	/** @var string */
+	private $template;
+
+	public function __construct(Wordpress $wp, $template)
 	{
 		$this->wp = $wp;
+		$this->template = $template;
 	}
 
 	public function start_el(&$output, $category, $depth = 0, $args = array(), $current_object_id = 0)
@@ -29,8 +35,9 @@ class CategoryWalker extends \Walker_CategoryDropdown
 
 		$value = $args['value'] == 'slug' ? $category->slug : $category->term_id;
 
-		$output .= Render::get('admin/products/categoryFilter/item', array(
+		$output .= Render::get($this->template, array(
 			'depth' => $depth,
+			'term' => $category,
 			'value' => $value,
 			'name' => $name,
 			'selected' => $args['selected'],
