@@ -37,6 +37,10 @@ parameters:
       class: \Jigoshop\Widget\RecentProducts
       calls:
         - ['setProductService', 'jigoshop.service.product']
+    recent_reviews:
+      class: \Jigoshop\Widget\RecentReviews
+      calls:
+        - ['setProductService', 'jigoshop.service.product']
     top_rated:
       class: \Jigoshop\Widget\TopRated
       calls:

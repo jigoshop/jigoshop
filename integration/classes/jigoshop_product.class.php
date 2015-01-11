@@ -660,7 +660,7 @@ class jigoshop_product extends Jigoshop_Base
 
 	public function get_rating_html($location = '')
 	{
-		return \Jigoshop\Helper\Product::getRatingHtml($this->__product, $location);
+		return \Jigoshop\Helper\Product::getRatingHtml(\Jigoshop\Helper\Product::getRating($this->__product), $location);
 	}
 
 	public function get_related($limit = 5)

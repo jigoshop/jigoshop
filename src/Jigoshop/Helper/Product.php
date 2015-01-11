@@ -361,9 +361,8 @@ class Product
 		return round($ratings / $count, 2);
 	}
 
-	public static function getRatingHtml(Entity\Product $product, $location = '')
+	public static function getRatingHtml($rating, $location = '')
 	{
-		$rating = self::getRating($product);
 		if ($location) {
 			$location = '_'.$location;
 		}
