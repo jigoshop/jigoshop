@@ -23,6 +23,8 @@ parameters:
       class: \Jigoshop\Widget\ProductsOnSale
       calls:
         - ['setProductService', 'jigoshop.service.product']
+    product_tag_cloud:
+      class: \Jigoshop\Widget\ProductTagCloud
     random_products:
       class: \Jigoshop\Widget\RandomProducts
       calls:
