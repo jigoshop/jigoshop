@@ -22,7 +22,6 @@ class Messages
 
 	public function __construct(Wordpress $wp)
 	{
-		session_start();
 		if (isset($_SESSION[self::NOTICES])) {
 			$this->notices = $_SESSION[self::NOTICES];
 		}
@@ -146,7 +145,6 @@ class Messages
 		$_SESSION[self::ERRORS] = array_values(array_filter($this->errors, function ($item){
 			return $item['persistent'];
 		}));
-		session_write_close();
 	}
 
 	/**

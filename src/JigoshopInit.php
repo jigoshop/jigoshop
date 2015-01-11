@@ -113,6 +113,30 @@ class JigoshopInit
 		// Add links in Plugins page
 		add_filter('plugin_action_links_'.JIGOSHOP_BASE_NAME, array($this, 'pluginLinks'));
 
+		// Handle session properly session
+		if (!session_id()) {
+			session_start();
+			session_register_shutdown();
+		}
+		add_action('wp_logout', function(){
+			session_destroy();
+			session_regenerate_id();
+		});
+
+		// Disable relation links for Jigoshop products
+		$disable = function($value){
+			if (\Jigoshop\Frontend\Pages::isProduct()) {
+				return false;
+			}
+
+			return $value;
+		};
+		add_filter('index_rel_link', $disable);
+		add_filter('parent_post_rel_link', $disable);
+		add_filter('start_post_rel_link', $disable);
+		add_filter('previous_post_rel_link', $disable);
+		add_filter('next_post_rel_link', $disable);
+
 		// Configure container before initializing Jigoshop
 		do_action('jigoshop\init', $this->container);
 

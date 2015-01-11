@@ -140,7 +140,7 @@ class Optimization
 		{
 			unset($dependencies[$key]);
 			$dependency = '@'.$this->prepareScriptHandle($dependency);
-			if(!in_array($dependency, $this->_scripts[JIGOSHOP_ALL]) && !in_array($dependency, $this->_scripts[$current_page]))
+			if(!in_array($dependency, $this->_scripts[Pages::ALL]) && !in_array($dependency, $this->_scripts[$current_page]))
 			{
 				return false;
 			}
@@ -380,7 +380,7 @@ class Optimization
 	{
 		$current_page = $this->getCurrentPage();
 		$styles = array_merge(
-			$this->_styles[JIGOSHOP_ALL],
+			$this->_styles[Pages::ALL],
 			$this->_styles[$current_page]
 		);
 		$asset = new Optimization\Asset\Minified\Stylesheet($this->_factory, $styles, array('page' => $current_page, 'location' => 'frontend'));
@@ -396,7 +396,7 @@ class Optimization
 	{
 		$current_page = $this->getCurrentPage();
 		$scripts = array_merge(
-			$this->_scripts[JIGOSHOP_ALL],
+			$this->_scripts[Pages::ALL],
 			$this->_scripts[$current_page]
 		);
 		$asset = new Optimization\Asset\Minified\Javascript($this->_factory, $scripts, array('page' => $current_page, 'location' => 'frontend'));

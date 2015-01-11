@@ -126,7 +126,7 @@ class ProductService implements ProductServiceInterface
 
 		// TODO: Maybe it is good to optimize this to fetch all found products at once?
 		foreach ($results as $product) {
-			$products[] = $this->findForPost($product);
+			$products[$product->ID] = $this->findForPost($product);
 		}
 
 		return $this->wp->applyFilters('jigoshop\service\product\find_by_query', $products, $query);

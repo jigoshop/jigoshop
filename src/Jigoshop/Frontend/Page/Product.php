@@ -51,11 +51,11 @@ class Product implements PageInterface
 		$this->wp->doAction('jigoshop\product\assets', $wp, $styles, $scripts);
 	}
 
-
 	public function action()
 	{
 		if (isset($_POST['action']) && $_POST['action'] == 'add-to-cart') {
 			$post = $this->wp->getGlobalPost();
+			/** @var \Jigoshop\Entity\Product $product */
 			$product = $this->productService->findForPost($post);
 
 			try {

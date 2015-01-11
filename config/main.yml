@@ -29,6 +29,10 @@ parameters:
       class: \Jigoshop\Widget\RandomProducts
       calls:
         - ['setProductService', 'jigoshop.service.product']
+    recently_viewed_products:
+      class: \Jigoshop\Widget\RecentlyViewedProducts
+      calls:
+        - ['setProductService', 'jigoshop.service.product']
     recent_products:
       class: \Jigoshop\Widget\RecentProducts
       calls:
