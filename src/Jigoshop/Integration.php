@@ -154,6 +154,34 @@ class Integration
 		add_action('jigoshop\service\order\new', function($id){
 			do_action('jigoshop_new_order', $id);
 		});
+
+		// Cart support
+		add_filter('jigoshop\template\shop\cart\product_title', function($value, $product){
+			/** @var $product Product */
+			return apply_filters('jigoshop_cart_product_title', $value, new \jigoshop_product($product));
+		}, 10, 2);
+		add_filter('jigoshop\template\shop\cart\product_price', function($value, $price, $product, $item){
+			/** @var $product Product */
+			/** @var $item Order\Item */
+			$cart = \jigoshop_cart::get_cart();
+			$values = $cart[$item->getKey()];
+			return apply_filters('jigoshop_product_price_display_in_cart', $value, $product->getId(), $values);
+		}, 10, 4);
+		add_filter('jigoshop\template\shop\cart\product_subtotal', function($value, $subtotal, $product, $item){
+			/** @var $product Product */
+			/** @var $item Order\Item */
+			$cart = \jigoshop_cart::get_cart();
+			$values = $cart[$item->getKey()];
+			if (Integration::getOptions()->get('tax.included')) {
+				return apply_filters('jigoshop_product_total_display_in_cart', $value, $product->getId(), $values);
+			}
+			return apply_filters('jigoshop_product_subtotal_display_in_cart', $value, $product->getId(), $values);
+		}, 10, 4);
+
+		// Checkout support
+		add_action('jigoshop\template\shop\checkout\before_total', function(){
+			do_action('jigoshop_after_review_order_items');
+		});
 	}
 
 	public static function initializeGateways()

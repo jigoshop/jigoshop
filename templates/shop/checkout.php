@@ -143,6 +143,7 @@ use Jigoshop\Helper\Tax;
 					<th scope="row"><?php _e('Subtotal', 'jigoshop'); ?></th>
 					<td><?php echo Product::formatPrice($cart->getSubtotal()); ?></td>
 				</tr>
+			<?php do_action('jigoshop\template\shop\checkout\before_tax'); ?>
 				<?php foreach ($cart->getCombinedTax() as $taxClass => $tax): ?>
 					<tr id="tax-<?php echo $taxClass; ?>"<?php $tax == 0 and print ' style="display: none;"'; ?>>
 						<th scope="row"><?php echo Tax::getLabel($taxClass, $cart); ?></th>
@@ -153,6 +154,7 @@ use Jigoshop\Helper\Tax;
 					<th scope="row"><?php _e('Discount', 'jigoshop'); ?></th>
 					<td><?php echo Product::formatPrice($cart->getDiscount()); ?></td>
 				</tr>
+			<?php do_action('jigoshop\template\shop\checkout\before_total'); ?>
 				<tr id="cart-total" class="info">
 					<th scope="row"><?php _e('Total', 'jigoshop'); ?></th>
 					<td><strong><?php echo Product::formatPrice($cart->getTotal()); ?></strong></td>

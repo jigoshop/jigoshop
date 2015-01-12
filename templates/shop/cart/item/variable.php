@@ -22,10 +22,10 @@ $price = $showWithTax ? $item->getPrice() + $item->getTax() / $item->getQuantity
 	</td>
 	<td class="product-thumbnail"><a href="<?php echo $url; ?>"><?php echo Product::getFeaturedImage($product, 'shop_tiny'); ?></a></td>
 	<td class="product-name">
-		<a href="<?php echo $url; ?>"><?php echo $product->getName(); ?></a>
+		<a href="<?php echo $url; ?>"><?php echo apply_filters('jigoshop\template\shop\cart\product_title', $product->getName(), $product); ?></a>
 		<?php echo Product::getVariation($variation, $item); ?>
 	</td>
-	<td class="product-price"><?php echo Product::formatPrice($price); ?></td>
+	<td class="product-price"><?php echo apply_filters('jigoshop\template\shop\cart\product_price', Product::formatPrice($price), $price, $product, $item); ?></td>
 	<td class="product-quantity"><input type="number" name="cart[<?php echo $key; ?>]" value="<?php echo $item->getQuantity(); ?>" /></td>
-	<td class="product-subtotal"><?php echo Product::formatPrice($item->getQuantity() * $price); ?></td>
+	<td class="product-subtotal"><?php echo apply_filters('jigoshop\template\shop\cart\product_subtotal', Product::formatPrice($item->getQuantity() * $price), $item->getQuantity() * $price, $product, $item); ?></td>
 </tr>

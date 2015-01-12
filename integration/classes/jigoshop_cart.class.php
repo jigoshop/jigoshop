@@ -23,6 +23,8 @@ class jigoshop_cart
 
 	private static $price_per_tax_class_ex_tax;
 	private static $instance;
+	/** @var string Cart hash used for speeding up integration */
+	private static $__cartHash;
 
 	public static function instance()
 	{
@@ -435,23 +437,31 @@ class jigoshop_cart
 	public static function get_cart()
 	{
 		$cart = Integration::getCart();
-		$contents = array();
-
-		foreach ($cart->getItems() as $key => $item) {
+		$hash = hash('md5', join('|', array_map(function($item){
 			/** @var $item \Jigoshop\Entity\Order\Item */
-			$contents[$key] = array(
-				'data' => new jigoshop_product($item->getProduct()),
-				'product_id' => $item->getProductId(),
-				'variation' => self::__prepareVariation($item),
-				'quantity' => $item->getQuantity(),
-				'unit_price' => $item->getPrice(),
-				'tax' => $item->getTax(),
-				'discount' => 0,
-				'price_includes_tax' => 'no',
-			);
+			return $item->getQuantity().$item->getProductId().$item->getPrice().$item->getKey();
+		}, $cart->getItems())));
+
+		if (self::$__cartHash !== $hash) {
+			self::$cart_contents = array();
+			foreach ($cart->getItems() as $key => $item) {
+				/** @var $item \Jigoshop\Entity\Order\Item */
+				self::$cart_contents[$key] = array(
+					'data' => new jigoshop_product($item->getProduct()),
+					'product_id' => $item->getProductId(),
+					'variation' => self::__prepareVariation($item),
+					'quantity' => $item->getQuantity(),
+					'unit_price' => $item->getPrice(),
+					'tax' => $item->getTax(),
+					'discount' => 0,
+					'price_includes_tax' => 'no',
+				);
+			}
+
+			self::$__cartHash = $hash;
 		}
 
-		return $contents;
+		return self::$cart_contents;
 	}
 
 	public static function get_cart_url()
@@ -594,7 +604,7 @@ class jigoshop_cart
 
 	public static function get_tax_rate($tax_class)
 	{
-		return Integration::getTaxService()->getRate($tax_class, Integration::getCart()->getCustomer());
+		return Integration::getTaxService()->getRate($tax_class, Integration::getCart());
 	}
 
 	public static function show_retail_price()
