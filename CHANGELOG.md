@@ -1,8 +1,9 @@
 ## Changelog
 
-* 1.16:
-    * New: [is_bank_transfer], [bank_info], [billing_euvatno] and [all_tax_classes] variables in order emails.
-    * Improved: Email shortcode praser to work with new variable.
+* 1.15.4 - 2015-01-12:
+    * Improved: [is_bank_transfer], [bank_info], [billing_euvatno] and [all_tax_classes] variables in order emails. Thanks to newash!
+    * Improved: Email shortcode parser to work with new variable.
+		* Fix: Bulk edit now can change price to not announced. Thanks to newash!
 * 1.15.3 - 2015-01-06:
     * Fix: Missing vendor files.
     * Fix: JWOS for ssl websites.
