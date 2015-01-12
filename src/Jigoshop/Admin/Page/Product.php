@@ -63,6 +63,8 @@ class Product
 						'saved' => __('Changes saved.', 'jigoshop'),
 						'attribute_removed' => __('Attribute successfully removed.', 'jigoshop'),
 						'confirm_remove' => __('Are you sure?', 'jigoshop'),
+						'invalid_attribute' => __('Invalid attribute, please select another one.', 'jigoshop'),
+						'attribute_without_label' => __('Please provide attribute label.', 'jigoshop'),
 					),
 					'menu' => array_map(function($item){ return $item['visible']; }, $menu),
 				));
@@ -94,7 +96,8 @@ class Product
 		}
 
 		$attributes = array(
-			'' => array('label' => '',),
+			'' => array('label' => ''),
+			'-1' => array('label' => __('Custom attribute', 'jigoshop')),
 		);
 		foreach($this->productService->findAllAttributes() as $attribute) {
 			/** @var $attribute Attribute */
@@ -121,9 +124,6 @@ class Product
 				'product' => $product,
 			),
 		), $product);
-
-//		add_action('admin_footer', 'jigoshop_meta_scripts');
-//		wp_nonce_field('jigoshop_save_data', 'jigoshop_meta_nonce');
 
 		Render::output('admin/product/box', array(
 			'product' => $product,
@@ -156,11 +156,23 @@ class Product
 				throw new Exception(__('Product does not exists.', 'jigoshop'));
 			}
 
-			if ($product->hasAttribute((int)$_POST['attribute_id'])) {
-				$attribute = $product->removeAttribute((int)$_POST['attribute_id']);
+			$id = (int)$_POST['attribute_id'];
+			if ($product->hasAttribute($id)) {
+				$attribute = $product->removeAttribute($id);
 				$attributeExists = true;
+			} else if ($id == -1) {
+				$attribute = new Attribute\Custom();
+				$label = trim(strip_tags($_POST['attribute_label']));
+
+				if (empty($label)) {
+					throw new Exception(__('Custom attribute requires label to be set.', 'jigoshop'));
+				}
+
+				$attribute->setLabel($label);
+				$this->productService->saveAttribute($attribute);
+				$attributeExists = false;
 			} else {
-				$attribute = $this->productService->getAttribute((int)$_POST['attribute_id']);
+				$attribute = $this->productService->getAttribute($id);
 				$attributeExists = false;
 			}
 
@@ -182,6 +194,7 @@ class Product
 
 			$product->addAttribute($attribute);
 			$this->productService->save($product);
+
 			echo json_encode(array(
 				'success' => true,
 				'html' => Render::get('admin/product/box/attributes/attribute', array('attribute' => $attribute)),

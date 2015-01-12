@@ -33,10 +33,20 @@
   .schedule.hide {
     display: none;
   }
-  #attributes > .form-group {
-    display: inline-block;
-    width: 70%;
+  #attributes .form-inline {
     margin-bottom: 2*@padding-base-vertical;
+
+    .not-active {
+      display: none;
+    }
+    .form-group {
+      width: 35%;
+      margin-right: @padding-base-horizontal;
+
+      .form-control {
+        width: 100%;
+      }
+    }
   }
   #add-variation {
     margin-bottom: 2*@padding-base-vertical;

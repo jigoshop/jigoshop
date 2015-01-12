@@ -5,10 +5,20 @@ class AdminProduct
       saved: ''
       confirm_remove: ''
       attribute_removed: ''
+      invalid_attribute: ''
+      attribute_without_label: ''
     menu: {}
 
   constructor: (@params) ->
     jQuery('#add-attribute').on 'click', @addAttribute
+    jQuery('#new-attribute').on 'change', (event) ->
+      $label = jQuery('#new-attribute-label')
+      window.console.log jQuery(event.target).val()
+      if jQuery(event.target).val() == '-1'
+        $label.closest('.form-group').css('display', 'inline-block')
+        $label.fadeIn()
+      else
+        $label.fadeOut()
     jQuery('#product-attributes')
       .on 'change', 'input, select', @updateAttribute
       .on 'click', '.remove-attribute', @removeAttribute
@@ -55,9 +65,19 @@ class AdminProduct
     event.preventDefault()
     $parent = jQuery('#product-attributes')
     $attribute = jQuery('#new-attribute')
-    value = $attribute.val()
+    $label = jQuery('#new-attribute-label')
+    value = parseInt($attribute.val())
+    label = $label.val()
+    if value < 0 and value != -1
+      addMessage('warning', @params.i18n.invalid_attribute)
+      return
+    if value == -1 and label.length == 0
+      addMessage('danger', @params.i18n.attribute_without_label, 6000)
+      return
     $attribute.select2('val', '')
-    jQuery("option[value=#{value}]", $attribute).attr('disabled', 'disabled')
+    $label.val('').slideUp()
+    if value > 0
+      jQuery("option[value=#{value}]", $attribute).attr('disabled', 'disabled')
     jQuery.ajax
       url: @params.ajax
       type: 'post'
@@ -66,6 +86,7 @@ class AdminProduct
         action: 'jigoshop.admin.product.save_attribute'
         product_id: $parent.closest('.jigoshop').data('id')
         attribute_id: value
+        attribute_label: label
     .done (data) ->
       if data.success? and data.success
         jQuery(data.html).hide().appendTo($parent).slideDown()
