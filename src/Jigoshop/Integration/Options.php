@@ -78,7 +78,6 @@ class Options implements \Jigoshop_Options_Interface
 				'jigoshop_notify_low_stock_amount' => 'products.low_stock_threshold',
 				'jigoshop_notify_no_stock' => 'products.notify_out_of_stock',
 				'jigoshop_hide_no_stock_product' => 'products.hide_out_of_stock',
-//				'jigoshop_calc_taxes' => '',
 				'jigoshop_prices_include_tax' => 'tax.included',
 				'jigoshop_tax_classes' => 'tax.classes',
 				'jigoshop_tax_rates' => '',
@@ -196,7 +195,13 @@ class Options implements \Jigoshop_Options_Interface
 
 	public function install_external_options_tab($tab, $options)
 	{
-		Integration::getAdminSettings()->addTab(new Tab($tab, $options));
+		$tab = new Tab($tab, $options);
+		Integration::getAdminSettings()->addTab($tab);
+		foreach ($options as $option) {
+			if (!empty($option['id'])) {
+				self::__addTransformation($option['id'], $tab->getSlug().'.'.$option['id']);
+			}
+		}
 	}
 
 	/**
