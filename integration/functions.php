@@ -240,3 +240,35 @@ function is_ajax()
 {
 	return Pages::isAjax();
 }
+
+/**
+ * Returns list of pages supported by is_jigoshop_single_page() and is_jigoshop_page().
+ *
+ * @return array List of supported pages.
+ */
+function jigoshop_get_available_pages()
+{
+	return Pages::getAvailable();
+}
+
+/**
+ * Checks if current page is of given page type.
+ *
+ * @param string $page Page type.
+ * @return bool Is current page the one from name?
+ */
+function is_jigoshop_single_page($page)
+{
+	return Pages::is($page);
+}
+
+/**
+ * Checks if current page is one of given page types.
+ *
+ * @param string|array $pages List of page types to check.
+ * @return bool Is current page one of provided?
+ */
+function is_jigoshop_page($pages)
+{
+	return Pages::isOneOf($pages);
+}
