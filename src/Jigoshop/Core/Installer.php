@@ -266,6 +266,7 @@ class Installer
 		$this->_createPage(Pages::ACCOUNT, array_merge($data, array(
 			'post_title' => __('My account', 'jigoshop'),
 		)));
+		$this->options->saveOptions();
 	}
 
 	private function _createPage($slug, $data)

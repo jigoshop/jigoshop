@@ -92,7 +92,7 @@ class Options implements \Jigoshop_Options_Interface
 				'jigoshop_cart_page_id' => 'advanced.pages.cart',
 				'jigoshop_checkout_page_id' => 'advanced.pages.checkout',
 				'jigoshop_myaccount_page_id' => 'advanced.pages.account',
-				'jigoshop_thanks_page_id' => 'advanced.pages.thanks',
+				'jigoshop_thanks_page_id' => 'advanced.pages.checkout_thank_you',
 				'jigoshop_terms_page_id' => 'advanced.pages.terms',
 			);
 
@@ -102,19 +102,24 @@ class Options implements \Jigoshop_Options_Interface
 		}
 	}
 
-	public static function __getTransformations()
-	{
-		return self::$_transformations;
-	}
-
 	public static function __addTransformation($from, $to)
 	{
 		self::$_transformations[$from] = $to;
 	}
 
+	public static function __getTransformations()
+	{
+		return self::$_transformations;
+	}
+
 	public function update_options()
 	{
 		// Empty
+	}
+
+	public function add_option($name, $value)
+	{
+		$this->add($name, $value);
 	}
 
 	public function add($name, $value)
@@ -126,9 +131,9 @@ class Options implements \Jigoshop_Options_Interface
 		Integration::getOptions()->update($name, $value);
 	}
 
-	public function add_option($name, $value)
+	public function get_option($name, $default = null)
 	{
-		$this->add($name, $value);
+		return $this->get($name, $default);
 	}
 
 	public function get($name, $default = null)
@@ -146,9 +151,9 @@ class Options implements \Jigoshop_Options_Interface
 		return $value;
 	}
 
-	public function get_option($name, $default = null)
+	public function set_option($name, $value)
 	{
-		return $this->get($name, $default);
+		$this->set($name, $value);
 	}
 
 	public function set($name, $value)
@@ -160,9 +165,9 @@ class Options implements \Jigoshop_Options_Interface
 		Integration::getOptions()->update($name, $value);
 	}
 
-	public function set_option($name, $value)
+	public function delete_option($name)
 	{
-		$this->set($name, $value);
+		return $this->delete($name);
 	}
 
 	public function delete($name)
@@ -174,9 +179,9 @@ class Options implements \Jigoshop_Options_Interface
 		return Integration::getOptions()->remove($name);
 	}
 
-	public function delete_option($name)
+	public function exists_option($name)
 	{
-		return $this->delete($name);
+		return $this->exists($name);
 	}
 
 	public function exists($name)
@@ -186,11 +191,6 @@ class Options implements \Jigoshop_Options_Interface
 		}
 
 		return Integration::getOptions()->exists($name);
-	}
-
-	public function exists_option($name)
-	{
-		return $this->exists($name);
 	}
 
 	public function install_external_options_tab($tab, $options)

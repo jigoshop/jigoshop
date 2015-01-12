@@ -172,7 +172,7 @@ class Options
 				'shop' => 0,
 				'cart' => 0,
 				'checkout' => 0,
-				'thanks' => 0,
+				'checkout_thank_you' => 0,
 				'account' => 0,
 			),
 		),
@@ -191,6 +191,29 @@ class Options
 		$this->wp = $wp;
 		$this->_loadOptions();
 		$this->_addImageSizes();
+	}
+
+	/**
+	 * Loads stored options and merges them with default ones.
+	 */
+	private function _loadOptions()
+	{
+		$options = (array)$this->wp->getOption(self::NAME);
+		foreach($this->defaults as $key => $value){
+			$options[$key] = array_replace_recursive($value, isset($options[$key]) ? $options[$key] : array());
+		}
+		$this->options = array_merge($this->defaults, $options);
+	}
+
+	private function _addImageSizes()
+	{
+		$sizes = $this->getImageSizes();
+
+		foreach ($sizes as $size => $options) {
+			$this->wp->addImageSize($size, $options['width'], $options['height'], $options['crop']);
+		}
+
+		$this->wp->addImageSize('admin_product_list', 70, 70, true);
 	}
 
 	public function getImageSizes()
@@ -311,17 +334,6 @@ class Options
 		return isset($this->options[$name]);
 	}
 
-	private function _addImageSizes()
-	{
-		$sizes = $this->getImageSizes();
-
-		foreach ($sizes as $size => $options) {
-			$this->wp->addImageSize($size, $options['width'], $options['height'], $options['crop']);
-		}
-
-		$this->wp->addImageSize('admin_product_list', 70, 70, true);
-	}
-
 	/**
 	 * Saves current option values (if needed).
 	 */
@@ -330,18 +342,6 @@ class Options
 		if ($this->dirty) {
 			$this->wp->updateOption(self::NAME, $this->options);
 		}
-	}
-
-	/**
-	 * Loads stored options and merges them with default ones.
-	 */
-	private function _loadOptions()
-	{
-		$options = (array)$this->wp->getOption(self::NAME);
-		foreach($this->defaults as $key => $value){
-			$options[$key] = array_replace_recursive($value, isset($options[$key]) ? $options[$key] : array());
-		}
-		$this->options = array_merge($this->defaults, $options);
 	}
 
 	/**

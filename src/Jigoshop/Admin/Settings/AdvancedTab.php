@@ -204,10 +204,10 @@ class AdvancedTab implements TabInterface, ContainerAware
 						'options' => $pages,
 					),
 					array(
-						'name' => '[pages][thanks]',
+						'name' => '[pages][checkout_thank_you]',
 						'title' => __('Thanks page', 'jigoshop'),
 						'type' => 'select',
-						'value' => $this->settings['pages']['thanks'],
+						'value' => $this->settings['pages']['checkout_thank_you'],
 						'options' => $pages,
 					),
 					array(
@@ -227,6 +227,16 @@ class AdvancedTab implements TabInterface, ContainerAware
 				),
 			),
 		);
+	}
+
+	private function _getPages()
+	{
+		$pages = array();
+		foreach ($this->wp->getPages() as $page) {
+			$pages[$page->ID] = $page->post_title;
+		}
+
+		return $pages;
 	}
 
 	/**
@@ -286,10 +296,10 @@ class AdvancedTab implements TabInterface, ContainerAware
 			$this->options->setPageId(Pages::CHECKOUT, $settings['pages']['checkout']);
 		}
 
-		if (!in_array($settings['pages']['thanks'], array_keys($pages))) {
-			$this->messages->addError(__('Invalid thanks page, please select again.', 'jigoshop'));
+		if (!in_array($settings['pages']['checkout_thank_you'], array_keys($pages))) {
+			$this->messages->addError(__('Invalid thank you page, please select again.', 'jigoshop'));
 		} else {
-			$this->options->setPageId(Pages::THANK_YOU, $settings['pages']['thanks']);
+			$this->options->setPageId(Pages::THANK_YOU, $settings['pages']['checkout_thank_you']);
 		}
 
 		if (!in_array($settings['pages']['account'], array_keys($pages))) {
@@ -302,16 +312,6 @@ class AdvancedTab implements TabInterface, ContainerAware
 		}
 
 		return $settings;
-	}
-
-	private function _getPages()
-	{
-		$pages = array();
-		foreach ($this->wp->getPages() as $page) {
-			$pages[$page->ID] = $page->post_title;
-		}
-
-		return $pages;
 	}
 
 	/**
