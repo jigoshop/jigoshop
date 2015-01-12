@@ -87,7 +87,7 @@ function get_order_email_arguments($order_id)
 	$inc_tax = ($options->get('jigoshop_calc_taxes') == 'no') || ($options->get('jigoshop_prices_include_tax') == 'yes');
 	$can_show_links = ($order->status == 'completed' || $order->status == 'processing');
 
-	return apply_filters('jigoshop_order_email_variables', array(
+	$variables = array(
 		'blog_name' => get_bloginfo('name'),
 		'order_number' => $order->get_order_number(),
 		'order_date' => date_i18n(get_option('date_format')),
@@ -112,6 +112,7 @@ function get_order_email_arguments($order_id)
 		'billing_first_name' => $order->billing_first_name,
 		'billing_last_name' => $order->billing_last_name,
 		'billing_company' => $order->billing_company,
+		'billing_euvatno' => $order->billing_euvatno,
 		'billing_address_1' => $order->billing_address_1,
 		'billing_address_2' => $order->billing_address_2,
 		'billing_postcode' => $order->billing_postcode,
@@ -134,7 +135,21 @@ function get_order_email_arguments($order_id)
 		'shipping_country_raw' => $order->shipping_country,
 		'shipping_state_raw' => $order->shipping_state,
 		'customer_note' => $order->customer_note,
-	),$order_id);
+	);
+
+	if ($options->get('jigoshop_calc_taxes') == 'yes') {
+		$all_tax_classes = '';
+		foreach ($order->get_tax_classes() as $tax_class) {
+			if ($order->show_tax_entry($tax_class)) {
+				$all_tax_classes .= $order->get_tax_class_for_display($tax_class).' ('.(float)$order->get_tax_rate($tax_class).'%): ';
+				$all_tax_classes .= html_entity_decode($order->get_tax_amount($tax_class), ENT_QUOTES, 'UTF-8');
+				$all_tax_classes .= PHP_EOL;
+			}
+		}
+		$variables['all_tax_classes'] = $all_tax_classes;
+	}
+
+	return apply_filters('jigoshop_order_email_variables', $variables, $order_id);
 }
 
 function get_order_email_arguments_description()
@@ -157,6 +172,7 @@ function get_order_email_arguments_description()
 		'shipping_method' => __('Shipping Method', 'jigoshop'),
 		'discount' => __('Discount Price', 'jigoshop'),
 		'total_tax' => __('Total Tax', 'jigoshop'),
+		'all_tax_classes' => __('Show tax classes separately', 'jigoshop'),
 		'total' => __('Total Price', 'jigoshop'),
 		'payment_method' => __('Payment Method Title', 'jigoshop'),
 		'is_local_pickup' => __('Is Local Pickup?', 'jigoshop'),
@@ -164,6 +180,7 @@ function get_order_email_arguments_description()
 		'billing_first_name' => __('Billing First Name', 'jigoshop'),
 		'billing_last_name' => __('Billing Last Name', 'jigoshop'),
 		'billing_company' => __('Billing Company', 'jigoshop'),
+		'billing_euvatno' => __('Billing EU Vat number', 'jigoshop'),
 		'billing_address_1' => __('Billing Address part 1', 'jigoshop'),
 		'billing_address_2' => __('Billing Address part 2', 'jigoshop'),
 		'billing_postcode' => __('Billing Postcode', 'jigoshop'),

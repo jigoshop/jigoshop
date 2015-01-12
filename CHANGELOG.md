@@ -1,5 +1,7 @@
 ## Changelog
 
+* 1.16:
+    * New: [billing_euvatno] and [all_tax_classes] variables in order emails.
 * 1.15.3 - 2015-01-06:
     * Fix: Missing vendor files.
     * Fix: JWOS for ssl websites.
