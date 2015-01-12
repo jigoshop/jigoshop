@@ -13,6 +13,11 @@ parameters:
       class: \Jigoshop\Widget\FeaturedProducts
       calls:
         - ['setProductService', 'jigoshop.service.product']
+    layered_nav:
+      class: \Jigoshop\Widget\LayeredNav
+      calls:
+        - ['setProductService', 'jigoshop.service.product']
+        - ['setStyles', 'jigoshop.helper.styles']
     price_filter:
       class: \Jigoshop\Widget\PriceFilter
       calls:

@@ -1,0 +1,38 @@
+.widget_layered_nav ul {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  list-style: none outside !important;
+
+  li {
+    overflow: hidden;
+    zoom: 1;
+    padding: 0 0 1px;
+
+    a, span {
+      padding: 1px 0;
+      float: left;
+    }
+
+    &.chosen a {
+      padding: 0 6px 0 18px;
+      border: 1px solid #3399cc;
+      background: #3399cc url(../../images/cross_white.png) no-repeat 6px center;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, .5) #888888;
+      -webkit-box-shadow: inset 0 1px 1px rgba(255, 255, 255, .5) #888888;
+      -moz-box-shadow: inset 0 1px 1px rgba(255, 255, 255, .5) #888888;
+      color: #ffffff;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px;
+    }
+  }
+
+  small.count {
+    float: right;
+    margin-left: 6px;
+    font-size: 1em;
+    padding: 1px 0;
+    color: #999999;
+  }
+}
