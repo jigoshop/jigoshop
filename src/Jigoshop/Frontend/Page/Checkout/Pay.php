@@ -46,6 +46,9 @@ class Pay implements PageInterface
 		$styles->add('jigoshop', JIGOSHOP_URL.'/assets/css/shop.css');
 		$styles->add('jigoshop.checkout.pay', JIGOSHOP_URL.'/assets/css/shop/checkout/pay.css');
 		$scripts->add('jigoshop.checkout.pay', JIGOSHOP_URL.'/assets/js/shop/checkout/pay.js', array('jquery'));
+		$scripts->localize('jigoshop.checkout.pay', 'jigoshop_checkout_pay', array(
+			'assets' => JIGOSHOP_URL.'/assets',
+		));
 		$wp->doAction('jigoshop\checkout\pay\assets', $wp, $styles, $scripts);
 	}
 
