@@ -270,7 +270,10 @@ class Product
 			}
 		}
 
-		switch($product->getType()){
+		do_action('jigoshop\helper\product\cart_form\before', $product, $template);
+		$type = apply_filters('jigoshop\helper\product\cart_form\type', $product->getType(), $product, $template);
+
+		switch($type){
 			case Entity\Product\Simple::TYPE:
 				Render::output("shop/{$template}/cart/simple", array('product' => $product));
 				break;
@@ -290,8 +293,9 @@ class Product
 				Render::output("shop/{$template}/cart/variable", array('product' => $product));
 				break;
 			default:
-				do_action('jigoshop\helper\product\print_cart_form', '', $product, $template);
+				do_action('jigoshop\helper\product\print_cart_form', $product->getType(), $product, $template);
 		}
+		do_action('jigoshop\helper\product\cart_form\after', $product, $template);
 	}
 
 	/**
