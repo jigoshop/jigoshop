@@ -143,6 +143,12 @@ class Integration
 		add_action('jigoshop\template\product\before_cart', function(){
 			return do_action('jigoshop_before_add_to_cart_form_button');
 		}, 10, 0);
+		add_action('jigoshop\template\shop\list\before', function(){
+			do_action('jigoshop_before_shop_loop');
+		});
+		add_action('jigoshop\template\shop\list\after', function(){
+			do_action('jigoshop_after_shop_loop');
+		});
 
 		// Orders support
 		add_action('jigoshop\service\order\new', function($id){
