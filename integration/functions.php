@@ -235,3 +235,8 @@ function is_jigoshop()
 {
 	return Pages::isJigoshop();
 }
+
+function is_ajax()
+{
+	return Pages::isAjax();
+}
