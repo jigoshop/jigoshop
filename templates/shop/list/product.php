@@ -21,6 +21,6 @@ use Jigoshop\Helper\Product;
 		<?php do_action('jigoshop\shop\list\product\after_title', $product); ?>
 	</a>
 	<span class="price"><?php echo Product::getPriceHtml($product); ?></span>
-	<?php echo Product::printAddToCartForm($product, 'list'); ?>
+	<?php Product::printAddToCartForm($product, 'list'); ?>
 	<?php do_action('jigoshop\shop\list\product\after', $product); ?>
 </li>

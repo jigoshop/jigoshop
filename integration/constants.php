@@ -14,4 +14,4 @@ define('JIGOSHOP_PRODUCT', \Jigoshop\Frontend\Pages::PRODUCT);
 define('JIGOSHOP_PRODUCT_CATEGORY', \Jigoshop\Frontend\Pages::PRODUCT_CATEGORY);
 define('JIGOSHOP_PRODUCT_LIST', \Jigoshop\Frontend\Pages::PRODUCT_LIST);
 define('JIGOSHOP_PRODUCT_TAG', \Jigoshop\Frontend\Pages::PRODUCT_TAG);
-define('JIGOSHOP_ALL', 'all');
+define('JIGOSHOP_ALL', \Jigoshop\Frontend\Pages::ALL);
