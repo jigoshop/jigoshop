@@ -91,7 +91,9 @@ class Options
 				break;
 			case 'user_defined':
 				$result['display'] = $option['display'];
-				$result['update'] = $option['update'];
+				if (isset($option['update'])) {
+					$result['update'] = $option['update'];
+				}
 			default:
 				$result['value'] = Integration::getOptions()->get($id.'.'.$result['__name'], isset($option['std']) ? $option['std'] : false);
 		}
