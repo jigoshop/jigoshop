@@ -31,8 +31,8 @@ abstract class jigoshop_shipping_method
 
 	protected $tax_status = '';
 
-	protected $rates; // the rates in array format
-	protected $has_error = false; // used for shipping methods that have issues and cannot be chosen
+	protected $rates = array();
+	protected $has_error = false;
 
 	private $tax;
 	private $error_message = null;
