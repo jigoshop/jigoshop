@@ -167,18 +167,18 @@ function jigoshop_save_bulk_edit() {
 	check_ajax_referer( 'update-product-stock-price', 'security' );
 
 	$post_ids = ( isset( $_POST[ 'post_ids' ] ) && ! empty( $_POST[ 'post_ids' ] ) ) ? $_POST[ 'post_ids' ] : array();
-	$stock = ( isset( $_POST[ 'stock' ] ) && ! empty( $_POST[ 'stock' ] ) ) ? $_POST[ 'stock' ] : NULL;
-	$price = ( isset( $_POST[ 'price' ] ) && ! empty( $_POST[ 'price' ] ) ) ? $_POST[ 'price' ] : NULL;
+	$stock = isset( $_POST[ 'stock' ] ) ? $_POST[ 'stock' ] : NULL;
+	$price = isset( $_POST[ 'price' ] ) ? $_POST[ 'price' ] : NULL;
 
 	if ( ! empty( $post_ids ) && is_array( $post_ids ) ) {
 		foreach ( $post_ids as $post_id ) {
 			$_product = new jigoshop_product( $post_id );
-			if ( $_product->managing_stock() ) {
+			if ( trim( $stock ) !== '' && $_product->managing_stock() ) {
 				$stock = empty( $stock ) ? 0 : jigoshop_sanitize_num( $stock );
 				// TODO: do we need to check to hide products at low stock threshold? (-JAP-)
 				update_post_meta( $post_id, 'stock', $stock );
 			}
-			if ( ! empty( $price ) && ! $_product->is_type( array( 'grouped' ) ) ) {
+			if ( trim( $price ) !== '' && ! $_product->is_type( array( 'grouped' ) ) ) {
 				update_post_meta( $post_id, 'regular_price', jigoshop_sanitize_num( $price ) );
 			}
 		}
