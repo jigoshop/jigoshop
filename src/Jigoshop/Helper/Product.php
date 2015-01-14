@@ -68,7 +68,7 @@ class Product
 
 		$price = $product->getRegularPrice();
 		if (empty($price)) {
-			return __('Price not announced', 'jigoshop');
+			return apply_filters('jigoshop\helper\product\get_price_html', __('Price not announced', 'jigoshop'), '', $product);
 		}
 
 		switch($product->getType()){
@@ -105,112 +105,6 @@ class Product
 		}
 
 		return apply_filters('jigoshop\helper\product\get_price_html', $result, $price, $product);
-	}
-
-	/**
-	 * Formats stock status appropriately to the product type and returns a string.
-	 *
-	 * @param Entity\Product $product
-	 * @return string
-	 */
-	public static function getStock(Entity\Product $product)
-	{
-		if (!($product instanceof Entity\Product\Purchasable) || !$product->getStock()->getManage()) {
-			return '';
-		}
-
-		/**@var $product Entity\Product */
-		switch ($product->getType()){
-			case Entity\Product\Simple::TYPE:
-			case Entity\Product\Downloadable::TYPE:
-				/** @var $product Entity\Product\Simple */
-				$status = $product->getStock()->getStatus() == Entity\Product\Attributes\StockStatus::IN_STOCK ?
-					_x('In stock', 'product', 'jigoshop') :
-					'<strong class="attention">'._x('Out of stock', 'product', 'jigoshop').'</strong>';
-
-				if (!self::$options->get('products.show_stock')) {
-					return $status;
-				}
-
-				return sprintf(_x('%s <strong>(%d available)</strong>', 'product', 'jigoshop'), $status, $product->getStock()->getStock());
-			default:
-				return apply_filters('jigoshop\helper\product\get_stock', '', $product);
-		}
-	}
-
-	/**
-	 * Checks if product has a thumbnail.
-	 *
-	 * @param Entity\Product $product
-	 * @return boolean
-	 */
-	public static function hasFeaturedImage(Entity\Product $product)
-	{
-		return has_post_thumbnail($product->getId());
-	}
-
-	/**
-	 * Gets thumbnail <img> tag for the product.
-	 *
-	 * @param Entity\Product $product
-	 * @param string $size
-	 * @return string
-	 */
-	public static function getFeaturedImage(Entity\Product $product, $size = Options::IMAGE_SMALL)
-	{
-		if (self::hasFeaturedImage($product)) {
-			return get_the_post_thumbnail($product->getId(), $size);
-		}
-
-		return self::getImagePlaceholder($size);
-	}
-
-	/**
-	 * Returns width and height for images of given size.
-	 *
-	 * @param $size string Size name to fetch.
-	 * @return array Width and height values.
-	 */
-	public static function getImageSize($size) {
-		$width = 70;
-		$height = 70;
-
-		global $_wp_additional_image_sizes;
-		if (isset($_wp_additional_image_sizes) && isset($_wp_additional_image_sizes[$size])) {
-			$width = intval($_wp_additional_image_sizes[$size]['width']);
-			$height = intval($_wp_additional_image_sizes[$size]['height']);
-		}
-
-		return array('width' => $width, 'height' => $height);
-	}
-
-	/**
-	 * Gets placeholder <img> tag for products.
-	 *
-	 * @param string $size
-	 * @return string
-	 */
-	public static function getImagePlaceholder($size = Options::IMAGE_SMALL)
-	{
-		$size = self::getImageSize($size);
-
-		return '<img src="'.JIGOSHOP_URL.'/assets/images/placeholder.png" alt="" width="'.$size['width'].'" height="'.$size['height'].'" />';
-	}
-
-	/**
-	 * Formats stock status appropriately to the product type and returns a string.
-	 *
-	 * @param Entity\Product $product
-	 * @return string
-	 */
-	public static function isFeatured(Entity\Product $product)
-	{
-		return sprintf(
-			'<a href="#" data-id="%d" class="product-featured"><span class="glyphicon %s" aria-hidden="true"></span> <span class="sr-only">%s</span></a>',
-			$product->getId(),
-			$product->isFeatured() ? 'glyphicon-star' : 'glyphicon-star-empty',
-			$product->isFeatured() ? __('Yes', 'jigoshop') : __('No', 'jigoshop')
-		);
 	}
 
 	/**
@@ -253,6 +147,112 @@ class Product
 	public static function formatNumericPrice($price)
 	{
 		return number_format($price, Currency::decimals(), Currency::decimalSeparator(), Currency::thousandsSeparator());
+	}
+
+	/**
+	 * Formats stock status appropriately to the product type and returns a string.
+	 *
+	 * @param Entity\Product $product
+	 * @return string
+	 */
+	public static function getStock(Entity\Product $product)
+	{
+		if (!($product instanceof Entity\Product\Purchasable) || !$product->getStock()->getManage()) {
+			return '';
+		}
+
+		/**@var $product Entity\Product */
+		switch ($product->getType()){
+			case Entity\Product\Simple::TYPE:
+			case Entity\Product\Downloadable::TYPE:
+				/** @var $product Entity\Product\Simple */
+				$status = $product->getStock()->getStatus() == Entity\Product\Attributes\StockStatus::IN_STOCK ?
+					_x('In stock', 'product', 'jigoshop') :
+					'<strong class="attention">'._x('Out of stock', 'product', 'jigoshop').'</strong>';
+
+				if (!self::$options->get('products.show_stock')) {
+					return $status;
+				}
+
+				return sprintf(_x('%s <strong>(%d available)</strong>', 'product', 'jigoshop'), $status, $product->getStock()->getStock());
+			default:
+				return apply_filters('jigoshop\helper\product\get_stock', '', $product);
+		}
+	}
+
+	/**
+	 * Gets thumbnail <img> tag for the product.
+	 *
+	 * @param Entity\Product $product
+	 * @param string $size
+	 * @return string
+	 */
+	public static function getFeaturedImage(Entity\Product $product, $size = Options::IMAGE_SMALL)
+	{
+		if (self::hasFeaturedImage($product)) {
+			return get_the_post_thumbnail($product->getId(), $size);
+		}
+
+		return self::getImagePlaceholder($size);
+	}
+
+	/**
+	 * Checks if product has a thumbnail.
+	 *
+	 * @param Entity\Product $product
+	 * @return boolean
+	 */
+	public static function hasFeaturedImage(Entity\Product $product)
+	{
+		return has_post_thumbnail($product->getId());
+	}
+
+	/**
+	 * Gets placeholder <img> tag for products.
+	 *
+	 * @param string $size
+	 * @return string
+	 */
+	public static function getImagePlaceholder($size = Options::IMAGE_SMALL)
+	{
+		$size = self::getImageSize($size);
+
+		return '<img src="'.JIGOSHOP_URL.'/assets/images/placeholder.png" alt="" width="'.$size['width'].'" height="'.$size['height'].'" />';
+	}
+
+	/**
+	 * Returns width and height for images of given size.
+	 *
+	 * @param $size string Size name to fetch.
+	 * @return array Width and height values.
+	 */
+	public static function getImageSize($size) {
+		$width = 70;
+		$height = 70;
+
+		global $_wp_additional_image_sizes;
+		if (isset($_wp_additional_image_sizes) && isset($_wp_additional_image_sizes[$size])) {
+			$width = intval($_wp_additional_image_sizes[$size]['width']);
+			$height = intval($_wp_additional_image_sizes[$size]['height']);
+		}
+
+		return array('width' => $width, 'height' => $height);
+	}
+
+	/**
+	 * Formats stock status appropriately to the product type and returns a string.
+	 *
+	 * @param Entity\Product $product
+	 * @return string
+	 */
+	public static function isFeatured(Entity\Product $product)
+	{
+		return sprintf(
+			'<a href="#" data-id="%d" class="product-featured"><span class="glyphicon %s" aria-hidden="true"></span> <span class="sr-only">%s</span></a>',
+			$product->getId(),
+			$product->isFeatured() ? 'glyphicon-star' : 'glyphicon-star-empty',
+			$product->isFeatured() ? __('Yes', 'jigoshop') : __('No', 'jigoshop')
+		);
 	}
 
 	/**
@@ -299,19 +299,6 @@ class Product
 	}
 
 	/**
-	 * @param Entity\Product\Variable\Variation $variation Variation to format.
-	 * @param Entity\Order\Item $item Order item.
-	 * @return string Formatted variation data in HTML.
-	 */
-	public static function getVariation(Entity\Product\Variable\Variation $variation, Entity\Order\Item $item)
-	{
-		return Render::get('helper/product/variation', array(
-			'variation' => $variation,
-			'item' => $item,
-		));
-	}
-
-	/**
 	 * Returns HTML for product data.
 	 *
 	 * Calls `jigoshop\helper\product\item_data` filter with current data and order item.
@@ -331,6 +318,19 @@ class Product
 		}
 
 		return apply_filters('jigoshop\helper\product\item_data', $data, $item);
+	}
+
+	/**
+	 * @param Entity\Product\Variable\Variation $variation Variation to format.
+	 * @param Entity\Order\Item $item Order item.
+	 * @return string Formatted variation data in HTML.
+	 */
+	public static function getVariation(Entity\Product\Variable\Variation $variation, Entity\Order\Item $item)
+	{
+		return Render::get('helper/product/variation', array(
+			'variation' => $variation,
+			'item' => $item,
+		));
 	}
 
 	public static function getRating(Entity\Product $product)
