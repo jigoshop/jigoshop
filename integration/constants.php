@@ -15,3 +15,4 @@ define('JIGOSHOP_PRODUCT_CATEGORY', \Jigoshop\Frontend\Pages::PRODUCT_CATEGORY);
 define('JIGOSHOP_PRODUCT_LIST', \Jigoshop\Frontend\Pages::PRODUCT_LIST);
 define('JIGOSHOP_PRODUCT_TAG', \Jigoshop\Frontend\Pages::PRODUCT_TAG);
 define('JIGOSHOP_ALL', \Jigoshop\Frontend\Pages::ALL);
+define('JIGOSHOP_OPTIONS', \Jigoshop\Core\Options::NAME);
