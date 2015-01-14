@@ -52,8 +52,6 @@ use Jigoshop\Integration;
  */
 class jigoshop_order extends Jigoshop_Base
 {
-	public $_data = array();
-
 	private static $_statusTransformations = array(
 		'new' => Order\Status::PENDING,
 		'pending' => Order\Status::PENDING,
@@ -63,13 +61,13 @@ class jigoshop_order extends Jigoshop_Base
 		'cancelled' => Order\Status::CANCELLED,
 		'refunded' => Order\Status::REFUNDED,
 	);
-
+	public $_data = array();
 	private $order_data;
 	/** @var \Jigoshop\Entity\Order */
 	private $_order;
 	private $_formattedBillingAddress;
 	private $_formattedShippingAddress;
-	private $_items = array();
+	private $_items;
 
 	public function __construct($id = '')
 	{
@@ -94,6 +92,17 @@ class jigoshop_order extends Jigoshop_Base
 		}
 
 		return false;
+	}
+
+	public static function get_order_statuses_and_names()
+	{
+		$statuses = Order\Status::getStatuses();
+		$result = array();
+		foreach (self::$_statusTransformations as $old => $new) {
+			$result[$old] = $statuses[$new];
+		}
+
+		return apply_filters('jigoshop_filter_order_status_names', $result);
 	}
 
 	public function __get($variable)
@@ -136,7 +145,7 @@ class jigoshop_order extends Jigoshop_Base
 							'variation_id' => $variationId,
 							'variation' => $variation,
 							'customization' => '',
-							'name' => $item->getName(),
+							'name' => $product->getName(),
 							'qty' => $item->getQuantity(),
 							'cost' => $item->getCost() - $item->getTax(),
 							'cost_inc_tax' => $item->getCost(),
@@ -477,17 +486,6 @@ class jigoshop_order extends Jigoshop_Base
 		return '';
 	}
 
-	public static function get_order_statuses_and_names()
-	{
-		$statuses = Order\Status::getStatuses();
-		$result = array();
-		foreach (self::$_statusTransformations as $old => $new) {
-			$result[$old] = $statuses[$new];
-		}
-
-		return apply_filters('jigoshop_filter_order_status_names', $result);
-	}
-
 	/**
 	 * Returns the order number for display purposes.
 	 *
@@ -622,7 +620,11 @@ class jigoshop_order extends Jigoshop_Base
 	public function get_product_from_item($item)
 	{
 		try {
-			return $this->_order->getItem($item['__key']);
+			if (isset($item['variation_id']) && !empty($item['variation_id'])) {
+				return new jigoshop_product_variation($this->_order->getItem($item['__key'])->getProduct(), $item['variation_id'], $item['variation']);
+			} else {
+				return new jigoshop_product($this->_order->getItem($item['__key'])->getProduct());
+			}
 		} catch(\Jigoshop\Exception $e) {
 			return null;
 		}

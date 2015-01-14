@@ -272,3 +272,42 @@ function is_jigoshop_page($pages)
 {
 	return Pages::isOneOf($pages);
 }
+
+function jigoshop_get_formatted_variation(jigoshop_product $product, $variation_data = array(), $flat = false)
+{
+	$p = $product->__getProduct();
+	$result = '';
+
+	if ($p instanceof \Jigoshop\Entity\Product\Variable) {
+		$variation = $p->getVariation($product->variation_id);
+		if ($flat) {
+			$result .= PHP_EOL;
+		} else {
+			$result .= '<dl class="dl-horizontal variation-data">';
+		}
+
+		foreach ($variation->getAttributes() as $attribute) {
+			/** @var $attribute \Jigoshop\Entity\Product\Variable\Attribute */
+			$label = $attribute->getAttribute()->getLabel();
+			if ($attribute->getValue()) {
+				$value = $attribute->getAttribute()->getOption($attribute->getValue())->getValue();
+			} else {
+				$value = $variation_data[$attribute->getAttribute()->getSlug()];
+			}
+
+			if ($flat) {
+				$result .= $label.': '.$value.', ';
+			} else {
+				$result .= '<dt>'.$label.'</dt><dd>'.$value.'</dd>';
+			}
+		}
+
+		if ($flat) {
+			$result = rtrim($result, ', ');
+		} else {
+			$result .= '</dl>';
+		}
+	}
+
+	return $result;
+}

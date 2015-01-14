@@ -6,19 +6,21 @@ use Jigoshop\Integration;
 
 class jigoshop_product extends Jigoshop_Base
 {
-	public $id;           // : jigoshop_template_functions.php on line 99 // This is just an alias for $this->ID
-	public $ID;
-	public $exists;       // : jigoshop_cart.class.php on line 66
-	public $product_type; // : jigoshop_template_functions.php on line 271
-	public $sku;          // : jigoshop_template_functions.php on line 246
+		/** @var \Jigoshop\Service\ProductServiceInterface */
+	private static $__productService;           // : jigoshop_template_functions.php on line 99 // This is just an alias for $this->ID
+	/** @var \Jigoshop\Service\TaxServiceInterface */
+	private static $__taxService;
+	public $id;       // : jigoshop_cart.class.php on line 66
+		public $ID; // : jigoshop_template_functions.php on line 271
+	public $exists;          // : jigoshop_template_functions.php on line 246
+public $product_type;
+public $sku;
 	public $brand;
-	public $gtin;
-	public $mpn;
-
-	public $data;         // jigoshop_tax.class.php on line 186
-	public $post;         // for get_title()
-
-	public $meta;         // for get_child()
+	public $gtin;         // jigoshop_tax.class.php on line 186
+		public $mpn;         // for get_title()
+public $data;         // for get_child()
+public $post;
+public $meta;
 	public $visibility = 'visible';
 	public $stock;
 	public $children = array();
@@ -27,24 +29,19 @@ class jigoshop_product extends Jigoshop_Base
 	protected $sale_price_dates_from;
 	protected $sale_price_dates_to;
 	protected $stock_sold;
-	protected $jigoshop_options;
+		protected $jigoshop_options; // : admin/jigoshop-admin-post-types.php on line 168
 	private $weight;
-	private $length; // : admin/jigoshop-admin-post-types.php on line 168
+private $length;
 	private $width;
 	private $height;
-	private $tax_status = 'taxable';
-	private $tax_class;
-	private $featured = false;         // : admin/jigoshop-admin-post-types.php on line 180
-	private $manage_stock = false;    // for managed stock only
-	private $stock_status = 'instock'; // all sales whether managed stock or not
+		private $tax_status = 'taxable';         // : admin/jigoshop-admin-post-types.php on line 180
+		private $tax_class;    // for managed stock only
+	private $featured = false; // all sales whether managed stock or not
+private $manage_stock = false;
+	private $stock_status = 'instock'; // : jigoshop_template_functions.php on line 328
 	private $backorders;
-	private $quantity_sold; // : jigoshop_template_functions.php on line 328
+private $quantity_sold;
 	private $__product;
-
-	/** @var \Jigoshop\Service\ProductServiceInterface */
-	private static $__productService;
-	/** @var \Jigoshop\Service\TaxServiceInterface */
-	private static $__taxService;
 
 	public function __construct($product)
 	{
@@ -200,6 +197,11 @@ class jigoshop_product extends Jigoshop_Base
 //		$products = self::$__productService->findByQuery($query);
 	}
 
+	public function __getProduct()
+	{
+		return $this->__product;
+	}
+
 	public function get_image($size = 'shop_thumbnail')
 	{
 		switch ($size) {
@@ -247,19 +249,6 @@ class jigoshop_product extends Jigoshop_Base
 		return false;
 	}
 
-	public function managing_stock()
-	{
-		if (!Integration::getOptions()->get('products.manage_stock')) {
-			return false;
-		}
-
-		if ($this->__product instanceof Product\Purchasable) {
-			return $this->__product->getStock()->getManage();
-		}
-
-		return false;
-	}
-
 	public function increase_stock($by = 1)
 	{
 		return $this->modify_stock($by);
@@ -269,19 +258,6 @@ class jigoshop_product extends Jigoshop_Base
 	{
 		// If it's virtual or downloadable don't require shipping, same for subscriptions
 		return apply_filters('jigoshop_requires_shipping', $this->__product instanceof Product\Shippable && $this->__product->isShippable(), $this->id);
-	}
-
-	public function is_type($type)
-	{
-		if (is_array($type) && in_array($this->product_type, $type)) {
-			return true;
-		}
-
-		if ($this->product_type == $type) {
-			return true;
-		}
-
-		return false;
 	}
 
 	public function exists()
@@ -334,6 +310,19 @@ class jigoshop_product extends Jigoshop_Base
 		return false;
 	}
 
+	public function is_type($type)
+	{
+		if (is_array($type) && in_array($this->product_type, $type)) {
+			return true;
+		}
+
+		if ($this->product_type == $type) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public function get_children()
 	{
 		// TODO: This needs Group product implementation
@@ -354,10 +343,14 @@ class jigoshop_product extends Jigoshop_Base
 		return false;
 	}
 
-	public function backorders_require_notification()
+	public function managing_stock()
 	{
+		if (!Integration::getOptions()->get('products.manage_stock')) {
+			return false;
+		}
+
 		if ($this->__product instanceof Product\Purchasable) {
-			return $this->__product->getStock()->getAllowBackorders() == StockStatus::BACKORDERS_NOTIFY;
+			return $this->__product->getStock()->getManage();
 		}
 
 		return false;
@@ -370,6 +363,15 @@ class jigoshop_product extends Jigoshop_Base
 		}
 
 		return 0;
+	}
+
+	public function backorders_require_notification()
+	{
+		if ($this->__product instanceof Product\Purchasable) {
+			return $this->__product->getStock()->getAllowBackorders() == StockStatus::BACKORDERS_NOTIFY;
+		}
+
+		return false;
 	}
 
 	/**
@@ -421,16 +423,13 @@ class jigoshop_product extends Jigoshop_Base
 			|| $this->__product->getStock()->getStatus() == StockStatus::IN_STOCK;
 		}
 
-		// TODO: Variable support?
-
 		return false;
 	}
 
 	public function get_child($id)
 	{
 		if ($this->is_type('variable')) {
-			// TODO: Return properly variation based on product's one.
-			return null;//new jigoshop_product_variation($id);
+			return new jigoshop_product_variation($this->__product, $id);
 		}
 
 		// TODO: Requires grouped product support
@@ -477,24 +476,6 @@ class jigoshop_product extends Jigoshop_Base
 		return $price * $quantity;
 	}
 
-	public function get_price()
-	{
-		if ($this->__product instanceof Product\Purchasable) {
-			return $this->__product->getPrice();
-		}
-
-		return '';
-	}
-
-	public function is_on_sale()
-	{
-		if ($this->__product instanceof Product\Saleable) {
-			return $this->__product->getSales()->isEnabled();
-		}
-
-		return false;
-	}
-
 	public function get_price_excluding_tax($quantity = 1)
 	{
 		// TODO: Support for price includes tax
@@ -503,6 +484,15 @@ class jigoshop_product extends Jigoshop_Base
 //		}
 
 		return $this->get_price() * $quantity;
+	}
+
+	public function get_price()
+	{
+		if ($this->__product instanceof Product\Purchasable) {
+			return $this->__product->getPrice();
+		}
+
+		return '';
 	}
 
 	public function get_tax_base_rate()
@@ -564,6 +554,15 @@ class jigoshop_product extends Jigoshop_Base
 		}
 
 		return '';
+	}
+
+	public function is_on_sale()
+	{
+		if ($this->__product instanceof Product\Saleable) {
+			return $this->__product->getSales()->isEnabled();
+		}
+
+		return false;
 	}
 
 	/**
