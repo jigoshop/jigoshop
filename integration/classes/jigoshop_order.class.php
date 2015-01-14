@@ -147,8 +147,8 @@ class jigoshop_order extends Jigoshop_Base
 							'customization' => '',
 							'name' => $product->getName(),
 							'qty' => $item->getQuantity(),
-							'cost' => $item->getCost() - $item->getTax(),
-							'cost_inc_tax' => $item->getCost(),
+							'cost' => $item->getPrice(),
+							'cost_inc_tax' => $item->getPrice() + $item->getTax() / $item->getQuantity(),
 							'taxrate' => '', // TODO: What about tax rate?
 							'__key' => $key,
 						);
@@ -210,7 +210,7 @@ class jigoshop_order extends Jigoshop_Base
 			case 'payment_method_title':
 				return $this->_order->getPaymentMethod() ? $this->_order->getPaymentMethod()->getName() : '';
 			case 'order_subtotal':
-				return $this->_order->getSubtotal();
+				return $this->_order->getProductSubtotal();
 			case 'order_discount_subtotal':
 				return $this->_order->getSubtotal() - $this->_order->getDiscount();
 			case 'order_shipping':
@@ -580,7 +580,7 @@ class jigoshop_order extends Jigoshop_Base
 
 	public function get_subtotal_to_display()
 	{
-		$subtotal = \Jigoshop\Helper\Product::formatPrice($this->_order->getSubtotal());
+		$subtotal = \Jigoshop\Helper\Product::formatPrice($this->_order->getProductSubtotal());
 		if ($this->_order->getTotalTax() > 0) {
 			$subtotal .= __(' <small>(ex. tax)</small>', 'jigoshop');
 		}
