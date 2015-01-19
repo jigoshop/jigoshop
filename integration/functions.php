@@ -107,6 +107,13 @@ function jigoshop_get_image_size($size)
 	return array($image_size['width'], $image_size['height']);
 }
 
+function jigoshop_get_image_placeholder($size = 'shop_small')
+{
+	$image_size = \Jigoshop\Helper\Product::getImageSize($size);
+
+	return apply_filters('jigoshop_image_placeholder_html', \Jigoshop\Helper\Product::getImagePlaceholder($size), $image_size);
+}
+
 function jigoshop_disable_autosave($src, $handle)
 {
 	if ('autosave' != $handle) {

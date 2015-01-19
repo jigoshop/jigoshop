@@ -43,7 +43,7 @@ class Integration
 			Integration::initializeShipping();
 		});
 		add_action('jigoshop\page_resolver\before', function(){
-			if (Pages::isCart() || Pages::isCheckout() || Pages::isCheckoutThankYou()) {
+			if (Pages::isCart() || Pages::isCheckout()) {
 				Integration::initializeGateways();
 			}
 		});
