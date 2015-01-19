@@ -132,6 +132,10 @@ class Integration
 			global $post;
 			do_action('jigoshop_before_single_product_summary', $post, new \jigoshop_product($product));
 		});
+		add_action('jigoshop\template\product\before_thumbnails', function($product){
+			global $post;
+			do_action('jigoshop_before_single_product_summary_thumbnails', $post, new \jigoshop_product($product));
+		});
 		add_filter('jigoshop\helper\product\get_price_html', function($html, $price, $product){
 			return apply_filters('jigoshop_product_get_price_html', $html, new \jigoshop_product($product), $price);
 		}, 10, 3);
@@ -157,6 +161,25 @@ class Integration
 		// Orders support
 		add_action('jigoshop\service\order\new', function($id){
 			do_action('jigoshop_new_order', $id);
+		});
+		add_action(sprintf('jigoshop\order\after\%s', Order\Status::PENDING), function($id){
+			do_action('order_status_pending', $id);
+		});
+		add_action(sprintf('jigoshop\order\after\%s', Order\Status::ON_HOLD), function($id){
+			do_action('order_status_on-hold', $id);
+			do_action('order_status_on_hold', $id);
+		});
+		add_action(sprintf('jigoshop\order\after\%s', Order\Status::PROCESSING), function($id){
+			do_action('order_status_processing', $id);
+		});
+		add_action(sprintf('jigoshop\order\after\%s', Order\Status::COMPLETED), function($id){
+			do_action('order_status_completed', $id);
+		});
+		add_action(sprintf('jigoshop\order\after\%s', Order\Status::CANCELLED), function($id){
+			do_action('order_status_cancelled', $id);
+		});
+		add_action(sprintf('jigoshop\order\after\%s', Order\Status::REFUNDED), function($id){
+			do_action('order_status_refunded', $id);
 		});
 
 		// Cart support
