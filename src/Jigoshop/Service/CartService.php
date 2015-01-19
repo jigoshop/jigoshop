@@ -5,7 +5,6 @@ namespace Jigoshop\Service;
 use Jigoshop\Core\ContainerAware;
 use Jigoshop\Core\Options;
 use Jigoshop\Entity\Cart;
-use Jigoshop\Entity\Customer\Guest;
 use Jigoshop\Entity\Order;
 use Symfony\Component\DependencyInjection\Container;
 use WPAL\Wordpress;
@@ -39,6 +38,28 @@ class CartService implements CartServiceInterface, ContainerAware
 		$this->wp->doAction('jigoshop\service\cart');
 	}
 
+	private function generateCartId()
+	{
+		if ($this->wp->getCurrentUserId() > 0) {
+			$id = $this->wp->getCurrentUserId();
+		} elseif(isset($_SESSION[self::CART_ID])){
+			$id = $_SESSION[self::CART_ID];
+		} elseif(isset($_COOKIE[self::CART_ID])){
+			$id = $_COOKIE[self::CART_ID];
+		} else {
+			$id = md5($_SERVER['HTTP_USER_AGENT'].time().$_SERVER['REMOTE_ADDR'].rand(1, 10000000));
+		}
+
+		if (!isset($_SESSION[self::CART_ID])) {
+			$_SESSION[self::CART_ID] = $id;
+		}
+		if (!isset($_COOKIE[self::CART_ID])) {
+			setcookie(self::CART_ID, $id, null, '/', null, null, true);
+		}
+
+		return $id;
+	}
+
 	/**
 	 * Sets container for every container aware service.
 	 *
@@ -47,6 +68,17 @@ class CartService implements CartServiceInterface, ContainerAware
 	public function setContainer(Container $container)
 	{
 		$this->di = $container;
+	}
+
+	/**
+	 * Find and fetches cart for current user.
+	 * If cart is not found - returns new empty one.
+	 *
+	 * @return Cart Prepared cart instance.
+	 */
+	public function getCurrent()
+	{
+		return $this->get($this->getCartIdForCurrentUser());
 	}
 
 	/**
@@ -81,14 +113,15 @@ class CartService implements CartServiceInterface, ContainerAware
 	}
 
 	/**
-	 * Find and fetches cart for current user.
-	 * If cart is not found - returns new empty one.
+	 * Returns cart ID for current user.
+	 * If the user is logged in - returns his ID so his cart will be properly loaded.
+	 * Otherwise generates random string based on available user data to preserve it's cart.
 	 *
-	 * @return Cart Prepared cart instance.
+	 * @return string Cart ID for currently logged in user.
 	 */
-	public function getCurrent()
+	public function getCartIdForCurrentUser()
 	{
-		return $this->get($this->getCartIdForCurrentUser());
+		return $this->currentUserCartId;
 	}
 
 	/**
@@ -118,40 +151,6 @@ class CartService implements CartServiceInterface, ContainerAware
 		if (isset($_SESSION[self::CART][$cart->getId()])) {
 			unset($_SESSION[self::CART][$cart->getId()]);
 		}
-	}
-
-	/**
-	 * Returns cart ID for current user.
-	 * If the user is logged in - returns his ID so his cart will be properly loaded.
-	 * Otherwise generates random string based on available user data to preserve it's cart.
-	 *
-	 * @return string Cart ID for currently logged in user.
-	 */
-	public function getCartIdForCurrentUser()
-	{
-		return $this->currentUserCartId;
-	}
-
-	private function generateCartId()
-	{
-		if ($this->wp->getCurrentUserId() > 0) {
-			$id = $this->wp->getCurrentUserId();
-		} elseif(isset($_SESSION[self::CART_ID])){
-			$id = $_SESSION[self::CART_ID];
-		} elseif(isset($_COOKIE[self::CART_ID])){
-			$id = $_COOKIE[self::CART_ID];
-		} else {
-			$id = md5($_SERVER['HTTP_USER_AGENT'].time().$_SERVER['REMOTE_ADDR'].rand(1, 10000000));
-		}
-
-		if (!isset($_SESSION[self::CART_ID])) {
-			$_SESSION[self::CART_ID] = $id;
-		}
-		if (!isset($_COOKIE[self::CART_ID])) {
-			setcookie(self::CART_ID, $id, null, '/', null, null, true);
-		}
-
-		return $id;
 	}
 
 	/**

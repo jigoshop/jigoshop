@@ -49,23 +49,23 @@ class Api implements ContainerAware
 
 	public function parseRequest()
 	{
-		if (!empty($_GET[self::API_ENDPOINT])) {
-			ob_start();
-			$api = strtolower(esc_attr($_GET[self::API_ENDPOINT]));
-			$availableApi = $this->di->getParameter('api');
+		$endpoint = isset($_GET[self::API_ENDPOINT]) ? strtolower(esc_attr($_GET[self::API_ENDPOINT])) : null;
 
-			if (isset($availableApi[$api]) && $this->di->has($availableApi[$api])) {
-				$bean = $this->di->get($availableApi[$api]);
-				if (!($bean instanceof Api\Processable)) {
+		if (!empty($endpoint)) {
+			if ($this->di->hasParameter('jigoshop.api.'.$endpoint)) {
+				ob_start();
+				$api = $this->di->getParameter('jigoshop.api.'.$endpoint);
+
+				if (!($api instanceof Api\Processable)) {
 					if (WP_DEBUG) {
 						throw new Exception(__('Provided API is not processable.', 'jigoshop'));
 					}
 					return;
 				}
 
-				$bean->processResponse();
+				$api->processResponse();
 			} else {
-				$this->wp->doAction('jigoshop_api_'.$api);
+				$this->wp->doAction('jigoshop_api_'.$endpoint);
 			}
 
 			exit;

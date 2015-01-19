@@ -1,4 +1,5 @@
 parameters:
+  jigoshop.api.download_file: jigoshop.product_type.downloadable.download_file
   jigoshop.widgets:
     best_seller:
       class: \Jigoshop\Widget\BestSellers
@@ -205,5 +206,10 @@ services:
       - '@wpal'
       - '@jigoshop.options'
       - '@jigoshop.messages'
+  jigoshop.product_type.downloadable.download_file:
+    class: Jigoshop\Api\DownloadFile
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'
+      - '@jigoshop.messages'
       - '@jigoshop.service.order'
-

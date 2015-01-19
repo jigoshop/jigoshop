@@ -1,6 +1,5 @@
 parameters:
-  api:
-    paypal: jigoshop.payment.paypal
+  jigoshop.api.paypal: jigoshop.payment.paypal
 services:
   jigoshop.payment.cheque:
     class: Jigoshop\Payment\Cheque
