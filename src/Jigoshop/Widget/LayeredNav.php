@@ -48,11 +48,6 @@ class LayeredNav extends \WP_Widget
 		self::$styles = $styles;
 	}
 
-	public function assets()
-	{
-		self::$styles->add('jigoshop.widget.layered_nav', JIGOSHOP_URL.'/assets/css/widget/layered_nav.css');
-	}
-
 	public static function getParameters()
 	{
 		self::$parameters = array();
@@ -62,6 +57,11 @@ class LayeredNav extends \WP_Widget
 			/** @var $attribute Product\Attribute */
 			self::$parameters[$attribute->getId()] = isset($_GET['filter_'.$attribute->getSlug()]) ? array_filter(explode('|', $_GET['filter_'.$attribute->getSlug()])) : array();
 		}
+	}
+
+	public function assets()
+	{
+		self::$styles->add('jigoshop.widget.layered_nav', JIGOSHOP_URL.'/assets/css/widget/layered_nav.css');
 	}
 
 	public function query($products)
@@ -116,7 +116,7 @@ class LayeredNav extends \WP_Widget
 
 		$attribute = self::$productService->getAttribute($instance['attribute']);
 
-		if ($attribute->hasOptions()) {
+		if ($attribute && $attribute->hasOptions()) {
 			$selected = self::$parameters[$attribute->getId()];
 			$productsPerOption = array();
 			$products = array_filter($this->products, function($product) use ($attribute, $selected, &$productsPerOption) {
