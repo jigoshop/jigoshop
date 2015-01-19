@@ -44,8 +44,8 @@ class Product implements PageInterface
 		$styles->add('jigoshop.vendors', JIGOSHOP_URL.'/assets/css/vendors.min.css');
 		$scripts->add('jigoshop.vendors', JIGOSHOP_URL.'/assets/js/vendors.min.js');
 		$scripts->add('jigoshop.shop.product', JIGOSHOP_URL.'/assets/js/shop/product.js', array('jquery', 'jigoshop.vendors'));
-		$this->wp->addAction('jigoshop\product\before_summary', array($this, 'productImages'), 10, 1);
-		$this->wp->addAction('jigoshop\product\after_summary', array($this, 'productTabs'), 10, 1);
+		$this->wp->addAction('jigoshop\template\product\before_summary', array($this, 'productImages'), 10, 1);
+		$this->wp->addAction('jigoshop\template\product\after_summary', array($this, 'productTabs'), 10, 1);
 		$this->wp->addAction('jigoshop\template\product\tab_panels', array($this, 'productAttributes'), 10, 2);
 		$this->wp->addAction('jigoshop\template\product\tab_panels', array($this, 'productDescription'), 10, 2);
 		$this->wp->doAction('jigoshop\product\assets', $wp, $styles, $scripts);

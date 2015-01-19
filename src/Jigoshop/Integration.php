@@ -124,9 +124,13 @@ class Integration
 		add_action('jigoshop\template\product\tab_panels', function(){
 			do_action('jigoshop_product_tab_panels');
 		}, 10, 0);
-		add_action('jigoshop\product\summary', function($product){
+		add_action('jigoshop\template\product\summary', function($product){
 			global $post;
 			do_action('jigoshop_template_single_summary', $post, new \jigoshop_product($product));
+		});
+		add_action('jigoshop\template\product\before_summary', function($product){
+			global $post;
+			do_action('jigoshop_before_single_product_summary', $post, new \jigoshop_product($product));
 		});
 		add_filter('jigoshop\helper\product\get_price_html', function($html, $price, $product){
 			return apply_filters('jigoshop_product_get_price_html', $html, new \jigoshop_product($product), $price);
@@ -198,6 +202,51 @@ class Integration
 	}
 
 	/**
+	 * @return \Jigoshop\Service\PaymentServiceInterface
+	 */
+	public static function getPaymentService()
+	{
+		return self::$di->get('jigoshop.service.payment');
+	}
+
+	public static function initializeShipping()
+	{
+		Registry::getInstance(JIGOSHOP_LOGGER)->addDebug('Initializing Jigoshop 1.x shipping methods');
+		$service = self::getShippingService();
+		$methods = apply_filters('jigoshop_shipping_methods', array());
+
+		foreach ($methods as $method) {
+			$service->addMethod(new Integration\Shipping($method));
+		}
+
+//		add_action('jigoshop\checkout\set_shipping\before', '\Jigoshop\Integration::processGateway');
+	}
+
+	/**
+	 * @return \Jigoshop\Service\ShippingServiceInterface
+	 */
+	public static function getShippingService()
+	{
+		return self::$di->get('jigoshop.service.shipping');
+	}
+
+	/**
+	 * @return \Jigoshop\Admin\Pages
+	 */
+	public static function getAdminPages()
+	{
+		return self::$di->get('jigoshop.admin.pages');
+	}
+
+	/**
+	 * @return \Jigoshop\Core\Options
+	 */
+	public static function getOptions()
+	{
+		return self::$di->get('jigoshop.options');
+	}
+
+	/**
 	 * @param $method \Jigoshop\Payment\Method
 	 */
 	public static function processGateway($method)
@@ -215,17 +264,12 @@ class Integration
 		}
 	}
 
-	public static function initializeShipping()
+	/**
+	 * @return \Jigoshop\Entity\Cart
+	 */
+	public static function getCart()
 	{
-		Registry::getInstance(JIGOSHOP_LOGGER)->addDebug('Initializing Jigoshop 1.x shipping methods');
-		$service = self::getShippingService();
-		$methods = apply_filters('jigoshop_shipping_methods', array());
-
-		foreach ($methods as $method) {
-			$service->addMethod(new Integration\Shipping($method));
-		}
-
-//		add_action('jigoshop\checkout\set_shipping\before', '\Jigoshop\Integration::processGateway');
+		return self::$di->get('jigoshop.service.cart')->getCurrent();
 	}
 
 	/**
@@ -242,22 +286,6 @@ class Integration
 	public static function setShippingRate($shippingRate)
 	{
 		self::$shippingRate = $shippingRate;
-	}
-
-	/**
-	 * @return \Jigoshop\Service\PaymentServiceInterface
-	 */
-	public static function getPaymentService()
-	{
-		return self::$di->get('jigoshop.service.payment');
-	}
-
-	/**
-	 * @return \Jigoshop\Service\ShippingServiceInterface
-	 */
-	public static function getShippingService()
-	{
-		return self::$di->get('jigoshop.service.shipping');
 	}
 
 	/**
@@ -325,27 +353,11 @@ class Integration
 	}
 
 	/**
-	 * @return \Jigoshop\Entity\Cart
-	 */
-	public static function getCart()
-	{
-		return self::$di->get('jigoshop.service.cart')->getCurrent();
-	}
-
-	/**
 	 * @return \Jigoshop\Core\Messages
 	 */
 	public static function getMessages()
 	{
 		return self::$di->get('jigoshop.messages');
-	}
-
-	/**
-	 * @return \Jigoshop\Core\Options
-	 */
-	public static function getOptions()
-	{
-		return self::$di->get('jigoshop.options');
 	}
 
 	/**
@@ -373,24 +385,11 @@ class Integration
 	}
 
 	/**
-	 * @return \Jigoshop\Admin\Pages
-	 */
-	public static function getAdminPages()
-	{
-		return self::$di->get('jigoshop.admin.pages');
-	}
-
-	/**
 	 * @return \Jigoshop\Admin\Settings
 	 */
 	public static function getAdminSettings()
 	{
 		return self::$di->get('jigoshop.admin.settings');
-	}
-
-	public static function setCurrentOrder($order)
-	{
-		self::$currentOrder = $order;
 	}
 
 	/**
@@ -399,5 +398,10 @@ class Integration
 	public static function getCurrentOrder()
 	{
 		return self::$currentOrder;
+	}
+
+	public static function setCurrentOrder($order)
+	{
+		self::$currentOrder = $order;
 	}
 }

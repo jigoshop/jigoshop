@@ -25,12 +25,52 @@ class RecentlyViewedProducts extends \WP_Widget
 		parent::__construct(self::ID, __('Jigoshop: Recently Viewed', 'jigoshop'), $options);
 
 		// Attach the tracker to the product view action
-		add_action('jigoshop\product\before', '\Jigoshop\Widget\RecentlyViewedProducts::productViewTracker', 10, 1);
+		add_action('jigoshop\template\product\before', '\Jigoshop\Widget\RecentlyViewedProducts::productViewTracker', 10, 1);
 	}
 
 	public static function setProductService($productService)
 	{
 		self::$productService = $productService;
+	}
+
+	/**
+	 * Logs viewed products into the session
+	 *
+	 * @var $product Product
+	 */
+	public static function productViewTracker($product)
+	{
+		$instance = get_option('widget_'.self::ID);
+		$number = 0;
+		if (is_array($instance)) {
+			foreach ($instance as $entry) {
+				if (isset($entry['number'])) {
+					$number = $entry['number'];
+					break;
+				}
+			}
+		}
+
+		if (!$number) {
+			return;
+		}
+
+		if (!is_array($_SESSION[self::SESSION_KEY])) {
+			$_SESSION[self::SESSION_KEY] = array();
+		}
+
+		$key = array_search($product->getId(), $_SESSION[self::SESSION_KEY]);
+		if ($key !== false) {
+			unset($_SESSION[self::SESSION_KEY][$key]);
+		}
+
+		array_unshift($_SESSION[self::SESSION_KEY], $product->getId());
+
+		if (count($_SESSION[self::SESSION_KEY]) > $number) {
+			array_pop($_SESSION[self::SESSION_KEY]);
+		}
+
+		$_SESSION[self::SESSION_KEY] = array_values($_SESSION[self::SESSION_KEY]);
 	}
 
 	/**
@@ -118,46 +158,6 @@ class RecentlyViewedProducts extends \WP_Widget
 		unset($_SESSION[self::SESSION_KEY]);
 
 		return $instance;
-	}
-
-	/**
-	 * Logs viewed products into the session
-	 *
-	 * @var $product Product
-	 */
-	public static function productViewTracker($product)
-	{
-		$instance = get_option('widget_'.self::ID);
-		$number = 0;
-		if (is_array($instance)) {
-			foreach ($instance as $entry) {
-				if (isset($entry['number'])) {
-					$number = $entry['number'];
-					break;
-				}
-			}
-		}
-
-		if (!$number) {
-			return;
-		}
-
-		if (!is_array($_SESSION[self::SESSION_KEY])) {
-			$_SESSION[self::SESSION_KEY] = array();
-		}
-
-		$key = array_search($product->getId(), $_SESSION[self::SESSION_KEY]);
-		if ($key !== false) {
-			unset($_SESSION[self::SESSION_KEY][$key]);
-		}
-
-		array_unshift($_SESSION[self::SESSION_KEY], $product->getId());
-
-		if (count($_SESSION[self::SESSION_KEY]) > $number) {
-			array_pop($_SESSION[self::SESSION_KEY]);
-		}
-
-		$_SESSION[self::SESSION_KEY] = array_values($_SESSION[self::SESSION_KEY]);
 	}
 
 	/**

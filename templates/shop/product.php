@@ -7,10 +7,10 @@ use Jigoshop\Helper\Render;
  * @var $messages \Jigoshop\Core\Messages Messages container.
  */
 ?>
-<?php do_action('jigoshop\product\before', $product); ?>
+<?php do_action('jigoshop\template\product\before', $product); ?>
 <article id="post-<?php echo $product->getId(); ?>" class="product">
 	<?php Render::output('shop/messages', array('messages' => $messages)); ?>
-	<?php do_action('jigoshop\product\before_summary', $product); ?>
+	<?php do_action('jigoshop\template\product\before_summary', $product); ?>
 	<div class="summary">
 		<h1><?php echo $product->getName(); ?></h1>
 		<p class="price"><?php echo Product::getPriceHtml($product); ?></p>
@@ -36,10 +36,10 @@ use Jigoshop\Helper\Render;
 				<?php endforeach; ?>
 			</dd>
 			<?php endif; ?>
-			<?php do_action('jigoshop\product\data', $product); ?>
+			<?php do_action('jigoshop\template\product\data', $product); ?>
 		</dl>
-		<?php do_action('jigoshop\product\summary', $product); ?>
+		<?php do_action('jigoshop\template\product\summary', $product); ?>
 	</div>
-	<?php do_action('jigoshop\product\after_summary', $product); ?>
+	<?php do_action('jigoshop\template\product\after_summary', $product); ?>
 </article>
-<?php do_action('jigoshop\product\after', $product); ?>
+<?php do_action('jigoshop\template\product\after', $product); ?>
