@@ -35,7 +35,7 @@ use Jigoshop\Helper\Product;
 								'id' => 'product_attributes_'.$attribute->getId().'_option_'.$option->getId(),
 								'classes' => array('attribute-'.$attribute->getId()),
 								'label' => $option->getLabel(),
-								'value' => $option->getId(),
+								'value' => apply_filters('jigoshop\template\admin\product\attribute\multiselect\value', $option->getId(), $attribute, $option),
 								'multiple' => true,
 								'checked' => in_array($option->getId(), $attribute->getValue()),
 								)); ?>
@@ -47,7 +47,7 @@ use Jigoshop\Helper\Product;
 						Forms::select(array(
 							'name' => 'product[attributes]['.$attribute->getId().']',
 							'classes' => array('attribute-'.$attribute->getId()),
-							'value' => $attribute->getValue(),
+							'value' => apply_filters('jigoshop\template\admin\product\attribute\select\value', $attribute->getValue(), $attribute),
 							'options' => Product::getSelectOption($attribute->getOptions()),
 							'size' => 12,
 						)); ?>
@@ -58,7 +58,7 @@ use Jigoshop\Helper\Product;
 					Forms::text(array(
 						'name' => 'product[attributes]['.$attribute->getId().']',
 						'classes' => array('attribute-'.$attribute->getId()),
-						'value' => $attribute->getValue(),
+						'value' => apply_filters('jigoshop\template\admin\product\attribute\text\value', $attribute->getValue(), $attribute),
 						'size' => 12,
 					)); ?>
 					</div><?php
