@@ -164,24 +164,30 @@ class Integration
 		add_action('jigoshop\service\order\new', function($id){
 			do_action('jigoshop_new_order', $id);
 		});
-		add_action(sprintf('jigoshop\order\after\%s', Order\Status::PENDING), function($id){
-			do_action('order_status_pending', $id);
+		add_action(sprintf('jigoshop\order\after\%s', Order\Status::PENDING), function($order){
+			/** @var $order Order */
+			do_action('order_status_pending', $order->getId());
 		});
-		add_action(sprintf('jigoshop\order\after\%s', Order\Status::ON_HOLD), function($id){
-			do_action('order_status_on-hold', $id);
-			do_action('order_status_on_hold', $id);
+		add_action(sprintf('jigoshop\order\after\%s', Order\Status::ON_HOLD), function($order){
+			/** @var $order Order */
+			do_action('order_status_on-hold', $order->getId());
+			do_action('order_status_on_hold', $order->getId());
 		});
-		add_action(sprintf('jigoshop\order\after\%s', Order\Status::PROCESSING), function($id){
-			do_action('order_status_processing', $id);
+		add_action(sprintf('jigoshop\order\after\%s', Order\Status::PROCESSING), function($order){
+			/** @var $order Order */
+			do_action('order_status_processing', $order->getId());
 		});
-		add_action(sprintf('jigoshop\order\after\%s', Order\Status::COMPLETED), function($id){
-			do_action('order_status_completed', $id);
+		add_action(sprintf('jigoshop\order\after\%s', Order\Status::COMPLETED), function($order){
+			/** @var $order Order */
+			do_action('order_status_completed', $order->getId());
 		});
-		add_action(sprintf('jigoshop\order\after\%s', Order\Status::CANCELLED), function($id){
-			do_action('order_status_cancelled', $id);
+		add_action(sprintf('jigoshop\order\after\%s', Order\Status::CANCELLED), function($order){
+			/** @var $order Order */
+			do_action('order_status_cancelled', $order->getId());
 		});
-		add_action(sprintf('jigoshop\order\after\%s', Order\Status::REFUNDED), function($id){
-			do_action('order_status_refunded', $id);
+		add_action(sprintf('jigoshop\order\after\%s', Order\Status::REFUNDED), function($order){
+			/** @var $order Order */
+			do_action('order_status_refunded', $order->getId());
 		});
 		add_action('jigoshop\template\account\orders\single\before_totals', function($order){
 			/** @var $order Order */
@@ -214,7 +220,10 @@ class Integration
 		// Checkout support
 		add_action('jigoshop\template\shop\checkout\before_total', function(){
 			do_action('jigoshop_after_review_order_items');
-		});
+		}, 10, 0);
+		add_action('jigoshop\template\checkout\after', function(){
+			do_action('jigoshop_review_order_after_submit');
+		}, 10, 0);
 	}
 
 	public static function initializeGateways()

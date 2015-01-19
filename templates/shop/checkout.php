@@ -197,6 +197,7 @@ use Jigoshop\Helper\Tax;
 		)); ?>
 	<?php endif; ?>
 	<a class="btn btn-default" href="<?php echo $cartUrl; ?>"><?php _e('Back to cart', 'jigoshop'); ?></a>
-	<button class="btn btn-success pull-right clearfix" name="action" value="purchase" type="submit"><?php _e('Purchase', 'jigoshop'); ?></button>
+	<button class="btn btn-success pull-right clearfix" name="action" value="purchase" type="submit"><?php _e('Purchase and pay', 'jigoshop'); ?></button>
+	<?php do_action('jigoshop\template\checkout\after', $cart); ?>
 </form>
 
