@@ -4,7 +4,6 @@ namespace Jigoshop\Payment;
 
 use Jigoshop\Api\Processable;
 use Jigoshop\Core;
-use Jigoshop\Core\ContainerAware;
 use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
 use Jigoshop\Entity\Customer\CompanyAddress;
@@ -19,7 +18,7 @@ use Monolog\Registry;
 use Symfony\Component\DependencyInjection\Container;
 use WPAL\Wordpress;
 
-class PayPal implements Method, Processable, ContainerAware
+class PayPal implements Method, Processable
 {
 	const ID = 'paypal';
 	const LIVE_URL = 'https://www.paypal.com/webscr';
@@ -39,23 +38,14 @@ class PayPal implements Method, Processable, ContainerAware
 	/** @var Container */
 	private $di;
 
-	public function __construct(Wordpress $wp, Options $options, Messages $messages)
+	public function __construct(Wordpress $wp, \JigoshopContainer $di, Options $options, Messages $messages)
 	{
 		$this->wp = $wp;
+		$this->di = $di;
 		$this->options = $options;
 		$this->messages = $messages;
 		$this->settings = $options->get('payment.'.self::ID);
 		$this->decimals = min($options->get('general.currency_decimals'), (in_array($options->get('general.currency'), self::$noDecimalCurrencies) ? 0 : 2));
-	}
-
-	/**
-	 * Sets container for every container aware service.
-	 *
-	 * @param Container $container
-	 */
-	public function setContainer(Container $container)
-	{
-		$this->di = $container;
 	}
 
 	/**

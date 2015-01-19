@@ -32,10 +32,11 @@ services:
     class: Jigoshop\Service\CartService
     arguments:
       - '@wpal'
+      - '@service_container'
       - '@jigoshop.options'
       - '@jigoshop.service.customer'
-    tags:
-      - { name: jigoshop.container_aware }
+    calls:
+      - ['init']
   jigoshop.service.email:
     class: Jigoshop\Service\EmailService
     arguments:

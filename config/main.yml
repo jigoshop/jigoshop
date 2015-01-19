@@ -100,8 +100,7 @@ services:
     class: Jigoshop\Api
     arguments:
       - '@wpal'
-    tags:
-      - { name: jigoshop.container_aware }
+      - '@service_container'
   jigoshop.messages:
     class: Jigoshop\Core\Messages
     arguments:

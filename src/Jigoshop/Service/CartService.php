@@ -9,7 +9,7 @@ use Jigoshop\Entity\Order;
 use Symfony\Component\DependencyInjection\Container;
 use WPAL\Wordpress;
 
-class CartService implements CartServiceInterface, ContainerAware
+class CartService implements CartServiceInterface
 {
 	const CART = 'jigoshop_cart';
 	const CART_ID = 'jigoshop_cart_id';
@@ -25,9 +25,10 @@ class CartService implements CartServiceInterface, ContainerAware
 
 	private $carts = array();
 
-	public function __construct(Wordpress $wp, Options $options, CustomerServiceInterface $customerService)
+	public function __construct(Wordpress $wp, \JigoshopContainer $di, Options $options, CustomerServiceInterface $customerService)
 	{
 		$this->wp = $wp;
+		$this->di = $di;
 		$this->customerService = $customerService;
 
 		if (!isset($_SESSION[self::CART])) {
@@ -35,7 +36,6 @@ class CartService implements CartServiceInterface, ContainerAware
 		}
 
 		$this->currentUserCartId = $this->generateCartId();
-		$this->wp->doAction('jigoshop\service\cart');
 	}
 
 	private function generateCartId()
@@ -60,14 +60,9 @@ class CartService implements CartServiceInterface, ContainerAware
 		return $id;
 	}
 
-	/**
-	 * Sets container for every container aware service.
-	 *
-	 * @param Container $container
-	 */
-	public function setContainer(Container $container)
+	public function init()
 	{
-		$this->di = $container;
+		$this->wp->doAction('jigoshop\service\cart');
 	}
 
 	/**

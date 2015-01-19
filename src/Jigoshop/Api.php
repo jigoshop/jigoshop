@@ -2,11 +2,9 @@
 
 namespace Jigoshop;
 
-use Jigoshop\Core\ContainerAware;
-use Symfony\Component\DependencyInjection\Container;
 use WPAL\Wordpress;
 
-class Api implements ContainerAware
+class Api
 {
 	const API_ENDPOINT = 'jigoshop_api';
 
@@ -15,9 +13,10 @@ class Api implements ContainerAware
 	/** @var \JigoshopContainer */
 	private $di;
 
-	public function __construct(Wordpress $wp)
+	public function __construct(Wordpress $wp, \JigoshopContainer $di)
 	{
 		$this->wp = $wp;
+		$this->di = $di;
 	}
 
 	public function run()
@@ -70,15 +69,5 @@ class Api implements ContainerAware
 
 			exit;
 		}
-	}
-
-	/**
-	 * Sets container for every container aware service.
-	 *
-	 * @param Container $container
-	 */
-	public function setContainer(Container $container)
-	{
-		$this->di = $container;
 	}
 }

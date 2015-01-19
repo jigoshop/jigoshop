@@ -57,7 +57,6 @@ class JigoshopInit
 			$builder->setDefinition('di', $diDefinition);
 			$builder->addCompilerPass(new Jigoshop\Core\Types\CompilerPass());
 			$builder->addCompilerPass(new Jigoshop\Core\Installer\CompilerPass());
-			$builder->addCompilerPass(new Jigoshop\Core\ContainerAware\CompilerPass());
 			$builder->addCompilerPass(new Jigoshop\Payment\CompilerPass());
 			$builder->addCompilerPass(new Jigoshop\Shipping\CompilerPass());
 			$builder->addCompilerPass(new Jigoshop\Admin\CompilerPass());
@@ -186,7 +185,7 @@ class JigoshopInit
 		$this->container->get('jigoshop.types');
 		$this->container->get('jigoshop.roles');
 		// Initialize Cron
-		$this->container->get('jigoshop.cron');
+//		$this->container->get('jigoshop.cron');
 
 		if (is_admin()) {
 			/** @var \Jigoshop\Admin\PageResolver $resolver */

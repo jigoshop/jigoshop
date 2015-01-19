@@ -21,9 +21,9 @@ services:
     class: Jigoshop\Payment\PayPal
     arguments:
       - '@wpal'
+      - '@service_container'
       - '@jigoshop.options'
       - '@jigoshop.messages'
       - '@jigoshop.service.customer'
     tags:
       - { name: jigoshop.payment.method }
-      - { name: jigoshop.container_aware }

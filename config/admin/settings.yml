@@ -53,8 +53,8 @@ services:
     class: Jigoshop\Admin\Settings\AdvancedTab
     arguments:
       - '@wpal'
+      - '@service_container'
       - '@jigoshop.options'
       - '@jigoshop.messages'
     tags:
       - { name: jigoshop.admin.settings.tab }
-      - { name: jigoshop.container_aware }

@@ -2,12 +2,10 @@
 
 namespace Jigoshop\Admin\Settings;
 
-use Jigoshop\Core\ContainerAware;
 use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
 use Jigoshop\Frontend\Pages;
 use Jigoshop\Helper\Render;
-use Symfony\Component\DependencyInjection\Container;
 use WPAL\Wordpress;
 
 /**
@@ -15,7 +13,7 @@ use WPAL\Wordpress;
  *
  * @package Jigoshop\Admin\Settings
  */
-class AdvancedTab implements TabInterface, ContainerAware
+class AdvancedTab implements TabInterface
 {
 	const SLUG = 'advanced';
 
@@ -32,9 +30,10 @@ class AdvancedTab implements TabInterface, ContainerAware
 	/** @var \JigoshopContainer */
 	private $di;
 
-	public function __construct(Wordpress $wp, Options $options, Messages $messages)
+	public function __construct(Wordpress $wp, \JigoshopContainer $di, Options $options, Messages $messages)
 	{
 		$this->wp = $wp;
+		$this->di = $di;
 		$this->options = $options;
 		$this->settings = $options->get(self::SLUG);
 		$this->messages = $messages;
@@ -252,7 +251,6 @@ class AdvancedTab implements TabInterface, ContainerAware
 			unset($settings['install_emails']);
 			$this->di->get('jigoshop.installer')->installEmails();
 			$this->messages->addNotice(__('Emails created.', 'jigoshop'));
-			return;
 		}
 
 		$settings['automatic_complete'] = $settings['automatic_complete'] == 'on';
@@ -312,15 +310,5 @@ class AdvancedTab implements TabInterface, ContainerAware
 		}
 
 		return $settings;
-	}
-
-	/**
-	 * Sets container for every container aware service.
-	 *
-	 * @param Container $container
-	 */
-	public function setContainer(Container $container)
-	{
-		$this->di = $container;
 	}
 }
