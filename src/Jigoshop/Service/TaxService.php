@@ -131,100 +131,6 @@ class TaxService implements TaxServiceInterface
 	}
 
 	/**
-	 * @param float $price Price to tax.
-	 * @param array $taxClasses List of applied tax classes.
-	 * @param array $definitions List of tax definitions to use.
-	 * @return float Overall tax value.
-	 */
-	public function calculate($price, array $taxClasses, array $definitions)
-	{
-		return array_sum($this->get($price, $taxClasses, $definitions));
-	}
-
-	/**
-	 * @param float $price Price to tax.
-	 * @param array $taxClasses List of applied tax classes.
-	 * @param array $definitions List of tax definitions to use.
-	 * @return array List of tax values per tax class.
-	 */
-	public function get($price, array $taxClasses, array $definitions)
-	{
-		$tax = array();
-		$cost = $price;
-		$standard = array();
-		$compound = array();
-
-		foreach ($taxClasses as $class) {
-			if (!isset($definitions[$class])) {
-				Registry::getInstance(JIGOSHOP_LOGGER)->addInfo(sprintf('No tax class: %s', $class));
-				$tax[$class] = 0.0;
-				continue;
-			}
-
-			$standard[$class] = $definitions[$class];
-
-			if (isset($definitions['__compound__'.$class])) {
-				$compound[$class] = $definitions['__compound__'.$class];
-			}
-		}
-
-		foreach ($standard as $class => $definition) {
-			// TODO: Support for prices included in tax
-			$tax[$class] = $definition['rate'] * $cost / 100;
-		}
-
-		$cost += array_sum($tax);
-		foreach ($compound as $class => $definition) {
-			// TODO: Support for prices included in tax
-			$tax['__compound__'.$class] += $definition['rate'] * $cost / 100;
-		}
-
-		return array_filter($tax);
-	}
-
-	/**
-	 * @param $item Order\Item Order item to calculate tax for.
-	 * @param $order OrderInterface The order.
-	 * @return float Overall tax value.
-	 */
-	public function calculateForOrder(Order\Item $item, OrderInterface $order)
-	{
-		return array_sum($this->getForOrder($item, $order));
-	}
-
-	/**
-	 * @param $item Item Order item to calculate tax for.
-	 * @param $order OrderInterface The order.
-	 * @return array List of tax values per tax class.
-	 */
-	public function getForOrder(Item $item, OrderInterface $order)
-	{
-		return $this->get($item->getCost(), $item->getTaxClasses(), $order->getTaxDefinitions());
-	}
-
-	/**
-	 * @param Method $method Method to calculate tax for.
-	 * @param OrderInterface $order Order with the shipping method.
-	 * @param $price float Price calculated for current cart.
-	 * @return float Overall tax value.
-	 */
-	public function calculateForShipping(Method $method, OrderInterface $order, $price)
-	{
-		return array_sum($this->getForShipping($method, $order, $price));
-	}
-
-	/**
-	 * @param Method $method Method to calculate tax for.
-	 * @param OrderInterface $order Order with the shipping method.
-	 * @param $price float Price calculated for current cart.
-	 * @return array List of tax values per tax class.
-	 */
-	public function getForShipping(Method $method, OrderInterface $order, $price)
-	{
-		return $this->get($price, $method->getTaxClasses(), $order->getTaxDefinitions());
-	}
-
-	/**
 	 * @param $address Customer\Address The order.
 	 * @return array List of tax values per tax class.
 	 */
@@ -299,66 +205,6 @@ class TaxService implements TaxServiceInterface
 	}
 
 	/**
-	 * @return array List of available tax classes.
-	 */
-	public function getClasses()
-	{
-		return $this->taxClasses;
-	}
-
-	/**
-	 * @param $taxClass string Tax class to get label for.
-	 * @param OrderInterface $order Order to calculate taxes for.
-	 * @return string Tax class label
-	 * @throws Exception When tax class is not found.
-	 */
-	public function getLabel($taxClass, $order)
-	{
-		$definitions = $order->getTaxDefinitions();
-
-		if (!isset($definitions[$taxClass])) {
-			$definitions[$taxClass] = $this->getDefinition($taxClass, $order->getCustomer()->getTaxAddress());
-		}
-
-		if (!isset($definitions[$taxClass])) {
-			if (WP_DEBUG) {
-				throw new Exception(sprintf(__('No tax class: %s', 'jigoshop'), $taxClass));
-			}
-
-			return $taxClass;
-		}
-
-		$label = !empty($definitions[$taxClass]['label']) ? $definitions[$taxClass]['label'] : $taxClass;
-
-		return sprintf('%s (%s%%)', $label, $definitions[$taxClass]['rate']);
-	}
-
-	/**
-	 * @param $taxClass string Tax class to get label for.
-	 * @param OrderInterface $order Order to calculate taxes for.
-	 * @return string Tax class rate
-	 * @throws Exception When tax class is not found.
-	 */
-	public function getRate($taxClass, $order)
-	{
-		if (!in_array($taxClass, $this->taxClasses)) {
-			if (WP_DEBUG) {
-				throw new Exception(sprintf(__('No tax class: %s', 'jigoshop'), $taxClass));
-			}
-
-			return $taxClass;
-		}
-
-		$definitions = $order->getTaxDefinitions();
-
-		if (!isset($definitions[$taxClass])) {
-			$definitions[$taxClass] = $this->getDefinition($taxClass, $order->getCustomer()->getTaxAddress());
-		}
-
-		return $definitions[$taxClass]['rate'];
-	}
-
-	/**
 	 * Fetches and returns properly formatted list of tax rules.
 	 *
 	 * @return array List of rules.
@@ -421,6 +267,160 @@ class TaxService implements TaxServiceInterface
 	}
 
 	/**
+	 * @param $item Order\Item Order item to calculate tax for.
+	 * @param $order OrderInterface The order.
+	 * @return float Overall tax value.
+	 */
+	public function calculateForOrder(Order\Item $item, OrderInterface $order)
+	{
+		return array_sum($this->getForOrder($item, $order));
+	}
+
+	/**
+	 * @param $item Item Order item to calculate tax for.
+	 * @param $order OrderInterface The order.
+	 * @return array List of tax values per tax class.
+	 */
+	public function getForOrder(Item $item, OrderInterface $order)
+	{
+		return $this->get($item->getCost(), $item->getTaxClasses(), $order->getTaxDefinitions());
+	}
+
+	/**
+	 * @param float $price Price to tax.
+	 * @param array $taxClasses List of applied tax classes.
+	 * @param array $definitions List of tax definitions to use.
+	 * @return array List of tax values per tax class.
+	 */
+	public function get($price, array $taxClasses, array $definitions)
+	{
+		$tax = array();
+		$cost = $price;
+		$standard = array();
+		$compound = array();
+
+		foreach ($taxClasses as $class) {
+			if (!isset($definitions[$class])) {
+				Registry::getInstance(JIGOSHOP_LOGGER)->addInfo(sprintf('No tax class: %s', $class));
+				$tax[$class] = 0.0;
+				continue;
+			}
+
+			$standard[$class] = $definitions[$class];
+
+			if (isset($definitions['__compound__'.$class])) {
+				$compound[$class] = $definitions['__compound__'.$class];
+			}
+		}
+
+		foreach ($standard as $class => $definition) {
+			// TODO: Support for prices included in tax
+			$tax[$class] = $definition['rate'] * $cost / 100;
+		}
+
+		$cost += array_sum($tax);
+		foreach ($compound as $class => $definition) {
+			// TODO: Support for prices included in tax
+			$tax['__compound__'.$class] += $definition['rate'] * $cost / 100;
+		}
+
+		return array_filter($tax);
+	}
+
+	/**
+	 * @param Method $method Method to calculate tax for.
+	 * @param OrderInterface $order Order with the shipping method.
+	 * @param $price float Price calculated for current cart.
+	 * @return float Overall tax value.
+	 */
+	public function calculateForShipping(Method $method, OrderInterface $order, $price)
+	{
+		return array_sum($this->getForShipping($method, $order, $price));
+	}
+
+	/**
+	 * @param Method $method Method to calculate tax for.
+	 * @param OrderInterface $order Order with the shipping method.
+	 * @param $price float Price calculated for current cart.
+	 * @return array List of tax values per tax class.
+	 */
+	public function getForShipping(Method $method, OrderInterface $order, $price)
+	{
+		return $this->get($price, $method->getTaxClasses(), $order->getTaxDefinitions());
+	}
+
+	/**
+	 * @param float $price Price to tax.
+	 * @param array $taxClasses List of applied tax classes.
+	 * @param array $definitions List of tax definitions to use.
+	 * @return float Overall tax value.
+	 */
+	public function calculate($price, array $taxClasses, array $definitions)
+	{
+		return array_sum($this->get($price, $taxClasses, $definitions));
+	}
+
+	/**
+	 * @return array List of available tax classes.
+	 */
+	public function getClasses()
+	{
+		return $this->taxClasses;
+	}
+
+	/**
+	 * @param $taxClass string Tax class to get label for.
+	 * @param OrderInterface $order Order to calculate taxes for.
+	 * @return string Tax class label
+	 * @throws Exception When tax class is not found.
+	 */
+	public function getLabel($taxClass, $order)
+	{
+		$definitions = $order->getTaxDefinitions();
+
+		if (!isset($definitions[$taxClass])) {
+			$definitions[$taxClass] = $this->getDefinition($taxClass, $order->getCustomer()->getTaxAddress());
+		}
+
+		if (!isset($definitions[$taxClass])) {
+			if (WP_DEBUG) {
+				throw new Exception(sprintf(__('No tax class: %s', 'jigoshop'), $taxClass));
+			}
+
+			return $taxClass;
+		}
+
+		$label = !empty($definitions[$taxClass]['label']) ? $definitions[$taxClass]['label'] : $taxClass;
+
+		return isset($definitions[$taxClass]['rate']) ? sprintf('%s (%s%%)', $label, $definitions[$taxClass]['rate']) : '';
+	}
+
+	/**
+	 * @param $taxClass string Tax class to get label for.
+	 * @param OrderInterface $order Order to calculate taxes for.
+	 * @return string Tax class rate
+	 * @throws Exception When tax class is not found.
+	 */
+	public function getRate($taxClass, $order)
+	{
+		if (!in_array($taxClass, $this->taxClasses)) {
+			if (WP_DEBUG) {
+				throw new Exception(sprintf(__('No tax class: %s', 'jigoshop'), $taxClass));
+			}
+
+			return $taxClass;
+		}
+
+		$definitions = $order->getTaxDefinitions();
+
+		if (!isset($definitions[$taxClass])) {
+			$definitions[$taxClass] = $this->getDefinition($taxClass, $order->getCustomer()->getTaxAddress());
+		}
+
+		return $definitions[$taxClass]['rate'];
+	}
+
+	/**
 	 * @param $rule array Rule to save.
 	 * @return array Saved rule.
 	 */
@@ -464,46 +464,6 @@ class TaxService implements TaxServiceInterface
 		return $rule;
 	}
 
-	/**
-	 * @param $ids array IDs to preserve.
-	 */
-	public function removeAllExcept($ids)
-	{
-		$wpdb = $this->wp->getWPDB();
-		$ids = join(',', array_filter(array_map(function($item){ return (int)$item; }, $ids)));
-		// Support for removing all items
-		if (empty($ids)) {
-			$ids = '0';
-		}
-		$query = "DELETE FROM {$wpdb->prefix}jigoshop_tax WHERE id NOT IN ({$ids})";
-		$wpdb->query($query);
-	}
-
-	private function _addPostcodes($rule, $state, $postcodes)
-	{
-		$wpdb = $this->wp->getWPDB();
-		$ids = array();
-		$query = $wpdb->prepare("
-			SELECT postcode FROM {$wpdb->prefix}jigoshop_tax_location
-			WHERE tax_id = %d AND country = %s AND state = %s
-		", array($rule['id'], $rule['country'], $state));
-		$existing = $wpdb->get_col($query);
-
-		foreach ($postcodes as $postcode) {
-			if (!in_array($postcode, $existing)) {
-				$wpdb->insert($wpdb->prefix.'jigoshop_tax_location', array(
-					'tax_id' => $rule['id'],
-					'country' => $rule['country'],
-					'state' => $state,
-					'postcode' => $postcode,
-				));
-				$ids[] = $wpdb->insert_id;
-			}
-		}
-
-		return $ids;
-	}
-
 	private function _removeAllStatesExcept($rule, $states)
 	{
 		$wpdb = $this->wp->getWPDB();
@@ -537,6 +497,46 @@ class TaxService implements TaxServiceInterface
 			"DELETE FROM {$wpdb->prefix}jigoshop_tax_location WHERE postcode NOT IN ({$values}) AND state = %s AND tax_id = %d",
 			array($state, $rule['id'])
 		);
+		$wpdb->query($query);
+	}
+
+	private function _addPostcodes($rule, $state, $postcodes)
+	{
+		$wpdb = $this->wp->getWPDB();
+		$ids = array();
+		$query = $wpdb->prepare("
+			SELECT postcode FROM {$wpdb->prefix}jigoshop_tax_location
+			WHERE tax_id = %d AND country = %s AND state = %s
+		", array($rule['id'], $rule['country'], $state));
+		$existing = $wpdb->get_col($query);
+
+		foreach ($postcodes as $postcode) {
+			if (!in_array($postcode, $existing)) {
+				$wpdb->insert($wpdb->prefix.'jigoshop_tax_location', array(
+					'tax_id' => $rule['id'],
+					'country' => $rule['country'],
+					'state' => $state,
+					'postcode' => $postcode,
+				));
+				$ids[] = $wpdb->insert_id;
+			}
+		}
+
+		return $ids;
+	}
+
+	/**
+	 * @param $ids array IDs to preserve.
+	 */
+	public function removeAllExcept($ids)
+	{
+		$wpdb = $this->wp->getWPDB();
+		$ids = join(',', array_filter(array_map(function($item){ return (int)$item; }, $ids)));
+		// Support for removing all items
+		if (empty($ids)) {
+			$ids = '0';
+		}
+		$query = "DELETE FROM {$wpdb->prefix}jigoshop_tax WHERE id NOT IN ({$ids})";
 		$wpdb->query($query);
 	}
 }

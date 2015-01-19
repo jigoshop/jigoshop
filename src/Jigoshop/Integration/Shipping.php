@@ -54,19 +54,19 @@ class Shipping implements MultipleMethod
 	}
 
 	/**
-	 * @return \jigoshop_shipping_method
-	 */
-	public function getShipping()
-	{
-		return $this->shipping;
-	}
-
-	/**
 	 * @return string ID of shipping method.
 	 */
 	public function getId()
 	{
 		return $this->shipping->id;
+	}
+
+	/**
+	 * @return \jigoshop_shipping_method
+	 */
+	public function getShipping()
+	{
+		return $this->shipping;
 	}
 
 	/**
@@ -177,7 +177,7 @@ class Shipping implements MultipleMethod
 			$this->rates = array();
 			$rates = $this->shipping->__get_rates();
 
-			if ($rates === null) {
+			if (empty($rates)) {
 				$this->shipping->calculate_shipping();
 				$rates = $this->shipping->__get_rates();
 			}
