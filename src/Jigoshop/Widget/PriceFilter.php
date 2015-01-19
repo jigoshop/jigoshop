@@ -39,7 +39,7 @@ class PriceFilter extends \WP_Widget
 		add_filter('jigoshop\service\product\find_by_query', array($this, 'query'));
 
 		// Add own hidden fields to filter
-//		add_filter('jigoshop_get_hidden_fields', array($this, 'hiddenFields'));
+		add_filter('jigoshop\get_fields', array($this, 'hiddenFields'));
 	}
 
 	public static function setStyles($styles)
@@ -108,15 +108,12 @@ class PriceFilter extends \WP_Widget
 			$this->id_base
 		);
 
-//		// Remember current filters/search
-//		$fields = array();
-//
-//		// Support for other plugins which uses GET parameters
-//		$fields = apply_filters('jigoshop_get_hidden_fields', $fields);
+		$fields = apply_filters('jigoshop\get_fields', array());
 
 		Render::output('widget/price_filter/widget', array_merge($args, array(
 			'title' => $title,
 			'max' => $this->max,
+			'fields' => $fields,
 		)));
 	}
 

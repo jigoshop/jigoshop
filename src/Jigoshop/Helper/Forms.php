@@ -62,15 +62,45 @@ class Forms
 	}
 
 	/**
-	 * Outputs checkbox field.
+	 * Outputs field based on specified type.
+	 *
+	 * @param $type string Field type.
+	 * @param $field array Field definition.
+	 */
+	public static function field($type, $field)
+	{
+		switch ($type) {
+			case 'text':
+				self::text($field);
+				break;
+			case 'select':
+				self::select($field);
+				break;
+			case 'checkbox':
+				self::checkbox($field);
+				break;
+			case 'textarea':
+				self::textarea($field);
+				break;
+			case 'hidden':
+				self::hidden($field);
+				break;
+			case 'constant':
+				self::constant($field);
+				break;
+		}
+	}
+
+	/**
+	 * Outputs simple text field.
 	 *
 	 * Available parameters (with defaults):
 	 *   * id (null) - HTML id for the tag
 	 *   * name (null) - HTML name for the tag
+	 *   * type ('text') - HTML type for the tag
 	 *   * label (null) - label for the tag
-	 *   * value ('on') - HTML value of the tag
-	 *   * multiple (false) - whether there are many checkboxes with the same name
-	 *   * checked (false) - whether checkbox is checked by default
+	 *   * value (false) - HTML value of the tag
+	 *   * placeholder ('') - placeholder of the tag
 	 *   * disabled (false) - whether checkbox is disabled
 	 *   * classes (array()) - list of HTML classes for the tag
 	 *   * description (false) - description of the tag
@@ -82,17 +112,16 @@ class Forms
 	 *
 	 * @param $field array Field parameters.
 	 * @throws \Jigoshop\Exception
-	 *
 	 */
-	public static function checkbox($field)
+	public static function text($field)
 	{
 		$defaults = array(
 			'id' => null,
 			'name' => null,
+			'type' => 'text',
 			'label' => null,
-			'value' => 'on',
-			'multiple' => false,
-			'checked' => false,
+			'value' => false,
+			'placeholder' => '',
 			'disabled' => false,
 			'classes' => array(),
 			'description' => false,
@@ -104,7 +133,7 @@ class Forms
 
 		if (empty($field['name'])) {
 			if (WP_DEBUG) {
-				throw new Exception('Field "%s" must have a name!', serialize($field));
+				throw new Exception(sprintf('Field "%s" must have a name!', serialize($field)));
 			}
 
 			Registry::getInstance(JIGOSHOP_LOGGER)->addCritical('Field must have a name!', array('field' => $field));
@@ -115,11 +144,18 @@ class Forms
 			$field['id'] = self::prepareIdFromName($field['name']);
 		}
 
-		if ($field['multiple']) {
-			$field['name'] .= '[]';
-		}
+		Render::output(static::$textTemplate, $field);
+	}
 
-		Render::output(static::$checkboxTemplate, $field);
+	/**
+	 * Prepares field name to be used as field ID.
+	 *
+	 * @param $name string Name to prepare.
+	 * @return string Prepared ID.
+	 */
+	public static function prepareIdFromName($name)
+	{
+		return str_replace(array('[', ']'), array('_', ''), $name);
 	}
 
 	/**
@@ -204,15 +240,15 @@ class Forms
 	}
 
 	/**
-	 * Outputs simple text field.
+	 * Outputs checkbox field.
 	 *
 	 * Available parameters (with defaults):
 	 *   * id (null) - HTML id for the tag
 	 *   * name (null) - HTML name for the tag
-	 *   * type ('text') - HTML type for the tag
 	 *   * label (null) - label for the tag
-	 *   * value (false) - HTML value of the tag
-	 *   * placeholder ('') - placeholder of the tag
+	 *   * value ('on') - HTML value of the tag
+	 *   * multiple (false) - whether there are many checkboxes with the same name
+	 *   * checked (false) - whether checkbox is checked by default
 	 *   * disabled (false) - whether checkbox is disabled
 	 *   * classes (array()) - list of HTML classes for the tag
 	 *   * description (false) - description of the tag
@@ -224,16 +260,17 @@ class Forms
 	 *
 	 * @param $field array Field parameters.
 	 * @throws \Jigoshop\Exception
+	 *
 	 */
-	public static function text($field)
+	public static function checkbox($field)
 	{
 		$defaults = array(
 			'id' => null,
 			'name' => null,
-			'type' => 'text',
 			'label' => null,
-			'value' => false,
-			'placeholder' => '',
+			'value' => 'on',
+			'multiple' => false,
+			'checked' => false,
 			'disabled' => false,
 			'classes' => array(),
 			'description' => false,
@@ -245,7 +282,7 @@ class Forms
 
 		if (empty($field['name'])) {
 			if (WP_DEBUG) {
-				throw new Exception(sprintf('Field "%s" must have a name!', serialize($field)));
+				throw new Exception('Field "%s" must have a name!', serialize($field));
 			}
 
 			Registry::getInstance(JIGOSHOP_LOGGER)->addCritical('Field must have a name!', array('field' => $field));
@@ -256,7 +293,11 @@ class Forms
 			$field['id'] = self::prepareIdFromName($field['name']);
 		}
 
-		Render::output(static::$textTemplate, $field);
+		if ($field['multiple']) {
+			$field['name'] .= '[]';
+		}
+
+		Render::output(static::$checkboxTemplate, $field);
 	}
 
 	/**
@@ -353,7 +394,6 @@ class Forms
 		Render::output(static::$hiddenTemplate, $field);
 	}
 
-
 	/**
 	 * Outputs simple static (constant) field.
 	 *
@@ -406,44 +446,18 @@ class Forms
 		Render::output(static::$constantTemplate, $field);
 	}
 
-	/**
-	 * Outputs field based on specified type.
-	 *
-	 * @param $type string Field type.
-	 * @param $field array Field definition.
-	 */
-	public static function field($type, $field)
+	public static function printHiddenFields($fields, $exceptions = array())
 	{
-		switch ($type) {
-			case 'text':
-				self::text($field);
-				break;
-			case 'select':
-				self::select($field);
-				break;
-			case 'checkbox':
-				self::checkbox($field);
-				break;
-			case 'textarea':
-				self::textarea($field);
-				break;
-			case 'hidden':
-				self::hidden($field);
-				break;
-			case 'constant':
-				self::constant($field);
-				break;
+		foreach ($fields as $key => $value) {
+			if (!in_array($key, $exceptions)) {
+				if (is_array($value)) {
+					foreach ($value as $subkey => $subvalue) {
+						echo '<input type="hidden" name="'.$key.'['.$subkey.']" value="'.$value.'" />';
+					}
+				} else {
+					echo '<input type="hidden" name="'.$key.'" value="'.$value.'" />';
+				}
+			}
 		}
-	}
-
-	/**
-	 * Prepares field name to be used as field ID.
-	 *
-	 * @param $name string Name to prepare.
-	 * @return string Prepared ID.
-	 */
-	public static function prepareIdFromName($name)
-	{
-		return str_replace(array('[', ']'), array('_', ''), $name);
 	}
 }

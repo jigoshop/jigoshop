@@ -47,6 +47,14 @@ class Core
 		$wp = $this->wp;
 		$wp->addFilter('template_include', array($this->template, 'process'));
 		$wp->addFilter('template_redirect', array($this->template, 'redirect'));
+		$wp->addFilter('jigoshop\get_fields', function($fields){
+			// Post type
+			if (isset($_GET['post_type'])) {
+				$fields['post_type'] = $_GET['post_type'];
+			}
+
+			return $fields;
+		});
 		$wp->addAction('jigoshop\shop\content\before', array($this, 'displayCustomMessage'));
 		$wp->addAction('wp_head', array($this, 'googleAnalyticsTracking'), 9990);
 		// Action for limiting WordPress feed from using order notes.

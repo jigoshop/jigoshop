@@ -5,6 +5,7 @@
  * @var $title string
  * @var $after_title string
  * @var $after_widget string
+ * @var $fields array
  * @var $max float maximum price value
  */
 
@@ -23,14 +24,7 @@ if ($title) {
 			<?php _e('Price: ', 'jigoshop'); ?><span></span>
 			<input type="hidden" id="max_price" name="max_price" value="<?php echo esc_attr($max); ?>" />
 			<input type="hidden" id="min_price" name="min_price" value="0" />
-			<?php
-			// TODO: Support for other GET parameters
-//			foreach ($fields as $key => $value) {
-//			if (!in_array($key, array('max_price', 'min_price'))) {
-//			echo '<input type="hidden" name="'.$key.'" value="'.$value.'" />';
-//			}
-//			}
-			?>
+			<?php \Jigoshop\Helper\Forms::printHiddenFields($fields, array('max_price', 'min_price')); ?>
 		</div>
 		<div class="clear"></div>
 	</div>

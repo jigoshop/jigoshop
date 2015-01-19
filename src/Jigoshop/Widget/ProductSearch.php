@@ -19,17 +19,13 @@ class ProductSearch extends \WP_Widget
 		parent::__construct(self::ID, __('Jigoshop: Product Search', 'jigoshop'), $options);
 
 		// Add own hidden fields to filter
-//		add_filter('jigoshop_get_hidden_fields', array($this, 'hiddenFields'));
+		add_filter('jigoshop\get_fields', array($this, 'hiddenFields'));
 	}
 
 	public function hiddenFields($fields)
 	{
 		if (isset($_GET['s'])) {
 			$fields['s'] = $_GET['s'];
-		}
-
-		if (isset($_GET['post_type'])) {
-			$fields['post_type'] = $_GET['post_type'];
 		}
 
 		return $fields;
@@ -55,8 +51,10 @@ class ProductSearch extends \WP_Widget
 			$this->id_base
 		);
 
+		$fields = apply_filters('jigoshop\get_fields', array());
 		Render::output('widget/product_search/widget', array_merge($args, array(
 			'title' => $title,
+			'fields' => $fields,
 		)));
 	}
 
