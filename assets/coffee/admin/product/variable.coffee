@@ -16,6 +16,9 @@ class AdminProductVariable
           jQuery('span', $item).toggleClass('glyphicon-collapse-down').toggleClass('glyphicon-collapse-up')
       .on 'change', 'select.variation-attribute', @updateVariation
       .on 'change', '.list-group-item-text input.form-control, .list-group-item-text select.form-control', @updateVariation
+      .on 'click', '.set_variation_image', @setImage
+      .on 'click', '.remove_variation_image', @removeImage
+    jQuery('.set_variation_image').each @connectImage
 
   removeParameters: (event) ->
     $item = jQuery(event.target)
@@ -96,6 +99,56 @@ class AdminProductVariable
           addMessage('success', @params.i18n.variation_removed, 2000)
         else
           addMessage('danger', data.error, 6000)
+  connectImage: (index, element) =>
+    $element = jQuery(element)
+    $remove = $element.next('.remove_variation_image')
+    $thumbnail = jQuery('img', $element.parent())
+    $element.jigoshop_media(
+      field: false
+      bind: false
+      thumbnail: $thumbnail
+      callback: (attachment) =>
+        $remove.show()
+        jQuery.ajax
+          url: @params.ajax
+          type: 'post'
+          dataType: 'json'
+          data:
+            action: 'jigoshop.admin.product.set_variation_image'
+            product_id: $element.closest('.jigoshop').data('id')
+            variation_id: $element.closest('.variation').data('id')
+            image_id: attachment.id
+        .done (data) ->
+          if !data.success? or !data.success
+            addMessage('danger', data.error, 6000)
+      library:
+        type: 'image'
+    )
+  setImage: (event) ->
+    event.preventDefault()
+    jQuery(event.target).trigger('jigoshop_media')
+  removeImage: (event) =>
+    event.preventDefault()
+    $element = jQuery(event.target)
+    $thumbnail = jQuery('img', $element.parent())
+    jQuery.ajax
+      url: @params.ajax
+      type: 'post'
+      dataType: 'json'
+      data:
+        action: 'jigoshop.admin.product.set_variation_image'
+        product_id: $element.closest('.jigoshop').data('id')
+        variation_id: $element.closest('.variation').data('id')
+        image_id: -1
+    .done (data) ->
+      if data.success? and data.success
+        $thumbnail
+          .attr('src', data.url)
+          .attr('width', 150)
+          .attr('height', 150)
+        $element.hide()
+      else
+        addMessage('danger', data.error, 6000)
 
 jQuery ->
   new AdminProductVariable(jigoshop_admin_product_variable)

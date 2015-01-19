@@ -12,7 +12,7 @@ use Jigoshop\Helper\Product;
 		<?php echo $attribute->getLabel(); ?>
 		<button type="button" class="remove-attribute btn btn-default pull-right" title="<?php _e('Remove', 'jigoshop'); ?>"><span class="glyphicon glyphicon-remove"></span></button>
 	</h4>
-	<div class="list-group-item-text clearfix">
+	<div class="list-group-item-text row clearfix">
 		<div class="col-md-4 options">
 			<h5><?php _e('Options', 'jigoshop'); ?></h5>
 			<?php Forms::checkbox(array(

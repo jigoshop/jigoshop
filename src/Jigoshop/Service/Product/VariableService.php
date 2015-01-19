@@ -89,7 +89,7 @@ class VariableService implements VariableServiceInterface
 		if (empty($ids)) {
 			$ids = '0';
 		}
-		$query = $wpdb->prepare("DELETE FROM {$wpdb->prefix}jigoshop_product_variation WHERE id NOT IN ({$ids}) AND product_id = %d", array($productId));
+		$query = $wpdb->prepare("DELETE FROM {$wpdb->posts} WHERE ID NOT IN ({$ids}) AND post_parent = %d", array($productId));
 		$wpdb->query($query);
 	}
 

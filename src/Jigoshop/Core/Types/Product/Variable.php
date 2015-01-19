@@ -3,6 +3,7 @@
 namespace Jigoshop\Core\Types\Product;
 
 use Jigoshop\Admin\Helper\Forms;
+use Jigoshop\Core\Options;
 use Jigoshop\Entity\Order;
 use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\Product;
@@ -113,6 +114,7 @@ class Variable implements Type
 		$wp->addAction('wp_ajax_jigoshop.admin.product.add_variation', array($this, 'ajaxAddVariation'), 10, 0);
 		$wp->addAction('wp_ajax_jigoshop.admin.product.save_variation', array($this, 'ajaxSaveVariation'), 10, 0);
 		$wp->addAction('wp_ajax_jigoshop.admin.product.remove_variation', array($this, 'ajaxRemoveVariation'), 10, 0);
+		$wp->addAction('wp_ajax_jigoshop.admin.product.set_variation_image', array($this, 'ajaxSetImageVariation'), 10, 0);
 
 		$that = $this;
 		$wp->addAction('jigoshop\run', function() use ($that, $wp, $enabledTypes){
@@ -280,6 +282,7 @@ class Variable implements Type
 	public function addAdminAssets(Wordpress $wp, Styles $styles, Scripts $scripts)
 	{
 		$styles->add('jigoshop.admin.product.variable', JIGOSHOP_URL.'/assets/css/admin/product/variable.css');
+		$scripts->add('jigoshop.media', JIGOSHOP_URL.'/assets/js/media.js', array('jquery'));
 		$scripts->add('jigoshop.admin.product.variable', JIGOSHOP_URL.'/assets/js/admin/product/variable.js', array('jquery'));
 		$scripts->localize('jigoshop.admin.product.variable', 'jigoshop_admin_product_variable', array(
 			'ajax' => $wp->getAjaxUrl(),
@@ -366,6 +369,62 @@ class Variable implements Type
 					'attributes' => $product->getVariableAttributes(),
 					'allowedSubtypes' => $types,
 				)),
+			));
+		} catch(Exception $e) {
+			echo json_encode(array(
+				'success' => false,
+				'error' => $e->getMessage(),
+			));
+		}
+
+		exit;
+	}
+
+	public function ajaxSetImageVariation()
+	{
+		try {
+			if (!isset($_POST['product_id']) || empty($_POST['product_id'])) {
+				throw new Exception(__('Product was not specified.', 'jigoshop'));
+			}
+			if (!is_numeric($_POST['product_id'])) {
+				throw new Exception(__('Invalid product ID.', 'jigoshop'));
+			}
+			if (!isset($_POST['variation_id']) || empty($_POST['variation_id'])) {
+				throw new Exception(__('Variation was not specified.', 'jigoshop'));
+			}
+			if (!is_numeric($_POST['variation_id'])) {
+				throw new Exception(__('Invalid variation ID.', 'jigoshop'));
+			}
+
+			if (!isset($_POST['image_id']) || !is_numeric($_POST['image_id'])) {
+				throw new Exception(__('Image is not not specified.', 'jigoshop'));
+			}
+
+			$product = $this->productService->find((int)$_POST['product_id']);
+
+			if (!$product->getId()) {
+				throw new Exception(__('Product does not exists.', 'jigoshop'));
+			}
+
+			if (!($product instanceof Product\Variable)) {
+				throw new Exception(__('Product is not variable - unable to add variation.', 'jigoshop'));
+			}
+
+			if (!$product->hasVariation((int)$_POST['variation_id'])) {
+				throw new Exception(__('Variation does not exists.', 'jigoshop'));
+			}
+
+			$this->wp->setPostThumbnail($_POST['variation_id'], $_POST['image_id']);
+
+			if ($_POST['image_id'] > 0) {
+				$url = $this->wp->wpGetAttachmentImageSrc($_POST['image_id'], Options::IMAGE_SMALL);
+			} else {
+				$url = JIGOSHOP_URL.'/assets/images/placeholder.png';
+			}
+
+			echo json_encode(array(
+				'success' => true,
+				'url' => $url,
 			));
 		} catch(Exception $e) {
 			echo json_encode(array(
