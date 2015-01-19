@@ -23,6 +23,7 @@ use Jigoshop\Helper\Render;
 	<dt><?php _e('Status', 'jigoshop'); ?></dt>
 	<dd><?php echo Status::getName($order->getStatus()); ?></dd>
 </dl>
+<?php do_action('jigoshop\template\account\orders\single\before_customer', $order); ?>
 <div class="col-md-6">
 	<div class="panel panel-default">
 		<div class="panel-heading">
@@ -43,6 +44,7 @@ use Jigoshop\Helper\Render;
 		</div>
 	</div>
 </div>
+<?php do_action('jigoshop\template\account\orders\single\before_details', $order); ?>
 <h3><?php _e('Order details', 'jigoshop'); ?></h3>
 <table class="table table-hover">
 	<thead>
@@ -69,6 +71,7 @@ use Jigoshop\Helper\Render;
 		</tr>
 	</tfoot>
 </table>
+<?php do_action('jigoshop\template\account\orders\single\before_totals', $order); ?>
 <div id="cart-collaterals">
 	<div id="cart-totals" class="panel panel-primary pull-right">
 		<div class="panel-heading"><h2 class="panel-title"><?php _e('Order Totals', 'jigoshop'); ?></h2></div>

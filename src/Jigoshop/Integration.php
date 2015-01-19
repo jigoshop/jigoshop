@@ -5,6 +5,7 @@ namespace Jigoshop;
 use Jigoshop\Entity\Order;
 use Jigoshop\Entity\Product;
 use Jigoshop\Frontend\Pages;
+use Jigoshop\Payment\Method;
 use JigoshopContainer;
 use Monolog\Registry;
 
@@ -143,6 +144,7 @@ class Integration
 			return apply_filters('jigoshop_add_to_cart_validation', $value, $id, $quantity);
 		}, 10, 3);
 		add_filter('jigoshop\product\get_price', function($price, $product){
+			/** @var $product Product */
 			return apply_filters('jigoshop_product_get_price', $price, $product->getId());
 		}, 10, 2);
 		add_action('jigoshop\product\tabs\general', function(){
@@ -181,6 +183,10 @@ class Integration
 		add_action(sprintf('jigoshop\order\after\%s', Order\Status::REFUNDED), function($id){
 			do_action('order_status_refunded', $id);
 		});
+		add_action('jigoshop\template\account\orders\single\before_totals', function($order){
+			/** @var $order Order */
+			do_action('jigoshop_before_order_customer_details', $order->getId());
+		});
 
 		// Cart support
 		add_filter('jigoshop\template\shop\cart\product_title', function($value, $product){
@@ -215,10 +221,16 @@ class Integration
 	{
 		Registry::getInstance(JIGOSHOP_LOGGER)->addDebug('Initializing Jigoshop 1.x gateways');
 		$service = self::getPaymentService();
+		$methods = array_map(function($method){
+			/** @var $method Method */
+			return $method->getId();
+		}, $service->getAvailable());
 		$gateways = apply_filters('jigoshop_payment_gateways', array());
 
 		foreach ($gateways as $gateway) {
-			$service->addMethod(new Integration\Gateway($gateway));
+			if (!in_array($gateway, $methods)) {
+				$service->addMethod(new Integration\Gateway($gateway));
+			}
 		}
 
 		add_action('jigoshop\checkout\set_payment\before', '\Jigoshop\Integration::processGateway');
@@ -236,13 +248,17 @@ class Integration
 	{
 		Registry::getInstance(JIGOSHOP_LOGGER)->addDebug('Initializing Jigoshop 1.x shipping methods');
 		$service = self::getShippingService();
+		$available = array_map(function($method){
+			/** @var $method \Jigoshop\Shipping\Method */
+			return $method->getId();
+		}, $service->getAvailable());
 		$methods = apply_filters('jigoshop_shipping_methods', array());
 
 		foreach ($methods as $method) {
-			$service->addMethod(new Integration\Shipping($method));
+			if (!in_array($method, $available)) {
+				$service->addMethod(new Integration\Shipping($method));
+			}
 		}
-
-//		add_action('jigoshop\checkout\set_shipping\before', '\Jigoshop\Integration::processGateway');
 	}
 
 	/**
