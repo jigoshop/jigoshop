@@ -279,6 +279,7 @@ class Variable implements Type
 	 */
 	public function addAdminAssets(Wordpress $wp)
 	{
+		$wp->wpEnqueueMedia();
 		Styles::add('jigoshop.admin.product.variable', JIGOSHOP_URL.'/assets/css/admin/product/variable.css');
 		Scripts::add('jigoshop.media', JIGOSHOP_URL.'/assets/js/media.js', array('jquery'));
 		Scripts::add('jigoshop.admin.product.variable', JIGOSHOP_URL.'/assets/js/admin/product/variable.js', array('jquery'));

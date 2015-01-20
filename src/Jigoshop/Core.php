@@ -5,7 +5,6 @@ namespace Jigoshop;
 use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Template;
-use Jigoshop\Frontend\Pages;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Tax;
 use WPAL\Wordpress;
@@ -14,6 +13,7 @@ class Core
 {
 	const VERSION = '2.0-beta12';
 	const WIDGET_CACHE = 'jigoshop_widget_cache';
+	const TERMS = 'jigoshop_term';
 
 	/** @var \Jigoshop\Core\Options */
 	private $options;
@@ -45,6 +45,12 @@ class Core
 	public function run(\JigoshopContainer $container)
 	{
 		$wp = $this->wp;
+
+		// Add table to benefit from WordPress metadata API
+		$wpdb = $wp->getWPDB();
+		/** @noinspection PhpUndefinedFieldInspection */
+		$wpdb->jigoshop_termmeta = "{$wpdb->prefix}jigoshop_term_meta";
+
 		$wp->addFilter('template_include', array($this->template, 'process'));
 		$wp->addFilter('template_redirect', array($this->template, 'redirect'));
 		$wp->addFilter('jigoshop\get_fields', function($fields){

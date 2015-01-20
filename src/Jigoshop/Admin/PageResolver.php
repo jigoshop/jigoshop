@@ -42,6 +42,10 @@ class PageResolver
 	{
 		$this->wp->doAction('jigoshop\admin\page_resolver\before');
 
+		if ($this->pages->isProductCategories()) {
+			return $container->get('jigoshop.admin.page.product_categories');
+		}
+
 		if ($this->pages->isProductsList()) {
 			return $container->get('jigoshop.admin.page.products');
 		}

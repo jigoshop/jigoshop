@@ -53,3 +53,8 @@ services:
       - '@jigoshop.options'
       - '@jigoshop.service.coupon'
       - '@jigoshop.service.payment'
+  jigoshop.admin.page.product_categories:
+    class: Jigoshop\Admin\Page\ProductCategories
+    arguments:
+      - '@wpal'
+      - '@jigoshop.options'

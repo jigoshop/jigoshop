@@ -131,4 +131,18 @@ class Pages
 
 		return defined('DOING_AJAX') && DOING_AJAX && isset($_POST['action']) && strpos($_POST['action'], 'admin.settings') !== false;
 	}
+
+	public function isProductCategories()
+	{
+		$screen = $this->wp->getCurrentScreen();
+
+		if ($screen !== null) {
+			return $screen->taxonomy == Types::PRODUCT_CATEGORY;
+		}
+
+		return defined('DOING_AJAX') && DOING_AJAX && (
+			(isset($_POST['action']) && strpos($_POST['action'], 'admin.product_categories') !== false) ||
+			(isset($_POST['taxonomy']) && $_POST['taxonomy'] == Types::PRODUCT_CATEGORY)
+		);
+	}
 }
