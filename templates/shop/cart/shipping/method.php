@@ -7,7 +7,7 @@ use Jigoshop\Helper\Product;
  * @var $cart \Jigoshop\Entity\Cart Current cart.
  */
 ?>
-<li class="list-group-item shipping-<?php echo $method->getId(); ?>">
+<li class="list-group-item shipping-<?php echo $method->getId(); ?> clearfix">
 	<label>
 		<input type="radio" name="jigoshop_order[shipping_method]" value="<?php echo $method->getId(); ?>" <?php echo Forms::checked($cart->hasShippingMethod($method), true); ?> />
 		<?php echo $method->getName(); ?>
