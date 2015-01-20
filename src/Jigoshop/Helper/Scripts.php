@@ -13,14 +13,6 @@ use WPAL\Wordpress;
  */
 class Scripts
 {
-	/** @var \WPAL\Wordpress */
-	private $wp;
-
-	public function __construct(Wordpress $wp)
-	{
-		$this->wp = $wp;
-	}
-
 	/**
 	 * Enqueues script.
 	 * Calls filter `jigoshop\script\add`. If the filter returns empty value the script is omitted.
@@ -36,17 +28,17 @@ class Scripts
 	 * @param array $options List of options.
 	 * @since 2.0
 	 */
-	public function add($handle, $src, array $dependencies = array(), array $options = array())
+	public static function add($handle, $src, array $dependencies = array(), array $options = array())
 	{
 		$page = isset($options['page']) ? (array)$options['page'] : array('all');
 
 		if (Pages::isOneOf($page)) {
-			$handle = $this->wp->applyFilters('jigoshop\script\add', $handle, $src, $dependencies, $options);
+			$handle = apply_filters('jigoshop\script\add', $handle, $src, $dependencies, $options);
 
 			if (!empty($handle)) {
 				$version = isset($options['version']) ? $options['version'] : false;
 				$footer = isset($options['in_footer']) ? $options['in_footer'] : false;
-				$this->wp->wpEnqueueScript($handle, $src, $dependencies, $version, $footer);
+				wp_enqueue_script($handle, $src, $dependencies, $version, $footer);
 			}
 		}
 	}
@@ -59,7 +51,7 @@ class Scripts
 	 * @param string $variable Variable name.
 	 * @param array $value List of values to localize.
 	 */
-	public function localize($handle, $variable, array $value)
+	public static function localize($handle, $variable, array $value)
 	{
 		$handle = apply_filters('jigoshop\script\localize', $handle, $variable, $value);
 
@@ -78,15 +70,15 @@ class Scripts
 	 * @param string $handle Handle name.
 	 * @param array $options List of options.
 	 */
-	public function remove($handle, $options)
+	public static function remove($handle, $options)
 	{
 		$page = isset($options['page']) ? (array)$options['page'] : array('all');
 
 		if (Pages::isOneOf($page)) {
-			$handle = $this->wp->applyFilters('jigoshop\script\remove', $handle, $options);
+			$handle = apply_filters('jigoshop\script\remove', $handle, $options);
 
 			if (!empty($handle)) {
-				$this->wp->wpDeregisterScript($handle);
+				wp_deregister_script($handle);
 			}
 		}
 	}

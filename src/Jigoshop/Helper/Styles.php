@@ -13,14 +13,6 @@ use WPAL\Wordpress;
  */
 class Styles
 {
-	/** @var \WPAL\Wordpress */
-	private $wp;
-
-	public function __construct(Wordpress $wp)
-	{
-		$this->wp = $wp;
-	}
-
 	/**
 	 * Enqueues stylesheet.
 	 * Calls filter `jigoshop\style\add`. If the filter returns empty value the style is omitted.
@@ -36,17 +28,17 @@ class Styles
 	 * @param array $options List of options.
 	 * @since 2.0
 	 */
-	public function add($handle, $src, array $dependencies = array(), array $options = array())
+	public static function add($handle, $src, array $dependencies = array(), array $options = array())
 	{
 		$page = isset($options['page']) ? (array)$options['page'] : array('all');
 
 		if (Pages::isOneOf($page)) {
-			$handle = $this->wp->applyFilters('jigoshop\style\add', $handle, $src, $dependencies, $options);
+			$handle = apply_filters('jigoshop\style\add', $handle, $src, $dependencies, $options);
 
 			if (!empty($handle)) {
 				$version = isset($options['version']) ? $options['version'] : false;
 				$media = isset($options['media']) ? $options['media'] : 'all';
-				$this->wp->wpEnqueueStyle($handle, $src, $dependencies, $version, $media);
+				wp_enqueue_style($handle, $src, $dependencies, $version, $media);
 			}
 		}
 	}
@@ -61,15 +53,15 @@ class Styles
 	 * @param string $handle Handle name.
 	 * @param array $options List of options.
 	 */
-	public function remove($handle, $options)
+	public static function remove($handle, $options)
 	{
 		$page = isset($options['page']) ? (array)$options['page'] : array('all');
 
 		if (Pages::isOneOf($page)) {
-			$handle = $this->wp->applyFilters('jigoshop\style\remove', $handle, $options);
+			$handle = apply_filters('jigoshop\style\remove', $handle, $options);
 
 			if (!empty($handle)) {
-				$this->wp->wpDeregisterStyle($handle);
+				wp_deregister_style($handle);
 			}
 		}
 	}

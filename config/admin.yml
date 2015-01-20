@@ -6,8 +6,6 @@ services:
       - '@wpal'
       - '@jigoshop.admin.dashboard'
       - '@jigoshop.admin.permalinks'
-      - '@jigoshop.helper.styles'
-      - '@jigoshop.helper.scripts'
   jigoshop.admin.pages:
     class: Jigoshop\Admin\Pages
     arguments:
@@ -25,8 +23,6 @@ services:
       - '@jigoshop.options'
       - '@jigoshop.service.order'
       - '@jigoshop.service.product'
-      - '@jigoshop.helper.styles'
-      - '@jigoshop.helper.scripts'
     tags:
       - { name: jigoshop.admin.page }
   jigoshop.admin.reports:
@@ -37,16 +33,12 @@ services:
       - '@wpal'
       - '@jigoshop.messages'
       - '@jigoshop.service.order'
-      - '@jigoshop.helper.styles'
-      - '@jigoshop.helper.scripts'
   jigoshop.admin.settings:
     class: Jigoshop\Admin\Settings
     arguments:
       - '@wpal'
       - '@jigoshop.options'
       - '@jigoshop.messages'
-      - '@jigoshop.helper.styles'
-      - '@jigoshop.helper.scripts'
     tags:
       - { name: jigoshop.admin.page }
   jigoshop.admin.system_info:
@@ -61,8 +53,6 @@ services:
       - '@wpal'
       - '@jigoshop.options'
       - '@jigoshop.messages'
-      - '@jigoshop.helper.styles'
-      - '@jigoshop.helper.scripts'
     tags:
       - { name: jigoshop.admin.page }
   jigoshop.admin.migration:
@@ -71,8 +61,6 @@ services:
       - '@wpal'
       - '@jigoshop.options'
       - '@jigoshop.messages'
-      - '@jigoshop.helper.styles'
-      - '@jigoshop.helper.scripts'
     tags:
       - { name: jigoshop.admin.page }
   jigoshop.admin.product.attributes:
@@ -81,7 +69,5 @@ services:
       - '@wpal'
       - '@jigoshop.messages'
       - '@jigoshop.service.product'
-      - '@jigoshop.helper.styles'
-      - '@jigoshop.helper.scripts'
     tags:
       - { name: jigoshop.admin.page }

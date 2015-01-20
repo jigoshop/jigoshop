@@ -8,9 +8,7 @@ use Jigoshop\Core\Options;
 use Jigoshop\Entity\Order;
 use Jigoshop\Entity\Product;
 use Jigoshop\Helper\Render;
-use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
-use Jigoshop\Service\ProductServiceInterface;
 use WPAL\Wordpress;
 
 /**
@@ -30,14 +28,14 @@ class Migration implements PageInterface
 	private $messages;
 	private $tools = array();
 
-	public function __construct(Wordpress $wp, Options $options, Messages $messages, Styles $styles, Scripts $scripts)
+	public function __construct(Wordpress $wp, Options $options, Messages $messages)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->messages = $messages;
 
 		$wp->addAction('current_screen', array($this, 'action'));
-		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $styles, $scripts) {
+		$wp->addAction('admin_enqueue_scripts', function () use ($wp){
 			// Weed out all admin pages except the Jigoshop Settings page hits
 			if (!in_array($wp->getPageNow(), array('admin.php', 'options.php'))) {
 				return;
@@ -49,7 +47,7 @@ class Migration implements PageInterface
 			}
 
 			// TODO: Migration styles
-			$styles->add('jigoshop.admin.migration', JIGOSHOP_URL.'/assets/css/admin/settings.css');
+			Styles::add('jigoshop.admin.migration', JIGOSHOP_URL.'/assets/css/admin/settings.css');
 		});
 	}
 

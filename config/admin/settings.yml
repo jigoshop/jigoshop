@@ -5,7 +5,6 @@ services:
     arguments:
       - '@wpal'
       - '@jigoshop.options'
-      - '@jigoshop.helper.scripts'
     tags:
       - { name: jigoshop.admin.settings.tab }
   jigoshop.admin.settings.shopping:
@@ -14,7 +13,6 @@ services:
       - '@wpal'
       - '@jigoshop.options'
       - '@jigoshop.messages'
-      - '@jigoshop.helper.scripts'
     tags:
       - { name: jigoshop.admin.settings.tab }
   jigoshop.admin.settings.products:
@@ -31,7 +29,6 @@ services:
       - '@wpal'
       - '@jigoshop.options'
       - '@jigoshop.service.tax'
-      - '@jigoshop.helper.scripts'
     tags:
       - { name: jigoshop.admin.settings.tab }
   jigoshop.admin.settings.shipping:
@@ -39,7 +36,6 @@ services:
     arguments:
       - '@jigoshop.options'
       - '@jigoshop.service.shipping'
-      - '@jigoshop.helper.scripts'
     tags:
       - { name: jigoshop.admin.settings.tab }
   jigoshop.admin.settings.payment:

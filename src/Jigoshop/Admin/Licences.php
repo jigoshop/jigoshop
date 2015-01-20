@@ -5,8 +5,6 @@ namespace Jigoshop\Admin;
 use Jigoshop\Admin;
 use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
-use Jigoshop\Helper\Scripts;
-use Jigoshop\Helper\Styles;
 use Jigoshop\Licence;
 use WPAL\Wordpress;
 
@@ -29,13 +27,13 @@ class Licences implements PageInterface
 	private $validator_token = 'jigoshop-licence-validator';
 	private $validator_prefix = 'jigoshop_licence_validator_';
 
-	public function __construct(Wordpress $wp, Options $options, Messages $messages, Styles $styles, Scripts $scripts)
+	public function __construct(Wordpress $wp, Options $options, Messages $messages)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->messages = $messages;
 
-		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $styles, $scripts) {
+		$wp->addAction('admin_enqueue_scripts', function () use ($wp){
 			// Weed out all admin pages except the Jigoshop Settings page hits
 			if (!in_array($wp->getPageNow(), array('admin.php', 'options.php'))) {
 				return;
@@ -46,7 +44,7 @@ class Licences implements PageInterface
 				return;
 			}
 
-//			$styles->add('jigoshop.admin.licences', JIGOSHOP_URL.'/assets/css/admin/settings.css');
+//			Styles::add('jigoshop.admin.licences', JIGOSHOP_URL.'/assets/css/admin/settings.css');
 		});
 	}
 
@@ -154,16 +152,6 @@ class Licences implements PageInterface
 	}
 
 	/**
-	 * Returns a set of licence keys for this site from the options table
-	 *
-	 * @return array
-	 */
-	private function getKeys()
-	{
-		return get_option($this->validator_prefix.'licence_keys');
-	}
-
-	/**
 	 * Gets the email address of the currently logged in user
 	 *
 	 * @return string
@@ -174,5 +162,15 @@ class Licences implements PageInterface
 
 		/** @noinspection PhpUndefinedFieldInspection */
 		return $current_user->user_email;
+	}
+
+	/**
+	 * Returns a set of licence keys for this site from the options table
+	 *
+	 * @return array
+	 */
+	private function getKeys()
+	{
+		return get_option($this->validator_prefix.'licence_keys');
 	}
 }

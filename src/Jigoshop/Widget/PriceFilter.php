@@ -14,8 +14,6 @@ class PriceFilter extends \WP_Widget
 {
 	const ID = 'jigoshop_price_filter';
 
-	/** @var Styles */
-	private static $styles;
 	/** @var float */
 	private $max = 0.0;
 
@@ -42,11 +40,6 @@ class PriceFilter extends \WP_Widget
 		add_filter('jigoshop\get_fields', array($this, 'hiddenFields'));
 	}
 
-	public static function setStyles($styles)
-	{
-		self::$styles = $styles;
-	}
-
 	public function assets()
 	{
 		// if price filter in use on front end, load jquery-ui slider (WP loads in footer)
@@ -54,14 +47,14 @@ class PriceFilter extends \WP_Widget
 			wp_enqueue_script('jquery-ui-slider');
 		}
 
-		self::$styles->add('jigoshop.widget.price_filter', JIGOSHOP_URL.'/assets/css/widget/price_filter.css');
+		Styles::add('jigoshop.widget.price_filter', JIGOSHOP_URL.'/assets/css/widget/price_filter.css');
 	}
 
 	public function query($products)
 	{
 		$this->max = 0.0;
 		foreach ($products as $product) {
-			/** @var $product Product */
+			/** @var $product |Product\Purchasable Product */
 			if ($product instanceof Product\Purchasable) {
 				$price = $product->getPrice();
 

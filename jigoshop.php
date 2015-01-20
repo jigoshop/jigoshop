@@ -50,6 +50,9 @@ if (!defined('JIGOSHOP_URL')) {
 if (!defined('JIGOSHOP_BASE_NAME')) {
 	define('JIGOSHOP_BASE_NAME', plugin_basename(__FILE__));
 }
+if (!defined('WP_DEBUG')) {
+	define('WP_DEBUG', false);
+}
 
 define('JIGOSHOP_REQUIRED_MEMORY', 64);
 define('JIGOSHOP_REQUIRED_WP_MEMORY', 40);
@@ -86,6 +89,7 @@ preg_match('/^(\d+)(\w*)?$/', $ini_memory_limit, $memory);
 $memory_limit = $memory[1];
 if (isset($memory[2])) {
 	switch ($memory[2]) {
+		/** @noinspection PhpMissingBreakStatementInspection */
 		case 'M':
 			$memory_limit *= 1024;
 		case 'K':
@@ -107,6 +111,7 @@ preg_match('/^(\d+)(\w*)?$/', WP_MEMORY_LIMIT, $memory);
 $memory_limit = $memory[1];
 if (isset($memory[2])) {
 	switch ($memory[2]) {
+		/** @noinspection PhpMissingBreakStatementInspection */
 		case 'M':
 			$memory_limit *= 1024;
 		case 'K':

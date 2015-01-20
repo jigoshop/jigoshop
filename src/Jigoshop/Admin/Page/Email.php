@@ -7,7 +7,6 @@ use Jigoshop\Core\Types;
 use Jigoshop\Exception;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
-use Jigoshop\Helper\Styles;
 use Jigoshop\Service\EmailServiceInterface as Service;
 use WPAL\Wordpress;
 
@@ -20,7 +19,7 @@ class Email
 	/** @var Service */
 	private $emailService;
 
-	public function __construct(Wordpress $wp, Options $options, Service $emailService, Styles $styles, Scripts $scripts)
+	public function __construct(Wordpress $wp, Options $options, Service $emailService)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
@@ -34,14 +33,17 @@ class Email
 			$wp->addMetaBox('jigoshop-email-variable', __('Email Variables', 'jigoshop'), array($that, 'variablesBox'), Types::EMAIL, 'normal', 'default');
 		});
 
-		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $styles, $scripts){
+		$wp->addAction('admin_enqueue_scripts', function () use ($wp){
 			if ($wp->getPostType() == Types::EMAIL) {
-				$scripts->add('jigoshop.admin.email', JIGOSHOP_URL.'/assets/js/admin/email.js', array('jquery', 'jigoshop.helpers'));
-				$scripts->localize('jigoshop.admin.email', 'jigoshop_admin_email', array(
+				Scripts::add('jigoshop.admin.email', JIGOSHOP_URL.'/assets/js/admin/email.js', array(
+					'jquery',
+					'jigoshop.helpers'
+				));
+				Scripts::localize('jigoshop.admin.email', 'jigoshop_admin_email', array(
 					'ajax' => $wp->getAjaxUrl(),
 				));
 
-				$wp->doAction('jigoshop\admin\email\assets', $wp, $styles, $scripts);
+				$wp->doAction('jigoshop\admin\email\assets', $wp);
 			}
 		});
 	}

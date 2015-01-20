@@ -18,11 +18,8 @@ parameters:
       class: \Jigoshop\Widget\LayeredNav
       calls:
         - ['setProductService', 'jigoshop.service.product']
-        - ['setStyles', 'jigoshop.helper.styles']
     price_filter:
       class: \Jigoshop\Widget\PriceFilter
-      calls:
-        - ['setStyles', 'jigoshop.helper.styles']
     product_categories:
       class: \Jigoshop\Widget\ProductCategories
       calls:
@@ -118,8 +115,6 @@ services:
     arguments:
       - '@wpal'
       - '@jigoshop.options'
-      - '@jigoshop.helper.styles'
-      - '@jigoshop.helper.scripts'
   jigoshop.template:
     class: Jigoshop\Core\Template
     arguments:

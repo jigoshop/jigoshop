@@ -15,8 +15,6 @@ class LayeredNav extends \WP_Widget
 
 	/** @var ProductServiceInterface */
 	private static $productService;
-	/** @var Styles */
-	private static $styles;
 	/** @var array */
 	private static $parameters;
 
@@ -46,11 +44,6 @@ class LayeredNav extends \WP_Widget
 		self::$productService = $productService;
 	}
 
-	public static function setStyles($styles)
-	{
-		self::$styles = $styles;
-	}
-
 	public static function loadParameters()
 	{
 		self::$parameters = array();
@@ -64,7 +57,7 @@ class LayeredNav extends \WP_Widget
 
 	public function assets()
 	{
-		self::$styles->add('jigoshop.widget.layered_nav', JIGOSHOP_URL.'/assets/css/widget/layered_nav.css');
+		Styles::add('jigoshop.widget.layered_nav', JIGOSHOP_URL.'/assets/css/widget/layered_nav.css');
 	}
 
 	public function query($products)

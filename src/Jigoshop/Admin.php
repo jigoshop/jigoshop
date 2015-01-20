@@ -9,6 +9,7 @@ use Jigoshop\Admin\Settings;
 use Jigoshop\Core\Types;
 use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
+use Monolog\Registry;
 use WPAL\Wordpress;
 
 /**
@@ -31,7 +32,7 @@ class Admin
 	);
 	private $dashboard;
 
-	public function __construct(Wordpress $wp, Dashboard $dashboard, Permalinks $permalinks, Styles $styles, Scripts $scripts)
+	public function __construct(Wordpress $wp, Dashboard $dashboard, Permalinks $permalinks)
 	{
 		$this->wp = $wp;
 		$this->dashboard = $dashboard;
@@ -41,12 +42,15 @@ class Admin
 
 		$wp->wpEnqueueScript('jquery');
 
-		$wp->addAction('admin_enqueue_scripts', function() use ($styles, $scripts){
-			$styles->add('jigoshop.admin', JIGOSHOP_URL.'/assets/css/admin.css');
-			$styles->add('jigoshop.vendors', JIGOSHOP_URL.'/assets/css/vendors.min.css');
-			$scripts->add('jigoshop.vendors', JIGOSHOP_URL.'/assets/js/vendors.min.js', array('jquery'));
-			$scripts->add('jigoshop.helpers', JIGOSHOP_URL.'/assets/js/helpers.js', array('jquery'));
-			$scripts->add('jigoshop.admin', JIGOSHOP_URL.'/assets/js/admin.js', array('jquery', 'jigoshop.vendors'));
+		$wp->addAction('admin_enqueue_scripts', function (){
+			Styles::add('jigoshop.admin', JIGOSHOP_URL.'/assets/css/admin.css');
+			Styles::add('jigoshop.vendors', JIGOSHOP_URL.'/assets/css/vendors.min.css');
+			Scripts::add('jigoshop.vendors', JIGOSHOP_URL.'/assets/js/vendors.min.js', array('jquery'));
+			Scripts::add('jigoshop.helpers', JIGOSHOP_URL.'/assets/js/helpers.js', array('jquery'));
+			Scripts::add('jigoshop.admin', JIGOSHOP_URL.'/assets/js/admin.js', array(
+				'jquery',
+				'jigoshop.vendors'
+			));
 		}, 100);
 	}
 
@@ -64,7 +68,7 @@ class Admin
 	{
 		$parent = $page->getParent();
 		if (!isset($this->pages[$parent])) {
-			if (WP_DEGUG) {
+			if (WP_DEBUG) {
 				throw new Exception(sprintf('Trying to add page to invalid parent (%s). Available ones are: %s', $parent, join(', ', array_keys($this->pages))));
 			}
 

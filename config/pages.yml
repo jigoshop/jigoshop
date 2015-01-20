@@ -17,8 +17,6 @@ services:
       - '@jigoshop.service.product'
       - '@jigoshop.service.cart'
       - '@jigoshop.messages'
-      - '@jigoshop.helper.styles'
-      - '@jigoshop.helper.scripts'
   jigoshop.page.product_category_list:
     class: Jigoshop\Frontend\Page\ProductCategoryList
     arguments:
@@ -27,8 +25,6 @@ services:
       - '@jigoshop.service.product'
       - '@jigoshop.service.cart'
       - '@jigoshop.messages'
-      - '@jigoshop.helper.styles'
-      - '@jigoshop.helper.scripts'
   jigoshop.page.product_tag_list:
     class: Jigoshop\Frontend\Page\ProductTagList
     arguments:
@@ -37,8 +33,6 @@ services:
       - '@jigoshop.service.product'
       - '@jigoshop.service.cart'
       - '@jigoshop.messages'
-      - '@jigoshop.helper.styles'
-      - '@jigoshop.helper.scripts'
   jigoshop.page.product:
     class: Jigoshop\Frontend\Page\Product
     arguments:
@@ -47,8 +41,6 @@ services:
       - '@jigoshop.service.product'
       - '@jigoshop.service.cart'
       - '@jigoshop.messages'
-      - '@jigoshop.helper.styles'
-      - '@jigoshop.helper.scripts'
   jigoshop.page.cart:
     class: Jigoshop\Frontend\Page\Cart
     arguments:
@@ -61,8 +53,6 @@ services:
       - '@jigoshop.service.order'
       - '@jigoshop.service.shipping'
       - '@jigoshop.service.coupon'
-      - '@jigoshop.helper.styles'
-      - '@jigoshop.helper.scripts'
   jigoshop.page.checkout:
     class: Jigoshop\Frontend\Page\Checkout
     arguments:
@@ -74,8 +64,6 @@ services:
       - '@jigoshop.service.shipping'
       - '@jigoshop.service.payment'
       - '@jigoshop.service.order'
-      - '@jigoshop.helper.styles'
-      - '@jigoshop.helper.scripts'
   jigoshop.page.checkout.thank_you:
     class: Jigoshop\Frontend\Page\Checkout\ThankYou
     arguments:
@@ -83,8 +71,6 @@ services:
       - '@jigoshop.options'
       - '@jigoshop.messages'
       - '@jigoshop.service.order'
-      - '@jigoshop.helper.styles'
-      - '@jigoshop.helper.scripts'
   jigoshop.page.checkout.pay:
     class: Jigoshop\Frontend\Page\Checkout\Pay
     arguments:
@@ -93,8 +79,6 @@ services:
       - '@jigoshop.messages'
       - '@jigoshop.service.order'
       - '@jigoshop.service.payment'
-      - '@jigoshop.helper.styles'
-      - '@jigoshop.helper.scripts'
   jigoshop.page.account:
     class: Jigoshop\Frontend\Page\Account
     arguments:
@@ -103,8 +87,6 @@ services:
       - '@jigoshop.service.customer'
       - '@jigoshop.service.order'
       - '@jigoshop.messages'
-      - '@jigoshop.helper.styles'
-      - '@jigoshop.helper.scripts'
   jigoshop.page.account.edit_address:
     class: Jigoshop\Frontend\Page\Account\EditAddress
     arguments:
@@ -112,8 +94,6 @@ services:
       - '@jigoshop.options'
       - '@jigoshop.service.customer'
       - '@jigoshop.messages'
-      - '@jigoshop.helper.styles'
-      - '@jigoshop.helper.scripts'
   jigoshop.page.account.change_password:
     class: Jigoshop\Frontend\Page\Account\ChangePassword
     arguments:
@@ -121,8 +101,6 @@ services:
       - '@jigoshop.options'
       - '@jigoshop.service.customer'
       - '@jigoshop.messages'
-      - '@jigoshop.helper.styles'
-      - '@jigoshop.helper.scripts'
   jigoshop.page.account.orders:
     class: Jigoshop\Frontend\Page\Account\Orders
     arguments:
@@ -131,5 +109,3 @@ services:
       - '@jigoshop.service.customer'
       - '@jigoshop.service.order'
       - '@jigoshop.messages'
-      - '@jigoshop.helper.styles'
-      - '@jigoshop.helper.scripts'

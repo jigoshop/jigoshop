@@ -27,7 +27,7 @@ class Product
 	/** @var array */
 	private $menu;
 
-	public function __construct(Wordpress $wp, Options $options, Types\Product $type, ProductServiceInterface $productService, Styles $styles, Scripts $scripts)
+	public function __construct(Wordpress $wp, Options $options, Types\Product $type, ProductServiceInterface $productService)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
@@ -53,11 +53,14 @@ class Product
 			'sales' => array('label' => __('Sales', 'jigoshop'), 'visible' => array(Simple::TYPE)),
 		));
 
-		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $menu, $styles, $scripts){
+		$wp->addAction('admin_enqueue_scripts', function () use ($wp, $menu){
 			if ($wp->getPostType() == Types::PRODUCT) {
-				$styles->add('jigoshop.admin.product', JIGOSHOP_URL.'/assets/css/admin/product.css');
-				$scripts->add('jigoshop.admin.product', JIGOSHOP_URL.'/assets/js/admin/product.js', array('jquery', 'jigoshop.helpers'));
-				$scripts->localize('jigoshop.admin.product', 'jigoshop_admin_product', array(
+				Styles::add('jigoshop.admin.product', JIGOSHOP_URL.'/assets/css/admin/product.css');
+				Scripts::add('jigoshop.admin.product', JIGOSHOP_URL.'/assets/js/admin/product.js', array(
+					'jquery',
+					'jigoshop.helpers'
+				));
+				Scripts::localize('jigoshop.admin.product', 'jigoshop_admin_product', array(
 					'ajax' => $wp->getAjaxUrl(),
 					'i18n' => array(
 						'saved' => __('Changes saved.', 'jigoshop'),
@@ -69,7 +72,7 @@ class Product
 					'menu' => array_map(function($item){ return $item['visible']; }, $menu),
 				));
 
-				$wp->doAction('jigoshop\admin\product\assets', $wp, $styles, $scripts);
+				$wp->doAction('jigoshop\admin\product\assets', $wp);
 			}
 		});
 	}
@@ -82,6 +85,7 @@ class Product
 	public function box()
 	{
 		$post = $this->wp->getGlobalPost();
+		/** @var \Jigoshop\Entity\Product $product */
 		$product = $this->productService->findForPost($post);
 		$types = array();
 
@@ -150,6 +154,7 @@ class Product
 				throw new Exception(__('Invalid attribute ID.', 'jigoshop'));
 			}
 
+			/** @var \Jigoshop\Entity\Product $product */
 			$product = $this->productService->find((int)$_POST['product_id']);
 
 			if (!$product->getId()) {
@@ -225,6 +230,7 @@ class Product
 				throw new Exception(__('Invalid attribute ID.', 'jigoshop'));
 			}
 
+			/** @var \Jigoshop\Entity\Product $product */
 			$product = $this->productService->find((int)$_POST['product_id']);
 
 			if (!$product->getId()) {

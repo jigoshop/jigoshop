@@ -7,7 +7,6 @@ use Jigoshop\Core\Types;
 use Jigoshop\Entity\Order as Entity;
 use Jigoshop\Helper\Order as OrderHelper;
 use Jigoshop\Helper\Render;
-use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
 use Jigoshop\Helper\Tax;
 use Jigoshop\Service\OrderServiceInterface;
@@ -22,7 +21,7 @@ class Orders
 	/** @var \Jigoshop\Service\OrderServiceInterface */
 	private $orderService;
 
-	public function __construct(Wordpress $wp, Options $options, OrderServiceInterface $orderService, Styles $styles, Scripts $scripts)
+	public function __construct(Wordpress $wp, Options $options, OrderServiceInterface $orderService)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
@@ -35,9 +34,9 @@ class Orders
 		$wp->addFilter(sprintf('manage_edit-%s_columns', Types::ORDER), array($this, 'columns'));
 		$wp->addAction(sprintf('manage_%s_posts_custom_column', Types::ORDER), array($this, 'displayColumn'), 2);
 
-		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $styles, $scripts){
+		$wp->addAction('admin_enqueue_scripts', function () use ($wp){
 			if ($wp->getPostType() == Types::ORDER) {
-				$styles->add('jigoshop.admin.orders', JIGOSHOP_URL.'/assets/css/admin/orders.css');
+				Styles::add('jigoshop.admin.orders', JIGOSHOP_URL.'/assets/css/admin/orders.css');
 			}
 		});
 	}

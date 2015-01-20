@@ -10,7 +10,6 @@ use Jigoshop\Frontend\Page\PageInterface;
 use Jigoshop\Frontend\Pages;
 use Jigoshop\Helper\Api;
 use Jigoshop\Helper\Render;
-use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
 use Jigoshop\Helper\Tax;
 use Jigoshop\Service\CustomerServiceInterface;
@@ -30,8 +29,7 @@ class Orders implements PageInterface
 	/** @var OrderServiceInterface */
 	private $orderService;
 
-	public function __construct(Wordpress $wp, Options $options, CustomerServiceInterface $customerService, OrderServiceInterface $orderService, Messages $messages,
-		Styles $styles, Scripts $scripts)
+	public function __construct(Wordpress $wp, Options $options, CustomerServiceInterface $customerService, OrderServiceInterface $orderService, Messages $messages)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
@@ -39,10 +37,10 @@ class Orders implements PageInterface
 		$this->orderService = $orderService;
 		$this->messages = $messages;
 
-		$styles->add('jigoshop.user.account', JIGOSHOP_URL.'/assets/css/user/account.css');
-		$styles->add('jigoshop.user.account.orders', JIGOSHOP_URL.'/assets/css/user/account/orders.css');
-		$styles->add('jigoshop.user.account.orders.single', JIGOSHOP_URL.'/assets/css/user/account/orders/single.css');
-		$this->wp->doAction('jigoshop\account\orders\assets', $wp, $styles, $scripts);
+		Styles::add('jigoshop.user.account', JIGOSHOP_URL.'/assets/css/user/account.css');
+		Styles::add('jigoshop.user.account.orders', JIGOSHOP_URL.'/assets/css/user/account/orders.css');
+		Styles::add('jigoshop.user.account.orders.single', JIGOSHOP_URL.'/assets/css/user/account/orders/single.css');
+		$this->wp->doAction('jigoshop\account\orders\assets', $wp);
 	}
 
 

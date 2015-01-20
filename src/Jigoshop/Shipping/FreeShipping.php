@@ -28,8 +28,7 @@ class FreeShipping implements Method
 	/** @var array */
 	private $availability;
 
-	public function __construct(Wordpress $wp, Options $options, CartServiceInterface $cartService, Messages $messages,
-		Scripts $scripts)
+	public function __construct(Wordpress $wp, Options $options, CartServiceInterface $cartService, Messages $messages)
 	{
 		$this->wp = $wp;
 		$this->options = $options->get('shipping.'.self::NAME);
@@ -41,7 +40,7 @@ class FreeShipping implements Method
 			'specific' => __('Selected countries', 'jigoshop'),
 		);
 
-		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $scripts) {
+		$wp->addAction('admin_enqueue_scripts', function () use ($wp){
 			// Weed out all admin pages except the Jigoshop Settings page hits
 			if (!in_array($wp->getPageNow(), array('admin.php', 'options.php'))) {
 				return;
@@ -56,16 +55,11 @@ class FreeShipping implements Method
 				return;
 			}
 
-			$scripts->add('jigoshop.admin.shipping.free_shipping', JIGOSHOP_URL.'/assets/js/admin/shipping/free_shipping.js', array('jquery', 'jigoshop.admin'));
+			Scripts::add('jigoshop.admin.shipping.free_shipping', JIGOSHOP_URL.'/assets/js/admin/shipping/free_shipping.js', array(
+				'jquery',
+				'jigoshop.admin'
+			));
 		});
-	}
-
-	/**
-	 * @return string ID of shipping method.
-	 */
-	public function getId()
-	{
-		return self::NAME;
 	}
 
 	/**
@@ -212,6 +206,14 @@ class FreeShipping implements Method
 		return array(
 			'id' => $this->getId(),
 		);
+	}
+
+	/**
+	 * @return string ID of shipping method.
+	 */
+	public function getId()
+	{
+		return self::NAME;
 	}
 
 	/**

@@ -34,8 +34,7 @@ class Pay implements PageInterface
 	/** @var PaymentServiceInterface */
 	private $paymentService;
 
-	public function __construct(Wordpress $wp, Options $options, Messages $messages, OrderServiceInterface $orderService, PaymentServiceInterface $paymentService,
-		Styles $styles, Scripts $scripts)
+	public function __construct(Wordpress $wp, Options $options, Messages $messages, OrderServiceInterface $orderService, PaymentServiceInterface $paymentService)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
@@ -43,13 +42,13 @@ class Pay implements PageInterface
 		$this->orderService = $orderService;
 		$this->paymentService = $paymentService;
 
-		$styles->add('jigoshop', JIGOSHOP_URL.'/assets/css/shop.css');
-		$styles->add('jigoshop.checkout.pay', JIGOSHOP_URL.'/assets/css/shop/checkout/pay.css');
-		$scripts->add('jigoshop.checkout.pay', JIGOSHOP_URL.'/assets/js/shop/checkout/pay.js', array('jquery'));
-		$scripts->localize('jigoshop.checkout.pay', 'jigoshop_checkout_pay', array(
+		Styles::add('jigoshop', JIGOSHOP_URL.'/assets/css/shop.css');
+		Styles::add('jigoshop.checkout.pay', JIGOSHOP_URL.'/assets/css/shop/checkout/pay.css');
+		Scripts::add('jigoshop.checkout.pay', JIGOSHOP_URL.'/assets/js/shop/checkout/pay.js', array('jquery'));
+		Scripts::localize('jigoshop.checkout.pay', 'jigoshop_checkout_pay', array(
 			'assets' => JIGOSHOP_URL.'/assets',
 		));
-		$wp->doAction('jigoshop\checkout\pay\assets', $wp, $styles, $scripts);
+		$wp->doAction('jigoshop\checkout\pay\assets', $wp);
 	}
 
 	public function action()

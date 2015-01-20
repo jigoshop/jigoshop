@@ -24,7 +24,7 @@ class Coupon
 	/** @var PaymentServiceInterface */
 	private $paymentService;
 
-	public function __construct(Wordpress $wp, Options $options, Service $couponService, PaymentServiceInterface $paymentService, Styles $styles, Scripts $scripts)
+	public function __construct(Wordpress $wp, Options $options, Service $couponService, PaymentServiceInterface $paymentService)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
@@ -37,15 +37,18 @@ class Coupon
 			$wp->addMetaBox('jigoshop-coupon-data', __('Coupon Data', 'jigoshop'), array($that, 'box'), Types::COUPON, 'normal', 'default');
 		});
 
-		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $styles, $scripts){
+		$wp->addAction('admin_enqueue_scripts', function () use ($wp){
 			if ($wp->getPostType() == Types::COUPON) {
-				$styles->add('jigoshop.admin.coupon', JIGOSHOP_URL.'/assets/css/admin/coupon.css');
-				$scripts->add('jigoshop.admin.coupon', JIGOSHOP_URL.'/assets/js/admin/coupon.js', array('jquery', 'jigoshop.helpers'));
-				$scripts->localize('jigoshop.admin.coupon', 'jigoshop_admin_coupon', array(
+				Styles::add('jigoshop.admin.coupon', JIGOSHOP_URL.'/assets/css/admin/coupon.css');
+				Scripts::add('jigoshop.admin.coupon', JIGOSHOP_URL.'/assets/js/admin/coupon.js', array(
+					'jquery',
+					'jigoshop.helpers'
+				));
+				Scripts::localize('jigoshop.admin.coupon', 'jigoshop_admin_coupon', array(
 					'ajax' => $wp->getAjaxUrl(),
 				));
 
-				$wp->doAction('jigoshop\admin\coupon\assets', $wp, $styles, $scripts);
+				$wp->doAction('jigoshop\admin\coupon\assets', $wp);
 			}
 		});
 	}
@@ -53,9 +56,9 @@ class Coupon
 	public function ajaxFindCategory()
 	{
 		try {
+			$categories = array();
 			if (isset($_POST['query'])) {
 				$query = trim(htmlspecialchars(strip_tags($_POST['query'])));
-				$categories = array();
 				if (!empty($query)) {
 					$categories = $this->wp->getCategories(array(
 						'taxonomy' => Types\ProductCategory::NAME,

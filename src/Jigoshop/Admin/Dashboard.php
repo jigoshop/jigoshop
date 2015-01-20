@@ -32,15 +32,14 @@ class Dashboard implements PageInterface
 	/** @var Options */
 	private $options;
 
-	public function __construct(Wordpress $wp, Options $options, OrderServiceInterface $orderService, ProductServiceInterface $productService, Styles $styles,
-		Scripts $scripts)
+	public function __construct(Wordpress $wp, Options $options, OrderServiceInterface $orderService, ProductServiceInterface $productService)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->orderService = $orderService;
 		$this->productService = $productService;
 
-		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $styles, $scripts) {
+		$wp->addAction('admin_enqueue_scripts', function () use ($wp){
 			// Weed out all admin pages except the Jigoshop Settings page hits
 			if (!in_array($wp->getPageNow(), array('admin.php', 'options.php'))) {
 				return;
@@ -51,9 +50,12 @@ class Dashboard implements PageInterface
 				return;
 			}
 
-			$styles->add('jigoshop.admin.dashboard', JIGOSHOP_URL.'/assets/css/admin/dashboard.css');
-			$scripts->add('jigoshop.flot', JIGOSHOP_URL.'/assets/js/flot/jquery.flot.min.js', array('jquery'));
-			$scripts->add('jigoshop.flot.time', JIGOSHOP_URL.'/assets/js/flot/jquery.flot.time.min.js', array('jquery', 'jigoshop.flot'));
+			Styles::add('jigoshop.admin.dashboard', JIGOSHOP_URL.'/assets/css/admin/dashboard.css');
+			Scripts::add('jigoshop.flot', JIGOSHOP_URL.'/assets/js/flot/jquery.flot.min.js', array('jquery'));
+			Scripts::add('jigoshop.flot.time', JIGOSHOP_URL.'/assets/js/flot/jquery.flot.time.min.js', array(
+				'jquery',
+				'jigoshop.flot'
+			));
 		});
 	}
 

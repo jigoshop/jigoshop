@@ -11,8 +11,6 @@ services:
       - '@wpal'
       - '@jigoshop.options'
       - '@jigoshop.service.order'
-      - '@jigoshop.helper.styles'
-      - '@jigoshop.helper.scripts'
   jigoshop.admin.page.order:
     class: Jigoshop\Admin\Page\Order
     arguments:
@@ -22,8 +20,6 @@ services:
       - '@jigoshop.service.product'
       - '@jigoshop.service.customer'
       - '@jigoshop.service.shipping'
-      - '@jigoshop.helper.styles'
-      - '@jigoshop.helper.scripts'
   jigoshop.admin.page.products:
     class: Jigoshop\Admin\Page\Products
     arguments:
@@ -31,8 +27,6 @@ services:
       - '@jigoshop.options'
       - '@jigoshop.post_type.product'
       - '@jigoshop.service.product'
-      - '@jigoshop.helper.styles'
-      - '@jigoshop.helper.scripts'
   jigoshop.admin.page.product:
     class: Jigoshop\Admin\Page\Product
     arguments:
@@ -40,24 +34,18 @@ services:
       - '@jigoshop.options'
       - '@jigoshop.post_type.product'
       - '@jigoshop.service.product'
-      - '@jigoshop.helper.styles'
-      - '@jigoshop.helper.scripts'
   jigoshop.admin.page.email:
     class: Jigoshop\Admin\Page\Email
     arguments:
       - '@wpal'
       - '@jigoshop.options'
       - '@jigoshop.service.email'
-      - '@jigoshop.helper.styles'
-      - '@jigoshop.helper.scripts'
   jigoshop.admin.page.coupons:
     class: Jigoshop\Admin\Page\Coupons
     arguments:
       - '@wpal'
       - '@jigoshop.options'
       - '@jigoshop.service.coupon'
-      - '@jigoshop.helper.styles'
-      - '@jigoshop.helper.scripts'
   jigoshop.admin.page.coupon:
     class: Jigoshop\Admin\Page\Coupon
     arguments:
@@ -65,5 +53,3 @@ services:
       - '@jigoshop.options'
       - '@jigoshop.service.coupon'
       - '@jigoshop.service.payment'
-      - '@jigoshop.helper.styles'
-      - '@jigoshop.helper.scripts'

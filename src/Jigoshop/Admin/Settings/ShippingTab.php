@@ -3,7 +3,6 @@
 namespace Jigoshop\Admin\Settings;
 
 use Jigoshop\Core\Options;
-use Jigoshop\Helper\Scripts;
 use Jigoshop\Integration;
 use Jigoshop\Service\ShippingServiceInterface;
 use Jigoshop\Shipping\Method;
@@ -22,7 +21,7 @@ class ShippingTab implements TabInterface
 	/** @var ShippingServiceInterface */
 	private $shippingService;
 
-	public function __construct(Options $options, ShippingServiceInterface $shippingService, Scripts $scripts)
+	public function __construct(Options $options, ShippingServiceInterface $shippingService)
 	{
 		$this->options = $options->get(self::SLUG);
 		$this->shippingService = $shippingService;

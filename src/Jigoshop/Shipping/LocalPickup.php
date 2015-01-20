@@ -2,11 +2,9 @@
 
 namespace Jigoshop\Shipping;
 
-use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\OrderInterface;
-use Jigoshop\Helper\Scripts;
 use Jigoshop\Service\CartServiceInterface;
 use WPAL\Wordpress;
 
@@ -29,14 +27,6 @@ class LocalPickup implements Method
 		$this->options = $options->get('shipping.'.self::NAME);
 		$this->baseCountry = $options->get('general.country');
 		$this->cartService = $cartService;
-	}
-
-	/**
-	 * @return string ID of shipping method.
-	 */
-	public function getId()
-	{
-		return self::NAME;
 	}
 
 	/**
@@ -126,6 +116,14 @@ class LocalPickup implements Method
 		return array(
 			'id' => $this->getId(),
 		);
+	}
+
+	/**
+	 * @return string ID of shipping method.
+	 */
+	public function getId()
+	{
+		return self::NAME;
 	}
 
 	/**

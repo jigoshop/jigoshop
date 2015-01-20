@@ -7,7 +7,6 @@ services:
       - '@jigoshop.options'
       - '@jigoshop.service.cart'
       - '@jigoshop.messages'
-      - '@jigoshop.helper.scripts'
     tags:
       - { name: jigoshop.shipping.method }
   jigoshop.shipping.free_shipping:
@@ -17,7 +16,6 @@ services:
       - '@jigoshop.options'
       - '@jigoshop.service.cart'
       - '@jigoshop.messages'
-      - '@jigoshop.helper.scripts'
     tags:
       - { name: jigoshop.shipping.method }
   jigoshop.shipping.local_pickup:

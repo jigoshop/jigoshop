@@ -103,10 +103,10 @@ class Variable implements Type
 		$wp->addFilter('jigoshop\cart\add', array($this, 'addToCart'), 10, 2);
 		$wp->addFilter('jigoshop\cart\generate_item_key', array($this, 'generateItemKey'), 10, 2);
 		$wp->addFilter('jigoshop\checkout\is_shipping_required', array($this, 'isShippingRequired'), 10, 2);
-		$wp->addAction('jigoshop\product\assets', array($this, 'addFrontendAssets'), 10, 3);
+		$wp->addAction('jigoshop\product\assets', array($this, 'addFrontendAssets'), 10, 1);
 		$wp->addFilter('jigoshop\product\get_stock', array($this, 'getStock'), 10, 2);
 
-		$wp->addAction('jigoshop\admin\product\assets', array($this, 'addAdminAssets'), 10, 3);
+		$wp->addAction('jigoshop\admin\product\assets', array($this, 'addAdminAssets'), 10, 1);
 		$wp->addAction('jigoshop\admin\product\attribute\options', array($this, 'addVariableAttributeOptions'));
 		$wp->addFilter('jigoshop\admin\product\menu', array($this, 'addProductMenu'));
 		$wp->addFilter('jigoshop\admin\product\tabs', array($this, 'addProductTab'), 10, 2);
@@ -276,15 +276,13 @@ class Variable implements Type
 
 	/**
 	 * @param Wordpress $wp
-	 * @param Styles $styles
-	 * @param Scripts $scripts
 	 */
-	public function addAdminAssets(Wordpress $wp, Styles $styles, Scripts $scripts)
+	public function addAdminAssets(Wordpress $wp)
 	{
-		$styles->add('jigoshop.admin.product.variable', JIGOSHOP_URL.'/assets/css/admin/product/variable.css');
-		$scripts->add('jigoshop.media', JIGOSHOP_URL.'/assets/js/media.js', array('jquery'));
-		$scripts->add('jigoshop.admin.product.variable', JIGOSHOP_URL.'/assets/js/admin/product/variable.js', array('jquery'));
-		$scripts->localize('jigoshop.admin.product.variable', 'jigoshop_admin_product_variable', array(
+		Styles::add('jigoshop.admin.product.variable', JIGOSHOP_URL.'/assets/css/admin/product/variable.css');
+		Scripts::add('jigoshop.media', JIGOSHOP_URL.'/assets/js/media.js', array('jquery'));
+		Scripts::add('jigoshop.admin.product.variable', JIGOSHOP_URL.'/assets/js/admin/product/variable.js', array('jquery'));
+		Scripts::localize('jigoshop.admin.product.variable', 'jigoshop_admin_product_variable', array(
 			'ajax' => $wp->getAjaxUrl(),
 			'i18n' => array(
 				'confirm_remove' => __('Are you sure?', 'jigoshop'),
@@ -296,10 +294,8 @@ class Variable implements Type
 
 	/**
 	 * @param Wordpress $wp
-	 * @param Styles $styles
-	 * @param Scripts $scripts
 	 */
-	public function addFrontendAssets(Wordpress $wp, Styles $styles, Scripts $scripts)
+	public function addFrontendAssets(Wordpress $wp)
 	{
 		$post = $wp->getGlobalPost();
 		$product = $this->productService->findForPost($post);
@@ -321,9 +317,9 @@ class Variable implements Type
 				}
 			}
 
-			$styles->add('jigoshop.product.variable', JIGOSHOP_URL.'/assets/css/shop/product/variable.css');
-			$scripts->add('jigoshop.product.variable', JIGOSHOP_URL.'/assets/js/shop/product/variable.js', array('jquery'));
-			$scripts->localize('jigoshop.product.variable', 'jigoshop_product_variable', array(
+			Styles::add('jigoshop.product.variable', JIGOSHOP_URL.'/assets/css/shop/product/variable.css');
+			Scripts::add('jigoshop.product.variable', JIGOSHOP_URL.'/assets/js/shop/product/variable.js', array('jquery'));
+			Scripts::localize('jigoshop.product.variable', 'jigoshop_product_variable', array(
 				'ajax' => $wp->getAjaxUrl(),
 				'variations' => $variations,
 			));

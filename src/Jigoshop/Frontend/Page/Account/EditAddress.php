@@ -28,18 +28,18 @@ class EditAddress implements PageInterface
 	/** @var CustomerServiceInterface */
 	private $customerService;
 
-	public function __construct(Wordpress $wp, Options $options, CustomerServiceInterface $customerService, Messages $messages, Styles $styles, Scripts $scripts)
+	public function __construct(Wordpress $wp, Options $options, CustomerServiceInterface $customerService, Messages $messages)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->customerService = $customerService;
 		$this->messages = $messages;
 
-		$styles->add('jigoshop.user.account', JIGOSHOP_URL.'/assets/css/user/account.css');
-		$styles->add('jigoshop.user.account.edit_address', JIGOSHOP_URL.'/assets/css/user/account/edit_address.css');
-		$styles->add('jigoshop.vendors', JIGOSHOP_URL.'/assets/css/vendors.min.css');
-		$scripts->add('jigoshop.vendors', JIGOSHOP_URL.'/assets/js/vendors.min.js');
-		$this->wp->doAction('jigoshop\account\assets', $wp, $styles, $scripts);
+		Styles::add('jigoshop.user.account', JIGOSHOP_URL.'/assets/css/user/account.css');
+		Styles::add('jigoshop.user.account.edit_address', JIGOSHOP_URL.'/assets/css/user/account/edit_address.css');
+		Styles::add('jigoshop.vendors', JIGOSHOP_URL.'/assets/css/vendors.min.css');
+		Scripts::add('jigoshop.vendors', JIGOSHOP_URL.'/assets/js/vendors.min.js');
+		$this->wp->doAction('jigoshop\account\assets', $wp);
 	}
 
 
@@ -48,11 +48,12 @@ class EditAddress implements PageInterface
 		if (isset($_POST['action']) && $_POST['action'] == 'save_address') {
 			$customer = $this->customerService->getCurrent();
 			switch ($this->wp->getQueryParameter('edit-address')) {
-				case 'billing':
-					$address = $customer->getBillingAddress();
-					break;
 				case 'shipping':
 					$address = $customer->getShippingAddress();
+					break;
+				case 'billing':
+				default:
+					$address = $customer->getBillingAddress();
 					break;
 			}
 
@@ -114,11 +115,12 @@ class EditAddress implements PageInterface
 
 		$customer = $this->customerService->getCurrent();
 		switch ($this->wp->getQueryParameter('edit-address')) {
-			case 'billing':
-				$address = $customer->getBillingAddress();
-				break;
 			case 'shipping':
 				$address = $customer->getShippingAddress();
+				break;
+			case 'billing':
+			default:
+				$address = $customer->getBillingAddress();
 				break;
 		}
 		return Render::get('user/account/edit_address', array(

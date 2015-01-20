@@ -69,7 +69,6 @@ class JigoshopInit
 			$loader->load('admin/pages.yml');
 			$loader->load('admin/settings.yml');
 			$loader->load('factories.yml');
-			$loader->load('helpers.yml');
 			$loader->load('main.yml');
 			$loader->load('pages.yml');
 			$loader->load('payment.yml');

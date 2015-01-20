@@ -29,8 +29,7 @@ class Account implements PageInterface
 	/** @var OrderServiceInterface */
 	private $orderService;
 
-	public function __construct(Wordpress $wp, Options $options, CustomerServiceInterface $customerService, OrderServiceInterface $orderService, Messages $messages,
-		Styles $styles, Scripts $scripts)
+	public function __construct(Wordpress $wp, Options $options, CustomerServiceInterface $customerService, OrderServiceInterface $orderService, Messages $messages)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
@@ -38,10 +37,13 @@ class Account implements PageInterface
 		$this->orderService = $orderService;
 		$this->messages = $messages;
 
-		$styles->add('jigoshop.user.account', JIGOSHOP_URL.'/assets/css/user/account.css');
-		$scripts->add('jigoshop.helpers', JIGOSHOP_URL.'/assets/js/helpers.js', array('jquery'));
-		$scripts->add('jigoshop.shop', JIGOSHOP_URL.'/assets/js/shop.js', array('jquery', 'jigoshop.helpers'));
-		$this->wp->doAction('jigoshop\account\assets', $wp, $styles, $scripts);
+		Styles::add('jigoshop.user.account', JIGOSHOP_URL.'/assets/css/user/account.css');
+		Scripts::add('jigoshop.helpers', JIGOSHOP_URL.'/assets/js/helpers.js', array('jquery'));
+		Scripts::add('jigoshop.shop', JIGOSHOP_URL.'/assets/js/shop.js', array(
+			'jquery',
+			'jigoshop.helpers'
+		));
+		$this->wp->doAction('jigoshop\account\assets', $wp);
 	}
 
 

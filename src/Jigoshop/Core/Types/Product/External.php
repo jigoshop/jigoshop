@@ -7,7 +7,6 @@ use Jigoshop\Entity\Product;
 use Jigoshop\Entity\Product\External as Entity;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
-use Jigoshop\Helper\Styles;
 use WPAL\Wordpress;
 
 class External implements Type
@@ -54,7 +53,7 @@ class External implements Type
 		$wp->addFilter('jigoshop\cart\add', array($this, 'addToCart'), 10, 2);
 //		$wp->addFilter('jigoshop\core\types\variable\subtypes', array($this, 'addVariableSubtype'), 10, 1); // TODO: Enable variable subtypes changing
 
-		$wp->addAction('jigoshop\admin\product\assets', array($this, 'addAssets'), 10, 3);
+		$wp->addAction('jigoshop\admin\product\assets', array($this, 'addAssets'), 10, 0);
 		$wp->addFilter('jigoshop\admin\product\menu', array($this, 'addProductMenu'));
 		$wp->addFilter('jigoshop\product\tabs\general', array($this, 'addToGeneralTab'), 10, 1);
 		$wp->addAction('jigoshop\admin\variation', array($this, 'addVariationFields'), 10, 2);
@@ -100,14 +99,12 @@ class External implements Type
 		return $value;
 	}
 
-	/**
-	 * @param Wordpress $wp
-	 * @param Styles $styles
-	 * @param Scripts $scripts
-	 */
-	public function addAssets(Wordpress $wp, Styles $styles, Scripts $scripts)
+	public function addAssets()
 	{
-		$scripts->add('jigoshop.admin.product.external', JIGOSHOP_URL.'/assets/js/admin/product/external.js', array('jquery', 'jigoshop.helpers'));
+		Scripts::add('jigoshop.admin.product.external', JIGOSHOP_URL.'/assets/js/admin/product/external.js', array(
+			'jquery',
+			'jigoshop.helpers'
+		));
 	}
 
 	/**

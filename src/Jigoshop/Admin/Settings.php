@@ -5,12 +5,10 @@ namespace Jigoshop\Admin;
 use Jigoshop\Admin;
 use Jigoshop\Admin\Helper\Forms;
 use Jigoshop\Admin\Settings\GeneralTab;
-use Jigoshop\Admin\Settings\OwnerTab;
 use Jigoshop\Admin\Settings\TabInterface;
 use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
 use Jigoshop\Helper\Render;
-use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
 use WPAL\Wordpress;
 
@@ -33,14 +31,14 @@ class Settings implements PageInterface
 	private $tabs = array();
 	private $currentTab;
 
-	public function __construct(Wordpress $wp, Options $options, Messages $messages, Styles $styles, Scripts $scripts)
+	public function __construct(Wordpress $wp, Options $options, Messages $messages)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->messages = $messages;
 
 		$wp->addAction('current_screen', array($this, 'register'));
-		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $styles, $scripts) {
+		$wp->addAction('admin_enqueue_scripts', function () use ($wp){
 			// Weed out all admin pages except the Jigoshop Settings page hits
 			if (!in_array($wp->getPageNow(), array('admin.php', 'options.php'))) {
 				return;
@@ -51,7 +49,7 @@ class Settings implements PageInterface
 				return;
 			}
 
-			$styles->add('jigoshop.admin.settings', JIGOSHOP_URL.'/assets/css/admin/settings.css');
+			Styles::add('jigoshop.admin.settings', JIGOSHOP_URL.'/assets/css/admin/settings.css');
 		});
 	}
 
@@ -147,18 +145,6 @@ class Settings implements PageInterface
 	}
 
 	/**
-	 * Displays the page.
-	 */
-	public function display()
-	{
-		Render::output('admin/settings', array(
-			'tabs' => $this->tabs,
-			'current_tab' => $this->getCurrentTab(),
-			'messages' => $this->messages,
-		));
-	}
-
-	/**
 	 * Displays the tab.
 	 *
 	 * @param TabInterface $tab Tab to display.
@@ -183,6 +169,18 @@ class Settings implements PageInterface
 		$field['name'] = Options::NAME.$field['name'];
 
 		return $field;
+	}
+
+	/**
+	 * Displays the page.
+	 */
+	public function display()
+	{
+		Render::output('admin/settings', array(
+			'tabs' => $this->tabs,
+			'current_tab' => $this->getCurrentTab(),
+			'messages' => $this->messages,
+		));
 	}
 
 	/**

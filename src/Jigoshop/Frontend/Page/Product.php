@@ -30,8 +30,7 @@ class Product implements PageInterface
 	/** @var Messages  */
 	private $messages;
 
-	public function __construct(Wordpress $wp, Options $options, ProductServiceInterface $productService, CartServiceInterface $cartService, Messages $messages, Styles $styles,
-		Scripts $scripts)
+	public function __construct(Wordpress $wp, Options $options, ProductServiceInterface $productService, CartServiceInterface $cartService, Messages $messages)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
@@ -39,16 +38,19 @@ class Product implements PageInterface
 		$this->cartService = $cartService;
 		$this->messages = $messages;
 
-		$styles->add('jigoshop.shop', JIGOSHOP_URL.'/assets/css/shop.css');
-		$styles->add('jigoshop.shop.product', JIGOSHOP_URL.'/assets/css/shop/product.css');
-		$styles->add('jigoshop.vendors', JIGOSHOP_URL.'/assets/css/vendors.min.css');
-		$scripts->add('jigoshop.vendors', JIGOSHOP_URL.'/assets/js/vendors.min.js');
-		$scripts->add('jigoshop.shop.product', JIGOSHOP_URL.'/assets/js/shop/product.js', array('jquery', 'jigoshop.vendors'));
+		Styles::add('jigoshop.shop', JIGOSHOP_URL.'/assets/css/shop.css');
+		Styles::add('jigoshop.shop.product', JIGOSHOP_URL.'/assets/css/shop/product.css');
+		Styles::add('jigoshop.vendors', JIGOSHOP_URL.'/assets/css/vendors.min.css');
+		Scripts::add('jigoshop.vendors', JIGOSHOP_URL.'/assets/js/vendors.min.js');
+		Scripts::add('jigoshop.shop.product', JIGOSHOP_URL.'/assets/js/shop/product.js', array(
+			'jquery',
+			'jigoshop.vendors'
+		));
 		$this->wp->addAction('jigoshop\template\product\before_summary', array($this, 'productImages'), 10, 1);
 		$this->wp->addAction('jigoshop\template\product\after_summary', array($this, 'productTabs'), 10, 1);
 		$this->wp->addAction('jigoshop\template\product\tab_panels', array($this, 'productAttributes'), 10, 2);
 		$this->wp->addAction('jigoshop\template\product\tab_panels', array($this, 'productDescription'), 10, 2);
-		$this->wp->doAction('jigoshop\product\assets', $wp, $styles, $scripts);
+		$this->wp->doAction('jigoshop\product\assets', $wp);
 	}
 
 	public function action()

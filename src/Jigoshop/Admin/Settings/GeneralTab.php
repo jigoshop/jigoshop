@@ -20,10 +20,10 @@ class GeneralTab implements TabInterface
 	/** @var array */
 	private $options;
 
-	public function __construct(Wordpress $wp, Options $options, Scripts $scripts)
+	public function __construct(Wordpress $wp, Options $options)
 	{
 		$this->options = $options->get(self::SLUG);
-		$wp->addAction('admin_enqueue_scripts', function() use ($scripts){
+		$wp->addAction('admin_enqueue_scripts', function (){
 			if (!isset($_GET['tab']) || $_GET['tab'] != GeneralTab::SLUG) {
 				return;
 			}
@@ -35,8 +35,8 @@ class GeneralTab implements TabInterface
 				}
 			}
 
-			$scripts->add('jigoshop.admin.settings.general', JIGOSHOP_URL.'/assets/js/admin/settings/general.js', array('jquery'), array('page' => 'jigoshop_page_jigoshop_settings'));
-			$scripts->localize('jigoshop.admin.settings.general', 'jigoshop_admin_general', array(
+			Scripts::add('jigoshop.admin.settings.general', JIGOSHOP_URL.'/assets/js/admin/settings/general.js', array('jquery'), array('page' => 'jigoshop_page_jigoshop_settings'));
+			Scripts::localize('jigoshop.admin.settings.general', 'jigoshop_admin_general', array(
 				'states' => $states,
 			));
 		});

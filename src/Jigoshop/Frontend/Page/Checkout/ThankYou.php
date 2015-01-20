@@ -7,12 +7,10 @@ use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\Order;
 use Jigoshop\Entity\Order\Item;
-use Jigoshop\Entity\OrderInterface;
 use Jigoshop\Entity\Product;
 use Jigoshop\Frontend\Page\PageInterface;
 use Jigoshop\Frontend\Pages;
 use Jigoshop\Helper\Render;
-use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
 use Jigoshop\Helper\Tax;
 use Jigoshop\Service\OrderServiceInterface;
@@ -29,18 +27,18 @@ class ThankYou implements PageInterface
 	/** @var OrderServiceInterface */
 	private $orderService;
 
-	public function __construct(Wordpress $wp, Options $options, Messages $messages, OrderServiceInterface $orderService, Styles $styles, Scripts $scripts)
+	public function __construct(Wordpress $wp, Options $options, Messages $messages, OrderServiceInterface $orderService)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
 		$this->messages = $messages;
 		$this->orderService = $orderService;
 
-		$styles->add('jigoshop.shop', JIGOSHOP_URL.'/assets/css/shop.css');
-		$styles->add('jigoshop.user.account', JIGOSHOP_URL.'/assets/css/user/account.css');
-		$styles->add('jigoshop.user.account.orders', JIGOSHOP_URL.'/assets/css/user/account/orders.css');
-		$styles->add('jigoshop.user.account.orders.single', JIGOSHOP_URL.'/assets/css/user/account/orders/single.css');
-		$wp->doAction('jigoshop\checkout\thank_you\assets', $wp, $styles, $scripts);
+		Styles::add('jigoshop.shop', JIGOSHOP_URL.'/assets/css/shop.css');
+		Styles::add('jigoshop.user.account', JIGOSHOP_URL.'/assets/css/user/account.css');
+		Styles::add('jigoshop.user.account.orders', JIGOSHOP_URL.'/assets/css/user/account/orders.css');
+		Styles::add('jigoshop.user.account.orders.single', JIGOSHOP_URL.'/assets/css/user/account/orders/single.css');
+		$wp->doAction('jigoshop\checkout\thank_you\assets', $wp);
 		$wp->addAction('wp_head', array($this, 'googleAnalyticsTracking'), 9999);
 	}
 

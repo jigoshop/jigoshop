@@ -7,8 +7,6 @@ use Jigoshop\Core\Types;
 use Jigoshop\Entity\Product;
 use Jigoshop\Helper\Formatter;
 use Jigoshop\Helper\Product as ProductHelper;
-use Jigoshop\Helper\Scripts;
-use Jigoshop\Helper\Styles;
 use Jigoshop\Service\CouponServiceInterface;
 use WPAL\Wordpress;
 
@@ -21,7 +19,7 @@ class Coupons
 	/** @var \Jigoshop\Service\CouponServiceInterface */
 	private $couponService;
 
-	public function __construct(Wordpress $wp, Options $options, CouponServiceInterface $couponService, Styles $styles, Scripts $scripts)
+	public function __construct(Wordpress $wp, Options $options, CouponServiceInterface $couponService)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
@@ -30,9 +28,9 @@ class Coupons
 		$wp->addFilter(sprintf('manage_edit-%s_columns', Types::COUPON), array($this, 'columns'));
 		$wp->addAction(sprintf('manage_%s_posts_custom_column', Types::COUPON), array($this, 'displayColumn'), 2);
 
-		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $styles, $scripts){
+		$wp->addAction('admin_enqueue_scripts', function () use ($wp){
 			if ($wp->getPostType() == Types::COUPON) {
-				$wp->doAction('jigoshop\admin\coupons\assets', $wp, $styles, $scripts);
+				$wp->doAction('jigoshop\admin\coupons\assets', $wp);
 			}
 		});
 	}

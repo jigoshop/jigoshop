@@ -1,6 +1,8 @@
 <?php
 
 use Jigoshop\Frontend\Pages;
+use Jigoshop\Helper\Scripts;
+use Jigoshop\Helper\Styles;
 
 function jigowatt_clean($var)
 {
@@ -29,32 +31,27 @@ function jigoshop_add_required_version_notice($source, $version)
 
 function jigoshop_add_script($handle, $src, array $dependencies = array(), array $options = array())
 {
-	$scripts = \Jigoshop\Integration::getScripts();
-	$scripts->add($handle, $src, $dependencies, $options);
+	Scripts::add($handle, $src, $dependencies, $options);
 }
 
 function jigoshop_remove_script($handle, array $options = array())
 {
-	$scripts = \Jigoshop\Integration::getScripts();
-	$scripts->remove($handle, $options);
+	Scripts::remove($handle, $options);
 }
 
 function jigoshop_localize_script($handle, $object, array $values)
 {
-	$scripts = \Jigoshop\Integration::getScripts();
-	$scripts->localize($handle, $object, $values);
+	Scripts::localize($handle, $object, $values);
 }
 
 function jigoshop_add_style($handle, $src, array $dependencies = array(), array $options = array())
 {
-	$styles = \Jigoshop\Integration::getStyles();
-	$styles->add($handle, $src, $dependencies, $options);
+	Styles::add($handle, $src, $dependencies, $options);
 }
 
 function jigoshop_remove_style($handle, array $options = array())
 {
-	$styles = \Jigoshop\Integration::getStyles();
-	$styles->remove($handle, $options);
+	Styles::remove($handle, $options);
 }
 
 function jigoshop_get_page_id($page)
@@ -286,6 +283,7 @@ function jigoshop_get_formatted_variation(jigoshop_product $product, $variation_
 	$result = '';
 
 	if ($p instanceof \Jigoshop\Entity\Product\Variable) {
+		/** @noinspection PhpUndefinedFieldInspection */
 		$variation = $p->getVariation($product->variation_id);
 		if ($flat) {
 			$result .= PHP_EOL;

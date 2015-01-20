@@ -5,18 +5,15 @@ namespace Jigoshop\Frontend\Page;
 use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
-use Jigoshop\Helper\Scripts;
-use Jigoshop\Helper\Styles;
 use Jigoshop\Service\CartServiceInterface;
 use Jigoshop\Service\ProductServiceInterface;
 use WPAL\Wordpress;
 
 class ProductTagList extends AbstractProductList
 {
-	public function __construct(Wordpress $wp, Options $options, ProductServiceInterface $productService, CartServiceInterface $cartService, Messages $messages, Styles $styles,
-		Scripts $scripts)
+	public function __construct(Wordpress $wp, Options $options, ProductServiceInterface $productService, CartServiceInterface $cartService, Messages $messages)
 	{
-		parent::__construct($wp, $options, $productService, $cartService, $messages, $styles, $scripts);
+		parent::__construct($wp, $options, $productService, $cartService, $messages);
 	}
 
 	public function getTitle()

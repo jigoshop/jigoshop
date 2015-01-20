@@ -5,11 +5,11 @@ namespace Jigoshop\Admin\Page;
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
 use Jigoshop\Entity\Product as ProductEntity;
+use Jigoshop\Entity\Product;
 use Jigoshop\Helper\Formatter;
 use Jigoshop\Helper\Product as ProductHelper;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
-use Jigoshop\Helper\Styles;
 use Jigoshop\Service\ProductServiceInterface;
 use WPAL\Wordpress;
 
@@ -24,7 +24,7 @@ class Products
 	/** @var Types\Product */
 	private $type;
 
-	public function __construct(Wordpress $wp, Options $options, Types\Product $type, ProductServiceInterface $productService, Styles $styles, Scripts $scripts)
+	public function __construct(Wordpress $wp, Options $options, Types\Product $type, ProductServiceInterface $productService)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
@@ -38,20 +38,24 @@ class Products
 		$wp->addAction('pre_get_posts', array($this, 'setTypeFilter'));
 		$wp->addAction('wp_ajax_jigoshop.admin.products.feature_product', array($this, 'ajaxFeatureProduct'));
 
-		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $styles, $scripts){
+		$wp->addAction('admin_enqueue_scripts', function () use ($wp){
 			if ($wp->getPostType() == Types::PRODUCT) {
-				$scripts->add('jigoshop.admin.products', JIGOSHOP_URL.'/assets/js/admin/products.js', array('jquery', 'jigoshop.helpers'));
-				$scripts->localize('jigoshop.admin.products', 'jigoshop_admin_products', array(
+				Scripts::add('jigoshop.admin.products', JIGOSHOP_URL.'/assets/js/admin/products.js', array(
+					'jquery',
+					'jigoshop.helpers'
+				));
+				Scripts::localize('jigoshop.admin.products', 'jigoshop_admin_products', array(
 					'ajax' => $wp->getAjaxUrl(),
 				));
 
-				$wp->doAction('jigoshop\admin\products\assets', $wp, $styles, $scripts);
+				$wp->doAction('jigoshop\admin\products\assets', $wp);
 			}
 		});
 	}
 
 	public function ajaxFeatureProduct()
 	{
+		/** @var Product $product */
 		$product = $this->productService->find((int)$_POST['product_id']);
 		$product->setFeatured(!$product->isFeatured());
 		$this->productService->save($product);
@@ -95,6 +99,7 @@ class Products
 			return;
 		}
 
+		/** @var Product $product */
 		$product = $this->productService->find($post->ID);
 		switch ($column) {
 			case 'thumbnail':
@@ -199,21 +204,6 @@ class Products
 	}
 
 	/**
-	 * @param $query \WP_Query
-	 */
-	public function setTypeFilter($query)
-	{
-		if (isset($_GET['product_type']) && in_array($_GET['product_type'], array_keys($this->type->getEnabledTypes()))) {
-			$meta = $query->meta_query;
-			$meta[] = array(
-				'key' => 'type',
-				'value' => $_GET['product_type'],
-			);
-			$query->set('meta_query', $meta);
-		}
-	}
-
-	/**
 	 * Finds and returns number of products of specified type.
 	 *
 	 * @param $type Types\Product\Type Type class.
@@ -227,5 +217,20 @@ class Products
 				LEFT JOIN {$wpdb->postmeta} pm ON pm.post_id = p.ID
 				WHERE pm.meta_key = %s AND pm.meta_value = %s
 		", array('type', $type->getId())));
+	}
+
+	/**
+	 * @param $query \WP_Query
+	 */
+	public function setTypeFilter($query)
+	{
+		if (isset($_GET['product_type']) && in_array($_GET['product_type'], array_keys($this->type->getEnabledTypes()))) {
+			$meta = $query->meta_query;
+			$meta[] = array(
+				'key' => 'type',
+				'value' => $_GET['product_type'],
+			);
+			$query->set('meta_query', $meta);
+		}
 	}
 }

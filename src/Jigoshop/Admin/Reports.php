@@ -35,13 +35,13 @@ class Reports implements PageInterface
 	/** @var int End date of the report */
 	private $endDate;
 
-	public function __construct(Wordpress $wp, Messages $messages, OrderServiceInterface $orderService, Styles $styles, Scripts $scripts)
+	public function __construct(Wordpress $wp, Messages $messages, OrderServiceInterface $orderService)
 	{
 		$this->wp = $wp;
 		$this->messages = $messages;
 		$this->orderService = $orderService;
 
-		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $styles, $scripts) {
+		$wp->addAction('admin_enqueue_scripts', function () use ($wp){
 			// Weed out all admin pages except the Jigoshop Settings page hits
 			if (!in_array($wp->getPageNow(), array('admin.php', 'options.php'))) {
 				return;
@@ -57,11 +57,17 @@ class Reports implements PageInterface
 			$wp->wpEnqueueScript('postbox');
 			$wp->wpEnqueueScript('jquery-ui-datepicker');
 
-			$styles->add('jigoshop.admin.reports', JIGOSHOP_URL.'/assets/css/admin/reports.css');
-			$styles->add('jigoshop.jquery.ui', JIGOSHOP_URL.'/assets/css/jquery-ui.css');
-			$scripts->add('jigoshop.flot', JIGOSHOP_URL.'/assets/js/flot/jquery.flot.min.js', array('jquery'));
-			$scripts->add('jigoshop.flot.time', JIGOSHOP_URL.'/assets/js/flot/jquery.flot.time.min.js', array('jquery', 'jigoshop.flot'));
-			$scripts->add('jigoshop.flot.pie', JIGOSHOP_URL.'/assets/js/flot/jquery.flot.pie.min.js', array('jquery', 'jigoshop.flot'));
+			Styles::add('jigoshop.admin.reports', JIGOSHOP_URL.'/assets/css/admin/reports.css');
+			Styles::add('jigoshop.jquery.ui', JIGOSHOP_URL.'/assets/css/jquery-ui.css');
+			Scripts::add('jigoshop.flot', JIGOSHOP_URL.'/assets/js/flot/jquery.flot.min.js', array('jquery'));
+			Scripts::add('jigoshop.flot.time', JIGOSHOP_URL.'/assets/js/flot/jquery.flot.time.min.js', array(
+				'jquery',
+				'jigoshop.flot'
+			));
+			Scripts::add('jigoshop.flot.pie', JIGOSHOP_URL.'/assets/js/flot/jquery.flot.pie.min.js', array(
+				'jquery',
+				'jigoshop.flot'
+			));
 		});
 	}
 

@@ -6,7 +6,6 @@ use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\Product;
 use Jigoshop\Entity\Product\Simple as Entity;
 use Jigoshop\Helper\Scripts;
-use Jigoshop\Helper\Styles;
 use WPAL\Wordpress;
 
 class Simple implements Type
@@ -53,7 +52,7 @@ class Simple implements Type
 		$wp->addFilter('jigoshop\cart\add', array($this, 'addToCart'), 10, 2);
 		$wp->addFilter('jigoshop\core\types\variable\subtypes', array($this, 'addVariableSubtype'), 10, 1);
 		$wp->addFilter('jigoshop\product\get_stock', array($this, 'getStock'), 10, 2);
-		$wp->addAction('jigoshop\admin\product\assets', array($this, 'addAssets'), 10, 3);
+		$wp->addAction('jigoshop\admin\product\assets', array($this, 'addAssets'), 10, 0);
 	}
 
 	/**
@@ -98,13 +97,8 @@ class Simple implements Type
 		return $value;
 	}
 
-	/**
-	 * @param Wordpress $wp
-	 * @param Styles $styles
-	 * @param Scripts $scripts
-	 */
-	public function addAssets(Wordpress $wp, Styles $styles, Scripts $scripts)
+	public function addAssets()
 	{
-		$scripts->add('jigoshop.admin.product.simple', JIGOSHOP_URL.'/assets/js/admin/product/simple.js', array('jquery'));
+		Scripts::add('jigoshop.admin.product.simple', JIGOSHOP_URL.'/assets/js/admin/product/simple.js', array('jquery'));
 	}
 }

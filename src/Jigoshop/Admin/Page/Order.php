@@ -39,7 +39,7 @@ class Order
 	private $shippingService;
 
 	public function __construct(Wordpress $wp, Options $options, OrderServiceInterface $orderService, ProductServiceInterface $productService,
-		CustomerServiceInterface $customerService, ShippingServiceInterface $shippingService, Styles $styles, Scripts $scripts)
+		CustomerServiceInterface $customerService, ShippingServiceInterface $shippingService)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
@@ -48,11 +48,14 @@ class Order
 		$this->customerService = $customerService;
 		$this->shippingService = $shippingService;
 
-		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $options, $styles, $scripts){
+		$wp->addAction('admin_enqueue_scripts', function () use ($wp, $options){
 			if ($wp->getPostType() == Types::ORDER) {
-				$styles->add('jigoshop.admin.order', JIGOSHOP_URL.'/assets/css/admin/order.css');
-				$scripts->add('jigoshop.admin.order', JIGOSHOP_URL.'/assets/js/admin/order.js', array('jquery', 'jigoshop.helpers'));
-				$scripts->localize('jigoshop.admin.order', 'jigoshop_admin_order', array(
+				Styles::add('jigoshop.admin.order', JIGOSHOP_URL.'/assets/css/admin/order.css');
+				Scripts::add('jigoshop.admin.order', JIGOSHOP_URL.'/assets/js/admin/order.js', array(
+					'jquery',
+					'jigoshop.helpers'
+				));
+				Scripts::localize('jigoshop.admin.order', 'jigoshop_admin_order', array(
 					'ajax' => $wp->getAjaxUrl(),
 					'tax_shipping' => $options->get('tax.shipping'),
 					'ship_to_billing' => $options->get('shipping.only_to_billing'),
@@ -71,6 +74,7 @@ class Order
 		$that = $this;
 		$wp->addAction('add_meta_boxes_'.Types::ORDER, function() use ($wp, $orderService, $that){
 			$post = $wp->getGlobalPost();
+			/** @var \Jigoshop\Entity\Order $order */
 			$order = $orderService->findForPost($post);
 			$wp->addMetaBox('jigoshop-order-data', $order->getTitle(), array($that, 'dataBox'), Types::ORDER, 'normal', 'high');
 			$wp->addMetaBox('jigoshop-order-items', __('Order Items', 'jigoshop'), array($that, 'itemsBox'), Types::ORDER, 'normal', 'high');
@@ -87,6 +91,7 @@ class Order
 	public function ajaxAddProduct()
 	{
 		try {
+			/** @var \Jigoshop\Entity\Order $order */
 			$order = $this->orderService->find((int)$_POST['order']);
 
 			if ($order->getId() === null) {
@@ -130,6 +135,89 @@ class Order
 		exit;
 	}
 
+	/**
+	 * @param $order OrderInterface Order to get values from.
+	 * @return array Ajax response array.
+	 */
+	private function getAjaxResponse($order)
+	{
+		$tax = $order->getTax();
+		$shippingTax = $order->getShippingTax();
+
+		foreach ($order->getTax() as $class => $value) {
+			$tax[$class] = $value + $shippingTax[$class];
+		}
+
+		$shipping = array();
+		$shippingHtml = array();
+		foreach ($this->shippingService->getAvailable() as $method) {
+			/** @var $method Shipping\Method */
+			if ($method instanceof Shipping\MultipleMethod) {
+				/** @var $method Shipping\MultipleMethod */
+				foreach ($method->getRates() as $rate) {
+					/** @var $rate Shipping\Rate */
+					$shipping[$method->getId().'-'.$rate->getId()] = $method->isEnabled() ? $rate->calculate($order) : -1;
+
+					if ($method->isEnabled()) {
+						$shippingHtml[$method->getId().'-'.$rate->getId()] = array(
+							'price' => ProductHelper::formatPrice($rate->calculate($order)),
+							'html' => Render::get('admin/order/totals/shipping/rate', array(
+								'method' => $method,
+								'rate' => $rate,
+								'order' => $order
+							)),
+						);
+					}
+				}
+			} else {
+				$shipping[$method->getId()] = $method->isEnabled() ? $method->calculate($order) : -1;
+
+				if ($method->isEnabled()) {
+					$shippingHtml[$method->getId()] = array(
+						'price' => ProductHelper::formatPrice($method->calculate($order)),
+						'html' => Render::get('admin/order/totals/shipping/method', array(
+							'method' => $method,
+							'order' => $order
+						)),
+					);
+				}
+			}
+		}
+
+		return array(
+			'success' => true,
+			'shipping' => $shipping,
+			'product_subtotal' => $order->getProductSubtotal(),
+			'subtotal' => $order->getSubtotal(),
+			'total' => $order->getTotal(),
+			'tax' => $tax,
+			'html' => array(
+				'shipping' => $shippingHtml,
+				'product_subtotal' => ProductHelper::formatPrice($order->getProductSubtotal()),
+				'subtotal' => ProductHelper::formatPrice($order->getSubtotal()),
+				'total' => ProductHelper::formatPrice($order->getTotal()),
+				'tax' => $this->getTaxes($order),
+			),
+		);
+	}
+
+	/**
+	 * @param $order OrderInterface Order to get taxes for.
+	 * @return array Taxes with labels array.
+	 */
+	private function getTaxes($order)
+	{
+		$result = array();
+		foreach ($order->getCombinedTax() as $class => $value) {
+			$result[$class] = array(
+				'label' => Tax::getLabel($class, $order),
+				'value' => ProductHelper::formatPrice($value),
+			);
+		}
+
+		return $result;
+	}
+
 	public function ajaxUpdateProduct()
 	{
 		try {
@@ -140,6 +228,7 @@ class Order
 				throw new Exception(__('Invalid product price.', 'jigoshop'));
 			}
 
+			/** @var \Jigoshop\Entity\Order $order */
 			$order = $this->orderService->find((int)$_POST['order']);
 
 			if ($order->getId() === null) {
@@ -179,6 +268,7 @@ class Order
 	public function ajaxRemoveProduct()
 	{
 		try {
+			/** @var \Jigoshop\Entity\Order $order */
 			$order = $this->orderService->find((int)$_POST['order']);
 
 			if ($order->getId() === null) {
@@ -202,6 +292,7 @@ class Order
 	public function ajaxChangeShippingMethod()
 	{
 		try {
+			/** @var \Jigoshop\Entity\Order $order */
 			$order = $this->orderService->find((int)$_POST['order']);
 
 			if ($order->getId() === null) {
@@ -233,6 +324,30 @@ class Order
 		exit;
 	}
 
+	/**
+	 * @param $order \Jigoshop\Entity\Order The order.
+	 * @return \Jigoshop\Entity\Order Updated order.
+	 */
+	private function rebuildOrder($order)
+	{
+		// Recalculate values
+		$items = $order->getItems();
+		$method = $order->getShippingMethod();
+		$order->removeItems();
+
+		foreach ($items as $item) {
+			/** @var $item Item */
+			$item = $this->wp->applyFilters('jigoshop\admin\order\update_product', $item, $order);
+			$order->addItem($item);
+		}
+
+		if ($method !== null) {
+			$order->setShippingMethod($method);
+		}
+
+		return $order;
+	}
+
 	public function ajaxChangeCountry()
 	{
 		try {
@@ -242,6 +357,7 @@ class Order
 
 			$post = $this->wp->getPost((int)$_POST['order']);
 			$this->wp->updateGlobalPost($post);
+			/** @var \Jigoshop\Entity\Order $order */
 			$order = $this->orderService->findForPost($post);
 
 			if ($order->getId() === null) {
@@ -283,6 +399,7 @@ class Order
 		try {
 			$post = $this->wp->getPost((int)$_POST['order']);
 			$this->wp->updateGlobalPost($post);
+			/** @var \Jigoshop\Entity\Order $order */
 			$order = $this->orderService->findForPost($post);
 
 			if ($order->getId() === null) {
@@ -326,6 +443,7 @@ class Order
 		try {
 			$post = $this->wp->getPost((int)$_POST['order']);
 			$this->wp->updateGlobalPost($post);
+			/** @var \Jigoshop\Entity\Order $order */
 			$order = $this->orderService->findForPost($post);
 
 			if ($order->getId() === null) {
@@ -364,6 +482,7 @@ class Order
 	public function dataBox()
 	{
 		$post = $this->wp->getGlobalPost();
+		/** @var \Jigoshop\Entity\Order $order */
 		$order = $this->orderService->findForPost($post);
 		$billingOnly = $this->options->get('shipping.only_to_billing');
 		$billingFields = $this->wp->applyFilters('jigoshop\admin\order\billing_fields', array(
@@ -478,6 +597,7 @@ class Order
 	public function totalsBox()
 	{
 		$post = $this->wp->getGlobalPost();
+		/** @var \Jigoshop\Entity\Order $order */
 		$order = $this->orderService->findForPost($post);
 
 		Render::output('admin/order/totalsBox', array(
@@ -490,105 +610,5 @@ class Order
 	public function actionsBox()
 	{
 		//
-	}
-
-	/**
-	 * @param $order OrderInterface Order to get values from.
-	 * @return array Ajax response array.
-	 */
-	private function getAjaxResponse($order)
-	{
-		$tax = $order->getTax();
-		$shippingTax = $order->getShippingTax();
-
-		foreach ($order->getTax() as $class => $value) {
-			$tax[$class] = $value + $shippingTax[$class];
-		}
-
-		$shipping = array();
-		$shippingHtml = array();
-		foreach ($this->shippingService->getAvailable() as $method) {
-			/** @var $method Shipping\Method */
-			if ($method instanceof Shipping\MultipleMethod) {
-				/** @var $method Shipping\MultipleMethod */
-				foreach ($method->getRates() as $rate) {
-					/** @var $rate Shipping\Rate */
-					$shipping[$method->getId().'-'.$rate->getId()] = $method->isEnabled() ? $rate->calculate($order) : -1;
-
-					if ($method->isEnabled()) {
-						$shippingHtml[$method->getId().'-'.$rate->getId()] = array(
-							'price' => ProductHelper::formatPrice($rate->calculate($order)),
-							'html' => Render::get('admin/order/totals/shipping/rate', array('method' => $method, 'rate' => $rate, 'order' => $order)),
-						);
-					}
-				}
-			} else {
-				$shipping[$method->getId()] = $method->isEnabled() ? $method->calculate($order) : -1;
-
-				if ($method->isEnabled()) {
-					$shippingHtml[$method->getId()] = array(
-						'price' => ProductHelper::formatPrice($method->calculate($order)),
-						'html' => Render::get('admin/order/totals/shipping/method', array('method' => $method, 'order' => $order)),
-					);
-				}
-			}
-		}
-
-		return array(
-			'success' => true,
-			'shipping' => $shipping,
-			'product_subtotal' => $order->getProductSubtotal(),
-			'subtotal' => $order->getSubtotal(),
-			'total' => $order->getTotal(),
-			'tax' => $tax,
-			'html' => array(
-				'shipping' => $shippingHtml,
-				'product_subtotal' => ProductHelper::formatPrice($order->getProductSubtotal()),
-				'subtotal' => ProductHelper::formatPrice($order->getSubtotal()),
-				'total' => ProductHelper::formatPrice($order->getTotal()),
-				'tax' => $this->getTaxes($order),
-			),
-		);
-	}
-
-	/**
-	 * @param $order OrderInterface Order to get taxes for.
-	 * @return array Taxes with labels array.
-	 */
-	private function getTaxes($order)
-	{
-		$result = array();
-		foreach ($order->getCombinedTax() as $class => $value) {
-			$result[$class] = array(
-				'label' => Tax::getLabel($class, $order),
-				'value' => ProductHelper::formatPrice($value),
-			);
-		}
-
-		return $result;
-	}
-
-	/**
-	 * @param $order \Jigoshop\Entity\Order The order.
-	 * @return \Jigoshop\Entity\Order Updated order.
-	 */
-	private function rebuildOrder($order)
-	{
-		// Recalculate values
-		$items = $order->getItems();
-		$method = $order->getShippingMethod();
-		$order->removeItems();
-
-		foreach ($items as $item) {
-			/** @var $item Item */
-			$item = $this->wp->applyFilters('jigoshop\admin\order\update_product', $item, $order);
-			$order->addItem($item);
-		}
-
-		if ($method !== null) {
-			$order->setShippingMethod($method);
-		}
-
-		return $order;
 	}
 }

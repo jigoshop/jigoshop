@@ -30,7 +30,7 @@ class ShoppingTab implements TabInterface
 	/** @var array */
 	private $catalogOrder;
 
-	public function __construct(Wordpress $wp, Options $options, Messages $messages, Scripts $scripts)
+	public function __construct(Wordpress $wp, Options $options, Messages $messages)
 	{
 		$this->options = $options->get(self::SLUG);
 		$this->messages = $messages;
@@ -56,9 +56,9 @@ class ShoppingTab implements TabInterface
 			'DESC' => __('Descending', 'jigoshop'),
 		));
 
-		$wp->addAction('admin_enqueue_scripts', function() use ($scripts){
+		$wp->addAction('admin_enqueue_scripts', function (){
 			if (isset($_GET['tab']) && $_GET['tab'] == ShoppingTab::SLUG) {
-				$scripts->add('jigoshop.admin.settings.shopping', JIGOSHOP_URL.'/assets/js/admin/settings/shopping.js', array('jquery'), array('page' => 'jigoshop_page_jigoshop_settings'));
+				Scripts::add('jigoshop.admin.settings.shopping', JIGOSHOP_URL.'/assets/js/admin/settings/shopping.js', array('jquery'), array('page' => 'jigoshop_page_jigoshop_settings'));
 			}
 		});
 	}

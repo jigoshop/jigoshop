@@ -52,7 +52,7 @@ class Checkout implements PageInterface
 	private $orderService;
 
 	public function __construct(Wordpress $wp, Options $options, Messages $messages, CartServiceInterface $cartService,	CustomerServiceInterface $customerService,
-		ShippingServiceInterface $shippingService, PaymentServiceInterface $paymentService, OrderServiceInterface $orderService, Styles $styles, Scripts $scripts)
+		ShippingServiceInterface $shippingService, PaymentServiceInterface $paymentService, OrderServiceInterface $orderService)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
@@ -63,14 +63,17 @@ class Checkout implements PageInterface
 		$this->paymentService = $paymentService;
 		$this->orderService = $orderService;
 
-		$styles->add('jigoshop', JIGOSHOP_URL.'/assets/css/shop.css');
-		$styles->add('jigoshop.checkout', JIGOSHOP_URL.'/assets/css/shop/checkout.css');
-		$styles->add('jigoshop.vendors', JIGOSHOP_URL.'/assets/css/vendors.min.css');
-		$scripts->add('jigoshop.vendors', JIGOSHOP_URL.'/assets/js/vendors.min.js', array('jquery'));
-		$scripts->add('jigoshop.helpers', JIGOSHOP_URL.'/assets/js/helpers.js');
-		$scripts->add('jigoshop.checkout', JIGOSHOP_URL.'/assets/js/shop/checkout.js', array('jquery', 'jigoshop.vendors'));
-		$scripts->add('jquery-blockui', '//cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.66.0-2013.10.09/jquery.blockUI.min.js');
-		$scripts->localize('jigoshop.checkout', 'jigoshop_checkout', array(
+		Styles::add('jigoshop', JIGOSHOP_URL.'/assets/css/shop.css');
+		Styles::add('jigoshop.checkout', JIGOSHOP_URL.'/assets/css/shop/checkout.css');
+		Styles::add('jigoshop.vendors', JIGOSHOP_URL.'/assets/css/vendors.min.css');
+		Scripts::add('jigoshop.vendors', JIGOSHOP_URL.'/assets/js/vendors.min.js', array('jquery'));
+		Scripts::add('jigoshop.helpers', JIGOSHOP_URL.'/assets/js/helpers.js');
+		Scripts::add('jigoshop.checkout', JIGOSHOP_URL.'/assets/js/shop/checkout.js', array(
+			'jquery',
+			'jigoshop.vendors'
+		));
+		Scripts::add('jquery-blockui', '//cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.66.0-2013.10.09/jquery.blockUI.min.js');
+		Scripts::localize('jigoshop.checkout', 'jigoshop_checkout', array(
 			'ajax' => $this->wp->getAjaxUrl(),
 			'assets' => JIGOSHOP_URL.'/assets',
 			'i18n' => array(
@@ -388,6 +391,17 @@ class Checkout implements PageInterface
 		}
 	}
 
+	/**
+	 * Checks whether user is allowed to see checkout page.
+	 *
+	 * @return bool Is user allowed to enter checkout page?
+	 */
+	private function isAllowedToEnterCheckout()
+	{
+		return $this->options->get('shopping.guest_purchases') || $this->wp->isUserLoggedIn() || $this->options->get('shopping.show_login_form')
+		|| $this->options->get('shopping.allow_registration');
+	}
+
 	private function createUserAccount()
 	{
 		// Check if user agreed to account creation
@@ -439,6 +453,53 @@ class Checkout implements PageInterface
 		$this->wp->wpSetAuthCookie($id, true, $this->wp->isSsl());
 		$customer = $this->cartService->getCurrent()->getCustomer();
 		$customer->setId($id);
+	}
+
+	/**
+	 * Checks whether user is allowed to see checkout page.
+	 *
+	 * @param CartEntity $cart The cart.
+	 * @return bool Is user allowed to enter checkout page?
+	 */
+	private function isAllowedToCheckout(CartEntity $cart)
+	{
+		return $this->options->get('shopping.guest_purchases') || $this->wp->isUserLoggedIn()
+		|| ($this->options->get('shopping.allow_registration') && $cart->getCustomer()->getId() > 0);
+	}
+
+	/**
+	 * @param $order OrderInterface The order.
+	 * @return bool
+	 */
+	private function isShippingRequired($order)
+	{
+		foreach ($order->getItems() as $item) {
+			/** @var $item Item */
+			switch ($item->getType()) {
+				case Simple::TYPE:
+					/** @var \Jigoshop\Entity\Product|\Jigoshop\Entity\Product\Shippable $product */
+					$product = $item->getProduct();
+					if ($product->isShippable()) {
+						return true;
+					}
+					break;
+				default:
+					if ($this->wp->applyFilters('jigoshop\checkout\is_shipping_required', false, $item)) {
+						return true;
+					}
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * @param $order OrderInterface The order.
+	 * @return bool
+	 */
+	private function isPaymentRequired($order)
+	{
+		return $order->getTotal() > 0;
 	}
 
 	/**
@@ -673,62 +734,5 @@ class Checkout implements PageInterface
 				'columnSize' => 6,
 			),
 		);
-	}
-
-	/**
-	 * @param $order OrderInterface The order.
-	 * @return bool
-	 */
-	private function isPaymentRequired($order)
-	{
-		return $order->getTotal() > 0;
-	}
-
-	/**
-	 * @param $order OrderInterface The order.
-	 * @return bool
-	 */
-	private function isShippingRequired($order)
-	{
-		foreach ($order->getItems() as $item) {
-			/** @var $item Item */
-			switch ($item->getType()) {
-				case Simple::TYPE:
-					/** @var \Jigoshop\Entity\Product|\Jigoshop\Entity\Product\Shippable $product */
-					$product = $item->getProduct();
-					if ($product->isShippable()) {
-						return true;
-					}
-					break;
-				default:
-					if ($this->wp->applyFilters('jigoshop\checkout\is_shipping_required', false, $item)) {
-						return true;
-					}
-			}
-		}
-
-		return false;
-	}
-
-	/**
-	 * Checks whether user is allowed to see checkout page.
-	 * @return bool Is user allowed to enter checkout page?
-	 */
-	private function isAllowedToEnterCheckout()
-	{
-		return $this->options->get('shopping.guest_purchases') || $this->wp->isUserLoggedIn() || $this->options->get('shopping.show_login_form')
-			|| $this->options->get('shopping.allow_registration');
-	}
-
-	/**
-	 * Checks whether user is allowed to see checkout page.
-	 *
-	 * @param CartEntity $cart The cart.
-	 * @return bool Is user allowed to enter checkout page?
-	 */
-	private function isAllowedToCheckout(CartEntity $cart)
-	{
-		return $this->options->get('shopping.guest_purchases') || $this->wp->isUserLoggedIn()
-			|| ($this->options->get('shopping.allow_registration') && $cart->getCustomer()->getId() > 0);
 	}
 }

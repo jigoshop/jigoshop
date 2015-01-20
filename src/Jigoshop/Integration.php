@@ -199,6 +199,7 @@ class Integration
 			/** @var $product Product */
 			return apply_filters('jigoshop_cart_product_title', $value, new \jigoshop_product($product));
 		}, 10, 2);
+		/** @noinspection PhpUnusedParameterInspection */
 		add_filter('jigoshop\template\shop\cart\product_price', function($value, $price, $product, $item){
 			/** @var $product Product */
 			/** @var $item Order\Item */
@@ -206,6 +207,7 @@ class Integration
 			$values = $cart[$item->getKey()];
 			return apply_filters('jigoshop_product_price_display_in_cart', $value, $product->getId(), $values);
 		}, 10, 4);
+		/** @noinspection PhpUnusedParameterInspection */
 		add_filter('jigoshop\template\shop\cart\product_subtotal', function($value, $subtotal, $product, $item){
 			/** @var $product Product */
 			/** @var $item Order\Item */
@@ -406,22 +408,6 @@ class Integration
 	public static function getMessages()
 	{
 		return self::$di->get('jigoshop.messages');
-	}
-
-	/**
-	 * @return \Jigoshop\Helper\Styles
-	 */
-	public static function getStyles()
-	{
-		return self::$di->get('jigoshop.helper.styles');
-	}
-
-	/**
-	 * @return \Jigoshop\Helper\Scripts
-	 */
-	public static function getScripts()
-	{
-		return self::$di->get('jigoshop.helper.scripts');
 	}
 
 	/**

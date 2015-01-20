@@ -29,13 +29,13 @@ class Attributes implements PageInterface
 	/** @var ProductServiceInterface */
 	private $productService;
 
-	public function __construct(Wordpress $wp, Messages $messages, ProductServiceInterface $productService, Styles $styles, Scripts $scripts)
+	public function __construct(Wordpress $wp, Messages $messages, ProductServiceInterface $productService)
 	{
 		$this->wp = $wp;
 		$this->messages = $messages;
 		$this->productService = $productService;
 
-		$wp->addAction('admin_enqueue_scripts', function() use ($wp, $styles, $scripts) {
+		$wp->addAction('admin_enqueue_scripts', function () use ($wp){
 			// Weed out all admin pages except the Jigoshop Settings page hits
 			if (!in_array($wp->getPageNow(), array('edit.php'))) {
 				return;
@@ -46,9 +46,12 @@ class Attributes implements PageInterface
 				return;
 			}
 
-			$styles->add('jigoshop.admin.product_attributes', JIGOSHOP_URL.'/assets/css/admin/product_attributes.css');
-			$scripts->add('jigoshop.admin.product_attributes', JIGOSHOP_URL.'/assets/js/admin/product_attributes.js', array('jquery', 'jigoshop.helpers'));
-			$scripts->localize('jigoshop.admin.product_attributes', 'jigoshop_admin_product_attributes', array(
+			Styles::add('jigoshop.admin.product_attributes', JIGOSHOP_URL.'/assets/css/admin/product_attributes.css');
+			Scripts::add('jigoshop.admin.product_attributes', JIGOSHOP_URL.'/assets/js/admin/product_attributes.js', array(
+				'jquery',
+				'jigoshop.helpers'
+			));
+			Scripts::localize('jigoshop.admin.product_attributes', 'jigoshop_admin_product_attributes', array(
 				'ajax' => $wp->getAjaxUrl(),
 				'i18n' => array(
 					'saved' => __('Changes saved.', 'jigoshop'),

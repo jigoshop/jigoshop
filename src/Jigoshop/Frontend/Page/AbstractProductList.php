@@ -30,8 +30,7 @@ abstract class AbstractProductList implements PageInterface
 	/** @var Messages  */
 	protected $messages;
 
-	public function __construct(Wordpress $wp, Options $options, ProductServiceInterface $productService, CartServiceInterface $cartService, Messages $messages, Styles $styles,
-		Scripts $scripts)
+	public function __construct(Wordpress $wp, Options $options, ProductServiceInterface $productService, CartServiceInterface $cartService, Messages $messages)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
@@ -39,10 +38,10 @@ abstract class AbstractProductList implements PageInterface
 		$this->cartService = $cartService;
 		$this->messages = $messages;
 
-		$styles->add('jigoshop.shop', JIGOSHOP_URL.'/assets/css/shop.css');
-		$styles->add('jigoshop.shop.list', JIGOSHOP_URL.'/assets/css/shop/list.css');
-		$scripts->add('jigoshop.helpers', JIGOSHOP_URL.'/assets/js/helpers.js');
-		$scripts->add('jigoshop.shop', JIGOSHOP_URL.'/assets/js/shop.js');
+		Styles::add('jigoshop.shop', JIGOSHOP_URL.'/assets/css/shop.css');
+		Styles::add('jigoshop.shop.list', JIGOSHOP_URL.'/assets/css/shop/list.css');
+		Scripts::add('jigoshop.helpers', JIGOSHOP_URL.'/assets/js/helpers.js');
+		Scripts::add('jigoshop.shop', JIGOSHOP_URL.'/assets/js/shop.js');
 	}
 
 
@@ -115,6 +114,7 @@ abstract class AbstractProductList implements PageInterface
 		));
 	}
 
-	public abstract function getTitle();
 	public abstract function getContent();
+
+	public abstract function getTitle();
 }

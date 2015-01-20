@@ -12,7 +12,6 @@ use Jigoshop\Entity\Product\Downloadable as Entity;
 use Jigoshop\Helper\Api;
 use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
-use Jigoshop\Helper\Styles;
 use WPAL\Wordpress;
 
 class Downloadable implements Type
@@ -76,7 +75,7 @@ class Downloadable implements Type
 		$wp->addAction('jigoshop\order\before\\'.Order\Status::PROCESSING, array($this, 'updateProcessingStatus'));
 		$wp->addFilter('jigoshop\product\reduce_stock_status', array($this, 'reduceStockStatus'), 10, 2);
 
-		$wp->addAction('jigoshop\admin\product\assets', array($this, 'addAssets'), 10, 3);
+		$wp->addAction('jigoshop\admin\product\assets', array($this, 'addAssets'), 10, 0);
 		$wp->addFilter('jigoshop\admin\product\menu', array($this, 'addProductMenu'));
 		$wp->addFilter('jigoshop\admin\product\tabs', array($this, 'addProductTab'), 10, 2);
 		$wp->addAction('jigoshop\admin\variation', array($this, 'addVariationFields'), 10, 2);
@@ -190,14 +189,12 @@ class Downloadable implements Type
 		return $result;
 	}
 
-	/**
-	 * @param Wordpress $wp
-	 * @param Styles $styles
-	 * @param Scripts $scripts
-	 */
-	public function addAssets(Wordpress $wp, Styles $styles, Scripts $scripts)
+	public function addAssets()
 	{
-		$scripts->add('jigoshop.admin.product.downloadable', JIGOSHOP_URL.'/assets/js/admin/product/downloadable.js', array('jquery', 'jigoshop.helpers'));
+		Scripts::add('jigoshop.admin.product.downloadable', JIGOSHOP_URL.'/assets/js/admin/product/downloadable.js', array(
+			'jquery',
+			'jigoshop.helpers'
+		));
 	}
 
 	/**
