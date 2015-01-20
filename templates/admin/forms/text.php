@@ -26,7 +26,7 @@ $hasLabel = !empty($label);
 	<?php elseif(!empty($tip)): ?>
 		<a href="#" data-toggle="tooltip" class="badge" data-placement="top" title="<?php echo $tip; ?>">?</a>
 	<?php endif; ?>
-	<div class="<?php echo 'col-sm-'.($size-1); ?>">
+	<div class="<?php echo 'col-sm-'.($hasLabel ? $size - 1 : 12); ?>">
 		<input type="<?php echo $type; ?>" id="<?php echo $id; ?>" name="<?php echo $name; ?>" class="form-control <?php echo join(' ', $classes); ?>" placeholder="<?php echo $placeholder; ?>" value="<?php echo $value; ?>" />
 		<?php if(!empty($description)): ?>
 			<span class="help-block"><?php echo $description; ?></span>
