@@ -207,14 +207,19 @@ class Checkout
   _updateShipping: (shipping, html) ->
     for own shippingClass, value of shipping
       $method = jQuery(".shipping-#{shippingClass}")
+      $method.addClass('existing')
       if $method.length > 0
         if value > -1
-          jQuery('span', $method).html(html[shippingClass].price)
+          $item = jQuery(html[shippingClass].html).addClass('existing')
+          $method.replaceWith($item)
         else
           $method.slideUp -> jQuery(this).remove()
       else if html[shippingClass]?
         $item = jQuery(html[shippingClass].html)
-        $item.hide().appendTo(jQuery('#shipping-methods')).slideDown()
+        $item.hide().addClass('existing').appendTo(jQuery('#shipping-methods')).slideDown()
+    # Remove non-existent methods
+    jQuery('#shipping-methods > li:not(.existing)').slideUp -> jQuery(this).remove()
+    jQuery('#shipping-methods > li').removeClass('existing')
 
   _updateTaxes: (taxes, html) ->
     for own taxClass, tax of html
