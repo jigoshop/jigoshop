@@ -268,6 +268,13 @@ abstract class jigoshop_shipping_method
 			$tax = $this->calculate_shipping_tax($price);
 		}
 
+		foreach ($this->rates as $rate) {
+			// If this is the same rate - skip it
+			if ($rate['service'] == $service_name && $rate['price'] == $price && $rate['tax'] == $tax) {
+				return;
+			}
+		}
+
 		if ($price >= 0) {
 			$this->rates[] = array('service' => $service_name, 'price' => $price, 'tax' => $tax);
 		}
