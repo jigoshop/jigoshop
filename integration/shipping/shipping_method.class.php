@@ -52,6 +52,17 @@ abstract class jigoshop_shipping_method
 	}
 
 	/**
+	 * Default Option settings for WordPress Settings API using an implementation of the Jigoshop_Options_Interface
+	 * These should be installed on the Jigoshop_Options 'Shipping' tab
+	 *
+	 * @since 1.3
+	 */
+	protected function get_default_options()
+	{
+		return array();
+	}
+
+	/**
 	 * @internal
 	 * @return array List of all rates added to the method.
 	 */
@@ -69,19 +80,6 @@ abstract class jigoshop_shipping_method
 		return $this->tax_status;
 	}
 
-	public abstract function calculate_shipping();
-
-	/**
-	 * Default Option settings for WordPress Settings API using an implementation of the Jigoshop_Options_Interface
-	 * These should be installed on the Jigoshop_Options 'Shipping' tab
-	 *
-	 * @since 1.3
-	 */
-	protected function get_default_options()
-	{
-		return array();
-	}
-
 	public function is_available()
 	{
 		if (!$this->get_enabled()) {
@@ -95,26 +93,15 @@ abstract class jigoshop_shipping_method
 		$customer = Integration::getCart()->getCustomer();
 		$shippingCountries = $this->get_ship_to_countries();
 
-		if (!empty($shippingCountries) && !in_array($customer->getShippingAddress()->getCountry(), $shippingCountries)) {
+		if (!empty($shippingCountries) && !in_array($customer->getShippingAddress()
+				->getCountry(), $shippingCountries)
+		) {
 			return false;
 		}
 
 		$this->calculate_shipping();
 
 		return !$this->has_error();
-	}
-
-	public function is_rate_selected($rate_index)
-	{
-		if($this->is_chosen()){
-			$rate = Integration::getShippingRate();
-			if (is_numeric($rate)) {
-				return $rate_index == $rate;
-			} else {
-				return $rate_index == $this->get_cheapest_service();
-			}
-		}
-		return false;
 	}
 
 	public function get_enabled()
@@ -135,9 +122,57 @@ abstract class jigoshop_shipping_method
 		return array();
 	}
 
-	public function set_error_message($error_message = null)
+	public abstract function calculate_shipping();
+
+	public function has_error()
 	{
-		$this->error_message = $error_message;
+		return $this->has_error;
+	}
+
+	public function is_rate_selected($rate_index)
+	{
+		if ($this->is_chosen()) {
+			$rate = Integration::getShippingRate();
+			if (is_numeric($rate)) {
+				return $rate_index == $rate;
+			} else {
+				return $rate_index == $this->get_cheapest_service();
+			}
+		}
+
+		return false;
+	}
+
+	public function is_chosen()
+	{
+		return $this->chosen;
+	}
+
+	public function get_cheapest_service()
+	{
+		$my_cheapest_rate = $this->get_cheapest_rate();
+
+		if ($this->title && $my_cheapest_rate['service'] != $this->title) {
+			$service = $my_cheapest_rate['service'].__(' via ', 'jigoshop').$this->title;
+		} else {
+			$service = $my_cheapest_rate['service'];
+		}
+
+		return ($my_cheapest_rate == null ? $this->title : $service);
+	}
+
+	protected function get_cheapest_rate()
+	{
+		$cheapest_rate = null;
+		if ($this->rates != null) {
+			for ($i = 0; $i < count($this->rates); $i++) {
+				if (!isset($cheapest_rate) || $this->rates[$i]['price'] < $cheapest_rate['price']) {
+					$cheapest_rate = $this->rates[$i];
+				}
+			}
+		}
+
+		return $cheapest_rate;
 	}
 
 	public function get_error_message()
@@ -145,14 +180,9 @@ abstract class jigoshop_shipping_method
 		return $this->error_message;
 	}
 
-	public function set_tax($tax)
+	public function set_error_message($error_message = null)
 	{
-		_deprecated_function('set_tax', '2.0');
-	}
-
-	public function is_chosen()
-	{
-		return $this->chosen;
+		$this->error_message = $error_message;
 	}
 
 	public function choose()
@@ -192,34 +222,7 @@ abstract class jigoshop_shipping_method
 
 	protected function get_selected_rate($rate_index)
 	{
-		return (empty($this->rates) ? null : $this->rates[$rate_index]);
-	}
-
-	public function get_cheapest_service()
-	{
-		$my_cheapest_rate = $this->get_cheapest_rate();
-
-		if ($this->title && $my_cheapest_rate['service'] != $this->title) {
-			$service = $my_cheapest_rate['service'].__(' via ', 'jigoshop').$this->title;
-		} else {
-			$service = $my_cheapest_rate['service'];
-		}
-
-		return ($my_cheapest_rate == null ? $this->title : $service);
-	}
-
-	protected function get_cheapest_rate()
-	{
-		$cheapest_rate = null;
-		if ($this->rates != null) {
-			for ($i = 0; $i < count($this->rates); $i++) {
-				if (!isset($cheapest_rate) || $this->rates[$i]['price'] < $cheapest_rate['price']) {
-					$cheapest_rate = $this->rates[$i];
-				}
-			}
-		}
-
-		return $cheapest_rate;
+		return !isset($this->rates[$rate_index]) ? null : $this->rates[$rate_index];
 	}
 
 	public function get_cheapest_price()
@@ -243,11 +246,6 @@ abstract class jigoshop_shipping_method
 		return apply_filters('jigoshop_shipping_tax_price', ($my_rate == null ? $this->shipping_tax : $my_rate['tax']));
 	}
 
-	public function has_error()
-	{
-		return $this->has_error;
-	}
-
 	public function reset_method()
 	{
 		$this->chosen = false;
@@ -264,7 +262,9 @@ abstract class jigoshop_shipping_method
 		$price += (empty($this->fee) ? 0 : $this->get_fee($this->fee, jigoshop_cart::$cart_contents_total_ex_dl));
 
 		$tax = 0;
-		if (Jigoshop_Base::get_options()->get('jigoshop_calc_taxes') == 'yes' && $this->tax_status == 'taxable' && $price > 0) {
+		if (Jigoshop_Base::get_options()
+				->get('jigoshop_calc_taxes') == 'yes' && $this->tax_status == 'taxable' && $price > 0
+		) {
 			$tax = $this->calculate_shipping_tax($price);
 		}
 
@@ -275,7 +275,7 @@ abstract class jigoshop_shipping_method
 
 	public function get_fee($fee, $total)
 	{
-		if (strpos($fee, '%') !== false){
+		if (strpos($fee, '%') !== false) {
 			return ($total / 100) * str_replace('%', '', $fee);
 		}
 
@@ -296,7 +296,13 @@ abstract class jigoshop_shipping_method
 	protected function get_tax()
 	{
 		_deprecated_function('get_tax', '2.0');
+
 		return null; // TODO: What to return here?
+	}
+
+	public function set_tax($tax)
+	{
+		_deprecated_function('set_tax', '2.0');
 	}
 
 	protected function get_cheapest_price_tax()
