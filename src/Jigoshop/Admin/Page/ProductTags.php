@@ -11,7 +11,7 @@ use Jigoshop\Helper\Render;
 use Jigoshop\Helper\Scripts;
 use WPAL\Wordpress;
 
-class ProductCategories
+class ProductTags
 {
 	/** @var \WPAL\Wordpress */
 	private $wp;
@@ -20,28 +20,28 @@ class ProductCategories
 	{
 		$this->wp = $wp;
 
-		$wp->addAction(sprintf('%s_add_form_fields', Types::PRODUCT_CATEGORY), array(
+		$wp->addAction(sprintf('%s_add_form_fields', Types::PRODUCT_TAG), array(
 			$this,
 			'showThumbnail'
 		));
-		$wp->addAction(sprintf('%s_edit_form_fields', Types::PRODUCT_CATEGORY), array(
+		$wp->addAction(sprintf('%s_edit_form_fields', Types::PRODUCT_TAG), array(
 			$this,
 			'showThumbnail'
 		));
 		$wp->addAction('created_term', array($this, 'saveThumbnail'), 10, 3);
 		$wp->addAction('edit_term', array($this, 'saveThumbnail'), 10, 3);
-		$wp->addAction(sprintf('delete_%s', Types::PRODUCT_CATEGORY), array($this, 'delete'));
+		$wp->addAction(sprintf('delete_%s', Types::PRODUCT_TAG), array($this, 'delete'));
 
 		$wp->addAction('admin_enqueue_scripts', function () use ($wp){
 			$wp->wpEnqueueMedia();
 			Scripts::add('jigoshop.media', JIGOSHOP_URL.'/assets/js/media.js', array('jquery'));
-			Scripts::add('jigoshop.admin.product_categories', JIGOSHOP_URL.'/assets/js/admin/product_categories.js', array('jquery'));
-			Scripts::localize('jigoshop.admin.product_categories', 'jigoshop_admin_product_categories', array(
-				'category_name' => Types::PRODUCT_CATEGORY,
+			Scripts::add('jigoshop.admin.product_tags', JIGOSHOP_URL.'/assets/js/admin/product_tags.js', array('jquery'));
+			Scripts::localize('jigoshop.admin.product_tags', 'jigoshop_admin_product_tags', array(
+				'tag_name' => Types::PRODUCT_TAG,
 				'placeholder' => JIGOSHOP_URL.'/assets/images/placeholder.png',
 			));
 
-			$wp->doAction('jigoshop\admin\product_categories\assets', $wp);
+			$wp->doAction('jigoshop\admin\product_tags\assets', $wp);
 		});
 	}
 
@@ -53,18 +53,18 @@ class ProductCategories
 		}
 
 		$image = ProductCategory::getImage($termId);
-		Render::output('admin/product_categories/thumbnail', array(
+		Render::output('admin/product_tags/thumbnail', array(
 			'image' => $image,
 		));
 	}
 
 	public function saveThumbnail($termId, $ttId, $taxonomy)
 	{
-		if ($taxonomy != Types::PRODUCT_CATEGORY) {
+		if ($taxonomy != Types::PRODUCT_TAG) {
 			return;
 		}
 
-		$thumbnail = isset($_POST[Types::PRODUCT_CATEGORY.'_thumbnail_id']) ? $_POST[Types::PRODUCT_CATEGORY.'_thumbnail_id'] : false;
+		$thumbnail = isset($_POST[Types::PRODUCT_TAG.'_thumbnail_id']) ? $_POST[Types::PRODUCT_TAG.'_thumbnail_id'] : false;
 		if (!is_numeric($thumbnail)) {
 			return;
 		}

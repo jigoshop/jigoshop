@@ -46,6 +46,10 @@ class PageResolver
 			return $container->get('jigoshop.admin.page.product_categories');
 		}
 
+		if ($this->pages->isProductTags()) {
+			return $container->get('jigoshop.admin.page.product_tags');
+		}
+
 		if ($this->pages->isProductsList()) {
 			return $container->get('jigoshop.admin.page.products');
 		}
