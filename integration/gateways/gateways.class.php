@@ -21,6 +21,19 @@ class jigoshop_payment_gateways
 	protected static $gateways = array();
 	private static $instance;
 
+	protected function __construct()
+	{
+		self::gateways_init();
+	}
+
+	/**
+	 * Initializes gateways.
+	 */
+	public static function gateways_init()
+	{
+		Integration::initializeGateways();
+	}
+
 	public static function instance()
 	{
 		if (self::$instance === null) {
@@ -36,36 +49,12 @@ class jigoshop_payment_gateways
 		self::$instance = null;
 	}
 
-	public function __clone()
-	{
-		trigger_error("Cloning Singleton's is not allowed.", E_USER_ERROR);
-	}
-
-
-	public function __wakeup()
-	{
-		trigger_error("Unserializing Singleton's is not allowed.", E_USER_ERROR);
-	}
-
-	protected function __construct()
-	{
-		self::gateways_init();
-	}
-
 	/**
 	 * @deprecated Use jigoshop_payment_gateways::gateways_init() instead.
 	 */
 	public static function gateway_inits()
 	{
 		self::gateways_init();
-	}
-
-	/**
-	 * Initializes gateways.
-	 */
-	public static function gateways_init()
-	{
-		Integration::initializeGateways();
 	}
 
 	/**
@@ -82,8 +71,11 @@ class jigoshop_payment_gateways
 	public static function get_available_payment_gateways()
 	{
 		return apply_filters('jigoshop_available_payment_gateways', array_map(function($gateway){
-			/** @var $gateway Jigoshop\Integration\Gateway */
-			return $gateway->getGateway();
+			if ($gateway instanceof Integration\Gateway) {
+				return $gateway->getGateway();
+			}
+
+			return new \jigoshop_gateway($gateway);
 		}, Integration::getPaymentService()->getEnabled()));
 	}
 
@@ -97,9 +89,23 @@ class jigoshop_payment_gateways
 			/** @var Jigoshop\Integration\Gateway $gateway */
 			$gateway = Integration::getPaymentService()->get($id);
 
-			return $gateway->getGateway();
+			if ($gateway instanceof Integration\Gateway) {
+				return $gateway->getGateway();
+			}
+
+			return new \jigoshop_gateway($gateway);
 		} catch (\Jigoshop\Exception $e) {
 			return null;
 		}
+	}
+
+	public function __clone()
+	{
+		trigger_error("Cloning Singleton's is not allowed.", E_USER_ERROR);
+	}
+
+	public function __wakeup()
+	{
+		trigger_error("Unserializing Singleton's is not allowed.", E_USER_ERROR);
 	}
 }
