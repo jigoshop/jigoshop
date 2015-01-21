@@ -737,13 +737,14 @@ function jigoshop_frontend_scripts()
 
 	wp_enqueue_script('jquery');
 	jigoshop_add_script('jigoshop_global', JIGOSHOP_URL.'/assets/js/global.js', array('jquery'), array('in_footer' => true));
+	wp_register_script('jquery-blockui', '//cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.66.0-2013.10.09/jquery.blockUI.min.js', array('jquery'));
 
 	if ($options->get('jigoshop_disable_fancybox') == 'no') {
 		jigoshop_add_script('prettyphoto', JIGOSHOP_URL.'/assets/js/jquery.prettyPhoto.js', array('jquery'), array('in_footer' => true));
 		jigoshop_add_style('prettyphoto', JIGOSHOP_URL.'/assets/css/prettyPhoto.css');
 	}
 
-	jigoshop_add_script('jigoshop_blockui', JIGOSHOP_URL.'/assets/js/blockui.js', array('jquery'), array('in_footer' => false));
+	wp_enqueue_script('jquery-blockui');
 	jigoshop_add_script('jigoshop-cart', JIGOSHOP_URL.'/assets/js/cart.js', array('jquery'), array('in_footer' => true, 'page' => JIGOSHOP_CART));
 	jigoshop_add_script('jigoshop-checkout', JIGOSHOP_URL.'/assets/js/checkout.js', array('jquery'), array('in_footer' => true, 'page' => array(JIGOSHOP_CHECKOUT, JIGOSHOP_PAY)));
 	jigoshop_add_script('jigoshop-validation', JIGOSHOP_URL.'/assets/js/validation.js', array(), array('in_footer' => true, 'page' => JIGOSHOP_CHECKOUT));
@@ -835,16 +836,16 @@ function jigoshop_admin_scripts()
 
 	jigoshop_add_script('jigoshop-select2', JIGOSHOP_URL.'/assets/js/select2.min.js', array('jquery'));
 	jigoshop_add_script('jigoshop-editor-shortcodes', JIGOSHOP_URL.'/assets/js/editor-shortcodes.js', array('jquery'));
-
+	wp_register_script('jquery-blockui', '//cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.66.0-2013.10.09/jquery.blockUI.min.js', array('jquery'));
 
 	if (jigoshop_is_admin_page()) {
 
 		wp_enqueue_media();
 		wp_enqueue_script('jquery-ui-sortable');
 		wp_enqueue_script('jquery-ui-datepicker');
+		wp_enqueue_script('jquery-blockui');
 		jigoshop_add_script('jigoshop_datetimepicker', JIGOSHOP_URL.'/assets/js/jquery-ui-timepicker-addon.min.js', array('jquery', 'jquery-ui-datepicker'));
 		jigoshop_add_script('jigoshop_media', JIGOSHOP_URL.'/assets/js/media.js', array('jquery', 'media-editor'));
-		jigoshop_add_script('jigoshop_blockui', JIGOSHOP_URL.'/assets/js/blockui.js', array('jquery'), array('version' => '2.4.6'));
 		jigoshop_add_script('jigoshop_backend', JIGOSHOP_URL.'/assets/js/backend.js', array('jquery'), array('version' => '1.0'));
 		if($current_screen->base == 'edit-tags' && Jigoshop_Base::get_options()->get('jigoshop_enable_draggable_categories') == 'yes') {
 			jigoshop_add_script('jigoshop_draggable_categories', JIGOSHOP_URL.'/assets/js/draggable_categories.js', array('jquery'), array('version' => '1.0'));
