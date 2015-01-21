@@ -56,7 +56,9 @@ gulp.task 'fonts', ->
     .pipe gulp.dest('assets/fonts')
 
 gulp.task 'clean', ->
-  gulp.src ['assets/css/*', '!assets/js/flot', '!assets/js/flot/**', '!assets/js/blockui.js', 'assets/js/*',  'assets/fonts'], {read: false}
+  gulp.src ['!assets/css/prettyPhoto.css', 'assets/css/*', '!assets/js/flot', '!assets/js/flot/**',
+            '!assets/js/blockui.js', '!assets/js/jquery.prettyPhoto.js', 'assets/js/*',
+            'assets/fonts'], {read: false}
     .pipe rimraf()
 
 gulp.task 'watch', ['styles', 'scripts', 'fonts'], ->

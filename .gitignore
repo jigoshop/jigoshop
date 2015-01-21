@@ -7,7 +7,9 @@ composer.lock
 deploy.sh
 node_modules
 assets/bower
-assets/css
+assets/css/*
+!assets/css/prettyPhoto.css
 assets/js/*
 !assets/js/flot
+!assets/js/jquery.prettyPhoto.js
 assets/fonts
