@@ -32,10 +32,9 @@ class ChangePassword implements PageInterface
 		$this->customerService = $customerService;
 		$this->messages = $messages;
 
-		Styles::add('jigoshop.user.account', JIGOSHOP_URL.'/assets/css/user/account.css');
-		Styles::add('jigoshop.user.account.change_password', JIGOSHOP_URL.'/assets/css/user/account/change_password.css');
-		Styles::add('jigoshop.vendors', JIGOSHOP_URL.'/assets/css/vendors.min.css');
-		Scripts::add('jigoshop.vendors', JIGOSHOP_URL.'/assets/js/vendors.min.js');
+		Styles::add('jigoshop.user.account', JIGOSHOP_URL.'/assets/css/user/account.css', array('jigoshop.vendors'));
+		Styles::add('jigoshop.user.account.change_password', JIGOSHOP_URL.'/assets/css/user/account/change_password.css', array('jigoshop.user.account'));
+		Scripts::add('jigoshop.vendors');
 		$this->wp->doAction('jigoshop\account\assets', $wp);
 	}
 

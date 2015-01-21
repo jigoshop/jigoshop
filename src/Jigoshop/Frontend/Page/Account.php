@@ -38,11 +38,7 @@ class Account implements PageInterface
 		$this->messages = $messages;
 
 		Styles::add('jigoshop.user.account', JIGOSHOP_URL.'/assets/css/user/account.css');
-		Scripts::add('jigoshop.helpers', JIGOSHOP_URL.'/assets/js/helpers.js', array('jquery'));
-		Scripts::add('jigoshop.shop', JIGOSHOP_URL.'/assets/js/shop.js', array(
-			'jquery',
-			'jigoshop.helpers'
-		));
+		Scripts::add('jigoshop.shop');
 		$this->wp->doAction('jigoshop\account\assets', $wp);
 	}
 

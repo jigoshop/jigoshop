@@ -64,14 +64,17 @@ class Cart implements PageInterface
 		$this->orderService = $orderService;
 		$this->couponService = $couponService;
 
-		Styles::add('jigoshop.shop', JIGOSHOP_URL.'/assets/css/shop.css');
-		Styles::add('jigoshop.shop.cart', JIGOSHOP_URL.'/assets/css/shop/cart.css');
-		Styles::add('jigoshop-vendors', JIGOSHOP_URL.'/assets/css/vendors.min.css');
-		Scripts::add('jigoshop.helpers', JIGOSHOP_URL.'/assets/js/helpers.js');
-		Scripts::add('jigoshop.shop', JIGOSHOP_URL.'/assets/js/shop.js');
-		Scripts::add('jigoshop.shop.cart', JIGOSHOP_URL.'/assets/js/shop/cart.js');
-		Scripts::add('jigoshop-vendors', JIGOSHOP_URL.'/assets/js/vendors.min.js');
-		Scripts::add('jquery-blockui', '//cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.66.0-2013.10.09/jquery.blockUI.min.js');
+		Styles::add('jigoshop.shop.cart', JIGOSHOP_URL.'/assets/css/shop/cart.css', array(
+			'jigoshop.shop',
+			'jigoshop.vendors'
+		));
+		Scripts::add('jigoshop.shop.cart', JIGOSHOP_URL.'/assets/js/shop/cart.js', array(
+			'jquery',
+			'jquery-blockui',
+			'jigoshop.shop',
+			'jigoshop.helpers',
+			'jigoshop.vendors'
+		));
 		Scripts::localize('jigoshop.shop.cart', 'jigoshop', array(
 			'ajax' => $wp->getAjaxUrl(),
 			'assets' => JIGOSHOP_URL.'/assets',

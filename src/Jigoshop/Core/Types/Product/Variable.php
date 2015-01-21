@@ -281,8 +281,10 @@ class Variable implements Type
 	{
 		$wp->wpEnqueueMedia();
 		Styles::add('jigoshop.admin.product.variable', JIGOSHOP_URL.'/assets/css/admin/product/variable.css');
-		Scripts::add('jigoshop.media', JIGOSHOP_URL.'/assets/js/media.js', array('jquery'));
-		Scripts::add('jigoshop.admin.product.variable', JIGOSHOP_URL.'/assets/js/admin/product/variable.js', array('jquery'));
+		Scripts::add('jigoshop.admin.product.variable', JIGOSHOP_URL.'/assets/js/admin/product/variable.js', array(
+			'jquery',
+			'jigoshop.media'
+		));
 		Scripts::localize('jigoshop.admin.product.variable', 'jigoshop_admin_product_variable', array(
 			'ajax' => $wp->getAjaxUrl(),
 			'i18n' => array(

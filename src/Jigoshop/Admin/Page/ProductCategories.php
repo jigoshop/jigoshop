@@ -34,8 +34,10 @@ class ProductCategories
 
 		$wp->addAction('admin_enqueue_scripts', function () use ($wp){
 			$wp->wpEnqueueMedia();
-			Scripts::add('jigoshop.media', JIGOSHOP_URL.'/assets/js/media.js', array('jquery'));
-			Scripts::add('jigoshop.admin.product_categories', JIGOSHOP_URL.'/assets/js/admin/product_categories.js', array('jquery'));
+			Scripts::add('jigoshop.admin.product_categories', JIGOSHOP_URL.'/assets/js/admin/product_categories.js', array(
+				'jquery',
+				'jigoshop.media'
+			));
 			Scripts::localize('jigoshop.admin.product_categories', 'jigoshop_admin_product_categories', array(
 				'category_name' => Types::PRODUCT_CATEGORY,
 				'placeholder' => JIGOSHOP_URL.'/assets/images/placeholder.png',

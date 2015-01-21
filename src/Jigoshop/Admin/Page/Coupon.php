@@ -32,17 +32,24 @@ class Coupon
 		$this->paymentService = $paymentService;
 
 		$that = $this;
-		$wp->addAction('wp_ajax_jigoshop.admin.coupon.find_category', array($this, 'ajaxFindCategory'), 10, 0);
-		$wp->addAction('add_meta_boxes_'.Types::COUPON, function() use ($wp, $that){
-			$wp->addMetaBox('jigoshop-coupon-data', __('Coupon Data', 'jigoshop'), array($that, 'box'), Types::COUPON, 'normal', 'default');
+		$wp->addAction('wp_ajax_jigoshop.admin.coupon.find_category', array(
+			$this,
+			'ajaxFindCategory'
+		), 10, 0);
+		$wp->addAction('add_meta_boxes_'.Types::COUPON, function () use ($wp, $that){
+			$wp->addMetaBox('jigoshop-coupon-data', __('Coupon Data', 'jigoshop'), array(
+				$that,
+				'box'
+			), Types::COUPON, 'normal', 'default');
 		});
 
 		$wp->addAction('admin_enqueue_scripts', function () use ($wp){
 			if ($wp->getPostType() == Types::COUPON) {
-				Styles::add('jigoshop.admin.coupon', JIGOSHOP_URL.'/assets/css/admin/coupon.css');
+				Styles::add('jigoshop.admin.coupon', JIGOSHOP_URL.'/assets/css/admin/coupon.css', array('jigoshop.admin'));
 				Scripts::add('jigoshop.admin.coupon', JIGOSHOP_URL.'/assets/js/admin/coupon.js', array(
 					'jquery',
-					'jigoshop.helpers'
+					'jigoshop.admin',
+					'jigoshop.helpers',
 				));
 				Scripts::localize('jigoshop.admin.coupon', 'jigoshop_admin_coupon', array(
 					'ajax' => $wp->getAjaxUrl(),
@@ -84,7 +91,7 @@ class Coupon
 					);
 				}, $categories),
 			);
-		} catch(Exception $e) {
+		} catch (Exception $e) {
 			$result = array(
 				'success' => false,
 				'error' => $e->getMessage(),
@@ -98,7 +105,7 @@ class Coupon
 	/**
 	 * Displays the product data box, tabbed, with several panels covering price, stock etc
 	 *
-	 * @since 		1.0
+	 * @since    1.0
 	 */
 	public function box()
 	{

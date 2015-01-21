@@ -63,16 +63,16 @@ class Checkout implements PageInterface
 		$this->paymentService = $paymentService;
 		$this->orderService = $orderService;
 
-		Styles::add('jigoshop', JIGOSHOP_URL.'/assets/css/shop.css');
-		Styles::add('jigoshop.checkout', JIGOSHOP_URL.'/assets/css/shop/checkout.css');
-		Styles::add('jigoshop.vendors', JIGOSHOP_URL.'/assets/css/vendors.min.css');
-		Scripts::add('jigoshop.vendors', JIGOSHOP_URL.'/assets/js/vendors.min.js', array('jquery'));
-		Scripts::add('jigoshop.helpers', JIGOSHOP_URL.'/assets/js/helpers.js');
-		Scripts::add('jigoshop.checkout', JIGOSHOP_URL.'/assets/js/shop/checkout.js', array(
-			'jquery',
+		Styles::add('jigoshop.checkout', JIGOSHOP_URL.'/assets/css/shop/checkout.css', array(
+			'jigoshop.shop',
 			'jigoshop.vendors'
 		));
-		Scripts::add('jquery-blockui', '//cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.66.0-2013.10.09/jquery.blockUI.min.js');
+		Scripts::add('jigoshop.checkout', JIGOSHOP_URL.'/assets/js/shop/checkout.js', array(
+			'jquery',
+			'jquery-blockui',
+			'jigoshop.helpers',
+			'jigoshop.vendors',
+		));
 		Scripts::localize('jigoshop.checkout', 'jigoshop_checkout', array(
 			'ajax' => $this->wp->getAjaxUrl(),
 			'assets' => JIGOSHOP_URL.'/assets',

@@ -34,8 +34,10 @@ class ProductTags
 
 		$wp->addAction('admin_enqueue_scripts', function () use ($wp){
 			$wp->wpEnqueueMedia();
-			Scripts::add('jigoshop.media', JIGOSHOP_URL.'/assets/js/media.js', array('jquery'));
-			Scripts::add('jigoshop.admin.product_tags', JIGOSHOP_URL.'/assets/js/admin/product_tags.js', array('jquery'));
+			Scripts::add('jigoshop.admin.product_tags', JIGOSHOP_URL.'/assets/js/admin/product_tags.js', array(
+				'jquery',
+				'jigoshop.media'
+			));
 			Scripts::localize('jigoshop.admin.product_tags', 'jigoshop_admin_product_tags', array(
 				'tag_name' => Types::PRODUCT_TAG,
 				'placeholder' => JIGOSHOP_URL.'/assets/images/placeholder.png',

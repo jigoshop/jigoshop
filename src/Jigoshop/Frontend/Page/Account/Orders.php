@@ -38,8 +38,8 @@ class Orders implements PageInterface
 		$this->messages = $messages;
 
 		Styles::add('jigoshop.user.account', JIGOSHOP_URL.'/assets/css/user/account.css');
-		Styles::add('jigoshop.user.account.orders', JIGOSHOP_URL.'/assets/css/user/account/orders.css');
-		Styles::add('jigoshop.user.account.orders.single', JIGOSHOP_URL.'/assets/css/user/account/orders/single.css');
+		Styles::add('jigoshop.user.account.orders', JIGOSHOP_URL.'/assets/css/user/account/orders.css', array('jigoshop.user.account'));
+		Styles::add('jigoshop.user.account.orders.single', JIGOSHOP_URL.'/assets/css/user/account/orders/single.css', array('jigoshop.user.account.orders'));
 		$this->wp->doAction('jigoshop\account\orders\assets', $wp);
 	}
 

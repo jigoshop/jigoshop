@@ -14,6 +14,36 @@ use WPAL\Wordpress;
 class Styles
 {
 	/**
+	 * Registers stylesheet.
+	 * Calls filter `jigoshop\style\register`. If the filter returns empty value the style is omitted.
+	 * Available options:
+	 *   * version - Wordpress script version number
+	 *   * media - CSS media this script represents
+	 *   * page - list of pages to use the style
+	 * Options could be extended by plugins.
+	 *
+	 * @param string $handle Handle name.
+	 * @param bool $src Source file.
+	 * @param array $dependencies List of dependencies to the stylesheet.
+	 * @param array $options List of options.
+	 * @since 2.0
+	 */
+	public static function register($handle, $src, array $dependencies = array(), array $options = array())
+	{
+		$page = isset($options['page']) ? (array)$options['page'] : array('all');
+
+		if (Pages::isOneOf($page)) {
+			$handle = apply_filters('jigoshop\style\register', $handle, $src, $dependencies, $options);
+
+			if (!empty($handle)) {
+				$version = isset($options['version']) ? $options['version'] : false;
+				$media = isset($options['media']) ? $options['media'] : 'all';
+				wp_register_style($handle, $src, $dependencies, $version, $media);
+			}
+		}
+	}
+
+	/**
 	 * Enqueues stylesheet.
 	 * Calls filter `jigoshop\style\add`. If the filter returns empty value the style is omitted.
 	 * Available options:
@@ -28,7 +58,7 @@ class Styles
 	 * @param array $options List of options.
 	 * @since 2.0
 	 */
-	public static function add($handle, $src, array $dependencies = array(), array $options = array())
+	public static function add($handle, $src = false, array $dependencies = array(), array $options = array())
 	{
 		$page = isset($options['page']) ? (array)$options['page'] : array('all');
 

@@ -6,6 +6,8 @@ use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Template;
 use Jigoshop\Helper\Render;
+use Jigoshop\Helper\Scripts;
+use Jigoshop\Helper\Styles;
 use Jigoshop\Helper\Tax;
 use WPAL\Wordpress;
 
@@ -34,7 +36,18 @@ class Core
 		$this->template = $template;
 		$this->widgets = $widgets;
 
+		// Register main Jigoshop scripts
 		$wp->wpEnqueueScript('jquery');
+		Styles::register('jigoshop.shop', JIGOSHOP_URL.'/assets/css/shop.css');
+		Styles::register('jigoshop.vendors', JIGOSHOP_URL.'/assets/css/vendors.min.css');
+		Scripts::register('jigoshop.helpers', JIGOSHOP_URL.'/assets/js/helpers.js', array('jquery'));
+		Scripts::register('jigoshop.media', JIGOSHOP_URL.'/assets/js/media.js', array('jquery'));
+		Scripts::register('jigoshop.vendors', JIGOSHOP_URL.'/assets/js/vendors.min.js', array('jquery'));
+		Scripts::register('jigoshop.shop', JIGOSHOP_URL.'/assets/js/shop.js', array(
+			'jquery',
+			'jigoshop.helpers'
+		));
+		Scripts::register('jquery-blockui', '//cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.66.0-2013.10.09/jquery.blockUI.min.js', array('jquery'));
 	}
 
 	/**

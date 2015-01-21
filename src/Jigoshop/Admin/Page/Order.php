@@ -50,7 +50,7 @@ class Order
 
 		$wp->addAction('admin_enqueue_scripts', function () use ($wp, $options){
 			if ($wp->getPostType() == Types::ORDER) {
-				Styles::add('jigoshop.admin.order', JIGOSHOP_URL.'/assets/css/admin/order.css');
+				Styles::add('jigoshop.admin.order', JIGOSHOP_URL.'/assets/css/admin/order.css', array('jigoshop.vendors'));
 				Scripts::add('jigoshop.admin.order', JIGOSHOP_URL.'/assets/js/admin/order.js', array(
 					'jquery',
 					'jigoshop.helpers'

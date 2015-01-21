@@ -9,6 +9,7 @@ use Jigoshop\Admin\Settings\TabInterface;
 use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
 use Jigoshop\Helper\Render;
+use Jigoshop\Helper\Scripts;
 use Jigoshop\Helper\Styles;
 use WPAL\Wordpress;
 
@@ -49,7 +50,8 @@ class Settings implements PageInterface
 				return;
 			}
 
-			Styles::add('jigoshop.admin.settings', JIGOSHOP_URL.'/assets/css/admin/settings.css');
+			Styles::add('jigoshop.admin.settings', JIGOSHOP_URL.'/assets/css/admin/settings.css', array('jigoshop.admin'));
+			Scripts::add('jigoshop.admin');
 		});
 	}
 

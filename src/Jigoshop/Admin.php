@@ -40,18 +40,12 @@ class Admin
 		$wp->addAction('admin_menu', array($this, 'beforeMenu'), 9);
 		$wp->addAction('admin_menu', array($this, 'afterMenu'), 50);
 
-		$wp->wpEnqueueScript('jquery');
-
-		$wp->addAction('admin_enqueue_scripts', function (){
-			Styles::add('jigoshop.admin', JIGOSHOP_URL.'/assets/css/admin.css');
-			Styles::add('jigoshop.vendors', JIGOSHOP_URL.'/assets/css/vendors.min.css');
-			Scripts::add('jigoshop.vendors', JIGOSHOP_URL.'/assets/js/vendors.min.js', array('jquery'));
-			Scripts::add('jigoshop.helpers', JIGOSHOP_URL.'/assets/js/helpers.js', array('jquery'));
-			Scripts::add('jigoshop.admin', JIGOSHOP_URL.'/assets/js/admin.js', array(
-				'jquery',
-				'jigoshop.vendors'
-			));
-		}, 100);
+		Styles::add('jigoshop.admin', JIGOSHOP_URL.'/assets/css/admin.css', array('jigoshop.vendors'));
+		Scripts::add('jigoshop.admin', JIGOSHOP_URL.'/assets/js/admin.js', array(
+			'jquery',
+			'jigoshop.helpers',
+			'jigoshop.vendors'
+		));
 	}
 
 	/**

@@ -38,13 +38,14 @@ class Product implements PageInterface
 		$this->cartService = $cartService;
 		$this->messages = $messages;
 
-		Styles::add('jigoshop.shop', JIGOSHOP_URL.'/assets/css/shop.css');
-		Styles::add('jigoshop.shop.product', JIGOSHOP_URL.'/assets/css/shop/product.css');
-		Styles::add('jigoshop.vendors', JIGOSHOP_URL.'/assets/css/vendors.min.css');
-		Scripts::add('jigoshop.vendors', JIGOSHOP_URL.'/assets/js/vendors.min.js');
+		Styles::add('jigoshop.shop.product', JIGOSHOP_URL.'/assets/css/shop/product.css', array(
+			'jigoshop.shop',
+			'jigoshop.vendors'
+		));
 		Scripts::add('jigoshop.shop.product', JIGOSHOP_URL.'/assets/js/shop/product.js', array(
 			'jquery',
-			'jigoshop.vendors'
+			'jigoshop.shop',
+			'jigoshop.vendors',
 		));
 		$this->wp->addAction('jigoshop\template\product\before_summary', array($this, 'productImages'), 10, 1);
 		$this->wp->addAction('jigoshop\template\product\after_summary', array($this, 'productTabs'), 10, 1);

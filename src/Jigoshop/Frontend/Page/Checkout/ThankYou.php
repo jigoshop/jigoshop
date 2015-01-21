@@ -34,10 +34,10 @@ class ThankYou implements PageInterface
 		$this->messages = $messages;
 		$this->orderService = $orderService;
 
-		Styles::add('jigoshop.shop', JIGOSHOP_URL.'/assets/css/shop.css');
+		Styles::add('jigoshop.shop');
 		Styles::add('jigoshop.user.account', JIGOSHOP_URL.'/assets/css/user/account.css');
-		Styles::add('jigoshop.user.account.orders', JIGOSHOP_URL.'/assets/css/user/account/orders.css');
-		Styles::add('jigoshop.user.account.orders.single', JIGOSHOP_URL.'/assets/css/user/account/orders/single.css');
+		Styles::add('jigoshop.user.account.orders', JIGOSHOP_URL.'/assets/css/user/account/orders.css', array('jigoshop.user.account'));
+		Styles::add('jigoshop.user.account.orders.single', JIGOSHOP_URL.'/assets/css/user/account/orders/single.css', array('jigoshop.user.account.orders'));
 		$wp->doAction('jigoshop\checkout\thank_you\assets', $wp);
 		$wp->addAction('wp_head', array($this, 'googleAnalyticsTracking'), 9999);
 	}
