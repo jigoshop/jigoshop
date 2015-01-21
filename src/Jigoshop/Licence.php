@@ -11,7 +11,10 @@ namespace Jigoshop;
  */
 class Licence
 {
-	private static $instance = false; /* Product ID from the selling shop */
+	const VALIDATOR_PREFIX = 'jigoshop_licence_validator_';
+	const VALIDATOR_TOKEN = 'jigoshop-licence-validator';
+	/** @var Licence */
+	private static $instance;
 	private static $plugins = array(); /* full server path to this plugin folder */
 	private static $checked = array(); /* full server path to this plugin folder */
 	private $identifier; /* full server path to this plugin main file */
@@ -22,8 +25,6 @@ class Licence
 	private $title; /* the selling shop URL of this product */
 	private $version;
 	private $home_shop_url;
-	private $validator_token = 'jigoshop-licence-validator';
-	private $validator_prefix = 'jigoshop_licence_validator_';
 
 	/**
 	 * Constructor for Licence Validator in each plugin
@@ -62,23 +63,27 @@ class Licence
 			'title' => $this->title,
 		);
 
-		if (!self::$instance) {
-			self::$instance = true;
+		if (self::$instance === null) {
+			self::$instance = $this;
 			// Define the alternative response for information checking
 			add_filter('plugins_api', array($this, 'getUpdateData'), 20, 3);
-
-			if (!empty($_POST[$this->validator_prefix.'nonce']) &&
-				wp_verify_nonce($_POST[$this->validator_prefix.'nonce'], $this->validator_token.'-nonce')
-			) {
-				if (isset($_POST[$this->validator_token.'-login'])) {
-					$messages = $this->save_licence_keys();
-				}
-			}
 		}
 
 		// define the alternative API for updating checking
 		add_filter('pre_set_site_transient_update_plugins', array($this, 'checkUpdates'));
 		add_action('in_plugin_update_message-'.$this->plugin_slug, array($this, 'updateMessage'), 10, 2);
+		add_action('admin_init', '\Jigoshop\Licence::activateKeys');
+	}
+
+	public static function activateKeys()
+	{
+		if (!empty($_POST[self::VALIDATOR_PREFIX.'nonce']) &&
+			wp_verify_nonce($_POST[self::VALIDATOR_PREFIX.'nonce'], self::VALIDATOR_TOKEN.'-nonce')
+		) {
+			if (isset($_POST[self::VALIDATOR_TOKEN.'-login'])) {
+				$messages = self::$instance->save_licence_keys();
+			}
+		}
 	}
 
 	/**
@@ -115,7 +120,7 @@ class Licence
 						'status' => false,
 						'email' => ''
 					);
-				} else if (isset(self::$plugins[$product_id])) {
+				} else {
 					$messages[] = array(
 						'success' => false,
 						'message' => sprintf(__('%s deactivation: ', 'jigoshop'), self::$plugins[$product_id]['title']).$response->error
@@ -157,7 +162,7 @@ class Licence
 	 */
 	private function getKeys()
 	{
-		return get_option($this->validator_prefix.'licence_keys');
+		return get_option(self::VALIDATOR_PREFIX.'licence_keys');
 	}
 
 	/**
@@ -268,7 +273,7 @@ class Licence
 	 */
 	private function set_keys($keys)
 	{
-		return update_option($this->validator_prefix.'licence_keys', $keys);
+		return update_option(self::VALIDATOR_PREFIX.'licence_keys', $keys);
 	}
 
 	public static function __getPlugins()
