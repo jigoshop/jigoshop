@@ -28,11 +28,15 @@ services:
     lazy: true
   jigoshop.service.cart:
     class: Jigoshop\Service\CartService
+    lazy: true
     arguments:
       - '@wpal'
-      - '@service_container'
       - '@jigoshop.options'
       - '@jigoshop.service.customer'
+      - '@jigoshop.service.product'
+      - '@jigoshop.service.shipping'
+      - '@jigoshop.service.payment'
+      - '@jigoshop.factory.order'
     calls:
       - ['init']
   jigoshop.service.email:

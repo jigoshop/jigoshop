@@ -53,33 +53,14 @@ class CouponService implements CouponServiceInterface
 	}
 
 	/**
-	 * Finds item for specified WordPress post.
+	 * Save the email data upon post saving.
 	 *
-	 * @param $post \WP_Post WordPress post.
-	 * @return EntityInterface Item found.
+	 * @param $id int Post ID.
 	 */
-	public function findForPost($post)
+	public function savePost($id)
 	{
-		return $this->factory->fetch($post);
-	}
-
-	/**
-	 * Finds items specified using WordPress query.
-	 *
-	 * @param $query \WP_Query WordPress query.
-	 * @return array Collection of found items.
-	 */
-	public function findByQuery($query)
-	{
-		$results = $query->get_posts();
-		$coupons = array();
-
-		// TODO: Maybe it is good to optimize this to fetch all found coupons at once?
-		foreach ($results as $coupon) {
-			$coupons[] = $this->findForPost($coupon);
-		}
-
-		return $coupons;
+		$coupon = $this->factory->create($id);
+		$this->save($coupon);
 	}
 
 	/**
@@ -110,14 +91,17 @@ class CouponService implements CouponServiceInterface
 	}
 
 	/**
-	 * Save the email data upon post saving.
-	 *
-	 * @param $id int Post ID.
+	 * @param $coupon Entity
+	 * @return string Type name.
 	 */
-	public function savePost($id)
+	public function getType($coupon)
 	{
-		$coupon = $this->factory->create($id);
-		$this->save($coupon);
+		$types = $this->getTypes();
+		if (!isset($types[$coupon->getType()])) {
+			return '';
+		}
+
+		return $types[$coupon->getType()];
 	}
 
 	/**
@@ -135,20 +119,6 @@ class CouponService implements CouponServiceInterface
 		}
 
 		return $this->types;
-	}
-
-	/**
-	 * @param $coupon Entity
-	 * @return string Type name.
-	 */
-	public function getType($coupon)
-	{
-		$types = $this->getTypes();
-		if (!isset($types[$coupon->getType()])) {
-			return '';
-		}
-
-		return $types[$coupon->getType()];
 	}
 
 	/**
@@ -209,8 +179,39 @@ class CouponService implements CouponServiceInterface
 				return null;
 			}
 
+			return $coupon;
 		}
 
 		return null;
+	}
+
+	/**
+	 * Finds items specified using WordPress query.
+	 *
+	 * @param $query \WP_Query WordPress query.
+	 * @return array Collection of found items.
+	 */
+	public function findByQuery($query)
+	{
+		$results = $query->get_posts();
+		$coupons = array();
+
+		// TODO: Maybe it is good to optimize this to fetch all found coupons at once?
+		foreach ($results as $coupon) {
+			$coupons[] = $this->findForPost($coupon);
+		}
+
+		return $coupons;
+	}
+
+	/**
+	 * Finds item for specified WordPress post.
+	 *
+	 * @param $post \WP_Post WordPress post.
+	 * @return EntityInterface Item found.
+	 */
+	public function findForPost($post)
+	{
+		return $this->factory->fetch($post);
 	}
 }

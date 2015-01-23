@@ -4,6 +4,7 @@ namespace Jigoshop\Service;
 
 use Jigoshop\Entity\Cart;
 use Jigoshop\Entity\Order;
+use Jigoshop\Entity\OrderInterface;
 
 /**
  * Interface for cart handling service.
@@ -43,6 +44,13 @@ interface CartServiceInterface
 	 * @param Cart $cart Cart to remove.
 	 */
 	public function remove(Cart $cart);
+
+	/**
+	 * Validates whether
+	 *
+	 * @param OrderInterface $cart
+	 */
+	public function validate(OrderInterface $cart);
 
 	/**
 	 * Returns cart ID for current user.

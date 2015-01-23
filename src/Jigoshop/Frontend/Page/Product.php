@@ -47,11 +47,28 @@ class Product implements PageInterface
 			'jigoshop.shop',
 			'jigoshop.vendors',
 		));
-		$this->wp->addAction('jigoshop\template\product\before_summary', array($this, 'productImages'), 10, 1);
-		$this->wp->addAction('jigoshop\template\product\after_summary', array($this, 'productTabs'), 10, 1);
-		$this->wp->addAction('jigoshop\template\product\tab_panels', array($this, 'productAttributes'), 10, 2);
-		$this->wp->addAction('jigoshop\template\product\tab_panels', array($this, 'productDescription'), 10, 2);
-		$this->wp->doAction('jigoshop\product\assets', $wp);
+
+		$wp->addFilter('jigoshop\cart\add', function ($item) use ($productService){
+			/** @var $item Item */
+			$item->setKey($productService->generateItemKey($item));
+
+			return $item;
+		});
+
+		$wp->addAction('jigoshop\template\product\before_summary', array(
+			$this,
+			'productImages'
+		), 10, 1);
+		$wp->addAction('jigoshop\template\product\after_summary', array($this, 'productTabs'), 10, 1);
+		$wp->addAction('jigoshop\template\product\tab_panels', array(
+			$this,
+			'productAttributes'
+		), 10, 2);
+		$wp->addAction('jigoshop\template\product\tab_panels', array(
+			$this,
+			'productDescription'
+		), 10, 2);
+		$wp->doAction('jigoshop\product\assets', $wp);
 	}
 
 	public function action()

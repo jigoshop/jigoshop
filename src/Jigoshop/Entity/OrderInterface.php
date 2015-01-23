@@ -4,6 +4,7 @@ namespace Jigoshop\Entity;
 use Jigoshop\Entity\Order\Item;
 use Jigoshop\Exception;
 use Jigoshop\Shipping\Method;
+use Jigoshop\Shipping\Rate;
 
 interface OrderInterface extends EntityInterface
 {
@@ -124,4 +125,14 @@ interface OrderInterface extends EntityInterface
 	 * @return bool Is the method selected?
 	 */
 	public function hasShippingMethod($method, $rate = null);
+
+	/**
+	 * @param Coupon|string $coupon New coupon object or code.
+	 */
+	public function addCoupon($coupon);
+
+	/**
+	 * @param string $coupon Code to remove.
+	 */
+	public function removeCoupon($coupon);
 }

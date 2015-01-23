@@ -42,13 +42,12 @@ class TaxService implements TaxServiceInterface
 		// TODO: Calculate taxes AFTER all discounts!
 		$service = $this;
 		$wp = $this->wp;
-		$wp->addFilter('jigoshop\service\cart\before_initialize', function($cart) use ($service) {
-			/** @var $cart OrderInterface */
-			$cart->setTaxDefinitions($service->getDefinitions($cart->getCustomer()->getTaxAddress()));
-			return $cart;
-		}, 10, 1);
-		$wp->addFilter('jigoshop\factory\order\fetch\after_customer', function($order) use ($wp) {
+		$wp->addFilter('jigoshop\factory\order\fetch\after_customer', function ($order) use ($wp, $service){
 			/** @var $order Order */
+			// Fetch current definitions
+			$definitions = $service->getDefinitions($order->getCustomer()->getTaxAddress());
+
+			// Fetch definitions for the order
 			$wpdb = $wp->getWPDB();
 			$tax = array();
 			$results = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}jigoshop_order_tax jot WHERE jot.order_id = %d", array($order->getId())));
@@ -62,7 +61,14 @@ class TaxService implements TaxServiceInterface
 				);
 			}
 
+			foreach ($definitions as $class => $definition) {
+				if (!isset($tax[$class])) {
+					$tax[$class] = $definition;
+				}
+			}
+
 			$order->setTaxDefinitions($tax);
+
 			return $order;
 		}, 10, 1);
 		$wp->addFilter('jigoshop\factory\order\create', function ($order) use ($service){

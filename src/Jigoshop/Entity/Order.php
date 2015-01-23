@@ -252,10 +252,13 @@ class Order implements OrderInterface
 	}
 
 	/**
-	 * @param string $coupon New code of used coupon.
+	 * @param Coupon|string $coupon New coupon object or code.
 	 */
 	public function addCoupon($coupon)
 	{
+		if (is_object($coupon)) {
+			$coupon = $coupon->getCode();
+		}
 		if (array_search($coupon, $this->coupons) === false) {
 			$this->coupons[] = $coupon;
 		}
@@ -774,6 +777,8 @@ class Order implements OrderInterface
 			} else {
 				$this->shippingPrice = $this->shippingMethod->calculate($this);
 			}
+
+			$this->subtotal += $this->shippingPrice;
 		}
 		if (isset($state['payment']) && !empty($state['payment'])) {
 			$this->paymentMethod = $state['payment'];
@@ -782,7 +787,7 @@ class Order implements OrderInterface
 			$this->customerNote = $state['customer_note'];
 		}
 		if (isset($state['shipping_tax'])) {
-			$tax = unserialize($state['shipping_tax']);
+			$tax = maybe_unserialize($state['shipping_tax']);
 			foreach ($tax as $class => $value) {
 				if (!isset($this->shippingTax[$class])) {
 					$this->shippingTax[$class] = 0.0;
@@ -794,14 +799,11 @@ class Order implements OrderInterface
 		if (isset($state['product_subtotal'])) {
 			$this->productSubtotal = (float)$state['product_subtotal'];
 		}
-		if (isset($state['subtotal'])) {
-			$this->subtotal = (float)$state['subtotal'];
-		}
 		if (isset($state['discount'])) {
 			$this->discount = (float)$state['discount'];
 		}
 		if (isset($state['coupons'])) {
-			$this->coupons = unserialize($state['coupons']);
+			$this->coupons = maybe_unserialize($state['coupons']);
 		}
 		if (isset($state['tax_definitions'])) {
 			$this->taxDefinitions = $state['tax_definitions'];

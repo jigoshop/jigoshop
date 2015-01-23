@@ -49,10 +49,9 @@ services:
     arguments:
       - '@wpal'
       - '@jigoshop.options'
-      - '@jigoshop.service.customer'
-      - '@jigoshop.service.product'
-      - '@jigoshop.service.shipping'
-      - '@jigoshop.service.payment'
+      - '@jigoshop.messages'
+    calls:
+      - ['init', ['@jigoshop.service.customer', '@jigoshop.service.product', '@jigoshop.service.shipping', '@jigoshop.service.payment', '@jigoshop.service.coupon']]
   jigoshop.factory.customer:
     class: Jigoshop\Factory\Customer
     lazy: true

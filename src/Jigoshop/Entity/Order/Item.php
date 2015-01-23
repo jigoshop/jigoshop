@@ -276,6 +276,7 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 			'price' => $this->price,
 			'tax' => $this->tax,
 			'tax_classes' => serialize($this->taxClasses),
+			'product_id' => $this->product->getId(),
 			'product' => $this->product->getState(),
 			'meta' => serialize($this->meta),
 		));
@@ -303,8 +304,8 @@ class Item implements Product\Purchasable, Product\Taxable, \Serializable
 		$this->tax = $data['tax'];
 		$this->taxClasses = unserialize($data['tax_classes']);
 		$this->meta = unserialize($data['meta']);
-		// TODO: How to properly unserialize product?
-		$this->product = $data['product'];
+		$this->productId = $data['product_id'];
+		$this->product = apply_filters('jigoshop\internal\order\item', null, $data['product']);
 
 		foreach ($this->meta as $meta) {
 			/** @var $meta Item\Meta */

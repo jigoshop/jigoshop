@@ -45,8 +45,8 @@ use Jigoshop\Helper\Tax;
 			<?php if (!$alwaysShowShipping): ?>
 			<?php Forms::checkbox(array(
 				'label' => __('Different shipping address', 'jigoshop'),
-				'name' => 'jigoshop_order[different_shipping]',
-				'id' => 'different_shipping',
+					'name' => 'jigoshop_order[different_shipping_address]',
+					'id' => 'different_shipping_address',
 				'checked' => $differentShipping,
 				'size' => 9
 			)); ?>
@@ -94,7 +94,10 @@ use Jigoshop\Helper\Tax;
 						'id' => 'jigoshop_coupons',
 						'name' => 'jigoshop_coupons',
 						'placeholder' => __('Enter coupons...', 'jigoshop'),
-						'value' => join(',', array_map(function($coupon){ return $coupon->getCode(); }, $cart->getCoupons())),
+						'value' => join(',', array_map(function ($coupon){
+							/** @var $coupon \Jigoshop\Entity\Coupon */
+							return $coupon->getCode();
+						}, $cart->getCoupons())),
 					)); ?>
 				</td>
 				<?php $productSubtotal = $showWithTax ? $cart->getProductSubtotal() + $cart->getTotalTax() : $cart->getProductSubtotal(); ?>
@@ -111,7 +114,7 @@ use Jigoshop\Helper\Tax;
 		<div class="panel-body">
 			<?php Forms::textarea(array(
 				'label' => '',
-				'name' => 'jigoshop_order[note]',
+				'name' => 'jigoshop_order[customer_note]',
 				'rows' => 3,
 				'size' => 12,
 				'value' => $cart->getCustomerNote(),

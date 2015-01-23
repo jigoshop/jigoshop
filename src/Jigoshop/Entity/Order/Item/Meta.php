@@ -98,6 +98,5 @@ class Meta implements \Serializable
 		$data = unserialize($serialized);
 		$this->key = $data['key'];
 		$this->value = $data['value'];
-		// TODO: How to properly unserialize item?
 	}
 }

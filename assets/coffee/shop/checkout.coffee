@@ -15,7 +15,7 @@ class Checkout
     jQuery('#create-account').on 'change', ->
       jQuery('#registration-form').slideToggle()
     jQuery('#different_shipping_address').on 'change', ->
-      jQuery('#shipping_address-address').slideToggle()
+      jQuery('#shipping-address').slideToggle()
       if (jQuery(this).is(':checked'))
         jQuery('#jigoshop_order_shipping_address_country').change()
       else

@@ -2,8 +2,6 @@
 
 namespace Jigoshop\Entity;
 
-use Jigoshop\Core\Messages;
-use Jigoshop\Core\Options;
 use Jigoshop\Entity\Customer;
 use Jigoshop\Entity\Order\Item;
 use Jigoshop\Entity\Product;
@@ -11,143 +9,16 @@ use Jigoshop\Entity\Product\Attributes\StockStatus;
 use Jigoshop\Exception;
 use Jigoshop\Frontend\NotEnoughStockException;
 use Jigoshop\Helper\Product as ProductHelper;
-use Jigoshop\Service\CouponServiceInterface;
-use Jigoshop\Service\ProductServiceInterface;
-use Jigoshop\Service\ShippingServiceInterface;
-use Monolog\Registry;
 use WPAL\Wordpress;
 
 class Cart extends Order
 {
-	/** @var Options */
-	private $options;
-	/** @var ProductServiceInterface  */
-	private $productService;
-	/** @var ShippingServiceInterface */
-	private $shippingService;
-	/** @var CouponServiceInterface */
-	private $couponService;
-	/** @var Messages */
-	private $messages;
-
 	/** @var array */
 	private $couponData = array();
 
-	public function __construct(Wordpress $wp, Options $options, ProductServiceInterface $productService,	ShippingServiceInterface $shippingService,
-		CouponServiceInterface $couponService, Messages $messages)
+	public function __construct(Wordpress $wp, array $taxClasses)
 	{
-		parent::__construct($wp, $options->get('tax.classes'));
-		$this->options = $options;
-		$this->productService = $productService;
-		$this->shippingService = $shippingService;
-		$this->couponService = $couponService;
-		$this->messages = $messages;
-	}
-
-	/**
-	 * @param string $id
-	 * @param array $data
-	 */
-	public function initializeFor($id, $data = array())
-	{
-		$this->setId($id);
-		$this->removeItems();
-
-		if (!empty($data)) {
-			$this->setId($data['id']);
-
-			if (isset($data['customer'])) {
-				$customer = unserialize($data['customer']);
-				$this->setCustomer($customer);
-			}
-
-			$items = unserialize($data['items']);
-//			$taxIncludedInPrice = $this->options->get('tax.included');
-
-			if (is_array($items)) {
-				foreach ($items as $item) {
-					/** @var Item $item */
-					$productState = (array)$item->getProduct();
-					$product = $this->productService->findForState($productState);
-					$item->setProduct($product);
-					$key = $this->productService->generateItemKey($item);
-
-					if ($key != $item->getKey()) {
-						Registry::getInstance(JIGOSHOP_LOGGER)->addWarning(sprintf('Initializing cart: item "%d" has invalid key ("%s" instead of "%s").', $item->getId(), $item->getKey(), $key));
-					}
-
-					$item->setKey($key);
-
-					// TODO: Add support for "Price included in tax"
-//					if ($taxIncludedInPrice) {
-//						$price -= $tax;
-//					}
-
-					$this->addItem($item);
-				}
-			}
-
-			if (isset($data['shipping_method'])) {
-				$this->setShippingMethod($this->shippingService->findForState($data['shipping_method']));
-			}
-			if (isset($data['shipping_method_rate'])) {
-				$this->setShippingMethodRate($data['shipping_method_rate']);
-			}
-
-			if (isset($data['coupons'])) {
-				foreach ($data['coupons'] as $couponId) {
-					try {
-						/** @var Coupon $coupon */
-						$coupon = $this->couponService->find($couponId);
-						$this->addCoupon($coupon);
-					} catch (Exception $e) {
-						$this->messages->addWarning($e->getMessage(), false);
-					}
-				}
-			}
-		}
-	}
-
-	/**
-	 * Adds item to the cart.
-	 * If item is already present - increases it's quantity.
-	 *
-	 * @param Item $item Item to add to cart.
-	 * @throws NotEnoughStockException When user requests more than we have.
-	 * @throws Exception On any error.
-	 */
-	public function addItem(Item $item)
-	{
-		$product = $item->getProduct();
-		$quantity = $item->getQuantity();
-
-		if ($product === null || $product->getId() === 0) {
-			throw new Exception(__('Product not found', 'jigoshop'));
-		}
-
-		if ($quantity <= 0) {
-			throw new Exception(__('Quantity has to be positive number', 'jigoshop'));
-		}
-
-		if ($product instanceof Product\Purchasable && !$this->checkStock($product, $quantity)) {
-			throw new NotEnoughStockException($product->getStock()->getStock());
-		}
-
-		$isValid = $this->wp->applyFilters('jigoshop\cart\validate_new_item', true, $product->getId(), $item->getQuantity());
-		if (!$isValid) {
-			throw new Exception(__('Could not add to cart.', 'jigoshop'));
-		}
-
-		$key = $this->productService->generateItemKey($item);
-		$item->setKey($key);
-		if ($this->hasItem($key)) {
-			/** @var Item $itemInCart */
-			$itemInCart = $this->getItem($key);
-			$itemInCart->setQuantity($itemInCart->getQuantity() + $item->getQuantity());
-		} else {
-			$item = $this->wp->applyFilters('jigoshop\cart\new_item', $item);
-			parent::addItem($item);
-		}
+		parent::__construct($wp, $taxClasses);
 	}
 
 	/**
@@ -182,6 +53,71 @@ class Cart extends Order
 	}
 
 	/**
+	 * Adds item to the cart.
+	 * If item is already present - increases it's quantity.
+	 *
+	 * @param Item $item Item to add to cart.
+	 * @throws NotEnoughStockException When user requests more than we have.
+	 * @throws Exception On any error.
+	 */
+	public function addItem(Item $item)
+	{
+		$product = $item->getProduct();
+		$quantity = $item->getQuantity();
+
+		if ($product === null || $product->getId() === 0) {
+			throw new Exception(__('Product not found', 'jigoshop'));
+		}
+
+		if ($quantity <= 0) {
+			throw new Exception(__('Quantity has to be positive number', 'jigoshop'));
+		}
+
+		if ($product instanceof Product\Purchasable && !$this->checkStock($product, $quantity)) {
+			throw new NotEnoughStockException($product->getStock()->getStock());
+		}
+
+		$isValid = $this->wp->applyFilters('jigoshop\cart\validate_new_item', true, $product->getId(), $item->getQuantity());
+		if (!$isValid) {
+			throw new Exception(__('Could not add to cart.', 'jigoshop'));
+		}
+
+		if ($this->hasItem($item->getKey())) {
+			/** @var Item $itemInCart */
+			$itemInCart = $this->getItem($item->getKey());
+			$itemInCart->setQuantity($itemInCart->getQuantity() + $item->getQuantity());
+		} else {
+			$item = $this->wp->applyFilters('jigoshop\cart\new_item', $item);
+			parent::addItem($item);
+		}
+	}
+
+	/**
+	 * @param $product Product\Purchasable
+	 * @param $quantity int
+	 * @return bool
+	 */
+	private function checkStock($product, $quantity)
+	{
+		if (!$product->getStock()->getManage()) {
+			return $product->getStock()->getStatus() == StockStatus::IN_STOCK;
+		}
+
+		if ($quantity >= $product->getStock()->getStock()) {
+			if (in_array($product->getStock()->getAllowBackorders(), array(
+				StockStatus::BACKORDERS_ALLOW,
+				StockStatus::BACKORDERS_NOTIFY
+			))) {
+				return true;
+			}
+
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * @return bool Is the cart empty?
 	 */
 	public function isEmpty()
@@ -191,10 +127,69 @@ class Cart extends Order
 	}
 
 	/**
+	 * @return array Coupons list.
+	 */
+	public function getCoupons()
+	{
+		return array_map(function ($item){
+			return $item['object'];
+		}, $this->couponData);
+	}
+
+	/**
+	 * @return bool Whether cart has coupons applied.
+	 */
+	public function hasCoupons()
+	{
+		return !empty($this->couponData);
+	}
+
+	/**
+	 * Removes and adds each coupon currently applied to the cart. This causes to recalculate discount values.
+	 */
+	public function recalculateCoupons()
+	{
+		foreach ($this->couponData as $data) {
+			/** @var Coupon $coupon */
+			$coupon = $data['object'];
+
+			$this->removeCoupon($coupon->getId());
+			try {
+				$this->addCoupon($coupon);
+			} catch (Exception $e) {
+				// TODO: Some idea how to report this to the user?
+			}
+		}
+	}
+
+	/**
+	 * @param $id int Coupon ID.
+	 */
+	public function removeCoupon($id)
+	{
+		if (!isset($this->couponData[$id])) {
+			return;
+		}
+
+		$coupon = $this->couponData[$id];
+		/** @var Coupon $object */
+		$object = $coupon['object'];
+		parent::removeCoupon($object->getCode());
+		$this->removeDiscount($coupon['discount']);
+		unset($this->couponData[$id]);
+	}
+
+	/**
 	 * @param $coupon Coupon
 	 */
 	public function addCoupon($coupon)
 	{
+		if (!is_object($coupon)) {
+			parent::addCoupon($coupon);
+
+			return;
+		}
+
 		if (isset($this->couponData[$coupon->getId()])) {
 			return;
 		}
@@ -221,23 +216,6 @@ class Cart extends Order
 	}
 
 	/**
-	 * @param $id int Coupon ID.
-	 */
-	public function removeCoupon($id)
-	{
-		if (!isset($this->couponData[$id])) {
-			return;
-		}
-
-		$coupon = $this->couponData[$id];
-		/** @var Coupon $object */
-		$object = $coupon['object'];
-		$this->removeCoupon($object->getCode());
-		$this->removeDiscount($coupon['discount']);
-		unset($this->couponData[$id]);
-	}
-
-	/**
 	 * Removes all coupons except ones listed in the parameter.
 	 *
 	 * @param $codes array List of actual coupon codes.
@@ -253,79 +231,13 @@ class Cart extends Order
 		}
 	}
 
-	/**
-	 * @return array Coupons list.
-	 */
-	public function getCoupons()
+	public function getStateToSave()
 	{
-		return array_map(function($item){ return $item['object']; }, $this->couponData);
-	}
+		$state = parent::getStateToSave();
+		$state['items'] = serialize($state['items']);
+		unset($state['update_messages'], $state['updated_at'], $state['completed_at'], $state['total'],
+			$state['subtotal']);
 
-	/**
-	 * @return bool Whether cart has coupons applied.
-	 */
-	public function hasCoupons()
-	{
-		return !empty($this->couponData);
-	}
-
-	/**
-	 * Generates representation of current cart state.
-	 *
-	 * @return string the string representation of the cart or null
-	 */
-	public function getState()
-	{
-		$shippingMethod = $this->getShippingMethod();
-		return array(
-			'id' => $this->getId(),
-			'shipping_method' => $shippingMethod !== null ? $shippingMethod->getState() : null,
-			'coupons' => array_map(function($item){
-				/** @var Coupon $coupon */
-				$coupon = $item['object'];
-				return $coupon->getId();
-			}, $this->couponData),
-			'items' => serialize($this->getItems()),
-		);
-	}
-
-	/**
-	 * Removes and adds each coupon currently applied to the cart. This causes to recalculate discount values.
-	 */
-	public function recalculateCoupons()
-	{
-		foreach ($this->couponData as $data) {
-			/** @var Coupon $coupon */
-			$coupon = $data['object'];
-
-			$this->removeCoupon($coupon->getId());
-			try {
-				$this->addCoupon($coupon);
-			} catch (Exception $e) {
-				// TODO: Some idea how to report this to the user?
-			}
-		}
-	}
-
-	/**
-	 * @param $product Product\Purchasable
-	 * @param $quantity int
-	 * @return bool
-	 */
-	private function checkStock($product, $quantity)
-	{
-		if (!$product->getStock()->getManage()) {
-			return $product->getStock()->getStatus() == StockStatus::IN_STOCK;
-		}
-
-		if ($quantity >= $product->getStock()->getStock()) {
-			if (in_array($product->getStock()->getAllowBackorders(), array(StockStatus::BACKORDERS_ALLOW, StockStatus::BACKORDERS_NOTIFY))) {
-				return true;
-			}
-
-			return false;
-		}
-
-		return true;
+		return $state;
 	}
 }

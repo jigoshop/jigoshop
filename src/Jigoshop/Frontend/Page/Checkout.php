@@ -348,25 +348,26 @@ class Checkout implements PageInterface
 					throw new Exception(__('You need to accept terms &amp; conditions!', 'jigoshop'));
 				}
 
-				$order = $this->orderService->createFromCart($cart);
-				$this->customerService->save($order->getCustomer());
+				$this->cartService->validate($cart);
+				$this->customerService->save($cart->getCustomer());
 
-				if (!Country::isAllowed($order->getCustomer()->getBillingAddress()->getCountry())) {
+				if (!Country::isAllowed($cart->getCustomer()->getBillingAddress()->getCountry())) {
 					$locations = array_map(function($location){ return Country::getName($location); }, $this->options->get('shopping.selling_locations'));
 					throw new Exception(sprintf(__('This location is not supported, we sell only to %s.'), join(', ', $locations)));
 				}
 
-				$shipping = $order->getShippingMethod();
-				if ($this->isShippingRequired($order) && (!$shipping || !$shipping->isEnabled())) {
+				$shipping = $cart->getShippingMethod();
+				if ($this->isShippingRequired($cart) && (!$shipping || !$shipping->isEnabled())) {
 					throw new Exception(__('Shipping is required for this order. Please select shipping method.', 'jigoshop'));
 				}
 
-				$payment = $order->getPaymentMethod();
-				$isPaymentRequired = $this->isPaymentRequired($order);
+				$payment = $cart->getPaymentMethod();
+				$isPaymentRequired = $this->isPaymentRequired($cart);
 				if ($isPaymentRequired && (!$payment || !$payment->isEnabled())) {
 					throw new Exception(__('Payment is required for this order. Please select payment method.', 'jigoshop'));
 				}
 
+				$order = $this->orderService->createFromCart($cart);
 				$this->orderService->save($order);
 				/** @var Order $order */
 				$order = $this->wp->applyFilters('jigoshop\checkout\order', $order);
@@ -535,7 +536,8 @@ class Checkout implements PageInterface
 			'allowRegistration' => $this->options->get('shopping.allow_registration') && !$this->wp->isUserLoggedIn(),
 			'showRegistrationForm' => $this->options->get('shopping.allow_registration') && !$this->options->get('shopping.guest_purchases') && !$this->wp->isUserLoggedIn(),
 			'alwaysShowShipping' => $this->options->get('shipping.always_show_shipping'),
-			'differentShipping' => isset($_POST['jigoshop_order']) ? $_POST['jigoshop_order']['different_shipping'] == 'on' : false, // TODO: Fetch whether user want different shipping by default
+			'differentShipping' => isset($_POST['jigoshop_order']) ? $_POST['jigoshop_order']['different_shipping_address'] == 'on' : false,
+			// TODO: Fetch whether user want different shipping by default
 			'termsUrl' => $termsUrl,
 		));
 	}

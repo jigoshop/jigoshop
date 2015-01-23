@@ -38,6 +38,13 @@ abstract class AbstractProductList implements PageInterface
 		$this->cartService = $cartService;
 		$this->messages = $messages;
 
+		$wp->addFilter('jigoshop\cart\add', function ($item) use ($productService){
+			/** @var $item Item */
+			$item->setKey($productService->generateItemKey($item));
+
+			return $item;
+		});
+
 		Styles::add('jigoshop.shop.list', JIGOSHOP_URL.'/assets/css/shop/list.css', array(
 			'jigoshop.shop',
 			'jigoshop.vendors'

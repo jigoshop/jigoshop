@@ -125,16 +125,16 @@ services:
     arguments:
       - '@wpal'
       - '@jigoshop.options'
-  jigoshop.cart:
-    class: Jigoshop\Entity\Cart
-    scope: prototype
-    arguments:
-      - '@wpal'
-      - '@jigoshop.options'
-      - '@jigoshop.service.product'
-      - '@jigoshop.service.shipping'
-      - '@jigoshop.service.coupon'
-      - '@jigoshop.messages'
+#  jigoshop.cart:
+#    class: Jigoshop\Entity\Cart
+#    scope: prototype
+#    arguments:
+#      - '@wpal'
+#      - '@jigoshop.options'
+#      - '@jigoshop.service.product'
+#      - '@jigoshop.service.shipping'
+#      - '@jigoshop.service.coupon'
+#      - '@jigoshop.messages'
   jigoshop.permalinks:
     class: Jigoshop\Core\Permalinks
     arguments:

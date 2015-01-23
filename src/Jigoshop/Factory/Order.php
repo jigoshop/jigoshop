@@ -2,15 +2,15 @@
 
 namespace Jigoshop\Factory;
 
+use Jigoshop\Core\Messages;
 use Jigoshop\Core\Options;
 use Jigoshop\Core\Types;
-use Jigoshop\Entity\Cart;
+use Jigoshop\Entity\Coupon;
 use Jigoshop\Entity\Customer as CustomerEntity;
 use Jigoshop\Entity\Order as Entity;
 use Jigoshop\Entity\OrderInterface;
 use Jigoshop\Exception;
-use Jigoshop\Helper\Country;
-use Jigoshop\Helper\Validation;
+use Jigoshop\Service\CouponServiceInterface;
 use Jigoshop\Service\CustomerServiceInterface;
 use Jigoshop\Service\PaymentServiceInterface;
 use Jigoshop\Service\ProductServiceInterface;
@@ -24,6 +24,8 @@ class Order implements EntityFactoryInterface
 	private $wp;
 	/** @var Options */
 	private $options;
+	/** @var Messages */
+	private $messages;
 	/** @var CustomerServiceInterface */
 	private $customerService;
 	/** @var ProductServiceInterface */
@@ -32,16 +34,25 @@ class Order implements EntityFactoryInterface
 	private $shippingService;
 	/** @var PaymentServiceInterface */
 	private $paymentService;
+	/** @var CouponServiceInterface */
+	private $couponService;
 
-	public function __construct(Wordpress $wp, Options $options, CustomerServiceInterface $customerService, ProductServiceInterface $productService,
-		ShippingServiceInterface $shippingService, PaymentServiceInterface $paymentService)
+	public function __construct(Wordpress $wp, Options $options, Messages $messages)
 	{
 		$this->wp = $wp;
 		$this->options = $options;
+		$this->messages = $messages;
+	}
+
+	public function init(CustomerServiceInterface $customerService, ProductServiceInterface $productService,
+		ShippingServiceInterface $shippingService, PaymentServiceInterface $paymentService,
+		CouponServiceInterface $couponService)
+	{
 		$this->customerService = $customerService;
 		$this->productService = $productService;
 		$this->shippingService = $shippingService;
 		$this->paymentService = $paymentService;
+		$this->couponService = $couponService;
 	}
 
 	/**
@@ -187,21 +198,40 @@ class Order implements EntityFactoryInterface
 			$data['customer'] = $this->customerService->find($data['customer']);
 		}
 
-		if (isset($data['billing_address'])) {
-			/** @var CustomerEntity $customer */
-			$customer = $data['customer'];
-			$customer->setBillingAddress($this->createAddress($data['billing_address']));
-		}
-		if (isset($data['shipping_address'])) {
-			/** @var CustomerEntity $customer */
-			$customer = $data['customer'];
-			$customer->setShippingAddress($this->createAddress($data['shipping_address']));
+		if (isset($data['customer'])) {
+			$data['customer'] = $this->wp->getHelpers()->maybeUnserialize($data['customer']);
+
+			if (isset($data['billing_address'])) {
+				/** @var CustomerEntity $customer */
+				$customer = $data['customer'];
+				$customer->setBillingAddress($this->createAddress($data['billing_address']));
+			}
+			if (isset($data['shipping_address'])) {
+				/** @var CustomerEntity $customer */
+				$customer = $data['customer'];
+				$customer->setShippingAddress($this->createAddress($data['shipping_address']));
+			}
 		}
 
+		/** @var OrderInterface $order */
 		$order = $this->wp->applyFilters('jigoshop\factory\order\fetch\after_customer', $order);
 
 		if (isset($data['items'])) {
 			$order->removeItems();
+		}
+
+
+		if (isset($data['coupons'])) {
+			$coupons = $this->wp->getHelpers()->maybeUnserialize($data['coupons']);
+			$coupons = $this->couponService->getByCodes($coupons);
+			foreach ($coupons as $coupon) {
+				/** @var Coupon $coupon */
+				try {
+					$order->addCoupon($coupon);
+				} catch (Exception $e) {
+					$this->messages->addWarning($e->getMessage(), false);
+				}
+			}
 		}
 
 		$order->restoreState($data);
@@ -240,116 +270,21 @@ class Order implements EntityFactoryInterface
 		return $address;
 	}
 
-	/**
-	 * @param Cart $cart Cart to get data from.
-	 * @return Entity Order instance.
-	 * @throws Exception When errors occurred.
-	 */
-	public function fromCart(Cart $cart)
+	public function fromCart(\Jigoshop\Entity\Cart $cart)
 	{
-		$order = clone $cart;
-		$order->setId(false);
-		$customer = $order->getCustomer();
-		$customer->selectTaxAddress($this->options->get('taxes.shipping') ? 'shipping' : 'billing');
-		$address = $this->createAddress($_POST['jigoshop_order']['billing_address']);
-		$customer->setBillingAddress($address);
+		$order = new \Jigoshop\Entity\Order($this->wp, $this->options->get('tax.classes'));
+		$state = $cart->getStateToSave();
+		$state['items'] = unserialize($state['items']);
+		$state['customer'] = unserialize($state['customer']);
+		unset($state['shipping'], $state['payment']);
 
-		$billingErrors = $this->validateAddress($address);
+		$order->setTaxDefinitions($cart->getTaxDefinitions());
+		$order->restoreState($state);
 
-		if ($address->getEmail() == null) {
-			$billingErrors[] = __('Email address is empty.', 'jigoshop');
-		}
-		if ($address->getPhone() == null) {
-			$billingErrors[] = __('Phone is empty.', 'jigoshop');
-		}
-
-		if (!Validation::isEmail($address->getEmail())) {
-			$billingErrors[] = __('Email address is invalid.', 'jigoshop');
-		}
-
-		if ($_POST['jigoshop_order']['different_shipping'] == 'on') {
-			$address = $this->createAddress($_POST['jigoshop_order']['shipping_address']);
-			$shippingErrors = $this->validateAddress($address);
-		}
-
-		$customer->setShippingAddress($address);
-
-		$error = '';
-		if (!empty($billingErrors)) {
-			$error .= $this->prepareAddressError(__('Billing address is not valid.', 'jigoshop'), $billingErrors);
-		}
-		if (!empty($shippingErrors)) {
-			$error .= $this->prepareAddressError(__('Shipping address is not valid.', 'jigoshop'), $shippingErrors);
-		}
-		if (!empty($error)) {
-			throw new Exception($error);
-		}
-
-		$order->setCustomerNote(trim(htmlspecialchars(strip_tags($_POST['jigoshop_order']['note']))));
-		$order->setStatus(Entity\Status::PENDING);
-
-		if (isset($_POST['jigoshop_order']['payment_method'])) {
-			$payment = $this->paymentService->get($_POST['jigoshop_order']['payment_method']);
-			$this->wp->doAction('jigoshop\checkout\set_payment\before', $payment, $order);
-			$order->setPaymentMethod($payment);
-		}
-
-		if (isset($_POST['jigoshop_order']['shipping_method'])) {
-			$shipping = $this->shippingService->get($_POST['jigoshop_order']['shipping_method']);
-			$this->wp->doAction('jigoshop\checkout\set_shipping\before', $shipping, $order);
-			$order->setShippingMethod($shipping);
-		}
+		$order->setShippingMethod($cart->getShippingMethod());
+		$order->setPaymentMethod($cart->getPaymentMethod());
+		$order->setShippingTax($cart->getShippingTax());
 
 		return $order;
-	}
-
-	/**
-	 * @param $address CustomerEntity\Address
-	 * @return array
-	 */
-	private function validateAddress($address)
-	{
-		$errors = array();
-
-		if (!$address->isValid()) {
-			if ($address->getFirstName() == null) {
-				$errors[] = __('First name is empty.', 'jigoshop');
-			}
-			if ($address->getLastName() == null) {
-				$errors[] = __('Last name is empty.', 'jigoshop');
-			}
-			if ($address->getAddress() == null) {
-				$errors[] = __('Address is empty.', 'jigoshop');
-			}
-			if ($address->getCountry() == null) {
-				$errors[] = __('Country is not selected.', 'jigoshop');
-			}
-			if ($address->getState() == null) {
-				$errors[] = __('State or province is not selected.', 'jigoshop');
-			}
-			if ($address->getCity() == null) {
-				$errors[] = __('City is empty.', 'jigoshop');
-			}
-			if ($address->getPostcode() == null) {
-				$errors[] = __('Postcode is empty.', 'jigoshop');
-			}
-			if ($this->options->get('shopping.validate_zip') && !Validation::isPostcode($address->getPostcode(), $address->getCountry())) {
-				$errors[] = __('Invalid postcode.', 'jigoshop');
-			}
-		}
-
-		if (!Country::exists($address->getCountry())) {
-			$errors[] = sprintf(__('Country "%s" does not exist.', 'jigoshop'), $address->getCountry());
-		}
-		if (Country::hasStates($address->getCountry()) && !Country::hasState($address->getCountry(), $address->getState())) {
-			$errors[] = sprintf(__('Country "%s" does not have state "%s".', 'jigoshop'), $address->getCountry(), $address->getState());
-		}
-
-		return $errors;
-	}
-
-	private function prepareAddressError($message, $errors)
-	{
-		return $message.'<ul><li>'.join('</li><li>', $errors).'</li></ul>';
 	}
 }
