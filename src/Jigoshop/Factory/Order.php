@@ -7,6 +7,7 @@ use Jigoshop\Core\Types;
 use Jigoshop\Entity\Cart;
 use Jigoshop\Entity\Customer as CustomerEntity;
 use Jigoshop\Entity\Order as Entity;
+use Jigoshop\Entity\OrderInterface;
 use Jigoshop\Exception;
 use Jigoshop\Helper\Country;
 use Jigoshop\Helper\Validation;
@@ -59,49 +60,35 @@ class Order implements EntityFactoryInterface
 		}
 
 		$order = $this->fetch($post);
-
-		$order->setUpdatedAt(new \DateTime());
+		$data = array(
+			'updated_at' => time(),
+		);
 		if (isset($_POST['post_excerpt'])) {
-			$order->setCustomerNote($_POST['post_excerpt']);
+			$data['customer_note'] = trim($_POST['post_excerpt']);
 		}
 		if (isset($_POST['order'])) {
-			if (isset($_POST['order']['status'])) {
-				$order->setStatus($_POST['order']['status']);
-			}
-
-			if (!empty($_POST['order']['customer'])) {
-				/** @var CustomerEntity $customer */
-				$customer = $this->customerService->find($_POST['order']['customer']);
-				$order->setCustomer($customer);
-			}
-
-			if (isset($_POST['order']['billing_address'])) {
-				$order->getCustomer()->setBillingAddress($this->createAddress($_POST['order']['billing_address']));
-			}
-			if (isset($_POST['order']['shipping_address'])) {
-				$order->getCustomer()->setShippingAddress($this->createAddress($_POST['order']['shipping_address']));
-			}
+			$data = array_merge($data, $_POST['order']);
 		}
 
-		$order = $this->wp->applyFilters('jigoshop\factory\order\create\after_customer', $order);
-
-		$order->removeItems();
-		$items = $this->getItems($id);
-		foreach ($items as $item) {
-			$order->addItem($item);
-		}
+		$data['items'] = $this->getItems($id);
 
 		if (isset($_POST['order']['shipping'])) {
-			$method = $this->shippingService->get($_POST['order']['shipping']);
+			$data['shipping'] = array(
+				'method' => null,
+				'rate' => null,
+				'price' => -1,
+			);
 
+			$method = $this->shippingService->get($_POST['order']['shipping']);
 			if ($method instanceof MultipleMethod && isset($_POST['order']['shipping_rate'])) {
 				$method->setShippingRate($_POST['order']['shipping_rate']);
+				$data['shipping']['rate'] = $method->getShippingRate();
 			}
 
-			$order->setShippingMethod($method);
+			$data['shipping']['method'] = $method;
 		}
 
-		return $order;
+		return $order = $this->wp->applyFilters('jigoshop\factory\order\create', $this->fill($order, $data));
 	}
 
 	/**
@@ -117,7 +104,7 @@ class Order implements EntityFactoryInterface
 		$order = $this->wp->applyFilters('jigoshop\factory\order\fetch\before', $order);
 		$state = array();
 
-		if($post){
+		if ($post) {
 			$state = array_map(function ($item){
 				return $item[0];
 			}, $this->wp->getPostMeta($post->ID));
@@ -125,19 +112,12 @@ class Order implements EntityFactoryInterface
 			$order->setId($post->ID);
 			if (isset($state['customer'])) {
 				// Customer must be unserialized twice "thanks" to WordPress second serialization.
-				$order->setCustomer(unserialize(unserialize($state['customer'])));
-				unset($state['customer']);
+				$state['customer'] = unserialize(unserialize($state['customer']));
 			}
-			/** @var Entity $order */
-			$order = $this->wp->applyFilters('jigoshop\factory\order\fetch\after_customer', $order);
 			$state['customer_note'] = $post->post_excerpt;
 			$state['status'] = $post->post_status;
 			$state['created_at'] = strtotime($post->post_date);
 			$state['items'] = $this->getItems($post->ID);
-			$state['product_subtotal'] = array_reduce($state['items'], function($value, $item){
-				/** @var $item Entity\Item */
-				return $value + $item->getCost();
-			}, 0.0);
 			if (isset($state['shipping'])) {
 				$shipping = unserialize($state['shipping']);
 				if (!empty($shipping['method'])) {
@@ -151,110 +131,11 @@ class Order implements EntityFactoryInterface
 			if (isset($state['payment'])) {
 				$state['payment'] = $this->paymentService->get($state['payment']);
 			}
-			if (isset($state['subtotal'])) {
-				$state['subtotal'] = (float)$state['subtotal'];
-			}
 
-			$order->restoreState($state);
+			$order = $this->fill($order, $state);
 		}
 
 		return $this->wp->applyFilters('jigoshop\find\order', $order, $state);
-	}
-
-	/**
-	 * @param Cart $cart Cart to get data from.
-	 * @return Entity Order instance.
-	 * @throws Exception When errors occurred.
-	 */
-	public function fromCart(Cart $cart)
-	{
-		$order = clone $cart;
-		$order->setId(false);
-		$customer = $order->getCustomer();
-		$customer->selectTaxAddress($this->options->get('taxes.shipping') ? 'shipping' : 'billing');
-		$address = $this->createAddress($_POST['jigoshop_order']['billing']);
-		$customer->setBillingAddress($address);
-
-		$billingErrors = $this->validateAddress($address);
-
-		if ($address->getEmail() == null || $address->getPhone() == null) {
-			if ($address->getEmail() == null) {
-				$billingErrors[] = __('Email address is empty.', 'jigoshop');
-			}
-			if ($address->getPhone() == null) {
-				$billingErrors[] = __('Phone is empty.', 'jigoshop');
-			}
-		}
-
-		if (!Validation::isEmail($address->getEmail())) {
-			$billingErrors[] = __('Email address is invalid.', 'jigoshop');
-		}
-
-		if ($_POST['jigoshop_order']['different_shipping'] == 'on') {
-			$address = $this->createAddress($_POST['jigoshop_order']['shipping']);
-			$shippingErrors = $this->validateAddress($address);
-		}
-
-		$customer->setShippingAddress($address);
-
-		$error = '';
-		if (!empty($billingErrors)) {
-			$error .= $this->prepareAddressError(__('Billing address is not valid.', 'jigoshop'), $billingErrors);
-		}
-		if (!empty($shippingErrors)) {
-			$error .= $this->prepareAddressError(__('Shipping address is not valid.', 'jigoshop'), $shippingErrors);
-		}
-		if (!empty($error)) {
-			throw new Exception($error);
-		}
-
-		$order->setCustomerNote(trim(htmlspecialchars(strip_tags($_POST['jigoshop_order']['note']))));
-		$order->setStatus(Entity\Status::PENDING);
-
-		if (isset($_POST['jigoshop_order']['payment_method'])) {
-			$payment = $this->paymentService->get($_POST['jigoshop_order']['payment_method']);
-			$this->wp->doAction('jigoshop\checkout\set_payment\before', $payment, $order);
-			$order->setPaymentMethod($payment);
-		}
-
-		if (isset($_POST['jigoshop_order']['shipping_method'])) {
-			$shipping = $this->shippingService->get($_POST['jigoshop_order']['shipping_method']);
-			$this->wp->doAction('jigoshop\checkout\set_shipping\before', $shipping, $order);
-			$order->setShippingMethod($shipping);
-		}
-
-		return $order;
-	}
-
-	private function createAddress($data)
-	{
-		if (!empty($data['company'])) {
-			$address = new CustomerEntity\CompanyAddress();
-			$address->setCompany($data['company']);
-			if (isset($data['euvatno'])) {
-				$address->setVatNumber($data['euvatno']);
-			}
-		} else {
-			$address = new CustomerEntity\Address();
-		}
-
-		$address->setFirstName($data['first_name']);
-		$address->setLastName($data['last_name']);
-		$address->setAddress($data['address']);
-		$address->setCountry($data['country']);
-		$address->setState($data['state']);
-		$address->setCity($data['city']);
-		$address->setPostcode($data['postcode']);
-
-		if (isset($data['phone'])) {
-			$address->setPhone($data['phone']);
-		}
-
-		if (isset($data['email'])) {
-			$address->setEmail($data['email']);
-		}
-
-		return $address;
 	}
 
 	/**
@@ -300,6 +181,128 @@ class Order implements EntityFactoryInterface
 		return $items;
 	}
 
+	public function fill(OrderInterface $order, array $data)
+	{
+		if (!empty($data['customer']) && is_numeric($data['customer'])) {
+			$data['customer'] = $this->customerService->find($data['customer']);
+		}
+
+		if (isset($data['billing_address'])) {
+			/** @var CustomerEntity $customer */
+			$customer = $data['customer'];
+			$customer->setBillingAddress($this->createAddress($data['billing_address']));
+		}
+		if (isset($data['shipping_address'])) {
+			/** @var CustomerEntity $customer */
+			$customer = $data['customer'];
+			$customer->setShippingAddress($this->createAddress($data['shipping_address']));
+		}
+
+		$order = $this->wp->applyFilters('jigoshop\factory\order\fetch\after_customer', $order);
+
+		if (isset($data['items'])) {
+			$order->removeItems();
+		}
+
+		$order->restoreState($data);
+
+		return $this->wp->applyFilters('jigoshop\factory\order\fill', $order);
+	}
+
+	private function createAddress($data)
+	{
+		if (!empty($data['company'])) {
+			$address = new CustomerEntity\CompanyAddress();
+			$address->setCompany($data['company']);
+			if (isset($data['euvatno'])) {
+				$address->setVatNumber($data['euvatno']);
+			}
+		} else {
+			$address = new CustomerEntity\Address();
+		}
+
+		$address->setFirstName($data['first_name']);
+		$address->setLastName($data['last_name']);
+		$address->setAddress($data['address']);
+		$address->setCountry($data['country']);
+		$address->setState($data['state']);
+		$address->setCity($data['city']);
+		$address->setPostcode($data['postcode']);
+
+		if (isset($data['phone'])) {
+			$address->setPhone($data['phone']);
+		}
+
+		if (isset($data['email'])) {
+			$address->setEmail($data['email']);
+		}
+
+		return $address;
+	}
+
+	/**
+	 * @param Cart $cart Cart to get data from.
+	 * @return Entity Order instance.
+	 * @throws Exception When errors occurred.
+	 */
+	public function fromCart(Cart $cart)
+	{
+		$order = clone $cart;
+		$order->setId(false);
+		$customer = $order->getCustomer();
+		$customer->selectTaxAddress($this->options->get('taxes.shipping') ? 'shipping' : 'billing');
+		$address = $this->createAddress($_POST['jigoshop_order']['billing_address']);
+		$customer->setBillingAddress($address);
+
+		$billingErrors = $this->validateAddress($address);
+
+		if ($address->getEmail() == null) {
+			$billingErrors[] = __('Email address is empty.', 'jigoshop');
+		}
+		if ($address->getPhone() == null) {
+			$billingErrors[] = __('Phone is empty.', 'jigoshop');
+		}
+
+		if (!Validation::isEmail($address->getEmail())) {
+			$billingErrors[] = __('Email address is invalid.', 'jigoshop');
+		}
+
+		if ($_POST['jigoshop_order']['different_shipping'] == 'on') {
+			$address = $this->createAddress($_POST['jigoshop_order']['shipping_address']);
+			$shippingErrors = $this->validateAddress($address);
+		}
+
+		$customer->setShippingAddress($address);
+
+		$error = '';
+		if (!empty($billingErrors)) {
+			$error .= $this->prepareAddressError(__('Billing address is not valid.', 'jigoshop'), $billingErrors);
+		}
+		if (!empty($shippingErrors)) {
+			$error .= $this->prepareAddressError(__('Shipping address is not valid.', 'jigoshop'), $shippingErrors);
+		}
+		if (!empty($error)) {
+			throw new Exception($error);
+		}
+
+		$order->setCustomerNote(trim(htmlspecialchars(strip_tags($_POST['jigoshop_order']['note']))));
+		$order->setStatus(Entity\Status::PENDING);
+
+		if (isset($_POST['jigoshop_order']['payment_method'])) {
+			$payment = $this->paymentService->get($_POST['jigoshop_order']['payment_method']);
+			$this->wp->doAction('jigoshop\checkout\set_payment\before', $payment, $order);
+			$order->setPaymentMethod($payment);
+		}
+
+		if (isset($_POST['jigoshop_order']['shipping_method'])) {
+			$shipping = $this->shippingService->get($_POST['jigoshop_order']['shipping_method']);
+			$this->wp->doAction('jigoshop\checkout\set_shipping\before', $shipping, $order);
+			$order->setShippingMethod($shipping);
+		}
+
+		return $order;
+	}
+
 	/**
 	 * @param $address CustomerEntity\Address
 	 * @return array
@@ -323,6 +326,9 @@ class Order implements EntityFactoryInterface
 			}
 			if ($address->getState() == null) {
 				$errors[] = __('State or province is not selected.', 'jigoshop');
+			}
+			if ($address->getCity() == null) {
+				$errors[] = __('City is empty.', 'jigoshop');
 			}
 			if ($address->getPostcode() == null) {
 				$errors[] = __('Postcode is empty.', 'jigoshop');

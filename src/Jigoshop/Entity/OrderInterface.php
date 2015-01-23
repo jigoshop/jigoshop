@@ -5,7 +5,7 @@ use Jigoshop\Entity\Order\Item;
 use Jigoshop\Exception;
 use Jigoshop\Shipping\Method;
 
-interface OrderInterface
+interface OrderInterface extends EntityInterface
 {
 	/**
 	 * @return Customer The customer.
@@ -48,6 +48,11 @@ interface OrderInterface
 	 * @return array List of items in the order.
 	 */
 	public function getItems();
+
+	/**
+	 * Removes all items, shipping method and associated taxes from the order.
+	 */
+	public function removeItems();
 
 	/**
 	 * @return float Current total value of the order.

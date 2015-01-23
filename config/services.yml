@@ -2,32 +2,30 @@ parameters: ~
 services:
   jigoshop.service.order:
     class: Jigoshop\Service\OrderService
-    factory_service: jigoshop.factory.order_service
-    factory_method: getService
+    factory: ['@jigoshop.factory.order_service', getService]
+    lazy: true
   jigoshop.service.product:
     class: Jigoshop\Service\ProductService
-    factory_service: jigoshop.factory.product_service
-    factory_method: getService
+    factory: ['@jigoshop.factory.product_service', getService]
+    lazy: true
   jigoshop.service.product.variable:
     class: Jigoshop\Service\Product\VariableService
-    factory_service: jigoshop.factory.variable_product_service
-    factory_method: getService
+    factory: ['@jigoshop.factory.variable_product_service', getService]
   jigoshop.service.tax:
     class: Jigoshop\Service\TaxService
-    factory_service: jigoshop.factory.tax_service
-    factory_method: getService
+    factory: ['@jigoshop.factory.tax_service', getService]
+    lazy: true
   jigoshop.service.customer:
     class: Jigoshop\Service\CustomerService
-    factory_service: jigoshop.factory.customer_service
-    factory_method: getService
+    factory: ['@jigoshop.factory.customer_service', getService]
   jigoshop.service.shipping:
     class: Jigoshop\Service\ShippingService
-    factory_service: jigoshop.factory.shipping_service
-    factory_method: getService
+    factory: ['@jigoshop.factory.shipping_service', getService]
+    lazy: true
   jigoshop.service.payment:
     class: Jigoshop\Service\PaymentService
-    factory_service: jigoshop.factory.payment_service
-    factory_method: getService
+    factory: ['@jigoshop.factory.payment_service', getService]
+    lazy: true
   jigoshop.service.cart:
     class: Jigoshop\Service\CartService
     arguments:
@@ -45,6 +43,7 @@ services:
       - '@jigoshop.factory.email'
   jigoshop.service.coupon:
     class: Jigoshop\Service\CouponService
+    lazy: true
     arguments:
       - '@wpal'
       - '@jigoshop.options'

@@ -65,7 +65,7 @@ class TaxService implements TaxServiceInterface
 			$order->setTaxDefinitions($tax);
 			return $order;
 		}, 10, 1);
-		$wp->addFilter('jigoshop\factory\order\create\after_customer', function($order) use ($service) {
+		$wp->addFilter('jigoshop\factory\order\create', function ($order) use ($service){
 			/** @var $order OrderInterface */
 			$order->setTaxDefinitions($service->getDefinitions($order->getCustomer()->getTaxAddress()));
 			return $order;

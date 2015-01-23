@@ -277,23 +277,6 @@ class Pages
 	 * @return bool
 	 * @since 2.0
 	 */
-	public static function isCheckoutThankYou()
-	{
-		if (!isset(self::$cache[self::THANK_YOU])) {
-			$page = self::$options->getPageId(self::THANK_YOU);
-			self::$cache[self::THANK_YOU] = $page !== false && is_page($page);
-			self::$cache[self::THANK_YOU] |= self::isAjax() && isset($_REQUEST['action']) && strpos($_REQUEST['action'], 'thank_you') !== false;
-		}
-
-		return self::$cache[self::THANK_YOU];
-	}
-
-	/**
-	 * Evaluates to true only on the Thank You page
-	 *
-	 * @return bool
-	 * @since 2.0
-	 */
 	public static function isCheckoutPay()
 	{
 		if (!isset(self::$cache['checkout-pay'])) {
@@ -360,7 +343,7 @@ class Pages
 	 */
 	public static function isJigoshop()
 	{
-		return self::isShop() || self::isAccount() || self::isCart() || self::isCheckout() || self::isOrderTracker();
+		return self::isShop() || self::isAccount() || self::isCart() || self::isCheckout() || self::isCheckoutThankYou() || self::isOrderTracker();
 	}
 
 	/**
@@ -372,6 +355,23 @@ class Pages
 	public static function isShop()
 	{
 		return self::isProductList() || self::isProduct() || self::isProductCategory() || self::isProductTag();
+	}
+
+	/**
+	 * Evaluates to true only on the Thank You page
+	 *
+	 * @return bool
+	 * @since 2.0
+	 */
+	public static function isCheckoutThankYou()
+	{
+		if (!isset(self::$cache[self::THANK_YOU])) {
+			$page = self::$options->getPageId(self::THANK_YOU);
+			self::$cache[self::THANK_YOU] = $page !== false && is_page($page);
+			self::$cache[self::THANK_YOU] |= self::isAjax() && isset($_REQUEST['action']) && strpos($_REQUEST['action'], 'thank_you') !== false;
+		}
+
+		return self::$cache[self::THANK_YOU];
 	}
 
 	/**

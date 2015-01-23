@@ -33,16 +33,19 @@ services:
       - '@jigoshop.factory.customer'
   jigoshop.factory.product:
     class: Jigoshop\Factory\Product
+    lazy: true
     arguments:
       - '@wpal'
       - '@jigoshop.options'
   jigoshop.factory.product.variable:
     class: Jigoshop\Factory\Product\Variable
+    lazy: true
     arguments:
       - '@wpal'
       - '@jigoshop.service.product'
   jigoshop.factory.order:
     class: Jigoshop\Factory\Order
+    lazy: true
     arguments:
       - '@wpal'
       - '@jigoshop.options'
@@ -52,6 +55,7 @@ services:
       - '@jigoshop.service.payment'
   jigoshop.factory.customer:
     class: Jigoshop\Factory\Customer
+    lazy: true
     arguments:
       - '@wpal'
   jigoshop.factory.shipping_service:
@@ -66,10 +70,12 @@ services:
       - '@jigoshop.options'
   jigoshop.factory.email:
     class: Jigoshop\Factory\Email
+    lazy: true
     arguments:
       - '@wpal'
       - '@jigoshop.options'
   jigoshop.factory.coupon:
     class: Jigoshop\Factory\Coupon
+    lazy: true
     arguments:
       - '@wpal'

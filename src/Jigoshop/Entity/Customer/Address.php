@@ -23,161 +23,6 @@ class Address implements \Serializable
 	private $phone;
 
 	/**
-	 * @param string $address Street, house etc. value.
-	 */
-	public function setAddress($address)
-	{
-		$this->address = $address;
-	}
-
-	/**
-	 * @return string Address line.
-	 */
-	public function getAddress()
-	{
-		return $this->address;
-	}
-
-	/**
-	 * @param string $city New city name.
-	 */
-	public function setCity($city)
-	{
-		$this->city = $city;
-	}
-
-	/**
-	 * @return string City name.
-	 */
-	public function getCity()
-	{
-		return $this->city;
-	}
-
-	/**
-	 * @param string $country New country code.
-	 */
-	public function setCountry($country)
-	{
-		if ($country != $this->country) {
-			$this->country = $country;
-			$this->setState('');
-		}
-	}
-
-	/**
-	 * @return string Country code.
-	 */
-	public function getCountry()
-	{
-		return $this->country;
-	}
-
-	/**
-	 * @param string $email New email.
-	 */
-	public function setEmail($email)
-	{
-		$this->email = $email;
-	}
-
-	/**
-	 * @return Email.
-	 */
-	public function getEmail()
-	{
-		return $this->email;
-	}
-
-	/**
-	 * @param string $firstName New first name.
-	 */
-	public function setFirstName($firstName)
-	{
-		$this->firstName = $firstName;
-	}
-
-	/**
-	 * @return string First name.
-	 */
-	public function getFirstName()
-	{
-		return $this->firstName;
-	}
-
-	/**
-	 * @param string $lastName New last name.
-	 */
-	public function setLastName($lastName)
-	{
-		$this->lastName = $lastName;
-	}
-
-	/**
-	 * @return string Last name.
-	 */
-	public function getLastName()
-	{
-		return $this->lastName;
-	}
-
-	/**
-	 * @param string $phone New phone number.
-	 */
-	public function setPhone($phone)
-	{
-		$this->phone = $phone;
-	}
-
-	/**
-	 * @return string Phone number.
-	 */
-	public function getPhone()
-	{
-		return $this->phone;
-	}
-
-	/**
-	 * @param string $postcode New postcode.
-	 */
-	public function setPostcode($postcode)
-	{
-		$this->postcode = $postcode;
-	}
-
-	/**
-	 * @return string Postcode.
-	 */
-	public function getPostcode()
-	{
-		return $this->postcode;
-	}
-
-	/**
-	 * @param string $state New state name or code.
-	 */
-	public function setState($state)
-	{
-		$this->state = $state;
-	}
-
-	/**
-	 * @return string State name or code.
-	 */
-	public function getState()
-	{
-		return $this->state;
-	}
-
-	/**
-	 * @return string Full name for the address.
-	 */
-	public function getName()
-	{
-		return $this->firstName.' '.$this->lastName;
-	}
-
-	/**
 	 * @return string Formatted address for Google Maps.
 	 */
 	public function getGoogleAddress()
@@ -229,13 +74,160 @@ class Address implements \Serializable
 	}
 
 	/**
+	 * @return string First name.
+	 */
+	public function getFirstName()
+	{
+		return $this->firstName;
+	}
+
+	/**
+	 * @param string $firstName New first name.
+	 */
+	public function setFirstName($firstName)
+	{
+		$this->firstName = $firstName;
+	}
+
+	/**
+	 * @return string Last name.
+	 */
+	public function getLastName()
+	{
+		return $this->lastName;
+	}
+
+	/**
+	 * @param string $lastName New last name.
+	 */
+	public function setLastName($lastName)
+	{
+		$this->lastName = $lastName;
+	}
+
+	/**
+	 * @return string Address line.
+	 */
+	public function getAddress()
+	{
+		return $this->address;
+	}
+
+	/**
+	 * @param string $address Street, house etc. value.
+	 */
+	public function setAddress($address)
+	{
+		$this->address = $address;
+	}
+
+	/**
+	 * @return string City name.
+	 */
+	public function getCity()
+	{
+		return $this->city;
+	}
+
+	/**
+	 * @param string $city New city name.
+	 */
+	public function setCity($city)
+	{
+		$this->city = $city;
+	}
+
+	/**
+	 * @return string Postcode.
+	 */
+	public function getPostcode()
+	{
+		return $this->postcode;
+	}
+
+	/**
+	 * @param string $postcode New postcode.
+	 */
+	public function setPostcode($postcode)
+	{
+		$this->postcode = $postcode;
+	}
+
+	/**
+	 * @return string Country code.
+	 */
+	public function getCountry()
+	{
+		return $this->country;
+	}
+
+	/**
+	 * @param string $country New country code.
+	 */
+	public function setCountry($country)
+	{
+		if ($country != $this->country) {
+			$this->country = $country;
+			$this->setState('');
+		}
+	}
+
+	/**
+	 * @return string State name or code.
+	 */
+	public function getState()
+	{
+		return $this->state;
+	}
+
+	/**
+	 * @param string $state New state name or code.
+	 */
+	public function setState($state)
+	{
+		$this->state = $state;
+	}
+
+	/**
+	 * @return Email.
+	 */
+	public function getEmail()
+	{
+		return $this->email;
+	}
+
+	/**
+	 * @param string $email New email.
+	 */
+	public function setEmail($email)
+	{
+		$this->email = $email;
+	}
+
+	/**
+	 * @return string Phone number.
+	 */
+	public function getPhone()
+	{
+		return $this->phone;
+	}
+
+	/**
+	 * @param string $phone New phone number.
+	 */
+	public function setPhone($phone)
+	{
+		$this->phone = $phone;
+	}
+
+	/**
 	 * Checks whether the address is valid (has all required fields filled).
 	 *
 	 * @return bool Is address valid?
 	 */
 	public function isValid()
 	{
-		return $this->firstName != null && $this->lastName != null && $this->address != null && $this->country != null && $this->state != null && $this->postcode != null;
+		return $this->firstName != null && $this->lastName != null && $this->address != null && $this->country != null && $this->state != null && $this->postcode != null && $this->city != null;
 	}
 
 	/**
@@ -260,6 +252,14 @@ class Address implements \Serializable
 		}
 
 		return $result;
+	}
+
+	/**
+	 * @return string Full name for the address.
+	 */
+	public function getName()
+	{
+		return $this->firstName.' '.$this->lastName;
 	}
 
 	/**

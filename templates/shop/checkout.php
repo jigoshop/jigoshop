@@ -114,6 +114,7 @@ use Jigoshop\Helper\Tax;
 				'name' => 'jigoshop_order[note]',
 				'rows' => 3,
 				'size' => 12,
+				'value' => $cart->getCustomerNote(),
 			)); ?>
 		</div>
 	</div>

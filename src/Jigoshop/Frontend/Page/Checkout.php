@@ -563,7 +563,7 @@ class Checkout implements PageInterface
 			'first_name' => array(
 				'type' => 'text',
 				'label' => __('First name', 'jigoshop'),
-				'name' => 'jigoshop_order[billing][first_name]',
+				'name' => 'jigoshop_order[billing_address][first_name]',
 				'value' => $address->getFirstName(),
 				'size' => 9,
 				'columnSize' => 6,
@@ -571,7 +571,7 @@ class Checkout implements PageInterface
 			'last_name' => array(
 				'type' => 'text',
 				'label' => __('Last name', 'jigoshop'),
-				'name' => 'jigoshop_order[billing][last_name]',
+				'name' => 'jigoshop_order[billing_address][last_name]',
 				'value' => $address->getLastName(),
 				'size' => 9,
 				'columnSize' => 6,
@@ -579,7 +579,7 @@ class Checkout implements PageInterface
 			'company' => array(
 				'type' => 'text',
 				'label' => __('Company', 'jigoshop'),
-				'name' => 'jigoshop_order[billing][company]',
+				'name' => 'jigoshop_order[billing_address][company]',
 				'value' => $address instanceof CompanyAddress ? $address->getCompany() : '',
 				'size' => 9,
 				'columnSize' => 6,
@@ -587,7 +587,7 @@ class Checkout implements PageInterface
 			'vat_number' => array(
 				'type' => 'text',
 				'label' => __('EU VAT number', 'jigoshop'),
-				'name' => 'jigoshop_order[billing][eu_vat]',
+				'name' => 'jigoshop_order[billing_address][eu_vat]',
 				'value' => $address instanceof CompanyAddress ? $address->getVatNumber() : '',
 				'size' => 9,
 				'columnSize' => 6,
@@ -595,7 +595,7 @@ class Checkout implements PageInterface
 			'address' => array(
 				'type' => 'text',
 				'label' => __('Address', 'jigoshop'),
-				'name' => 'jigoshop_order[billing][address]',
+				'name' => 'jigoshop_order[billing_address][address]',
 				'value' => $address->getAddress(),
 				'size' => 10,
 				'columnSize' => 12,
@@ -603,7 +603,7 @@ class Checkout implements PageInterface
 			'country' => array(
 				'type' => 'select',
 				'label' => __('Country', 'jigoshop'),
-				'name' => 'jigoshop_order[billing][country]',
+				'name' => 'jigoshop_order[billing_address][country]',
 				'options' => Country::getAllowed(),
 				'value' => $address->getCountry(),
 				'size' => 9,
@@ -612,7 +612,7 @@ class Checkout implements PageInterface
 			'state' => array(
 				'type' => Country::hasStates($address->getCountry()) ? 'select' : 'text',
 				'label' => __('State/Province', 'jigoshop'),
-				'name' => 'jigoshop_order[billing][state]',
+				'name' => 'jigoshop_order[billing_address][state]',
 				'options' => Country::getStates($address->getCountry()),
 				'value' => $address->getState(),
 				'size' => 9,
@@ -621,7 +621,7 @@ class Checkout implements PageInterface
 			'city' => array(
 				'type' => 'text',
 				'label' => __('City', 'jigoshop'),
-				'name' => 'jigoshop_order[billing][city]',
+				'name' => 'jigoshop_order[billing_address][city]',
 				'value' => $address->getCity(),
 				'size' => 9,
 				'columnSize' => 6,
@@ -629,7 +629,7 @@ class Checkout implements PageInterface
 			'postcode' => array(
 				'type' => 'text',
 				'label' => __('Postcode', 'jigoshop'),
-				'name' => 'jigoshop_order[billing][postcode]',
+				'name' => 'jigoshop_order[billing_address][postcode]',
 				'value' => $address->getPostcode(),
 				'size' => 9,
 				'columnSize' => 6,
@@ -637,7 +637,7 @@ class Checkout implements PageInterface
 			'phone' => array(
 				'type' => 'text',
 				'label' => __('Phone', 'jigoshop'),
-				'name' => 'jigoshop_order[billing][phone]',
+				'name' => 'jigoshop_order[billing_address][phone]',
 				'value' => $address->getPhone(),
 				'size' => 9,
 				'columnSize' => 6,
@@ -645,7 +645,7 @@ class Checkout implements PageInterface
 			'email' => array(
 				'type' => 'text',
 				'label' => __('Email', 'jigoshop'),
-				'name' => 'jigoshop_order[billing][email]',
+				'name' => 'jigoshop_order[billing_address][email]',
 				'value' => $address->getEmail(),
 				'size' => 9,
 				'columnSize' => 6,
@@ -670,7 +670,7 @@ class Checkout implements PageInterface
 			'first_name' => array(
 				'type' => 'text',
 				'label' => __('First name', 'jigoshop'),
-				'name' => 'jigoshop_order[shipping][first_name]',
+				'name' => 'jigoshop_order[shipping_address][first_name]',
 				'value' => $address->getFirstName(),
 				'size' => 9,
 				'columnSize' => 6,
@@ -678,7 +678,7 @@ class Checkout implements PageInterface
 			'last_name' => array(
 				'type' => 'text',
 				'label' => __('Last name', 'jigoshop'),
-				'name' => 'jigoshop_order[shipping][last_name]',
+				'name' => 'jigoshop_order[shipping_address][last_name]',
 				'value' => $address->getLastName(),
 				'size' => 9,
 				'columnSize' => 6,
@@ -686,7 +686,7 @@ class Checkout implements PageInterface
 			'company' => array(
 				'type' => 'text',
 				'label' => __('Company', 'jigoshop'),
-				'name' => 'jigoshop_order[shipping][company]',
+				'name' => 'jigoshop_order[shipping_address][company]',
 				'value' => $address instanceof CompanyAddress ? $address->getCompany() : '',
 				'size' => 9,
 				'columnSize' => 6,
@@ -694,7 +694,7 @@ class Checkout implements PageInterface
 			'address' => array(
 				'type' => 'text',
 				'label' => __('Address', 'jigoshop'),
-				'name' => 'jigoshop_order[shipping][address]',
+				'name' => 'jigoshop_order[shipping_address][address]',
 				'value' => $address->getAddress(),
 				'size' => 10,
 				'columnSize' => 12,
@@ -702,7 +702,7 @@ class Checkout implements PageInterface
 			'country' => array(
 				'type' => 'select',
 				'label' => __('Country', 'jigoshop'),
-				'name' => 'jigoshop_order[shipping][country]',
+				'name' => 'jigoshop_order[shipping_address][country]',
 				'options' => Country::getAllowed(),
 				'value' => $address->getCountry(),
 				'size' => 9,
@@ -711,7 +711,7 @@ class Checkout implements PageInterface
 			'state' => array(
 				'type' => Country::hasStates($address->getCountry()) ? 'select' : 'text',
 				'label' => __('State/Province', 'jigoshop'),
-				'name' => 'jigoshop_order[shipping][state]',
+				'name' => 'jigoshop_order[shipping_address][state]',
 				'options' => Country::getStates($address->getCountry()),
 				'value' => $address->getState(),
 				'size' => 9,
@@ -720,7 +720,7 @@ class Checkout implements PageInterface
 			'city' => array(
 				'type' => 'text',
 				'label' => __('City', 'jigoshop'),
-				'name' => 'jigoshop_order[shipping][city]',
+				'name' => 'jigoshop_order[shipping_address][city]',
 				'value' => $address->getCity(),
 				'size' => 9,
 				'columnSize' => 6,
@@ -728,7 +728,7 @@ class Checkout implements PageInterface
 			'postcode' => array(
 				'type' => 'text',
 				'label' => __('Postcode', 'jigoshop'),
-				'name' => 'jigoshop_order[shipping][postcode]',
+				'name' => 'jigoshop_order[shipping_address][postcode]',
 				'value' => $address->getPostcode(),
 				'size' => 9,
 				'columnSize' => 6,

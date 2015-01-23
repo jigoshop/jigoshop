@@ -18,8 +18,10 @@ use WPAL\Wordpress;
  * @package Jigoshop\Entity
  * @author Amadeusz Starzykiewicz
  */
-class Order implements EntityInterface, OrderInterface
+class Order implements OrderInterface
 {
+	/** @var \WPAL\Wordpress */
+	protected $wp;
 	/** @var int */
 	private $id;
 	/** @var string */
@@ -70,9 +72,6 @@ class Order implements EntityInterface, OrderInterface
 	private $customerNote;
 	/** @var array */
 	private $updateMessages = array();
-
-	/** @var \WPAL\Wordpress */
-	protected $wp;
 
 	public function __construct(Wordpress $wp, array $taxClasses)
 	{
@@ -290,43 +289,6 @@ class Order implements EntityInterface, OrderInterface
 	}
 
 	/**
-	 * @param Item $item Item to add.
-	 */
-	public function addItem(Item $item)
-	{
-		$this->items[$item->getKey()] = $item;
-		$this->productSubtotal += $item->getCost();
-		$this->subtotal += $item->getCost();
-		$this->wp->doAction('jigoshop\order\add_item', $item, $this);
-		$this->total += $item->getCost() + $item->getTax();
-		$this->totalTax = null;
-		$this->totalCombinedTax = null;
-	}
-
-	/**
-	 * @param $key string Item key to remove.
-	 * @return Item Removed item.
-	 */
-	public function removeItem($key)
-	{
-		if (isset($this->items[$key])) {
-			// TODO: Support for "Price includes tax"
-			/** @var Item $item */
-			$item = $this->items[$key];
-			$this->wp->doAction('jigoshop\order\remove_item', $item, $this);
-			$this->total -= $item->getCost() + $item->getTax();
-			$this->subtotal -= $item->getCost();
-			$this->productSubtotal -= $item->getCost();
-			$this->totalTax = null;
-			$this->totalCombinedTax = null;
-			unset($this->items[$key]);
-			return $item;
-		}
-
-		return null;
-	}
-
-	/**
 	 * Returns item of selected key.
 	 *
 	 * @param $key string Item key to fetch.
@@ -372,6 +334,25 @@ class Order implements EntityInterface, OrderInterface
 		$this->discount = 0.0;
 		$this->tax = array_map(function() { return 0.0; }, $this->tax);
 		$this->totalTax = null;
+		$this->totalCombinedTax = null;
+	}
+
+	/**
+	 * Removes shipping method and associated taxes from the order.
+	 */
+	public function removeShippingMethod()
+	{
+		$this->subtotal -= $this->shippingPrice;
+		$this->total -= $this->shippingPrice + array_reduce($this->shippingTax, function ($value, $item){
+				return $value + $item;
+			}, 0.0);
+
+		$this->shippingMethod = null;
+		$this->shippingMethodRate = null;
+		$this->shippingPrice = 0.0;
+		$this->shippingTax = array_map(function (){
+			return 0.0;
+		}, $this->shippingTax);
 		$this->totalCombinedTax = null;
 	}
 
@@ -436,22 +417,6 @@ class Order implements EntityInterface, OrderInterface
 	public function setShippingMethodRate($shippingMethodRate)
 	{
 		$this->shippingMethodRate = $shippingMethodRate;
-	}
-
-
-	/**
-	 * Removes shipping method and associated taxes from the order.
-	 */
-	public function removeShippingMethod()
-	{
-		$this->subtotal -= $this->shippingPrice;
-		$this->total -= $this->shippingPrice + array_reduce($this->shippingTax, function($value, $item){ return $value + $item; }, 0.0);
-
-		$this->shippingMethod = null;
-		$this->shippingMethodRate = null;
-		$this->shippingPrice = 0.0;
-		$this->shippingTax = array_map(function() { return 0.0; }, $this->shippingTax);
-		$this->totalCombinedTax = null;
 	}
 
 	/**
@@ -629,23 +594,6 @@ class Order implements EntityInterface, OrderInterface
 	}
 
 	/**
-	 * @return array All tax data combined.
-	 */
-	public function getCombinedTax()
-	{
-		$tax = $this->tax;
-		foreach ($this->shippingTax as $class => $value) {
-			if (!isset($tax[$class])) {
-				$tax[$class] = 0.0;
-			}
-
-			$tax[$class] += $value;
-		}
-
-		return $tax;
-	}
-
-	/**
 	 * @return float Total tax of the order.
 	 */
 	public function getTotalTax()
@@ -667,6 +615,23 @@ class Order implements EntityInterface, OrderInterface
 		}
 
 		return $this->totalCombinedTax;
+	}
+
+	/**
+	 * @return array All tax data combined.
+	 */
+	public function getCombinedTax()
+	{
+		$tax = $this->tax;
+		foreach ($this->shippingTax as $class => $value) {
+			if (!isset($tax[$class])) {
+				$tax[$class] = 0.0;
+			}
+
+			$tax[$class] += $value;
+		}
+
+		return $tax;
 	}
 
 	/**
@@ -698,6 +663,44 @@ class Order implements EntityInterface, OrderInterface
 
 		$item->setQuantity($quantity);
 		$this->addItem($item);
+	}
+
+	/**
+	 * @param $key string Item key to remove.
+	 * @return Item Removed item.
+	 */
+	public function removeItem($key)
+	{
+		if (isset($this->items[$key])) {
+			// TODO: Support for "Price includes tax"
+			/** @var Item $item */
+			$item = $this->items[$key];
+			$this->wp->doAction('jigoshop\order\remove_item', $item, $this);
+			$this->total -= $item->getCost() + $item->getTax();
+			$this->subtotal -= $item->getCost();
+			$this->productSubtotal -= $item->getCost();
+			$this->totalTax = null;
+			$this->totalCombinedTax = null;
+			unset($this->items[$key]);
+
+			return $item;
+		}
+
+		return null;
+	}
+
+	/**
+	 * @param Item $item Item to add.
+	 */
+	public function addItem(Item $item)
+	{
+		$this->items[$item->getKey()] = $item;
+		$this->productSubtotal += $item->getCost();
+		$this->subtotal += $item->getCost();
+		$this->wp->doAction('jigoshop\order\add_item', $item, $this);
+		$this->total += $item->getCost() + $item->getTax();
+		$this->totalTax = null;
+		$this->totalCombinedTax = null;
 	}
 
 	/**
@@ -764,8 +767,13 @@ class Order implements EntityInterface, OrderInterface
 		}
 		if (isset($state['shipping']) && is_array($state['shipping'])) {
 			$this->shippingMethod = $state['shipping']['method'];
-			$this->shippingPrice = $state['shipping']['price'];
 			$this->shippingMethodRate = $state['shipping']['rate'];
+
+			if ($state['shipping']['price'] > -1) {
+				$this->shippingPrice = $state['shipping']['price'];
+			} else {
+				$this->shippingPrice = $this->shippingMethod->calculate($this);
+			}
 		}
 		if (isset($state['payment']) && !empty($state['payment'])) {
 			$this->paymentMethod = $state['payment'];

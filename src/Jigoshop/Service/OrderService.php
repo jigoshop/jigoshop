@@ -35,23 +35,6 @@ class OrderService implements OrderServiceInterface
 	}
 
 	/**
-	 * Finds order specified by ID.
-	 *
-	 * @param $id int Order ID.
-	 * @return Order
-	 */
-	public function find($id)
-	{
-		$post = null;
-
-		if ($id !== null) {
-			$post = $this->wp->getPost($id);
-		}
-
-		return $this->wp->applyFilters('jigoshop\service\order\find', $this->factory->fetch($post), $id);
-	}
-
-	/**
 	 * Finds item for specified WordPress post.
 	 *
 	 * @param $post \WP_Post WordPress post.
@@ -63,24 +46,28 @@ class OrderService implements OrderServiceInterface
 	}
 
 	/**
-	 * Finds order specified using WordPress query.
+	 * Prepares order based on cart.
 	 *
-	 * @param $query \WP_Query WordPress query.
-	 * @return array Collection of found orders
+	 * @param Cart $cart Cart to fetch data from.
+	 * @return Order Prepared order.
 	 */
-	public function findByQuery($query)
+	public function createFromCart(Cart $cart)
 	{
-		// Fetch only IDs
-		$query->query_vars['fields'] = 'ids';
+		return $this->wp->applyFilters('jigoshop\service\order\create_from_cart', $this->factory->fromCart($cart), $cart);
+	}
 
-		$results = $query->get_posts();
-		$that = $this;
-		// TODO: Maybe it is good to optimize this to fetch all found orders at once?
-		$orders = array_map(function ($order) use ($that){
-			return $that->find($order);
-		}, $results);
-
-		return $this->wp->applyFilters('jigoshop\service\order\find_by_query', $orders, $query);
+	/**
+	 * Save the order data upon post saving.
+	 *
+	 * @param $id int Post ID.
+	 */
+	public function savePost($id)
+	{
+		// Do not save order when trashing or restoring from trash
+		if (!isset($_GET['action'])) {
+			$order = $this->factory->create($id);
+			$this->save($order);
+		}
 	}
 
 	/**
@@ -113,6 +100,7 @@ class OrderService implements OrderServiceInterface
 				'post_type' => Types::ORDER,
 				'post_title' => $object->getTitle(),
 				'post_status' => $object->getStatus(),
+				'post_excerpt' => $object->getCustomerNote(),
 			));
 
 			if (!is_int($post) || $post === 0) {
@@ -135,10 +123,11 @@ class OrderService implements OrderServiceInterface
 
 		$wpdb = $this->wp->getWPDB();
 
-		if (!$created && (isset($fields['status']) || isset($fields['number']))) {
+		if (!$created && (isset($fields['status']) || isset($fields['number']) || isset($fields['customer_note']))) {
 			$wpdb->update($wpdb->posts, array(
 				'post_title' => $object->getTitle(),
 				'post_status' => $object->getStatus(),
+				'post_excerpt' => $object->getCustomerNote(),
 			), array('ID' => $object->getId()));
 		}
 
@@ -152,7 +141,6 @@ class OrderService implements OrderServiceInterface
 		}
 
 		if (isset($fields['customer_note']) || isset($fields['status'])) {
-			// We don't need to save these values - they are stored by WordPress itself.
 			unset($fields['customer_note'], $fields['status']);
 		}
 
@@ -237,20 +225,36 @@ class OrderService implements OrderServiceInterface
 		 */
 	}
 
-	/**
-	 * Saves item meta value to database.
-	 *
-	 * @param $item Order\Item Item of the meta.
-	 * @param $meta Order\Item\Meta Meta to save.
-	 */
-	public function saveItemMeta($item, $meta)
+	private function getNextOrderNumber()
 	{
 		$wpdb = $this->wp->getWPDB();
-		$wpdb->replace($wpdb->prefix.'jigoshop_order_item_meta', array(
-			'item_id' => $item->getId(),
-			'meta_key' => $meta->getKey(),
-			'meta_value' => $meta->getValue(),
-		));
+
+		return $this->wp->applyFilters('jigoshop\service\order\next_order_number', $wpdb->get_var($wpdb->prepare(
+			"SELECT MAX(ID)+1 FROM {$wpdb->posts} WHERE post_type = %s",
+			array(Types::ORDER)
+		)));
+	}
+
+	/**
+	 * @param $object Order
+	 * @return string Random order key.
+	 */
+	private function generateOrderKey($object)
+	{
+		$fields = $object->getStateToSave();
+		$keys = array_keys($fields);
+		$min = 0;
+		$max = count($keys) - 1;
+		$source = time().$this->wp->getCurrentUserId();
+		$fields = array_map(function ($item){
+			return is_array($item) ? serialize($item) : $item;
+		}, $fields);
+
+		for ($i = 0; $i < 5; $i++) {
+			$source .= $fields[$keys[rand($min, $max)]];
+		}
+
+		return hash('md5', str_repeat($source, 5));
 	}
 
 	/**
@@ -285,28 +289,37 @@ class OrderService implements OrderServiceInterface
 	}
 
 	/**
-	 * Prepares order based on cart.
-	 *
-	 * @param Cart $cart Cart to fetch data from.
-	 * @return Order Prepared order.
+	 * @param $order int Order ID.
+	 * @param $ids array IDs to preserve.
 	 */
-	public function createFromCart(Cart $cart)
+	public function removeAllExcept($order, $ids)
 	{
-		return $this->wp->applyFilters('jigoshop\service\order\create_from_cart', $this->factory->fromCart($cart), $cart);
+		$wpdb = $this->wp->getWPDB();
+		$ids = join(',', array_filter(array_map(function ($item){
+			return (int)$item;
+		}, $ids)));
+		// Support for removing all items
+		if (empty($ids)) {
+			$ids = '0';
+		}
+		$query = $wpdb->prepare("DELETE FROM {$wpdb->prefix}jigoshop_order_item WHERE id NOT IN ({$ids}) AND order_id = %d", array($order));
+		$wpdb->query($query);
 	}
 
 	/**
-	 * Save the order data upon post saving.
+	 * Saves item meta value to database.
 	 *
-	 * @param $id int Post ID.
+	 * @param $item Order\Item Item of the meta.
+	 * @param $meta Order\Item\Meta Meta to save.
 	 */
-	public function savePost($id)
+	public function saveItemMeta($item, $meta)
 	{
-		// Do not save order when trashing or restoring from trash
-		if (!isset($_GET['action'])) {
-			$order = $this->factory->create($id);
-			$this->save($order);
-		}
+		$wpdb = $this->wp->getWPDB();
+		$wpdb->replace($wpdb->prefix.'jigoshop_order_item_meta', array(
+			'item_id' => $item->getId(),
+			'meta_key' => $meta->getKey(),
+			'meta_value' => $meta->getValue(),
+		));
 	}
 
 	/**
@@ -342,6 +355,44 @@ class OrderService implements OrderServiceInterface
 		$this->wp->removeFilter('posts_where', $restriction);
 
 		return $results;
+	}
+
+	/**
+	 * Finds order specified using WordPress query.
+	 *
+	 * @param $query \WP_Query WordPress query.
+	 * @return array Collection of found orders
+	 */
+	public function findByQuery($query)
+	{
+		// Fetch only IDs
+		$query->query_vars['fields'] = 'ids';
+
+		$results = $query->get_posts();
+		$that = $this;
+		// TODO: Maybe it is good to optimize this to fetch all found orders at once?
+		$orders = array_map(function ($order) use ($that){
+			return $that->find($order);
+		}, $results);
+
+		return $this->wp->applyFilters('jigoshop\service\order\find_by_query', $orders, $query);
+	}
+
+	/**
+	 * Finds order specified by ID.
+	 *
+	 * @param $id int Order ID.
+	 * @return Order
+	 */
+	public function find($id)
+	{
+		$post = null;
+
+		if ($id !== null) {
+			$post = $this->wp->getPost($id);
+		}
+
+		return $this->wp->applyFilters('jigoshop\service\order\find', $this->factory->fetch($post), $id);
 	}
 
 	/**
@@ -391,31 +442,6 @@ class OrderService implements OrderServiceInterface
 	}
 
 	/**
-	 * @param $order int Order ID.
-	 * @param $ids array IDs to preserve.
-	 */
-	public function removeAllExcept($order, $ids)
-	{
-		$wpdb = $this->wp->getWPDB();
-		$ids = join(',', array_filter(array_map(function($item){ return (int)$item; }, $ids)));
-		// Support for removing all items
-		if (empty($ids)) {
-			$ids = '0';
-		}
-		$query = $wpdb->prepare("DELETE FROM {$wpdb->prefix}jigoshop_order_item WHERE id NOT IN ({$ids}) AND order_id = %d", array($order));
-		$wpdb->query($query);
-	}
-
-	private function getNextOrderNumber()
-	{
-		$wpdb = $this->wp->getWPDB();
-		return $this->wp->applyFilters('jigoshop\service\order\next_order_number', $wpdb->get_var($wpdb->prepare(
-			"SELECT MAX(ID)+1 FROM {$wpdb->posts} WHERE post_type = %s",
-			array(Types::ORDER)
-		)));
-	}
-
-	/**
 	 * Finds orders for specified user.
 	 *
 	 * @param $userId int User ID.
@@ -439,25 +465,5 @@ class OrderService implements OrderServiceInterface
 			),
 		));
 		return $this->wp->applyFilters('jigoshop\service\order\find_for_user', $this->findByQuery($query), $userId);
-	}
-
-	/**
-	 * @param $object Order
-	 * @return string Random order key.
-	 */
-	private function generateOrderKey($object)
-	{
-		$fields = $object->getStateToSave();
-		$keys = array_keys($fields);
-		$min = 0;
-		$max = count($keys)-1;
-		$source = time().$this->wp->getCurrentUserId();
-		$fields = array_map(function($item){ return is_array($item) ? serialize($item) : $item; }, $fields);
-
-		for ($i = 0; $i < 5; $i++) {
-			$source .= $fields[$keys[rand($min, $max)]];
-		}
-
-		return hash('md5', str_repeat($source, 5));
 	}
 }

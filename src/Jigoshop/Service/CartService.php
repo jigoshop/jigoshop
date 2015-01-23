@@ -16,12 +16,12 @@ class CartService implements CartServiceInterface
 
 	/** @var Wordpress */
 	private $wp;
+	/** @var Container */
+	private $di;
 	/** @var CustomerServiceInterface */
 	private $customerService;
 	/** @var string */
 	private $currentUserCartId;
-	/** @var Container */
-	private $di;
 
 	private $carts = array();
 
@@ -93,9 +93,13 @@ class CartService implements CartServiceInterface
 			if (isset($_SESSION[self::CART][$id])) {
 				$data = unserialize($_SESSION[self::CART][$id]);
 			}
+//			if (isset($_POST['jigoshop_order'])) {
+//				//
+//			}
 
 			/** @var \Jigoshop\Entity\Cart $cart */
 			$cart = $this->di->get('jigoshop.cart');
+			// TODO: Refactor to use Factory\Order::fill() function
 			$cart = $this->wp->applyFilters('jigoshop\service\cart\before_get', $cart);
 			$cart->setCustomer($this->customerService->getCurrent());
 			$cart = $this->wp->applyFilters('jigoshop\service\cart\before_initialize', $cart);
