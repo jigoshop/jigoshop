@@ -49,19 +49,19 @@ class Gateway implements Method
 	}
 
 	/**
-	 * @return \jigoshop_payment_gateway
-	 */
-	public function getGateway()
-	{
-		return $this->gateway;
-	}
-
-	/**
 	 * @return string ID of payment method.
 	 */
 	public function getId()
 	{
 		return $this->gateway->id;
+	}
+
+	/**
+	 * @return \jigoshop_payment_gateway
+	 */
+	public function getGateway()
+	{
+		return $this->gateway;
 	}
 
 	/**
@@ -137,6 +137,12 @@ class Gateway implements Method
 		$result = $this->gateway->process_payment($order->getId());
 
 		if ($result === false) {
+			throw new Exception(__('Payment failed.', 'jigoshop'));
+		}
+
+		Integration::getOrderService()->save($order);
+
+		if (Integration::getMessages()->hasErrors()) {
 			throw new Exception(__('Payment failed.', 'jigoshop'));
 		}
 

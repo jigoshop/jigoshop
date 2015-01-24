@@ -41,14 +41,6 @@ abstract class jigoshop_payment_gateway
 	}
 
 	/**
-	 * Process the payment and return the result.
-	 *
-	 * @param $order_id int Order ID to process.
-	 * @return array
-	 */
-	public abstract function process_payment($order_id);
-
-	/**
 	 * Default Option settings for WordPress Settings API using the Jigoshop_Options class
 	 * These should be installed on the Jigoshop_Options 'Payment Gateways' tab
 	 */
@@ -56,6 +48,14 @@ abstract class jigoshop_payment_gateway
 	{
 		return array();
 	}
+
+	/**
+	 * Process the payment and return the result.
+	 *
+	 * @param $order_id int Order ID to process.
+	 * @return array
+	 */
+	public abstract function process_payment($order_id);
 
 	public function is_available()
 	{
@@ -95,6 +95,6 @@ abstract class jigoshop_payment_gateway
 	 */
 	public function process_gateway($subtotal, $shipping_total, $discount = 0)
 	{
-		return Integration::getCart()->getTotal() > 0;
+		return ($subtotal + $shipping_total - $discount) > 0;
 	}
 }

@@ -71,6 +71,10 @@ function jigoshop_get_page_id($page)
 		}, 9999);
 	}
 
+	if ($page == 'thanks') {
+		$page = Pages::THANK_YOU;
+	}
+
 	return $options->get('advanced.pages.'.$page);
 }
 

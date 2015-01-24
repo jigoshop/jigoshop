@@ -363,14 +363,15 @@ class Checkout implements PageInterface
 
 				$payment = $cart->getPaymentMethod();
 				$isPaymentRequired = $this->isPaymentRequired($cart);
+				$this->wp->doAction('jigoshop\checkout\payment', $payment);
 				if ($isPaymentRequired && (!$payment || !$payment->isEnabled())) {
 					throw new Exception(__('Payment is required for this order. Please select payment method.', 'jigoshop'));
 				}
 
 				$order = $this->orderService->createFromCart($cart);
-				$this->orderService->save($order);
 				/** @var Order $order */
 				$order = $this->wp->applyFilters('jigoshop\checkout\order', $order);
+				$this->orderService->save($order);
 				$this->cartService->remove($cart);
 
 				$url = '';

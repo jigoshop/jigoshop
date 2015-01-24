@@ -244,7 +244,7 @@ class Integration
 			}
 		}
 
-		add_action('jigoshop\service\cart\payment', '\Jigoshop\Integration::processGateway');
+		add_action('jigoshop\checkout\payment', '\Jigoshop\Integration::processGateway');
 	}
 
 	/**
