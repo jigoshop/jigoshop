@@ -5,6 +5,7 @@ namespace Jigoshop\Service;
 use Jigoshop\Exception;
 use Jigoshop\Payment\Dummy;
 use Jigoshop\Payment\Method;
+use Monolog\Registry;
 
 /**
  * Service for managing payment methods.
@@ -35,9 +36,7 @@ class PaymentService implements PaymentServiceInterface
 	public function get($id)
 	{
 		if (!isset($this->methods[$id])) {
-			if (WP_DEBUG) {
-				throw new Exception(sprintf(__('Payment gateway "%s" does not exists', 'jigoshop'), $id));
-			}
+			Registry::getInstance(JIGOSHOP_LOGGER)->addWarning(sprintf(__('Payment gateway "%s" does not exists', 'jigoshop'), $id));
 
 			return new Dummy($id);
 		}

@@ -27,26 +27,6 @@ class ShippingService implements ShippingServiceInterface
 	}
 
 	/**
-	 * Returns method by its ID.
-	 *
-	 * @param $id string ID of method.
-	 * @return Method Method found.
-	 * @throws Exception When no method is found for specified ID.
-	 */
-	public function get($id)
-	{
-		if (!isset($this->methods[$id])) {
-			if (WP_DEBUG) {
-				throw new Exception(sprintf(__('Method "%s" does not exists', 'jigoshop'), $id));
-			}
-
-			return new Dummy($id);
-		}
-
-		return $this->methods[$id];
-	}
-
-	/**
 	 * Finds item specified by state.
 	 *
 	 * @param array $state State of the method to be found.
@@ -57,6 +37,24 @@ class ShippingService implements ShippingServiceInterface
 		$method = $this->get($state['id']);
 		$method->restoreState($state);
 		return $method;
+	}
+
+	/**
+	 * Returns method by its ID.
+	 *
+	 * @param $id string ID of method.
+	 * @return Method Method found.
+	 * @throws Exception When no method is found for specified ID.
+	 */
+	public function get($id)
+	{
+		if (!isset($this->methods[$id])) {
+			Registry::getInstance(JIGOSHOP_LOGGER)->addWarning(sprintf(__('Shipping method "%s" does not exists', 'jigoshop'), $id));
+
+			return new Dummy($id);
+		}
+
+		return $this->methods[$id];
 	}
 
 	/**
@@ -85,16 +83,6 @@ class ShippingService implements ShippingServiceInterface
 	}
 
 	/**
-	 * Returns list of available shipping methods.
-	 *
-	 * @return array List of available shipping methods.
-	 */
-	public function getAvailable()
-	{
-		return $this->methods;
-	}
-
-	/**
 	 * Returns list of enabled shipping methods.
 	 *
 	 * @return array List of enabled shipping methods.
@@ -105,5 +93,15 @@ class ShippingService implements ShippingServiceInterface
 			/** @var $method Method */
 			return $method->isEnabled();
 		});
+	}
+
+	/**
+	 * Returns list of available shipping methods.
+	 *
+	 * @return array List of available shipping methods.
+	 */
+	public function getAvailable()
+	{
+		return $this->methods;
 	}
 }
