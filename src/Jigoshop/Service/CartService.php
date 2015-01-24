@@ -159,6 +159,10 @@ class CartService implements CartServiceInterface
 					);
 				}
 			}
+
+			if (isset($state['payment']) && !empty($state['payment'])) {
+				$state['payment'] = $this->paymentService->get($state['payment']);
+			}
 		}
 
 		return $state;
@@ -320,25 +324,44 @@ class CartService implements CartServiceInterface
 	}
 
 	/**
-	 * Creates cart from order ID.
-
-
-*
-*@param $cartId string Cart ID to use.
+	 * Creates cart from order - useful for cancelling orders.
+	 *
+	 * @param $cartId string Cart ID to use.
 	 * @param $order Order Order to base cart on.
 	 * @return \Jigoshop\Entity\Cart The cart.
 	 */
 	public function createFromOrder($cartId, $order)
 	{
-		/** @var \Jigoshop\Entity\Cart $cart */
-//		$cart = $this->di->get('jigoshop.cart');
-//		$cart->initializeFor($cartId, array());
-//		$cart->setCustomer($order->getCustomer());
-//		$cart->setShippingMethod($order->getShippingMethod());
-//		foreach ($order->getItems() as $item) {
-//			$cart->addItem($item);
+		$cart = new \Jigoshop\Entity\Cart($this->wp, $this->options->get('tax.classes'));
+
+		$cart->setId($cartId);
+		$cart->setCustomer($order->getCustomer());
+		$cart->setCustomerNote($order->getCustomerNote());
+		$cart->setTaxDefinitions($order->getTaxDefinitions());
+
+		foreach ($order->getItems() as $item) {
+			/** @var $item Order\Item */
+			$item = clone $item;
+			$item->setId(false);
+			$item->setKey(false);
+			$cart->addItem($item);
+		}
+
+//		foreach ($order->getCoupons() as $coupon) {
+//			$cart->addCoupon()
 //		}
-//
-//		return $cart;
+
+		$shipping = $order->getShippingMethod();
+		if ($shipping !== null) {
+			$cart->setShippingMethod($shipping);
+			$cart->setShippingTax($order->getShippingTax());
+		}
+
+		$payment = $order->getPaymentMethod();
+		if ($payment !== null) {
+			$cart->setPaymentMethod($payment);
+		}
+
+		return $cart;
 	}
 }

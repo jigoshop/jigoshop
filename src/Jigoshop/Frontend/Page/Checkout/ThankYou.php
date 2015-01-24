@@ -125,6 +125,7 @@ class ThankYou implements PageInterface
 			'order' => $order,
 			'showWithTax' => $this->options->get('tax.price_tax') == 'with_tax',
 			'shopUrl' => $this->wp->getPermalink($this->options->getPageId(Pages::SHOP)),
+			'cancelUrl' => \Jigoshop\Helper\Order::getCancelLink($order),
 			'getTaxLabel' => function($taxClass) use ($order) {
 				return Tax::getLabel($taxClass, $order);
 			},

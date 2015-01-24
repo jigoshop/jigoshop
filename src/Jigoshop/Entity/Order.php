@@ -711,6 +711,16 @@ class Order implements OrderInterface
 	 */
 	public function getStateToSave()
 	{
+		$shipping = false;
+		if (is_object($this->shippingMethod)) {
+			$shipping = $this->shippingMethod->getState();
+		}
+
+		$payment = false;
+		if (is_object($this->paymentMethod)) {
+			$payment = $this->paymentMethod->getId();
+		}
+
 		return array(
 			'id' => $this->id,
 			'number' => $this->number,
@@ -720,11 +730,11 @@ class Order implements OrderInterface
 			'customer' => serialize($this->customer),
 			'customer_id' =>  $this->customer->getId(),
 			'shipping' => array(
-				'method' => $this->shippingMethod ? $this->shippingMethod->getState() : false,
+				'method' => $shipping,
 				'price' => $this->shippingPrice,
 				'rate' => $this->shippingMethodRate,
 			),
-			'payment' => $this->paymentMethod ? $this->paymentMethod->getId() : false,
+			'payment' => $payment,
 			'customer_note' => $this->customerNote,
 			'total' => $this->total,
 			'subtotal' => $this->subtotal,

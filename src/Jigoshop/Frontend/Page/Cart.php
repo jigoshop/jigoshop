@@ -408,9 +408,15 @@ class Cart implements PageInterface
 							return;
 						}
 
+						if ($order->getStatus() != Status::PENDING) {
+							$this->messages->addError(__('Unable to cancel order.', 'jigoshop'));
+
+							return;
+						}
+
 						$order->setStatus(Status::CANCELLED);
-						$this->orderService->save($order);
 						$cart = $this->cartService->createFromOrder($this->cartService->getCartIdForCurrentUser(), $order);
+						$this->orderService->save($order);
 						$this->cartService->save($cart);
 						$this->messages->addNotice(__('The order has been cancelled', 'jigoshop'));
 					}

@@ -281,9 +281,16 @@ class Order implements EntityFactoryInterface
 		$order->setTaxDefinitions($cart->getTaxDefinitions());
 		$order->restoreState($state);
 
-		$order->setShippingMethod($cart->getShippingMethod());
-		$order->setPaymentMethod($cart->getPaymentMethod());
-		$order->setShippingTax($cart->getShippingTax());
+		$shipping = $cart->getShippingMethod();
+		if ($shipping !== null) {
+			$order->setShippingMethod($shipping);
+			$order->setShippingTax($cart->getShippingTax());
+		}
+
+		$payment = $cart->getPaymentMethod();
+		if ($payment !== null) {
+			$order->setPaymentMethod($payment);
+		}
 
 		return $order;
 	}

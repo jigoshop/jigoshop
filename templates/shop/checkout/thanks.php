@@ -7,6 +7,7 @@ use Jigoshop\Helper\Render;
  * @var $messages \Jigoshop\Core\Messages Messages container.
  * @var $content string Contents of cart page
  * @var $order \Jigoshop\Entity\Order The order.
+ * @var $cancelUrl string URL to cancel order.
  * @var $shopUrl string URL to product list page.
  * @var $showWithTax bool Whether to show product price with or without tax.
  * @var $getTaxLabel \Closure Function to retrieve tax label.
@@ -110,4 +111,7 @@ use Jigoshop\Helper\Render;
 		</table>
 	</div>
 </div>
+<?php if ($order->getStatus() == Status::PENDING): ?>
+<a href="<?php echo $cancelUrl; ?>" class="btn btn-danger"><?php _e('Cancel this order', 'jigoshop'); ?></a>
+<?php endif; ?>
 <a href="<?php echo $shopUrl; ?>" class="btn btn-primary pull-right"><?php _e('Continue shopping', 'jigoshop'); ?></a>
