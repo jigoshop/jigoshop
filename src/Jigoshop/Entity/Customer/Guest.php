@@ -10,7 +10,7 @@ class Guest extends Customer
 {
 	public function getId()
 	{
-		return '';
+		return null;
 	}
 
 	public function setId($id)
@@ -36,11 +36,6 @@ class Guest extends Customer
 		Registry::getInstance(JIGOSHOP_LOGGER)->addDebug('Guest customer cannot be updated!');
 	}
 
-	public function getName()
-	{
-		return __('Guest', 'jigoshop');
-	}
-
 	public function setName($name)
 	{
 		if (WP_DEBUG) {
@@ -53,6 +48,11 @@ class Guest extends Customer
 	public function __toString()
 	{
 		return $this->getName();
+	}
+
+	public function getName()
+	{
+		return __('Guest', 'jigoshop');
 	}
 
 	public function getStateToSave()

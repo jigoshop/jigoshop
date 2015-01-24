@@ -92,30 +92,6 @@ class OrderService implements OrderServiceInterface
 		}
 
 		$fields = $object->getStateToSave();
-		$created = false;
-
-		if (!$object->getId()) {
-			$object->setNumber($this->getNextOrderNumber());
-			$post = $this->wp->wpInsertPost(array(
-				'post_type' => Types::ORDER,
-				'post_title' => $object->getTitle(),
-				'post_status' => $object->getStatus(),
-				'post_excerpt' => $object->getCustomerNote(),
-			));
-
-			if (!is_int($post) || $post === 0) {
-				throw new Exception(__('Unable to save order. Please try again.', 'jigoshop'));
-			}
-
-			$object->setId($post);
-			$created = true;
-			$this->wp->doAction('jigoshop\service\order\new', $post);
-		}
-
-		if (!$object->getKey()) {
-			$fields['key'] = $this->generateOrderKey($object);
-			$object->setKey($fields['key']);
-		}
 
 		if (isset($fields['id'])) {
 			unset($fields['id']);
@@ -123,12 +99,48 @@ class OrderService implements OrderServiceInterface
 
 		$wpdb = $this->wp->getWPDB();
 
-		if (!$created && (isset($fields['status']) || isset($fields['number']) || isset($fields['customer_note']))) {
+		if (!$object->getId()) {
+			$date = $this->wp->getHelpers()->currentTime('mysql');
+			$dateGmt = $this->wp->getHelpers()->currentTime('mysql', true);
+
+			$wpdb->insert($wpdb->posts, array(
+				'post_author' => $object->getCustomer()->getId(),
+				'post_date' => $date,
+				'post_date_gmt' => $dateGmt,
+				'post_modified' => $date,
+				'post_modified_gmt' => $dateGmt,
+				'post_type' => Types::ORDER,
+				'post_title' => $object->getTitle(),
+				'post_excerpt' => $object->getCustomerNote(),
+				'post_status' => $object->getStatus(),
+				'post_name' => sanitize_title($object->getTitle()),
+				'comment_status' => 'open',
+				'ping_status' => 'closed',
+			));
+
+			$id = $wpdb->insert_id;
+			if (!is_int($id) || $id === 0) {
+				throw new Exception(__('Unable to save order. Please try again.', 'jigoshop'));
+			}
+
+			$object->setId($id);
+			$this->wp->doAction('jigoshop\service\order\new', $id);
+			unset($fields['status'], $fields['customer_note']);
+		}
+
+		if (!$object->getKey()) {
+			$fields['key'] = $this->generateOrderKey($object);
+			$object->setKey($fields['key']);
+		}
+
+		if (isset($fields['status']) || isset($fields['customer_note'])) {
 			$wpdb->update($wpdb->posts, array(
 				'post_title' => $object->getTitle(),
 				'post_status' => $object->getStatus(),
 				'post_excerpt' => $object->getCustomerNote(),
 			), array('ID' => $object->getId()));
+
+			unset($fields['customer_note'], $fields['status']);
 		}
 
 		if (isset($fields['update_messages']) && !empty($fields['update_messages'])) {
@@ -138,10 +150,6 @@ class OrderService implements OrderServiceInterface
 					Order\Status::getName($messages['new_status'])));
 			}
 			unset($fields['update_messages']);
-		}
-
-		if (isset($fields['customer_note']) || isset($fields['status'])) {
-			unset($fields['customer_note'], $fields['status']);
 		}
 
 		if (isset($fields['items'])) {
@@ -198,7 +206,7 @@ class OrderService implements OrderServiceInterface
 			$this->wp->updatePostMeta($object->getId(), $field, $this->wp->getHelpers()->escSql($value));
 		}
 
-		$this->wp->doAction('jigoshop\service\order\save', $object, $created);
+		$this->wp->doAction('jigoshop\service\order\save', $object);
 		$this->wp->doAction('jigoshop\order\after\\'.$object->getStatus(), $object);
 		$notifyLowStock = $this->options->get('products.notify_low_stock');
 		$notifyOutOfStock = $this->options->get('products.notify_out_of_stock');
@@ -207,9 +215,9 @@ class OrderService implements OrderServiceInterface
 			$threshold = $this->options->get('products.low_stock_threshold');
 			foreach ($object->getItems() as $item) {
 				$stock = $this->wp->applyFilters('jigoshop\product\get_stock', false, $item);
+				$product = $item->getProduct();
 
 				if ($notifyOutOfStock && $stock !== false && $stock == 0) {
-					$product = $item->getProduct();
 					$this->wp->doAction('jigoshop\product\out_of_stock', $product);
 					continue;
 				}
