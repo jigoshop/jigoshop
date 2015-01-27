@@ -178,6 +178,7 @@ function jigoshop_system_info() {
 
 	Short Open Tag:           <?php echo (ini_get('short_open_tag') ? 'Enabled' : 'Disabled'); ?><?php echo "\n"; ?>
 	Allow URL fopen:          <?php echo (ini_get('allow_url_fopen') ? 'Enabled' : 'Disabled'); ?><?php echo "\n"; ?>
+	cURL support:             <?php echo (function_exists('curl_init') && function_exists('curl_exec') ? 'Enabled' : 'Disabled'); ?><?php echo "\n"; ?>
 
 	WP_DEBUG:                 <?php echo defined('WP_DEBUG') ? WP_DEBUG ? 'Enabled' . "\n" : 'Disabled' . "\n" : 'Not set' . "\n" ?>
 	WP Table Prefix:          <?php global $wpdb; echo "Length: ". strlen($wpdb->prefix); echo " Status:"; if (strlen($wpdb->prefix)>16){echo " ERROR: Too Long";} else {echo " Acceptable";} echo "\n"; ?>
