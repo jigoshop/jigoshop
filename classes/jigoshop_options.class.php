@@ -151,6 +151,20 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	}
 
 	/**
+	 * Adds a named option to our collection
+	 *
+	 * Will do nothing if option already exists to match WordPress behaviour
+	 * Use 'set' to actually set an existing option
+	 *
+	 * @param string $name the name of the option to add
+	 * @param mixed	$value the value to set if the option doesn't exist
+	 * @since	1.3
+	 */
+	public function add_option($name, $value){
+		$this->add($name, $value);
+	}
+
+	/**
 	 * Adds a named option
 	 * Will do nothing if option already exists to match WordPress behaviour
 	 * Use 'set' to actually set an existing option
@@ -171,284 +185,6 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 	}
 
 	/**
-	 * Adds a named option to our collection
-	 *
-	 * Will do nothing if option already exists to match WordPress behaviour
-	 * Use 'set' to actually set an existing option
-	 *
-	 * @param string $name the name of the option to add
-	 * @param mixed	$value the value to set if the option doesn't exist
-	 * @since	1.3
-	 */
-	public function add_option($name, $value){
-		$this->add($name, $value);
-	}
-
-	/**
-	 * Returns a named Jigoshop option
-	 *
-	 * @param   string  the name of the option to retrieve
-	 * @param   mixed  the value to return if the option doesn't exist
-	 * @return  mixed  the value of the option, null if no $default and option doesn't exist
-	 * @since  1.12
-	 */
-	public function get($name, $default = null)
-	{
-		if(isset(self::$current_options[$name])){
-			return apply_filters('jigoshop_get_option', self::$current_options[$name], $name, $default);
-		} elseif(($old_option = get_option($name)) !== false){
-			return apply_filters('jigoshop_get_option', $old_option, $name, $default);
-		} elseif(isset($default)){
-			return apply_filters('jigoshop_get_option', $default, $name, $default);
-		} else {
-			return null;
-		}
-	}
-
-	/**
-	 * Returns a named Jigoshop option
-	 *
-	 * @param string $name the name of the option to retrieve
-	 * @param mixed $default the value to return if the option doesn't exist
-	 * @return mixed the value of the option, null if no $default and doesn't exist
-	 * @since  1.3
-	 */
-	public function get_option($name, $default = null){
-		return $this->get($name, $default);
-	}
-
-	/**
-	 * Sets a named Jigoshop option
-	 *
-	 * @param   string  the name of the option to set
-	 * @param  mixed  the value to set
-	 * @since  1.12
-	 */
-	public function set($name, $value)
-	{
-		$this->get_current_options();
-
-		if(isset($name)){
-			self::$current_options[$name] = $value;
-			if(!has_action('shutdown', array($this, 'update_options'))){
-				add_action('shutdown', array($this, 'update_options'));
-			}
-		}
-	}
-
-	/**
-	 * Sets a named Jigoshop option
-	 *
-	 * @param string $name the name of the option to set
-	 * @param	mixed	$value the value to set
-	 * @since	1.3
-	 */
-	public function set_option($name, $value){
-		$this->set($name, $value);
-	}
-
-	/**
-	 * Deletes a named Jigoshop option
-	 *
-	 * @param   string  the name of the option to delete
-	 * @return  bool  true for successful completion if option found, false otherwise
-	 * @since  1.12
-	 */
-	public function delete($name)
-	{
-		$this->get_current_options();
-		if(isset($name)){
-			unset(self::$current_options[$name]);
-			if(!has_action('shutdown', array($this, 'update_options'))){
-				add_action('shutdown', array($this, 'update_options'));
-			}
-
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Deletes a named Jigoshop option
-	 *
-	 * @param string $name the name of the option to delete
-	 * @return bool true for successful completion if option found, false otherwise
-	 * @since	1.3
-	 */
-	public function delete_option($name){
-		return $this->delete($name);
-	}
-
-	/**
-	 * Determines whether an Option exists
-	 *
-	 * @param $name string the name of option to check for existence
-	 * @return  bool  true for successful completion if option found, false otherwise
-	 * @since  1.12
-	 */
-	public function exists($name)
-	{
-		$this->get_current_options();
-		if(isset(self::$current_options[$name])){
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Determines whether an Option exists
-	 *
-	 * @param string $name Option name.
-	 * @return bool true for successful completion if option found, false otherwise
-	 * @since 1.3
-	 */
-	public function exists_option($name){
-		return $this->exists($name);
-	}
-
-	/**
-	 * Install additional Tab's to Jigoshop Options
-	 * Extensions would use this to add a new Tab for their own options
-	 *
-	 * NOTE: External code should not call this function any earlier than the WordPress 'init'
-	 *       action hook in order for Jigoshop language translations to function properly
-	 *
-	 * @param	string $tab The name of the Tab ('tab'), eg. 'My Extension'
-	 * @param	array	$options The array of options to install onto this tab
-	 *
-	 * @since	1.3
-	 */
-	public function install_external_options_tab($tab, $options){
-		// only proceed with function if we have options to add
-		if(empty($options)){
-			return;
-		}
-		if(empty($tab)){
-			return;
-		}
-
-		$our_options = $this->get_default_options();
-		$our_options[] = array('type' => 'tab', 'name' => $tab);
-
-		if(!empty($options)){
-			foreach($options as $option){
-				if(isset($option['id']) && !$this->exists($option['id'])){
-					$this->add($option['id'], isset($option['std']) ? $option['std'] : '');
-				}
-				$our_options[] = $option;
-			}
-		}
-
-		self::$default_options = $our_options;
-	}
-
-	/**
-	 * Install additional default options for parsing onto a specific Tab
-	 * Shipping methods, Payment gateways and Extensions would use this
-	 *
-	 * NOTE: External code should not call this function any earlier than the WordPress 'init'
-	 *       action hook in order for Jigoshop language translations to function properly
-	 *
-	 * @param	string $tab The name of the Tab ('tab') to install onto
-	 * @param	array	$options The array of options to install at the end of the current options on this Tab
-	 *
-	 * @since	1.3
-	 */
-	public function install_external_options_onto_tab($tab, $options){
-		// only proceed with function if we have options to add
-		if(empty($options)){
-			return;
-		}
-		if(empty($tab)){
-			return;
-		}
-
-		$our_options = $this->get_default_options();
-		$first_index = -1;
-		$second_index = -1;
-		foreach($our_options as $index => $option){
-			if($option['type'] <> 'tab'){
-				continue;
-			}
-			if($option['name'] == $tab){
-				$first_index = $index;
-				continue;
-			}
-			if($first_index >= 0){
-				$second_index = $index;
-				break;
-			}
-		}
-
-		if($second_index < 0){
-			$second_index = count($our_options);
-		}
-
-		/*** get the start of the array ***/
-		$start = array_slice($our_options, 0, $second_index);
-		/*** get the end of the array ***/
-		$end = array_slice($our_options, $second_index);
-		/*** add the new elements to the array ***/
-		foreach($options as $option){
-			if(isset($option['id']) && !$this->exists($option['id'])){
-				$this->add($option['id'], isset($option['std']) ? $option['std'] : '');
-			}
-			$start[] = $option;
-		}
-
-		/*** glue them back together ***/
-		self::$default_options = array_merge($start, $end);
-	}
-
-	/**
-	 * Install additional default options for parsing after a specific option ID
-	 * Extensions would use this
-	 *
-	 * NOTE: External code should not call this function any earlier than the WordPress 'init'
-	 *       action hook in order for Jigoshop language translations to function properly
-	 *
-	 * @param	string $insert_after_id	The name of the ID  to install -after-
-	 * @param	array	$options The array of options to install
-	 * @since	1.3
-	 */
-	public function install_external_options_after_id($insert_after_id, $options){
-		// only proceed with function if we have options to add
-		if(empty($options)){
-			return;
-		}
-		if(empty($insert_after_id)){
-			return;
-		}
-
-		$our_options = $this->get_default_options();
-		$first_index = -1;
-		foreach($our_options as $index => $option){
-			if(!isset($option['id']) || $option['id'] <> $insert_after_id){
-				continue;
-			}
-			$first_index = $index;
-			break;
-		}
-
-		/*** get the start of the array ***/
-		$start = array_slice($our_options, 0, $first_index + 1);
-		/*** get the end of the array ***/
-		$end = array_slice($our_options, $first_index + 1);
-		/*** add the new elements to the array ***/
-		foreach($options as $option){
-			if(isset($option['id']) && !$this->exists($option['id'])){
-				$this->add($option['id'], isset($option['std']) ? $option['std'] : '');
-			}
-			$start[] = $option;
-		}
-
-		/*** glue them back together ***/
-		self::$default_options = array_merge($start, $end);
-	}
-
-	/**
 	 * Return the Jigoshop current options
 	 *
 	 * @return array the entire current options array is returned
@@ -463,37 +199,6 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		}
 
 		return self::$current_options;
-	}
-
-	/**
-	 * Sets the entire Jigoshop current options
-	 *
-	 * @param array $options an array containing all the current Jigoshop option => value pairs to use
-	 * @since 1.3
-	 */
-	private function set_current_options($options){
-		self::$current_options = $options;
-		if(!has_action('shutdown', array($this, 'update_options'))){
-			add_action('shutdown', array($this, 'update_options'));
-		}
-	}
-
-	/**
-	 * Return the Jigoshop default options
-	 *
-	 * @return  array  the entire default options array is returned
-	 * @since  1.3
-	 */
-	public function get_default_options(){
-		if(empty(self::$default_options)){
-			$this->set_default_options();
-		}
-
-		return self::$default_options;
-	}
-
-	public function generate_defaults_emails(){
-		return '<button type="button" onClick="parent.location=\'admin.php?page=jigoshop_settings&tab=general&install_emails=1\'">'.__('Generate Defaults', 'jigoshop').'</button>';
 	}
 
 	/**
@@ -1458,6 +1163,27 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 				'id' => 'jigoshop_tax_rates',
 				'type' => 'tax_rates',
 			),
+			array('name' => __('Default options for new products', 'jigoshop'), 'type' => 'title', 'desc' => ''),
+			array(
+				'name' => __('Tax status', 'jigoshop'),
+				'tip' => __('Whether new products should be taxable by default.', 'jigoshop'),
+				'id' => 'jigoshop_tax_defaults_status',
+				'type' => 'select',
+				'std' => 'taxable',
+				'choices' => array(
+					'taxable' => __('Taxable', 'jigoshop'),
+					'shipping' => __('Shipping', 'jigoshop'),
+					'none' => __('None', 'jigoshop'),
+				),
+			),
+			array(
+				'name' => __('Tax classes', 'jigoshop'),
+				'tip' => __('List of tax classes added by default to new products.', 'jigoshop'),
+				'id' => 'jigoshop_tax_defaults_classes',
+				'type' => 'user_defined',
+				'display' => array($this, 'display_default_tax_classes'),
+				'update' => array($this, 'update_default_tax_classes'),
+			),
 			// Shipping tab
 			array('type' => 'tab', 'name' => __('Shipping', 'jigoshop')),
 			array('name' => __('Shipping Options', 'jigoshop'), 'type' => 'title', 'desc' => ''),
@@ -1527,6 +1253,342 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 				'desc' => __('Please enable all of the Payment Gateways you wish to make available to your customers.', 'jigoshop'),
 			),
 		);
+	}
+
+	/**
+	 * Returns a named Jigoshop option
+	 *
+	 * @param   string  the name of the option to retrieve
+	 * @param   mixed  the value to return if the option doesn't exist
+	 * @return  mixed  the value of the option, null if no $default and option doesn't exist
+	 * @since  1.12
+	 */
+	public function get($name, $default = null)
+	{
+		if(isset(self::$current_options[$name])){
+			return apply_filters('jigoshop_get_option', self::$current_options[$name], $name, $default);
+		} elseif(($old_option = get_option($name)) !== false){
+			return apply_filters('jigoshop_get_option', $old_option, $name, $default);
+		} elseif(isset($default)){
+			return apply_filters('jigoshop_get_option', $default, $name, $default);
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Sets the entire Jigoshop current options
+	 *
+	 * @param array $options an array containing all the current Jigoshop option => value pairs to use
+	 * @since 1.3
+	 */
+	private function set_current_options($options){
+		self::$current_options = $options;
+		if(!has_action('shutdown', array($this, 'update_options'))){
+			add_action('shutdown', array($this, 'update_options'));
+		}
+	}
+
+	/**
+	 * Returns a named Jigoshop option
+	 *
+	 * @param string $name the name of the option to retrieve
+	 * @param mixed $default the value to return if the option doesn't exist
+	 * @return mixed the value of the option, null if no $default and doesn't exist
+	 * @since  1.3
+	 */
+	public function get_option($name, $default = null){
+		return $this->get($name, $default);
+	}
+
+	/**
+	 * Sets a named Jigoshop option
+	 *
+	 * @param string $name the name of the option to set
+	 * @param	mixed	$value the value to set
+	 * @since	1.3
+	 */
+	public function set_option($name, $value){
+		$this->set($name, $value);
+	}
+
+	/**
+	 * Sets a named Jigoshop option
+	 *
+	 * @param   string  the name of the option to set
+	 * @param  mixed  the value to set
+	 * @since  1.12
+	 */
+	public function set($name, $value)
+	{
+		$this->get_current_options();
+
+		if(isset($name)){
+			self::$current_options[$name] = $value;
+			if(!has_action('shutdown', array($this, 'update_options'))){
+				add_action('shutdown', array($this, 'update_options'));
+			}
+		}
+	}
+
+	/**
+	 * Deletes a named Jigoshop option
+	 *
+	 * @param string $name the name of the option to delete
+	 * @return bool true for successful completion if option found, false otherwise
+	 * @since	1.3
+	 */
+	public function delete_option($name){
+		return $this->delete($name);
+	}
+
+	/**
+	 * Deletes a named Jigoshop option
+	 *
+	 * @param   string  the name of the option to delete
+	 * @return  bool  true for successful completion if option found, false otherwise
+	 * @since  1.12
+	 */
+	public function delete($name)
+	{
+		$this->get_current_options();
+		if(isset($name)){
+			unset(self::$current_options[$name]);
+			if(!has_action('shutdown', array($this, 'update_options'))){
+				add_action('shutdown', array($this, 'update_options'));
+			}
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Determines whether an Option exists
+	 *
+	 * @param string $name Option name.
+	 * @return bool true for successful completion if option found, false otherwise
+	 * @since 1.3
+	 */
+	public function exists_option($name){
+		return $this->exists($name);
+	}
+
+	/**
+	 * Determines whether an Option exists
+	 *
+	 * @param $name string the name of option to check for existence
+	 * @return  bool  true for successful completion if option found, false otherwise
+	 * @since  1.12
+	 */
+	public function exists($name)
+	{
+		$this->get_current_options();
+		if(isset(self::$current_options[$name])){
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Install additional Tab's to Jigoshop Options
+	 * Extensions would use this to add a new Tab for their own options
+	 *
+	 * NOTE: External code should not call this function any earlier than the WordPress 'init'
+	 *       action hook in order for Jigoshop language translations to function properly
+	 *
+	 * @param	string $tab The name of the Tab ('tab'), eg. 'My Extension'
+	 * @param	array	$options The array of options to install onto this tab
+	 *
+	 * @since	1.3
+	 */
+	public function install_external_options_tab($tab, $options){
+		// only proceed with function if we have options to add
+		if(empty($options)){
+			return;
+		}
+		if(empty($tab)){
+			return;
+		}
+
+		$our_options = $this->get_default_options();
+		$our_options[] = array('type' => 'tab', 'name' => $tab);
+
+		if(!empty($options)){
+			foreach($options as $option){
+				if(isset($option['id']) && !$this->exists($option['id'])){
+					$this->add($option['id'], isset($option['std']) ? $option['std'] : '');
+				}
+				$our_options[] = $option;
+			}
+		}
+
+		self::$default_options = $our_options;
+	}
+
+	/**
+	 * Return the Jigoshop default options
+	 *
+	 * @return  array  the entire default options array is returned
+	 * @since  1.3
+	 */
+	public function get_default_options(){
+		if(empty(self::$default_options)){
+			$this->set_default_options();
+		}
+
+		return self::$default_options;
+	}
+
+	/**
+	 * Install additional default options for parsing onto a specific Tab
+	 * Shipping methods, Payment gateways and Extensions would use this
+	 *
+	 * NOTE: External code should not call this function any earlier than the WordPress 'init'
+	 *       action hook in order for Jigoshop language translations to function properly
+	 *
+	 * @param	string $tab The name of the Tab ('tab') to install onto
+	 * @param	array	$options The array of options to install at the end of the current options on this Tab
+	 *
+	 * @since	1.3
+	 */
+	public function install_external_options_onto_tab($tab, $options){
+		// only proceed with function if we have options to add
+		if(empty($options)){
+			return;
+		}
+		if(empty($tab)){
+			return;
+		}
+
+		$our_options = $this->get_default_options();
+		$first_index = -1;
+		$second_index = -1;
+		foreach($our_options as $index => $option){
+			if($option['type'] <> 'tab'){
+				continue;
+			}
+			if($option['name'] == $tab){
+				$first_index = $index;
+				continue;
+			}
+			if($first_index >= 0){
+				$second_index = $index;
+				break;
+			}
+		}
+
+		if($second_index < 0){
+			$second_index = count($our_options);
+		}
+
+		/*** get the start of the array ***/
+		$start = array_slice($our_options, 0, $second_index);
+		/*** get the end of the array ***/
+		$end = array_slice($our_options, $second_index);
+		/*** add the new elements to the array ***/
+		foreach($options as $option){
+			if(isset($option['id']) && !$this->exists($option['id'])){
+				$this->add($option['id'], isset($option['std']) ? $option['std'] : '');
+			}
+			$start[] = $option;
+		}
+
+		/*** glue them back together ***/
+		self::$default_options = array_merge($start, $end);
+	}
+
+	/**
+	 * Install additional default options for parsing after a specific option ID
+	 * Extensions would use this
+	 *
+	 * NOTE: External code should not call this function any earlier than the WordPress 'init'
+	 *       action hook in order for Jigoshop language translations to function properly
+	 *
+	 * @param	string $insert_after_id	The name of the ID  to install -after-
+	 * @param	array	$options The array of options to install
+	 * @since	1.3
+	 */
+	public function install_external_options_after_id($insert_after_id, $options){
+		// only proceed with function if we have options to add
+		if(empty($options)){
+			return;
+		}
+		if(empty($insert_after_id)){
+			return;
+		}
+
+		$our_options = $this->get_default_options();
+		$first_index = -1;
+		foreach($our_options as $index => $option){
+			if(!isset($option['id']) || $option['id'] <> $insert_after_id){
+				continue;
+			}
+			$first_index = $index;
+			break;
+		}
+
+		/*** get the start of the array ***/
+		$start = array_slice($our_options, 0, $first_index + 1);
+		/*** get the end of the array ***/
+		$end = array_slice($our_options, $first_index + 1);
+		/*** add the new elements to the array ***/
+		foreach($options as $option){
+			if(isset($option['id']) && !$this->exists($option['id'])){
+				$this->add($option['id'], isset($option['std']) ? $option['std'] : '');
+			}
+			$start[] = $option;
+		}
+
+		/*** glue them back together ***/
+		self::$default_options = array_merge($start, $end);
+	}
+
+	public function generate_defaults_emails(){
+		return '<button type="button" onClick="parent.location=\'admin.php?page=jigoshop_settings&tab=general&install_emails=1\'">'.__('Generate Defaults', 'jigoshop').'</button>';
+	}
+
+	public function display_default_tax_classes()
+	{
+		$tax = new jigoshop_tax();
+		$classes = $tax->get_tax_classes();
+		$defaults = Jigoshop_Base::get_options()->get('jigoshop_tax_defaults_classes', array('*'));
+
+		ob_start();
+		echo Jigoshop_Forms::checkbox(array(
+			'id' => 'jigoshop_tax_defaults_class_standard',
+			'name' => 'jigoshop_tax_defaults_classes[*]',
+			'label' => __('Standard', 'jigoshop'),
+			'value' => in_array('*', $defaults),
+		));
+
+		foreach ($classes as $class) {
+			$value = sanitize_title($class);
+			echo Jigoshop_Forms::checkbox(array(
+				'id' => 'jigoshop_tax_defaults_class_'.$value,
+				'name' => 'jigoshop_tax_defaults_classes['.$value.']',
+				'label' => __($class, 'jigoshop'),
+				'value' => in_array($value, $defaults),
+			));
+		}
+
+		return ob_get_clean();
+	}
+
+	public function update_default_tax_classes()
+	{
+		if (!isset($_POST['jigoshop_tax_defaults_classes'])) {
+			return array();
+		}
+
+		$classes = array();
+		foreach ($_POST['jigoshop_tax_defaults_classes'] as $class => $value) {
+			$classes[] = $class;
+		}
+
+		return $classes;
 	}
 
 	public function jigoshop_deprecated_options(){

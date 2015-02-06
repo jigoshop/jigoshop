@@ -20,7 +20,7 @@
  * Description:         Jigoshop, a WordPress eCommerce plugin that works.
  * Author:              Jigoshop
  * Author URI:          http://www.jigoshop.com
- * Version:             1.15.4
+ * Version:             1.15.5
  * Requires at least:   3.8
  * Tested up to:        4.1
  * Text Domain:         jigoshop
@@ -38,7 +38,7 @@
  */
 
 if (!defined('JIGOSHOP_VERSION')) {
-	define('JIGOSHOP_VERSION', '1.15.4');
+	define('JIGOSHOP_VERSION', '1.15.5');
 }
 if (!defined('JIGOSHOP_DB_VERSION')) {
 	define('JIGOSHOP_DB_VERSION', 1411270);
@@ -736,17 +736,17 @@ function jigoshop_frontend_scripts()
 	}
 
 	wp_enqueue_script('jquery');
+	wp_register_script('jquery-blockui', '//cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.66.0-2013.10.09/jquery.blockUI.min.js', array('jquery'), '2.66.0');
+	wp_enqueue_script('jquery-blockui');
 	jigoshop_add_script('jigoshop_global', JIGOSHOP_URL.'/assets/js/global.js', array('jquery'), array('in_footer' => true));
-	wp_register_script('jquery-blockui', '//cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.66.0-2013.10.09/jquery.blockUI.min.js', array('jquery'));
 
 	if ($options->get('jigoshop_disable_fancybox') == 'no') {
 		jigoshop_add_script('prettyphoto', JIGOSHOP_URL.'/assets/js/jquery.prettyPhoto.js', array('jquery'), array('in_footer' => true));
 		jigoshop_add_style('prettyphoto', JIGOSHOP_URL.'/assets/css/prettyPhoto.css');
 	}
 
-	wp_enqueue_script('jquery-blockui');
 	jigoshop_add_script('jigoshop-cart', JIGOSHOP_URL.'/assets/js/cart.js', array('jquery'), array('in_footer' => true, 'page' => JIGOSHOP_CART));
-	jigoshop_add_script('jigoshop-checkout', JIGOSHOP_URL.'/assets/js/checkout.js', array('jquery'), array('in_footer' => true, 'page' => array(JIGOSHOP_CHECKOUT, JIGOSHOP_PAY)));
+	jigoshop_add_script('jigoshop-checkout', JIGOSHOP_URL.'/assets/js/checkout.js', array('jquery', 'jquery-blockui'), array('in_footer' => true, 'page' => array(JIGOSHOP_CHECKOUT, JIGOSHOP_PAY)));
 	jigoshop_add_script('jigoshop-validation', JIGOSHOP_URL.'/assets/js/validation.js', array(), array('in_footer' => true, 'page' => JIGOSHOP_CHECKOUT));
 	jigoshop_add_script('jigoshop-payment', JIGOSHOP_URL.'/assets/js/pay.js', array('jquery'), array('page' => JIGOSHOP_PAY));
 	jigoshop_add_script('jigoshop-single-product', JIGOSHOP_URL.'/assets/js/single-product.js', array('jquery'), array('in_footer' => true, 'page' => JIGOSHOP_PRODUCT));
