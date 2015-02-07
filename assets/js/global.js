@@ -152,6 +152,7 @@ jQuery(function($) {
 		} else {
 			$('.single_variation').slideDown();
 		}
+		$('.single_variation').trigger('jigoshop.variation.show', [variation.variation_id]);
 	}
 
 	//when one of attributes is changed - check everything to show only valid options
