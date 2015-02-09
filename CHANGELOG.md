@@ -1,6 +1,6 @@
 ## Changelog
 
-* 1.15.5:
+* 1.15.5 - 2015-02-09:
     * Improved: JavaScript action is triggered after variation is shown: `jigoshop.variation.show` on `div.single_variation`.
     * Improved: Better loading of checkout JavaScript files.
     * Improved: cURL checking in System Info page.

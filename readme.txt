@@ -5,7 +5,7 @@ Tags: 2checkout, 2co, affiliate, authorize, cart, checkout, commerce, coupons, e
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=sales%40jigoshop%2ecom&lc=US&item_name=Jigoshop%20%2d%20Wordpress%2eorg%20donation%20link&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
 Requires at least: 3.8
 Tested up to: 4.1
-Stable tag: 1.15.4
+Stable tag: 1.15.5
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -123,6 +123,12 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 4. Standard customer checkout screen
 
 == Changelog ==
+
+= 1.15.5 - 2015-02-09 =
+* Improved: JavaScript action is triggered after variation is shown: `jigoshop.variation.show` on `div.single_variation`.
+* Improved: Better loading of checkout JavaScript files.
+* Improved: cURL checking in System Info page.
+* Fixed: Users can now properly select default tax classes and default taxing status for new products.
 
 = 1.15.4 - 2015-01-12 =
 * Improved: [is_bank_transfer], [bank_info], [billing_euvatno] and [all_tax_classes] variables in order emails. Thanks to newash!
