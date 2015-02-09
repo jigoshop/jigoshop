@@ -14,13 +14,33 @@
  */
 
 /**
- * Category thumbnails
+ * Category thumbnails and optional fields
+ *
+ * The list of optional fields can be extended with the "jigoshop_optional_product_category_fields" filter.
+ * Only simple types are supported: text or number.
+ * The filter needs to add an array element like:
+ * array(
+ *     'id'   => 'field_id',
+ *     'name' => 'Label for the field',
+ *     'desc' => 'Longer description under the field',
+ *     'type' => 'text' or 'number'
+ * );
  */
 add_action('product_cat_add_form_fields', 'jigoshop_add_category_thumbnail_field');
 add_action('product_cat_edit_form_fields', 'jigoshop_edit_category_thumbnail_field', 10, 2);
 
 function jigoshop_add_category_thumbnail_field()
 {
+	foreach( apply_filters( 'jigoshop_optional_product_category_fields', array() ) as $field ):
+		?>
+		<div class="form-field">
+			<label><?php echo $field['name']; ?></label>
+			<input id="product_cat_<?php echo $field['id']; ?>" type="text" size="40" value="" name="product_cat_<?php echo $field['id']; ?>">
+			<p><?php echo $field['desc']; ?></p>
+		</div>
+		<?php
+	endforeach;
+
 	$image = JIGOSHOP_URL.'/assets/images/placeholder.png';
 	?>
 	<div class="form-field">
@@ -64,6 +84,19 @@ function jigoshop_add_category_thumbnail_field()
 
 function jigoshop_edit_category_thumbnail_field($term, $taxonomy)
 {
+	foreach( apply_filters( 'jigoshop_optional_product_category_fields', array() ) as $field ):
+		$value = get_metadata( 'jigoshop_term', $term->term_id, $field['id'], true );
+		?>
+		<tr class="form-field">
+			<th scope="row" valign="top"><label><?php echo $field['name']; ?></label></th>
+			<td>
+				<input id="product_cat_<?php echo $field['id']; ?>" type="<?php echo $field['type']; ?>" size="40" value="<?php echo $value; ?>" name="product_cat_<?php echo $field['id']; ?>">
+				<p class="description"><?php echo $field['desc']; ?></p>
+			</td>
+		</tr>
+		<?php
+	endforeach;
+
 	$image = jigoshop_product_cat_image($term->term_id);
 	?>
 	<tr class="form-field">
@@ -153,4 +186,14 @@ function jigoshop_product_cat_column($columns, $column, $id)
 
 	return $columns;
 
+}
+
+/**
+ * Gets a product category field for a product.
+ * Returns FALSE if the primary category of the product does not have that field.
+ */
+function jigoshop_get_category_field_for_product( $product_id, $field_id ) {
+	$categories = get_the_terms( $product_id, 'product_cat' );
+	$category_id = ( !empty( $categories ) ) ? current( $categories )->term_id : null;
+	return maybe_unserialize( get_metadata( 'jigoshop_term', $category_id, $field_id, true ) );
 }
