@@ -24,12 +24,12 @@
  */
 
 function install_jigoshop( $network_wide = false ) {
-
+	/** @var $wpdb \wpdb */
 	global $wpdb;
 
 	if ( $network_wide ) {
 		$old_blog = $wpdb->blogid;
-		$blogids = $wpdb->get_col($wpdb->prepare("SELECT blog_id FROM $wpdb->blogs"));
+		$blogids = $wpdb->get_col("SELECT blog_id FROM $wpdb->blogs");
 		foreach ($blogids as $blog_id) {
 			switch_to_blog($blog_id);
 			_install_jigoshop();
@@ -51,7 +51,7 @@ function _install_jigoshop(){
 		jigoshop_tables_install(); /* we need tables installed first to eliminate installation errors */
 
 		jigoshop_create_pages();
-		
+
 		jigoshop_post_type();
 		jigoshop_default_taxonomies();
 
@@ -269,7 +269,7 @@ function jigoshop_create_emails(){
 		'post_type' => 'shop_email',
 		'post_status' => 'publish',
 	);
-	
+
 	$emails_array = get_posts($args);
 	if(empty($emails_array)){
 		do_action('jigoshop_install_emails');
