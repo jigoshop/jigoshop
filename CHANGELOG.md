@@ -5,6 +5,7 @@
     * Improved: Trimming spaces from memory values before checking.
     * Improved: Remove ID from Jigoshop nonce fields.
     * Fix: Selected values issue on checkout and edit address pages. Thanks to @ipatenco!
+    * Fix: Show "Password changed" message after successful change.
 * 1.15.5 - 2015-02-09:
     * Improved: JavaScript action is triggered after variation is shown: `jigoshop.variation.show` on `div.single_variation`.
     * Improved: Better loading of checkout JavaScript files.

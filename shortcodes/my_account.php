@@ -238,7 +238,8 @@ add_action('template_redirect', function (){
 			if ($_POST['password-1'] && $_POST['password-2']) {
 				if ($_POST['password-1'] == $_POST['password-2']) {
 					wp_update_user(array('ID' => $user_id, 'user_pass' => $_POST['password-1']));
-					wp_safe_redirect(apply_filters('jigoshop_get_myaccount_page_id', get_permalink(jigoshop_get_page_id('myaccount'))));
+					jigoshop::add_message(__('Password changed successfully.', 'jigoshop'));
+					wp_safe_redirect(apply_filters('jigoshop_get_myaccount_page_id', get_permalink(jigoshop_get_page_id(JIGOSHOP_MY_ACCOUNT))));
 					exit;
 				} else {
 					jigoshop::add_error(__('Passwords do not match.', 'jigoshop'));
