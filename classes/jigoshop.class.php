@@ -213,7 +213,18 @@ class jigoshop extends Jigoshop_Singleton
 		$name = '_n';
 		$action = 'jigoshop-'.$action;
 
-		return wp_nonce_field($action, $name, $referrer, $echo);
+		$name = esc_attr($name);
+		$nonce_field = '<input type="hidden" name="'.$name.'" value="'.wp_create_nonce($action).'" />';
+
+		if ($referrer) {
+			$nonce_field .= wp_referer_field(false);
+		}
+
+		if ($echo) {
+			echo $nonce_field;
+		}
+
+		return $nonce_field;
 	}
 
 	public static function nonce_url($action, $url = '')

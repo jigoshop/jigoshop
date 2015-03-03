@@ -3,6 +3,7 @@
 * 1.15.6
     * Improved: Proper HTML for sale prices `<del>Old price</del><ins>New price</ins>` with `<span class="discount">Discount</span>` if applicable.
     * Improved: Trimming spaces from memory values before checking.
+    * Improved: Remove ID from Jigoshop nonce fields.
     * Fix: Selected values issue on checkout and edit address pages. Thanks to @ipatenco!
 * 1.15.5 - 2015-02-09:
     * Improved: JavaScript action is triggered after variation is shown: `jigoshop.variation.show` on `div.single_variation`.
