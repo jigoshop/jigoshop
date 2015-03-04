@@ -10,17 +10,6 @@ class jigoshop_emails extends Jigoshop_Base
 		self::$call_next_action = false;
 	}
 
-	private static function can_call_next_action()
-	{
-		if(self::$call_next_action == false){
-			self::$call_next_action = true;
-
-			return false;
-		}
-
-		return true;
-	}
-
 	public static function get_mail_list()
 	{
 		return self::$mail_list;
@@ -57,7 +46,8 @@ class jigoshop_emails extends Jigoshop_Base
 			return;
 		}
 
-		$allowed_templates = self::get_options()->get('jigoshop_emails');
+		$options = \Jigoshop_Base::get_options();
+		$allowed_templates = $options->get('jigoshop_emails');
 		if (!$allowed_templates[$hook]) {
 			return;
 		}
@@ -65,23 +55,50 @@ class jigoshop_emails extends Jigoshop_Base
 		foreach ($allowed_templates[$hook] as $post_id) {
 			$post = get_post($post_id);
 			if (!empty($post) && $post->post_status == 'publish') {
-				$subject = get_post_meta($post_id, 'jigoshop_email_subject', true);
-				$post->post_title = empty($subject) ? $post->post_title : $subject;
-				$post = self::filter_post($post, $args);
 				$headers = array(
 					'MIME-Version: 1.0',
 					'Content-Type: text/html; charset=UTF-8',
 					'From: "'.self::get_options()->get('jigoshop_email_from_name').'" <'.self::get_options()->get('jigoshop_email').'>',
 				);
-				$post->post_content = self::get_options()->get('jigoshop_email_footer') ? $post->post_content.'<br/><br/>'.self::get_options()->get('jigoshop_email_footer') : $post->post_content;
 
-				wp_mail($to,
-					$post->post_title,
-					nl2br($post->post_content),
-					$headers
-				);
+				$title = get_post_meta($post_id, 'jigoshop_email_subject', true);
+				$subject = empty($title) ? $post->post_title : $title;
+				$subject = str_replace('[[shop_name]]', '['.get_bloginfo('name').'] ', $subject);
+				$post = self::filter_post($post, $args);
+				$content = $post->post_content;
+				$footer = $options->get('jigoshop_email_footer');
+
+				if (!empty($footer)) {
+					$footer .= '<br/>';
+				}
+
+				$footer .= sprintf(_x('Powered by <a href="%s">Jigoshop</a> - an e-Commerce plugin built on WordPress', 'emails', 'jigoshop'), 'https://www.jigoshop.com');
+
+				$path = locate_template(array('jigoshop/emails/layout.html'));
+				if (empty($path)) {
+					$path = JIGOSHOP_DIR.'/templates/emails/layout.html';
+				}
+
+				$template = file_get_contents($path);
+				$title = str_replace('['.get_bloginfo('name').'] ', '', $subject);
+				$template = str_replace('{heading}', $title, $template);
+				$template = str_replace('{content}', $content, $template);
+				$template = str_replace('{footer}', apply_filters('jigoshop_email_footer', $footer), $template);
+
+				wp_mail($to, $subject, $template, $headers);
 			}
 		}
+	}
+
+	private static function can_call_next_action()
+	{
+		if(self::$call_next_action == false){
+			self::$call_next_action = true;
+
+			return false;
+		}
+
+		return true;
 	}
 
 	private static function filter_post(wp_post $post, array $args)

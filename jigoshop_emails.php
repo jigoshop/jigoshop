@@ -95,7 +95,8 @@ function get_order_email_arguments($order_id)
 		'shop_phone' => $options->get('jigoshop_company_phone'),
 		'shop_email' => $options->get('jigoshop_company_email'),
 		'customer_note' => $order->customer_note,
-		'order_items' => $order->email_order_items_list($can_show_links, true, $inc_tax),
+		'order_items' => jigoshop_get_order_items_list($order, $can_show_links, true, $inc_tax),//$order->email_order_items_list($can_show_links, true, $inc_tax),
+		'order_taxes' => jigoshop_get_order_taxes_list($order),
 		'subtotal' => $order->get_subtotal_to_display(),
 		'shipping' => $order->get_shipping_to_display(),
 		'shipping_cost' => jigoshop_price($order->order_shipping),
@@ -136,15 +137,9 @@ function get_order_email_arguments($order_id)
 	);
 
 	if ($options->get('jigoshop_calc_taxes') == 'yes') {
-		$all_tax_classes = '';
-		foreach ($order->get_tax_classes() as $tax_class) {
-			if ($order->show_tax_entry($tax_class)) {
-				$all_tax_classes .= $order->get_tax_class_for_display($tax_class).' ('.(float)$order->get_tax_rate($tax_class).'%): ';
-				$all_tax_classes .= html_entity_decode($order->get_tax_amount($tax_class), ENT_QUOTES, 'UTF-8');
-				$all_tax_classes .= PHP_EOL;
-			}
-		}
-		$variables['all_tax_classes'] = $all_tax_classes;
+		$variables['all_tax_classes'] = $variables['order_taxes'];
+	} else {
+		unset($variables['order_taxes']);
 	}
 
 	return apply_filters('jigoshop_order_email_variables', $variables, $order_id);
@@ -165,6 +160,7 @@ function get_order_email_arguments_description()
 		'shop_email' => __('Shop Email', 'jigoshop'),
 		'customer_note' => __('Customer Note', 'jigoshop'),
 		'order_items' => __('Ordered Items', 'jigoshop'),
+		'order_taxes' => __('Taxes of the order', 'jigoshop'),
 		'subtotal' => __('Subtotal', 'jigoshop'),
 		'shipping' => __('Shipping Price and Method', 'jigoshop'),
 		'shipping_cost' => __('Shipping Cost', 'jigoshop'),
@@ -249,6 +245,53 @@ function jigoshop_send_customer_invoice($order_id)
 	jigoshop_emails::send_mail('send_customer_invoice', get_order_email_arguments($order_id), $order->billing_email);
 }
 
+/**
+ * @param jigoshop_order $order
+ * @param bool $show_links
+ * @param bool $show_sku
+ * @param bool $includes_tax
+ * @return string
+ */
+function jigoshop_get_order_items_list($order, $show_links = false, $show_sku = false, $includes_tax = false)
+{
+	$use_inc_tax = $includes_tax;
+	if ($use_inc_tax) {
+		foreach ($this->items as $item) {
+			$use_inc_tax = ($item['cost_inc_tax'] >= 0);
+			if (!$use_inc_tax) {
+				break;
+			}
+		}
+	}
+
+	$path = locate_template(array('jigoshop/emails/items.php'));
+	if (empty($path)) {
+		$path = JIGOSHOP_DIR.'/templates/emails/items.php';
+	}
+
+	ob_start();
+	include($path);
+
+	return ob_get_clean();
+}
+
+/**
+ * @param jigoshop_order $order
+ * @return string
+ */
+function jigoshop_get_order_taxes_list($order)
+{
+	$path = locate_template(array('jigoshop/emails/taxes.php'));
+	if (empty($path)) {
+		$path = JIGOSHOP_DIR.'/templates/emails/taxes.php';
+	}
+
+	ob_start();
+	include($path);
+
+	return ob_get_clean();
+}
+
 add_action('jigoshop_install_emails', 'jigoshop_install_emails');
 
 function jigoshop_install_emails()
@@ -266,41 +309,71 @@ function jigoshop_install_emails()
 		'no_stock_notification',
 		'product_on_backorder_notification'
 	);
-	$invoice = '==============================<wbr />==============================
-		Order details:
-		<span class="il">ORDER</span> [order_number]                                              Date: [order_date]
-		==============================<wbr />==============================
-
-		[order_items]
-
-		Subtotal:                     [subtotal]
-		Shipping:                     [shipping_cost] via [shipping_method]
-		Total:                        [total]
-
-		------------------------------<wbr />------------------------------<wbr />--------------------
-		CUSTOMER DETAILS
-		------------------------------<wbr />------------------------------<wbr />--------------------
-		Email:                        <a href="mailto:[billing_email]">[billing_email]</a>
-		Tel:                          [billing_phone]
-
-		------------------------------<wbr />------------------------------<wbr />--------------------
-		BILLING ADDRESS
-		------------------------------<wbr />------------------------------<wbr />--------------------
-		[billing_first_name] [billing_last_name]
-		[billing_address_1], [billing_address_2], [billing_city]
-		[billing_state], [billing_country], [billing_postcode]
-
-		------------------------------<wbr />------------------------------<wbr />--------------------
-		SHIPPING ADDRESS
-		------------------------------<wbr />------------------------------<wbr />--------------------
-		[shipping_first_name] [shipping_last_name]
-		[shipping_address_1], [shipping_address_2], [shipping_city]
-		[shipping_state], [shipping_country], [shipping_postcode]
+	$invoice = '
+		<h4>'._x('Order [order_number] on [order_date]', 'emails', 'jigoshop').'</h4>
+		<table class="cart" cellpadding="0" cellspacing="0">
+			<thead>
+				<tr>
+					<th>'._x('Product', 'emails', 'jigoshop').'</th>
+					<th>'._x('Quantity', 'emails', 'jigoshop').'</th>
+					<th>'._x('Price', 'emails', 'jigoshop').'</th>
+				</tr>
+			</thead>
+			<tbody>
+				[order_items]
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="2"><strong>'._x('Subtotal', 'emails', 'jigoshop').'</strong></td>
+					<td>[subtotal]</td>
+				</tr>
+				<tr>
+					<td colspan="2"><strong>'._x('Shipping via [shipping_method]', 'emails', 'jigoshop').'</strong></td>
+					<td>[shipping_cost]</td>
+				</tr>
+				[order_taxes]
+				<tr>
+					<td colspan="2"><strong>'._x('Grand total', 'emails', 'jigoshop').'</strong></td>
+					<td>[total]</td>
+				</tr>
+			</tfoot>
+		</table>
+		<h4>'._x('Customer details', 'emails', 'jigoshop').'</h4>
+		<p>'._x('Email:', 'emails', 'jigoshop').' <a href="mailto:[billing_email]">[billing_email]</a></p>
+		<p>'._x('Phone:', 'emails', 'jigoshop').' [billing_phone]</p>
+		<table class="customer">
+			<thead>
+				<tr>
+					<td><strong>'._x('Billing address', 'emails', 'jigoshop').'</strong></td>
+					<td><strong>'._x('Shipping address', 'emails', 'jigoshop').'</strong></td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						[billing_first_name] [billing_last_name]<br />
+						[billing_address_1][billing_address_2], [value][/billing_address_2]<br />
+						[billing_city], [billing_postcode]<br />
+						[billing_city]<br />
+						[billing_state]<br />
+						[billing_country]
+					</td>
+					<td>
+						[shipping_first_name] [shipping_last_name]<br />
+						[shipping_address_1][shipping_address_2], [value][/shipping_address_2]<br />
+						[shipping_city], [shipping_postcode]<br />
+						[shipping_city]<br />
+						[shipping_state]<br />
+						[shipping_country]
+					</td>
+				</tr>
+			</tbody>
+		</table>
 		[customer_note]
-		------------------------------<wbr />------------------------------<wbr />--------------------
-		CUSTOMER NOTE
-		------------------------------<wbr />------------------------------<wbr />--------------------
-		[value][/customer_note]';
+		<h4>'._x('Customer note', 'emails', 'jigoshop').'</h4>
+		<p>[value]</p>
+		[/customer_note]
+	';
 
 	$title = '';
 	$message = '';
@@ -309,38 +382,38 @@ function jigoshop_install_emails()
 		switch ($email) {
 			case 'new_order_admin_notification':
 				$post_title = __('New order admin notification', 'jigoshop');
-				$title = __('[[shop_name]] New Customer Order - [order_number]', 'jigoshop');
-				$message = __('You have received an order from [billing_first_name] [billing_last_name].<br/>Current order status: [order_status]<br/> Their order is as follows:<br/>', 'jigoshop').$invoice;
+				$title = __('[[shop_name]] New Customer Order', 'jigoshop');
+				$message = __('<p>You have received an order from [billing_first_name] [billing_last_name].</p><p>Current order status: <strong>[order_status]</strong></p>', 'jigoshop').$invoice;
 				break;
 			case 'customer_order_status_pending_to_on-hold':
 				$post_title = __('Customer order status pending to on-hold', 'jigoshop');
 				$title = __('[[shop_name]] Order Received', 'jigoshop');
-				$message = __('Thank you, we have received your order. Your order\'s details are below:<br/>', 'jigoshop').$invoice;
+				$message = __('<p>Thank you, we have received your order.</p>', 'jigoshop').$invoice;
 				break;
 			case 'customer_order_status_pending_to_waiting-for-payment':
 				$post_title = __('Customer order status pending to waiting for payment', 'jigoshop');
 				$title = __('[[shop_name]] Order Received - waiting for payment', 'jigoshop');
-				$message = __('Thank you, we have received your order. We are waiting for your payment before we can start processing this order.<br/>Your order\'s details are below:<br/>', 'jigoshop').$invoice;
+				$message = __('<p>Thank you, we have received your order.</p><p>We are waiting for your payment before we can start processing this order.</p>', 'jigoshop').$invoice;
 				break;
 			case 'customer_order_status_pending_to_processing' :
 				$post_title = __('Customer order status pending to processing', 'jigoshop');
 				$title = __('[[shop_name]] Order Received', 'jigoshop');
-				$message = __('Thank you, we are now processing your order. Your order\'s details are below:<br/>', 'jigoshop').$invoice;
+				$message = __('<p>Thank you, we are now processing your order.<br/>', 'jigoshop').$invoice;
 				break;
 			case 'customer_order_status_on-hold_to_processing' :
 				$post_title = __('Customer order status on-hold to processing', 'jigoshop');
 				$title = __('[[shop_name]] Order Received', 'jigoshop');
-				$message = __('Thank you, we are now processing your order. Your order\'s details are below:<br/>', 'jigoshop').$invoice;
+				$message = __('<p>Thank you, we are now processing your order.<br/>', 'jigoshop').$invoice;
 				break;
 			case 'customer_order_status_completed' :
 				$post_title = __('Customer order status completed', 'jigoshop');
 				$title = __('[[shop_name]] Order Complete', 'jigoshop');
-				$message = __('Your order is complete. Your order\'s details are below:<br/>', 'jigoshop').$invoice;
+				$message = __('<p>Your order is complete.<br/>', 'jigoshop').$invoice;
 				break;
 			case 'customer_order_status_refunded' :
 				$post_title = __('Customer order status refunded', 'jigoshop');
 				$title = __('[[shop_name]] Order Refunded', 'jigoshop');
-				$message = __('Your order has been refunded. Your order\'s details are below:<br/>', 'jigoshop').$invoice;
+				$message = __('<p>Your order has been refunded.</p>', 'jigoshop').$invoice;
 				break;
 			case 'send_customer_invoice' :
 				$post_title = __('Send customer invoice', 'jigoshop');
@@ -350,17 +423,17 @@ function jigoshop_install_emails()
 			case 'low_stock_notification' :
 				$post_title = __('Low stock notification', 'jigoshop');
 				$title = __('[[shop_name]] Product low in stock', 'jigoshop');
-				$message = __('#[product_id] [product_name] ([sku]) is low in stock.', 'jigoshop');
+				$message = __('<p>#[product_id] [product_name] ([sku]) is low in stock.</p>', 'jigoshop');
 				break;
 			case 'no_stock_notification' :
 				$post_title = __('No stock notification', 'jigoshop');
 				$title = __('[[shop_name]] Product out of stock', 'jigoshop');
-				$message = __('#[product_id] [product_name] ([sku]) is out of stock.', 'jigoshop');
+				$message = __('<p>#[product_id] [product_name] ([sku]) is out of stock.</p>', 'jigoshop');
 				break;
 			case 'product_on_backorder_notification' :
 				$post_title = __('Product on backorder notification', 'jigoshop');
 				$title = __('[[shop_name]] Product Backorder on Order: [order_number].', 'jigoshop');
-				$message = __('#[product_id] [product_name] ([sku]) was found to be on backorder.<br/>', 'jigoshop').$invoice;
+				$message = __('<p>#[product_id] [product_name] ([sku]) was found to be on backorder.</p>', 'jigoshop').$invoice;
 				break;
 		}
 		$post_data = array(
