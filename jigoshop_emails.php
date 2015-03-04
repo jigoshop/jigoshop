@@ -319,18 +319,20 @@ function jigoshop_install_emails()
 	$invoice = '
 		[is_bank_transfer]
 			<p>We are waiting for your payment before we can start processing this order.</p>
-			<h4>'._x('Please transfer funds to:', 'emails', 'jigoshop').'</h4>
+			<h4>'._x('Bank details', 'emails', 'jigoshop').'</h4>
 			[bank_info]
 			<p>Total value: [total]</p>
-		[/is_bank_transfer]
+		[else]
+		[is_local_pickup]
+		<h4>'._x('Your order is being prepared', 'emails', 'jigoshop').'</h4>
+		<p>'._x('We are preparing your order, you will receive another email when we will be ready and awaiting for you to pick it up.', 'emails', 'jigoshop').'</p>
+		[else]
 		[is_cash_on_delivery]
 		<h4>'._x('Order will be dispatched shortly', 'emails', 'jigoshop').'</h4>
 		<p>'._x('Your order is being processed and will be dispatched to you as soon as possible. Please prepare exact change to pay when package arrives.', 'emails', 'jigoshop').'</p>
 		[/is_cash_on_delivery]
-		[is_local_pickup]
-		<h4>'._x('Your order is being prepared', 'emails', 'jigoshop').'</h4>
-		<p>'._x('We are preparing your order, you will receive another email when we will be ready and awaiting for you to pick it up.', 'emails', 'jigoshop').'</p>
 		[/is_local_pickup]
+		[/is_bank_transfer]
 		<h4>'._x('Order [order_number] on [order_date]', 'emails', 'jigoshop').'</h4>
 		<table class="cart" cellpadding="0" cellspacing="0">
 			<thead>
@@ -375,7 +377,6 @@ function jigoshop_install_emails()
 						[billing_first_name] [billing_last_name]<br />
 						[billing_address_1][billing_address_2], [value][/billing_address_2]<br />
 						[billing_city], [billing_postcode]<br />
-						[billing_city]<br />
 						[billing_state]<br />
 						[billing_country]
 					</td>
@@ -383,7 +384,6 @@ function jigoshop_install_emails()
 						[shipping_first_name] [shipping_last_name]<br />
 						[shipping_address_1][shipping_address_2], [value][/shipping_address_2]<br />
 						[shipping_city], [shipping_postcode]<br />
-						[shipping_city]<br />
 						[shipping_state]<br />
 						[shipping_country]
 					</td>
