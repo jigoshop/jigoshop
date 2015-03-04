@@ -111,6 +111,7 @@ function get_order_email_arguments($order_id)
 		'is_cash_on_delivery' => $order->payment_method == 'cod' ? true : null,
 		'is_cheque' => $order->payment_method == 'cheque' ? true : null,
 		'bank_info' => str_replace(PHP_EOL, '', jigoshop_bank_transfer::get_bank_details()),
+		'cheque_info' => str_replace(PHP_EOL, '', $options->get('jigoshop_cheque_description')),
 		'billing_first_name' => $order->billing_first_name,
 		'billing_last_name' => $order->billing_last_name,
 		'billing_company' => $order->billing_company,
@@ -176,6 +177,7 @@ function get_order_email_arguments_description()
 		'is_cheque' => __('Is payment method Cheque?', 'jigoshop'),
 		'is_local_pickup' => __('Is Local Pickup?', 'jigoshop'),
 		'bank_info' => __('Company bank transfer details', 'jigoshop'),
+		'cheque_info' => __('Company cheque details', 'jigoshop'),
 		'checkout_url' => __('If order is pending, show checkout url', 'jigoshop'),
 		'billing_first_name' => __('Billing First Name', 'jigoshop'),
 		'billing_last_name' => __('Billing Last Name', 'jigoshop'),
@@ -317,8 +319,13 @@ function jigoshop_install_emails()
 		'product_on_backorder_notification'
 	);
 	$invoice = '
+		[is_cheque]
+			<p>'._x('We are waiting for your cheque before we can start processing this order.', 'emails', 'jigoshop').'</p>
+			<p>[cheque_info]</p>
+			<p>Total value: [total]</p>
+		[else]
 		[is_bank_transfer]
-			<p>We are waiting for your payment before we can start processing this order.</p>
+			<p>'._x('We are waiting for your payment before we can start processing this order.', 'emails', 'jigoshop').'</p>
 			<h4>'._x('Bank details', 'emails', 'jigoshop').'</h4>
 			[bank_info]
 			<p>Total value: [total]</p>
@@ -333,6 +340,7 @@ function jigoshop_install_emails()
 		[/is_cash_on_delivery]
 		[/is_local_pickup]
 		[/is_bank_transfer]
+		[/is_cheque]
 		<h4>'._x('Order [order_number] on [order_date]', 'emails', 'jigoshop').'</h4>
 		<table class="cart" cellpadding="0" cellspacing="0">
 			<thead>

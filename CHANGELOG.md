@@ -1,14 +1,17 @@
 ## Changelog
 
-* 1.16
+* 1.16:
     * New: Completely new default HTML emails.
     * New: "Waiting for payment" transaction status for Cash on Delivery, Bank Transfer and Cheque payments.
     * New: More actions for emails - now available all actions for both customers and admins.
     * New: Default email templates are now translatable.
-    * New: Order status variable for emails - included by default in admin new order email. 
+    * New: Order status variable for emails - included by default in admin new order email.
+    * New: Better support for Cash on Delivery, Bank Transfer and Cheque payment methods in emails.
+    * New: Better support for Local Pickup shipping methods in emails.
     * Improved: Proper HTML for sale prices `<del>Old price</del><ins>New price</ins>` with `<span class="discount">Discount</span>` if applicable.
     * Improved: Trimming spaces from memory values before checking.
     * Improved: Remove ID from Jigoshop nonce fields.
+    * Improved: More variables for your emails!
     * Fix: Selected values issue on checkout and edit address pages. Thanks to @ipatenco!
     * Fix: Show "Password changed" message after successful change.
     * Fix: Warning for network installations of Jigoshop.
