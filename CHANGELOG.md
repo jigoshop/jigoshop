@@ -2,6 +2,9 @@
 
 * 1.16
     * New: "Waiting for payment" transaction status for Cash on Delivery, Bank Transfer and Cheque payments.
+    * New: More actions for emails - now available all actions for both customers and admins.
+    * New: Default email templates are now translatable.
+    * New: Order status variable for emails - included by default in admin new order email. 
     * Improved: Proper HTML for sale prices `<del>Old price</del><ins>New price</ins>` with `<span class="discount">Discount</span>` if applicable.
     * Improved: Trimming spaces from memory values before checking.
     * Improved: Remove ID from Jigoshop nonce fields.
@@ -324,75 +327,3 @@
     * Fix: Licence validator now properly deactivates licences.
     * Fix: Calculating taxes is always performed.
     * Fix: `jigoshop::plugin_url()` now returns proper URL.
-* 1.8.6 - 2014-04-24
-    * New: Checking for product type when loading products on sale.
-    * New: jQuery `jigoshop_add_variation` action after adding new variation in admin panel.
-    * Fix: Password type field on Checkout. Thanks to jlalunz
-    * Fix: Different user meta used for `address 2` line in checkout and `my_account` shortcode. Thanks to robselway
-* 1.8.5 - 2014-04-15
-    * New: Checking if widgets has titles - otherwise skipping displaying them. Thanks to Stephen Cronin
-    * New: Action `jigoshop_user_edit_address` after address edition. Thanks to robselway
-    * Fix: Product statuses now matches these from Google Feed.
-* 1.8.4 - 2014-04-01
-    * Fix: Category dropdown is now single selection. Thanks to Riccardo F
-    * Fix: Closing tags in `jigoshop_customer` class are now correctly included. Thanks to robselway
-* 1.8.3 - 2014-03-31
-    * New: Orders in admin panel can be filtered by date
-    * Tweak: Updated licences
-    * Tweak: Moved country-states javascript to separate file
-    * Fix: Categories widget can redirect to "All" page too
-* 1.8.2 - 2014-03-28
-    * New: Jigoshop manages its assets through new API `jigoshop_add_style()` and `jigoshop_add_script()`
-    * Tweak: PayPal landing page will now show Credit Card entry fields by default
-    * Tweak: Remove duplicated values from System Info
-    * Tweak: Redirect after error while adding product into cart
-    * Fix: Use calculated order price when using PayPal Standard gateway
-    * Fix: Force 0.01 charge on free orders at PayPal to allow it to process through PayPal
-    * Fix: Jigoshop categories widget will again use a pop-up select when 'dropdown' setting is enabled
-    * Fix: Resolve problems with Ukrainian translation
-    * Languages: New Chinese Taiwan translation courtesy of Eason Chen
-    * Languages: Updated Danish translation courtesy of Tine Kristensen
-    * Languages: Updated German translation courtesy of Andy Jordan
-    * Languages: Updated Polish translation courtesy of OptArt
-* 1.8.1 - 2014-01-03
-    * Tweak: Variations that are all priced the same will no longer show the secondary price when selected
-    * Tweak: Free Shipping module only activates on totals after applied coupon amounts
-    * Tweak: Provide total quantity products sold for Reports
-    * Fix: Reports include orders from beginning day of date range
-    * Fix: After coupon removal on Cart, totals recalcualted
-    * Fix: Products on sale shortcode now uses default loop-shop template to allow pagination
-    * Fix: Products on sale shortcode won't show all products if non actually on sale
-    * Fix: Clicks on Checkout's 'ship to billing' will force a recalc for selected states and taxes
-    * Fix: Numerous fixes for PHP Strict warnings
-    * Languages: Updated pot file for translators
-    * Languages: Updated Ukranian translation courtesy of Anatolii Sakhnik
-    * Languages: Updated Croatian translation courtesy of Ivica Delic
-    * Languages: Updated German translation courtesy of Andy Jordan
-    * Languages: New Slovenian translation courtesy of David Bratuša
-* 1.8 - 2013-10-10
-    * New: WorldPay payment gateway added to Jigoshop core
-    * New: Settings->General->Complete processing Orders option for `processing` orders older than 30 days
-    * New: Implement Jigoshop Request API for extensions and gateways
-    * New: Javascript Checkout field validation to enhance payment conversion. Shows correct and incorrect fields.
-        * Orders won't be placed until all Checkout fields required data are input and validated
-    * Tweak: Revamped all Jigoshop frontend javascript for modularity and efficiency
-        * all Jigoshop javascript loads in footer for improved performance
-    * Tweak: Updated several external javascript libraries (jQuery blockUI, select2)
-    * Tweak: Removed large jQuery UI library from front end loading, loads required bits as needed (Price Filter)
-    * Tweak: Jigoshop now only loads one CSS file from all internal sources for efficiency
-    * Tweak: Add a codeblock option type in the settings for extensions to use internally
-    * Tweak: Combine Edit Order variation attributes with product addons extension in one panel for Orders
-    * Tweak: Add some filters for Jigoshop WPML extension to allow more translated items
-    * Tweak: Jigoshop Reports pie chart cleanup with separate legend that won't over write charts
-    * Tweak: Jigoshop Reports pie chart products now show with 5% share
-    * Fix: Jigoshop Reports pie chart for 'Most Sold' per period now accurately reflects top products sold
-    * Fix: Repair Google Analytics function for tracking code to load in header where it's required
-    * Fix: Repair Google eCommerce Product tracking for Thank You page
-    * Fix: Unpaid 'on-hold' orders from cash or cheque gateways will no longer be overwritten with another order
-    * Fix: FuturePay gateway will not be selectable on the Checkout for Orders over $500.00 (current credit limit)
-    * Fix: Test to ensure PayPal payment amounts and addresses matches initially submitted order as a security check
-    * Fix: Remove filter that was overriding Contact Form 7 or other mail extensions for 'From' name on emails
-    * Fix: Variations that use Parent Product for stock tracking, Parent will now reduce stock upon order payment
-    * Languages: Updated .pot file for translators
-    * Languages: Updated Brazilian translation courtesy of Raphael Suzuki
-    * Languages: Updated Czech translation courtesy of Jaroslav Ondra

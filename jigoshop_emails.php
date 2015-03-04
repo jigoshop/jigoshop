@@ -17,56 +17,51 @@ add_action('admin_init', function(){
 	jigoshop_emails::register_mail('admin_order_status_pending_to_processing', __('Order Pending to Processing for admin'), get_order_email_arguments_description());
 	jigoshop_emails::register_mail('admin_order_status_pending_to_completed', __('Order Pending to Completed for admin'), get_order_email_arguments_description());
 	jigoshop_emails::register_mail('admin_order_status_pending_to_on-hold', __('Order Pending to On-Hold for admin'), get_order_email_arguments_description());
-	jigoshop_emails::register_mail('customer_order_status_pending_to_on-hold', __('Order Pending to On-Hold for customer'), get_order_email_arguments_description());
+	jigoshop_emails::register_mail('admin_order_status_pending_to_waiting-for-payment', __('Order Pending to Waiting for Payment for admin'), get_order_email_arguments_description());
+	jigoshop_emails::register_mail('admin_order_status_on-hold_to_processing', __('Order On-Hold to Processing for admin'), get_order_email_arguments_description());
+	jigoshop_emails::register_mail('admin_order_status_completed', __('Order Completed for admin'), get_order_email_arguments_description());
+	jigoshop_emails::register_mail('admin_order_status_refunded', __('Order Refunded for admin'), get_order_email_arguments_description());
+
 	jigoshop_emails::register_mail('customer_order_status_pending_to_processing', __('Order Pending to Processing for customer'), get_order_email_arguments_description());
+	jigoshop_emails::register_mail('customer_order_status_pending_to_completed', __('Order Pending to Completed for customer'), get_order_email_arguments_description());
+	jigoshop_emails::register_mail('customer_order_status_pending_to_on-hold', __('Order Pending to On-Hold for customer'), get_order_email_arguments_description());
+	jigoshop_emails::register_mail('customer_order_status_pending_to_waiting-for-payment', __('Order Pending to Waiting for Payment for customer'), get_order_email_arguments_description());
 	jigoshop_emails::register_mail('customer_order_status_on-hold_to_processing', __('Order On-Hold to Processing for customer'), get_order_email_arguments_description());
 	jigoshop_emails::register_mail('customer_order_status_completed', __('Order Completed for customer'), get_order_email_arguments_description());
 	jigoshop_emails::register_mail('customer_order_status_refunded', __('Order Refunded for customer'), get_order_email_arguments_description());
+
 	jigoshop_emails::register_mail('low_stock_notification', __('Low Stock Notification'), get_stock_email_arguments_description());
 	jigoshop_emails::register_mail('no_stock_notification', __('No Stock Notification'), get_stock_email_arguments_description());
 	jigoshop_emails::register_mail('product_on_backorder_notification', __('Backorder Notification'), array_merge(get_stock_email_arguments_description(), get_order_email_arguments_description(), array('amount' => __('Amount', 'jigoshop'))));
 	jigoshop_emails::register_mail('send_customer_invoice', __('Send Customer Invoice'), get_order_email_arguments_description());
 }, 999);
 
-add_action('order_status_pending_to_processing', function ($order_id){
-	$options = Jigoshop_Base::get_options();
-	$order = new jigoshop_order($order_id);
-	jigoshop_emails::send_mail('admin_order_status_pending_to_processing', get_order_email_arguments($order_id), $options->get('jigoshop_email'));
-	jigoshop_emails::send_mail('customer_order_status_pending_to_processing', get_order_email_arguments($order_id), $order->billing_email);
-});
-add_action('order_status_pending_to_completed', function ($order_id){
-	$options = Jigoshop_Base::get_options();
-	jigoshop_emails::send_mail('admin_order_status_pending_to_completed', get_order_email_arguments($order_id), $options->get('jigoshop_email'));
-});
-add_action('order_status_pending_to_on-hold', function ($order_id){
-	$options = Jigoshop_Base::get_options();
-	$order = new jigoshop_order($order_id);
-	jigoshop_emails::send_mail('admin_order_status_pending_to_on-hold', get_order_email_arguments($order_id), $options->get('jigoshop_email'));
-	jigoshop_emails::send_mail('customer_order_status_pending_to_on-hold', get_order_email_arguments($order_id), $order->billing_email);
-});
-add_action('order_status_on-hold_to_processing', function ($order_id){
-	$order = new jigoshop_order($order_id);
-	jigoshop_emails::send_mail('customer_order_status_on-hold_to_processing', get_order_email_arguments($order_id), $order->billing_email);
-});
+$jigoshopOrderEmailGenerator = function($action) {
+	return function ($order_id) use ($action) {
+		$options = Jigoshop_Base::get_options();
+		$order = new jigoshop_order($order_id);
+		jigoshop_emails::send_mail('admin_order_status_'.$action, get_order_email_arguments($order_id), $options->get('jigoshop_email'));
+		jigoshop_emails::send_mail('customer_order_status_'.$action, get_order_email_arguments($order_id), $order->billing_email);
+	};
+};
 
-add_action('order_status_completed', function ($order_id){
-	$order = new jigoshop_order($order_id);
-	jigoshop_emails::send_mail('customer_order_status_completed', get_order_email_arguments($order_id), $order->billing_email);
-});
+add_action('order_status_pending_to_processing', $jigoshopOrderEmailGenerator('pending_to_processing'));
+add_action('order_status_pending_to_completed', $jigoshopOrderEmailGenerator('pending_to_completed'));
+add_action('order_status_pending_to_on-hold', $jigoshopOrderEmailGenerator('pending_to_on-hold'));
+add_action('order_status_pending_to_waiting-for-payment', $jigoshopOrderEmailGenerator('pending_to_waiting-for-payment'));
+add_action('order_status_on-hold_to_processing', $jigoshopOrderEmailGenerator('on-hold_to_processing'));
+add_action('order_status_completed', $jigoshopOrderEmailGenerator('completed'));
+add_action('order_status_refunded', $jigoshopOrderEmailGenerator('refunded'));
 
-add_action('order_status_refunded', function ($order_id){
-	$order = new jigoshop_order($order_id);
-	jigoshop_emails::send_mail('customer_order_status_refunded', get_order_email_arguments($order_id), $order->billing_email);
-});
+$jigoshopStockEmailGenerator = function($action){
+	return function ($product) use ($action){
+		$options = Jigoshop_Base::get_options();
+		jigoshop_emails::send_mail($action, get_stock_email_arguments($product), $options->get('jigoshop_email'));
+	};
+};
+add_action('jigoshop_low_stock_notification', $jigoshopStockEmailGenerator('low_stock_notification'));
+add_action('jigoshop_no_stock_notification', $jigoshopStockEmailGenerator('no_stock_notification'));
 
-add_action('jigoshop_low_stock_notification', function ($product){
-	$options = Jigoshop_Base::get_options();
-	jigoshop_emails::send_mail('low_stock_notification', get_stock_email_arguments($product), $options->get('jigoshop_email'));
-});
-add_action('jigoshop_no_stock_notification', function ($product){
-	$options = Jigoshop_Base::get_options();
-	jigoshop_emails::send_mail('no_stock_notification', get_stock_email_arguments($product), $options->get('jigoshop_email'));
-});
 add_action('jigoshop_product_on_backorder_notification', function ($order_id, $product, $amount){
 	$options = Jigoshop_Base::get_options();
 	jigoshop_emails::send_mail('product_on_backorder_notification', array_merge(get_order_email_arguments($order_id), get_stock_email_arguments($product), array('amount' => $amount)), $options->get('jigoshop_email'));
@@ -76,9 +71,9 @@ add_action('jigoshop_product_on_backorder_notification', function ($order_id, $p
 	}
 }, 1, 3);
 
-add_filter('downloadable_file_url', function($link, $product, $order){
+add_filter('downloadable_file_url', function($link){
 	return '<a href="' .$link. '">' .$link. '</a>';
-}, 10, 3);
+}, 10, 1);
 
 function get_order_email_arguments($order_id)
 {
@@ -86,11 +81,13 @@ function get_order_email_arguments($order_id)
 	$order = new jigoshop_order($order_id);
 	$inc_tax = ($options->get('jigoshop_calc_taxes') == 'no') || ($options->get('jigoshop_prices_include_tax') == 'yes');
 	$can_show_links = ($order->status == 'completed' || $order->status == 'processing');
+	$statuses = $order->get_order_statuses_and_names();
 
 	$variables = array(
 		'blog_name' => get_bloginfo('name'),
 		'order_number' => $order->get_order_number(),
 		'order_date' => date_i18n(get_option('date_format')),
+		'order_status' => $statuses[$order->status],
 		'shop_name' => $options->get('jigoshop_company_name'),
 		'shop_address_1' => $options->get('jigoshop_address_1'),
 		'shop_address_2' => $options->get('jigoshop_address_2'),
@@ -136,7 +133,6 @@ function get_order_email_arguments($order_id)
 		'shipping_state' => strlen($order->shipping_state) == 2 ? jigoshop_countries::get_state($order->shipping_country, $order->shipping_state) : $order->shipping_state,
 		'shipping_country_raw' => $order->shipping_country,
 		'shipping_state_raw' => $order->shipping_state,
-		'customer_note' => $order->customer_note,
 	);
 
 	if ($options->get('jigoshop_calc_taxes') == 'yes') {
@@ -160,6 +156,7 @@ function get_order_email_arguments_description()
 		'blog_name' => __('Blog Name', 'jigoshop'),
 		'order_number' => __('Order Number', 'jigoshop'),
 		'order_date' => __('Order Date', 'jigoshop'),
+		'order_status' => __('Order Status', 'jigoshop'),
 		'shop_name' => __('Shop Name', 'jigoshop'),
 		'shop_address_1' => __('Shop Address part 1', 'jigoshop'),
 		'shop_address_2' => __('Shop Address part 2', 'jigoshop'),
@@ -206,10 +203,13 @@ function get_order_email_arguments_description()
 		'shipping_state' => __('Shipping State', 'jigoshop'),
 		'shipping_country_raw' => __('Raw Shipping Country', 'jigoshop'),
 		'shipping_state_raw' => __('Raw Shipping State', 'jigoshop'),
-		'customer_note' => __('Customer Note', 'jigoshop'),
 	));
 }
 
+/**
+ * @param \jigoshop_product $product
+ * @return array
+ */
 function get_stock_email_arguments($product)
 {
 	$options = Jigoshop_Base::get_options();
@@ -245,19 +245,19 @@ function get_stock_email_arguments_description()
 
 function jigoshop_send_customer_invoice($order_id)
 {
-	$options = Jigoshop_Base::get_options();
 	$order = new jigoshop_order($order_id);
 	jigoshop_emails::send_mail('send_customer_invoice', get_order_email_arguments($order_id), $order->billing_email);
 }
 
-add_action('jigoshop_install_emails', 'install_emails');
+add_action('jigoshop_install_emails', 'jigoshop_install_emails');
 
-function install_emails()
+function jigoshop_install_emails()
 {
 	$default_emails = array(
 		'new_order_admin_notification',
 		'customer_order_status_pending_to_processing',
 		'customer_order_status_pending_to_on-hold',
+		'customer_order_status_pending_to_waiting-for-payment',
 		'customer_order_status_on-hold_to_processing',
 		'customer_order_status_completed',
 		'customer_order_status_refunded',
@@ -308,54 +308,59 @@ function install_emails()
 	foreach ($default_emails as $email) {
 		switch ($email) {
 			case 'new_order_admin_notification':
-				$post_title = 'New order admin notification';
-				$title = '[[shop_name]] New Customer Order - [order_number]';
-				$message = 'You have received an order from [billing_first_name] [billing_last_name]. Their order is as follows:<br/>'.$invoice;
+				$post_title = __('New order admin notification', 'jigoshop');
+				$title = __('[[shop_name]] New Customer Order - [order_number]', 'jigoshop');
+				$message = __('You have received an order from [billing_first_name] [billing_last_name].<br/>Current order status: [order_status]<br/> Their order is as follows:<br/>', 'jigoshop').$invoice;
 				break;
 			case 'customer_order_status_pending_to_on-hold':
-				$post_title = 'Customer order status pending to on-hold';
-				$title = '[[shop_name]] Order Received';
-				$message = 'Thank you, we have received your order. Your order\'s details are below:<br/>'.$invoice;
+				$post_title = __('Customer order status pending to on-hold', 'jigoshop');
+				$title = __('[[shop_name]] Order Received', 'jigoshop');
+				$message = __('Thank you, we have received your order. Your order\'s details are below:<br/>', 'jigoshop').$invoice;
+				break;
+			case 'customer_order_status_pending_to_waiting-for-payment':
+				$post_title = __('Customer order status pending to waiting for payment', 'jigoshop');
+				$title = __('[[shop_name]] Order Received - waiting for payment', 'jigoshop');
+				$message = __('Thank you, we have received your order. We are waiting for your payment before we can start processing this order.<br/>Your order\'s details are below:<br/>', 'jigoshop').$invoice;
 				break;
 			case 'customer_order_status_pending_to_processing' :
-				$post_title = 'Customer order status pending to processing';
-				$title = '[[shop_name]] Order Received';
-				$message = 'Thank you, we are now processing your order. Your order\'s details are below:<br/>'.$invoice;
+				$post_title = __('Customer order status pending to processing', 'jigoshop');
+				$title = __('[[shop_name]] Order Received', 'jigoshop');
+				$message = __('Thank you, we are now processing your order. Your order\'s details are below:<br/>', 'jigoshop').$invoice;
 				break;
 			case 'customer_order_status_on-hold_to_processing' :
-				$post_title = 'Customer order status on-hold to processing';
-				$title = '[[shop_name]] Order Received';
-				$message = 'Thank you, we are now processing your order. Your order\'s details are below:<br/>'.$invoice;
+				$post_title = __('Customer order status on-hold to processing', 'jigoshop');
+				$title = __('[[shop_name]] Order Received', 'jigoshop');
+				$message = __('Thank you, we are now processing your order. Your order\'s details are below:<br/>', 'jigoshop').$invoice;
 				break;
 			case 'customer_order_status_completed' :
-				$post_title = 'Customer order status completed';
-				$title = '[[shop_name]] Order Complete';
-				$message = 'Your order is complete. Your order\'s details are below:<br/>'.$invoice;
+				$post_title = __('Customer order status completed', 'jigoshop');
+				$title = __('[[shop_name]] Order Complete', 'jigoshop');
+				$message = __('Your order is complete. Your order\'s details are below:<br/>', 'jigoshop').$invoice;
 				break;
 			case 'customer_order_status_refunded' :
-				$post_title = 'Customer order status refunded';
-				$title = '[[shop_name]] Order Refunded';
-				$message = 'Your order has been refunded. Your order\'s details are below:<br/>'.$invoice;
+				$post_title = __('Customer order status refunded', 'jigoshop');
+				$title = __('[[shop_name]] Order Refunded', 'jigoshop');
+				$message = __('Your order has been refunded. Your order\'s details are below:<br/>', 'jigoshop').$invoice;
 				break;
 			case 'send_customer_invoice' :
-				$post_title = 'Send customer invoice';
-				$title = 'Invoice for Order: [order_number]';
+				$post_title = __('Send customer invoice', 'jigoshop');
+				$title = __('Invoice for Order: [order_number]', 'jigoshop');
 				$message = $invoice;
 				break;
 			case 'low_stock_notification' :
-				$post_title = 'Low stock notification';
-				$title = '[[shop_name]] Product low in stock';
-				$message = '#[product_id] [product_name] ([sku]) is low in stock.';
+				$post_title = __('Low stock notification', 'jigoshop');
+				$title = __('[[shop_name]] Product low in stock', 'jigoshop');
+				$message = __('#[product_id] [product_name] ([sku]) is low in stock.', 'jigoshop');
 				break;
 			case 'no_stock_notification' :
-				$post_title = 'No stock notification';
-				$title = '[[shop_name]] Product out of stock';
-				$message = '#[product_id] [product_name] ([sku]) is out of stock.';
+				$post_title = __('No stock notification', 'jigoshop');
+				$title = __('[[shop_name]] Product out of stock', 'jigoshop');
+				$message = __('#[product_id] [product_name] ([sku]) is out of stock.', 'jigoshop');
 				break;
 			case 'product_on_backorder_notification' :
-				$post_title = 'Product on backorder notification';
-				$title = '[[shop_name]] Product Backorder on Order: [order_number].';
-				$message = '#[product_id] [product_name] ([sku]) was found to be on backorder.<br/>'.$invoice;
+				$post_title = __('Product on backorder notification', 'jigoshop');
+				$title = __('[[shop_name]] Product Backorder on Order: [order_number].', 'jigoshop');
+				$message = __('#[product_id] [product_name] ([sku]) was found to be on backorder.<br/>', 'jigoshop').$invoice;
 				break;
 		}
 		$post_data = array(
@@ -373,12 +378,14 @@ function install_emails()
 			jigoshop_emails::set_actions($post_id, array(
 				'admin_order_status_pending_to_processing',
 				'admin_order_status_pending_to_completed',
-				'admin_order_status_pending_to_on-hold'
+				'admin_order_status_pending_to_on-hold',
+				'admin_order_status_pending_to_waiting-for-payment',
 			));
 			update_post_meta($post_id, 'jigoshop_email_actions', array(
 				'admin_order_status_pending_to_processing',
 				'admin_order_status_pending_to_completed',
-				'admin_order_status_pending_to_on-hold'
+				'admin_order_status_pending_to_on-hold',
+				'admin_order_status_pending_to_waiting-for-payment',
 			));
 		} else {
 			jigoshop_emails::set_actions($post_id, array($email));
