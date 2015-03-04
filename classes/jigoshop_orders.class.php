@@ -37,6 +37,7 @@ class jigoshop_orders extends Jigoshop_Base {
 		$this->completed_count = get_term_by('slug', 'completed', 'shop_order_status')->count;
 		$this->cancelled_count = get_term_by('slug', 'cancelled', 'shop_order_status')->count;
 		$this->on_hold_count = get_term_by('slug', 'on-hold', 'shop_order_status')->count;
+		$this->waiting_for_payment_count = get_term_by('slug', 'waiting-for-payment', 'shop_order_status')->count;
 		$this->refunded_count = get_term_by('slug', 'refunded', 'shop_order_status')->count;
 		$this->processing_count = get_term_by('slug', 'processing', 'shop_order_status')->count;
 		$this->count = wp_count_posts('shop_order')->publish;

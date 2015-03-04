@@ -199,6 +199,7 @@ class jigoshop_order extends Jigoshop_Base
 			'new' => __('New', 'jigoshop'),
 			'pending' => __('Pending', 'jigoshop'),
 			'on-hold' => __('On-Hold', 'jigoshop'),
+			'waiting-for-payment' => __('Waiting for payment', 'jigoshop'),
 			'processing' => __('Processing', 'jigoshop'),
 			'completed' => __('Completed', 'jigoshop'),
 			'cancelled' => __('Cancelled', 'jigoshop'),

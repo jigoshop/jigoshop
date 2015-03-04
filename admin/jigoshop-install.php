@@ -392,6 +392,7 @@ function jigoshop_default_taxonomies() {
 		'new',
 		'pending',
 		'on-hold',
+		'waiting-for-payment',
 		'processing',
 		'completed',
 		'refunded',

@@ -426,6 +426,10 @@ ul.totals li.right input {
 	background: red
 }
 
+.widefat .column-order_status mark.waitingforpayment {
+	background: #00d3e6
+}
+
 .widefat .column-order_status mark.cancelled {
 	background: #dfdfdf
 }
@@ -436,6 +440,10 @@ ul.totals li.right input {
 
 .widefat .column-order_status mark.on-hold {
 	background: red
+}
+
+.widefat .column-order_status mark.waiting-for-payment {
+	background: #00d3e6
 }
 
 .widefat .column-order_status mark.refunded {
@@ -458,6 +466,10 @@ ul.subsubsub li.completed a {
 
 ul.subsubsub li.onhold a {
 	color: red
+}
+
+ul.subsubsub li.waitingforpayment a {
+	color: #00d3e6
 }
 
 ul.subsubsub li.cancelled a {
@@ -592,6 +604,10 @@ ul.recent-orders li .on-hold {
 	color: red
 }
 
+ul.recent-orders li .waiting-for-payment {
+	color: #00d3e6
+}
+
 ul.recent-orders li .processing {
 	color: #21759b
 }
@@ -645,6 +661,10 @@ ul.recent-orders li .refunded, ul.recent-orders li .cancelled {
 
 .jigoshop_right_now .onhold {
 	color: red
+}
+
+.jigoshop_right_now .waitingforpayment {
+	color: #00d3e6
 }
 
 .jigoshop_right_now .pending {
@@ -2054,6 +2074,10 @@ body, html {
 
 #jigoshop_dash_recent_orders .order-status.on-hold {
 	background: #e21b23 /* #2f79d5 */;
+}
+
+#jigoshop_dash_recent_orders .order-status.waiting-for-payment {
+	background: #00d3e6;
 }
 
 #jigoshop_dash_recent_orders .order-status.pending {

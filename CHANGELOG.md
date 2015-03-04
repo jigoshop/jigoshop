@@ -1,6 +1,7 @@
 ## Changelog
 
-* 1.15.6
+* 1.16
+    * New: "Waiting for payment" transaction status for Cash on Delivery, Bank Transfer and Cheque payments.
     * Improved: Proper HTML for sale prices `<del>Old price</del><ins>New price</ins>` with `<span class="discount">Discount</span>` if applicable.
     * Improved: Trimming spaces from memory values before checking.
     * Improved: Remove ID from Jigoshop nonce fields.

@@ -37,6 +37,9 @@ function jigoshop_upgrade()
 	if ($jigoshop_db_version < 1411270) {
 		jigoshop_upgrade_1_13_3();
 	}
+	if ($jigoshop_db_version < 1503040) {
+		jigoshop_upgrade_1_16_0();
+	}
 	// Update the db option
 	update_site_option('jigoshop_db_version', JIGOSHOP_DB_VERSION);
 }
@@ -59,7 +62,10 @@ function jigoshop_upgrade_1_10_0()
 	if (!empty($data)) {
 		$query = "REPLACE INTO {$wpdb->usermeta} VALUES ";
 		foreach ($data as $item) {
-			$key = str_replace(array('billing-', 'shipping-'), array('billing_', 'shipping_'), $item['meta_key']);
+			$key = str_replace(array('billing-', 'shipping-'), array(
+				'billing_',
+				'shipping_'
+			), $item['meta_key']);
 			$query .= "({$item['umeta_id']}, {$item['user_id']}, '{$key}', '{$item['meta_value']}'),";
 		}
 		unset($data);
@@ -88,14 +94,20 @@ function jigoshop_upgrade_1_10_6()
 	$wp_rewrite->flush_rules(true);
 }
 
-function jigoshop_upgrade_1_13_3(){
+function jigoshop_upgrade_1_13_3()
+{
 	$args = array(
 		'post_type' => 'shop_email',
 		'post_status' => 'publish',
 	);
 
 	$emails_array = get_posts($args);
-	if(empty($emails_array)){
+	if (empty($emails_array)) {
 		do_action('jigoshop_install_emails');
 	}
+}
+
+function jigoshop_upgrade_1_16_0()
+{
+	wp_insert_term('waiting-for-payment', 'shop_order_status');
 }
