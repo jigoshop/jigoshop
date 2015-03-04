@@ -23,10 +23,10 @@ function init_jigoshop_web_optimization_system()
 		load_plugin_textdomain('jigoshop_web_optimization_system', false, dirname(plugin_basename(__FILE__)).'/languages/');
 
 		// Set up class loaders
-		require_once(JIGOSHOP_WEB_OPTIMIZATION_SYSTEM_DIR.'/vendor/SplClassLoader.php');
-		$loader = new SplClassLoader('Assetic', JIGOSHOP_WEB_OPTIMIZATION_SYSTEM_DIR.'/vendor/assetic/src');
+		require_once(JIGOSHOP_WEB_OPTIMIZATION_SYSTEM_DIR.'/vendor/JigoshopSplClassLoader.php');
+		$loader = new JigoshopSplClassLoader('Assetic', JIGOSHOP_WEB_OPTIMIZATION_SYSTEM_DIR.'/vendor/assetic/src');
 		$loader->register();
-		$loader = new SplClassLoader('Jigoshop\\Web', JIGOSHOP_WEB_OPTIMIZATION_SYSTEM_DIR.'/src');
+		$loader = new JigoshopSplClassLoader('Jigoshop\\Web', JIGOSHOP_WEB_OPTIMIZATION_SYSTEM_DIR.'/src');
 		$loader->register();
 
 		new \Jigoshop\Web\Optimization();
