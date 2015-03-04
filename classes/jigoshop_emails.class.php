@@ -62,8 +62,7 @@ class jigoshop_emails extends Jigoshop_Base
 				);
 
 				$title = get_post_meta($post_id, 'jigoshop_email_subject', true);
-				$subject = empty($title) ? $post->post_title : $title;
-				$subject = str_replace('[[shop_name]]', '['.get_bloginfo('name').'] ', $subject);
+				$post->post_title = empty($title) ? $post->post_title : $title;
 				$post = self::filter_post($post, $args);
 				$content = $post->post_content;
 				$footer = $options->get('jigoshop_email_footer');
@@ -79,13 +78,17 @@ class jigoshop_emails extends Jigoshop_Base
 					$path = JIGOSHOP_DIR.'/templates/emails/layout.html';
 				}
 
+				if (Jigoshop_Base::get_options()->get('jigoshop_emails_html', 'no') == 'no') {
+					$content = nl2br(wptexturize($content));
+				}
+
 				$template = file_get_contents($path);
-				$title = str_replace('['.get_bloginfo('name').'] ', '', $subject);
+				$title = str_replace('['.get_bloginfo('name').'] ', '', $post->post_title);
 				$template = str_replace('{heading}', $title, $template);
 				$template = str_replace('{content}', $content, $template);
 				$template = str_replace('{footer}', apply_filters('jigoshop_email_footer', $footer), $template);
 
-				wp_mail($to, $subject, $template, $headers);
+				wp_mail($to, $post->post_title, $template, $headers);
 			}
 		}
 	}

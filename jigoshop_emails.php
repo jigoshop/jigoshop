@@ -108,6 +108,8 @@ function get_order_email_arguments($order_id)
 		'checkout_url' => $order->status == 'pending' ? $order->get_checkout_payment_url() : null,
 		'payment_method' => $order->payment_method_title,
 		'is_bank_transfer' => $order->payment_method == 'bank_transfer' ? true : null,
+		'is_cash_on_delivery' => $order->payment_method == 'cod' ? true : null,
+		'is_cheque' => $order->payment_method == 'cheque' ? true : null,
 		'bank_info' => str_replace(PHP_EOL, '', jigoshop_bank_transfer::get_bank_details()),
 		'billing_first_name' => $order->billing_first_name,
 		'billing_last_name' => $order->billing_last_name,
@@ -167,10 +169,11 @@ function get_order_email_arguments_description()
 		'shipping_method' => __('Shipping Method', 'jigoshop'),
 		'discount' => __('Discount Price', 'jigoshop'),
 		'total_tax' => __('Total Tax', 'jigoshop'),
-		'all_tax_classes' => __('Show tax classes separately', 'jigoshop'),
 		'total' => __('Total Price', 'jigoshop'),
 		'payment_method' => __('Payment Method Title', 'jigoshop'),
-		'is_bank_transfer' => __('Is Bank Transfer?', 'jigoshop'),
+		'is_bank_transfer' => __('Is payment method Bank Transfer?', 'jigoshop'),
+		'is_cash_on_delivery' => __('Is payment method Cash on Delivery?', 'jigoshop'),
+		'is_cheque' => __('Is payment method Cheque?', 'jigoshop'),
 		'is_local_pickup' => __('Is Local Pickup?', 'jigoshop'),
 		'bank_info' => __('Company bank transfer details', 'jigoshop'),
 		'checkout_url' => __('If order is pending, show checkout url', 'jigoshop'),
@@ -254,6 +257,10 @@ function jigoshop_send_customer_invoice($order_id)
  */
 function jigoshop_get_order_items_list($order, $show_links = false, $show_sku = false, $includes_tax = false)
 {
+	if (\Jigoshop_Base::get_options()->get('jigoshop_emails_html', 'no') == 'no') {
+		return $order->email_order_items_list($show_links, $show_sku, $includes_tax);
+	}
+
 	$use_inc_tax = $includes_tax;
 	if ($use_inc_tax) {
 		foreach ($this->items as $item) {
@@ -310,6 +317,20 @@ function jigoshop_install_emails()
 		'product_on_backorder_notification'
 	);
 	$invoice = '
+		[is_bank_transfer]
+			<p>We are waiting for your payment before we can start processing this order.</p>
+			<h4>'._x('Please transfer funds to:', 'emails', 'jigoshop').'</h4>
+			[bank_info]
+			<p>Total value: [total]</p>
+		[/is_bank_transfer]
+		[is_cash_on_delivery]
+		<h4>'._x('Order will be dispatched shortly', 'emails', 'jigoshop').'</h4>
+		<p>'._x('Your order is being processed and will be dispatched to you as soon as possible. Please prepare exact change to pay when package arrives.', 'emails', 'jigoshop').'</p>
+		[/is_cash_on_delivery]
+		[is_local_pickup]
+		<h4>'._x('Your order is being prepared', 'emails', 'jigoshop').'</h4>
+		<p>'._x('We are preparing your order, you will receive another email when we will be ready and awaiting for you to pick it up.', 'emails', 'jigoshop').'</p>
+		[/is_local_pickup]
 		<h4>'._x('Order [order_number] on [order_date]', 'emails', 'jigoshop').'</h4>
 		<table class="cart" cellpadding="0" cellspacing="0">
 			<thead>
@@ -393,7 +414,7 @@ function jigoshop_install_emails()
 			case 'customer_order_status_pending_to_waiting-for-payment':
 				$post_title = __('Customer order status pending to waiting for payment', 'jigoshop');
 				$title = __('[[shop_name]] Order Received - waiting for payment', 'jigoshop');
-				$message = __('<p>Thank you, we have received your order.</p><p>We are waiting for your payment before we can start processing this order.</p>', 'jigoshop').$invoice;
+				$message = __('<p>Thank you, we have received your order.</p>', 'jigoshop').$invoice;
 				break;
 			case 'customer_order_status_pending_to_processing' :
 				$post_title = __('Customer order status pending to processing', 'jigoshop');
@@ -465,4 +486,6 @@ function jigoshop_install_emails()
 			update_post_meta($post_id, 'jigoshop_email_actions', array($email));
 		}
 	}
+
+	\Jigoshop_Base::get_options()->set('jigoshop_emails_html', 'yes');
 }
