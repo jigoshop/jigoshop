@@ -815,7 +815,7 @@ ul.recent-orders li .refunded, ul.recent-orders li .cancelled {
 }
 
 .jigoshop #tabs-wrap table {
-	margin: 0 0 5px
+	margin: 0 0 5px 20px
 }
 
 .jigoshop #tabs-wrap table select {
@@ -1804,9 +1804,8 @@ div.multi_select_countries.shipping_services {
 }
 
 .jigoshop-settings #tabs-wrap h3 {
-	font-size: 13px;
-	padding: 1.5em 10px 3px 10px;
-	margin: 1em 0
+	padding: 1.5em 0 3px;
+	margin: 0 0 1em
 }
 
 .jigoshop-settings #tabs-wrap p {

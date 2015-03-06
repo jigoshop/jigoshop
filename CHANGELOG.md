@@ -18,6 +18,7 @@
     * Fix: Warning for network installations of Jigoshop.
     * Fix: Change name of SplClassLoader to avoid issues with other plugins/themes.
     * Fix: "Order failed" untranslatable text is not translatable!
+    * Fix: Bigger headers in Jigoshop Settings.
 * 1.15.5 - 2015-02-09:
     * Improved: JavaScript action is triggered after variation is shown: `jigoshop.variation.show` on `div.single_variation`.
     * Improved: Better loading of checkout JavaScript files.
