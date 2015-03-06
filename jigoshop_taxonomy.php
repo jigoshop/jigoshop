@@ -339,7 +339,7 @@ function jigoshop_post_type()
 			'query_var' => true,
 			'supports' => array('title', 'editor'),
 			'show_in_nav_menus' => false,
-			'show_in_menu' => 'jigoshop'
+			'show_in_menu' => 'jigoshop',
 		)
 	);
 

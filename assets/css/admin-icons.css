@@ -28,10 +28,13 @@
 	background-position: 0 -61px;
 }
 #toplevel_page_jigoshop ul.wp-submenu .wp-first-item +li+li+li a:before {
-	background-position: 0 -80px;
-}
-#toplevel_page_jigoshop ul.wp-submenu .wp-first-item +li+li+li a:before {
-	background-position: 0 -80px;
+	content: "\f466";
+	font-family: dashicons;
+	background: none;
+	text-indent: 0;
+	color: #fff;
+	font-size: 15px;
+	margin: -2px 0 0 -1px;
 }
 #toplevel_page_jigoshop ul.wp-submenu .wp-first-item +li+li+li+li a:before {
 	background-position: 0 -80px;
@@ -72,13 +75,25 @@ div.pages ul.pages li +li+li a:before {
 	background-position: -27px -63px;
 }
 div.pages ul.pages li +li+li+li a:before {
-	background-position: -27px -83px;
-}
-div.pages ul.pages li +li+li+li a:before {
-	background-position: -27px -83px;
+	content: "\f466";
+	font-family: dashicons;
+	background: none;
+	text-indent: 0;
+	color: #fff;
+	font-size: 22px;
+	margin: -3px 0 0 -2px;
 }
 div.pages ul.pages li +li+li+li+li a:before {
-	background-position: -27px -83px;
+	background: url(../images/jigo-ico.png) -27px -83px no-repeat;
+	content: "";
+	width: 19px;
+	height: 19px;
+	position: absolute;
+	left: 13px;
+	top: 14px;
+	text-indent: -9999999px;
+	padding: 0;
+	margin: 0;
 }
 div.pages ul.pages li +li+li+li+li+li a:before {
 	background-position: -27px -83px;

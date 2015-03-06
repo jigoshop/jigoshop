@@ -12,6 +12,7 @@
     * Improved: Trimming spaces from memory values before checking.
     * Improved: Remove ID from Jigoshop nonce fields.
     * Improved: More variables for your emails!
+    * Improved: Nice icon for Jigoshop Emails.
     * Fix: Selected values issue on checkout and edit address pages. Thanks to @ipatenco!
     * Fix: Show "Password changed" message after successful change.
     * Fix: Warning for network installations of Jigoshop.
