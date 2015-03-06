@@ -791,13 +791,9 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 
 				if ($create_new_order) {
 					$order_id = wp_insert_post($order_data);
-					if (is_wp_error($order_id)) {
-						jigoshop::add_error('Error: Unable to create order. Please try again.');
-						return false;
-					}
 				}
 
-				if ($order_id === 0) {
+				if (is_wp_error($order_id) || $order_id === 0) {
 					jigoshop::add_error(__('Error: Unable to create order. Please try again.', 'jigoshop'));
 
 					return false;
