@@ -125,7 +125,10 @@ class jigoshop_licence_validator
 		?>
 		<div class="error">
 			<p>
-				<?php echo sprintf(__('The License key for <i><b>%s</b></i> is not valid . Please enter your <b>Licence Key</b> on the Jigoshop->Manage Licences Menu with your <b>Order email address</b>.  Until then, the plugin will not be enabled for use.', 'jigoshop'), $this->title); ?>
+				<?php printf(__('The License key for <i><b>%s</b></i> is not valid . Please enter your <b>Licence Key</b> on the Jigoshop -> <a href="%s">Manage Licences</a> menu with your <b>Order email address</b>.  Until then, the plugin will not be enabled for use.', 'jigoshop'),
+					$this->title,
+					admin_url('admin.php?page=jigoshop-licence-validator'
+				)); ?>
 			</p>
 		</div>
 		<?php

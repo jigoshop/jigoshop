@@ -13,6 +13,7 @@
     * Improved: Remove ID from Jigoshop nonce fields.
     * Improved: More variables for your emails!
     * Improved: Nice icon for Jigoshop Emails.
+    * Improved: Link to "Manage licences" page for not activated products.
     * Fix: Selected values issue on checkout and edit address pages. Thanks to @ipatenco!
     * Fix: Show "Password changed" message after successful change.
     * Fix: Warning for network installations of Jigoshop.
