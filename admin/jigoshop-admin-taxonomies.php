@@ -31,7 +31,7 @@ add_action('product_cat_edit_form_fields', 'jigoshop_edit_category_thumbnail_fie
 
 function jigoshop_add_category_thumbnail_field()
 {
-	foreach( apply_filters( 'jigoshop_optional_product_category_fields', array() ) as $field ):
+	foreach( apply_filters( 'jigoshop_optional_product_category_fields', array() ) as $field ) {
 		?>
 		<div class="form-field">
 			<label><?php echo $field['name']; ?></label>
@@ -39,7 +39,7 @@ function jigoshop_add_category_thumbnail_field()
 			<p><?php echo $field['desc']; ?></p>
 		</div>
 		<?php
-	endforeach;
+	}
 
 	$image = JIGOSHOP_URL.'/assets/images/placeholder.png';
 	?>
@@ -84,7 +84,7 @@ function jigoshop_add_category_thumbnail_field()
 
 function jigoshop_edit_category_thumbnail_field($term, $taxonomy)
 {
-	foreach( apply_filters( 'jigoshop_optional_product_category_fields', array() ) as $field ):
+	foreach( apply_filters( 'jigoshop_optional_product_category_fields', array() ) as $field ) {
 		$value = get_metadata( 'jigoshop_term', $term->term_id, $field['id'], true );
 		?>
 		<tr class="form-field">
@@ -95,7 +95,7 @@ function jigoshop_edit_category_thumbnail_field($term, $taxonomy)
 			</td>
 		</tr>
 		<?php
-	endforeach;
+	}
 
 	$image = jigoshop_product_cat_image($term->term_id);
 	?>
@@ -144,11 +144,16 @@ add_action('edit_term', 'jigoshop_category_thumbnail_field_save', 10, 3);
 
 function jigoshop_category_thumbnail_field_save($term_id, $tt_id, $taxonomy)
 {
-	if (!isset($_POST['product_cat_thumbnail_id'])) {
-		return;
-	}
+	if( $taxonomy !== 'product_cat' ) return;
 
-	update_metadata('jigoshop_term', $term_id, 'thumbnail_id', $_POST['product_cat_thumbnail_id']);
+	if( isset( $_POST['product_cat_thumbnail_id'] ) )
+		update_metadata( 'jigoshop_term', $term_id, 'thumbnail_id', $_POST['product_cat_thumbnail_id'] );
+
+	foreach( apply_filters( 'jigoshop_optional_product_category_fields', array() ) as $field )
+		if( isset( $_POST['product_cat_' . $field['id']] ) ) {
+			$value = $_POST['product_cat_' . $field['id']];
+			update_metadata( 'jigoshop_term', $term_id, $field['id'], ( $field['type'] === 'number' ? jigoshop_sanitize_num( $value ) : $value ) );
+		}
 }
 
 /**
@@ -189,11 +194,10 @@ function jigoshop_product_cat_column($columns, $column, $id)
 }
 
 /**
- * Gets a product category field for a product.
- * Returns FALSE if the primary category of the product does not have that field.
+ * Gets a product category field.
+ * Returns all the fields (as strings) if the field is not specified.
+ * Returns FALSE if the category or the field cannot be found.
  */
-function jigoshop_get_category_field_for_product( $product_id, $field_id ) {
-	$categories = get_the_terms( $product_id, 'product_cat' );
-	$category_id = ( !empty( $categories ) ) ? current( $categories )->term_id : null;
+function jigoshop_get_category_field_for_product( $category_id, $field_id = '' ) {
 	return maybe_unserialize( get_metadata( 'jigoshop_term', $category_id, $field_id, true ) );
 }
