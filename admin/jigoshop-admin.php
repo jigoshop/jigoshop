@@ -45,7 +45,7 @@ function jigoshop_update() {
 	if ( is_admin() && get_site_option('jigoshop_db_version') < JIGOSHOP_DB_VERSION ) {
 
 		if ( isset($_GET['jigoshop_update_db']) && (bool) $_GET['jigoshop_update_db'] ) {
-			require_once( jigoshop::plugin_path().'/jigoshop_upgrade.php' );
+			require_once( JIGOSHOP_DIR.'/jigoshop_upgrade.php' );
 			jigoshop_upgrade();
 
 		} else {
@@ -230,7 +230,7 @@ echo $theme_data->Name . ': ' . $theme_data->Version;
 }
 
 function jigoshop_get_plugin_data( $key = 'Version' ) {
-	$data = get_plugin_data( jigoshop::plugin_path().'/jigoshop.php' );
+	$data = get_plugin_data( JIGOSHOP_DIR.'/jigoshop.php' );
 
 	return $data[$key];
 }

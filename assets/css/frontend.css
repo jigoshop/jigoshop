@@ -267,9 +267,9 @@ div.product #tabs .panel {
 	border-bottom-right-radius: 3px
 }
 
-div.product #tabs .commentlist { 
-	padding-left: 0px; 
-	list-style: none; 
+div.product #tabs .commentlist {
+	padding-left: 0px;
+	list-style: none;
 }
 
 .stock {
@@ -380,10 +380,8 @@ span.onsale {
 }
 
 .products li a img {
-	width: 150px !important;
-	height: 150px !important;
 	display: block;
-	margin: 0 0 8px !important;
+	margin: 0 auto 8px !important;
 	border: 1px solid #dddddd
 }
 

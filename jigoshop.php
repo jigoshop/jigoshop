@@ -726,10 +726,10 @@ function jigoshop_frontend_scripts()
 	$frontend_css = JIGOSHOP_URL.'/assets/css/frontend.css';
 	$theme_css = file_exists(get_stylesheet_directory().'/jigoshop/style.css')
 		? get_stylesheet_directory_uri().'/jigoshop/style.css'
-		: JIGOSHOP_URL.'/assets/css/frontend.css';
+		: $frontend_css;
 
 	if ($options->get('jigoshop_disable_css') == 'no') {
-		if ($options->get('jigoshop_frontend_with_theme_css') == 'yes') {
+		if ($options->get('jigoshop_frontend_with_theme_css') == 'yes' && $frontend_css != $theme_css) {
 			jigoshop_add_style('jigoshop_theme_styles', $frontend_css);
 		}
 		jigoshop_add_style('jigoshop_styles', $theme_css);

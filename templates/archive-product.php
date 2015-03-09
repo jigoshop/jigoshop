@@ -29,7 +29,10 @@
 	<?php
 		$shop_page_id = jigoshop_get_page_id('shop');
 		$shop_page = get_post($shop_page_id);
-		echo apply_filters('the_content', $shop_page->post_content);
+		if(post_password_required($shop_page)):
+			echo get_the_password_form($shop_page);
+		else:
+			echo apply_filters('the_content', $shop_page->post_content);
 	?>
 
 	<?php
@@ -40,6 +43,7 @@
 	?>
 
 	<?php do_action('jigoshop_pagination'); ?>
+<?php endif; ?>
 
 <?php do_action('jigoshop_after_main_content'); ?>
 

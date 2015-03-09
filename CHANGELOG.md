@@ -14,12 +14,14 @@
     * Improved: More variables for your emails!
     * Improved: Nice icon for Jigoshop Emails.
     * Improved: Link to "Manage licences" page for not activated products.
+    * Improved: Properly size and align product thumbnails on product list page.
     * Fix: Selected values issue on checkout and edit address pages. Thanks to @ipatenco!
     * Fix: Show "Password changed" message after successful change.
     * Fix: Warning for network installations of Jigoshop.
     * Fix: Change name of SplClassLoader to avoid issues with other plugins/themes.
     * Fix: "Order failed" untranslatable text is not translatable!
     * Fix: Bigger headers in Jigoshop Settings.
+    * Fix: Double loading of `frontend.css` when custom theme used.
 * 1.15.5 - 2015-02-09:
     * Improved: JavaScript action is triggered after variation is shown: `jigoshop.variation.show` on `div.single_variation`.
     * Improved: Better loading of checkout JavaScript files.
