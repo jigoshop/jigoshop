@@ -8,6 +8,7 @@
     * New: Order status variable for emails - included by default in admin new order email.
     * New: Better support for Cash on Delivery, Bank Transfer and Cheque payment methods in emails.
     * New: Better support for Local Pickup shipping methods in emails.
+    * New: Ability to add multiple fields to product category (only text or number). Thanks to newash!
     * Improved: Proper HTML for sale prices `<del>Old price</del><ins>New price</ins>` with `<span class="discount">Discount</span>` if applicable.
     * Improved: Trimming spaces from memory values before checking.
     * Improved: Remove ID from Jigoshop nonce fields.
