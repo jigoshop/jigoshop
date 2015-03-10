@@ -6,6 +6,7 @@ use Jigoshop\Entity\Cart;
 use Jigoshop\Exception;
 use Jigoshop\Shipping\Dummy;
 use Jigoshop\Shipping\Method;
+use Monolog\Registry;
 
 /**
  * Service for managing shipping methods.

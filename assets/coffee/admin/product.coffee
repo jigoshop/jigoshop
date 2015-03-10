@@ -19,6 +19,13 @@ class AdminProduct
         $label.fadeIn()
       else
         $label.fadeOut()
+
+    jQuery('#product-attributes')
+      .on 'click', '.show-variation', (event) ->
+        $item = jQuery(event.target)
+        jQuery('.list-group-item-text', $item.closest('li')).slideToggle ->
+          jQuery('span', $item).toggleClass('glyphicon-collapse-down').toggleClass('glyphicon-collapse-up')
+
     jQuery('#product-attributes')
       .on 'change', 'input, select', @updateAttribute
       .on 'click', '.remove-attribute', @removeAttribute

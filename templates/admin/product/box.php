@@ -39,7 +39,7 @@ $isHidden = function($options) use ($product) {
 		</ul>
 		<div class="tab-content">
 			<?php foreach($tabs as $id => $environment): ?>
-			<div class="tab-pane fade<?php $id == $current_tab and print ' in active'; ?>" id="<?php echo $id; ?>">
+			<div class="tab-pane<?php $id == $current_tab and print ' active'; ?>" id="<?php echo $id; ?>">
 				<?php if (is_array($environment)): ?>
 					<?php Render::output('admin/product/box/'.$id, $environment); ?>
 				<?php else: ?>

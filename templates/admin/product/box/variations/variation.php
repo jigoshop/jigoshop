@@ -1,8 +1,8 @@
 <?php
 use Jigoshop\Admin\Helper\Forms;
 use Jigoshop\Entity\Product\Attribute;
-use Jigoshop\Helper\Product as ProductHelper;
 use Jigoshop\Helper\Product;
+use Jigoshop\Helper\Product as ProductHelper;
 
 /**
  * @var $variation \Jigoshop\Entity\Product\Variable\Variation Variation to display.
@@ -12,9 +12,9 @@ use Jigoshop\Helper\Product;
 $product = $variation->getProduct();
 ?>
 <li class="list-group-item variation" data-id="<?php echo $variation->getId(); ?>">
-	<h4 class="list-group-item-heading">
+	<h4 class="list-group-item-heading clearfix">
 		<button type="button" class="remove-variation btn btn-default pull-right" title="<?php _e('Remove', 'jigoshop'); ?>"><span class="glyphicon glyphicon-remove"></span></button>
-		<button type="button" class="show-variation btn btn-default pull-right" title="<?php _e('Show', 'jigoshop'); ?>"><span class="glyphicon glyphicon-collapse-down"></span></button>
+		<button type="button" class="show-variation btn btn-default pull-right" title="<?php _e('Expand', 'jigoshop'); ?>"><span class="glyphicon glyphicon-collapse-down"></span></button>
 		<?php foreach($attributes as $attribute): /** @var $attribute Attribute */ $value = $variation->getAttribute($attribute->getId());?>
 			<?php Forms::select(array(
 				'name' => 'product[variation]['.$variation->getId().'][attribute]['.$attribute->getId().']',
