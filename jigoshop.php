@@ -1034,7 +1034,7 @@ add_action('wp_footer', 'jigoshop_sharethis');
  * Jigoshop Mail 'from' name on emails
  * We will add a filter to WordPress to get this as the site name when emails are sent
  */
-function jigoshop_mail_from_name($name)
+function jigoshop_mail_from_name()
 {
 	return esc_attr(get_bloginfo('name'));
 }
@@ -1043,12 +1043,10 @@ function jigoshop_mail_from_name($name)
  * Allow product_cat in the permalinks for products.
  *
  * @param string $permalink The existing permalink URL.
- * @param $post
- * @param $leavename
- * @param $sample
+ * @param WP_Post $post
  * @return string
  */
-function jigoshop_product_cat_filter_post_link($permalink, $post, $leavename, $sample)
+function jigoshop_product_cat_filter_post_link($permalink, $post)
 {
 	if ($post->post_type !== 'product') {
 		return $permalink;
@@ -1073,7 +1071,7 @@ function jigoshop_product_cat_filter_post_link($permalink, $post, $leavename, $s
 
 	return $permalink;
 }
-add_filter('post_type_link', 'jigoshop_product_cat_filter_post_link', 10, 4);
+add_filter('post_type_link', 'jigoshop_product_cat_filter_post_link', 10, 2);
 
 /**
  * Helper function to locate proper template and set up environment based on passed array.
@@ -1413,7 +1411,13 @@ function jigoshop_price($price, $args = array())
 	return apply_filters('jigoshop_price_display_filter', $return);
 }
 
-/** Show variation info if set */
+/** Show variation info if set
+ *
+ * @param jigoshop_product $product
+ * @param array $variation_data
+ * @param bool $flat
+ * @return string
+ */
 function jigoshop_get_formatted_variation(jigoshop_product $product, $variation_data = array(), $flat = false)
 {
 	$return = '';
@@ -1634,7 +1638,7 @@ add_filter('preprocess_comment', 'jigoshop_check_comment_rating', 0);
 
 //### Comments #########################################################
 
-function jigoshop_comments($comment, $args, $depth)
+function jigoshop_comments($comment)
 {
 	$GLOBALS['comment'] = $comment; ?>
 <li <?php comment_class(); ?> id="li-comment-<?php comment_ID() ?>">
