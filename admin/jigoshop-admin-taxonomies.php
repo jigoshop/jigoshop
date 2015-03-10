@@ -14,13 +14,33 @@
  */
 
 /**
- * Category thumbnails
+ * Category thumbnails and optional fields
+ *
+ * The list of optional fields can be extended with the "jigoshop_optional_product_category_fields" filter.
+ * Only simple types are supported: text or number.
+ * The filter needs to add an array element like:
+ * array(
+ *     'id'   => 'field_id',
+ *     'name' => 'Label for the field',
+ *     'desc' => 'Longer description under the field',
+ *     'type' => 'text' or 'number'
+ * );
  */
 add_action('product_cat_add_form_fields', 'jigoshop_add_category_thumbnail_field');
 add_action('product_cat_edit_form_fields', 'jigoshop_edit_category_thumbnail_field', 10, 2);
 
 function jigoshop_add_category_thumbnail_field()
 {
+	foreach( apply_filters( 'jigoshop_optional_product_category_fields', array() ) as $field ) {
+		?>
+		<div class="form-field">
+			<label><?php echo $field['name']; ?></label>
+			<input id="product_cat_<?php echo $field['id']; ?>" type="<?php echo $field['type']; ?>" size="40" value="" name="product_cat_<?php echo $field['id']; ?>">
+			<p><?php echo $field['desc']; ?></p>
+		</div>
+		<?php
+	}
+
 	$image = JIGOSHOP_URL.'/assets/images/placeholder.png';
 	?>
 	<div class="form-field">
@@ -64,6 +84,19 @@ function jigoshop_add_category_thumbnail_field()
 
 function jigoshop_edit_category_thumbnail_field($term, $taxonomy)
 {
+	foreach( apply_filters( 'jigoshop_optional_product_category_fields', array() ) as $field ) {
+		$value = get_metadata( 'jigoshop_term', $term->term_id, $field['id'], true );
+		?>
+		<tr class="form-field">
+			<th scope="row" valign="top"><label><?php echo $field['name']; ?></label></th>
+			<td>
+				<input id="product_cat_<?php echo $field['id']; ?>" type="<?php echo $field['type']; ?>" size="40" value="<?php echo $value; ?>" name="product_cat_<?php echo $field['id']; ?>">
+				<p class="description"><?php echo $field['desc']; ?></p>
+			</td>
+		</tr>
+		<?php
+	}
+
 	$image = jigoshop_product_cat_image($term->term_id);
 	?>
 	<tr class="form-field">
@@ -111,11 +144,18 @@ add_action('edit_term', 'jigoshop_category_thumbnail_field_save', 10, 3);
 
 function jigoshop_category_thumbnail_field_save($term_id, $tt_id, $taxonomy)
 {
-	if (!isset($_POST['product_cat_thumbnail_id'])) {
-		return;
+	if( $taxonomy !== 'product_cat' ) return;
+
+	if( isset( $_POST['product_cat_thumbnail_id'] ) ) {
+		update_metadata( 'jigoshop_term', $term_id, 'thumbnail_id', $_POST['product_cat_thumbnail_id'] );
 	}
 
-	update_metadata('jigoshop_term', $term_id, 'thumbnail_id', $_POST['product_cat_thumbnail_id']);
+	foreach( apply_filters( 'jigoshop_optional_product_category_fields', array() ) as $field ) {
+		if( isset( $_POST['product_cat_' . $field['id']] ) ) {
+			$value = $_POST['product_cat_' . $field['id']];
+			update_metadata( 'jigoshop_term', $term_id, $field['id'], ( $field['type'] === 'number' ? jigoshop_sanitize_num( $value ) : $value ) );
+		}
+	}
 }
 
 /**
@@ -153,4 +193,13 @@ function jigoshop_product_cat_column($columns, $column, $id)
 
 	return $columns;
 
+}
+
+/**
+ * Gets a product category field.
+ * Returns all the fields (as strings) if the field is not specified.
+ * Returns FALSE if the category or the field cannot be found.
+ */
+function jigoshop_get_category_field_for_product( $category_id, $field_id = '' ) {
+	return maybe_unserialize( get_metadata( 'jigoshop_term', $category_id, $field_id, true ) );
 }
