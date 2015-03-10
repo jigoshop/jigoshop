@@ -35,7 +35,7 @@ function jigoshop_add_category_thumbnail_field()
 		?>
 		<div class="form-field">
 			<label><?php echo $field['name']; ?></label>
-			<input id="product_cat_<?php echo $field['id']; ?>" type="text" size="40" value="" name="product_cat_<?php echo $field['id']; ?>">
+			<input id="product_cat_<?php echo $field['id']; ?>" type="<?php echo $field['type']; ?>" size="40" value="" name="product_cat_<?php echo $field['id']; ?>">
 			<p><?php echo $field['desc']; ?></p>
 		</div>
 		<?php
@@ -146,14 +146,16 @@ function jigoshop_category_thumbnail_field_save($term_id, $tt_id, $taxonomy)
 {
 	if( $taxonomy !== 'product_cat' ) return;
 
-	if( isset( $_POST['product_cat_thumbnail_id'] ) )
+	if( isset( $_POST['product_cat_thumbnail_id'] ) ) {
 		update_metadata( 'jigoshop_term', $term_id, 'thumbnail_id', $_POST['product_cat_thumbnail_id'] );
+	}
 
-	foreach( apply_filters( 'jigoshop_optional_product_category_fields', array() ) as $field )
+	foreach( apply_filters( 'jigoshop_optional_product_category_fields', array() ) as $field ) {
 		if( isset( $_POST['product_cat_' . $field['id']] ) ) {
 			$value = $_POST['product_cat_' . $field['id']];
 			update_metadata( 'jigoshop_term', $term_id, $field['id'], ( $field['type'] === 'number' ? jigoshop_sanitize_num( $value ) : $value ) );
 		}
+	}
 }
 
 /**
