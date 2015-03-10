@@ -33,21 +33,6 @@ class Jigoshop_reports {
 
 	}
 
-	/**
-	 * Orders for range filter function
-	 */
-	function orders_within_range( $where = '' ) {
-		global $start_date, $end_date;
-
-		$after  = date('Y-m-d', $start_date);
-		$before = date('Y-m-d', strtotime('+1 day', $end_date));
-
-		$where .= " AND post_date >= '$after'";
-		$where .= " AND post_date < '$before'";
-
-		return $where;
-	}
-
 	function jigoshop_get_orders() {
 		global $start_date, $end_date;
 
@@ -161,6 +146,7 @@ h6{font-size:11px;color:#999999;text-transform:uppercase;}
 				<div class="span3 thumbnail">
 					<h1><?php echo $this->jigoshop_total_sales(); ?></h1>
 					<h3><?php _e('Total Sales','jigoshop'); ?></h3>
+					<span class="help"><?php _e('Including taxes, shipping and all discounts', 'jigoshop'); ?></span>
 				</div>
 
 				<?php do_action('jigoshop_report_widgets', $this->orders); ?>
@@ -175,213 +161,6 @@ h6{font-size:11px;color:#999999;text-transform:uppercase;}
 		</script>
 
 <?php }
-
-function jigoshop_pie_charts($id = '') {
-
-	if (empty($id)) return false;
-
-	$total = array_sum($this->pie_products);
-	if ($total != 0){
-	$values = array();
-	foreach ($this->pie_products as $name => $sales) $values[] = '{ label: "'.esc_attr(mb_substr($name, 0, 40)).'", data: '. (round($sales/$total, 3)*100).'}';
-
-?>
-<script type="text/javascript">
-/* <![CDATA[ */
-jQuery(function($){
-	var data = [
-		<?php echo implode(',', $values); ?>
-	];
-	$.plot($("#<?php echo $id; ?>"), data, {
-		series: {
-			pie: {
-				show: true,
-				combine: {
-					color: '#999',
-					threshold: 0.045 /* rounding up for 5% */
-				},
-				radius: 1,
-				label: {
-					show: true,
-					radius: 2/3,
-					formatter: function(label, series){
-						return '<div style="font-size:8pt;text-align:center;padding:2px;color:black;">'+Math.round(series.percent)+'%</div>';
-					}
-				}
-			}
-		},
-		legend: {
-			show: true,
-			container: $("#<?php echo $id; ?>").prev()
-		}
-	});
-});
-/* ]]> */
-</script>
-<?php
-	}
-}
-
-	function jigoshop_total_orders() {
-		global $start_date, $end_date;
-
-		$total_orders = $this->orders ? count($this->orders) : 0;
-
-		return $total_orders;
-	}
-
-	function jigoshop_most_sold() {
-		global $start_date, $end_date;
-
-		$found_products = array();
-
-		if ($this->orders) :
-			foreach ($this->orders as $order) :
-				$order_items = (array) get_post_meta( $order->ID, 'order_items', true );
-				foreach ($order_items as $item) :
-					if ( !isset($item['cost']) && !isset($item['qty'])) continue;
-					$row_cost = $item['qty'];
-					$found_products[$item['id']] = isset($found_products[$item['id']]) ? $found_products[$item['id']] + $row_cost : $row_cost;
-				endforeach;
-			endforeach;
-		endif;
-
-		asort($found_products);
-		$found_products = array_reverse($found_products, true);
-//		$found_products = array_slice($found_products, 0, 25, true);
-		reset($found_products);
-
-		$this->pie_products = array();
-
-		?>
-
-		<table class="table table-condensed">
-			<?php $total_sold = 0; ?>
-			<thead>
-				<tr>
-					<th><?php _e('Product', 'jigoshop'); ?></th>
-					<th><?php _e('Quantity Sold', 'jigoshop'); ?></th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php
-					foreach ($found_products as $product_id => $qty) :
-						$product = get_post($product_id);
-						$this->pie_products[$product->post_title] = $qty;
-						$product_name = !empty($product) ? '<a href="'.get_permalink($product->ID).'">'.$product->post_title.'</a>' : __('Product no longer exists', 'jigoshop'); ?>
-						<tr>
-							<td><?php echo $product_name; ?></td>
-							<td><?php echo $qty; ?></td>
-							<?php $total_sold += $qty; ?>
-						</tr>
-					<?php endforeach; ?>
-
-			</tbody>
-			<tfoot>
-				<tr>
-					<th><?php _e('Total Products Sold', 'jigoshop'); ?></th>
-					<th><?php echo $total_sold; ?></th>
-				</tr>
-			</tfoot>
-		</table>
-	<?php
-
-	}
-
-	function jigoshop_total_sales() {
-		global $wpdb;
-
-		$row_cost = array();
-
-		if ($this->orders) :
-			foreach ($this->orders as $order) :
-				$order_data = (array) get_post_meta( $order->ID, 'order_data', true );
-				$row_cost[] = apply_filters('jigoshop_reports_order_total_cost', $order_data['order_total'], $order);
-			endforeach;
-		endif;
-
-		return jigoshop_price(array_sum($row_cost));
-
-	}
-
-	function jigoshop_total_customers() {
-		global $wpdb, $start_date, $end_date;
-
-		$after  = date('Y-m-d', $start_date);
-		$before = date('Y-m-d', strtotime('+1 day', $end_date));
-
-		$users_query = new WP_User_Query( array(
-			'fields' => array('user_registered'),
-			'role'   => 'customer',
-		) );
-
-		$i=0;
-		$customers = $users_query->get_results();
-		foreach($customers as $k => $v)
-			if ( $v->user_registered > $after && $v->user_registered < $before ) $i++;
-
-		return $i;
-
-	}
-
-
-	function jigoshop_top_earners() {
-
-		global $start_date, $end_date;
-
-		$found_products = array();
-
-		if ($this->orders) :
-			foreach ($this->orders as $order) :
-				$order_items = (array) get_post_meta( $order->ID, 'order_items', true );
-				foreach ($order_items as $item) :
-					if ( !isset($item['cost']) || !isset($item['qty'])) continue;
-					$row_cost = apply_filters('jigoshop_reports_order_item_cost', $item['cost'], $item, $order); /* this is total final cost multiplied by quantities */
-					$found_products[$item['id']] = isset($found_products[$item['id']]) ? $found_products[$item['id']] + $row_cost : $row_cost;
-				endforeach;
-			endforeach;
-		endif;
-
-		asort($found_products);
-		$found_products = array_reverse($found_products, true);
-//		$found_products = array_slice($found_products, 0, 25, true);
-		reset($found_products);
-
-		$this->pie_products = array();
-
-		?>
-
-		<table class="table table-condensed">
-			<?php $total_sales = 0; ?>
-			<thead>
-				<tr>
-					<th><?php _e('Product', 'jigoshop'); ?></th>
-					<th><?php _e('Sales', 'jigoshop'); ?></th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php foreach ($found_products as $product_id => $sales) :
-						$product = get_post($product_id);
-						$this->pie_products[$product->post_title] = $sales;
-						$product_name = !empty($product) ? '<a href="'.get_permalink($product->ID).'">'.$product->post_title.'</a>' : __('Product no longer exists', 'jigoshop');
-				?>
-						<tr>
-							<td><?php echo $product_name; ?></td>
-							<td><?php echo jigoshop_price($sales); ?></td>
-							<?php $total_sales += $sales; ?>
-						</tr>
-					<?php endforeach; ?>
-
-			</tbody>
-			<tfoot>
-				<tr>
-					<th><?php _e('Total Sales', 'jigoshop'); ?></th>
-					<th><?php echo jigoshop_price($total_sales); ?></th>
-				</tr>
-			</tfoot>
-		</table>
-	<?php
-	}
 
 	/**
 	 *	Monthly Report
@@ -560,5 +339,238 @@ jQuery(function($){
 	</div>
 	</div>
 <?php
+	}
+
+	function jigoshop_top_earners()
+	{
+
+		global $start_date, $end_date;
+
+		$found_products = array();
+
+		if ($this->orders) {
+			foreach ($this->orders as $order) {
+				$order_items = (array)get_post_meta($order->ID, 'order_items', true);
+
+				foreach ($order_items as $item) {
+					if (!isset($item['cost']) || !isset($item['qty'])) {
+						continue;
+					}
+
+					if (isset($item['cost_inc_tax']) && $item['cost_inc_tax'] > 0) {
+						$cost = $item['cost_inc_tax'];
+					} else if (isset($item['taxrate']) && $item['taxrate'] > 0) {
+						$cost = $item['cost'] * (100 + $item['taxrate']) / 100 * $item['qty'];
+					} else {
+						$cost = $item['cost'] * $item['qty'];
+					}
+					$cost = apply_filters('jigoshop_reports_order_item_cost', $cost, $item, $order);
+					$found_products[$item['id']] = isset($found_products[$item['id']]) ? $found_products[$item['id']] + $cost : $cost;
+				}
+			}
+		}
+
+		asort($found_products);
+		$found_products = array_reverse($found_products, true);
+//		$found_products = array_slice($found_products, 0, 25, true);
+		reset($found_products);
+
+		$this->pie_products = array();
+
+		?>
+
+		<table class="table table-condensed">
+			<?php $total_sales = 0; ?>
+			<thead>
+				<tr>
+					<th><?php _e('Product', 'jigoshop'); ?></th>
+					<th><?php _e('Sales', 'jigoshop'); ?></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach ($found_products as $product_id => $sales) :
+						$product = get_post($product_id);
+						$this->pie_products[$product->post_title] = $sales;
+						$product_name = !empty($product) ? '<a href="'.get_permalink($product->ID).'">'.$product->post_title.'</a>' : __('Product no longer exists', 'jigoshop');
+				?>
+						<tr>
+							<td><?php echo $product_name; ?></td>
+							<td><?php echo jigoshop_price($sales); ?></td>
+							<?php $total_sales += $sales; ?>
+						</tr>
+					<?php endforeach; ?>
+
+			</tbody>
+			<tfoot>
+				<tr>
+					<th><?php _e('Total Sales', 'jigoshop'); ?></th>
+					<th><?php echo jigoshop_price($total_sales); ?></th>
+				</tr>
+			</tfoot>
+		</table>
+	<?php
+	}
+
+function jigoshop_pie_charts($id = '') {
+
+	if (empty($id)) return false;
+
+	$total = array_sum($this->pie_products);
+	if ($total != 0){
+	$values = array();
+	foreach ($this->pie_products as $name => $sales) $values[] = '{ label: "'.esc_attr(mb_substr($name, 0, 40)).'", data: '. (round($sales/$total, 3)*100).'}';
+
+?>
+<script type="text/javascript">
+/* <![CDATA[ */
+jQuery(function($){
+	var data = [
+		<?php echo implode(',', $values); ?>
+	];
+	$.plot($("#<?php echo $id; ?>"), data, {
+		series: {
+			pie: {
+				show: true,
+				combine: {
+					color: '#999',
+					threshold: 0.045 /* rounding up for 5% */
+				},
+				radius: 1,
+				label: {
+					show: true,
+					radius: 2/3,
+					formatter: function(label, series){
+						return '<div style="font-size:8pt;text-align:center;padding:2px;color:black;">'+Math.round(series.percent)+'%</div>';
+					}
+				}
+			}
+		},
+		legend: {
+			show: true,
+			container: $("#<?php echo $id; ?>").prev()
+		}
+	});
+});
+/* ]]> */
+</script>
+<?php
+	}
+}
+
+	function jigoshop_most_sold() {
+		global $start_date, $end_date;
+
+		$found_products = array();
+
+		if ($this->orders) :
+			foreach ($this->orders as $order) :
+				$order_items = (array) get_post_meta( $order->ID, 'order_items', true );
+				foreach ($order_items as $item) :
+					if ( !isset($item['cost']) && !isset($item['qty'])) continue;
+					$row_cost = $item['qty'];
+					$found_products[$item['id']] = isset($found_products[$item['id']]) ? $found_products[$item['id']] + $row_cost : $row_cost;
+				endforeach;
+			endforeach;
+		endif;
+
+		asort($found_products);
+		$found_products = array_reverse($found_products, true);
+//		$found_products = array_slice($found_products, 0, 25, true);
+		reset($found_products);
+
+		$this->pie_products = array();
+
+		?>
+
+		<table class="table table-condensed">
+			<?php $total_sold = 0; ?>
+			<thead>
+				<tr>
+					<th><?php _e('Product', 'jigoshop'); ?></th>
+					<th><?php _e('Quantity Sold', 'jigoshop'); ?></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php
+					foreach ($found_products as $product_id => $qty) :
+						$product = get_post($product_id);
+						$this->pie_products[$product->post_title] = $qty;
+						$product_name = !empty($product) ? '<a href="'.get_permalink($product->ID).'">'.$product->post_title.'</a>' : __('Product no longer exists', 'jigoshop'); ?>
+						<tr>
+							<td><?php echo $product_name; ?></td>
+							<td><?php echo $qty; ?></td>
+							<?php $total_sold += $qty; ?>
+						</tr>
+					<?php endforeach; ?>
+
+			</tbody>
+			<tfoot>
+				<tr>
+					<th><?php _e('Total Products Sold', 'jigoshop'); ?></th>
+					<th><?php echo $total_sold; ?></th>
+				</tr>
+			</tfoot>
+		</table>
+	<?php
+
+	}
+
+	function jigoshop_total_customers() {
+		global $wpdb, $start_date, $end_date;
+
+		$after  = date('Y-m-d', $start_date);
+		$before = date('Y-m-d', strtotime('+1 day', $end_date));
+
+		$users_query = new WP_User_Query( array(
+			'fields' => array('user_registered'),
+			'role'   => 'customer',
+		) );
+
+		$i=0;
+		$customers = $users_query->get_results();
+		foreach($customers as $k => $v)
+			if ( $v->user_registered > $after && $v->user_registered < $before ) $i++;
+
+		return $i;
+
+	}
+
+	function jigoshop_total_orders() {
+		global $start_date, $end_date;
+
+		$total_orders = $this->orders ? count($this->orders) : 0;
+
+		return $total_orders;
+	}
+
+	function jigoshop_total_sales() {
+		global $wpdb;
+
+		$row_cost = array();
+
+		if ($this->orders) :
+			foreach ($this->orders as $order) :
+				$order_data = (array) get_post_meta( $order->ID, 'order_data', true );
+				$row_cost[] = apply_filters('jigoshop_reports_order_total_cost', $order_data['order_total'], $order);
+			endforeach;
+		endif;
+
+		return jigoshop_price(array_sum($row_cost));
+
+	}
+
+	/**
+	 * Orders for range filter function
+	 */
+	function orders_within_range( $where = '' ) {
+		global $start_date, $end_date;
+
+		$after  = date('Y-m-d', $start_date);
+		$before = date('Y-m-d', strtotime('+1 day', $end_date));
+
+		$where .= " AND post_date >= '$after'";
+		$where .= " AND post_date < '$before'";
+
+		return $where;
 	}
 }

@@ -15,6 +15,8 @@
     * Improved: Nice icon for Jigoshop Emails.
     * Improved: Link to "Manage licences" page for not activated products.
     * Improved: Properly size and align product thumbnails on product list page.
+    * Improved: Jigoshop Reports page shows properly product value with taxes.
+    * Improved: Jigoshop Reports page indicates that Total Sales are with discounts, taxes and shipping included.
     * Fix: Selected values issue on checkout and edit address pages. Thanks to @ipatenco!
     * Fix: Show "Password changed" message after successful change.
     * Fix: Warning for network installations of Jigoshop.
@@ -22,6 +24,7 @@
     * Fix: "Order failed" untranslatable text is not translatable!
     * Fix: Bigger headers in Jigoshop Settings.
     * Fix: Double loading of `frontend.css` when custom theme used.
+    * Fix: Behaviour of product thumbnails.
 * 1.15.5 - 2015-02-09:
     * Improved: JavaScript action is triggered after variation is shown: `jigoshop.variation.show` on `div.single_variation`.
     * Improved: Better loading of checkout JavaScript files.

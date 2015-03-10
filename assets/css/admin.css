@@ -2437,3 +2437,10 @@ div.pages ul.pages li a:hover {
 canvas.overlay {
 	z-index: 1;
 }
+
+#report-widgets span.help {
+	font-size: 85%;
+	font-style: italic;
+	text-align: center;
+	display: block;
+}

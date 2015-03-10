@@ -267,7 +267,8 @@ if (!function_exists('jigoshop_show_product_thumbnails')) {
 	function jigoshop_show_product_thumbnails()
 	{
 		global $post;
-		echo '<div class="thumbnails">';
+		$options = \Jigoshop_Base::get_options();
+		echo '<div class="thumbnails" style="width: '.($options->get('jigoshop_product_thumbnail_columns') * (15 + $options->get('jigoshop_shop_thumbnail_w'))).'px;">';
 
 		$thumb_id = get_post_thumbnail_id();
 		$small_thumbnail_size = jigoshop_get_image_size('shop_thumbnail');
