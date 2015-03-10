@@ -194,3 +194,12 @@ function jigoshop_product_cat_column($columns, $column, $id)
 	return $columns;
 
 }
+
+/**
+ * Gets a product category field.
+ * Returns all the fields (as strings) if the field is not specified.
+ * Returns FALSE if the category or the field cannot be found.
+ */
+function jigoshop_get_category_field_for_product( $category_id, $field_id = '' ) {
+	return maybe_unserialize( get_metadata( 'jigoshop_term', $category_id, $field_id, true ) );
+}
