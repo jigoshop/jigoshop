@@ -17,6 +17,7 @@
     * Improved: Properly size and align product thumbnails on product list page.
     * Improved: Jigoshop Reports page shows properly product value with taxes.
     * Improved: Jigoshop Reports page indicates that Total Sales are with discounts, taxes and shipping included.
+    * Improved: Jigoshop images were optimized. Thanks to @Dade88 (#1036)
     * Fix: Selected values issue on checkout and edit address pages. Thanks to @ipatenco!
     * Fix: Show "Password changed" message after successful change.
     * Fix: Warning for network installations of Jigoshop.
