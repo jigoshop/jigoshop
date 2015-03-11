@@ -410,7 +410,7 @@ class jigoshop_dashboard {
 					<li><a href="https://www.jigoshop.com/product-category/themes/"><?php _e('Themes', 'jigoshop'); ?></a> &ndash; <?php _e('Extend Jigoshop with themes.', 'jigoshop'); ?></li>
 					<li><a href="http://twitter.com/#!/jigoshop"><?php _e('@Jigoshop', 'jigoshop'); ?></a> &ndash; <?php _e('Follow us on Twitter.', 'jigoshop'); ?></li>
 					<li><a href="https://github.com/jigoshop/jigoshop"><?php _e('Jigoshop on Github', 'jigoshop'); ?></a> &ndash; <?php _e('Help extend Jigoshop.', 'jigoshop'); ?></li>
-					<li><a href="http://wordpress.org/plugins/jigoshop/"><?php _e('Jigoshop on WordPress.org', 'jigoshop'); ?></a> &ndash; <?php _e('Leave us a rating!', 'jigoshop'); ?></li>
+					<li><a href="https://wordpress.org/plugins/jigoshop/"><?php _e('Jigoshop on WordPress.org', 'jigoshop'); ?></a> &ndash; <?php _e('Leave us a rating!', 'jigoshop'); ?></li>
 				</ul>
 			</div>
 			<div class="social">
