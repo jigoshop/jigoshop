@@ -1,6 +1,6 @@
 ## Changelog
 
-* 1.16:
+* 1.16 - 2015-03-16:
     * New: Completely new default HTML emails.
     * New: "Waiting for payment" transaction status for Cash on Delivery, Bank Transfer and Cheque payments.
     * New: More actions for emails - now available all actions for both customers and admins.
