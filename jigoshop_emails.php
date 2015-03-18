@@ -495,5 +495,5 @@ function jigoshop_install_emails()
 		}
 	}
 
-	\Jigoshop_Base::get_options()->set('jigoshop_emails_html', 'yes');
+	\Jigoshop_Base::get_options()->set('jigoshop_enable_html_emails', 'yes');
 }

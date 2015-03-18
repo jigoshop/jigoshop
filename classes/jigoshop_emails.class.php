@@ -73,20 +73,20 @@ class jigoshop_emails extends Jigoshop_Base
 
 				$footer .= sprintf(_x('Powered by <a href="%s">Jigoshop</a> - an e-Commerce plugin built on WordPress', 'emails', 'jigoshop'), 'https://www.jigoshop.com');
 
-				$path = locate_template(array('jigoshop/emails/layout.html'));
-				if (empty($path)) {
-					$path = JIGOSHOP_DIR.'/templates/emails/layout.html';
-				}
+				if (Jigoshop_Base::get_options()->get('jigoshop_enable_html_emails', 'no') == 'no') {
+					$template = nl2br(wptexturize($content));
+				} else {
+					$path = locate_template(array('jigoshop/emails/layout.html'));
+					if (empty($path)) {
+						$path = JIGOSHOP_DIR.'/templates/emails/layout.html';
+					}
 
-				if (Jigoshop_Base::get_options()->get('jigoshop_emails_html', 'no') == 'no') {
-					$content = nl2br(wptexturize($content));
+					$title = str_replace('['.get_bloginfo('name').'] ', '', $post->post_title);
+					$template = file_get_contents($path);
+					$template = str_replace('{heading}', $title, $template);
+					$template = str_replace('{content}', $content, $template);
+					$template = str_replace('{footer}', apply_filters('jigoshop_email_footer', $footer), $template);
 				}
-
-				$template = file_get_contents($path);
-				$title = str_replace('['.get_bloginfo('name').'] ', '', $post->post_title);
-				$template = str_replace('{heading}', $title, $template);
-				$template = str_replace('{content}', $content, $template);
-				$template = str_replace('{footer}', apply_filters('jigoshop_email_footer', $footer), $template);
 
 				wp_mail($to, $post->post_title, $template, $headers);
 			}
