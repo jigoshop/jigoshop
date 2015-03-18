@@ -40,6 +40,9 @@ function jigoshop_upgrade()
 	if ($jigoshop_db_version < 1503040) {
 		jigoshop_upgrade_1_16_0();
 	}
+	if ($jigoshop_db_version < 1503180) {
+		jigoshop_upgrade_1_16_1();
+	}
 	// Update the db option
 	update_site_option('jigoshop_db_version', JIGOSHOP_DB_VERSION);
 }
@@ -110,4 +113,14 @@ function jigoshop_upgrade_1_13_3()
 function jigoshop_upgrade_1_16_0()
 {
 	wp_insert_term('waiting-for-payment', 'shop_order_status');
+}
+
+function jigoshop_upgrade_1_16_1()
+{
+	$options = Jigoshop_Base::get_options();
+	$options->add('jigoshop_enable_html_emails', 'no');
+	$options->update_options();
+
+	// Remove unnecessary Shop Cache experiment
+	@unlink(JIGOSHOP_DIR.'/jigoshop-shop-cache.php');
 }

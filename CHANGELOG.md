@@ -1,6 +1,7 @@
 ## Changelog
 
 * 1.16.1:
+    * Improved: Ability to enable/disable HTML emails.
     * Fixed: Improper items formatting in new HTML emails.
 * 1.16 - 2015-03-16:
     * New: Completely new default HTML emails.

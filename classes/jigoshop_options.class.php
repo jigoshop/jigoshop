@@ -486,16 +486,16 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 				),
 			),
 			array(
-			'name' => __('Use custom product category order', 'jigoshop'),
-			'desc' => '',
-			'tip' => __('This option allows to make custom product category order, by drag and drop method.', 'jigoshop'),
-			'id' => 'jigoshop_enable_draggable_categories',
-			'type' => 'checkbox',
-			'choices' => array(
-				'no' => __('No', 'jigoshop'),
-				'yes' => __('Yes', 'jigoshop'),
+				'name' => __('Use custom product category order', 'jigoshop'),
+				'desc' => '',
+				'tip' => __('This option allows to make custom product category order, by drag and drop method.', 'jigoshop'),
+				'id' => 'jigoshop_enable_draggable_categories',
+				'type' => 'checkbox',
+				'choices' => array(
+					'no' => __('No', 'jigoshop'),
+					'yes' => __('Yes', 'jigoshop'),
+				),
 			),
-		),
 			array('name' => __('Jigoshop messages', 'jigoshop'), 'type' => 'title', 'desc' => ''),
 			array(
 				'name' => __('Message disappear time', 'jigoshop'),
@@ -530,6 +530,17 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 				'tip' => __('The email footer used in all jigoshop emails.', 'jigoshop'),
 				'id' => 'jigoshop_email_footer',
 				'type' => 'textarea',
+			),
+			array(
+				'name' => __('Use HTML emails', 'jigoshop'),
+				'desc' => '',
+				'tip' => __('This option enables HTML email templates.', 'jigoshop'),
+				'id' => 'jigoshop_enable_html_emails',
+				'type' => 'checkbox',
+				'choices' => array(
+					'no' => __('No', 'jigoshop'),
+					'yes' => __('Yes', 'jigoshop'),
+				),
 			),
 			array(
 				'name' => __('Generate default emails', 'jigoshop'),

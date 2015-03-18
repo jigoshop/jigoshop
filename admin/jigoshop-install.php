@@ -150,6 +150,7 @@ function jigoshop_populate_options(){
 		'jigoshop_default_gateway' => 'cheque',
 		'jigoshop_error_disappear_time' => 8000,
 		'jigoshop_message_disappear_time' => 4000,
+		'jigoshop_enable_html_emails' => 'yes',
 	);
 
 	$options = Jigoshop_Base::get_options();
