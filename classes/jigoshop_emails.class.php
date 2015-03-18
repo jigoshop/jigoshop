@@ -67,21 +67,26 @@ class jigoshop_emails extends Jigoshop_Base
 				$content = $post->post_content;
 				$footer = $options->get('jigoshop_email_footer');
 
-				if (!empty($footer)) {
-					$footer .= '<br/>';
-				}
-
-				$footer .= sprintf(_x('Powered by <a href="%s">Jigoshop</a> - an e-Commerce plugin built on WordPress', 'emails', 'jigoshop'), 'https://www.jigoshop.com');
-
 				if (Jigoshop_Base::get_options()->get('jigoshop_enable_html_emails', 'no') == 'no') {
 					$template = nl2br(wptexturize($content));
+
+					if (!empty($footer)) {
+						$template .= '<br/><br/>'.$footer;
+					}
 				} else {
 					$path = locate_template(array('jigoshop/emails/layout.html'));
 					if (empty($path)) {
 						$path = JIGOSHOP_DIR.'/templates/emails/layout.html';
 					}
 
+
+					if (!empty($footer)) {
+						$footer .= '<br/>';
+					}
+
+					$footer .= sprintf(_x('Powered by <a href="%s">Jigoshop</a> - an e-Commerce plugin built on WordPress', 'emails', 'jigoshop'), 'https://www.jigoshop.com');
 					$title = str_replace('['.get_bloginfo('name').'] ', '', $post->post_title);
+
 					$template = file_get_contents($path);
 					$template = str_replace('{heading}', $title, $template);
 					$template = str_replace('{content}', $content, $template);
