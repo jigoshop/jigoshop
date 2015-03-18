@@ -95,7 +95,8 @@ function get_order_email_arguments($order_id)
 		'shop_phone' => $options->get('jigoshop_company_phone'),
 		'shop_email' => $options->get('jigoshop_company_email'),
 		'customer_note' => $order->customer_note,
-		'order_items' => jigoshop_get_order_items_list($order, $can_show_links, true, $inc_tax),//$order->email_order_items_list($can_show_links, true, $inc_tax),
+		'order_items_table' => jigoshop_get_order_items_table($order, $can_show_links, true, $inc_tax),
+		'order_items' => $order->email_order_items_list($can_show_links, true, $inc_tax),
 		'order_taxes' => jigoshop_get_order_taxes_list($order),
 		'subtotal' => $order->get_subtotal_to_display(),
 		'shipping' => $order->get_shipping_to_display(),
@@ -162,6 +163,7 @@ function get_order_email_arguments_description()
 		'shop_phone' => __('Shop_Phone', 'jigoshop'),
 		'shop_email' => __('Shop Email', 'jigoshop'),
 		'customer_note' => __('Customer Note', 'jigoshop'),
+		'order_items_table' => __('HTML table with ordered items', 'jigoshop'),
 		'order_items' => __('Ordered Items', 'jigoshop'),
 		'order_taxes' => __('Taxes of the order', 'jigoshop'),
 		'subtotal' => __('Subtotal', 'jigoshop'),
@@ -257,7 +259,7 @@ function jigoshop_send_customer_invoice($order_id)
  * @param bool $includes_tax
  * @return string
  */
-function jigoshop_get_order_items_list($order, $show_links = false, $show_sku = false, $includes_tax = false)
+function jigoshop_get_order_items_table($order, $show_links = false, $show_sku = false, $includes_tax = false)
 {
 	if (\Jigoshop_Base::get_options()->get('jigoshop_emails_html', 'no') == 'no') {
 		return $order->email_order_items_list($show_links, $show_sku, $includes_tax);
@@ -290,15 +292,18 @@ function jigoshop_get_order_items_list($order, $show_links = false, $show_sku = 
  */
 function jigoshop_get_order_taxes_list($order)
 {
-	$path = locate_template(array('jigoshop/emails/taxes.php'));
-	if (empty($path)) {
-		$path = JIGOSHOP_DIR.'/templates/emails/taxes.php';
+	$taxes = '';
+
+	foreach ($order->get_tax_classes() as $tax_class) {
+		$taxes .= sprintf(
+			_x('%s (%s%%): %.4f', 'emails', 'jigoshop'),
+			$order->get_tax_class_for_display($tax_class),
+			$order->get_tax_rate($tax_class),
+			$order->get_tax_amount($tax_class)
+		).PHP_EOL;
 	}
 
-	ob_start();
-	include($path);
-
-	return ob_get_clean();
+	return $taxes;
 }
 
 add_action('jigoshop_install_emails', 'jigoshop_install_emails');
@@ -342,33 +347,7 @@ function jigoshop_install_emails()
 		[/is_bank_transfer]
 		[/is_cheque]
 		<h4>'._x('Order [order_number] on [order_date]', 'emails', 'jigoshop').'</h4>
-		<table class="cart" cellpadding="0" cellspacing="0">
-			<thead>
-				<tr>
-					<th>'._x('Product', 'emails', 'jigoshop').'</th>
-					<th>'._x('Quantity', 'emails', 'jigoshop').'</th>
-					<th>'._x('Price', 'emails', 'jigoshop').'</th>
-				</tr>
-			</thead>
-			<tbody>
-				[order_items]
-			</tbody>
-			<tfoot>
-				<tr>
-					<td colspan="2"><strong>'._x('Subtotal', 'emails', 'jigoshop').'</strong></td>
-					<td>[subtotal]</td>
-				</tr>
-				<tr>
-					<td colspan="2"><strong>'._x('Shipping via [shipping_method]', 'emails', 'jigoshop').'</strong></td>
-					<td>[shipping_cost]</td>
-				</tr>
-				[order_taxes]
-				<tr>
-					<td colspan="2"><strong>'._x('Grand total', 'emails', 'jigoshop').'</strong></td>
-					<td>[total]</td>
-				</tr>
-			</tfoot>
-		</table>
+		[order_items_table]
 		<h4>'._x('Customer details', 'emails', 'jigoshop').'</h4>
 		<p>'._x('Email:', 'emails', 'jigoshop').' <a href="mailto:[billing_email]">[billing_email]</a></p>
 		<p>'._x('Phone:', 'emails', 'jigoshop').' [billing_phone]</p>

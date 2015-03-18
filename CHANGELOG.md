@@ -2,6 +2,7 @@
 
 * 1.16.1:
     * Improved: Ability to enable/disable HTML emails.
+    * Improved: `[order_items_table]` code for HTML order items table. Used by default now.
     * Fixed: Improper items formatting in new HTML emails.
 * 1.16 - 2015-03-16:
     * New: Completely new default HTML emails.
