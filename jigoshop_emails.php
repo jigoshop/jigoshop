@@ -265,7 +265,7 @@ function jigoshop_get_order_items_list($order, $show_links = false, $show_sku = 
 
 	$use_inc_tax = $includes_tax;
 	if ($use_inc_tax) {
-		foreach ($this->items as $item) {
+		foreach ($order->items as $item) {
 			$use_inc_tax = ($item['cost_inc_tax'] >= 0);
 			if (!$use_inc_tax) {
 				break;

@@ -1,5 +1,7 @@
 ## Changelog
 
+* 1.16.1:
+    * Fixed: Improper items formatting in new HTML emails.
 * 1.16 - 2015-03-16:
     * New: Completely new default HTML emails.
     * New: "Waiting for payment" transaction status for Cash on Delivery, Bank Transfer and Cheque payments.
