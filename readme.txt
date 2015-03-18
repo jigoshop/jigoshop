@@ -5,7 +5,7 @@ Tags: 2checkout, 2co, affiliate, authorize, cart, checkout, commerce, coupons, e
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=finance%40jigoshop%2ecom&lc=US&item_name=Jigoshop%20%2d%20Wordpress%2eorg%20donation%20link&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
 Requires at least: 3.8
 Tested up to: 4.1.1
-Stable tag: 1.16
+Stable tag: 1.16.1
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -123,6 +123,11 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 4. Standard customer checkout screen
 
 == Changelog ==
+
+= 1.16.1 - 2015-03-18 =
+* Improved: Ability to enable/disable HTML emails.
+* Improved: `[order_items_table]` code for HTML order items table. Used by default now.
+* Fixed: Improper items formatting in new HTML emails.
 
 = 1.16 - 2015-03-16 =
 * New: Completely new default HTML emails.
