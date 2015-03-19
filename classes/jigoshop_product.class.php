@@ -984,17 +984,20 @@ class jigoshop_product extends Jigoshop_Base
 
 			$array = array();
 			$onsale = false;
+			$childInStock = false;
 			foreach ($children as $child_ID) {
 				$child = $this->get_child($child_ID);
 
-				// Only get prices that are in stock
-				if ($child->is_in_stock()) {
+				$inStock = $child->is_in_stock();
+				$childInStock |= $inStock;
+				if ($inStock) {
 					if ($child->is_on_sale()) {
 						$onsale = true;
-					} // signal at least one child is on sale
-					// store product id for later, get regular or sale price if available
-					if ($child->get_price() != null) {
-						$array[$child_ID] = $child->get_price();
+					}
+
+					$price = $child->get_price();
+					if ($price != null) {
+						$array[$child_ID] = $price;
 					}
 				}
 			}
@@ -1005,31 +1008,38 @@ class jigoshop_product extends Jigoshop_Base
 			if (count($array) >= 2 && reset($array) != end($array)) {
 				$sameprice = false;
 			}
-			if (!$sameprice) :
-				$html = '<span class="from">'._x('From:', 'price', 'jigoshop').'</span> ';
-				reset($array);
-				$id = key($array);
-				$child = $this->get_child($id);
-				if ($child->is_on_sale()) {
-					$html .= $child->get_calculated_sale_price_html();
-				} else {
-					$html .= jigoshop_price($child->get_price());
-				}
-			elseif ($onsale) : // prices may be the same, but we could be on sale and need the 'From'
-				$html = '<span class="from">'._x('From:', 'price', 'jigoshop').'</span> ';
-				reset($array);
-				$id = key($array);
-				$child = $this->get_child($id);
-				if ($child->is_on_sale()) {
-					$html .= $child->get_calculated_sale_price_html();
-				} else {
-					$html .= jigoshop_price($child->get_price());
-				}
-			else :  // prices are the same
-				$html = jigoshop_price(reset($array));
-			endif;
 
-			$html = empty($array) ? __('Price Not Announced', 'jigoshop') : $html;
+			if (!$sameprice) {
+				$html = '<span class="from">'._x('From:', 'price', 'jigoshop').'</span> ';
+				reset($array);
+				$id = key($array);
+				$child = $this->get_child($id);
+				if ($child->is_on_sale()) {
+					$html .= $child->get_calculated_sale_price_html();
+				} else {
+					$html .= jigoshop_price($child->get_price());
+				}
+			} elseif ($onsale) { // prices may be the same, but we could be on sale and need the 'From'
+				$html = '<span class="from">'._x('From:', 'price', 'jigoshop').'</span> ';
+				reset($array);
+				$id = key($array);
+				$child = $this->get_child($id);
+				if ($child->is_on_sale()) {
+					$html .= $child->get_calculated_sale_price_html();
+				} else {
+					$html .= jigoshop_price($child->get_price());
+				}
+			} else {  // prices are the same
+				$html = jigoshop_price(reset($array));
+			}
+
+			if (empty($array)) {
+				if (!$childInStock) {
+					$html = __('Out of stock', 'jigoshop');
+				} else {
+					$html = __('Price Not Announced', 'jigoshop');
+				}
+			}
 
 			return apply_filters('jigoshop_product_get_price_html', $html, $this, $this->regular_price);
 		}
