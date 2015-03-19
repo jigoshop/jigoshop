@@ -662,6 +662,15 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 					}
 				}
 
+				if (!isset($_POST['submit_action']) || $_POST['submit_action'] != 'place_order') {
+					$result = jigoshop::redirect(jigoshop_get_page_id(JIGOSHOP_CHECKOUT));
+
+					return array(
+						'result' => 'redirect',
+						'redirect' => $result,
+					);
+				}
+
 				// Order meta data
 				$data = array();
 				$applied_coupons = array_map(function($coupon){

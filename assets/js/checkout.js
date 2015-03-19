@@ -167,7 +167,7 @@ jQuery(function($) {
 	$('input[name=payment_method]:checked').click();
 
 	// handle selections from items requiring an update of totals
-	$(document.body).on('change', '#shipping_method, #coupon_code, #billing_country, #billing_state, #billing_postcode, #shipping_country, #shipping_state, #shipping_postcode, #shiptobilling', function(){
+	$(document.body).on('change', '#shipping_method, #billing_country, #billing_state, #billing_postcode, #shipping_country, #shipping_state, #shipping_postcode, #shiptobilling', function(){
 		clearTimeout(updateTimer);
 		update_checkout();
 		validate_required();
@@ -237,11 +237,27 @@ jQuery(function($) {
 		}).change();
 	}
 
+
+	$('form.checkout').on('click', 'input[type=submit]', function(event){
+		var $current = $(event.target);
+		$('input[type=submit]', $current.closest('form.checkout')).removeAttr('data-clicked');
+		$current.attr('data-clicked', 'true');
+	});
+
 	// AJAX Form Submission from 'Place Order' button
 	$('form.checkout').submit(function(){
 		validate_required();
 		var $form = $(this);
 
+		var $action = $('input[name=submit_action]', $form);
+		if ($action.length === 0){
+			$action = $(document.createElement('input'))
+				.attr('name', 'submit_action')
+				.attr('type', 'hidden');
+			$form.append($action);
+		}
+
+		$action.val($('input[type=submit][data-clicked=true]').attr('name'));
 		$form.block({
 			message: null,
 			overlayCSS: {

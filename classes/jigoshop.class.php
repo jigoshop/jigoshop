@@ -270,7 +270,6 @@ class jigoshop extends Jigoshop_Singleton
 	/**
 	 * Redirection hook which stores messages into session data
 	 *
-	 * @deprecated do we actually use this anywhere?
 	 * @param $location
 	 * @param $status
 	 * @return string Location
