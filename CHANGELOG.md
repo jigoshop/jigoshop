@@ -1,5 +1,8 @@
 ## Changelog
 
+* 1.16.2:
+    * Improved: Ability to set handling fee for Local Pickup.
+    * Improved: Reformatted and checked Free Shipping and Local Pickup shipping methods.
 * 1.16.1 - 2015-03-18:
     * Improved: Ability to enable/disable HTML emails.
     * Improved: `[order_items_table]` code for HTML order items table. Used by default now.

@@ -13,14 +13,11 @@
  * @license             GNU General Public License v3
  */
 
-function add_flat_rate_method($methods)
-{
+add_filter('jigoshop_shipping_methods', function($methods){
 	$methods[] = 'flat_rate';
 
 	return $methods;
-}
-
-add_filter('jigoshop_shipping_methods', 'add_flat_rate_method', 10);
+}, 10);
 
 class flat_rate extends jigoshop_shipping_method
 {
@@ -43,6 +40,7 @@ class flat_rate extends jigoshop_shipping_method
 
 	public function calculate_shipping()
 	{
+		/** @var \jigoshop_tax $_tax */
 		$_tax = $this->get_tax();
 		$this->shipping_total = 0;
 		$this->shipping_tax = 0;
@@ -90,7 +88,11 @@ class flat_rate extends jigoshop_shipping_method
 	protected function get_default_options()
 	{
 		return array(
-			array('name' => __('Flat Rates', 'jigoshop'), 'type' => 'title', 'desc' => __('Flat rates let you define a standard rate per item, or per order.', 'jigoshop')),
+			array(
+				'name' => __('Flat Rates', 'jigoshop'),
+				'type' => 'title',
+				'desc' => __('Flat rates let you define a standard rate per item, or per order.', 'jigoshop')
+			),
 			array(
 				'name' => __('Enable Flat Rate', 'jigoshop'),
 				'desc' => '',
