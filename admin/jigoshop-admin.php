@@ -170,6 +170,7 @@ function jigoshop_system_info() {
 	OpCache:                  <?php echo (ini_get('opcache.enable') == '1' ? 'Enabled' : 'Disabled'); echo PHP_EOL; ?>
 
 	PHP Memory Limit:         <?php echo ini_get('memory_limit') . "\n"; ?>
+	PHP Execution Time:       <?php echo ini_get('max_execution_time') . "\n"; ?>
 	PHP Post Max Size:        <?php if(function_exists('phpversion')) echo (jigoshop_let_to_num(ini_get('post_max_size'))/(1024*1024))."MB"; ?><?php echo "\n"; ?>
 	PHP Upload Max File Size: <?php if(function_exists('phpversion')) echo (jigoshop_let_to_num(ini_get('upload_max_filesize'))/(1024*1024))."MB"; ?><?php echo "\n"; ?>
 	PHP Max Input Time:       <?php echo ini_get('max_input_time'); ?><?php echo "\n"; ?>
