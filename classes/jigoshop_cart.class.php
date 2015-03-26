@@ -68,9 +68,13 @@ class jigoshop_cart extends Jigoshop_Singleton
 
 		// Loop through each product in the cart
 		if (!empty(self::$cart_contents)) {
-			foreach (self::$cart_contents as $values) {
+			foreach (self::$cart_contents as $key => $values) {
 				/** @var jigoshop_product $_product */
 				$_product = $values['data'];
+				if (!($_product instanceof jigoshop_product)) {
+					unset(self::$cart_contents[$key]);
+					continue;
+				}
 
 				self::$cart_contents_count += $values['quantity'];
 

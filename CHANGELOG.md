@@ -5,6 +5,7 @@
     * Improved: Reformatted and checked Free Shipping and Local Pickup shipping methods.
     * Improved: Display "Out of stock" for variable products without any available variation.
     * Improved: PHP Execution Time in System Info page.
+    * Improved: Cart items check before displaying.
     * Fixed: "Apply coupon" button in checkout no longer places the order.
 * 1.16.1 - 2015-03-18:
     * Improved: Ability to enable/disable HTML emails.
