@@ -20,7 +20,7 @@
  * Description:         Jigoshop, a WordPress eCommerce plugin that works.
  * Author:              Jigoshop
  * Author URI:          http://www.jigoshop.com
- * Version:             1.16.2
+ * Version:             1.17
  * Requires at least:   3.8
  * Tested up to:        4.1.1
  * Text Domain:         jigoshop
@@ -38,7 +38,7 @@
  */
 
 if (!defined('JIGOSHOP_VERSION')) {
-	define('JIGOSHOP_VERSION', '1.16.2');
+	define('JIGOSHOP_VERSION', '1.17');
 }
 if (!defined('JIGOSHOP_DB_VERSION')) {
 	define('JIGOSHOP_DB_VERSION', 1503180);
@@ -850,18 +850,36 @@ function jigoshop_admin_scripts()
 		if($current_screen->base == 'edit-tags' && Jigoshop_Base::get_options()->get('jigoshop_enable_draggable_categories') == 'yes') {
 			jigoshop_add_script('jigoshop_draggable_categories', JIGOSHOP_URL.'/assets/js/draggable_categories.js', array('jquery'), array('version' => '1.0'));
 		}
-		jigoshop_add_script('jquery_flot', JIGOSHOP_URL.'/assets/js/jquery.flot.min.js', array('jquery'), array(
-				'version' => '1.0',
+		jigoshop_add_script('jquery_flot', JIGOSHOP_URL.'/assets/js/admin/jquery.flot.min.js', array('jquery'), array(
+				'version' => '2.4.0-dev',
 				'page' => array('jigoshop_page_jigoshop_reports', 'toplevel_page_jigoshop')
 			)
 		);
-		jigoshop_add_script('jquery_flot_pie', JIGOSHOP_URL.'/assets/js/jquery.flot.pie.min.js', array('jquery'), array(
-				'version' => '1.0',
+		jigoshop_add_script('jquery_flot_pie', JIGOSHOP_URL.'/assets/js/admin/jquery.flot.pie.min.js', array('jquery'), array(
+				'version' => '2.4.0-dev',
 				'page' => array('jigoshop_page_jigoshop_reports', 'toplevel_page_jigoshop')
 			)
 		);
-
-
+		jigoshop_add_script('jquery_flot_resize', JIGOSHOP_URL.'/assets/js/admin/jquery.flot.resize.min.js', array('jquery'), array(
+				'version' => '2.4.0-dev',
+				'page' => array('jigoshop_page_jigoshop_reports', 'toplevel_page_jigoshop')
+			)
+		);
+		jigoshop_add_script('jquery_flot_stack', JIGOSHOP_URL.'/assets/js/admin/jquery.flot.stack.min.js', array('jquery'), array(
+				'version' => '2.4.0-dev',
+				'page' => array('jigoshop_page_jigoshop_reports', 'toplevel_page_jigoshop')
+			)
+		);
+		jigoshop_add_script('jquery_flot_time', JIGOSHOP_URL.'/assets/js/admin/jquery.flot.time.min.js', array('jquery'), array(
+				'version' => '2.4.0-dev',
+				'page' => array('jigoshop_page_jigoshop_reports', 'toplevel_page_jigoshop')
+			)
+		);
+		jigoshop_add_script('jigoshop_reports', JIGOSHOP_URL.'/assets/js/admin/reports.js', array('jquery'), array(
+				'version' => '1.17',
+				'page' => array('jigoshop_page_jigoshop_reports', 'toplevel_page_jigoshop')
+			)
+		);
 
 		/**
 		 * Disable autosaves on the order and coupon pages. Prevents the javascript alert when modifying.
@@ -1527,6 +1545,11 @@ function jigowatt_clean($var)
 {
 	return strip_tags(stripslashes(trim($var)));
 }
+
+//function jigowatt_clean($var)
+//{
+//	return jigoshop_clean($var);
+//}
 
 // Returns a float value
 function jigoshop_sanitize_num($var)

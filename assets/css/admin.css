@@ -2444,3 +2444,121 @@ canvas.overlay {
 	text-align: center;
 	display: block;
 }
+
+/* Report charts */
+.jigoshop-reports-wide .postbox h3.stats_range ul::after, .jigoshop-reports-wide .postbox h3.stats_range ul::before, .jigoshop-reports-wrap .postbox h3.stats_range ul::after, .jigoshop-reports-wrap .postbox h3.stats_range ul::before {
+	content: " ";
+	display: table;
+}
+.jigoshop-reports-wide .postbox h3.stats_range ul::after, .jigoshop-reports-wrap .postbox h3.stats_range ul::after {
+	clear: both;
+}
+.jigoshop-reports-wide .postbox h3.stats_range ul::after, .jigoshop-reports-wide .postbox h3.stats_range ul::before, .jigoshop-reports-wrap .postbox h3.stats_range ul::after, .jigoshop-reports-wrap .postbox h3.stats_range ul::before {
+	content: " ";
+	display: table;
+}
+.jigoshop-reports-wide .postbox h3.stats_range ul, .jigoshop-reports-wrap .postbox h3.stats_range ul {
+	background: none repeat scroll 0 0 #f5f5f5;
+	list-style: outside none none;
+	margin: 0;
+	padding: 0;
+}
+.jigoshop-reports-wide .postbox h3.stats_range ul li, .jigoshop-reports-wrap .postbox h3.stats_range ul li {
+	float: left;
+	line-height: 26px;
+	margin: 0;
+	padding: 0;
+}
+.jigoshop-reports-wide .postbox h3.stats_range ul li a, .jigoshop-reports-wrap .postbox h3.stats_range ul li a {
+	border-right: 1px solid #dfdfdf;
+	display: block;
+	padding: 10px;
+	text-decoration: none;
+}
+.jigoshop-reports-wide .postbox h3.stats_range ul li.active, .jigoshop-reports-wrap .postbox h3.stats_range ul li.active {
+	background: none repeat scroll 0 0 #fff;
+	box-shadow: 0 4px 0 0 #fff;
+}
+.jigoshop-reports-wide .postbox h3.stats_range ul li.active a, .jigoshop-reports-wrap .postbox h3.stats_range ul li.active a {
+	color: #777;
+}
+.jigoshop-reports-wide .postbox .chart-legend li:hover, .jigoshop-reports-wrap .postbox .chart-legend li:hover {
+	border-right: 5px solid #98c242 !important;
+	box-shadow: 0 -1px 0 0 #dfdfdf inset, 300px 0 0 rgba(156, 93, 144, 0.1) inset;
+	color: #98c242;
+	padding-left: 1.5em;
+}
+.jigoshop-reports-wide .postbox h3.stats_range ul li.custom, .jigoshop-reports-wrap .postbox h3.stats_range ul li.custom {
+	padding: 9px 10px;
+	vertical-align: middle;
+}
+.jigoshop-reports-wide .postbox h3.stats_range ul li.custom div input.range_datepicker, .jigoshop-reports-wide .postbox h3.stats_range ul li.custom form input.range_datepicker, .jigoshop-reports-wrap .postbox h3.stats_range ul li.custom div input.range_datepicker, .jigoshop-reports-wrap .postbox h3.stats_range ul li.custom form input.range_datepicker {
+	background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+	border: 0 none;
+	box-shadow: none;
+	color: #777;
+	margin: 0 10px 0 0;
+	padding: 0;
+	text-align: center;
+}
+.jigoshop-reports-wide .postbox .chart-legend li strong, .jigoshop-reports-wrap .postbox .chart-legend li strong {
+	color: #464646;
+	display: block;
+	font-family: HelveticaNeue-Light,"Helvetica Neue Light","Helvetica Neue",sans-serif;
+	font-size: 1.618em;
+	font-weight: 400;
+	line-height: 1.2em;
+}
+.jigoshop-reports-wide .postbox h3.stats_range ul li.custom div, .jigoshop-reports-wide .postbox h3.stats_range ul li.custom form, .jigoshop-reports-wrap .postbox h3.stats_range ul li.custom div, .jigoshop-reports-wrap .postbox h3.stats_range ul li.custom form {
+	display: inline;
+	margin: 0;
+}
+.jigoshop-reports-wide .postbox h3.stats_range .export_csv, .jigoshop-reports-wrap .postbox h3.stats_range .export_csv {
+	border-left: 1px solid #dfdfdf;
+	display: block;
+	float: right;
+	line-height: 26px;
+	padding: 10px;
+	text-decoration: none;
+}
+.jigoshop-reports-wide .postbox .chart-with-sidebar .chart-sidebar, .jigoshop-reports-wrap .postbox .chart-with-sidebar .chart-sidebar {
+	float: left;
+	margin-left: -237px;
+	width: 225px;
+}
+.jigoshop-reports-wide .postbox .chart-legend, .jigoshop-reports-wrap .postbox .chart-legend {
+	-moz-border-bottom-colors: none;
+	-moz-border-left-colors: none;
+	-moz-border-right-colors: none;
+	-moz-border-top-colors: none;
+	background: none repeat scroll 0 0 #fff;
+	border-color: #dfdfdf;
+	border-image: none;
+	border-style: solid;
+	border-width: 1px 0 0 1px;
+	list-style: outside none none;
+	margin: 0 0 1em;
+	padding: 0;
+}
+.jigoshop-reports-wide .postbox .chart-legend li, .jigoshop-reports-wrap .postbox .chart-legend li {
+	border-right: 5px solid #aaa;
+	box-shadow: 0 -1px 0 0 #dfdfdf inset;
+	color: #aaa;
+	display: block;
+	margin: 0;
+	padding: 1em;
+}
+.tips {
+	cursor: help;
+	text-decoration: none;
+}
+.jigoshop-reports-wide .postbox .chart-with-sidebar, .jigoshop-reports-wrap .postbox .chart-with-sidebar {
+	margin: 0 !important;
+	padding: 12px 12px 12px 249px;
+}
+.jigoshop-reports-wide .postbox .chart-placeholder, .jigoshop-reports-wrap .postbox .chart-placeholder {
+	height: 650px;
+	overflow: hidden;
+	position: relative;
+	width: 100%;
+}

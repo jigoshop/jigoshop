@@ -54,3 +54,42 @@ function jigoshop_add_required_version_notice($source, $version)
 
 	return false;
 }
+
+/**
+ * Format decimal numbers according to current settings.
+ *
+ * @param  float|string $number Expects either a float or a string with a decimal separator only (no thousands)
+ * @param  mixed $dp number of decimal points to use, blank to use configured decimals or false to avoid all rounding.
+ * @param  boolean $trim_zeros from end of string
+ * @return string
+ */
+function jigoshop_format_decimal($number, $dp = false, $trim_zeros = false)
+{
+	$locale = localeconv();
+	$options = Jigoshop_Base::get_options();
+	$decimals = array(
+		$options->get('jigoshop_price_decimal_sep'),
+		$locale['decimal_point'],
+		$locale['mon_decimal_point']
+	);
+
+	// Remove locale from string
+	if (!is_float($number)) {
+		$number = jigowatt_clean(str_replace($decimals, '.', $number));
+	}
+
+	if ($dp !== false) {
+		$dp = intval($dp == "" ? $options->get('jigoshop_price_num_decimals') : $dp);
+		$number = number_format(floatval($number), $dp, '.', '');
+
+		// DP is false - don't use number format, just return a string in our format
+	} elseif (is_float($number)) {
+		$number = jigowatt_clean(str_replace($decimals, '.', strval($number)));
+	}
+
+	if ($trim_zeros && strstr($number, '.')) {
+		$number = rtrim(rtrim($number, '0'), '.');
+	}
+
+	return $number;
+}

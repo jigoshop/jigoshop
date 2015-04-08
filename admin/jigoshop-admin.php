@@ -101,7 +101,7 @@ function jigoshop_after_admin_menu()
 function jigoshop_reports()
 {
 	require_once('jigoshop-admin-reports.php');
-	new Jigoshop_reports();
+	Jigoshop_Admin_Reports::output();
 }
 
 function jigoshop_dashboard()

@@ -1,6 +1,7 @@
 ## Changelog
 
-* 1.16.2:
+* 1.17:
+    * New: Improved Reports page.
     * Improved: Ability to set handling fee for Local Pickup.
     * Improved: Reformatted and checked Free Shipping and Local Pickup shipping methods.
     * Improved: Display "Out of stock" for variable products without any available variation.
