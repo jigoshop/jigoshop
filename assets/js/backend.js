@@ -31,6 +31,14 @@ jQuery(function($){
 		'fadeOut': 50,
 		'delay': 200
 	});
+	// Regular select boxes
+	$(':input.jigoshop-enhanced-select').filter(':not(.enhanced)').each(function(){
+		$(this).select2({
+			minimumResultsForSearch: 10,
+			allowClear: $(this).data('allow_clear') ? true : false,
+			placeholder: $(this).data('placeholder')
+		}).addClass('enhanced');
+	});
 	// Ajax product search box
 	$(':input.jigoshop-product-search').filter(':not(.enhanced)').each(function(){
 		var select2_args = {

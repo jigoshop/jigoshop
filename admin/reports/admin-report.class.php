@@ -407,6 +407,11 @@ abstract class Jigoshop_Admin_Report
 									$result->product_id = $product['id'];
 									$result->order_item_qty = 0;
 									$result->order_item_total = 0;
+
+									if (isset($item->post_date)) {
+										$result->post_date = $item->post_date;
+									}
+
 									$results[$product['id']] = $result;
 								}
 

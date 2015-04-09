@@ -908,35 +908,36 @@ function jigoshop_walk_category_dropdown_tree() {
 /**
  * Create HTML dropdown list of Product Categories.
  */
-class Jigoshop_Walker_CategoryDropdown extends Walker_CategoryDropdown {
-
+class Jigoshop_Walker_CategoryDropdown extends Walker_CategoryDropdown
+{
 	var $tree_type = 'category';
-	var $db_fields = array ('parent' => 'parent', 'id' => 'term_id', 'slug' => 'slug' );
+	var $db_fields = array('parent' => 'parent', 'id' => 'term_id', 'slug' => 'slug');
 
-    function start_el( &$output, $category, $depth = 0, $args = array(), $current_object_id = 0 ) {
+	function start_el(&$output, $category, $depth = 0, $args = array(), $current_object_id = 0)
+	{
 
-        $pad = str_repeat( '&nbsp;', $depth * 3 );
-        $cat_name = apply_filters( 'list_product_cats', $category->name, $category );
+		$pad = str_repeat('&nbsp;', $depth * 3);
+		$cat_name = apply_filters('list_product_cats', $category->name, $category);
 
-        if ( ! isset( $args['value'] ) ) {
-            $args['value'] = ( $category->taxonomy == 'product_cat' ? 'slug' : 'id' );
-        }
+		if (!isset($args['value'])) {
+			$args['value'] = ($category->taxonomy == 'product_cat' ? 'slug' : 'id');
+		}
 
-        $value = $args['value'] == 'slug' ? $category->slug : $category->term_id;
+		$value = $args['value'] == 'slug' ? $category->slug : $category->term_id;
 
-        $output .= "\t<option class=\"level-$depth\" value=\"".esc_attr($value)."\"";
-        if ( $value === (string) $args['selected'] ){
-            $output .= ' selected="selected"';
-        }
-        $output .= '>';
-        $output .= $pad.$cat_name;
-        if ( $args['show_count'] )
-            $output .= '&nbsp;&nbsp;('. $category->count .')';
+		$output .= "\t<option class=\"level-$depth\" value=\"".esc_attr($value)."\"";
+		if ($value == $args['selected'] || (is_array($args['selected']) && in_array($value, $args['selected']))) {
+			$output .= ' selected="selected"';
+		}
 
-        $output .= "</option>\n";
+		$output .= '>';
+		$output .= $pad.$cat_name;
+		if ($args['show_count']) {
+			$output .= '&nbsp;&nbsp;('.$category->count.')';
+		}
 
-    }
-
+		$output .= "</option>\n";
+	}
 }
 
 /**
