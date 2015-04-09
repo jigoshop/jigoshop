@@ -2636,6 +2636,24 @@ canvas.overlay {
 	text-align: center;
 	width: 50%;
 }
+#jigoshop_customers p.search-box {
+	float: left;
+	margin: 6px 0 4px;
+}
+#jigoshop_customers .tablenav {
+	clear: none;
+	float: right;
+}
+.jigoshop table.widefat.customers {
+	width: 100%;
+}
+.jigoshop table.widefat.customers a.tips {
+	width: auto;
+}
+.jigoshop-reports-wide .widefat td, .jigoshop-reports-wrap .widefat td {
+	padding: 7px;
+	vertical-align: top;
+}
 
 
 /**

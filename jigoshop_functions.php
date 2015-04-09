@@ -93,3 +93,78 @@ function jigoshop_format_decimal($number, $dp = false, $trim_zeros = false)
 
 	return $number;
 }
+
+/**
+ * Get total spent by customer
+ *
+ * @param  int $user_id
+ * @return string
+ */
+function jigoshop_get_customer_total_spent($user_id)
+{
+	if (!$spent = get_user_meta($user_id, 'money_spent', true)) {
+		/** @var $wpdb \wpdb */
+		global $wpdb;
+
+		$spent = $wpdb->get_results("SELECT meta2.meta_value
+			FROM $wpdb->posts as posts
+
+			LEFT JOIN {$wpdb->postmeta} AS meta ON posts.ID = meta.post_id
+			LEFT JOIN {$wpdb->postmeta} AS meta2 ON posts.ID = meta2.post_id
+			LEFT JOIN {$wpdb->term_relationships} AS tr ON posts.ID = tr.object_id
+			LEFT JOIN {$wpdb->term_taxonomy} AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
+			LEFT JOIN {$wpdb->terms} AS t ON tt.term_id = t.term_id
+
+			WHERE   meta.meta_key       = 'customer_user'
+			AND     meta.meta_value     = $user_id
+			AND     posts.post_type     IN ('".implode("','", array('shop_order'))."')
+			AND     posts.post_status   IN ( 'publish' )
+			AND     meta2.meta_key      = 'order_data'
+			AND     tt.taxonomy         = 'shop_order_status'
+			AND     t.name              IN ( 'processing', 'completed' )
+		");
+
+		$spent = array_sum(array_map(function($order){
+			$order = maybe_unserialize($order->meta_value);
+
+			return $order['order_total'];
+		}, $spent));
+
+		update_user_meta($user_id, 'money_spent', $spent);
+	}
+
+	return $spent;
+}
+
+/**
+ * Get total orders by customer
+ *
+ * @param  int $user_id
+ * @return int
+ */
+function jigoshop_get_customer_order_count($user_id)
+{
+	if (!$count = get_user_meta($user_id, 'order_count', true)) {
+		global $wpdb;
+
+		$count = $wpdb->get_var("SELECT COUNT(*)
+			FROM $wpdb->posts as posts
+
+			LEFT JOIN {$wpdb->postmeta} AS meta ON posts.ID = meta.post_id
+			LEFT JOIN {$wpdb->term_relationships} AS tr ON posts.ID = tr.object_id
+			LEFT JOIN {$wpdb->term_taxonomy} AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
+			LEFT JOIN {$wpdb->terms} AS t ON tt.term_id = t.term_id
+
+			WHERE   meta.meta_key       = 'customer_user'
+			AND     posts.post_type     IN ('".implode("','", array('shop_order'))."')
+			AND     posts.post_status   IN ('publish')
+			AND     meta_value          = $user_id
+			AND     tt.taxonomy         = 'shop_order_status'
+			AND     t.name              IN ( 'processing', 'completed' )
+		");
+
+		update_user_meta($user_id, 'order_count', absint($count));
+	}
+
+	return absint($count);
+}

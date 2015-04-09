@@ -25,12 +25,14 @@ function clearPlaceholdersBeforeSubmit(form){form.find(':input[placeholder]').ea
 
 jQuery(function($){
 	// Tooltips
-	$('.tips, .help_tip').tipTip({
-		'attribute': 'data-tip',
-		'fadeIn': 50,
-		'fadeOut': 50,
-		'delay': 200
-	});
+	if (typeof($.fn.tipTip) == 'function'){
+		$('.tips, .help_tip').tipTip({
+			'attribute': 'data-tip',
+			'fadeIn': 50,
+			'fadeOut': 50,
+			'delay': 200
+		});
+	}
 	// Regular select boxes
 	$(':input.jigoshop-enhanced-select').filter(':not(.enhanced)').each(function(){
 		$(this).select2({
