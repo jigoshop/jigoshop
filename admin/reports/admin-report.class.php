@@ -23,10 +23,8 @@ abstract class Jigoshop_Admin_Report
 	 */
 	public function sales_sparkline($id = '', $days = 7, $type = 'sales')
 	{
-
 		if ($id) {
 			$meta_key = $type == 'sales' ? '_line_total' : '_qty';
-
 			$data = $this->get_order_report_data(array(
 				'data' => array(
 					'_product_id' => array(
@@ -64,7 +62,6 @@ abstract class Jigoshop_Admin_Report
 				'filter_range' => false
 			));
 		} else {
-
 			$data = $this->get_order_report_data(array(
 				'data' => array(
 					'_order_total' => array(
@@ -311,7 +308,6 @@ abstract class Jigoshop_Admin_Report
 			print_r($query);
 			echo '</pre>';
 		}
-		$args['debug'] = true;
 
 		if ($args['debug'] || $args['nocache'] || false === $cached_results || !isset($cached_results[$query_hash])) {
 			$cached_results[$query_hash] = apply_filters('jigoshop_reports_get_order_report_data', $wpdb->{$args['query_type']}($query), $args['data']);
@@ -325,7 +321,6 @@ abstract class Jigoshop_Admin_Report
 				switch ($value['name']) {
 					case 'order_data':
 						$results = array();
-
 						foreach ($cached_results[$query_hash] as $item) {
 							$result = new stdClass;
 							$result->post_date = $item->post_date;
@@ -341,7 +336,6 @@ abstract class Jigoshop_Admin_Report
 						break;
 					case 'order_item_count':
 						$results = array();
-
 						foreach ($cached_results[$query_hash] as $item) {
 							$result = new stdClass;
 							$result->post_date = $item->post_date;
@@ -354,7 +348,6 @@ abstract class Jigoshop_Admin_Report
 						break;
 					case 'discount_amount':
 						$results = array();
-
 						foreach ($cached_results[$query_hash] as $item) {
 							if (!isset($results[$item->post_date])) {
 								$result = new stdClass;
@@ -444,9 +437,7 @@ abstract class Jigoshop_Admin_Report
 	 */
 	public function calculate_current_range($current_range)
 	{
-
 		switch ($current_range) {
-
 			case 'custom' :
 				$this->start_date = strtotime(sanitize_text_field($_GET['start_date']));
 				$this->end_date = strtotime('midnight', strtotime(sanitize_text_field($_GET['end_date'])));
@@ -469,26 +460,22 @@ abstract class Jigoshop_Admin_Report
 					$this->chart_groupby = 'day';
 				}
 				break;
-
 			case 'year' :
 				$this->start_date = strtotime(date('Y-01-01', current_time('timestamp')));
 				$this->end_date = strtotime('midnight', current_time('timestamp'));
 				$this->chart_groupby = 'month';
 				break;
-
 			case 'last_month' :
 				$first_day_current_month = strtotime(date('Y-m-01', current_time('timestamp')));
 				$this->start_date = strtotime(date('Y-m-01', strtotime('-1 DAY', $first_day_current_month)));
 				$this->end_date = strtotime(date('Y-m-t', strtotime('-1 DAY', $first_day_current_month)));
 				$this->chart_groupby = 'day';
 				break;
-
 			case 'month' :
 				$this->start_date = strtotime(date('Y-m-01', current_time('timestamp')));
 				$this->end_date = strtotime('midnight', current_time('timestamp'));
 				$this->chart_groupby = 'day';
 				break;
-
 			case '7day' :
 				$this->start_date = strtotime('-6 days', current_time('timestamp'));
 				$this->end_date = strtotime('midnight', current_time('timestamp'));
@@ -498,13 +485,11 @@ abstract class Jigoshop_Admin_Report
 
 		// Group by
 		switch ($this->chart_groupby) {
-
 			case 'day' :
 				$this->group_by_query = 'YEAR(posts.post_date), MONTH(posts.post_date), DAY(posts.post_date)';
 				$this->chart_interval = ceil(max(0, ($this->end_date - $this->start_date) / (60 * 60 * 24)));
 				$this->barwidth = 60 * 60 * 24 * 1000;
 				break;
-
 			case 'month' :
 				$this->group_by_query = 'YEAR(posts.post_date), MONTH(posts.post_date)';
 				$this->chart_interval = 0;
@@ -526,7 +511,8 @@ abstract class Jigoshop_Admin_Report
 	 */
 	public function get_currency_tooltip()
 	{
-		switch (get_option('jigoshop_currency_pos')) {
+		$options = Jigoshop_Base::get_options();
+		switch ($options->get('jigoshop_currency_pos')) {
 			case 'right':
 				$currency_tooltip = 'append_tooltip: "'.get_jigoshop_currency_symbol().'"';
 				break;

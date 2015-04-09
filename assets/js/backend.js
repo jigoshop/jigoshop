@@ -22,3 +22,13 @@ options=value||{};var result,decode=options.raw?function(s){return s;}:decodeURI
  */
 (function($){if("placeholder"in document.createElement("input"))return;$(document).ready(function(){$(':input[placeholder]').each(function(){setupPlaceholder($(this));});$('form').submit(function(e){clearPlaceholdersBeforeSubmit($(this));});});function setupPlaceholder(input){var placeholderText=input.attr('placeholder');if(input.val()==='')input.val(placeholderText);input.bind({focus:function(e){if(input.val()===placeholderText)input.val('');},blur:function(e){if(input.val()==='')input.val(placeholderText);}});}
 function clearPlaceholdersBeforeSubmit(form){form.find(':input[placeholder]').each(function(){var el=$(this);if(el.val()===el.attr('placeholder'))el.val('');});}})(jQuery);
+
+jQuery(function($){
+	// Tooltips
+	$('.tips, .help_tip').tipTip({
+		'attribute': 'data-tip',
+		'fadeIn': 50,
+		'fadeOut': 50,
+		'delay': 200
+	});
+});

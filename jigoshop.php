@@ -880,6 +880,11 @@ function jigoshop_admin_scripts()
 				'page' => array('jigoshop_page_jigoshop_reports', 'toplevel_page_jigoshop')
 			)
 		);
+		jigoshop_add_script('jquery.tiptip', JIGOSHOP_URL.'/assets/js/admin/jquery.tipTip.min.js', array('jquery'), array(
+				'version' => '1.3',
+//				'page' => array('toplevel_page_jigoshop')
+			)
+		);
 
 		/**
 		 * Disable autosaves on the order and coupon pages. Prevents the javascript alert when modifying.
