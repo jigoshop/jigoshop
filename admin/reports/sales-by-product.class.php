@@ -5,11 +5,8 @@ class Jigoshop_Report_Sales_By_Product extends Jigoshop_Admin_Report
 	public $chart_colours = array();
 	public $product_ids = array();
 	public $product_ids_titles = array();
-	protected $report_data;
+	private $report_data;
 
-	/**
-	 * Constructor
-	 */
 	public function __construct()
 	{
 		if (isset($_GET['product_ids']) && is_array($_GET['product_ids'])) {
@@ -17,8 +14,6 @@ class Jigoshop_Report_Sales_By_Product extends Jigoshop_Admin_Report
 		} elseif (isset($_GET['product_ids'])) {
 			$this->product_ids = array_filter(array(absint($_GET['product_ids'])));
 		}
-
-		$this->report_data = new stdClass();
 	}
 
 	/**
@@ -34,6 +29,41 @@ class Jigoshop_Report_Sales_By_Product extends Jigoshop_Admin_Report
 
 		$legend = array();
 
+		$data = $this->get_report_data();
+		$total_sales = array_sum(array_map(function($item){
+			return $item->order_item_amount;
+		}, $data->order_item_amounts));
+		$total_items = array_sum(array_map(function($item){
+			return $item->order_item_count;
+		}, $data->order_item_counts));
+
+		$legend[] = array(
+			'title' => sprintf(__('%s sales for the selected items', 'jigoshop'), '<strong>'.jigoshop_price($total_sales).'</strong>'),
+			'color' => $this->chart_colours['sales_amount'],
+			'highlight_series' => 1
+		);
+
+		$legend[] = array(
+			'title' => sprintf(__('%s purchases for the selected items', 'jigoshop'), '<strong>'.$total_items.'</strong>'),
+			'color' => $this->chart_colours['item_count'],
+			'highlight_series' => 0
+		);
+
+		return $legend;
+	}
+
+	public function get_report_data()
+	{
+		if (empty($this->report_data)) {
+			$this->query_report_data();
+		}
+
+		return $this->report_data;
+	}
+
+	private function query_report_data()
+	{
+		$this->report_data = new stdClass();
 		$this->report_data->order_item_counts = $this->get_order_report_data(array(
 			'data' => array(
 				'order_items' => array(
@@ -79,27 +109,6 @@ class Jigoshop_Report_Sales_By_Product extends Jigoshop_Admin_Report
 			'query_type' => 'get_results',
 			'filter_range' => true,
 		));
-
-		$total_sales = array_sum(array_map(function($item){
-			return $item->order_item_amount;
-		}, $this->report_data->order_item_amounts));
-		$total_items = array_sum(array_map(function($item){
-			return $item->order_item_count;
-		}, $this->report_data->order_item_counts));
-
-		$legend[] = array(
-			'title' => sprintf(__('%s sales for the selected items', 'jigoshop'), '<strong>'.jigoshop_price($total_sales).'</strong>'),
-			'color' => $this->chart_colours['sales_amount'],
-			'highlight_series' => 1
-		);
-
-		$legend[] = array(
-			'title' => sprintf(__('%s purchases for the selected items', 'jigoshop'), '<strong>'.$total_items.'</strong>'),
-			'color' => $this->chart_colours['item_count'],
-			'highlight_series' => 0
-		);
-
-		return $legend;
 	}
 
 	public function output()
@@ -461,9 +470,9 @@ class Jigoshop_Report_Sales_By_Product extends Jigoshop_Admin_Report
 						];
 						if(highlight !== 'undefined' && series[highlight]){
 							highlight_series = series[highlight];
-							highlight_series.color = '#9c5d90';
+							highlight_series.color = '#98c242';
 							if(highlight_series.bars)
-								highlight_series.bars.fillColor = '#9c5d90';
+								highlight_series.bars.fillColor = '#98c242';
 							if(highlight_series.lines){
 								highlight_series.lines.lineWidth = 5;
 							}

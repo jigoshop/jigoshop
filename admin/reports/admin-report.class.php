@@ -366,12 +366,45 @@ abstract class Jigoshop_Admin_Report
 								$result = new stdClass;
 								$result->post_date = $item->post_date;
 								$result->discount_amount = 0.0;
+								$result->coupons_used = 0;
 								$results[$item->post_date] = $result;
 							}
 
 							$data = maybe_unserialize($item->discount_amount);
+							$data = $this->filterItem($data, $value);
+
+							if (!empty($data)) {
+								$results[$item->post_date]->coupons_used += count($data['order_discount_coupons']);
+
+								foreach ($data['order_discount_coupons'] as $coupon) {
+									$results[$item->post_date]->discount_amount += $coupon['amount'];
+								}
+							}
+						}
+
+						$cached_results[$query_hash] = $results;
+						break;
+					case 'order_coupons':
+						$coupons = array();
+						$results = array();
+						foreach ($cached_results[$query_hash] as $item) {
+							if (!isset($results[$item->post_date])) {
+								$coupons[$item->post_date] = array();
+								$results[$item->post_date] = new stdClass();
+								$results[$item->post_date]->post_date = $item->post_date;
+								$results[$item->post_date]->coupons = array();
+								$results[$item->post_date]->usage = array();
+							}
+
+							$data = maybe_unserialize($item->order_coupons);
 							foreach ($data['order_discount_coupons'] as $coupon) {
-								$results[$item->post_date]->discount_amount += $coupon['amount'];
+								if (!in_array($coupon['code'], $coupons[$item->post_date])) {
+									$results[$item->post_date]->coupons[] = JS_Coupons::get_coupon($coupon['code']);
+									$results[$item->post_date]->usage[$coupon['code']] = 1;
+									$coupons[$item->post_date][] = $coupon['code'];
+								} else {
+									$results[$item->post_date]->usage[$coupon['code']] += 1;
+								}
 							}
 						}
 
@@ -480,11 +513,60 @@ abstract class Jigoshop_Admin_Report
 								return $product[$value['where']['key']] <= $value['where']['value'];
 							case '>=':
 								return $product[$value['where']['key']] >= $value['where']['value'];
+							case 'in':
+								return in_array($product[$value['where']['key']], $value['where']['value']);
+							case 'intersection':
+								$intersection = array_intersect($product[$value['where']['key']], $value['where']['value']);
+								return !empty($intersection);
 						}
 
 						return false;
 					});
 					break;
+				case 'object_comparison':
+					switch ($value['where']['operator']) {
+						case '<>':
+						case '!=':
+							if ($item[$value['where']['key']] != $value['where']['value']) {
+								return $item;
+							}
+						case '=':
+							if ($item[$value['where']['key']] == $value['where']['value']) {
+								return $item;
+							}
+						case '<':
+							if ($item[$value['where']['key']] < $value['where']['value']) {
+								return $item;
+							}
+						case '>':
+							if ($item[$value['where']['key']] > $value['where']['value']) {
+								return $item;
+							}
+						case '<=':
+							if ($item[$value['where']['key']] <= $value['where']['value']) {
+								return $item;
+							}
+						case '>=':
+							if ($item[$value['where']['key']] >= $value['where']['value']) {
+								return $item;
+							}
+						case 'in':
+							if (in_array($item[$value['where']['key']], $value['where']['value'])) {
+								return $item;
+							}
+						case 'intersection':
+							$source = $item[$value['where']['key']];
+							if (isset($value['where']['map'])) {
+								$source = array_map($value['where']['map'], $source);
+							}
+
+							$intersection = array_intersect($source, $value['where']['value']);
+							if (!empty($intersection)) {
+								return $item;
+							};
+					}
+
+					return false;
 			}
 		}
 

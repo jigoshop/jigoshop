@@ -313,10 +313,10 @@ class Jigoshop_Report_Sales_By_Category extends Jigoshop_Admin_Report
 
 						if ( highlight !== 'undefined' && series[ highlight ] ) {
 							highlight_series = series[ highlight ];
-							highlight_series.color = '#9c5d90';
+							highlight_series.color = '#98c242';
 
 							if ( highlight_series.bars ) {
-								highlight_series.bars.fillColor = '#9c5d90';
+								highlight_series.bars.fillColor = '#98c242';
 							}
 							if ( highlight_series.lines ) {
 								highlight_series.lines.lineWidth = 5;
