@@ -839,7 +839,6 @@ function jigoshop_admin_scripts()
 	wp_register_script('jquery-blockui', '//cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.66.0-2013.10.09/jquery.blockUI.min.js', array('jquery'));
 
 	if (jigoshop_is_admin_page()) {
-
 		wp_enqueue_media();
 		wp_enqueue_script('jquery-ui-sortable');
 		wp_enqueue_script('jquery-ui-datepicker');
@@ -882,9 +881,14 @@ function jigoshop_admin_scripts()
 		);
 		jigoshop_add_script('jquery.tiptip', JIGOSHOP_URL.'/assets/js/admin/jquery.tipTip.min.js', array('jquery'), array(
 				'version' => '1.3',
-//				'page' => array('toplevel_page_jigoshop')
+				'page' => array('jigoshop_page_jigoshop_reports', 'toplevel_page_jigoshop') // TODO: Properly load on selected pages
 			)
 		);
+
+		jigoshop_localize_script('jigoshop_backend', 'jigoshop_params', array(
+			'ajax_url' => admin_url('admin-ajax.php', 'jigoshop'),
+			'search_products_nonce' => wp_create_nonce("search-products"),
+		));
 
 		/**
 		 * Disable autosaves on the order and coupon pages. Prevents the javascript alert when modifying.

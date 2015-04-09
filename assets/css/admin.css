@@ -2446,6 +2446,20 @@ canvas.overlay {
 }
 
 /* Report charts */
+.jigoshop-reports-wide .postbox .chart-container, .jigoshop-reports-wrap .postbox .chart-container {
+	background: none repeat scroll 0 0 #fff;
+	border: 1px solid #dfdfdf;
+	border-radius: 3px;
+	padding: 12px;
+	position: relative;
+}
+.jigoshop-reports-wide .postbox h3.stats_range, .jigoshop-reports-wrap .postbox h3.stats_range {
+	border-bottom-color: #dfdfdf;
+	padding: 0 !important;
+}
+.jigoshop-reports-wide .postbox h3, .jigoshop-reports-wrap .postbox h3 {
+	cursor: default !important;
+}
 .jigoshop-reports-wide .postbox h3.stats_range ul::after, .jigoshop-reports-wide .postbox h3.stats_range ul::before, .jigoshop-reports-wrap .postbox h3.stats_range ul::after, .jigoshop-reports-wrap .postbox h3.stats_range ul::before {
 	content: " ";
 	display: table;
@@ -2481,6 +2495,15 @@ canvas.overlay {
 }
 .jigoshop-reports-wide .postbox h3.stats_range ul li.active a, .jigoshop-reports-wrap .postbox h3.stats_range ul li.active a {
 	color: #777;
+}
+.jigoshop-reports-wide .postbox .chart-widgets, .jigoshop-reports-wrap .postbox .chart-widgets {
+	margin: 0;
+	padding: 0;
+}
+.jigoshop-reports-wide .postbox .chart-widgets li.chart-widget, .jigoshop-reports-wrap .postbox .chart-widgets li.chart-widget {
+	background: none repeat scroll 0 0 #fafafa;
+	border: 1px solid #dfdfdf;
+	margin: 0 0 1em;
 }
 .jigoshop-reports-wide .postbox .chart-legend li:hover, .jigoshop-reports-wrap .postbox .chart-legend li:hover {
 	border-right: 5px solid #98c242 !important;
@@ -2548,6 +2571,16 @@ canvas.overlay {
 	margin: 0;
 	padding: 1em;
 }
+.jigoshop-reports-wide .postbox .chart-widgets li.chart-widget table td, .jigoshop-reports-wrap .postbox .chart-widgets li.chart-widget table td {
+	border-top: 1px solid #e5e5e5;
+	line-height: 1.4em;
+	padding: 7px 10px;
+	vertical-align: top;
+}
+.jigoshop-reports-wide .postbox .chart-widgets li.chart-widget form, .jigoshop-reports-wide .postbox .chart-widgets li.chart-widget p, .jigoshop-reports-wrap .postbox .chart-widgets li.chart-widget form, .jigoshop-reports-wrap .postbox .chart-widgets li.chart-widget p {
+	margin: 0;
+	padding: 10px;
+}
 .tips {
 	cursor: help;
 	text-decoration: none;
@@ -2561,6 +2594,27 @@ canvas.overlay {
 	overflow: hidden;
 	position: relative;
 	width: 100%;
+}
+.jigoshop-reports-wide .postbox .chart-widgets li.chart-widget h4, .jigoshop-reports-wrap .postbox .chart-widgets li.chart-widget h4 {
+	-moz-border-bottom-colors: none;
+	-moz-border-left-colors: none;
+	-moz-border-right-colors: none;
+	-moz-border-top-colors: none;
+	background: -moz-linear-gradient(center bottom , #ececec, #f9f9f9) repeat scroll 0 0 #fff;
+	border-image: none;
+	border: 0 solid #dfdfdf;
+	border-bottom-width: 1px;
+	color: #2ea2cc;
+	margin: 0;
+	padding: 10px;
+}
+.jigoshop-reports-wide .postbox .chart-prompt, .jigoshop-reports-wrap .postbox .chart-prompt {
+	color: #999;
+	font-size: 1.2em;
+	font-style: italic;
+	line-height: 650px;
+	margin: 0;
+	text-align: center;
 }
 
 

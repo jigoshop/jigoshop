@@ -101,7 +101,7 @@ abstract class Jigoshop_Admin_Report
 
 		$sparkline_data = array_values($this->prepare_chart_data($data, 'post_date', 'sparkline_value', $days - 1, strtotime('midnight -'.($days - 1).' days', current_time('timestamp')), 'day'));
 
-		return '<span class="wc_sparkline '.($type == 'sales' ? 'lines' : 'bars').' tips" data-color="#777" data-tip="'.esc_attr($tooltip).'" data-barwidth="'. 60 * 60 * 16 * 1000 .'" data-sparkline="'.esc_attr(json_encode($sparkline_data)).'"></span>';
+		return '<span class="jigoshop_sparkline '.($type == 'sales' ? 'lines' : 'bars').' tips" data-color="#777" data-tip="'.esc_attr($tooltip).'" data-barwidth="'. 60 * 60 * 16 * 1000 .'" data-sparkline="'.esc_attr(json_encode($sparkline_data)).'"></span>';
 	}
 
 	/**
@@ -309,6 +309,7 @@ abstract class Jigoshop_Admin_Report
 			echo '</pre>';
 		}
 
+		$args['debug'] = true;
 		if ($args['debug'] || $args['nocache'] || false === $cached_results || !isset($cached_results[$query_hash])) {
 			$cached_results[$query_hash] = apply_filters('jigoshop_reports_get_order_report_data', $wpdb->{$args['query_type']}($query), $args['data']);
 
@@ -322,14 +323,21 @@ abstract class Jigoshop_Admin_Report
 					case 'order_data':
 						$results = array();
 						foreach ($cached_results[$query_hash] as $item) {
-							$result = new stdClass;
-							$result->post_date = $item->post_date;
-							$item = maybe_unserialize($item->order_data);
-							$result->total_sales = $item['order_total'];
-							$result->total_shipping = $item['order_shipping'];
-							$result->total_tax = $item['order_tax_no_shipping_tax'];
-							$result->total_shipping_tax = $item['order_shipping_tax'];
-							$results[] = $result;
+							if (!isset($results[$item->post_date])) {
+								$result = new stdClass;
+								$result->post_date = $item->post_date;
+								$result->total_sales = 0.0;
+								$result->total_shipping = 0.0;
+								$result->total_tax = 0.0;
+								$result->total_shipping_tax = 0.0;
+								$results[$item->post_date] = $result;
+							}
+
+							$data = maybe_unserialize($item->order_data);
+							$results[$item->post_date]->total_sales += $data['order_total'];
+							$results[$item->post_date]->total_shipping += $data['order_shipping'];
+							$results[$item->post_date]->total_tax += $data['order_tax_no_shipping_tax'];
+							$results[$item->post_date]->total_shipping_tax += $data['order_shipping_tax'];
 						}
 
 						$cached_results[$query_hash] = $results;
@@ -337,11 +345,16 @@ abstract class Jigoshop_Admin_Report
 					case 'order_item_count':
 						$results = array();
 						foreach ($cached_results[$query_hash] as $item) {
-							$result = new stdClass;
-							$result->post_date = $item->post_date;
-							$item = maybe_unserialize($item->order_item_count);
-							$result->order_item_count = count($item);
-							$results[] = $result;
+							if (!isset($results[$item->post_date])) {
+								$result = new stdClass;
+								$result->post_date = $item->post_date;
+								$result->order_item_count = 0;
+								$results[$item->post_date] = $result;
+							}
+
+							$data = maybe_unserialize($item->order_item_count);
+							$data = $this->filterItem($data, $value);
+							$results[$item->post_date]->order_item_count += count($data);
 						}
 
 						$cached_results[$query_hash] = $results;
@@ -364,6 +377,65 @@ abstract class Jigoshop_Admin_Report
 
 						$cached_results[$query_hash] = $results;
 						break;
+					case 'order_item_amount':
+						$results = array();
+						foreach ($cached_results[$query_hash] as $item) {
+							if (!isset($results[$item->post_date])) {
+								$result = new stdClass;
+								$result->post_date = $item->post_date;
+								$result->order_item_amount = 0.0;
+								$results[$item->post_date] = $result;
+							}
+
+							$data = maybe_unserialize($item->order_item_amount);
+							$data = $this->filterItem($data, $value);
+							$results[$item->post_date]->order_item_amount += array_sum(array_map(function($product){
+								return $product['qty'] * $product['cost'];
+							}, $data));
+						}
+
+						$cached_results[$query_hash] = $results;
+						break;
+					case 'top_products':
+						$results = array();
+						foreach ($cached_results[$query_hash] as $item) {
+							$data = maybe_unserialize($item->top_products);
+							$data = $this->filterItem($data, $value);
+							foreach ($data as $product) {
+								if (!isset($results[$product['id']])) {
+									$result = new stdClass;
+									$result->product_id = $product['id'];
+									$result->order_item_qty = 0;
+									$result->order_item_total = 0;
+									$results[$product['id']] = $result;
+								}
+
+								$results[$product['id']]->order_item_qty += $product['qty'];
+								$results[$product['id']]->order_item_total += $product['qty'] * $product['cost'];
+							}
+						}
+
+						if (isset($value['order'])) {
+							switch($value['order']) {
+								case 'most_sold':
+									usort($results, function($a, $b){
+										return $b->order_item_qty - $a->order_item_qty;
+									});
+									break;
+								case 'most_earned':
+									usort($results, function($a, $b){
+										return $b->order_item_total - $a->order_item_total;
+									});
+									break;
+							}
+						}
+
+						if (isset($value['limit'])) {
+							$results = array_slice($results, 0, $value['limit']);
+						}
+
+						$cached_results[$query_hash] = $results;
+						break;
 				}
 			}
 
@@ -371,6 +443,47 @@ abstract class Jigoshop_Admin_Report
 		}
 
 		return $cached_results[$query_hash];
+	}
+
+	protected function filterItem($item, $value)
+	{
+		if (isset($value['where'])) {
+			switch($value['where']['type']) {
+				case 'item_id':
+					$item = array_filter($item, function($product) use ($value){
+						$result = false;
+						foreach ($value['where']['keys'] as $key) {
+							$result |= in_array($product[$key], $value['where']['value']);
+						}
+
+						return $result;
+					});
+					break;
+				case 'comparison':
+					$item = array_filter($item, function($product) use ($value){
+						switch ($value['where']['operator']) {
+							case '<>':
+							case '!=':
+								return $product[$value['where']['key']] != $value['where']['value'];
+							case '=':
+								return $product[$value['where']['key']] == $value['where']['value'];
+							case '<':
+								return $product[$value['where']['key']] < $value['where']['value'];
+							case '>':
+								return $product[$value['where']['key']] > $value['where']['value'];
+							case '<=':
+								return $product[$value['where']['key']] <= $value['where']['value'];
+							case '>=':
+								return $product[$value['where']['key']] >= $value['where']['value'];
+						}
+
+						return false;
+					});
+					break;
+			}
+		}
+
+		return $item;
 	}
 
 	/**
