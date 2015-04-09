@@ -2644,10 +2644,10 @@ canvas.overlay {
 	clear: none;
 	float: right;
 }
-.jigoshop table.widefat.customers {
+.jigoshop table.widefat.customers, .jigoshop table.widefat.stock {
 	width: 100%;
 }
-.jigoshop table.widefat.customers a.tips {
+.jigoshop table.widefat.customers a.tips, .jigoshop table.widefat.stock a.tips {
 	width: auto;
 }
 .jigoshop-reports-wide .widefat td, .jigoshop-reports-wrap .widefat td {
