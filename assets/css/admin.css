@@ -2616,6 +2616,26 @@ canvas.overlay {
 	margin: 0;
 	text-align: center;
 }
+.jigoshop-reports-wide .postbox .chart-container, .jigoshop-reports-wrap .postbox .chart-container {
+	background: none repeat scroll 0 0 #fff;
+	border: 1px solid #dfdfdf;
+	border-radius: 3px;
+	padding: 12px;
+	position: relative;
+}
+.jigoshop-reports-wide .postbox .pie-chart-legend, .jigoshop-reports-wrap .postbox .pie-chart-legend {
+	margin: 12px 0 0;
+	overflow: hidden;
+}
+.jigoshop-reports-wide .postbox .pie-chart-legend li, .jigoshop-reports-wrap .postbox .pie-chart-legend li {
+	border-top: 4px solid #999;
+	box-sizing: border-box;
+	float: left;
+	margin: 0;
+	padding: 6px 0 0;
+	text-align: center;
+	width: 50%;
+}
 
 
 /**
