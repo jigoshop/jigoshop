@@ -154,6 +154,85 @@ if (!defined('ABSPATH')) {
 			</td>
 		</tr>
 		<tr>
+			<td data-export-label="eAccelerator"><?php _e('eAccelerator', 'jigoshop'); ?>:</td>
+			<td class="help"><?php echo '<a href="#" class="help_tip" data-tip="'.esc_attr__('eAccelerator is deprecated and causes problems with Jigoshop.', 'jigoshop').'">[?]</a>'; ?></td>
+			<td><?php
+				if (ini_get('eaccelerator.enable') == '1') {
+					echo '<mark class="error">'.'&#10004; '.__('Enabled', 'jigoshop').'</mark>';
+				} else {
+					echo '&#10005;';
+				}
+				?></td>
+		</tr>
+		<tr>
+			<td data-export-label="APC"><?php _e('APC', 'jigoshop'); ?>:</td>
+			<td class="help"><?php echo '<a href="#" class="help_tip" data-tip="'.esc_attr__('APC is deprecated and causes problems with Jigoshop.', 'jigoshop').'">[?]</a>'; ?></td>
+			<td><?php
+				if (ini_get('apc.enable') == '1') {
+					echo '<mark class="error">'.'&#10004; '.__('Enabled', 'jigoshop').'</mark>';
+				} else {
+					echo '&#10005;';
+				}
+				?></td>
+		</tr>
+		<tr>
+			<td data-export-label="OpCache"><?php _e('OpCache', 'jigoshop'); ?>:</td>
+			<td class="help"><?php echo '<a href="#" class="help_tip" data-tip="'.esc_attr__('OpCache is new PHP optimizer and it is recommended to use with Jigoshop.', 'jigoshop').'">[?]</a>'; ?></td>
+			<td><?php
+				if (ini_get('opcache.enable') == '1') {
+					echo '<mark class="yes">'.'&#10004;'.'</mark>';
+				} else {
+					echo '&#10005;';
+				}
+				?></td>
+		</tr>
+		<tr>
+			<td data-export-label="Short Open Tag"><?php _e('Short Open Tag', 'jigoshop'); ?>:</td>
+			<td class="help"><?php echo '<a href="#" class="help_tip" data-tip="'.esc_attr__('Whether short tags are enabled, they are used by some older extensions.', 'jigoshop').'">[?]</a>'; ?></td>
+			<td><?php echo ini_get('short_open_tag') ? '&#10004;' : '&ndash;'; ?></td>
+		</tr>
+		<tr>
+			<td data-export-label="Allow URL fopen"><?php _e('Allow URL fopen', 'jigoshop'); ?>:</td>
+			<td class="help"><?php echo '<a href="#" class="help_tip" data-tip="'.esc_attr__('Whether fetching remote files is allowed. This option is used by many Jigoshop extensions.', 'jigoshop').'">[?]</a>'; ?></td>
+			<td><?php echo ini_get('allow_url_fopen') ? '&#10004;' : '&ndash;'; ?></td>
+		</tr>
+		<tr>
+			<td data-export-label="Session"><?php _e('Session', 'jigoshop'); ?>:</td>
+			<td class="help"><?php echo '<a href="#" class="help_tip" data-tip="'.esc_attr__('Whether PHP sessions are working properly.', 'jigoshop').'">[?]</a>'; ?></td>
+			<td><?php echo isset($_SESSION) ? '&#10004;' : '&ndash;'; ?></td>
+		</tr>
+		<tr>
+			<td data-export-label="Cookie Path"><?php _e('Cookie Path', 'jigoshop'); ?>:</td>
+			<td class="help"><?php echo '<a href="#" class="help_tip" data-tip="'.esc_attr__('Path for which cookies are saved. This is important for sessions and session security.', 'jigoshop').'">[?]</a>'; ?></td>
+			<td><?php echo esc_html(ini_get('session.cookie_path')); ?></td>
+		</tr>
+		<tr>
+			<td data-export-label="Save Path"><?php _e('Save Path', 'jigoshop'); ?>:</td>
+			<td class="help"><?php echo '<a href="#" class="help_tip" data-tip="'.esc_attr__('Path where sessions are stored on the server. This is sometimes cause of login/logout problems.', 'jigoshop').'">[?]</a>'; ?></td>
+			<td><?php echo esc_html(ini_get('session.save_path')); ?></td>
+		</tr>
+		<tr>
+			<td data-export-label="Use Cookies"><?php _e('Use Cookies', 'jigoshop'); ?>:</td>
+			<td class="help"><?php echo '<a href="#" class="help_tip" data-tip="'.esc_attr__('Whether cookies are used to store PHP session on user\'s computer. Recommended.', 'jigoshop').'">[?]</a>'; ?></td>
+			<td><?php
+				if (ini_get('session.use_cookies')) {
+					echo '<mark class="yes">'.'&#10004;'.'</mark>';
+				} else {
+					echo '<mark class="error">'.'&#10005;'.'</mark>';
+				}?></td>
+		</tr>
+		<tr>
+			<td data-export-label="Use Only Cookies"><?php _e('Use Only Cookies', 'jigoshop'); ?>:</td>
+			<td class="help"><?php echo '<a href="#" class="help_tip" data-tip="'.esc_attr__('Whether PHP uses only cookies to handle user sessions. This is important for security reasons.', 'jigoshop').'">[?]</a>'; ?></td>
+			<td><?php
+				if (ini_get('session.use_only_cookies')) {
+					echo '<mark class="yes">'.'&#10004;'.'</mark>';
+				} else {
+					echo '<mark class="error">'.'&#10005;'.'</mark>';
+				}
+			?></td>
+		</tr>
+		<tr>
 			<td data-export-label="Max Upload Size"><?php _e('Max Upload Size', 'jigoshop'); ?>:</td>
 			<td class="help"><?php echo '<a href="#" class="help_tip" data-tip="'.esc_attr__('The largest filesize that can be uploaded to your WordPress installation.', 'jigoshop').'">[?]</a>'; ?></td>
 			<td><?php echo size_format(wp_max_upload_size()); ?></td>
