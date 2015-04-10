@@ -28,14 +28,27 @@ class Jigoshop_Admin_Status
 		if (!empty($_GET['action']) && !empty($_REQUEST['_wpnonce']) && wp_verify_nonce($_REQUEST['_wpnonce'], 'debug_action')) {
 			switch ($_GET['action']) {
 				case 'clear_transients':
-					wc_delete_product_transients();
-					wc_delete_shop_order_transients();
-					WC_Cache_Helper::get_transient_version('shipping', true);
+					delete_transient('jigoshop_addons_data');
+					delete_transient('jigoshop_report_coupon_usage');
+					delete_transient('jigoshop_report_customer_list');
+					delete_transient('jigoshop_report_customers');
+					delete_transient('jigoshop_report_low_in_stock');
+					delete_transient('jigoshop_report_most_stocked');
+					delete_transient('jigoshop_report_out_of_stock');
+					delete_transient('jigoshop_report_sales_by_category');
+					delete_transient('jigoshop_report_sales_by_date');
+					delete_transient('jigoshop_report_sales_by_product');
+					delete_transient('jigoshop_widget_cache');
 
-					echo '<div class="updated"><p>'.__('Product Transients Cleared', 'woocommerce').'</p></div>';
+					$query = new WP_User_Query(array('fields' => 'ids'));
+					$users = $query->get_results();
+					foreach ($users as $user) {
+						delete_transient('jigo_usercart_'.$user);
+					}
+
+					echo '<div class="updated"><p>'.__('Jigoshop transients cleared', 'jigoshop').'</p></div>';
 					break;
 				case 'clear_expired_transients':
-
 					// http://w-shadow.com/blog/2012/04/17/delete-stale-transients/
 					$rows = $wpdb->query("
 						DELETE
@@ -73,14 +86,26 @@ class Jigoshop_Admin_Status
 							AND b.option_value < UNIX_TIMESTAMP()
 					");
 
-					echo '<div class="updated"><p>'.sprintf(__('%d Transients Rows Cleared', 'woocommerce'), $rows + $rows2).'</p></div>';
+					echo '<div class="updated"><p>'.sprintf(__('%d transients rows cleared', 'jigoshop'), $rows + $rows2).'</p></div>';
 					break;
 				case 'reset_roles':
 					// Remove then re-add caps and roles
-					WC_Install::remove_roles();
-					WC_Install::create_roles();
+					/** @var $wp_roles WP_Roles */
+					global $wp_roles;
+					$capabilities = jigoshop_get_core_capabilities();
+					foreach ($capabilities as $cap_group) {
+						foreach ($cap_group as $cap) {
+							$wp_roles->remove_cap('administrator', $cap);
+							$wp_roles->remove_cap('shop_manager', $cap);
+						}
+					}
+					remove_role('customer');
+					remove_role('shop_manager');
 
-					echo '<div class="updated"><p>'.__('Roles successfully reset', 'woocommerce').'</p></div>';
+					// Add roles back
+					jigoshop_roles_init();
+
+					echo '<div class="updated"><p>'.__('Roles successfully reset', 'jigoshop').'</p></div>';
 					break;
 				case 'recount_terms':
 					$product_cats = get_terms('product_cat', array(
@@ -88,42 +113,23 @@ class Jigoshop_Admin_Status
 						'fields' => 'id=>parent'
 					));
 
-					_wc_term_recount($product_cats, get_taxonomy('product_cat'), true, false);
+					_update_post_term_count($product_cats, get_taxonomy('product_cat'));
 
 					$product_tags = get_terms('product_tag', array(
 						'hide_empty' => false,
 						'fields' => 'id=>parent'
 					));
 
-					_wc_term_recount($product_tags, get_taxonomy('product_tag'), true, false);
+					_update_post_term_count($product_tags, get_taxonomy('product_tag'));
 
-					echo '<div class="updated"><p>'.__('Terms successfully recounted', 'woocommerce').'</p></div>';
-					break;
-				case 'clear_sessions':
-					$wpdb->query("
-						DELETE FROM {$wpdb->options}
-						WHERE option_name LIKE '_wc_session_%' OR option_name LIKE '_wc_session_expires_%'
-					");
-
-					wp_cache_flush();
-
-					echo '<div class="updated"><p>'.__('Sessions successfully cleared', 'woocommerce').'</p></div>';
-					break;
-				case 'install_pages':
-					WC_Install::create_pages();
-					echo '<div class="updated"><p>'.__('All missing WooCommerce pages was installed successfully.', 'woocommerce').'</p></div>';
+					echo '<div class="updated"><p>'.__('Terms successfully recounted', 'jigoshop').'</p></div>';
 					break;
 				case 'delete_taxes':
-					$wpdb->query("TRUNCATE ".$wpdb->prefix."woocommerce_tax_rates");
-					$wpdb->query("TRUNCATE ".$wpdb->prefix."woocommerce_tax_rate_locations");
+					$options = Jigoshop_Base::get_options();
+					$options->set('jigoshop_tax_rates', '');
+					$options->update_options();
 
-					echo '<div class="updated"><p>'.__('Tax rates successfully deleted', 'woocommerce').'</p></div>';
-					break;
-				case 'reset_tracking':
-					delete_option('woocommerce_allow_tracking');
-					WC_Admin_Notices::add_notice('tracking');
-
-					echo '<div class="updated"><p>'.__('Usage tracking settings successfully reset.', 'woocommerce').'</p></div>';
+					echo '<div class="updated"><p>'.__('Tax rates successfully deleted', 'jigoshop').'</p></div>';
 					break;
 				default:
 					$action = esc_attr($_GET['action']);
@@ -132,10 +138,10 @@ class Jigoshop_Admin_Status
 						$return = call_user_func($callback);
 						if ($return === false) {
 							if (is_array($callback)) {
-								echo '<div class="error"><p>'.sprintf(__('There was an error calling %s::%s', 'woocommerce'), get_class($callback[0]), $callback[1]).'</p></div>';
+								echo '<div class="error"><p>'.sprintf(__('There was an error calling %s::%s', 'jigoshop'), get_class($callback[0]), $callback[1]).'</p></div>';
 
 							} else {
-								echo '<div class="error"><p>'.sprintf(__('There was an error calling %s', 'woocommerce'), $callback).'</p></div>';
+								echo '<div class="error"><p>'.sprintf(__('There was an error calling %s', 'jigoshop'), $callback).'</p></div>';
 							}
 						}
 					}
@@ -143,30 +149,9 @@ class Jigoshop_Admin_Status
 			}
 		}
 
-		// Manual translation update messages
-		if (isset($_GET['translation_updated'])) {
-			switch ($_GET['translation_updated']) {
-				case 2 :
-					echo '<div class="error"><p>'.__('Failed to install/update the translation:', 'woocommerce').' '.__('Seems you don\'t have permission to do this!', 'woocommerce').'</p></div>';
-					break;
-				case 3 :
-					echo '<div class="error"><p>'.__('Failed to install/update the translation:', 'woocommerce').' '.sprintf(__('An authentication error occurred while updating the translation. Please try again or configure your %sUpgrade Constants%s.', 'woocommerce'), '<a href="http://codex.wordpress.org/Editing_wp-config.php#WordPress_Upgrade_Constants">', '</a>').'</p></div>';
-					break;
-				case 4 :
-					echo '<div class="error"><p>'.__('Failed to install/update the translation:', 'woocommerce').' '.__('Sorry but there is no translation available for your language =/', 'woocommerce').'</p></div>';
-					break;
-				default :
-					// Force WordPress find for new updates and hide the WooCommerce translation update
-					set_site_transient('update_plugins', null);
-
-					echo '<div class="updated"><p>'.__('Translations installed/updated successfully!', 'woocommerce').'</p></div>';
-					break;
-			}
-		}
-
 		// Display message if settings settings have been saved
 		if (isset($_REQUEST['settings-updated'])) {
-			echo '<div class="updated"><p>'.__('Your changes have been saved.', 'woocommerce').'</p></div>';
+			echo '<div class="updated"><p>'.__('Your changes have been saved.', 'jigoshop').'</p></div>';
 		}
 
 		$template = jigoshop_locate_template('admin/status/tools');
@@ -178,48 +163,33 @@ class Jigoshop_Admin_Status
 	{
 		$tools = array(
 			'clear_transients' => array(
-				'name' => __('WC Transients', 'woocommerce'),
-				'button' => __('Clear transients', 'woocommerce'),
-				'desc' => __('This tool will clear the product/shop transients cache.', 'woocommerce'),
+				'name' => __('Jigoshop Transients', 'jigoshop'),
+				'button' => __('Clear transients', 'jigoshop'),
+				'desc' => __('This tool will clear the product/shop transients cache.', 'jigoshop'),
 			),
 			'clear_expired_transients' => array(
-				'name' => __('Expired Transients', 'woocommerce'),
-				'button' => __('Clear expired transients', 'woocommerce'),
-				'desc' => __('This tool will clear ALL expired transients from WordPress.', 'woocommerce'),
+				'name' => __('Expired Transients', 'jigoshop'),
+				'button' => __('Clear expired transients', 'jigoshop'),
+				'desc' => __('This tool will clear ALL expired transients from WordPress.', 'jigoshop'),
 			),
 			'recount_terms' => array(
-				'name' => __('Term counts', 'woocommerce'),
-				'button' => __('Recount terms', 'woocommerce'),
-				'desc' => __('This tool will recount product terms - useful when changing your settings in a way which hides products from the catalog.', 'woocommerce'),
+				'name' => __('Term counts', 'jigoshop'),
+				'button' => __('Recount terms', 'jigoshop'),
+				'desc' => __('This tool will recount product terms - useful when changing your settings in a way which hides products from the catalog.', 'jigoshop'),
 			),
 			'reset_roles' => array(
-				'name' => __('Capabilities', 'woocommerce'),
-				'button' => __('Reset capabilities', 'woocommerce'),
-				'desc' => __('This tool will reset the admin, customer and shop_manager roles to default. Use this if your users cannot access all of the WooCommerce admin pages.', 'woocommerce'),
-			),
-			'clear_sessions' => array(
-				'name' => __('Customer Sessions', 'woocommerce'),
-				'button' => __('Clear all sessions', 'woocommerce'),
-				'desc' => __('<strong class="red">Warning:</strong> This tool will delete all customer session data from the database, including any current live carts.', 'woocommerce'),
-			),
-			'install_pages' => array(
-				'name' => __('Install WooCommerce Pages', 'woocommerce'),
-				'button' => __('Install pages', 'woocommerce'),
-				'desc' => __('<strong class="red">Note:</strong> This tool will install all the missing WooCommerce pages. Pages already defined and set up will not be replaced.', 'woocommerce'),
+				'name' => __('Capabilities', 'jigoshop'),
+				'button' => __('Reset capabilities', 'jigoshop'),
+				'desc' => __('This tool will reset the admin, customer and shop_manager roles to default. Use this if your users cannot access all of the jigoshop admin pages.', 'jigoshop'),
 			),
 			'delete_taxes' => array(
-				'name' => __('Delete all WooCommerce tax rates', 'woocommerce'),
-				'button' => __('Delete ALL tax rates', 'woocommerce'),
-				'desc' => __('<strong class="red">Note:</strong> This option will delete ALL of your tax rates, use with caution.', 'woocommerce'),
+				'name' => __('Delete all jigoshop tax rates', 'jigoshop'),
+				'button' => __('Delete ALL tax rates', 'jigoshop'),
+				'desc' => __('<strong class="red">Note:</strong> This option will delete ALL of your tax rates, use with caution.', 'jigoshop'),
 			),
-			'reset_tracking' => array(
-				'name' => __('Reset Usage Tracking Settings', 'woocommerce'),
-				'button' => __('Reset usage tracking settings', 'woocommerce'),
-				'desc' => __('This will reset your usage tracking settings, causing it to show the opt-in banner again and not sending any data.', 'woocommerce'),
-			)
 		);
 
-		return apply_filters('woocommerce_debug_tools', $tools);
+		return apply_filters('jigoshop_debug_tools', $tools);
 	}
 
 	public static function status_logs()
@@ -227,8 +197,10 @@ class Jigoshop_Admin_Status
 		$logs = self::scan_log_files();
 
 		if (!empty($_REQUEST['log_file']) && isset($logs[sanitize_title($_REQUEST['log_file'])])) {
+			/** @noinspection PhpUnusedLocalVariableInspection */
 			$viewed_log = $logs[sanitize_title($_REQUEST['log_file'])];
 		} elseif ($logs) {
+			/** @noinspection PhpUnusedLocalVariableInspection */
 			$viewed_log = current($logs);
 		}
 
