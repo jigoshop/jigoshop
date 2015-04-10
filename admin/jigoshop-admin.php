@@ -133,104 +133,6 @@ function jigoshop_admin_head() {
 }
 add_action('admin_head', 'jigoshop_admin_head');
 
-/**
- * System info
- *
- * Shows the system info panel which contains version data and debug info
- *
- * @since 		1.0
- * @usedby 		jigoshop_settings()
- */
-function jigoshop_system_info() {
-	?>
-<div class="wrap jigoshop">
-	<div class="icon32 icon32-jigoshop-debug" id="icon-jigoshop"><br/></div>
-	<h2><?php _e('System Information','jigoshop') ?></h2>
-	<p>Use the information below when submitting technical support requests via <a href="https://wordpress.org/support/plugin/jigoshop" title="Jigoshop Support" target="_blank">Jigoshop Support</a>.</p>
-
-<textarea readonly="readonly" id="system-info-textarea" title="To copy the system info, click below then press Ctrl + C (PC) or Cmd + C (Mac).">
-
-	### Begin System Info ###
-
-	Multi-site:               <?php echo is_multisite() ? 'Yes' . "\n" : 'No' . "\n" ?>
-
-	SITE_URL:                 <?php echo site_url() . "\n"; ?>
-	HOME_URL:                 <?php echo home_url() . "\n"; ?>
-
-	Jigoshop Version:         <?php echo jigoshop_get_plugin_data() . "\n"; ?>
-	WordPress Version:        <?php echo get_bloginfo('version') . "\n"; ?>
-
-	<?php require_once('browser.php'); $browser =  new Browser(); echo $browser ; ?>
-
-	PHP Version:              <?php echo PHP_VERSION . "\n"; ?>
-	MySQL Version:            <?php global $wpdb; echo $wpdb->db_version() . "\n"; ?>
-	Web Server Info:          <?php echo $_SERVER['SERVER_SOFTWARE'] . "\n"; ?>
-
-	eAccelerator:             <?php echo (ini_get('eaccelerator.enable') == '1' ? 'Enabled' : 'Disabled'); echo PHP_EOL; ?>
-	APC:                      <?php echo (ini_get('apc.enable') == '1' ? 'Enabled' : 'Disabled'); echo PHP_EOL; ?>
-	OpCache:                  <?php echo (ini_get('opcache.enable') == '1' ? 'Enabled' : 'Disabled'); echo PHP_EOL; ?>
-
-	PHP Memory Limit:         <?php echo ini_get('memory_limit') . "\n"; ?>
-	PHP Execution Time:       <?php echo ini_get('max_execution_time') . "\n"; ?>
-	PHP Post Max Size:        <?php if(function_exists('phpversion')) echo (jigoshop_let_to_num(ini_get('post_max_size'))/(1024*1024))."MB"; ?><?php echo "\n"; ?>
-	PHP Upload Max File Size: <?php if(function_exists('phpversion')) echo (jigoshop_let_to_num(ini_get('upload_max_filesize'))/(1024*1024))."MB"; ?><?php echo "\n"; ?>
-	PHP Max Input Time:       <?php echo ini_get('max_input_time'); ?><?php echo "\n"; ?>
-	PHP Max Input Vars:       <?php echo ini_get('max_input_vars'); ?><?php echo "\n"; ?>
-	WordPress Memory Limit:   <?php echo (jigoshop_let_to_num(WP_MEMORY_LIMIT)/(1024*1024))."MB"; ?><?php echo "\n"; ?>
-
-	Short Open Tag:           <?php echo (ini_get('short_open_tag') ? 'Enabled' : 'Disabled'); ?><?php echo "\n"; ?>
-	Allow URL fopen:          <?php echo (ini_get('allow_url_fopen') ? 'Enabled' : 'Disabled'); ?><?php echo "\n"; ?>
-	cURL support:             <?php echo (function_exists('curl_init') && function_exists('curl_exec') ? 'Enabled' : 'Disabled'); ?><?php echo "\n"; ?>
-
-	WP_DEBUG:                 <?php echo defined('WP_DEBUG') ? WP_DEBUG ? 'Enabled' . "\n" : 'Disabled' . "\n" : 'Not set' . "\n" ?>
-	WP Table Prefix:          <?php global $wpdb; echo "Length: ". strlen($wpdb->prefix); echo " Status:"; if (strlen($wpdb->prefix)>16){echo " ERROR: Too Long";} else {echo " Acceptable";} echo "\n"; ?>
-
-	Show On Front:            <?php echo get_option('show_on_front') . "\n" ?>
-	Page On Front:            <?php echo get_option('page_on_front') . "\n" ?>
-	Page For Posts:           <?php echo get_option('page_for_posts') . "\n" ?>
-
-	Session:                  <?php echo isset( $_SESSION ) ? 'Enabled' : 'Disabled'; ?><?php echo "\n"; ?>
-	Session Name:             <?php echo esc_html( ini_get( 'session.name' ) ); ?><?php echo "\n"; ?>
-	Cookie Path:              <?php echo esc_html( ini_get( 'session.cookie_path' ) ); ?><?php echo "\n"; ?>
-	Save Path:                <?php echo esc_html( ini_get( 'session.save_path' ) ); ?><?php echo "\n"; ?>
-	Use Cookies:              <?php echo (ini_get('session.use_cookies') ? 'On' : 'Off'); ?><?php echo "\n"; ?>
-	Use Only Cookies:         <?php echo (ini_get('session.use_only_cookies') ? 'On' : 'Off'); ?><?php echo "\n"; ?>
-
-	DISPLAY ERRORS:           <?php echo (ini_get('display_errors')) ? 'On (' . ini_get('display_errors') . ')' : 'N/A'; ?><?php echo "\n"; ?>
-	FSOCKOPEN:                <?php echo (function_exists('fsockopen')) ? 'Supported' : 'Not supported'; ?><?php echo "\n"; ?>
-
-	ACTIVE PLUGINS:
-
-<?php
-$plugins = get_plugins();
-$active_plugins = get_option('active_plugins', array());
-
-foreach ( $plugins as $plugin_path => $plugin ):
-
-	//If the plugin isn't active, don't show it.
-	if ( !in_array($plugin_path, $active_plugins) )
-		continue;
-?>
-	<?php echo $plugin['Name']; ?>: <?php echo $plugin['Version']; ?>
-
-<?php endforeach; ?>
-
-	CURRENT THEME:
-
-<?php
-$theme_data = wp_get_theme();
-echo $theme_data->Name . ': ' . $theme_data->Version;
-?>
-
-
-	### End System Info ###
-</textarea>
-
-	</div>
-</div>
-<?php
-}
-
 function jigoshop_get_plugin_data( $key = 'Version' ) {
 	$data = get_plugin_data( JIGOSHOP_DIR.'/jigoshop.php' );
 
@@ -242,8 +144,6 @@ function jigoshop_feature_product() {
 	if( !is_admin() ) die;
 
 	if( !current_user_can('edit_posts') ) wp_die( __('You do not have sufficient permissions to access this page.') );
-
-	// if( !check_admin_referer()) wp_die( __('You have taken too long. Please go back and retry.', 'jigoshop') );
 
 	$post_id = isset($_GET['product_id']) && (int)$_GET['product_id'] ? (int)$_GET['product_id'] : '';
 
