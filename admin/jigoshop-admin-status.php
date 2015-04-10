@@ -219,14 +219,6 @@ class Jigoshop_Admin_Status
 			)
 		);
 
-		if (get_locale() !== 'en_US') {
-			$tools['translation_upgrade'] = array(
-				'name' => __('Translation Upgrade', 'woocommerce'),
-				'button' => __('Force Translation Upgrade', 'woocommerce'),
-				'desc' => __('<strong class="red">Note:</strong> This option will force the translation upgrade for your language if a translation is available.', 'woocommerce'),
-			);
-		}
-
 		return apply_filters('woocommerce_debug_tools', $tools);
 	}
 

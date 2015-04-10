@@ -2696,6 +2696,14 @@ table.jigoshop_status_table td mark.error {
 table.jigoshop_status_table td mark.yes {
 	color: #7ad03a;
 }
+#log-viewer-select {
+	line-height: 180%;
+	padding: 10px 0 8px;
+}
+#log-viewer textarea {
+	resize: vertical;
+	width: 100%;
+}
 
 /**
  * Tooltips
