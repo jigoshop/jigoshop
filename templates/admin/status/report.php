@@ -6,7 +6,8 @@ if (!defined('ABSPATH')) {
 <div class="updated jigoshop-message">
 	<p><?php _e('Please copy and paste this information in your ticket when contacting support:', 'jigoshop'); ?> </p>
 	<p class="submit"><a href="#" class="button-primary debug-report"><?php _e('Get System Report', 'jigoshop'); ?></a>
-	<a class="skip button-primary" href="http://docs.woothemes.com/document/understanding-the-jigoshop-system-status-report/" target="_blank"><?php _e('Understanding the Status Report', 'jigoshop'); ?></a></p>
+	<?php // TODO: Restore when proper page is created
+	/*<a class="skip button-primary" href="http://docs.woothemes.com/document/understanding-the-jigoshop-system-status-report/" target="_blank"><?php _e('Understanding the Status Report', 'jigoshop'); ?></a></p>*/ ?>
 	<div id="debug-report">
 		<textarea readonly="readonly"></textarea>
 		<p class="submit"><button id="copy-for-support" class="button-primary" href="#" data-tip="<?php _e('Copied!', 'jigoshop'); ?>"><?php _e('Copy for Support', 'jigoshop'); ?></button></p>
