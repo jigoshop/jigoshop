@@ -18,6 +18,7 @@
 require_once( 'jigoshop-install.php' );
 require_once( 'jigoshop-write-panels.php' );
 require_once( 'jigoshop-admin-settings-api.php' );
+require_once( 'jigoshop-admin-status.php' );
 require_once( 'jigoshop-admin-attributes.php' );
 require_once( 'jigoshop-admin-post-types.php' );
 require_once( 'jigoshop-admin-product-quick-bulk-edit.php' );
@@ -93,7 +94,7 @@ function jigoshop_after_admin_menu()
 		do_action('jigoshop_admin_enqueue_scripts');
 	});
 
-	add_submenu_page('jigoshop', __('System Information', 'jigoshop'), __('System Info', 'jigoshop'), 'manage_jigoshop', 'jigoshop_system_info', 'jigoshop_system_info');
+	add_submenu_page('jigoshop', __('System Information', 'jigoshop'), __('System Info', 'jigoshop'), 'manage_jigoshop', 'jigoshop_system_info', array('Jigoshop_Admin_Status', 'output'));
 
 	do_action('jigoshop_after_admin_menu');
 }

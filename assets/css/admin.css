@@ -2655,6 +2655,47 @@ canvas.overlay {
 	vertical-align: top;
 }
 
+/** System Info page */
+#debug-report {
+	display: none;
+	margin: 10px 0;
+	padding: 0;
+	position: relative;
+}
+#debug-report textarea {
+	border-radius: 0;
+	font-family: monospace;
+	font-size: 12px;
+	height: 300px;
+	line-height: 20px;
+	margin: 0;
+	outline: 0 none;
+	padding: 20px;
+	resize: none;
+	width: 100%;
+}
+.jigoshop table.jigoshop_status_table {
+	width: 100%;
+}
+table.jigoshop_status_table td:first-child {
+	width: 33%;
+}
+table.jigoshop_status_table td {
+	font-size: 1.1em;
+	padding: 9px;
+}
+.jigoshop table.jigoshop_status_table td.help {
+	width: 1em;
+}
+table.jigoshop_status_table td mark {
+	background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+table.jigoshop_status_table td mark.error {
+	color: #a00;
+}
+table.jigoshop_status_table td mark.yes {
+	color: #7ad03a;
+}
 
 /**
  * Tooltips

@@ -94,6 +94,10 @@ function jigoshop_format_decimal($number, $dp = false, $trim_zeros = false)
 	return $number;
 }
 
+function jigoshop_get_core_supported_themes() {
+	return array( 'twentyfifteen', 'twentyfourteen', 'twentythirteen', 'twentyeleven', 'twentytwelve', 'twentyten' );
+}
+
 /**
  * Get total spent by customer
  *
