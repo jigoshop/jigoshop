@@ -252,7 +252,7 @@ class Jigoshop_Admin_Status
 	 */
 	public static function scan_log_files()
 	{
-		$files = @scandir(WC_LOG_DIR);
+		$files = @scandir(JIGOSHOP_LOG_DIR);
 		$result = array();
 
 		if ($files) {
