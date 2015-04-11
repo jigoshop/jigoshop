@@ -2705,6 +2705,53 @@ table.jigoshop_status_table td mark.yes {
 	width: 100%;
 }
 
+/** Extensions page */
+.jigoshop_extensions_wrap .products {
+	overflow: hidden;
+}
+.jigoshop_extensions_wrap .products li {
+	float: left;
+	margin: 0 1em 1em 0 !important;
+	padding: 0;
+	vertical-align: top;
+	width: 300px;
+}
+.jigoshop_extensions_wrap .products li a {
+	background: none repeat scroll 0 0 #f5f5f5;
+	border: 1px solid #ddd;
+	box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 -1px 0 rgba(0, 0, 0, 0.1) inset;
+	color: inherit;
+	display: block;
+	min-height: 220px;
+	overflow: hidden;
+	text-decoration: none;
+}
+.jigoshop_extensions_wrap .products li a img {
+	background: none repeat scroll 0 0 #fff;
+	display: inline-block;
+	margin: 0;
+	max-height: 24px;
+	max-width: 258px;
+	padding: 0 20px 0 0;
+	vertical-align: text-bottom;
+}
+.jigoshop_extensions_wrap .products li a h3 {
+	background: none repeat scroll 0 0 #fff;
+	margin: 0 !important;
+	padding: 20px !important;
+}
+.jigoshop_extensions_wrap .products li a p {
+	border-top: 1px solid #f1f1f1;
+	margin: 0 !important;
+	padding: 20px !important;
+}
+.jigoshop_extensions_wrap .products li a .price {
+	color: green;
+	float: right;
+	margin: 10px 10px 0 0;
+	font-size: 120%;
+}
+
 /**
  * Tooltips
  */

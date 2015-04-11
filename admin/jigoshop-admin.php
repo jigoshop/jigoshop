@@ -18,6 +18,7 @@
 require_once( 'jigoshop-install.php' );
 require_once( 'jigoshop-write-panels.php' );
 require_once( 'jigoshop-admin-settings-api.php' );
+require_once( 'jigoshop-admin-extensions.php' );
 require_once( 'jigoshop-admin-status.php' );
 require_once( 'jigoshop-admin-attributes.php' );
 require_once( 'jigoshop-admin-post-types.php' );
@@ -94,6 +95,7 @@ function jigoshop_after_admin_menu()
 		do_action('jigoshop_admin_enqueue_scripts');
 	});
 
+	add_submenu_page('jigoshop', __('Extensions', 'jigoshop'), __('Extensions', 'jigoshop'), 'manage_jigoshop', 'jigoshop_extensions', array('Jigoshop_Admin_Extensions', 'output'));
 	add_submenu_page('jigoshop', __('System Information', 'jigoshop'), __('System Info', 'jigoshop'), 'manage_jigoshop', 'jigoshop_system_info', array('Jigoshop_Admin_Status', 'output'));
 
 	do_action('jigoshop_after_admin_menu');
@@ -211,8 +213,6 @@ add_action('admin_footer-edit-tags.php', 'jigoshop_categories_scripts');
  */
 function jigoshop_categories_ordering() {
 
-	global $wpdb;
-
 	$id = (int)$_POST['id'];
 	$next_id  = isset($_POST['nextid']) && (int) $_POST['nextid'] ? (int) $_POST['nextid'] : null;
 
@@ -236,7 +236,7 @@ if (!function_exists('boolval')) {
 	 * if the variable is not false and not empty. If strict, the value of the variable must exactly match a
 	 * value in the true test array to evaluate to true
 	 *
-	 * @param $in The input variable
+	 * @param $in int The input variable
 	 * @param bool $strict
 	 * @return bool|null|string
 	 */
