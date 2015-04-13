@@ -102,26 +102,6 @@ class Jigoshop_Admin_Reports
 			),
 		);
 
-//		if (wc_tax_enabled()) {
-//			$reports['taxes'] = array(
-//				'title' => __('Taxes', 'jigoshop'),
-//				'reports' => array(
-//					'taxes_by_code' => array(
-//						'title' => __('Taxes by code', 'jigoshop'),
-//						'description' => '',
-//						'hide_title' => true,
-//						'callback' => array(__CLASS__, 'get_report'),
-//					),
-//					'taxes_by_date' => array(
-//						'title' => __('Taxes by date', 'jigoshop'),
-//						'description' => '',
-//						'hide_title' => true,
-//						'callback' => array(__CLASS__, 'get_report'),
-//					),
-//				),
-//			);
-//		}
-
 		$reports = apply_filters('jigoshop_admin_reports', $reports);
 		$reports = apply_filters('jigoshop_reports_charts', $reports); // Backwards compat
 

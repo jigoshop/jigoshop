@@ -591,6 +591,9 @@ abstract class Jigoshop_Admin_Report
 		// Ensure all days (or months) have values first in this range
 		for ($i = 0; $i <= $interval; $i++) {
 			switch ($group_by) {
+				case 'hour' :
+					$time = strtotime(date('YmdHi', strtotime($start_date)))+$i*3600000;
+					break;
 				case 'day' :
 					$time = strtotime(date('Ymd', strtotime("+{$i} DAY", $start_date))).'000';
 					break;
@@ -607,6 +610,9 @@ abstract class Jigoshop_Admin_Report
 
 		foreach ($data as $d) {
 			switch ($group_by) {
+				case 'hour' :
+					$time = (date('H', strtotime($d->$date_key))*3600).'000';
+					break;
 				case 'day' :
 					$time = strtotime(date('Ymd', strtotime($d->$date_key))).'000';
 					break;
@@ -681,10 +687,20 @@ abstract class Jigoshop_Admin_Report
 				$this->end_date = strtotime('midnight', current_time('timestamp'));
 				$this->chart_groupby = 'day';
 				break;
+			case 'today' :
+				$this->start_date = strtotime('midnight', current_time('timestamp'));
+				$this->end_date = strtotime('+1 hour', current_time('timestamp'));
+				$this->chart_groupby = 'hour';
+				break;
 		}
 
 		// Group by
 		switch ($this->chart_groupby) {
+			case 'hour' :
+				$this->group_by_query = 'YEAR(posts.post_date), MONTH(posts.post_date), DAY(posts.post_date), HOUR(posts.post_date)';
+				$this->chart_interval = ceil(max(0, ($this->end_date - $this->start_date) / (60 * 60)));
+				$this->barwidth = 60 * 60 * 1000;
+				break;
 			case 'day' :
 				$this->group_by_query = 'YEAR(posts.post_date), MONTH(posts.post_date), DAY(posts.post_date)';
 				$this->chart_interval = ceil(max(0, ($this->end_date - $this->start_date) / (60 * 60 * 24)));

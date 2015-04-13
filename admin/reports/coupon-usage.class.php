@@ -79,7 +79,8 @@ class Jigoshop_Report_Coupon_Usage extends Jigoshop_Admin_Report
 			'year' => __('Year', 'jigoshop'),
 			'last_month' => __('Last Month', 'jigoshop'),
 			'month' => __('This Month', 'jigoshop'),
-			'7day' => __('Last 7 Days', 'jigoshop')
+			'7day' => __('Last 7 Days', 'jigoshop'),
+			'today' => __('Today', 'jigoshop'),
 		);
 
 		$this->chart_colours = array(
@@ -89,7 +90,7 @@ class Jigoshop_Report_Coupon_Usage extends Jigoshop_Admin_Report
 
 		$current_range = !empty($_GET['range']) ? sanitize_text_field($_GET['range']) : '7day';
 
-		if (!in_array($current_range, array('custom', 'year', 'last_month', 'month', '7day'))) {
+		if (!in_array($current_range, array('custom', 'year', 'last_month', 'month', '7day', 'today'))) {
 			$current_range = '7day';
 		}
 
@@ -278,77 +279,6 @@ class Jigoshop_Report_Coupon_Usage extends Jigoshop_Admin_Report
 	{
 		global $wp_locale;
 
-		// Get orders and dates in range - we want the SUM of order totals, COUNT of order items, COUNT of orders, and the date
-		$order_coupon_counts_query = array(
-			'data' => array(
-				'order_item_name' => array(
-					'type' => 'order_item',
-					'order_item_type' => 'coupon',
-					'function' => 'COUNT',
-					'name' => 'order_coupon_count'
-				),
-				'post_date' => array(
-					'type' => 'post_data',
-					'function' => '',
-					'name' => 'post_date'
-				),
-			),
-			'where' => array(
-				array(
-					'key' => 'order_item_type',
-					'value' => 'coupon',
-					'operator' => '='
-				)
-			),
-			'group_by' => $this->group_by_query,
-			'order_by' => 'post_date ASC',
-			'query_type' => 'get_results',
-			'filter_range' => true,
-			'order_types' => array('shop_order')
-		);
-
-		$order_discount_amounts_query = array(
-			'data' => array(
-				'discount_amount' => array(
-					'type' => 'order_item_meta',
-					'order_item_type' => 'coupon',
-					'function' => 'SUM',
-					'name' => 'discount_amount'
-				),
-				'post_date' => array(
-					'type' => 'post_data',
-					'function' => '',
-					'name' => 'post_date'
-				),
-			),
-			'where' => array(
-				array(
-					'key' => 'order_item_type',
-					'value' => 'coupon',
-					'operator' => '='
-				)
-			),
-			'group_by' => $this->group_by_query.', order_item_name',
-			'order_by' => 'post_date ASC',
-			'query_type' => 'get_results',
-			'filter_range' => true,
-			'order_types' => array('shop_order')
-		);
-
-		if ($this->coupon_codes) {
-			$coupon_code_query = array(
-				'type' => 'order_item',
-				'key' => 'order_item_name',
-				'value' => $this->coupon_codes,
-				'operator' => 'IN'
-			);
-			$order_coupon_counts_query['where'][] = $coupon_code_query;
-			$order_discount_amounts_query['where'][] = $coupon_code_query;
-		}
-
-//		$order_coupon_counts = $this->get_order_report_data($order_coupon_counts_query);
-//		$order_discount_amounts = $this->get_order_report_data($order_discount_amounts_query);
-
 		$data = $this->get_report_data();
 		$order_coupon_counts = array_map(function($item){
 			$time = new stdClass();
@@ -366,6 +296,16 @@ class Jigoshop_Report_Coupon_Usage extends Jigoshop_Admin_Report
 
 			return $time;
 		}, $data);
+
+		$start_time = $this->start_date;
+		$end_time = $this->end_date;
+		$filter_times = function($item) use ($start_time, $end_time){
+			$time = strtotime($item->post_date);
+			return $time >= $start_time && $time < $end_time;
+		};
+
+		$order_coupon_counts = array_filter($order_coupon_counts, $filter_times);
+		$order_discount_amounts = array_filter($order_discount_amounts, $filter_times);
 
 		// Prepare data for report
 		$order_coupon_counts = $this->prepare_chart_data($order_coupon_counts, 'post_date', 'order_coupon_count', $this->chart_interval, $this->start_date, $this->chart_groupby);
@@ -440,7 +380,11 @@ class Jigoshop_Report_Coupon_Usage extends Jigoshop_Admin_Report
 								position: "bottom",
 								tickColor: 'transparent',
 								mode: "time",
-								timeformat: "<?php if ($this->chart_groupby == 'day') {echo '%d %b';} else {echo '%b';} ?>",
+								timeformat: "<?php if ($this->chart_groupby == 'hour') {echo '%H';} elseif ($this->chart_groupby == 'day') {echo '%d %b';} else {echo '%b';} ?>",
+								<?php if ($this->chart_groupby == 'hour'): ?>
+								min: 0,
+								max: 24*3600000,
+								<?php endif; ?>
 								monthNames: <?php echo json_encode(array_values($wp_locale->month_abbrev)) ?>,
 								tickLength: 1,
 								minTickSize: [1, "<?php echo $this->chart_groupby; ?>"],

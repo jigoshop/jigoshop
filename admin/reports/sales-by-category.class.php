@@ -76,7 +76,8 @@ class Jigoshop_Report_Sales_By_Category extends Jigoshop_Admin_Report
 			'year' => __('Year', 'jigoshop'),
 			'last_month' => __('Last Month', 'jigoshop'),
 			'month' => __('This Month', 'jigoshop'),
-			'7day' => __('Last 7 Days', 'jigoshop')
+			'7day' => __('Last 7 Days', 'jigoshop'),
+			'today' => __('Today', 'jigoshop'),
 		);
 
 		$this->chart_colours = array(
@@ -99,7 +100,7 @@ class Jigoshop_Report_Sales_By_Category extends Jigoshop_Admin_Report
 
 		$current_range = !empty($_GET['range']) ? sanitize_text_field($_GET['range']) : '7day';
 
-		if (!in_array($current_range, array('custom', 'year', 'last_month', 'month', '7day'))) {
+		if (!in_array($current_range, array('custom', 'year', 'last_month', 'month', '7day', 'today'))) {
 			$current_range = '7day';
 		}
 
@@ -131,6 +132,9 @@ class Jigoshop_Report_Sales_By_Category extends Jigoshop_Admin_Report
 			if (is_array($order_items)) {
 				foreach ($order_items as $order_item) {
 					switch ($this->chart_groupby) {
+						case 'hour' :
+							$time = (date('H', strtotime($order_item->post_date))*3600).'000';
+							break;
 						case 'day' :
 							$time = strtotime(date('Ymd', strtotime($order_item->post_date))) * 1000;
 							break;
@@ -246,6 +250,9 @@ class Jigoshop_Report_Sales_By_Category extends Jigoshop_Admin_Report
 					$interval_total = 0;
 
 					switch ($this->chart_groupby) {
+						case 'hour' :
+							$time = strtotime(date('YmdHi', strtotime($this->start_date)))+$i*3600000;
+							break;
 						case 'day' :
 							$time = strtotime(date('Ymd', strtotime("+{$i} DAY", $this->start_date))) * 1000;
 							break;
@@ -342,7 +349,11 @@ class Jigoshop_Report_Sales_By_Category extends Jigoshop_Admin_Report
 									position: "bottom",
 									tickColor: 'transparent',
 									mode: "time",
-									timeformat: "<?php if ($this->chart_groupby == 'day') echo '%d %b'; else echo '%b'; ?>",
+									timeformat: "<?php if ($this->chart_groupby == 'hour') {echo '%H';} elseif ($this->chart_groupby == 'day') {echo '%d %b';} else {echo '%b';} ?>",
+									<?php if ($this->chart_groupby == 'hour'): ?>
+									min: 0,
+									max: 24*3600000,
+									<?php endif; ?>
 									monthNames: <?php echo json_encode(array_values($wp_locale->month_abbrev)); ?>,
 									tickLength: 1,
 									minTickSize: [1, "<?php echo $this->chart_groupby; ?>"],
