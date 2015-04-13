@@ -33,7 +33,7 @@ $theme = wp_get_theme();
 			$addons = $addons->products->$view;
 			foreach ($addons as $addon) {
 				echo '<li class="product">';
-				echo '<a href="'.$addon->link.'">';
+				echo '<a href="'.$addon->link.'" target="_blank">';
 				echo '<span class="price">'.$addon->price.'</span>';
 				if (!empty($addon->image)) {
 					echo '<h3><img src="'.$addon->image.'"/>'.$addon->title.'</h3>';
