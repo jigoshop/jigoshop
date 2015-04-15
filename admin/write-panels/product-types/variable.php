@@ -51,8 +51,8 @@ class jigoshop_product_meta_variable extends jigoshop_product_meta
 			return;
 		}
 
-		jigoshop_add_script('jigoshop-variable-js', JIGOSHOP_URL.'/assets/js/variable.js', array('jquery'), array('in_footer' => true));
-		jigoshop_localize_script('jigoshop-variable-js', 'varmeta', array(
+		jrto_enqueue_script('admin', 'jigoshop-variable-js', JIGOSHOP_URL.'/assets/js/variable.js', array('jquery'), array('in_footer' => true));
+		jrto_localize_script('jigoshop-variable-js', 'varmeta', array(
 			'assets_url' => JIGOSHOP_URL,
 			'ajax_url' => admin_url('admin-ajax.php'),
 			'i18n' => array(

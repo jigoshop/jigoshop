@@ -78,7 +78,7 @@ class flat_rate extends jigoshop_shipping_method
 
 	public function admin_scripts()
 	{
-		jigoshop_add_script('flat_rate_shipping', JIGOSHOP_URL.'/assets/js/shipping/flat_rate/admin.js', array('jquery'));
+		jrto_enqueue_script('admin', 'flat_rate_shipping', JIGOSHOP_URL.'/assets/js/shipping/flat_rate/admin.js', array('jquery'));
 	}
 
 	/**

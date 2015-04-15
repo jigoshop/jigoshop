@@ -172,3 +172,197 @@ function jigoshop_get_customer_order_count($user_id)
 
 	return absint($count);
 }
+
+if (!function_exists('jrto_enqueue_script')) {
+	/**
+	 * Enqueues script.
+	 * Available options:
+	 *   * version - Wordpress script version number
+	 *   * in_footer - is this script required to add to the footer?
+	 *
+	 * Proper locations: 'admin', 'frontend'
+	 *
+	 * @param string $location Location to load script on.
+	 * @param string $handle Handle name.
+	 * @param bool $src Source file.
+	 * @param array $dependencies List of dependencies to the script.
+	 * @param array $options List of options.
+	 */
+	function jrto_enqueue_script($location, $handle, $src = false, array $dependencies = array(), array $options = array())
+	{
+		if (class_exists('\Jigoshop\RoundTrip\Optimizer')) {
+			/** @noinspection PhpUndefinedNamespaceInspection */
+			/** @noinspection PhpUndefinedClassInspection */
+			Jigoshop\RoundTrip\Optimizer\Helper\Script::enqueue($location, $handle, $src, $dependencies, $options);
+		} else {
+			$action = $location == 'admin' ? 'admin' : 'wp';
+			add_action($action.'_enqueue_scripts', function() use ($handle, $src, $dependencies, $options){
+				$version = isset($options['version']) ? $options['version'] : false;
+				$footer = isset($options['in_footer']) ? $options['in_footer'] : false;
+				wp_enqueue_script($handle, $src, $dependencies, $version, $footer);
+			}, 9);
+		}
+	}
+}
+
+if (!function_exists('jrto_register_script')) {
+	/**
+	 * Registers script.
+	 * Available options:
+	 *   * version - Wordpress script version number
+	 *   * in_footer - is this script required to add to the footer?
+	 *
+	 * Proper locations: 'admin', 'frontend'
+	 *
+	 * @param string $location Location to load script on.
+	 * @param string $handle Handle name.
+	 * @param bool $src Source file.
+	 * @param array $dependencies List of dependencies to the script.
+	 * @param array $options List of options.
+	 */
+	function jrto_register_script($location, $handle, $src, array $dependencies = array(), array $options = array())
+	{
+		if (class_exists('Jigoshop\RoundTrip\Optimizer')) {
+			/** @noinspection PhpUndefinedNamespaceInspection */
+			/** @noinspection PhpUndefinedClassInspection */
+			Jigoshop\RoundTrip\Optimizer\Helper\Script::register($location, $handle, $src, $dependencies, $options);
+		} else {
+			$action = $location == 'admin' ? 'admin' : 'wp';
+			add_action($action.'_enqueue_scripts', function() use ($handle, $src, $dependencies, $options){
+				$version = isset($options['version']) ? $options['version'] : false;
+				$footer = isset($options['in_footer']) ? $options['in_footer'] : false;
+				wp_register_script($handle, $src, $dependencies, $version, $footer);
+			}, 9);
+		}
+	}
+}
+
+if (!function_exists('jrto_deregister_script')) {
+	/**
+	 * Removes registered script.
+	 *
+	 * Proper locations: 'admin', 'frontend'
+	 *
+	 * @param string $location Location to load script on.
+	 * @param string $handle Handle name.
+	 */
+	function jrto_deregister_script($location, $handle)
+	{
+		if (class_exists('Jigoshop\RoundTrip\Optimizer')) {
+			/** @noinspection PhpUndefinedNamespaceInspection */
+			/** @noinspection PhpUndefinedClassInspection */
+			Jigoshop\RoundTrip\Optimizer\Helper\Script::deregister($location, $handle);
+		} else {
+			wp_deregister_script($handle);
+		}
+	}
+}
+
+if (!function_exists('jrto_localize_script')) {
+	/**
+	 * Localizes script.
+	 *
+	 * @param string $handle Handle name.
+	 * @param string $object Object name.
+	 * @param array $value Value to localize.
+	 */
+	function jrto_localize_script($handle, $object, $value)
+	{
+		if (class_exists('Jigoshop\RoundTrip\Optimizer')) {
+			/** @noinspection PhpUndefinedNamespaceInspection */
+			/** @noinspection PhpUndefinedClassInspection */
+			Jigoshop\RoundTrip\Optimizer\Helper\Script::localize($handle, $object, $value);
+		} else {
+			$action = is_admin() ? 'admin' : 'wp';
+			add_action($action.'_enqueue_scripts', function() use ($handle, $object, $value){
+				wp_localize_script($handle, $object, $value);
+			}, 9);
+		}
+	}
+}
+
+
+if (!function_exists('jrto_enqueue_style')) {
+	/**
+	 * Enqueues style.
+	 * Available options:
+	 *   * version - Wordpress script version number
+	 *   * media - CSS media this style represents
+	 *
+	 * Proper locations: 'admin', 'frontend'
+	 *
+	 * @param string $location Location to load script on.
+	 * @param string $handle Handle name.
+	 * @param bool $src Source file.
+	 * @param array $dependencies List of dependencies to the script.
+	 * @param array $options List of options.
+	 */
+	function jrto_enqueue_style($location, $handle, $src = false, array $dependencies = array(), array $options = array())
+	{
+		if (class_exists('\Jigoshop\RoundTrip\Optimizer')) {
+			/** @noinspection PhpUndefinedNamespaceInspection */
+			/** @noinspection PhpUndefinedClassInspection */
+			Jigoshop\RoundTrip\Optimizer\Helper\Style::enqueue($location, $handle, $src, $dependencies, $options);
+		} else {
+			$action = $location == 'admin' ? 'admin' : 'wp';
+			add_action($action.'_enqueue_scripts', function() use ($handle, $src, $dependencies, $options){
+				$version = isset($options['version']) ? $options['version'] : false;
+				$media = isset($options['media']) ? $options['media'] : 'all';
+				wp_enqueue_style($handle, $src, $dependencies, $version, $media);
+			}, 9);
+		}
+	}
+}
+
+if (!function_exists('jrto_register_style')) {
+	/**
+	 * Registers style.
+	 * Available options:
+	 *   * version - Wordpress script version number
+	 *   * media - CSS media this style represents
+	 *
+	 * Proper locations: 'admin', 'frontend'
+	 *
+	 * @param string $location Location to load script on.
+	 * @param string $handle Handle name.
+	 * @param bool $src Source file.
+	 * @param array $dependencies List of dependencies to the script.
+	 * @param array $options List of options.
+	 */
+	function jrto_register_style($location, $handle, $src, array $dependencies = array(), array $options = array())
+	{
+		if (class_exists('\Jigoshop\RoundTrip\Optimizer')) {
+			/** @noinspection PhpUndefinedNamespaceInspection */
+			/** @noinspection PhpUndefinedClassInspection */
+			Jigoshop\RoundTrip\Optimizer\Helper\Style::register($handle, $src, $dependencies, $options);
+		} else {
+			$action = $location == 'admin' ? 'admin' : 'wp';
+			add_action($action.'_enqueue_scripts', function() use ($handle, $src, $dependencies, $options){
+				$version = isset($options['version']) ? $options['version'] : false;
+				$media = isset($options['media']) ? $options['media'] : 'all';
+				wp_register_style($handle, $src, $dependencies, $version, $media);
+			}, 9);
+		}
+	}
+}
+
+if (!function_exists('jrto_deregister_style')) {
+	/**
+	 * Removes registered style.
+	 *
+	 * Proper locations: 'admin', 'frontend'
+	 *
+	 * @param string $location Location to load script on.
+	 * @param string $handle Handle name.
+	 */
+	function jrto_deregister_style($location, $handle)
+	{
+		if (class_exists('Jigoshop\RoundTrip\Optimizer')) {
+			/** @noinspection PhpUndefinedNamespaceInspection */
+			/** @noinspection PhpUndefinedClassInspection */
+			Jigoshop\RoundTrip\Optimizer\Helper\Style::deregister($location, $handle);
+		} else {
+			wp_deregister_style($handle);
+		}
+	}
+}

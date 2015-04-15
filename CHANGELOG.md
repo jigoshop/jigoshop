@@ -4,6 +4,7 @@
     * New: Improved Reports page.
     * New: Improved System Info page.
     * New: Jigoshop Extensions page.
+    * New: Remove Jigoshop Web Optimization System in favor of new Jigoshop Round Trip Optimizer extension.
     * Improved: Ability to set handling fee for Local Pickup.
     * Improved: Reformatted and checked Free Shipping and Local Pickup shipping methods.
     * Improved: Display "Out of stock" for variable products without any available variation.

@@ -4,10 +4,10 @@ require_once(JIGOSHOP_DIR.'/classes/jigoshop_user.class.php');
 
 function jigoshop_admin_user_profile(WP_User $user){
 	$customer = new jigoshop_user($user->ID);
-	
-	jigoshop_add_script('jigoshop-select2', JIGOSHOP_URL.'/assets/js/select2.min.js', array('jquery'));
-	jigoshop_add_style('jigoshop-select2', JIGOSHOP_URL.'/assets/css/select2.css');
-	
+
+	jrto_enqueue_script('admin', 'jigoshop-select2', JIGOSHOP_URL.'/assets/js/select2.min.js', array('jquery'));
+	jrto_enqueue_style('admin', 'jigoshop-select2', JIGOSHOP_URL.'/assets/css/select2.css');
+
 	jigoshop_render('admin/user-profile', array(
 		'user' => $user,
 		'customer' => $customer,

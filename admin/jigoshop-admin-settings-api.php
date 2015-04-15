@@ -37,9 +37,9 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	 * @since 1.3
 	 */
 	public function settings_scripts(){
-		jigoshop_add_script('jigoshop-bootstrap-tooltip', JIGOSHOP_URL.'/assets/js/bootstrap-tooltip.min.js', array('jquery'), array('version' => '2.0.3'));
-		jigoshop_add_script('jigoshop-select2', JIGOSHOP_URL.'/assets/js/select2.min.js', array('jquery'));
-		jigoshop_add_script('jigoshop-settings', JIGOSHOP_URL.'/assets/js/settings.js', array('jquery'));
+		jrto_enqueue_script('admin', 'jigoshop-bootstrap-tooltip', JIGOSHOP_URL.'/assets/js/bootstrap-tooltip.min.js', array('jquery'), array('version' => '2.0.3'));
+		jrto_enqueue_script('admin', 'jigoshop-select2', JIGOSHOP_URL.'/assets/js/select2.min.js', array('jquery'));
+		jrto_enqueue_script('admin', 'jigoshop-settings', JIGOSHOP_URL.'/assets/js/settings.js', array('jquery'));
 	}
 
 	/**
@@ -48,7 +48,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	 * @since 1.3
 	 */
 	public function settings_styles(){
-		jigoshop_add_style('jigoshop-select2', JIGOSHOP_URL.'/assets/css/select2.css');
+		jrto_enqueue_style('admin', 'jigoshop-select2', JIGOSHOP_URL.'/assets/css/select2.css');
 		do_action('jigoshop_settings_styles'); // user defined stylesheets should be registered and queued
 	}
 
@@ -93,8 +93,33 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 			}
 		}
 
-		add_action('admin_enqueue_styles', array($this, 'settings_styles'));
+		add_action('init', array($this, 'settings_styles'));
 		add_action('admin_enqueue_scripts', array($this, 'settings_scripts'));
+	}
+
+	/**
+	 * Return the current Tab slug in view
+	 *
+	 * @since 1.3
+	 */
+	public function get_current_tab_slug(){
+		if(isset($_GET['tab'])){
+			$current = $_GET['tab'];
+		} else if(isset($_POST['_wp_http_referer']) && strpos($_POST['_wp_http_referer'], '&tab=') !== false){
+			// /site/wp-admin/admin.php?page=jigoshop_settings&tab=products-inventory&settings-updated=true
+			// find the 'tab'
+			$result = strstr($_POST['_wp_http_referer'], '&tab=');
+			// &tab=products-inventory&settings-updated=true
+			$result = substr($result, 5);
+			// products-inventory&settings-updated=true
+			$end_pos = strpos($result, '&');
+			$current = substr($result, 0, $end_pos !== false ? $end_pos : strlen($result));
+			// products-inventory
+		} else {
+			$current = $this->our_parser->these_options[0]['name'];
+		}
+
+		return sanitize_title($current);
 	}
 
 	/**
@@ -238,31 +263,6 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 		}
 
 		return $menus_li;
-	}
-
-	/**
-	 * Return the current Tab slug in view
-	 *
-	 * @since 1.3
-	 */
-	public function get_current_tab_slug(){
-		if(isset($_GET['tab'])){
-			$current = $_GET['tab'];
-		} else if(isset($_POST['_wp_http_referer']) && strpos($_POST['_wp_http_referer'], '&tab=') !== false){
-			// /site/wp-admin/admin.php?page=jigoshop_settings&tab=products-inventory&settings-updated=true
-			// find the 'tab'
-			$result = strstr($_POST['_wp_http_referer'], '&tab=');
-			// &tab=products-inventory&settings-updated=true
-			$result = substr($result, 5);
-			// products-inventory&settings-updated=true
-			$end_pos = strpos($result, '&');
-			$current = substr($result, 0, $end_pos !== false ? $end_pos : strlen($result));
-			// products-inventory
-		} else {
-			$current = $this->our_parser->these_options[0]['name'];
-		}
-
-		return sanitize_title($current);
 	}
 
 	/**
@@ -496,52 +496,6 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 	}
 
 	/**
-	 * Remove all jigoshop_update_options actions on shipping and payment classes when not on those tabs
-	 *
-	 * @since  1.3
-	 */
-	private function remove_update_options($classes){
-		if(empty($classes)){
-			return;
-		}
-
-		foreach($classes as $class){
-			remove_action('jigoshop_update_options', array($class, 'process_admin_options'));
-		}
-	}
-
-	/**
-	 * Defines a custom sort for the tax_rates array. The sort that is needed is that the array is sorted
-	 * by country, followed by state, followed by compound tax. The difference is that compound must be sorted based
-	 * on compound = no before compound = yes. Ultimately, the purpose of the sort is to make sure that country, state
-	 * are all consecutive in the array, and that within those groups, compound = 'yes' always appears last. This is
-	 * so that tax classes that are compounded will be executed last in comparison to those that aren't.
-	 * last.
-	 * <br>
-	 * <pre>
-	 * eg. country = 'CA', state = 'QC', compound = 'yes'<br>
-	 *     country = 'CA', state = 'QC', compound = 'no'<br>
-	 *
-	 * will be sorted to have <br>
-	 *     country = 'CA', state = 'QC', compound = 'no'<br>
-	 *     country = 'CA', state = 'QC', compound = 'yes' <br>
-	 * </pre>
-	 *
-	 * @param array $a the first object to compare with (our inner array)
-	 * @param array $b the second object to compare with (our inner array)
-	 * @return int the results of strcmp
-	 */
-	function csort_tax_rates($a, $b){
-		$str1 = '';
-		$str2 = '';
-
-		$str1 .= $a['country'].$a['state'].($a['compound'] == 'no' ? 'a' : 'b');
-		$str2 .= $b['country'].$b['state'].($b['compound'] == 'no' ? 'a' : 'b');
-
-		return strcmp($str1, $str2);
-	}
-
-	/**
 	 * When Options are saved, return the 'jigoshop_tax_rates' option values
 	 *
 	 * @return  mixed  false if not rax rates, array of tax rates otherwise
@@ -615,6 +569,52 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 
 		usort($tax_rates, array($this, 'csort_tax_rates'));
 		return $tax_rates;
+	}
+
+	/**
+	 * Remove all jigoshop_update_options actions on shipping and payment classes when not on those tabs
+	 *
+	 * @since  1.3
+	 */
+	private function remove_update_options($classes){
+		if(empty($classes)){
+			return;
+		}
+
+		foreach($classes as $class){
+			remove_action('jigoshop_update_options', array($class, 'process_admin_options'));
+		}
+	}
+
+	/**
+	 * Defines a custom sort for the tax_rates array. The sort that is needed is that the array is sorted
+	 * by country, followed by state, followed by compound tax. The difference is that compound must be sorted based
+	 * on compound = no before compound = yes. Ultimately, the purpose of the sort is to make sure that country, state
+	 * are all consecutive in the array, and that within those groups, compound = 'yes' always appears last. This is
+	 * so that tax classes that are compounded will be executed last in comparison to those that aren't.
+	 * last.
+	 * <br>
+	 * <pre>
+	 * eg. country = 'CA', state = 'QC', compound = 'yes'<br>
+	 *     country = 'CA', state = 'QC', compound = 'no'<br>
+	 *
+	 * will be sorted to have <br>
+	 *     country = 'CA', state = 'QC', compound = 'no'<br>
+	 *     country = 'CA', state = 'QC', compound = 'yes' <br>
+	 * </pre>
+	 *
+	 * @param array $a the first object to compare with (our inner array)
+	 * @param array $b the second object to compare with (our inner array)
+	 * @return int the results of strcmp
+	 */
+	function csort_tax_rates($a, $b){
+		$str1 = '';
+		$str2 = '';
+
+		$str1 .= $a['country'].$a['state'].($a['compound'] == 'no' ? 'a' : 'b');
+		$str2 .= $b['country'].$b['state'].($b['compound'] == 'no' ? 'a' : 'b');
+
+		return strcmp($str1, $str2);
 	}
 }
 
@@ -1006,38 +1006,6 @@ class Jigoshop_Options_Parser {
 		return $display;
 	}
 
-	function array_find( $needle, $haystack ) {
-		foreach ( $haystack as $key => $val ):
-			if ( $needle == array( "label" => $val['label'], "compound" => $val['compound'], 'rate' => $val['rate'], 'shipping' => $val['shipping'], 'class' => $val['class'] ) ):
-				return $key;
-			endif;
-		endforeach;
-		return false;
-	}
-
-
-	function array_compare( $tax_rates ) {
-		$after = array();
-		foreach ( $tax_rates as $key => $val ):
-			$first_two = array("label" => $val['label'], "compound" => $val['compound'], 'rate' => $val['rate'], 'shipping' => $val['shipping'], 'class' => $val['class'] );
-			$found = $this->array_find( $first_two, $after );
-			if ( $found !== false ):
-				$combined  = $after[$found]["state"];
-				$combined2 = $after[$found]["country"];
-				$combined = !is_array($combined) ? array($combined) : $combined;
-				$combined2 = !is_array($combined2) ? array($combined2) : $combined2;
-				$after[$found] = array_merge($first_two,array( "state" => array_merge($combined,array($val['state'])), "country" => array_merge($combined2,array($val['country'])) ));
-			else:
-				$after = array_merge($after,array(array_merge($first_two,array("state" => $val['state'], "country" => $val['country']))));
-			endif;
-		endforeach;
-		return $after;
-	}
-
-
-	/*
-	 *	Format tax rates array for display
-	 */
 	function format_tax_rates_for_display( $value ) {
 
 		$_tax = new jigoshop_tax();
@@ -1208,6 +1176,38 @@ class Jigoshop_Options_Parser {
 		ob_end_clean();
 
 		return $output;
+	}
+
+	function array_compare( $tax_rates ) {
+		$after = array();
+		foreach ( $tax_rates as $key => $val ):
+			$first_two = array("label" => $val['label'], "compound" => $val['compound'], 'rate' => $val['rate'], 'shipping' => $val['shipping'], 'class' => $val['class'] );
+			$found = $this->array_find( $first_two, $after );
+			if ( $found !== false ):
+				$combined  = $after[$found]["state"];
+				$combined2 = $after[$found]["country"];
+				$combined = !is_array($combined) ? array($combined) : $combined;
+				$combined2 = !is_array($combined2) ? array($combined2) : $combined2;
+				$after[$found] = array_merge($first_two,array( "state" => array_merge($combined,array($val['state'])), "country" => array_merge($combined2,array($val['country'])) ));
+			else:
+				$after = array_merge($after,array(array_merge($first_two,array("state" => $val['state'], "country" => $val['country']))));
+			endif;
+		endforeach;
+		return $after;
+	}
+
+
+	/*
+	 *	Format tax rates array for display
+	 */
+
+	function array_find( $needle, $haystack ) {
+		foreach ( $haystack as $key => $val ):
+			if ( $needle == array( "label" => $val['label'], "compound" => $val['compound'], 'rate' => $val['rate'], 'shipping' => $val['shipping'], 'class' => $val['class'] ) ):
+				return $key;
+			endif;
+		endforeach;
+		return false;
 	}
 
 }
