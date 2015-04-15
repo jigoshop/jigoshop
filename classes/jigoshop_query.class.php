@@ -189,6 +189,14 @@ class jigoshop_catalog_query extends Jigoshop_Singleton {
 			'value' => $in,
 			'compare' => 'IN'
 		);
+		
+		if(Jigoshop_Base::get_options()->get( 'jigoshop_hide_no_stock_product' ) == 'yes'){
+			$meta[] = array(
+				'key'    => 'stock_status',
+				'value'  => 'outofstock',
+				'compare'=> '!='
+			);
+		}
 
 		return $meta;
 	}

@@ -481,7 +481,7 @@ class jigoshop_licence_validator
 			// Deactivate this key as it was removed
 			if (empty($licence_key) && isset($keys[$product_id]['status']) && $keys[$product_id]['status'] && $licence_active) {
 				$response = $this->deactivate($product_id, $keys[$product_id]['licence_key'], $activation_email);
-				if (isset($response->success) && $response->success) {
+				if ((isset($response->success) && $response->success) || (isset($response->code) && $response->code == 101)) {
 					$messages[] = array(
 						'success' => true,
 						'message' => sprintf(__('<b>Key deactivated.</b> License key for <i>%s</i> has been <b>deactivated</b>.', 'jigoshop'), self::$plugins[$product_id]['title'])
