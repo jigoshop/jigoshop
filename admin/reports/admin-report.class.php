@@ -202,17 +202,21 @@ abstract class Jigoshop_Admin_Report
 			";
 
 		if (!empty($order_status)) {
-			// TODO: Properly filter statuses
-//			$query['where'] .= "
-//				AND posts.post_status IN ( 'jigoshop-".implode("','jigoshop-", $order_status)."')
-//			";
+			$query['join'] .= " LEFT JOIN {$wpdb->term_relationships} ostr ON posts.ID = ostr.object_id";
+			$query['join'] .= " LEFT JOIN {$wpdb->term_taxonomy} ostt ON ostr.term_taxonomy_id = ostt.term_taxonomy_id";
+			$query['join'] .= " LEFT JOIN {$wpdb->terms} ost ON ostt.term_id = ost.term_id";
+			$query['where'] .= "
+				AND ost.name IN ( '".implode("','", $order_status)."')
+			";
 		}
 
 		if (!empty($parent_order_status)) {
-			// TODO: Properly filter statuses
-//			$query['where'] .= "
-//				AND ( parent.post_status IN ( 'wc-".implode("','wc-", $parent_order_status)."') OR parent.ID IS NULL )
-//			";
+			$query['join'] .= " LEFT JOIN {$wpdb->term_relationships} postr ON parent.ID = postr.object_id";
+			$query['join'] .= " LEFT JOIN {$wpdb->term_taxonomy} postt ON postr.term_taxonomy_id = postt.term_taxonomy_id";
+			$query['join'] .= " LEFT JOIN {$wpdb->terms} post ON postt.term_id = post.term_id";
+			$query['where'] .= "
+				AND post.name IN ( '".implode("','", $parent_order_status)."')
+			";
 		}
 
 		if ($args['filter_range']) {
@@ -284,10 +288,6 @@ abstract class Jigoshop_Admin_Report
 			if (!empty($where_value)) {
 				$query['where'] .= " AND {$value['key']} {$where_value}";
 			}
-		}
-
-		if ($args['group_by']) {
-			$query['group_by'] = "GROUP BY {$args['group_by']}";
 		}
 
 		if ($args['order_by']) {

@@ -115,8 +115,7 @@ class Jigoshop_Report_Sales_By_Date extends Jigoshop_Admin_Report
 			'query_type' => 'get_results',
 			'filter_range' => true,
 			'order_types' => array('shop_order'),
-			'order_status' => array('completed', 'processing', 'on-hold'),
-			'parent_order_status' => array('completed', 'processing', 'on-hold'),
+			'order_status' => array('completed', 'processing'),
 		));
 
 		$this->report_data->order_counts = (array)$this->get_order_report_data(array(
