@@ -1,5 +1,7 @@
 ## Changelog
 
+* 1.17.1:
+    * Fix: Scripts and compatibility with JRTO.
 * 1.17 - 2015-04-16:
     * New: Improved Reports page.
     * New: Improved System Info page.

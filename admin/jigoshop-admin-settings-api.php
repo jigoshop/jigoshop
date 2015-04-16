@@ -93,8 +93,8 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 			}
 		}
 
-		add_action('init', array($this, 'settings_styles'));
-		add_action('admin_enqueue_scripts', array($this, 'settings_scripts'));
+		add_action('current_screen', array($this, 'settings_styles'));
+		add_action('current_screen', array($this, 'settings_scripts'));
 	}
 
 	/**

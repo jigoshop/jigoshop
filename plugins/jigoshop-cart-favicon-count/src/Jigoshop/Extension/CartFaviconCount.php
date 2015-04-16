@@ -8,12 +8,12 @@ class CartFaviconCount
 		if(is_admin())
 		{
 			\Jigoshop_Base::get_options()->install_external_options_tab(__('Cart Favicon', 'jigoshop_cart_favicon_count'), $this->adminSettings());
-			add_action('admin_enqueue_scripts', array($this, 'adminScripts'));
+			add_action('init', array($this, 'adminScripts'));
 			add_action('init', array($this, 'adminStyles'));
 		}
 		if(\Jigoshop_Base::get_options()->get('jigoshop_cart_favicon_count_enable') == 'yes' && (\Jigoshop_Base::get_options()->exists('jigoshop_cart_favicon_count_url'))){
 			add_action('wp_head', array($this, 'addFavicon'),1000);
-			add_action('wp_enqueue_scripts', array($this, 'frontScripts'));
+			add_action('init', array($this, 'frontScripts'));
 		}
 	}
 

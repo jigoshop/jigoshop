@@ -204,7 +204,7 @@ function jigoshop_categories_scripts()
 	}
 
 	wp_enqueue_script('jquery-ui-sortable');
-	jrto_enqueue_script('admin', 'jigoshop-categories-ordering', JIGOSHOP_URL.'/assets/js/categories-ordering.js', array('jquery-ui-sortable'));
+	wp_enqueue_script('jigoshop-categories-ordering', JIGOSHOP_URL.'/assets/js/categories-ordering.js', array('jquery-ui-sortable'));
 }
 add_action('admin_footer-edit-tags.php', 'jigoshop_categories_scripts');
 

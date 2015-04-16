@@ -35,7 +35,7 @@ class flat_rate extends jigoshop_shipping_method
 		$this->cost = Jigoshop_Base::get_options()->get('jigoshop_flat_rate_cost');
 		$this->fee = Jigoshop_Base::get_options()->get('jigoshop_flat_rate_handling_fee');
 
-		add_action('jigoshop_admin_enqueue_scripts', array($this, 'admin_scripts'));
+		add_action('init', array($this, 'admin_scripts'));
 	}
 
 	public function calculate_shipping()
