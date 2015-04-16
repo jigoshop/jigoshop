@@ -162,7 +162,7 @@ abstract class Jigoshop_Admin_Report
 				continue;
 			}
 
-			if ($value['function']) {
+			if (isset($value['function'])) {
 				$get = "{$value['function']}({$distinct} {$get_key})";
 			} else {
 				$get = "{$distinct} {$get_key}";
