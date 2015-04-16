@@ -5,7 +5,7 @@ Tags: 2checkout, 2co, affiliate, authorize, cart, checkout, commerce, coupons, e
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=finance%40jigoshop%2ecom&lc=US&item_name=Jigoshop%20%2d%20Wordpress%2eorg%20donation%20link&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
 Requires at least: 3.8
 Tested up to: 4.1.1
-Stable tag: 1.16.1
+Stable tag: 1.17
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
@@ -67,7 +67,7 @@ And our Jigoshop-optimized themes here: https://www.jigoshop.com/product-categor
 
 * WordPress 3.8 or greater
 * PHP version 5.3 or greater
-* MySQL version 5.0 or greater
+* MySQL version 5.1 or greater
 * The mod_rewrite Apache module (for permalinks)
 * Some payment gateways require fsockopen support (for IPN access)
 * Some extensions require allow_url_fopen enabled (for remote files fetching)
@@ -124,6 +124,21 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 
 == Changelog ==
 
+= 1.17 - 2015-04-16 =
+* New: Improved Reports page.
+* New: Improved System Info page.
+* New: Jigoshop Extensions page.
+* New: Remove Jigoshop Web Optimization System in favor of new Jigoshop Round Trip Optimizer extension.
+* Improved: Ability to set handling fee for Local Pickup.
+* Improved: Reformatted and checked Free Shipping and Local Pickup shipping methods.
+* Improved: Display "Out of stock" for variable products without any available variation.
+* Improved: PHP Execution Time in System Info page.
+* Improved: Cart items check before displaying.
+* Improved: All out of stock products, can be properly removed from shop page. 
+* Improved: Invalid license key can be properly deactivated.
+* Improved: Updated www.jigoshop.com links.
+* Fixed: "Apply coupon" button in checkout no longer places the order.
+	
 = 1.16.1 - 2015-03-18 =
 * Improved: Ability to enable/disable HTML emails.
 * Improved: `[order_items_table]` code for HTML order items table. Used by default now.
