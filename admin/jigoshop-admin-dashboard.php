@@ -365,7 +365,7 @@ class jigoshop_dashboard {
 
 			include_once(ABSPATH.WPINC.'/class-simplepie.php');
 
-			$rss = fetch_feed('http://www.jigoshop.com/feed/');
+			$rss = fetch_feed('https://www.jigoshop.com/feed/');
 
 			if(!is_wp_error($rss)){
 				$maxitems = $rss->get_item_quantity(5);
@@ -430,7 +430,7 @@ class jigoshop_dashboard {
 			</div>
 			<div class="links jigo-links">
 				<ul>
-					<li><a href="http://www.jigoshop.com/"><?php _e('Learn more about the Jigoshop plugin', 'jigoshop'); ?></a></li>
+					<li><a href="https://www.jigoshop.com/"><?php _e('Learn more about the Jigoshop plugin', 'jigoshop'); ?></a></li>
 					<li><a href="https://www.jigoshop.com/documentation/"><?php _e('Stuck? Read the plugin\'s documentation.', 'jigoshop'); ?></a></li>
 					<li><a href="https://www.jigoshop.com/support/"><?php _e('Support', 'jigoshop'); ?></a></li>
 				</ul>

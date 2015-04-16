@@ -10349,7 +10349,7 @@ msgstr ""
 #. translators: plugin header field 'PluginURI'
 #: jigoshop.php:0
 #@ jigoshop
-msgid "http://www.jigoshop.com/"
+msgid "https://www.jigoshop.com/"
 msgstr ""
 
 #. translators: plugin header field 'Description'
@@ -10361,7 +10361,7 @@ msgstr ""
 #. translators: plugin header field 'AuthorURI'
 #: jigoshop.php:0
 #@ jigoshop
-msgid "http://www.jigoshop.com"
+msgid "https://www.jigoshop.com"
 msgstr ""
 
 #. translators: plugin header field 'Version'

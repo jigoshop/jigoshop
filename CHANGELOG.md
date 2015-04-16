@@ -12,6 +12,7 @@
     * Improved: Cart items check before displaying.
     * Improved: All out of stock products, can be properly removed from shop page. 
     * Improved: Invalid license key can be properly deactivated.
+    * Improved: Updated www.jigoshop.com links.
     * Fixed: "Apply coupon" button in checkout no longer places the order.
 * 1.16.1 - 2015-03-18:
     * Improved: Ability to enable/disable HTML emails.

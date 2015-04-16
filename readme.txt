@@ -53,9 +53,9 @@ plugin ever! They include more Payment Gateways, more Shipping methods and much 
 Jigoshop eCommerce strives to maintain its status as the best WordPress eCommerce plugin ever. We hope you’ll
 choose the best to power your eCommerce shop and help us prove to you that we really are the best!
 
-You can take a look at our official extensions here: http://www.jigoshop.com/product-category/extensions/
+You can take a look at our official extensions here: https://www.jigoshop.com/product-category/extensions/
 
-And our Jigoshop-optimized themes here: http://www.jigoshop.com/product-category/themes/
+And our Jigoshop-optimized themes here: https://www.jigoshop.com/product-category/themes/
 
 == Upgrade Notice ==
 
@@ -89,7 +89,7 @@ Take a look through our <a href="https://www.jigoshop.com/documentation" title="
 
 = Will Jigoshop work with X theme? =
 
-Jigoshop will in theory work with any theme, but of course, certain parts may need to be styled using CSS to make them match up. We've added default styling for Twenty Ten (the WordPress default theme) and we also offer <a href="http://www.jigoshop.com/product-category/themes/">premium themes optimised for Jigoshop</a>.
+Jigoshop will in theory work with any theme, but of course, certain parts may need to be styled using CSS to make them match up. We've added default styling for Twenty Ten (the WordPress default theme) and we also offer <a href="https://www.jigoshop.com/product-category/themes/">premium themes optimised for Jigoshop</a>.
 
 If you need a theme built, or have a theme that needs styling, <a href="https://www.jigoshop.com/contact/">give us a shout</a> and we may be able to assist.
 
@@ -100,7 +100,7 @@ You can also <a href="https://www.jigoshop.com/documentation/localization-tutori
 
 = Which payment gateways do you have? =
 
-Take a look through <a href="https://www.jigoshop.com/documentation/payment-gateways/">our list of payment gateways</a>. There are some free ones that are included with Jigoshop, and even more are available <a href="http://www.jigoshop.com/product-category/payment-gateways/">on jigoshop.com</a>.
+Take a look through <a href="https://www.jigoshop.com/documentation/payment-gateways/">our list of payment gateways</a>. There are some free ones that are included with Jigoshop, and even more are available <a href="https://www.jigoshop.com/product-category/payment-gateways/">on jigoshop.com</a>.
 
 = Will tax settings work in my country? =
 
@@ -108,12 +108,12 @@ Jigoshop has a flexible tax rule system which allows you to define tax rates per
 
 = I need hosting! =
 
-You're in luck! We offer <a href="http://www.jigoshop.com/">optimised hosting packages</a> starting from 10 GBP per month.
+You're in luck! We offer <a href="https://www.jigoshop.com/">optimised hosting packages</a> starting from 10 GBP per month.
 
 = I need help! =
 
 We have <a href="https://www.jigoshop.com/documentation/" title="Jigoshop Documentation">documentation</a> for seeking information.
-However, if you want priority, dedicated support from Jigoshop staff, we dp offer <a href="http://www.jigoshop.com/support/" title="Jigoshop Premium Support">premium support packages</a>.
+However, if you want priority, dedicated support from Jigoshop staff, we dp offer <a href="https://www.jigoshop.com/support/" title="Jigoshop Premium Support">premium support packages</a>.
 
 == Screenshots ==
 

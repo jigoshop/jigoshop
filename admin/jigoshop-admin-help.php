@@ -38,7 +38,7 @@ function jigoshop_product_attributes_help() {
 	$sidebar_content = '
         <p><strong>'.__('For more information', 'jigoshop').':</strong></p>
         <p><a href="http://forum.jigoshop.com/kb/" target="_blank">'.__('Documentation on', 'jigoshop').'<br/>'.__('Product Attributes', 'jigoshop').'</a></p>
-        <p><a href="http://www.jigoshop.com/support" target="_blank">'.__('Support Forum', 'jigoshop').'</a></p>
+        <p><a href="https://www.jigoshop.com/support" target="_blank">'.__('Support Forum', 'jigoshop').'</a></p>
     ';
     $screen->set_help_sidebar( $sidebar_content );
 
@@ -88,7 +88,7 @@ function jigoshop_product_category_help() {
 	$sidebar_content = '
         <p><strong>'.__('For more information', 'jigoshop').':</strong></p>
         <p><a href="http://forum.jigoshop.com/kb/" target="_blank">'.__('Documentation on', 'jigoshop').'<br/>'.__('Product Categories', 'jigoshop').'</a></p>
-        <p><a href="http://www.jigoshop.com/support" target="_blank">'.__('Support Forum', 'jigoshop').'</a></p>
+        <p><a href="https://www.jigoshop.com/support" target="_blank">'.__('Support Forum', 'jigoshop').'</a></p>
     ';
     $screen->set_help_sidebar( $sidebar_content );
 
@@ -130,7 +130,7 @@ function jigoshop_product_tag_help() {
 	$sidebar_content = '
         <p><strong>'.__('For more information', 'jigoshop').':</strong></p>
         <p><a href="http://forum.jigoshop.com/kb/" target="_blank">'.__('Documentation on', 'jigoshop').'<br/>'.__('Product Tags', 'jigoshop').'</a></p>
-        <p><a href="http://www.jigoshop.com/support" target="_blank">'.__('Support Forum', 'jigoshop').'</a></p>
+        <p><a href="https://www.jigoshop.com/support" target="_blank">'.__('Support Forum', 'jigoshop').'</a></p>
     ';
     $screen->set_help_sidebar( $sidebar_content );
 
@@ -183,7 +183,7 @@ function jigoshop_product_list_help() {
     $sidebar_content = '
         <p><strong>'.__('For more information', 'jigoshop').':</strong></p>
         <p><a href="http://forum.jigoshop.com/kb/" target="_blank">'.__('Documentation on', 'jigoshop').'<br/>'.__('Managing Products', 'jigoshop').'</a></p>
-        <p><a href="http://www.jigoshop.com/support" target="_blank">'.__('Support Forum', 'jigoshop').'</a></p>
+        <p><a href="https://www.jigoshop.com/support" target="_blank">'.__('Support Forum', 'jigoshop').'</a></p>
     ';
     $screen->set_help_sidebar( $sidebar_content );
 
@@ -262,7 +262,7 @@ function jigoshop_product_data_help ( $post_type , $post ) {
 	$sidebar_content = '
 		<p><strong>'.__('For more information', 'jigoshop').':</strong></p>
 		<p><a href="http://forum.jigoshop.com/kb/creating-products/" target="_blank">'.__('Documentation on', 'jigoshop').'<br/>'.__('Creating Products', 'jigoshop').'</a></p>
-		<p><a href="http://www.jigoshop.com/support" target="_blank">'.__('Support Forum', 'jigoshop').'</a></p>
+		<p><a href="https://www.jigoshop.com/support" target="_blank">'.__('Support Forum', 'jigoshop').'</a></p>
 	';
 
 	$screen = get_current_screen();

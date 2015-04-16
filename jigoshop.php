@@ -16,10 +16,10 @@
  *   `//////////////////////////////`
  *
  * Plugin Name:         Jigoshop
- * Plugin URI:          http://www.jigoshop.com/
+ * Plugin URI:          https://www.jigoshop.com/
  * Description:         Jigoshop, a WordPress eCommerce plugin that works.
  * Author:              Jigoshop
- * Author URI:          http://www.jigoshop.com
+ * Author URI:          https://www.jigoshop.com
  * Version:             1.17
  * Requires at least:   3.8
  * Tested up to:        4.1.1
