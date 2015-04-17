@@ -125,12 +125,14 @@ class Jigoshop_Report_Coupon_Usage extends Jigoshop_Admin_Report
 					$used_coupons = array();
 					foreach ($data as $coupons) {
 						foreach ($coupons->coupons as $coupon) {
-							if (!isset($used_coupons[$coupon['code']])) {
-								$used_coupons[$coupon['code']] = $coupon;
-								$used_coupons[$coupon['code']]['usage'] = 0;
-							}
+							if(!empty($coupon)){
+								if (!isset($used_coupons[$coupon['code']])) {
+									$used_coupons[$coupon['code']] = $coupon;
+									$used_coupons[$coupon['code']]['usage'] = 0;
+								}
 
-							$used_coupons[$coupon['code']]['usage'] += $coupons->usage[$coupon['code']];
+								$used_coupons[$coupon['code']]['usage'] += $coupons->usage[$coupon['code']];
+							}
 						}
 					}
 
@@ -290,9 +292,18 @@ class Jigoshop_Report_Coupon_Usage extends Jigoshop_Admin_Report
 		$order_discount_amounts = array_map(function($item){
 			$time = new stdClass();
 			$time->post_date = $item->post_date;
-			$time->discount_amount = array_sum(array_map(function($inner_item) use ($item){
-				return $item->usage[$inner_item['code']] * $inner_item['amount'];
-			}, $item->coupons));
+			if(!empty($item->coupons)){
+				$time->discount_amount = array_sum(array_map(function($inner_item) use ($item){
+					if(empty($inner_item)){
+						return 0;
+					}
+
+					return $item->usage[$inner_item['code']] * $inner_item['amount'];
+				}, $item->coupons));
+			} else {
+				$time->discount_amount = 0;
+			}
+
 
 			return $time;
 		}, $data);
