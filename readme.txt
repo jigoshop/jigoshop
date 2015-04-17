@@ -124,6 +124,10 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 
 == Changelog ==
 
+= 1.17.1 - 2015-04-17 =
+* Improved: COD gateway allows to choose which status should be set to order.
+* Fix: Scripts and compatibility with JRTO.
+* Fix: Notices, warnings and error on reports page.
 = 1.17 - 2015-04-16 =
 * New: Improved Reports page.
 * New: Improved System Info page.
@@ -134,11 +138,11 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 * Improved: Display "Out of stock" for variable products without any available variation.
 * Improved: PHP Execution Time in System Info page.
 * Improved: Cart items check before displaying.
-* Improved: All out of stock products, can be properly removed from shop page. 
+* Improved: All out of stock products, can be properly removed from shop page.
 * Improved: Invalid license key can be properly deactivated.
 * Improved: Updated www.jigoshop.com links.
 * Fixed: "Apply coupon" button in checkout no longer places the order.
-	
+
 = 1.16.1 - 2015-03-18 =
 * Improved: Ability to enable/disable HTML emails.
 * Improved: `[order_items_table]` code for HTML order items table. Used by default now.
