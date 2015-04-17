@@ -52,7 +52,7 @@ abstract class Jigoshop_Admin_Report
 						'operator' => '>'
 					),
 					array(
-						'key' => 'order_item_meta__product_id.meta_value',
+						'key' => 'ID',
 						'value' => $id,
 						'operator' => '='
 					)
@@ -131,7 +131,7 @@ abstract class Jigoshop_Admin_Report
 			'filter_range' => false,
 			'nocache' => false,
 			'debug' => false,
-			'order_types' => 'shop_order',
+			'order_types' => array('shop_order'),
 			'order_status' => array('completed', 'processing', 'on-hold'),
 			'parent_order_status' => false,
 		);
