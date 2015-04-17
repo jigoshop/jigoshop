@@ -60,8 +60,8 @@ class jigoshop_cod extends jigoshop_payment_gateway {
 
 		$order = new jigoshop_order( $order_id );
 
-		// Mark as on-hold (we're awaiting the cod)
-		$order->update_status('processing', __('Waiting for cash delivery.', 'jigoshop'));
+		$status = Jigoshop_Base::get_options()->get('jigoshop_cod_status', 'processing');
+		$order->update_status($status, __('Waiting for cash delivery.', 'jigoshop'));
 
 		// Remove cart
 		jigoshop_cart::empty_cart();
@@ -118,6 +118,18 @@ class jigoshop_cod extends jigoshop_payment_gateway {
 			'id' 		=> 'jigoshop_cod_description',
 			'std' 		=> __('Please pay to Store Name, Store Street, Store Town, Store State / County, Store Postcode.', 'jigoshop'),
 			'type' 		=> 'longtext'
+		);
+
+		$defaults[] = array(
+			'name'		=> __('Order status','jigoshop'),
+			'desc' 		=> '',
+			'tip' 		=> __('This allow to choose status which should be set to order, after completing checkout.', 'jigoshop'),
+			'id' 		=> 'jigoshop_cod_status',
+			'type' 		=> 'select',
+			'choices'   => array(
+				'processing' => __('Processing', 'jigoshop'),
+				'on-hold' => __('On-hold', 'jigoshop'),
+			)
 		);
 
 		return $defaults;
