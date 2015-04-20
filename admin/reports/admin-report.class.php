@@ -290,6 +290,10 @@ abstract class Jigoshop_Admin_Report
 			}
 		}
 
+		if ($args['group_by']) {
+			$query['group_by'] = "GROUP BY {$args['group_by']}";
+		}
+
 		if ($args['order_by']) {
 			$query['order_by'] = "ORDER BY {$args['order_by']}";
 		}

@@ -383,7 +383,7 @@ class Jigoshop_Report_Sales_By_Product extends Jigoshop_Admin_Report
 						'operator' => 'IN'
 					),
 				),
-				'group_by' => 'product_id,'.$this->group_by_query,
+				'group_by' => 'posts.ID,'.$this->group_by_query,
 				'order_by' => 'post_date ASC',
 				'query_type' => 'get_results',
 				'filter_range' => true
@@ -418,7 +418,7 @@ class Jigoshop_Report_Sales_By_Product extends Jigoshop_Admin_Report
 						'operator' => 'IN'
 					),
 				),
-				'group_by' => 'product_id, '.$this->group_by_query,
+				'group_by' => 'posts.ID, '.$this->group_by_query,
 				'order_by' => 'post_date ASC',
 				'query_type' => 'get_results',
 				'filter_range' => true

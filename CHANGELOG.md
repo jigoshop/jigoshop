@@ -1,6 +1,7 @@
 ## Changelog
 
 * 1.17.3 - 2015-04-20:
+    * Improved: Reports page.
     * Fix: Scripts and compatibility with JRTO.
     * Fix: Doubled tip messages.
 * 1.17.2 - 2015-04-18:

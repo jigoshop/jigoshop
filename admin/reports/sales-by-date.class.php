@@ -32,14 +32,14 @@ class Jigoshop_Report_Sales_By_Date extends Jigoshop_Admin_Report
 			'title' => sprintf(__('%s gross sales in this period', 'jigoshop'), '<strong>'.jigoshop_price($data->total_sales).'</strong>'),
 			'placeholder' => __('This is the sum of the order totals including shipping and taxes.', 'jigoshop'),
 			'color' => $this->chart_colours['sales_amount'],
-			'highlight_series' => 6
+			'highlight_series' => 5
 		);
 		/** @noinspection PhpUndefinedFieldInspection */
 		$legend[] = array(
 			'title' => sprintf(__('%s net sales in this period', 'jigoshop'), '<strong>'.jigoshop_price($data->net_sales).'</strong>'),
 			'placeholder' => __('This is the sum of the order totals excluding shipping and taxes.', 'jigoshop'),
 			'color' => $this->chart_colours['net_sales_amount'],
-			'highlight_series' => 7
+			'highlight_series' => 6
 		);
 		$legend[] = array(
 			'title' => $average_sales_title,
@@ -64,7 +64,7 @@ class Jigoshop_Report_Sales_By_Date extends Jigoshop_Admin_Report
 		$legend[] = array(
 			'title' => sprintf(__('%s charged for shipping', 'jigoshop'), '<strong>'.jigoshop_price($data->total_shipping).'</strong>'),
 			'color' => $this->chart_colours['shipping_amount'],
-			'highlight_series' => 5
+			'highlight_series' => 4
 		);
 		/** @noinspection PhpUndefinedFieldInspection */
 		$legend[] = array(
@@ -308,8 +308,8 @@ class Jigoshop_Report_Sales_By_Date extends Jigoshop_Admin_Report
 								fill: true,
 								show: true,
 								lineWidth: 0,
-								align: 'center',
-								barWidth: 0<?php echo $this->barwidth; ?> * 0.5
+								align: 'left',
+								barWidth: 0<?php echo $this->barwidth; ?> * 0.25
 							},
 							shadowSize: 0,
 							hoverable: false
@@ -323,8 +323,8 @@ class Jigoshop_Report_Sales_By_Date extends Jigoshop_Admin_Report
 								fill: true,
 								show: true,
 								lineWidth: 0,
-								align: 'center',
-								barWidth: 0<?php echo $this->barwidth; ?> *	0.5
+								align: 'right',
+								barWidth: 0<?php echo $this->barwidth; ?> *	0.25
 							},
 							shadowSize: 0,
 							hoverable: false
