@@ -28,6 +28,7 @@ class Jigoshop_Admin_Settings extends Jigoshop_Singleton {
 			JIGOSHOP_OPTIONS
 		);
 
+		add_action('current_screen', array($this, 'register_settings'));
 	}
 
 	/**
