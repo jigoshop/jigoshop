@@ -231,7 +231,7 @@ function jigoshop_write_panel_scripts()
 
 	jrto_localize_script('jigoshop-writepanel', 'jigoshop_params', $params);
 }
-add_action('init', 'jigoshop_write_panel_scripts');
+add_action('admin_enqueue_scripts', 'jigoshop_write_panel_scripts', 9);
 
 /**
  * User Address

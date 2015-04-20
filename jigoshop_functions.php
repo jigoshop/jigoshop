@@ -200,7 +200,7 @@ if (!function_exists('jrto_enqueue_script')) {
 				$version = isset($options['version']) ? $options['version'] : false;
 				$footer = isset($options['in_footer']) ? $options['in_footer'] : false;
 				wp_enqueue_script($handle, $src, $dependencies, $version, $footer);
-			}, 9);
+			}, 10);
 		}
 	}
 }
@@ -232,7 +232,7 @@ if (!function_exists('jrto_register_script')) {
 				$version = isset($options['version']) ? $options['version'] : false;
 				$footer = isset($options['in_footer']) ? $options['in_footer'] : false;
 				wp_register_script($handle, $src, $dependencies, $version, $footer);
-			}, 9);
+			}, 10);
 		}
 	}
 }
@@ -276,7 +276,7 @@ if (!function_exists('jrto_localize_script')) {
 			$action = is_admin() ? 'admin' : 'wp';
 			add_action($action.'_enqueue_scripts', function() use ($handle, $object, $value){
 				wp_localize_script($handle, $object, $value);
-			}, 9);
+			}, 10);
 		}
 	}
 }
@@ -309,7 +309,7 @@ if (!function_exists('jrto_enqueue_style')) {
 				$version = isset($options['version']) ? $options['version'] : false;
 				$media = isset($options['media']) ? $options['media'] : 'all';
 				wp_enqueue_style($handle, $src, $dependencies, $version, $media);
-			}, 9);
+			}, 10);
 		}
 	}
 }
@@ -341,7 +341,7 @@ if (!function_exists('jrto_register_style')) {
 				$version = isset($options['version']) ? $options['version'] : false;
 				$media = isset($options['media']) ? $options['media'] : 'all';
 				wp_register_style($handle, $src, $dependencies, $version, $media);
-			}, 9);
+			}, 10);
 		}
 	}
 }

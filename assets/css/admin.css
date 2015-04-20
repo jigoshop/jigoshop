@@ -2835,3 +2835,8 @@ img.tips {
 	height: 0;
 	width: 0;
 }
+
+.help_tip{
+	cursor: help;
+	text-decoration: none;
+}

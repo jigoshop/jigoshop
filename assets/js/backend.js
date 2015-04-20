@@ -26,7 +26,7 @@ function clearPlaceholdersBeforeSubmit(form){form.find(':input[placeholder]').ea
 jQuery(function($){
 	// Tooltips
 	if (typeof($.fn.tipTip) == 'function'){
-		$('.tips, .help_tip').tipTip({
+		$('.help_tip').tipTip({
 			'attribute': 'data-tip',
 			'fadeIn': 50,
 			'fadeOut': 50,

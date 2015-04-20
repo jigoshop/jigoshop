@@ -53,7 +53,7 @@ if (!defined('ABSPATH')) {
 							<?php foreach ($legends as $legend) : ?>
 								<li style="border-color: <?php echo $legend['color']; ?>" <?php
 									if (isset($legend['highlight_series']))
-									echo 'class="highlight_series '.(isset($legend['placeholder']) ? 'tips' : '').'" data-series="'.esc_attr($legend['highlight_series']).'"';
+									echo 'class="highlight_series '.(isset($legend['placeholder']) ? 'help_tip' : '').'" data-series="'.esc_attr($legend['highlight_series']).'"';
 								 ?> data-tip="<?php echo isset($legend['placeholder']) ? $legend['placeholder'] : ''; ?>">
 									<?php echo $legend['title']; ?>
 								</li>

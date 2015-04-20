@@ -1568,6 +1568,8 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 		$defaults = Jigoshop_Base::get_options()->get('jigoshop_tax_defaults_classes', array('*'));
 
 		ob_start();
+		//We don't want any notices here.
+		$old_status = error_reporting(0);
 		echo Jigoshop_Forms::checkbox(array(
 			'id' => 'jigoshop_tax_defaults_class_standard',
 			'name' => 'jigoshop_tax_defaults_classes[*]',
@@ -1584,6 +1586,7 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 				'value' => in_array($value, $defaults),
 			));
 		}
+		error_reporting($old_status);
 
 		return ob_get_clean();
 	}

@@ -126,10 +126,12 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 
 = 1.17.2 - 2015-04-18 =
 * Fix: Scripts and compatibility with JRTO.
+
 = 1.17.1 - 2015-04-17 =
 * Improved: COD gateway allows to choose which status should be set to order.
 * Fix: Scripts and compatibility with JRTO.
 * Fix: Notices, warnings and error on reports page.
+
 = 1.17 - 2015-04-16 =
 * New: Improved Reports page.
 * New: Improved System Info page.
