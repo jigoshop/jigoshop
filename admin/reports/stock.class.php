@@ -104,7 +104,7 @@ class Jigoshop_Report_Stock extends WP_List_Table
 				}
 				break;
 			case 'stock_status' :
-				if ($product->is_in_stock()) {
+				if ($product->is_in_stock() || (!isset($product->meta['stock_manage']) && !isset($product->meta['stock_status']) && $product->get_stock() > 0)) {
 					echo '<mark class="instock">'.__('In stock', 'jigoshop').'</mark>';
 				} else {
 					echo '<mark class="outofstock">'.__('Out of stock', 'jigoshop').'</mark>';

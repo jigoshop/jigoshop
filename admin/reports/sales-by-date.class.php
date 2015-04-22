@@ -110,7 +110,6 @@ class Jigoshop_Report_Sales_By_Date extends Jigoshop_Admin_Report
 					'name' => 'post_date'
 				),
 			),
-			'group_by' => $this->group_by_query,
 			'order_by' => 'post_date ASC',
 			'query_type' => 'get_results',
 			'filter_range' => true,
@@ -153,7 +152,6 @@ class Jigoshop_Report_Sales_By_Date extends Jigoshop_Admin_Report
 					'name' => 'post_date'
 				),
 			),
-			'group_by' => $this->group_by_query,
 			'order_by' => 'post_date ASC',
 			'query_type' => 'get_results',
 			'filter_range' => true,
@@ -174,7 +172,6 @@ class Jigoshop_Report_Sales_By_Date extends Jigoshop_Admin_Report
 					'name' => 'post_date'
 				),
 			),
-			'group_by' => $this->group_by_query,
 			'order_by' => 'post_date ASC',
 			'query_type' => 'get_results',
 			'filter_range' => true,

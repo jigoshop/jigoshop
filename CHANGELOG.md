@@ -1,7 +1,8 @@
 ## Changelog
 
 * 1.17.4:
-    * Fix: JS error in checkout.
+    * Improved: Jigoshop Reports page shows properly order total values.
+    * Fix: JS error in Checkout page.
 * 1.17.3 - 2015-04-20:
     * Improved: Reports page.
     * Fix: Scripts and compatibility with JRTO.

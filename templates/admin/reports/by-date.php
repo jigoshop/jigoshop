@@ -4,6 +4,7 @@ if (!defined('ABSPATH')) {
 }
 ?>
 <div id="poststuff" class="jigoshop-reports-wide">
+	<?php $this->get_order_status_select(); ?>
 	<div class="postbox">
 		<h3 class="stats_range">
 			<?php $this->get_export_button(); ?>
