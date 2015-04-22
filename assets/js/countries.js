@@ -36,7 +36,7 @@ jQuery(function($){
 				selected = jigoshop_params.billing_state;
 			}
 
-			$('option[value='+selected+']', $state).attr('selected', 'selected');
+			$('option[value="'+selected+'"]', $state).attr('selected', 'selected');
 		} else if($state.is('select')){
 			var $parent = $state.closest('.form-row');
 			$parent.removeClass('jigoshop-validated jigoshop-invalid');
