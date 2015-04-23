@@ -112,7 +112,7 @@ class Jigoshop_Report_Sales_By_Category extends Jigoshop_Admin_Report
 				'data' => array(
 					'order_items' => array(
 						'type' => 'meta',
-						'name' => 'top_products',
+						'name' => 'category_data',
 						'process' => true,
 					),
 					'post_date' => array(

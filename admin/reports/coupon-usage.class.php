@@ -282,23 +282,40 @@ class Jigoshop_Report_Coupon_Usage extends Jigoshop_Admin_Report
 		global $wp_locale;
 
 		$data = $this->get_report_data();
-		$order_coupon_counts = array_map(function($item){
+
+		$coupon_codes = $this->coupon_codes;
+		if(!empty($coupon_codes[0])){
+			$data = array_filter($data, function($item) use ($coupon_codes)	{
+				return isset($item->usage[$coupon_codes[0]]);
+			});
+		};
+
+
+		$order_coupon_counts = array_map(function($item) use ($coupon_codes){
 			$time = new stdClass();
 			$time->post_date = $item->post_date;
-			$time->order_coupon_count = count($item->coupons);
+			if(!empty($coupon_codes))
+			{
+				$time->order_coupon_count = $item->usage[$coupon_codes[0]];
+			} else {
+				$time->order_coupon_count = count($item->coupons);
+			}
 
 			return $time;
 		}, $data);
-		$order_discount_amounts = array_map(function($item){
+		$order_discount_amounts = array_map(function($item) use ($coupon_codes){
 			$time = new stdClass();
 			$time->post_date = $item->post_date;
 			if(!empty($item->coupons)){
-				$time->discount_amount = array_sum(array_map(function($inner_item) use ($item){
+				$time->discount_amount = array_sum(array_map(function($inner_item) use ($item, $coupon_codes){
 					if(empty($inner_item)){
 						return 0;
 					}
-
-					return $item->usage[$inner_item['code']] * $inner_item['amount'];
+					if(!empty($coupon_codes[0])) {
+						return $coupon_codes[0] == $inner_item['code'] ? $item->usage[$inner_item['code']] * $inner_item['amount'] : 0;
+					} else {
+						return $item->usage[$inner_item['code']] * $inner_item['amount'];
+					}
 				}, $item->coupons));
 			} else {
 				$time->discount_amount = 0;

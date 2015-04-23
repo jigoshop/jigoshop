@@ -376,12 +376,22 @@ abstract class Jigoshop_Admin_Report
 
 							$data = maybe_unserialize($item->discount_amount);
 							$data = $this->filterItem($data, $value);
-
 							if (!empty($data)) {
-								$results[$item->post_date]->coupons_used += count($data['order_discount_coupons']);
+								if(!empty($this->coupon_codes[0])){
+									$coupon_code = $this->coupon_codes[0];
+									$results[$item->post_date]->coupons_used += array_sum(array_map(function($coupon) use ($coupon_code){
+										return $coupon['code'] == $coupon_code ? 1 : 0;
+									}, $data['order_discount_coupons']));
+									$results[$item->post_date]->discount_amount += array_sum(array_map(function($coupon) use ($coupon_code){
+										return $coupon['code'] == $coupon_code ? $coupon['amount'] : 0;
+									}, $data['order_discount_coupons']));
 
-								foreach ($data['order_discount_coupons'] as $coupon) {
-									$results[$item->post_date]->discount_amount += $coupon['amount'];
+								} else {
+									$results[$item->post_date]->coupons_used += count($data['order_discount_coupons']);
+
+									foreach ($data['order_discount_coupons'] as $coupon) {
+										$results[$item->post_date]->discount_amount += $coupon['amount'];
+									}
 								}
 							}
 						}
@@ -429,6 +439,30 @@ abstract class Jigoshop_Admin_Report
 							$results[$item->post_date]->order_item_amount += array_sum(array_map(function($product){
 								return $product['qty'] * $product['cost'];
 							}, $data));
+						}
+
+						$cached_results[$query_hash] = $results;
+						break;
+					case 'category_data':
+						$results = array();
+						foreach ($cached_results[$query_hash] as $item) {
+							$data = maybe_unserialize($item->category_data);
+							$data = $this->filterItem($data, $value);
+							foreach ($data as $product) {
+								if (!isset($results[$item->post_date])) {
+									$result = new stdClass;
+									$result->product_id = $product['id'];
+									$result->order_item_qty = 0;
+									$result->order_item_total = 0;
+
+									$result->post_date = $item->post_date;
+
+									$results[$item->post_date] = $result;
+								}
+
+								$results[$item->post_date]->order_item_qty += $product['qty'];
+								$results[$item->post_date]->order_item_total += $product['qty'] * $product['cost'];
+							}
 						}
 
 						$cached_results[$query_hash] = $results;

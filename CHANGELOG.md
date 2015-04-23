@@ -1,7 +1,7 @@
 ## Changelog
 
 * 1.17.4:
-    * Improved: Jigoshop Reports page shows properly coupon and order total values.
+    * Improved: Reports page displays properly values.
     * Fix: JS error in Checkout page.
 * 1.17.3 - 2015-04-20:
     * Improved: Reports page.
