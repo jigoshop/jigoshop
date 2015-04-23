@@ -42,15 +42,6 @@ class jigoshop_cheque extends jigoshop_payment_gateway {
     	add_action('thankyou_cheque', array(&$this, 'thankyou_page'));
     }
 
-	public function is_available()
-	{
-		if ($this->enabled == "yes") {
-			return true;
-		}
-
-		return false;
-	}
-
 	/**
 	* There are no payment fields for cheques, but we want to show the description if set.
 	**/
@@ -70,7 +61,11 @@ class jigoshop_cheque extends jigoshop_payment_gateway {
 		$order = new jigoshop_order( $order_id );
 
 		// Mark as on-hold (we're awaiting the cheque)
-		$order->payment_complete();
+		$order->update_status('waiting-for-payment', __('Awaiting cheque payment', 'jigoshop'));
+
+		// Remove cart
+		jigoshop_cart::empty_cart();
+
 		// Return thankyou redirect
 		$checkout_redirect = apply_filters( 'jigoshop_get_checkout_redirect_page_id', jigoshop_get_page_id('thanks') );
 		return array(
