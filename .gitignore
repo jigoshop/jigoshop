@@ -83,3 +83,4 @@ deploy.sh
 cache/
 compatibility/
 vendor/
+.idea/
