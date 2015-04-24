@@ -1,6 +1,8 @@
 ## Changelog
 
-* 1.17.4:
+* 1.18:
+    * New: Possibility to sort available variations on products page.
+    * New: Product reports shows sold quantity.
     * Improved: Reports page displays properly values.
     * Fix: JS error in Checkout page.
 * 1.17.3 - 2015-04-20:

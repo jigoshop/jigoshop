@@ -36,16 +36,25 @@ class Jigoshop_Report_Sales_By_Product extends Jigoshop_Admin_Report
 		$total_items = array_sum(array_map(function($item){
 			return $item->order_item_count;
 		}, $data->order_item_counts));
+		$total_quantity = array_sum(array_map(function($item){
+			return $item->order_item_quantity;
+		}, $data->order_item_quantity));
 
 		$legend[] = array(
 			'title' => sprintf(__('%s sales for the selected items', 'jigoshop'), '<strong>'.jigoshop_price($total_sales).'</strong>'),
 			'color' => $this->chart_colours['sales_amount'],
-			'highlight_series' => 1
+			'highlight_series' => 2
 		);
 
 		$legend[] = array(
 			'title' => sprintf(__('%s purchases for the selected items', 'jigoshop'), '<strong>'.$total_items.'</strong>'),
 			'color' => $this->chart_colours['item_count'],
+			'highlight_series' => 1
+		);
+
+		$legend[] = array(
+			'title' => sprintf(__('%s quantity purchased', 'jigoshop'), '<strong>'.$total_quantity.'</strong>'),
+			'color' => $this->chart_colours['item_quantity'],
 			'highlight_series' => 0
 		);
 
@@ -64,6 +73,28 @@ class Jigoshop_Report_Sales_By_Product extends Jigoshop_Admin_Report
 	private function query_report_data()
 	{
 		$this->report_data = new stdClass();
+		$this->report_data->order_item_quantity = $this->get_order_report_data(array(
+			'data' => array(
+				'order_items' => array(
+					'type' => 'meta',
+					'name' => 'order_item_quantity',
+					'process' => true,
+					'where' => array(
+						'type' => 'item_id',
+						'keys' => array('id', 'variation_id'),
+						'value' => $this->product_ids,
+					),
+				),
+				'post_date' => array(
+					'type' => 'post_data',
+					'function' => '',
+					'name' => 'post_date'
+				),
+			),
+			'order_types' => array('shop_order'),
+			'query_type' => 'get_results',
+			'filter_range' => true
+		));
 		$this->report_data->order_item_counts = $this->get_order_report_data(array(
 			'data' => array(
 				'order_items' => array(
@@ -125,6 +156,7 @@ class Jigoshop_Report_Sales_By_Product extends Jigoshop_Admin_Report
 		$this->chart_colours = array(
 			'sales_amount' => '#3498db',
 			'item_count' => '#d4d9dc',
+			'item_quantity' => '#ecf0f1'
 		);
 
 		$current_range = !empty($_GET['range']) ? sanitize_text_field($_GET['range']) : '7day';
@@ -353,7 +385,41 @@ class Jigoshop_Report_Sales_By_Product extends Jigoshop_Admin_Report
 			</div>
 		<?php
 		} else {
-			// Get orders and dates in range - we want the SUM of order totals, COUNT of order items, COUNT of orders, and the date
+			/*// Get orders and dates in range - we want the SUM of order totals, COUNT of order items, COUNT of orders, and the date
+			$order_item_quantity = $this->get_order_report_data(array(
+				'data' => array(
+					'_qty' => array(
+						'type' => 'order_item_meta',
+						'order_item_type' => 'line_item',
+						'function' => 'SUM',
+						'name' => 'order_item_quantity'
+					),
+					'post_date' => array(
+						'type' => 'post_data',
+						'function' => '',
+						'name' => 'post_date'
+					),
+					'_product_id' => array(
+						'type' => 'order_item_meta',
+						'order_item_type' => 'line_item',
+						'function' => '',
+						'name' => 'product_id'
+					)
+				),
+				'where_meta' => array(
+					'relation' => 'OR',
+					array(
+						'type' => 'order_item_meta',
+						'meta_key' => array('_product_id', '_variation_id'),
+						'meta_value' => $this->product_ids,
+						'operator' => 'IN'
+					),
+				),
+				'group_by' => 'posts.ID,'.$this->group_by_query,
+				'order_by' => 'post_date ASC',
+				'query_type' => 'get_results',
+				'filter_range' => true
+			));
 			$order_item_counts = $this->get_order_report_data(array(
 				'data' => array(
 					'_qty' => array(
@@ -388,7 +454,6 @@ class Jigoshop_Report_Sales_By_Product extends Jigoshop_Admin_Report
 				'query_type' => 'get_results',
 				'filter_range' => true
 			));
-
 			$order_item_amounts = $this->get_order_report_data(array(
 				'data' => array(
 					'_line_total' => array(
@@ -422,16 +487,17 @@ class Jigoshop_Report_Sales_By_Product extends Jigoshop_Admin_Report
 				'order_by' => 'post_date ASC',
 				'query_type' => 'get_results',
 				'filter_range' => true
-			));
+			));*/
 
 			// Prepare data for report
 			$order_item_counts = $this->prepare_chart_data($this->report_data->order_item_counts, 'post_date', 'order_item_count', $this->chart_interval, $this->start_date, $this->chart_groupby);
 			$order_item_amounts = $this->prepare_chart_data($this->report_data->order_item_amounts, 'post_date', 'order_item_amount', $this->chart_interval, $this->start_date, $this->chart_groupby);
-
+			$order_item_quantity = $this->prepare_chart_data($this->report_data->order_item_quantity, 'post_date', 'order_item_quantity', $this->chart_interval, $this->start_date, $this->chart_groupby);
 			// Encode in json format
 			$chart_data = json_encode(array(
 				'order_item_counts' => array_values($order_item_counts),
-				'order_item_amounts' => array_values($order_item_amounts)
+				'order_item_amounts' => array_values($order_item_amounts),
+				'order_item_quantity' => array_values($order_item_quantity)
 			));
 			?>
 			<div class="chart-container">
@@ -444,6 +510,21 @@ class Jigoshop_Report_Sales_By_Product extends Jigoshop_Admin_Report
 					var drawGraph = function(highlight){
 						var series = [
 							{
+								label: "<?php echo esc_js(__('Sold quantity', 'jigoshop')) ?>",
+								data: order_data.order_item_quantity,
+								color: '<?php echo $this->chart_colours['item_quantity']; ?>',
+								bars: {
+									fillColor: '<?php echo $this->chart_colours['item_quantity']; ?>',
+									fill: true,
+									show: true,
+									lineWidth: 0,
+									align: 'left',
+									barWidth: 0<?php echo $this->barwidth; ?> * 0.25
+								},
+								shadowSize: 0,
+								hoverable: false
+							},
+							{
 								label: "<?php echo esc_js(__('Number of items sold', 'jigoshop')) ?>",
 								data: order_data.order_item_counts,
 								color: '<?php echo $this->chart_colours['item_count']; ?>',
@@ -452,8 +533,8 @@ class Jigoshop_Report_Sales_By_Product extends Jigoshop_Admin_Report
 									fill: true,
 									show: true,
 									lineWidth: 0,
-									align: 'center',
-									barWidth: 0<?php echo $this->barwidth; ?> * 0.5
+									align: 'right',
+									barWidth: 0<?php echo $this->barwidth; ?> * 0.25
 								},
 								shadowSize: 0,
 								hoverable: false

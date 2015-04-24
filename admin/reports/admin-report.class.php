@@ -363,6 +363,25 @@ abstract class Jigoshop_Admin_Report
 
 						$cached_results[$query_hash] = $results;
 						break;
+					case 'order_item_quantity':
+						$results = array();
+						foreach ($cached_results[$query_hash] as $item) {
+							if (!isset($results[$item->post_date])) {
+								$result = new stdClass;
+								$result->post_date = $item->post_date;
+								$result->order_item_quantity = 0;
+								$results[$item->post_date] = $result;
+							}
+
+							$data = maybe_unserialize($item->order_item_quantity);
+							$data = $this->filterItem($data, $value);
+							$results[$item->post_date]->order_item_quantity += array_sum(array_map(function($item){
+								return isset($item['qty']) ? $item['qty'] : 0;
+							}, $data));
+						}
+
+						$cached_results[$query_hash] = $results;
+						break;
 					case 'discount_amount':
 						$results = array();
 						foreach ($cached_results[$query_hash] as $item) {
