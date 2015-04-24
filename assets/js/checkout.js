@@ -138,11 +138,13 @@ jQuery(function($) {
 	// ensure there is no duplicate #payment from themes
 	$('div#payment:not(:last)').remove();
 	// handle hiding and showing the login form
-	$('form.login').hide();
-	$('a.showlogin').click(function(e){
-		e.preventDefault();
-		$('form.login').slideToggle();
-	});
+	if($('a.showlogin').length> 0){
+		$('form.login').hide();
+		$('a.showlogin').click(function(e){
+			e.preventDefault();
+			$('form.login').slideToggle();
+		});
+	}
 
 	// handle hiding and showing the shipping fields
 	$('#shiptobilling-checkbox').change(function(){
