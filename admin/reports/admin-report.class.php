@@ -433,7 +433,7 @@ abstract class Jigoshop_Admin_Report
 							$data = maybe_unserialize($item->order_coupons);
 							foreach ($data['order_discount_coupons'] as $coupon) {
 								if (!in_array($coupon['code'], $coupons[$item->post_date])) {
-									$results[$item->post_date]->coupons[] = JS_Coupons::get_coupon($coupon['code']);
+									$results[$item->post_date]->coupons[] = $coupon;
 									$results[$item->post_date]->usage[$coupon['code']] = 1;
 									$coupons[$item->post_date][] = $coupon['code'];
 								} else {
