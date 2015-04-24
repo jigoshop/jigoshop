@@ -1584,7 +1584,28 @@ class jigoshop_product extends Jigoshop_Base
 			}
 
 			$values = array_unique($values);
-			asort($values);
+
+
+			$variation_order = isset($this->meta['variation_order'][0]) ? $this->meta['variation_order'][0] : 'asort';
+			switch($variation_order){
+				case 'shuffle':
+					shuffle($values);
+					break;
+				case 'krsrot':
+					krsort($values);
+					break;
+				case 'ksort':
+					ksort($values);
+					break;
+				case 'arsort':
+					arsort($values);
+					break;
+				case 'asort':
+				default:
+					asort($values);
+					break;
+			}
+
 			$available_attributes[$attribute['name']] = $values;
 		}
 

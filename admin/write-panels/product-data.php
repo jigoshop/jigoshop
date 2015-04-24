@@ -459,6 +459,19 @@ function jigoshop_product_data_box() {
 				'value'         => $post->menu_order,
 			);
 			echo Jigoshop_Forms::input( $args );
+			$args = array(
+				'id' => 'variation_order',
+				'label' => __('Variation Order','jigoshop'),
+				'options' => array(
+					'asort' => __('By name ascending','jigoshop'),
+					'arsort' => __('By name descending','jigoshop'),
+					'ksort' => __('From first to last key','jigoshop'),
+					'krsort' => __('From last to first key','jigoshop'),
+					'shuffle' => __('Random','jigoshop')
+				),
+				'selected' => get_post_meta( $post->ID, 'variation_order', true )
+			);
+			echo Jigoshop_Forms::select( $args );
 			?>
 			<?php do_action('jigoshop_product_grouped_panel'); ?>
 		</div>

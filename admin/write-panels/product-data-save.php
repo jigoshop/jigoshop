@@ -132,6 +132,10 @@ class jigoshop_product_meta
 			update_post_meta($post_id, 'manage_stock', false);
 		}
 
+		if ($_POST['product-type'] == 'variable') {
+			update_post_meta($post_id, 'variation_order', $_POST['variation_order']);
+		}
+
 		// Process the sale dates
 		foreach ($this->process_sale_dates($_POST, $post_id) as $key => $value) {
 			update_post_meta($post_id, $key, $value);
