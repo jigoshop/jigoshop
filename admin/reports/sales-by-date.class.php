@@ -114,7 +114,7 @@ class Jigoshop_Report_Sales_By_Date extends Jigoshop_Admin_Report
 			'query_type' => 'get_results',
 			'filter_range' => true,
 			'order_types' => array('shop_order'),
-			'order_status' => array('completed', 'processing'),
+			'order_status' => $this->order_status,
 		));
 
 		$this->report_data->order_counts = (array)$this->get_order_report_data(array(
@@ -136,7 +136,7 @@ class Jigoshop_Report_Sales_By_Date extends Jigoshop_Admin_Report
 			'query_type' => 'get_results',
 			'filter_range' => true,
 			'order_types' => array('shop_order'),
-			'order_status' => array('completed', 'processing', 'on-hold')
+			'order_status' => $this->order_status
 		));
 
 		$this->report_data->coupons = (array)$this->get_order_report_data(array(
@@ -156,7 +156,7 @@ class Jigoshop_Report_Sales_By_Date extends Jigoshop_Admin_Report
 			'query_type' => 'get_results',
 			'filter_range' => true,
 			'order_types' => array('shop_order'),
-			'order_status' => array('completed', 'processing', 'on-hold'),
+			'order_status' => $this->order_status,
 		));
 
 		$this->report_data->order_items = (array)$this->get_order_report_data(array(
@@ -176,7 +176,7 @@ class Jigoshop_Report_Sales_By_Date extends Jigoshop_Admin_Report
 			'query_type' => 'get_results',
 			'filter_range' => true,
 			'order_types' => array('shop_order'),
-			'order_status' => array('completed', 'processing', 'on-hold'),
+			'order_status' => $this->order_status,
 		));
 
 		$this->report_data->total_sales = jigoshop_format_decimal(array_sum(wp_list_pluck($this->report_data->orders, 'total_sales')), 2);
@@ -225,6 +225,63 @@ class Jigoshop_Report_Sales_By_Date extends Jigoshop_Admin_Report
 		$template = jigoshop_locate_template('admin/reports/by-date');
 		/** @noinspection PhpIncludeInspection */
 		include($template);
+	}
+
+	/**
+	 * [get_chart_widgets description]
+	 *
+	 * @return array
+	 */
+	public function get_chart_widgets()
+	{
+		$widgets = array();
+
+		$widgets[] = array(
+			'title' => __('Show reports for:', 'jigoshop'),
+			'callback' => array($this, 'order_status_widget')
+		);
+
+		return $widgets;
+	}
+
+	public function order_status_widget()
+	{
+		?>
+		<form method="GET">
+			<?php
+			$args = array(
+				'id' => 'order_status',
+				'name' => 'order_status',
+				'label' => null,
+				'after_label' => null,
+				'class' => 'full-width',
+				'desc' => false,
+				'tip' => false,
+				'multiple' => true,
+				'placeholder' => '',
+				'options' => array(
+					'pending' => __('Pending', 'jigoshop'),
+					'on-hold' => __('On-Hold', 'jigoshop'),
+					'waiting-for-payment' => __('Waiting for payment', 'jigoshop'),
+					'processing' => __('Processing', 'jigoshop'),
+					'completed' => __('Completed', 'jigoshop'),
+					'cancelled' => __('Cancelled', 'jigoshop'),
+					'refunded' => __('Refunded', 'jigoshop')
+				),
+				'selected' => $this->order_status,
+			);
+			echo Jigoshop_Forms::select($args);
+			?>
+			<input type="submit" class="submit button" value="<?php _e('Show', 'jigoshop'); ?>" />
+			<input type="hidden" name="range" value="<?php if (!empty($_GET['range'])) echo esc_attr($_GET['range']) ?>" />
+			<input type="hidden" name="start_date" value="<?php if (!empty($_GET['start_date'])) echo esc_attr($_GET['start_date']) ?>" />
+			<input type="hidden" name="end_date" value="<?php if (!empty($_GET['end_date'])) echo esc_attr($_GET['end_date']) ?>" />
+			<input type="hidden" name="page" value="<?php if (!empty($_GET['page'])) echo esc_attr($_GET['page']) ?>" />
+			<input type="hidden" name="tab" value="<?php if (!empty($_GET['tab'])) echo esc_attr($_GET['tab']) ?>" />
+			<input type="hidden" name="report" value="sales_by_date" />
+		</form>
+		<?php
+
 	}
 
 	/**

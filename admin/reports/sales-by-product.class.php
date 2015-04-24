@@ -53,7 +53,7 @@ class Jigoshop_Report_Sales_By_Product extends Jigoshop_Admin_Report
 		);
 
 		$legend[] = array(
-			'title' => sprintf(__('%s quantity purchased', 'jigoshop'), '<strong>'.$total_quantity.'</strong>'),
+			'title' => sprintf(__('%s purchased quantity', 'jigoshop'), '<strong>'.$total_quantity.'</strong>'),
 			'color' => $this->chart_colours['item_quantity'],
 			'highlight_series' => 0
 		);

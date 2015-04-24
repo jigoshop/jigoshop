@@ -2662,6 +2662,12 @@ canvas.overlay {
 	padding: 7px;
 	vertical-align: top;
 }
+.jigoshop-reports-wide .full-width {
+	width: 100%;
+}
+.jigoshop-reports-wide .full-width .select2-search-choice {
+	width: 80%;
+}
 
 /** System Info page */
 #debug-report {

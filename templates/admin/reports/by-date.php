@@ -73,6 +73,7 @@ if (!defined('ABSPATH')) {
 				<div class="main">
 					<?php $this->get_main_chart(); ?>
 				</div>
+				<div class="clear"></div>
 			</div>
 		<?php else : ?>
 			<div class="inside">

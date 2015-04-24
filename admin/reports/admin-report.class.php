@@ -12,6 +12,7 @@ abstract class Jigoshop_Admin_Report
 	public $chart_groupby;
 	public $start_date;
 	public $end_date;
+	public $order_status;
 
 	/**
 	 * Prepares a sparkline to show sales in the last X days
@@ -132,7 +133,7 @@ abstract class Jigoshop_Admin_Report
 			'nocache' => false,
 			'debug' => false,
 			'order_types' => array('shop_order'),
-			'order_status' => array('completed', 'processing', 'on-hold'),
+			'order_status' => $this->order_status,
 			'parent_order_status' => false,
 		);
 		$args = apply_filters('jigoshop_reports_get_order_report_data_args', $args);
@@ -775,6 +776,9 @@ abstract class Jigoshop_Admin_Report
 				$this->barwidth = 60 * 60 * 24 * 7 * 4 * 1000;
 				break;
 		}
+
+		// Order Status
+		$this->order_status = isset($_GET['order_status']) && !empty($_GET['order_status']) ? $_GET['order_status'] : array('completed', 'processing');
 	}
 
 	/**
