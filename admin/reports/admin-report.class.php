@@ -721,7 +721,16 @@ abstract class Jigoshop_Admin_Report
 				if ($interval > 3) {
 					$this->chart_groupby = 'month';
 				} else {
-					$this->chart_groupby = 'day';
+					$interval = 0;
+					$min_date = $this->start_date;
+					while (($min_date = strtotime("+1 day", $min_date)) <= $this->end_date) {
+						$interval++;
+					}
+					if($interval > 0){
+						$this->chart_groupby = 'day';
+					} else {
+						$this->chart_groupby = 'hour';
+					}
 				}
 				break;
 			case 'all' :

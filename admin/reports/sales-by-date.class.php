@@ -16,6 +16,10 @@ class Jigoshop_Report_Sales_By_Date extends Jigoshop_Admin_Report
 		$data = $this->get_report_data();
 
 		switch ($this->chart_groupby) {
+			case 'hour' :
+				/** @noinspection PhpUndefinedFieldInspection */
+				$average_sales_title = sprintf(__('%s average sales per hour', 'jigoshop'), '<strong>'.jigoshop_price($data->average_sales).'</strong>');
+				break;
 			case 'day' :
 				/** @noinspection PhpUndefinedFieldInspection */
 				$average_sales_title = sprintf(__('%s average daily sales', 'jigoshop'), '<strong>'.jigoshop_price($data->average_sales).'</strong>');
