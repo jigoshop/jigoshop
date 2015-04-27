@@ -76,9 +76,11 @@ class Jigoshop_Report_Coupon_Usage extends Jigoshop_Admin_Report
 	{
 		/** @noinspection PhpUnusedLocalVariableInspection */
 		$ranges = array(
+			'all' => __('All Time', 'jigoshop'),
 			'year' => __('Year', 'jigoshop'),
 			'last_month' => __('Last Month', 'jigoshop'),
 			'month' => __('This Month', 'jigoshop'),
+			'30day' => __('Last 30 Days', 'jigoshop'),
 			'7day' => __('Last 7 Days', 'jigoshop'),
 			'today' => __('Today', 'jigoshop'),
 		);
@@ -88,10 +90,10 @@ class Jigoshop_Report_Coupon_Usage extends Jigoshop_Admin_Report
 			'coupon_count' => '#d4d9dc',
 		);
 
-		$current_range = !empty($_GET['range']) ? sanitize_text_field($_GET['range']) : '7day';
+		$current_range = !empty($_GET['range']) ? sanitize_text_field($_GET['range']) : '30day';
 
-		if (!in_array($current_range, array('custom', 'year', 'last_month', 'month', '7day', 'today'))) {
-			$current_range = '7day';
+		if (!in_array($current_range, array('custom','all', 'year', 'last_month', 'month', '30day', '7day', 'today'))) {
+			$current_range = '30day';
 		}
 
 		$this->calculate_current_range($current_range);
@@ -262,7 +264,7 @@ class Jigoshop_Report_Coupon_Usage extends Jigoshop_Admin_Report
 				),
 			),
 			'query_type' => 'get_results',
-			'filter_range' => false,
+			'filter_range' => true,
 			'order_types' => array('shop_order'),
 		));
 	}
@@ -433,6 +435,7 @@ class Jigoshop_Report_Coupon_Usage extends Jigoshop_Admin_Report
 									min: 0,
 									tickDecimals: 2,
 									alignTicksWithAxis: 1,
+									autoscaleMargin: 0,
 									color: 'transparent',
 									font: {color: "#aaa"}
 								}
