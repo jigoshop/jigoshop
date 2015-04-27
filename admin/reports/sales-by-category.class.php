@@ -73,9 +73,11 @@ class Jigoshop_Report_Sales_By_Category extends Jigoshop_Admin_Report
 	{
 		/** @noinspection PhpUnusedLocalVariableInspection */
 		$ranges = array(
+			'all' => __('All Time', 'jigoshop'),
 			'year' => __('Year', 'jigoshop'),
 			'last_month' => __('Last Month', 'jigoshop'),
 			'month' => __('This Month', 'jigoshop'),
+			'30day' => __('Last 30 Days', 'jigoshop'),
 			'7day' => __('Last 7 Days', 'jigoshop'),
 			'today' => __('Today', 'jigoshop'),
 		);
@@ -98,17 +100,17 @@ class Jigoshop_Report_Sales_By_Category extends Jigoshop_Admin_Report
 			'#c0392b'
 		);
 
-		$current_range = !empty($_GET['range']) ? sanitize_text_field($_GET['range']) : '7day';
+		$current_range = !empty($_GET['range']) ? sanitize_text_field($_GET['range']) : '30day';
 
-		if (!in_array($current_range, array('custom', 'year', 'last_month', 'month', '7day', 'today'))) {
-			$current_range = '7day';
+		if (!in_array($current_range, array('custom','all', 'year', 'last_month', 'month', '30day', '7day', 'today'))) {
+			$current_range = '30day';
 		}
 
 		$this->calculate_current_range($current_range);
 
 		// Get item sales data
 		if ($this->show_categories) {
-			$order_items = $this->get_order_report_data(array(
+			$orders = $this->get_order_report_data(array(
 				'data' => array(
 					'order_items' => array(
 						'type' => 'meta',
@@ -129,24 +131,26 @@ class Jigoshop_Report_Sales_By_Category extends Jigoshop_Admin_Report
 			$this->item_sales = array();
 			$this->item_sales_and_times = array();
 
-			if (is_array($order_items)) {
-				foreach ($order_items as $order_item) {
-					switch ($this->chart_groupby) {
-						case 'hour' :
-							$time = (date('H', strtotime($order_item->post_date))*3600).'000';
-							break;
-						case 'day' :
-							$time = strtotime(date('Ymd', strtotime($order_item->post_date))) * 1000;
-							break;
-						case 'month' :
-						default :
-							$time = strtotime(date('Ym', strtotime($order_item->post_date)).'01') * 1000;
-							break;
-					}
+			if (is_array($orders)) {
+				foreach ($orders as $order_items) {
+					foreach($order_items as $order_item) {
+						switch ($this->chart_groupby) {
+							case 'hour' :
+								$time = (date('H', strtotime($order_item->post_date)) * 3600).'000';
+								break;
+							case 'day' :
+								$time = strtotime(date('Ymd', strtotime($order_item->post_date))) * 1000;
+								break;
+							case 'month' :
+							default :
+								$time = strtotime(date('Ym', strtotime($order_item->post_date)).'01') * 1000;
+								break;
+						}
 
-					$this->item_sales_and_times[$time][$order_item->product_id] = isset($this->item_sales_and_times[$time][$order_item->product_id]) ? $this->item_sales_and_times[$time][$order_item->product_id] + $order_item->order_item_total : $order_item->order_item_total;
-					$this->item_sales[$order_item->product_id] = isset($this->item_sales[$order_item->product_id]) ? $this->item_sales[$order_item->product_id] + $order_item->order_item_total : $order_item->order_item_total;
-				}
+						$this->item_sales_and_times[$time][$order_item->product_id] = isset($this->item_sales_and_times[$time][$order_item->product_id]) ? $this->item_sales_and_times[$time][$order_item->product_id] + $order_item->order_item_total : $order_item->order_item_total;
+						$this->item_sales[$order_item->product_id] = isset($this->item_sales[$order_item->product_id]) ? $this->item_sales[$order_item->product_id] + $order_item->order_item_total : $order_item->order_item_total;
+					}
+					}
 			}
 		}
 

@@ -469,7 +469,7 @@ abstract class Jigoshop_Admin_Report
 							$data = maybe_unserialize($item->category_data);
 							$data = $this->filterItem($data, $value);
 							foreach ($data as $product) {
-								if (!isset($results[$item->post_date])) {
+								if (!isset($results[$item->post_date][$product['id']])) {
 									$result = new stdClass;
 									$result->product_id = $product['id'];
 									$result->order_item_qty = 0;
@@ -477,11 +477,11 @@ abstract class Jigoshop_Admin_Report
 
 									$result->post_date = $item->post_date;
 
-									$results[$item->post_date] = $result;
+									$results[$item->post_date][$product['id']] = $result;
 								}
 
-								$results[$item->post_date]->order_item_qty += $product['qty'];
-								$results[$item->post_date]->order_item_total += $product['qty'] * $product['cost'];
+								$results[$item->post_date][$product['id']]->order_item_qty += $product['qty'];
+								$results[$item->post_date][$product['id']]->order_item_total += $product['qty'] * $product['cost'];
 							}
 						}
 
@@ -724,6 +724,11 @@ abstract class Jigoshop_Admin_Report
 					$this->chart_groupby = 'day';
 				}
 				break;
+			case 'all' :
+				$this->start_date = strtotime(date('Y-m-d', strtotime($this->get_first_order_date())));
+				$this->end_date = strtotime('midnight', current_time('timestamp'));;
+				$this->chart_groupby = 'month';
+				break;
 			case 'year' :
 				$this->start_date = strtotime(date('Y-01-01', current_time('timestamp')));
 				$this->end_date = strtotime('midnight', current_time('timestamp'));
@@ -737,6 +742,11 @@ abstract class Jigoshop_Admin_Report
 				break;
 			case 'month' :
 				$this->start_date = strtotime(date('Y-m-01', current_time('timestamp')));
+				$this->end_date = strtotime('midnight', current_time('timestamp'));
+				$this->chart_groupby = 'day';
+				break;
+			case '30day' :
+				$this->start_date = strtotime('-29 days', current_time('timestamp'));
 				$this->end_date = strtotime('midnight', current_time('timestamp'));
 				$this->chart_groupby = 'day';
 				break;
@@ -806,6 +816,20 @@ abstract class Jigoshop_Admin_Report
 		}
 
 		return $currency_tooltip;
+	}
+
+	public function get_first_order_date()
+	{
+		$args = array(
+			'posts_per_page'   => 1,
+			'offset'           => 0,
+			'orderby'          => 'post_date',
+			'order'            => 'ASC',
+			'post_type'        => 'shop_order',
+		);
+		$posts_array = get_posts( $args );
+
+		return $posts_array[0]->post_date;
 	}
 
 	/**
