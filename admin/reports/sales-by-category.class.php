@@ -366,7 +366,7 @@ class Jigoshop_Report_Sales_By_Category extends Jigoshop_Admin_Report
 									{
 										min: 0,
 										tickDecimals: 2,
-										color: 'transparent',
+										color: '#d4d9dc',
 										font: { color: "#aaa" }
 									}
 								]
