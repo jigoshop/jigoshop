@@ -7,6 +7,7 @@
     * Improved: Product reports show sold quantity.
     * Improved: Category reports show horizontal lines.
     * Improved: Reports page displays properly values.
+    * Improved: Custom themes compatibility.
     * Fix: JS error in Checkout page.
     * Fix: Hidden login box in my account page.
     * Fix: `[order_items_table]` shortcode.
