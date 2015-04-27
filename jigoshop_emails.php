@@ -261,7 +261,7 @@ function jigoshop_send_customer_invoice($order_id)
  */
 function jigoshop_get_order_items_table($order, $show_links = false, $show_sku = false, $includes_tax = false)
 {
-	if (\Jigoshop_Base::get_options()->get('jigoshop_emails_html', 'no') == 'no') {
+	if (\Jigoshop_Base::get_options()->get('jigoshop_enable_html_emails', 'no') == 'no') {
 		return $order->email_order_items_list($show_links, $show_sku, $includes_tax);
 	}
 

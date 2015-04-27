@@ -6,7 +6,8 @@
     * New: Product reports shows sold quantity.
     * Improved: Reports page displays properly values.
     * Fix: JS error in Checkout page.
-    * Fix: Hidden login box in my account page. 
+    * Fix: Hidden login box in my account page.
+    * Fix: `[order_items_table]` shortcode.
 * 1.17.3 - 2015-04-20:
     * Improved: Reports page.
     * Fix: Scripts and compatibility with JRTO.
