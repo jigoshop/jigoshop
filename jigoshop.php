@@ -22,7 +22,7 @@
  * Author URI:          https://www.jigoshop.com
  * Version:             1.18
  * Requires at least:   3.8
- * Tested up to:        4.1.1
+ * Tested up to:        4.2
  * Text Domain:         jigoshop
  * Domain Path:         /languages/
  * DISCLAIMER

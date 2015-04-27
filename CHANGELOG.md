@@ -1,7 +1,7 @@
 ## Changelog
 
 * 1.18:
-    * Mew: Possibility to show reports for specified order statuses.
+    * New: Possibility to show reports for specified order statuses.
     * New: Possibility to sort available variations on products page.
     * New: Product reports shows sold quantity.
     * Improved: Reports page displays properly values.
