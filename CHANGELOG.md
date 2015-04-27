@@ -1,10 +1,10 @@
 ## Changelog
 
-* 1.18:
-    * New: Possibility to show reports for specified order statuses.
-    * New: Possibility to sort available variations on products page.
-    * New: Product reports show sold quantity.
-    * New: Category reports show horizontal lines.
+* 1.17.4:
+    * Improved: Possibility to show reports for specified order statuses.
+    * Improved: Possibility to sort available variations on products page.
+    * Improved: Product reports show sold quantity.
+    * Improved: Category reports show horizontal lines.
     * Improved: Reports page displays properly values.
     * Fix: JS error in Checkout page.
     * Fix: Hidden login box in my account page.
