@@ -22,7 +22,7 @@
  * Author URI:          https://www.jigoshop.com
  * Version:             1.17.4
  * Requires at least:   3.8
- * Tested up to:        4.2
+ * Tested up to:        4.2.1
  * Text Domain:         jigoshop
  * Domain Path:         /languages/
  * DISCLAIMER
@@ -1578,7 +1578,7 @@ function jigoshop_sanitize_user($username, $raw_username, $strict)
 add_action('wp_head', 'jigoshop_head_version');
 function jigoshop_head_version()
 {
-	echo "\n".'<!-- Jigoshop Version: '.JIGOSHOP_VERSION.' -->'."\n";
+	echo '<!-- Jigoshop Version: '.JIGOSHOP_VERSION.' -->'."\n";
 }
 
 global $jigoshop_body_classes;
