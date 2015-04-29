@@ -45,11 +45,13 @@
 		<?php if ($show_links && $product->is_type('downloadable') && $product->exists()):
 			$product_id = (bool)$item['variation_id'] ? $product->variation_id : $product->id;
 			$url = apply_filters('downloadable_file_url', $order->get_downloadable_file_url($product_id), $product, $order);
-			?>
-			<tr>
-				<td><?php _ex('Download link:', 'emails', 'jigoshop'); ?></td>
-				<td colspan="2"><a href="<?php echo $url; ?>"><?php echo $url; ?></a></td>
-			</tr>
+			if(!empty($url)) :
+				?>
+				<tr>
+					<td><?php _ex('Download link:', 'emails', 'jigoshop'); ?></td>
+					<td colspan="2"><?php echo $url; ?></td>
+				</tr>
+			<?php endif; ?>
 		<?php endif; ?>
 	<?php endforeach; ?>
 	</tbody>
