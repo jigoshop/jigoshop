@@ -197,9 +197,13 @@ if (!function_exists('jrto_enqueue_script')) {
 		} else {
 			$action = $location == 'admin' ? 'admin' : 'wp';
 			add_action($action.'_enqueue_scripts', function() use ($handle, $src, $dependencies, $options){
-				$version = isset($options['version']) ? $options['version'] : false;
-				$footer = isset($options['in_footer']) ? $options['in_footer'] : false;
-				wp_enqueue_script($handle, $src, $dependencies, $version, $footer);
+
+				$page = isset($options['page']) ? (array)$options['page'] : array('all');
+				if (is_jigoshop_page($page)) {
+					$version = isset($options['version']) ? $options['version'] : false;
+					$footer = isset($options['in_footer']) ? $options['in_footer'] : false;
+					wp_enqueue_script($handle, $src, $dependencies, $version, $footer);
+				}
 			}, 10);
 		}
 	}
@@ -229,9 +233,13 @@ if (!function_exists('jrto_register_script')) {
 		} else {
 			$action = $location == 'admin' ? 'admin' : 'wp';
 			add_action($action.'_enqueue_scripts', function() use ($handle, $src, $dependencies, $options){
-				$version = isset($options['version']) ? $options['version'] : false;
-				$footer = isset($options['in_footer']) ? $options['in_footer'] : false;
-				wp_register_script($handle, $src, $dependencies, $version, $footer);
+
+				$page = isset($options['page']) ? (array)$options['page'] : array('all');
+				if (is_jigoshop_page($page)) {
+					$version = isset($options['version']) ? $options['version'] : false;
+					$footer = isset($options['in_footer']) ? $options['in_footer'] : false;
+					wp_register_script($handle, $src, $dependencies, $version, $footer);
+				}
 			}, 10);
 		}
 	}
