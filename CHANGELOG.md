@@ -1,6 +1,6 @@
 ## Changelog
 
-* 1.17.5:
+* 1.17.5 - 2015.05.05:
     * Improved: Optimized scripts.
     * Improved: Replaced old screenshots.
     * Fix: Email download link.
