@@ -119,8 +119,11 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 
 1. Jigoshop admin dashboard
 2. Admin product edit page
-3. Jigoshop homepage on a premium theme
-4. Standard customer checkout screen
+3. Jigoshop Demo store homepage on a premium theme
+4. Example customer checkout page
+5. Product page
+6. Jigoshop Reports
+7. Example category page
 
 == Changelog ==
 
