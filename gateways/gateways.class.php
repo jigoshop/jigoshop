@@ -36,6 +36,8 @@ class jigoshop_payment_gateways extends Jigoshop_Singleton
 	 */
 	public static function gateways_init()
 	{
+		do_action('jigoshop_payment_gateways_init'); /* load plugins for gateway inits */
+
 		$load_gateways = apply_filters('jigoshop_payment_gateways', array());
 
 		foreach ($load_gateways as $gateway) {
