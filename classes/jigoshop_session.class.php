@@ -98,6 +98,11 @@ class jigoshop_session extends Jigoshop_Singleton {
 				return $value;
 			}
 		}
+		if($key=='customer'){
+			if(isset($value['country']) && empty($value['country'])){
+				return $value;
+			}
+		}
 		$_SESSION['jigoshop'][JIGOSHOP_VERSION][$key] = $value;
 		return $value;
 	}

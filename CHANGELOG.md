@@ -1,5 +1,7 @@
 ## Changelog
 
+* 1.17.5.1 - 2015.05.06:
+    * Fix: Customer session.
 * 1.17.5 - 2015.05.05:
     * Improved: Optimized scripts.
     * Improved: Replaced old screenshots.
