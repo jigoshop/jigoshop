@@ -31,8 +31,8 @@ class jigoshop_licence_validator
 	private $home_shop_url;
 	private $validator_token = 'jigoshop-licence-validator';
 	private $validator_prefix = 'jigoshop_licence_validator_';
-	private $override_home_url_= false;
-	private $custom_home_url = '';
+	private $override_validation_url_= false;
+	private $custom_validation_url = '';
 
 	/**
 	 * Constructor for Licence Validator in each plugin
@@ -56,11 +56,11 @@ class jigoshop_licence_validator
 		$this->version = $info['Version'];
 		$this->plugin_url = $info['Url'];
 		$this->home_shop_url = $home_shop_url;
-		$this->override_home_url = get_option('jigoshop_license_override_home_url', false);
-		$this->custom_home_url = get_option('jigoshop_license_custom_home_url', '');
+		$this->override_validation_url = get_option('jigoshop_license_override_validation_url', false);
+		$this->custom_validation_url = get_option('jigoshop_license_custom_validation_url', '');
 
-		if($this->override_home_url){
-			$this->home_shop_url = $this->custom_home_url;
+		if($this->override_validation_url){
+			$this->home_shop_url = $this->custom_validation_url;
 		}
 
 		self::$plugins[$this->identifier] = array(
@@ -402,14 +402,14 @@ class jigoshop_licence_validator
 			      action="<?php echo admin_url('admin.php?page='.$this->validator_token); ?>" method="post">
 				<?php wp_nonce_field($this->validator_token.'-nonce', $this->validator_prefix.'nonce'); ?>
 				<fieldset>
-					<label for="override_home_url"><?php _e('Override licensing validation URL for all extensions (by default it\'s defined in each extension)', 'jigoshop') ?> <input id="override_home_url" type="checkbox" name="override_home_url" <?php if($this->override_home_url) : echo 'checked="checked"'; endif; ?>></label>
+					<label for="override_validation_url"><?php _e('Override licensing validation URL for all extensions (by default it\'s defined in each extension)', 'jigoshop') ?> <input id="override_validation_url" type="checkbox" name="override_validation_url" <?php if($this->override_validation_url) : echo 'checked="checked"'; endif; ?>></label>
 					<div id="custom_url" style="display:none">
-						<label for="custom_home_url"><?php _e('Custom validation URL', 'jigoshop'); ?> <input id="custom_home_url" type="text" name="custom_home_url" value="<?php echo $this->custom_home_url; ?>" placeholder="http://www.jigoshop.com/" style="width:338px;"> <?php _e('example: <i>http://jigoshop.com/</i> or <i>http://www.jigoshop.com/</i>', 'jigoshop'); ?></label>
+						<label for="custom_validation_url"><?php _e('Custom validation URL', 'jigoshop'); ?> <input id="custom_validation_url" type="text" name="custom_validation_url" value="<?php echo $this->custom_validation_url; ?>" placeholder="http://www.jigoshop.com/" style="width:338px;"> <?php _e('example: <i>http://jigoshop.com/</i> or <i>http://www.jigoshop.com/</i>', 'jigoshop'); ?></label>
 					</div>
 					<script>
 						jQuery(function($){
 							function changeVisibliltity(){
-								if($('#override_home_url').is(':checked')){
+								if($('#override_validation_url').is(':checked')){
 									console.log('test1');
 									$('#custom_url').show();
 								}else{
@@ -418,7 +418,7 @@ class jigoshop_licence_validator
 								}
 							}
 							changeVisibliltity();
-							$('#override_home_url').on('change', changeVisibliltity);
+							$('#override_validation_url').on('change', changeVisibliltity);
 						});
 					</script>
 					<table class="form-table">
@@ -488,10 +488,10 @@ class jigoshop_licence_validator
 		$messages = array();
 		$keys = $this->get_keys();
 
-		if(isset($_POST['override_home_url'])) {
-			update_option('jigoshop_license_override_home_url', $_POST['override_home_url']);
-			if(isset($_POST['custom_home_url']) && preg_match('/^(http|https):\/\/([A-Z0-9][A-Z0-9_-]*(?:\.[A-Z0-9][A-Z0-9_-]*)+):?(\d+)?\//i', $_POST['custom_home_url'])){
-				update_option('jigoshop_license_custom_home_url', $_POST['custom_home_url']);
+		if(isset($_POST['override_validation_url'])) {
+			update_option('jigoshop_license_override_validation_url', $_POST['override_validation_url']);
+			if(isset($_POST['custom_validation_url']) && preg_match('/^(http|https):\/\/([A-Z0-9][A-Z0-9_-]*(?:\.[A-Z0-9][A-Z0-9_-]*)+):?(\d+)?\//i', $_POST['custom_validation_url'])){
+				update_option('jigoshop_license_custom_validation_url', $_POST['custom_validation_url']);
 			} else {
 				$messages[] = array(
 					'success' => false,
@@ -499,7 +499,7 @@ class jigoshop_licence_validator
 				);
 			}
 		} else {
-			delete_option('jigoshop_license_override_home_url');
+			delete_option('jigoshop_license_override_validation_url');
 		}
 
 
