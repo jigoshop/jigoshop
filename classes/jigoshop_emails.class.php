@@ -88,7 +88,8 @@ class jigoshop_emails extends Jigoshop_Base
 					$title = str_replace('['.get_bloginfo('name').'] ', '', $post->post_title);
 
 					$template = file_get_contents($path);
-					$template = str_replace('{heading}', $title, $template);
+					$template = str_replace('{title}', $title, $template);
+					$template = str_replace('{heading}', apply_filters('jigoshop_email_heading', $title), $template);
 					$template = str_replace('{content}', $content, $template);
 					$template = str_replace('{footer}', apply_filters('jigoshop_email_footer', $footer), $template);
 				}
