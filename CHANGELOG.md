@@ -1,5 +1,7 @@
 ## Changelog
 
+* 1.17.6 - 2015.05.08:
+    * Fix: Jigoshop License Validator.
 * 1.17.5.1 - 2015.05.06:
     * Fix: Customer session.
 * 1.17.5 - 2015.05.05:
