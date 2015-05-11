@@ -1,5 +1,7 @@
 ## Changelog
 
+* 1.17.7:
+    * Fix: Checkout number format issue.
 * 1.17.6 - 2015.05.08:
     * Fix: Jigoshop License Validator.
 * 1.17.5.1 - 2015.05.06:

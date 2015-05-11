@@ -1157,7 +1157,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 			$shipping_total += jigoshop_cart::$shipping_tax_total;
 		}
 
-		return $gateway->process_gateway(number_format(jigoshop_cart::$subtotal, 2, '.', ''), number_format($shipping_total, 2, '.', ''), number_format(jigoshop_cart::$discount_total, 2, '.', ''));
+		return $gateway->process_gateway(number_format((float)jigoshop_cart::$subtotal, 2, '.', ''), number_format((float)$shipping_total, 2, '.', ''), number_format((float)jigoshop_cart::$discount_total, 2, '.', ''));
 	}
 
 	private function create_user_account()
