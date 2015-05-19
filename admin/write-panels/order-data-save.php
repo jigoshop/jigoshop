@@ -179,6 +179,9 @@ function jigoshop_process_shop_order_meta($post_id)
 		}
 	}
 
+	// Process custom attributes added with "jigoshop_order_data_panels"
+	$data = apply_filters("jigoshop_order_data_save", $data, $post_id);
+
 	// Save
 	update_post_meta($post_id, 'order_data', $data);
 	update_post_meta($post_id, 'order_items', $order_items);
