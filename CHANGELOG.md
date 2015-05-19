@@ -4,6 +4,7 @@
     * Fix: Checkout number format issue.
     * Improved: Default email template for change order status from waiting for payment to processing.
     * Improved: Email templating. Thanks to newash!
+    * Improved: Allow to save custom order data. Thanks to newash!    
 * 1.17.6 - 2015.05.08:
     * Fix: Jigoshop License Validator.
 * 1.17.5.1 - 2015.05.06:
