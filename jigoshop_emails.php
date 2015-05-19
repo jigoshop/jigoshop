@@ -18,6 +18,7 @@ add_action('admin_init', function(){
 	jigoshop_emails::register_mail('admin_order_status_pending_to_completed', __('Order Pending to Completed for admin'), get_order_email_arguments_description());
 	jigoshop_emails::register_mail('admin_order_status_pending_to_on-hold', __('Order Pending to On-Hold for admin'), get_order_email_arguments_description());
 	jigoshop_emails::register_mail('admin_order_status_pending_to_waiting-for-payment', __('Order Pending to Waiting for Payment for admin'), get_order_email_arguments_description());
+	jigoshop_emails::register_mail('admin_order_status_waiting-for-payment_to_processing', __('Order Waiting for Payment to Processing for admin'), get_order_email_arguments_description());
 	jigoshop_emails::register_mail('admin_order_status_on-hold_to_processing', __('Order On-Hold to Processing for admin'), get_order_email_arguments_description());
 	jigoshop_emails::register_mail('admin_order_status_completed', __('Order Completed for admin'), get_order_email_arguments_description());
 	jigoshop_emails::register_mail('admin_order_status_refunded', __('Order Refunded for admin'), get_order_email_arguments_description());
@@ -26,6 +27,7 @@ add_action('admin_init', function(){
 	jigoshop_emails::register_mail('customer_order_status_pending_to_completed', __('Order Pending to Completed for customer'), get_order_email_arguments_description());
 	jigoshop_emails::register_mail('customer_order_status_pending_to_on-hold', __('Order Pending to On-Hold for customer'), get_order_email_arguments_description());
 	jigoshop_emails::register_mail('customer_order_status_pending_to_waiting-for-payment', __('Order Pending to Waiting for Payment for customer'), get_order_email_arguments_description());
+	jigoshop_emails::register_mail('customer_order_status_waiting-for-payment_to_processing', __('Order Waiting for Payment to Processing for customer'), get_order_email_arguments_description());
 	jigoshop_emails::register_mail('customer_order_status_on-hold_to_processing', __('Order On-Hold to Processing for customer'), get_order_email_arguments_description());
 	jigoshop_emails::register_mail('customer_order_status_completed', __('Order Completed for customer'), get_order_email_arguments_description());
 	jigoshop_emails::register_mail('customer_order_status_refunded', __('Order Refunded for customer'), get_order_email_arguments_description());
@@ -49,6 +51,7 @@ add_action('order_status_pending_to_processing', $jigoshopOrderEmailGenerator('p
 add_action('order_status_pending_to_completed', $jigoshopOrderEmailGenerator('pending_to_completed'));
 add_action('order_status_pending_to_on-hold', $jigoshopOrderEmailGenerator('pending_to_on-hold'));
 add_action('order_status_pending_to_waiting-for-payment', $jigoshopOrderEmailGenerator('pending_to_waiting-for-payment'));
+add_action('order_status_waiting-for-payment_to_processing', $jigoshopOrderEmailGenerator('waiting-for-payment_to_processing'));
 add_action('order_status_on-hold_to_processing', $jigoshopOrderEmailGenerator('on-hold_to_processing'));
 add_action('order_status_completed', $jigoshopOrderEmailGenerator('completed'));
 add_action('order_status_refunded', $jigoshopOrderEmailGenerator('refunded'));
@@ -316,6 +319,7 @@ function jigoshop_install_emails()
 		'customer_order_status_pending_to_on-hold',
 		'customer_order_status_pending_to_waiting-for-payment',
 		'customer_order_status_on-hold_to_processing',
+		'customer_order_status_waiting-for-payment_to_processing',
 		'customer_order_status_completed',
 		'customer_order_status_refunded',
 		'send_customer_invoice',
@@ -405,6 +409,11 @@ function jigoshop_install_emails()
 				break;
 			case 'customer_order_status_pending_to_processing' :
 				$post_title = __('Customer order status pending to processing', 'jigoshop');
+				$title = __('[[shop_name]] Order Received', 'jigoshop');
+				$message = __('<p>Thank you, we are now processing your order.<br/>', 'jigoshop').$invoice;
+				break;
+			case 'customer_order_status_waiting-for-payment_to_processing' :
+				$post_title = __('Customer order status waiting for payment to processing', 'jigoshop');
 				$title = __('[[shop_name]] Order Received', 'jigoshop');
 				$message = __('<p>Thank you, we are now processing your order.<br/>', 'jigoshop').$invoice;
 				break;
