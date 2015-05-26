@@ -368,7 +368,7 @@ if (!function_exists('jigoshop_template_single_title')) {
 if (!function_exists('jigoshop_template_single_price')) {
 	function jigoshop_template_single_price($post, $_product)
 	{
-		?><p class="price"><?php echo apply_filters('jigoshop_single_product_price', $_product->get_price_html()); ?></p><?php
+		?><p class="price"><?php echo apply_filters('jigoshop_single_product_price', $_product->get_price_html(), $_product); ?></p><?php
 	}
 }
 
