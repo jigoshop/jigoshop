@@ -361,7 +361,7 @@ if (!function_exists('jigoshop_output_product_data_tabs')) {
 if (!function_exists('jigoshop_template_single_title')) {
 	function jigoshop_template_single_title($post, $_product)
 	{
-		?><h1 class="product_title page-title"><?php echo apply_filters('jigoshop_single_product_title', the_title('', '', false)); ?></h1><?php
+		?><h1 class="product_title page-title"><?php echo apply_filters('jigoshop_single_product_title', the_title('', '', false), $_product); ?></h1><?php
 	}
 }
 
