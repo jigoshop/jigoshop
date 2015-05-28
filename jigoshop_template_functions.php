@@ -361,14 +361,14 @@ if (!function_exists('jigoshop_output_product_data_tabs')) {
 if (!function_exists('jigoshop_template_single_title')) {
 	function jigoshop_template_single_title($post, $_product)
 	{
-		?><h1 class="product_title page-title"><?php echo apply_filters('jigoshop_single_product_title', the_title('', '', false)); ?></h1><?php
+		?><h1 class="product_title page-title"><?php echo apply_filters('jigoshop_single_product_title', the_title('', '', false), $_product); ?></h1><?php
 	}
 }
 
 if (!function_exists('jigoshop_template_single_price')) {
 	function jigoshop_template_single_price($post, $_product)
 	{
-		?><p class="price"><?php echo apply_filters('jigoshop_single_product_price', $_product->get_price_html()); ?></p><?php
+		?><p class="price"><?php echo apply_filters('jigoshop_single_product_price', $_product->get_price_html(), $_product); ?></p><?php
 	}
 }
 
