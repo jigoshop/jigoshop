@@ -341,6 +341,7 @@ function jigoshop_init()
 	load_plugin_textdomain('jigoshop', false, dirname(plugin_basename(__FILE__)).'/languages/');
 	add_filter('plugin_action_links_'.plugin_basename(__FILE__), 'jigoshop_admin_bar_links');
 
+	do_action('before_jigoshop_init');
 	// instantiate options -after- loading text domains
 	$options = Jigoshop_Base::get_options();
 

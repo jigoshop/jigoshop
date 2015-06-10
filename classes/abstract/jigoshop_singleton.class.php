@@ -25,17 +25,20 @@ abstract class Jigoshop_Singleton extends Jigoshop_Base {
 
     public static function instance() {
 
-    	$class = get_called_class();
+		$class = apply_filters('jigoshop_called_class', get_called_class());
 
-    	if ( isset( self::$instance[$class] ) ) return self::$instance[$class];
+		if ( isset( self::$instance[$class] ) ) return self::$instance[$class];
 
-    	$args = func_get_args();
+		$args = func_get_args();
 
-    	self::$instance[$class] = new $class( $args );
+		do_action('jigoshop_before_'.$class.'_class_init', $args);
 
-    	return self::$instance[$class];
+		self::$instance[$class] = new $class( $args );
+
+		return self::$instance[$class];
 
     }
+
 	public static function reset() {
 		self::$instance = null;
 	}
