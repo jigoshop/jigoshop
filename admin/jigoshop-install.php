@@ -342,7 +342,7 @@ function jigoshop_tables_install() {
         `product_id` 			mediumint(9) NOT NULL,
         `user_email`			varchar(200) NOT NULL,
         `user_id`				mediumint(9) NULL,
-        `order_key`				varchar(200) NOT NULL,
+        `order_key`				varchar(175) NOT NULL,
         `downloads_remaining`	varchar(9) NULL,
         PRIMARY KEY id (`product_id`, `order_key`)) $collate;";
     if ( $wpdb->query($sql) === false ) {

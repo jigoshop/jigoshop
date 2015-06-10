@@ -1,10 +1,11 @@
 ## Changelog
 
 * 1.17.7:
+	* Fix: Too long table key.
     * Fix: Checkout number format issue.
     * Improved: Default email template for change order status from waiting for payment to processing.
     * Improved: Email templating. Thanks to newash!
-    * Improved: Allow to save custom order data. Thanks to newash!    
+    * Improved: Allow to save custom order data. Thanks to newash!
 * 1.17.6 - 2015.05.08:
     * Fix: Jigoshop License Validator.
 * 1.17.5.1 - 2015.05.06:
@@ -31,7 +32,7 @@
 * 1.17.2 - 2015-04-18:
     * Fix: Scripts and compatibility with JRTO.
 * 1.17.1 - 2015-04-17:
-    * Improved: COD gateway allows to select status which should be set to order. 
+    * Improved: COD gateway allows to select status which should be set to order.
     * Fix: Scripts and compatibility with JRTO.
     * Fix: Notices, warnings and error on reports page.
 * 1.17 - 2015-04-16:
@@ -44,7 +45,7 @@
     * Improved: Display "Out of stock" for variable products without any available variation.
     * Improved: PHP Execution Time in System Info page.
     * Improved: Cart items check before displaying.
-    * Improved: All out of stock products, can be properly removed from shop page. 
+    * Improved: All out of stock products, can be properly removed from shop page.
     * Improved: Invalid license key can be properly deactivated.
     * Improved: Updated www.jigoshop.com links.
     * Fixed: "Apply coupon" button in checkout no longer places the order.
@@ -130,7 +131,7 @@
     * Fix: Removed ex. tax label from subtotal in cart when shop admin decide to show prices without tax.
     * Fix: Generate default emails button no longer generates warning.
 * 1.13.1 - 2014-11-21:
-    * Fix: Warnings in email module. 
+    * Fix: Warnings in email module.
     * Fix: Email templates now installs properly after jigoshop activation.
 * 1.13 - 2014-11-21:
     * New: Ability to select whether to show prices with or without tax in cart.
@@ -163,7 +164,7 @@
     * Fix: Phone number in order email.
     * Fix: Updated polish translation.
     * Fix: Triggering `jigoshop.cart.update` now properly passes data.
-    * Fix: `jigoshop.cart.update` gets called before data is updated (or removed). 
+    * Fix: `jigoshop.cart.update` gets called before data is updated (or removed).
     * Fix: Pass properly rounded discount values to PayPal.
 * 1.12 - 2014-09-30:
     * New: User fields in user's profile.
