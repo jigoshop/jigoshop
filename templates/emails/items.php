@@ -6,8 +6,8 @@
  * @var $use_inc_tax boolean Whether we use "include taxes" option for prices.
  */
 ?>
-<table class="cart" cellpadding="0" cellspacing="0">
-	<thead>
+<table cellpadding="5" cellspacing="0">
+	<thead style="text-align:center">
 	<tr>
 		<th><?php _ex('Product', 'emails', 'jigoshop'); ?></th>
 		<th><?php _ex('Quantity', 'emails', 'jigoshop'); ?></th>

@@ -3,6 +3,7 @@
 * 1.17.7:
     * Improved: Default email template for change order status from waiting for payment to processing.
     * Improved: Email templating. Thanks to newash!
+    * Improved: Used inline styles in email template.
     * Improved: Allow to save custom order data. Thanks to newash!
     * Improved: Jigoshop core is now more customizable for other plugins.
     * Fix: Too long table key.
