@@ -323,7 +323,7 @@ function jigoshop_post_type()
 				'view' => __('View Email', 'jigoshop'),
 				'view_item' => __('View Email', 'jigoshop'),
 				'search_items' => __('Search Email', 'jigoshop'),
-				'not_found' => __('No Emils found', 'jigoshop'),
+				'not_found' => __('No Emails found', 'jigoshop'),
 				'not_found_in_trash' => __('No Emails found in trash', 'jigoshop'),
 				'parent' => __('Parent Email', 'jigoshop')
 			),
