@@ -1,6 +1,6 @@
 ## Changelog
 
-* 1.17.7:
+* 1.17.7 - 2015.06.16:
     * Improved: Default email template for change order status from waiting for payment to processing.
     * Improved: Email templating. Thanks to newash!
     * Improved: Used inline styles in email template.
@@ -8,6 +8,7 @@
     * Improved: Jigoshop core is now more customizable for other plugins.
     * Fix: Too long table key.
     * Fix: Checkout number format issue.
+    * Fix: Typo. Thanks to newash!
 * 1.17.6 - 2015.05.08:
     * Fix: Jigoshop License Validator.
 * 1.17.5.1 - 2015.05.06:
