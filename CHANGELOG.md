@@ -1,5 +1,7 @@
 ## Changelog
 
+* 1.17.8:
+    * Fix: Variations select;
 * 1.17.7 - 2015.06.16:
     * Improved: Default email template for change order status from waiting for payment to processing.
     * Improved: Email templating. Thanks to newash!

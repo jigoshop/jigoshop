@@ -92,14 +92,13 @@ jQuery(function($) {
 						if(attr_val){
 							current_attr_select.find('option[value="' + attr_val + '"]').show();
 						} else {
-							current_attr_select.find('option').show();
+							current_attr_select.find('option').hide();
 						}
 					}
 				}
 			}
-			// completely re-enable the previous select so 'Choose an option' isn't required to change selections
-			current_attr_select.parent().prev().find('select').find('option:gt(0)').show();
 		});
+		$('.variations select').first().find('option:gt(0)').show();
 	}
 
 	//show single variation details (price, stock, image)
