@@ -6,6 +6,7 @@ class jigoshop_user
 	private $billing_first_name;
 	private $billing_last_name;
 	private $billing_company;
+	private $billing_euvatno;
 	private $billing_address_1;
 	private $billing_address_2;
 	private $billing_city;
@@ -37,7 +38,10 @@ class jigoshop_user
 			$this->billing_last_name = $meta['billing_last_name'][0];
 		}
 		if (isset($meta['billing_company'])) {
-			$this->billing_company = $meta['billing_company'][0];
+		$this->billing_company = $meta['billing_company'][0];
+		}
+		if (isset($meta['billing_euvatno'])) {
+			$this->billing_euvatno = $meta['billing_euvatno'][0];
 		}
 		if (isset($meta['billing_address_1'])) {
 			$this->billing_address_1 = $meta['billing_address_1'][0];
@@ -136,6 +140,14 @@ class jigoshop_user
 	public function getBillingCompany()
 	{
 		return $this->billing_company;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getBillingEuvatno()
+	{
+		return $this->billing_euvatno;
 	}
 
 	/**
@@ -282,6 +294,7 @@ class jigoshop_user
 		update_user_meta($this->id, 'billing_first_name', $this->billing_first_name);
 		update_user_meta($this->id, 'billing_last_name', $this->billing_last_name);
 		update_user_meta($this->id, 'billing_company', $this->billing_company);
+		update_user_meta($this->id, 'billing_euvatno', $this->billing_euvatno);
 		update_user_meta($this->id, 'billing_address_1', $this->billing_address_1);
 		update_user_meta($this->id, 'billing_address_2', $this->billing_address_2);
 		update_user_meta($this->id, 'billing_city', $this->billing_city);

@@ -21,6 +21,10 @@
 		<td><input type="text" name="jigoshop[billing_company]" value="<?php echo $customer->getBillingCompany(); ?>" class="regular-text" /> </td>
 	</tr>
 	<tr>
+		<th scioe="row"><?php _e('EU VAT Number', 'jigoshop'); ?></th>
+		<td><input type="text" name="jigoshop[billing_euvatno]" value="<?php echo $customer->getBillingEuvatno(); ?>" class="regular-text" /> </td>
+	</tr>
+	<tr>
 		<th scope="row"><?php _e('Address 1', 'jigoshop'); ?></th>
 		<td><input type="text" name="jigoshop[billing_address_1]" value="<?php echo $customer->getBillingAddress1(); ?>" class="regular-text" /> </td>
 	</tr>
