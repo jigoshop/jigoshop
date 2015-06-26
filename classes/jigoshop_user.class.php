@@ -38,7 +38,7 @@ class jigoshop_user
 			$this->billing_last_name = $meta['billing_last_name'][0];
 		}
 		if (isset($meta['billing_company'])) {
-		$this->billing_company = $meta['billing_company'][0];
+			$this->billing_company = $meta['billing_company'][0];
 		}
 		if (isset($meta['billing_euvatno'])) {
 			$this->billing_euvatno = $meta['billing_euvatno'][0];
