@@ -35,6 +35,7 @@ function jigoshop_process_shop_order_meta($post_id)
 		'billing_first_name',
 		'billing_last_name',
 		'billing_company',
+		'billing_euvatno',
 		'billing_address_1',
 		'billing_address_2',
 		'billing_city',
@@ -77,6 +78,11 @@ function jigoshop_process_shop_order_meta($post_id)
 		if (!empty($_POST['auto_draft']) && !empty($_POST['customer_user']) && empty($_POST[$key])){
 			$data[$key] = get_user_meta($_POST['customer_user'], $key, true);
 		}
+	}
+
+	//Check EUVAT Field
+	if (!empty($data['billing_euvatno']) && !empty($data['billing_country'])) {
+		$data['billing_euvatno'] = str_replace(' ', '', $data['billing_euvatno']);
 	}
 
 	//run stripslashes on all valid fields

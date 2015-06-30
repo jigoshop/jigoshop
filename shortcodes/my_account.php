@@ -79,6 +79,13 @@ function jigoshop_get_address_fields($load_address, $user_id)
 			'value' => get_user_meta($user_id, $load_address.'_company_name', true)
 		),
 		array(
+			'name' => $load_address.'_euvatno',
+			'label' => __('EU VAT Number', 'jigoshop'),
+			'placeholder' => __('EU VAT Number', 'jigoshop'),
+			'class' => array('columned full-row clear'),
+			'value' => get_user_meta($user_id, $load_address.'_euvatno', true)
+		),
+		array(
 			'name' => $load_address.'_address_1',
 			'label' => __('Address', 'jigoshop'),
 			'placeholder' => __('Address 1', 'jigoshop'),

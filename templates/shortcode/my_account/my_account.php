@@ -88,6 +88,7 @@
 			$address = array(
 				get_user_meta(get_current_user_id(), 'billing_first_name', true).' '.get_user_meta(get_current_user_id(), 'billing_last_name', true),
 				get_user_meta(get_current_user_id(), 'billing_company', true),
+				get_user_meta(get_current_user_id(), 'billing_euvatno', true),
 				get_user_meta(get_current_user_id(), 'billing_address_1', true),
 				get_user_meta(get_current_user_id(), 'billing_address_2', true),
 				get_user_meta(get_current_user_id(), 'billing_city', true),

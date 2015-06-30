@@ -266,13 +266,14 @@ jQuery(function($) {
 				$("#order_product_select").css('border-color', 'red');
 			}
 		});
-		
+
 		$( "#customer_user" ).change(function() {
 			if($(this).val() > 0) {
 				$.getJSON("?post_type=shop_order&load_address=" + $(this).val(), function(data) {
 					$("#billing_first_name").val(data.billing_first_name);
 					$("#billing_last_name").val(data.billing_last_name);
 					$("#billing_company").val(data.billing_company);
+					$("#billing_euvatno").val(data.billing_euvatno);
 					$("#billing_address_1").val(data.billing_address_1);
 					$("#billing_address_2").val(data.billing_address_2);
 					$("#billing_city").val(data.billing_city);

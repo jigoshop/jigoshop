@@ -128,6 +128,7 @@ class jigoshop_user
 
 	/**
 	 * @return string
+	 *
 	 */
 	public function getBillingCity()
 	{
@@ -294,7 +295,7 @@ class jigoshop_user
 		update_user_meta($this->id, 'billing_first_name', $this->billing_first_name);
 		update_user_meta($this->id, 'billing_last_name', $this->billing_last_name);
 		update_user_meta($this->id, 'billing_company', $this->billing_company);
-		update_user_meta($this->id, 'billing_euvatno', $this->billing_euvatno);
+		update_user_meta($this->id, 'billing_euvatno', str_replace(' ', '', $this->billing_euvatno));
 		update_user_meta($this->id, 'billing_address_1', $this->billing_address_1);
 		update_user_meta($this->id, 'billing_address_2', $this->billing_address_2);
 		update_user_meta($this->id, 'billing_city', $this->billing_city);
