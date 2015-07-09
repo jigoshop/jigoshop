@@ -24,7 +24,7 @@ class CheckoutPay
       overlayCss:
         opacity: 0.01
 
-    this.submit();
+    this.submit()
 
 jQuery ->
   new CheckoutPay(jigoshop_checkout_pay)

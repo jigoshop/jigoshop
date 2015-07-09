@@ -17,7 +17,7 @@ class AdminEmail
         actions: jQuery(event.target).val()
     .done (data) ->
       if data.success? and data.success
-        jQuery('#available_arguments').replaceWith(data.html);
+        jQuery('#available_arguments').replaceWith(data.html)
       else
         addMessage('danger', data.error, 6000)
 
