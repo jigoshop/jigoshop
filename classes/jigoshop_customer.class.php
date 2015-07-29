@@ -46,6 +46,11 @@ class jigoshop_customer extends Jigoshop_Singleton {
 	 * @since 1.4.4
 	 */
 	public function update_signed_in_customer($user_login, $user){
+
+		if(isset(jigoshop_session::instance()->customer)){
+			return;
+		}
+
 		$country = get_user_meta($user->ID, 'billing_country', true);
 		$state = get_user_meta($user->ID, 'billing_state', true);
 		$postcode = get_user_meta($user->ID, 'billing_postcode', true);

@@ -1090,7 +1090,7 @@ function jigoshop_ajax_update_item_quantity()
 	}	else if (jigoshop_cart::show_retail_price() && Jigoshop_Base::get_options()->get('jigoshop_prices_include_tax') == 'no') {
 		$subtotal = jigoshop_cart::get_cart_subtotal(true, true);
 	} else {
-		$subtotal = jigoshop_cart::$cart_contents_total_ex_tax + jigoshop_cart::$shipping_total;
+		$subtotal = jigoshop_cart::$cart_contents_total_ex_tax;
 		$subtotal = jigoshop_price($subtotal, array('ex_tax_label' => 1));
 	}
 

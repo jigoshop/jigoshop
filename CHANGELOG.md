@@ -1,8 +1,10 @@
 ## Changelog
 
 * 1.17.8:
-    * Improved: EU Vat is now avaliable to edit.  
+    * Improved: Shipping country now doesn't change on prage reload.
+    * Improved: EU Vat is now avaliable to edit.
     * Fix: Variations select.
+    * Fix: Subtotal update in cart.
 * 1.17.7 - 2015.06.16:
     * Improved: Default email template for change order status from waiting for payment to processing.
     * Improved: Email templating. Thanks to newash!
