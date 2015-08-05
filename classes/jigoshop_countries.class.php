@@ -502,6 +502,17 @@ class jigoshop_countries extends Jigoshop_Base {
 			'PRO' => 'Provence - Alpes - Côte d\'Azur',
 			'RHO' => 'Rhône - Alpes'
 		),
+		
+		// United Kingdom: Regions
+		'GB' => array(
+			'CHI' => 'Channel Islands',
+			'ENG' => 'England',
+			'IOM' => 'Isle of Man',
+			'NIR' => 'Northern Ireland',
+			'SCT' => 'Scotland',
+			'WAL' => 'Wales'
+		),
+		
 		// Greece: Regions
 		'GR' => array(
 			'AOR' => 'Ágio Óros [Mount Athos]',
