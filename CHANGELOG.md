@@ -6,6 +6,7 @@
     * Improved: Allow to select free shipping method automatically after successful coupon validation.
     * Fix: Variations select.
     * Fix: Subtotal update in cart.
+    * Fix: `[sale_products]` shortcode
 * 1.17.7 - 2015.06.16:
     * Improved: Default email template for change order status from waiting for payment to processing.
     * Improved: Email templating. Thanks to newash!

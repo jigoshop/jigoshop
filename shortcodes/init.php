@@ -397,7 +397,7 @@ function jigoshop_sale_products( $atts ) {
 	ob_start();
 	jigoshop_get_template_part( 'loop', 'shop' );
 	if ( $pagination ) do_action( 'jigoshop_pagination' );
-	wp_reset_postdata();
+	wp_reset_query();
 
 	return ob_get_clean();
 
