@@ -1165,6 +1165,15 @@ class jigoshop_cart extends Jigoshop_Singleton
 			self::$applied_coupons[] = $coupon_code;
 		}
 
+
+		// select free shipping method
+		if($coupon['free_shipping']) {
+			if(Jigoshop_Base::get_options()->get('jigoshop_select_free_shipping_method') == 'yes') {
+				jigoshop_session::instance()->chosen_shipping_method_id = 'free_shipping';
+			}
+		}
+
+
 		jigoshop_session::instance()->coupons = self::$applied_coupons;
 		jigoshop::add_message(__('Discount coupon applied successfully.', 'jigoshop'));
 

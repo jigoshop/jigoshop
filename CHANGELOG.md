@@ -3,6 +3,7 @@
 * 1.17.8:
     * Improved: Shipping country now doesn't change on prage reload.
     * Improved: EU Vat is now avaliable to edit.
+    * Improved: Allow to select free shipping method automatically after successful coupon validation.
     * Fix: Variations select.
     * Fix: Subtotal update in cart.
 * 1.17.7 - 2015.06.16:

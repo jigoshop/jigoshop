@@ -496,6 +496,17 @@ class Jigoshop_Options implements Jigoshop_Options_Interface {
 					'yes' => __('Yes', 'jigoshop'),
 				),
 			),
+			array(
+				'name' => __('Select free shipping method.', 'jigoshop'),
+				'desc' => '',
+				'tip' => __('This option forces jigoshop to select free shipping method after successful coupon validation.', 'jigoshop'),
+				'id' => 'jigoshop_select_free_shipping_method',
+				'type' => 'checkbox',
+				'choices' => array(
+					'no' => __('No', 'jigoshop'),
+					'yes' => __('Yes', 'jigoshop'),
+				),
+			),
 			array('name' => __('Jigoshop messages', 'jigoshop'), 'type' => 'title', 'desc' => ''),
 			array(
 				'name' => __('Message disappear time', 'jigoshop'),
