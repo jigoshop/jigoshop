@@ -4,6 +4,7 @@
     * Improved: Shipping country now doesn't change on prage reload.
     * Improved: EU Vat is now avaliable to edit.
     * Improved: Allow to select free shipping method automatically after successful coupon validation.
+    * Improved: Added State/Province select for United Kingdom. 
     * Fix: Variations select.
     * Fix: Subtotal update in cart.
     * Fix: `[sale_products]` shortcode
