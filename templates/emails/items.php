@@ -32,6 +32,12 @@
 						<?php echo $item['customization']; ?>
 					</div>
 				<?php endif; ?>
+				<?php if (isset($item['item_meta'])): ?>
+					<div>
+						<?php $order_item_meta = new addon_order_item_meta( $item['item_meta'] ); ?>
+						<?php echo $order_item_meta->display(true, true); ?>
+					</div>
+				<?php endif; ?>
 			</td>
 			<td><?php echo $item['qty']; ?></td>
 			<td>
