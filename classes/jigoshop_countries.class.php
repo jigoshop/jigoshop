@@ -1285,7 +1285,7 @@ class jigoshop_countries extends Jigoshop_Base {
 
 					foreach($states as $state_key => $state_value){
 						$is_selected = (isset($selected_state[$country_key]) && is_array($selected_state[$country_key]) && in_array($state_key, $selected_state[$country_key]) && in_array($country_key, $selected_country)) ||
-							 (!$show_all && ($selected_state == '*' && in_array($country_key, $selected_country)));
+							($country_key == $selected_country && $selected_state == $state_key) || (!$show_all && ($selected_state == '*' && is_array($selected_country) && in_array($country_key, $selected_country)));
 
 						$output .= '<option value="'.esc_attr($country_key).':'.esc_attr($state_key).'"';
 						if($is_selected){
