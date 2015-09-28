@@ -1264,13 +1264,6 @@ class jigoshop_countries extends Jigoshop_Base {
 			$selected_state = '*';
 		}
 
-		if(is_array($selected_country)){
-			$selected_country = array_unique($selected_country);
-		}
-		if(is_array($selected_state)){
-			$selected_state = array_unique($selected_state);
-		}
-
 		if($add_empty){
 			$output .= '<option value="-1">'.__('None', 'jigoshop').'</option>';
 		}
@@ -1283,18 +1276,16 @@ class jigoshop_countries extends Jigoshop_Base {
 					$output .= '<optgroup label="'.$country_value.'">';
 
 					if($show_all){
-						if(!is_array($selected_country) || !in_array($country_key, $selected_country)){
-							$output .= '<option value="'.esc_attr($country_key).'"';
-							if($selected_country == $country_key && $selected_state == '*'){
-								$output .= ' selected="selected"';
-							}
-							$output .= '>'.__('All of', 'jigoshop').' '.$country_value.'</option>';
+						$output .= '<option value="'.esc_attr($country_key).'"';
+						if(is_array($selected_country) && in_array($country_key, $selected_country) && $selected_state[$country_key] == '*'){
+							$output .= ' selected="selected"';
 						}
+						$output .= '>'.__('All of', 'jigoshop').' '.$country_value.'</option>';
 					}
 
 					foreach($states as $state_key => $state_value){
-						$is_selected = (is_array($selected_state) && in_array($state_key, $selected_state) && in_array($country_key, $selected_country)) ||
-							(($selected_country == $country_key && $selected_state == $state_key) || (!$show_all && ($selected_state == '*' && $selected_country == $country_key)));
+						$is_selected = (isset($selected_state[$country_key]) && is_array($selected_state[$country_key]) && in_array($state_key, $selected_state[$country_key]) && in_array($country_key, $selected_country)) ||
+							 (!$show_all && ($selected_state == '*' && in_array($country_key, $selected_country)));
 
 						$output .= '<option value="'.esc_attr($country_key).':'.esc_attr($state_key).'"';
 						if($is_selected){

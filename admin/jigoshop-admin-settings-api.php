@@ -1046,8 +1046,8 @@ class Jigoshop_Options_Parser {
 					<?php
 					$i = -1;
 					if ( $tax_rates && is_array( $tax_rates ) && sizeof( $tax_rates ) > 0 ) :
-						$tax_rates = $this->array_compare( $tax_rates );
-						foreach ( $tax_rates as $rate ) :
+						$compared_tax_rates = $this->array_compare( $tax_rates );
+						foreach ( $compared_tax_rates as $rate ) :
 							if ( isset($rate['is_all_states']) && in_array($rate['country'].$rate['class'], $applied_all_states) )
 								continue;
 
@@ -1070,16 +1070,23 @@ class Jigoshop_Options_Parser {
 							echo '<td><input type="text" value="' . esc_attr( $rate['label']  ) . '" name="tax_label[' . esc_attr( $i ) . ']" placeholder="' . __('Online Label', 'jigoshop') . '" size="10" /></td>';
 
 							echo '<td><select name="tax_country[' . esc_attr( $i ) . '][]" id="tax_country_' . esc_attr( $i ) . '" class="tax_select2" multiple="multiple" style="width:220px;">';
-							if ( isset($rate['is_all_states']) ) :
-								if ( is_array( $applied_all_states ) && !in_array( $rate['country'].$rate['class'], $applied_all_states )) :
-									$applied_all_states[] = $rate['country'].$rate['class'];
-									jigoshop_countries::country_dropdown_options( $rate['country'], '*', true ); //all-states
-								else :
-									continue;
+							$country = array();
+							$state = array();
+							foreach($tax_rates as $tax_rate):
+								if($tax_rate['label'] == $rate['label'] && $tax_rate['rate'] == $rate['rate']):
+									if(isset($state[$tax_rate['country']]) && $state[$tax_rate['country']] == '*') {
+										continue;
+									}
+									$country[] = $tax_rate['country'];
+									if($tax_rate['is_all_states']):
+										$state[$tax_rate['country']] = '*';
+									else :
+										$state[$tax_rate['country']][] = $tax_rate['state'];
+									endif;
 								endif;
-							else :
-								jigoshop_countries::country_dropdown_options( $rate['country'], $rate['state'], true );
-							endif;
+							endforeach;
+
+							jigoshop_countries::country_dropdown_options( $country, $state, true );
 							echo '</select>';
 
 							echo '<button class="select_none button">'.__('None', 'jigoshop').'</button><button class="button select_all">'.__('All', 'jigoshop').'</button><button class="button select_us_states">'.__('US States', 'jigoshop').'</button><button class="button select_europe">'.__('EU States', 'jigoshop').'</button></td>';
