@@ -186,6 +186,7 @@ include_once('classes/jigoshop.class.php');
 include_once('classes/jigoshop_cart.class.php');
 include_once('classes/jigoshop_checkout.class.php');
 include_once('classes/jigoshop_cron.class.php');
+include_once('classes/jigoshop_euvat_validator.class.php');
 
 include_once('shortcodes/init.php');
 include_once('widgets/init.php');
@@ -359,6 +360,7 @@ function jigoshop_init()
 	jigoshop_shipping::instance(); // Shipping class. loads shipping methods
 	jigoshop_payment_gateways::instance(); // Payment gateways class. loads payment methods
 	jigoshop_cart::instance(); // Cart class, uses sessions
+	jigoshop_euvat_validator::instance();
 
 	add_filter( 'mce_external_plugins', 'jigoshop_register_shortcode_editor' );
 	add_filter( 'mce_buttons', 'jigoshop_register_shortcode_buttons' );
