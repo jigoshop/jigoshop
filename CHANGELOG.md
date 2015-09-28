@@ -1,5 +1,9 @@
 ## Changelog
 
+* 1.17.9 - 2015.09.28:
+    * Improved: Display product addons in email order table.
+    * Improved: Optimize tax select in jigoshop settings.
+    * Improved: Improve eu vat validation.
 * 1.17.8 - 2015.09.03:
     * Improved: Shipping country now doesn't change on prage reload.
     * Improved: EU Vat is now avaliable to edit.
