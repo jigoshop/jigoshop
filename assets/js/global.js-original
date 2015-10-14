@@ -92,7 +92,7 @@ jQuery(function($) {
 						if(attr_val){
 							current_attr_select.find('option[value="' + attr_val + '"]').show();
 						} else {
-							current_attr_select.find('option').hide();
+							current_attr_select.find('option').show();
 						}
 					}
 				}
