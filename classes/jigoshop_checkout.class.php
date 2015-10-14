@@ -1003,8 +1003,25 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 					$vatno = substr($vatno, strlen($country));
 				}
 
+
 				if ($vatno != '') {
-					if (jigoshop_euvat_validator::check($country, $vatno) == false) {
+					$url = 'http://www.jigoshop.com/?vat_number='.$vatno.'&country='.$country;
+
+					$httpRequest = curl_init();
+					curl_setopt($httpRequest, CURLOPT_FAILONERROR, true);
+					curl_setopt($httpRequest, CURLOPT_RETURNTRANSFER, true);
+					curl_setopt($httpRequest, CURLOPT_HEADER, false);
+					curl_setopt($httpRequest, CURLOPT_URL, $url);
+					$result = curl_exec($httpRequest);
+					curl_close($httpRequest);
+
+					if ($result === 'false') {
+						jigoshop_log('EU VAT validation error with URL: '.$url);
+					}
+
+					$result = json_decode($result);
+
+					if (!isset($result->result) || !$result->result) {
 						jigoshop::add_error($field['label'].__(' (billing) is not a valid VAT Number.  Leave it blank to disable VAT validation. (VAT may be charged depending on your location)', 'jigoshop'));
 					} else {
 						$this->valid_euvatno = jigoshop_countries::get_base_country() != jigoshop_tax::get_customer_country() && jigoshop_countries::is_eu_country(jigoshop_tax::get_customer_country());
