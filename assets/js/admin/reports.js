@@ -115,6 +115,8 @@ jQuery(function($){
 		var export_format  = $(this).data('export');
 		var csv_data       = "data:application/csv;charset=utf-8,"
 
+
+
 		if ( export_format == 'table' ) {
 
 			$(this).closest('div').find('thead tr,tbody tr').each(function() {
@@ -141,7 +143,6 @@ jQuery(function($){
 			});
 
 		} else {
-
 			if ( ! window.main_chart )
 				return false;
 
@@ -168,10 +169,10 @@ jQuery(function($){
 			for ( var s = 0; s < series.length; ++s ) {
 				var series_data = series[s].data;
 				for ( var d = 0; d < series_data.length; ++d ) {
-					xaxis[series_data[d][0]] = new Array();
+					xaxis[parseInt(series_data[d][0])] = new Array();
 					// Zero values to start
 					for ( var i = 0; i < series.length; ++i ) {
-						xaxis[series_data[d][0]].push(0);
+						xaxis[parseInt(series_data[d][0])].push(0);
 					}
 				}
 			}
@@ -180,7 +181,7 @@ jQuery(function($){
 			for ( var s = 0; s < series.length; ++s ) {
 				var series_data = series[s].data;
 				for ( var d = 0; d < series_data.length; ++d ) {
-					xaxis[series_data[d][0]][s] = series_data[d][1];
+					xaxis[parseInt(series_data[d][0])][s] = series_data[d][1];
 				}
 			}
 

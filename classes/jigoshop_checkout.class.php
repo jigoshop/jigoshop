@@ -1022,7 +1022,11 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 					$result = json_decode($result);
 
 					if (!isset($result->result) || !$result->result) {
-						jigoshop::add_error($field['label'].__(' (billing) is not a valid VAT Number.  Leave it blank to disable VAT validation. (VAT may be charged depending on your location)', 'jigoshop'));
+						if (isset($result->name) && $result->name == 'MS_MAX_CONCURRENT_REQ') {
+							jigoshop::add_error($field['label'].__(' (billing) validation error. "VIES VAT number validation" API provided by European Commission is backing up their system at this moment, please try to checkout after 5 min or leave the EU VAT number field blank to disable the validation (VAT will be charged depending on your location).', 'jigoshop'));
+						} else {
+							jigoshop::add_error($field['label'].__(' (billing) is not a valid VAT Number.  Leave it blank to disable VAT validation. (VAT may be charged depending on your location)', 'jigoshop'));
+						}
 					} else {
 						$this->valid_euvatno = jigoshop_countries::get_base_country() != jigoshop_tax::get_customer_country() && jigoshop_countries::is_eu_country(jigoshop_tax::get_customer_country());
 					}
