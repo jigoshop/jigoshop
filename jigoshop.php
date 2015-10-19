@@ -21,8 +21,8 @@
  * Author:              Jigoshop Limited
  * Author URI:          https://www.jigoshop.com
  * Version:             1.17.9
- * Requires at least:   3.8
- * Tested up to:        4.2.2
+ * Requires at least:   4.0
+ * Tested up to:        4.3.1
  * Text Domain:         jigoshop
  * Domain Path:         /languages/
  * DISCLAIMER
