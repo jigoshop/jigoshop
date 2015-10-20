@@ -1005,7 +1005,7 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 
 
 				if ($vatno != '') {
-					$url = 'http://www.jigoshop.com/?vat_number='.$vatno.'&country='.$country;
+					$url = 'https://www.jigoshop.com/?vat_number='.$vatno.'&country='.$country;
 
 					$httpRequest = curl_init();
 					curl_setopt($httpRequest, CURLOPT_FAILONERROR, true);
