@@ -5,6 +5,7 @@
     * Improved: Optimize tax select in jigoshop settings.
     * Improved: Improve eu vat validation.
     * Fix: Reports CSV export.
+    * Fix: Stock reports pagination.
 * 1.17.8 - 2015.09.03:
     * Improved: Shipping country now doesn't change on prage reload.
     * Improved: EU Vat is now avaliable to edit.
