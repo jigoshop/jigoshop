@@ -45,7 +45,7 @@ class Jigoshop_Report_Stock extends WP_List_Table
 	{
 		$this->_column_headers = array($this->get_columns(), array(), $this->get_sortable_columns());
 		$current_page = absint($this->get_pagenum());
-		$per_page = apply_filters('jigoshop_admin_stock_report_products_per_page', 1);
+		$per_page = apply_filters('jigoshop_admin_stock_report_products_per_page', 20);
 		//$this->max_items
 		$this->get_items($current_page, $per_page);
 
