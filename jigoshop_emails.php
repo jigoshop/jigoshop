@@ -106,6 +106,7 @@ function get_order_email_arguments($order_id)
 		'shipping_cost' => jigoshop_price($order->order_shipping),
 		'shipping_method' => $order->shipping_service,
 		'discount' => jigoshop_price($order->order_discount),
+		'applied_coupons' => jigoshop_get_order_coupon_list($order),
 		'total_tax' => jigoshop_price($order->get_total_tax()),
 		'total' => jigoshop_price($order->order_total),
 		'is_local_pickup' => $order->shipping_method == 'local_pickup' ? true : null,
@@ -174,6 +175,7 @@ function get_order_email_arguments_description()
 		'shipping_cost' => __('Shipping Cost', 'jigoshop'),
 		'shipping_method' => __('Shipping Method', 'jigoshop'),
 		'discount' => __('Discount Price', 'jigoshop'),
+		'applied_coupons' => __('Applied Coupons', 'jigoshop'),
 		'total_tax' => __('Total Tax', 'jigoshop'),
 		'total' => __('Total Price', 'jigoshop'),
 		'payment_method' => __('Payment Method Title', 'jigoshop'),
@@ -307,6 +309,25 @@ function jigoshop_get_order_taxes_list($order)
 	}
 
 	return $taxes;
+}
+
+/**
+ * @param jigoshop_order $order
+ * @return string
+ */
+function jigoshop_get_order_coupon_list($order)
+{
+	$coupons = '';
+	if(!empty($order->order_discount_coupons)){
+		foreach($order->order_discount_coupons as $used_coupon){
+			if(!empty($coupons)){
+				$coupons .= ', ';
+			}
+			$coupons .= $used_coupon['code'];
+		}
+	}
+
+	return $coupons;
 }
 
 add_action('jigoshop_install_emails', 'jigoshop_install_emails');
