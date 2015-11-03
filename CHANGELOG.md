@@ -1,5 +1,8 @@
 ## Changelog
 
+* 1.17.10:
+    * Fix: No more warrnings about missing tax definition.
+    * Improved: Allow to change download link amount.
 * 1.17.9 - 2015.09.28:
     * Improved: Display product addons in email order table.
     * Improved: Optimize tax select in jigoshop settings.
