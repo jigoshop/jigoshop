@@ -294,7 +294,7 @@ class jigoshop_customer extends Jigoshop_Singleton {
 
 		if(is_user_logged_in()){
 			$jigoshop_orders = new jigoshop_orders();
-			$jigoshop_orders->get_customer_orders(get_current_user_id());
+			$jigoshop_orders->get_customer_orders(get_current_user_id(), apply_filters('jigoshop_downloadable_products_orders_limit', 5));
 			if($jigoshop_orders->orders){
 				$user_info = get_userdata(get_current_user_id());
 				foreach($jigoshop_orders->orders as $order){
