@@ -797,6 +797,7 @@ function jigoshop_ga_tracking()
 			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 		})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'jigoshopGA');
 		jigoshopGA('create', '<?php echo $tracking_id; ?>', { 'userId': '<?php echo $user_id; ?>' });
+		<?php do_action('jigoshop_ga_tracking'); ?>
 		jigoshopGA('send', 'pageview');
 	</script>
 <?php
