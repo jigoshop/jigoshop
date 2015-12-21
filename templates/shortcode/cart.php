@@ -9,6 +9,7 @@ $options = Jigoshop_Base::get_options();
 <?php jigoshop::show_messages(); ?>
 
 <?php if (count($cart) == 0): ?>
+	<?php do_action('jigoshop_shop_empty_cart'); ?>
 	<p><?php _e('Your cart is empty.', 'jigoshop'); ?></p>
 	<p><a href="<?php echo esc_url(jigoshop_cart::get_shop_url()); ?>" class="button"><?php _e('&larr; Return to Shop', 'jigoshop'); ?></a></p>
 <?php else: ?>
