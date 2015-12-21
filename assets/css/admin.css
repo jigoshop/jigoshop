@@ -2544,7 +2544,7 @@ canvas.overlay {
 	display: inline;
 	margin: 0;
 }
-.jigoshop-reports-wide .postbox h3.stats_range .export_csv, .jigoshop-reports-wrap .postbox h3.stats_range .export_csv {
+.jigoshop-reports-wide .postbox h3.stats_range .export_link, .jigoshop-reports-wrap .postbox h3.stats_range .export_link {
 	border-left: 1px solid #dfdfdf;
 	display: block;
 	float: right;
