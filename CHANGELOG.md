@@ -1,8 +1,11 @@
 ## Changelog
 
-* 1.17.10:
+* 1.17.10 - 2015.12.21:
     * Fix: No more warrnings about missing tax definition.
     * Improved: Allow to change download link amount.
+    * Improved: Added separated css classs for report csv link. Thanks to newash!
+    * Improved: Integrate Variation Sale Scheduler.
+    * Improved: Added hook for additional Analytics settings.
 * 1.17.9 - 2015.09.28:
     * Improved: Display product addons in email order table.
     * Improved: Optimize tax select in jigoshop settings.
