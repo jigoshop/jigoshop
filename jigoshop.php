@@ -913,11 +913,14 @@ add_action('init', 'jigoshop_check_required_css', 99);
 function jigoshop_check_required_css()
 {
 	global $wp_styles;
+	$options = Jigoshop_Base::get_options();
 
 	if (empty($wp_styles->registered['jigoshop_styles'])) {
 		jrto_enqueue_style('frontend', 'jigoshop-jquery-ui', JIGOSHOP_URL.'/assets/css/jquery-ui.css');
 		jrto_enqueue_style('frontend', 'jigoshop-select2', JIGOSHOP_URL.'/assets/css/select2.css');
-		jrto_enqueue_style('frontend', 'prettyPhoto', JIGOSHOP_URL.'/assets/css/prettyPhoto.css');
+		if ($options->get('jigoshop_disable_fancybox') == 'no') {
+			jrto_enqueue_style('frontend', 'prettyPhoto', JIGOSHOP_URL.'/assets/css/prettyPhoto.css');
+		}
 	}
 }
 

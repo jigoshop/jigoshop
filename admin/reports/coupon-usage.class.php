@@ -273,7 +273,7 @@ class Jigoshop_Report_Coupon_Usage extends Jigoshop_Admin_Report
 	{
 		$current_range = !empty($_GET['range']) ? sanitize_text_field($_GET['range']) : '7day';
 		?>
-		<a href="#" download="report-<?php echo esc_attr($current_range); ?>-<?php echo date_i18n('Y-m-d', current_time('timestamp')); ?>.csv" class="export_csv" data-export="chart" data-xaxes="<?php _e('Date', 'jigoshop'); ?>" data-groupby="<?php echo $this->chart_groupby; ?>">
+		<a href="#" download="report-<?php echo esc_attr($current_range); ?>-<?php echo date_i18n('Y-m-d', current_time('timestamp')); ?>.csv" class="export_csv export_link" data-export="chart" data-xaxes="<?php _e('Date', 'jigoshop'); ?>" data-groupby="<?php echo $this->chart_groupby; ?>">
 			<?php _e('Export CSV', 'jigoshop'); ?>
 		</a>
 	<?php
