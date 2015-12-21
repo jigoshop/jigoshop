@@ -35,7 +35,6 @@ class jigoshop_product_variation extends jigoshop_product {
 		// Setup the product
 		$parent_id = wp_get_post_parent_id( $ID );
 		parent::__construct( $parent_id );
-
 		// Get the meta & for each meta item overwrite with the variations ID
 		$meta = get_post_custom( $ID );
 		$variable_stock = 0;
@@ -64,7 +63,9 @@ class jigoshop_product_variation extends jigoshop_product {
 		$this->ID = $parent_id;
 		$this->id = $parent_id;
 		if ( ! empty( $tempsku )) $this->sku = $tempsku;
+		if(empty($this->sale_price_dates_from))
 		$this->sale_price_dates_from = $sale_from;
+		if(empty($this->sale_price_dates_to))
 		$this->sale_price_dates_to = $sale_to;
 		// signal parent stock tracking or variation stock tracking
 		$this->stock = $variable_stock == '-9999999' ? $variable_stock : $this->stock;

@@ -84,14 +84,14 @@ jQuery(function($){
 				}
 			});
 			$.ajax(jigoshop_params.ajax_url, {
-				type: 'post',
-				dataType: 'json',
-				data: {
-					action: 'jigoshop_update_item_quantity',
-					qty: $(this).val(),
-					item: $parent.data('item')
-				}
-			})
+					type: 'post',
+					dataType: 'json',
+					data: {
+						action: 'jigoshop_update_item_quantity',
+						qty: $(this).val(),
+						item: $parent.data('item')
+					}
+				})
 				.done(function(result){
 					$form.unblock();
 					if(result.success){
@@ -117,6 +117,10 @@ jQuery(function($){
 						var $discount = $('.cart-row-discount', $totals);
 						if($discount.length){
 							$discount.html(result.discount);
+							if(result.discount == '-'){
+								$('.applied-coupons').remove();
+								$('.discount').remove();
+							}
 						}
 						for(var tax in result.tax){
 							$('tr[data-tax="' + tax + '"] .cart-row-tax', $totals).html(result.tax[tax]);
