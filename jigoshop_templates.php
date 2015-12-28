@@ -18,6 +18,11 @@
  * @param $template
  * @return string
  */
+ 
+ if ( !defined('ABSPATH') ){
+	die("Not to be accessed directly");
+}
+ 
 function jigoshop_template_loader($template)
 {
 	if (is_single() && get_post_type() == 'product') {
