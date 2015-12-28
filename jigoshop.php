@@ -37,6 +37,9 @@
  * @license             GNU General Public License v3
  */
 
+if ( !defined('ABSPATH') ){
+	die("Not to be accessed directly");
+}
 if (!defined('JIGOSHOP_VERSION')) {
 	define('JIGOSHOP_VERSION', '1.17.9');
 }
