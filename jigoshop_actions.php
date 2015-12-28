@@ -36,6 +36,7 @@
  *
  * @since 		1.0
  */
+ 
  if ( !defined('ABSPATH') ){
 	die("Not to be accessed directly");
 }
