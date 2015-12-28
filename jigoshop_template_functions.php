@@ -16,6 +16,11 @@
 /**
  * Front page archive/shop template
  */
+ 
+ if ( !defined('ABSPATH') ){
+	die("Not to be accessed directly");
+}
+ 
 if (!function_exists('jigoshop_front_page_archive')) {
 	function jigoshop_front_page_archive()
 	{
