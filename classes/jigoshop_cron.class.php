@@ -80,18 +80,19 @@ class jigoshop_cron extends Jigoshop_Base {
 			));
 
 			remove_filter( 'posts_where', array( $this, 'orders_filter_when' ));
-			jigoshop_emails::suppress_next_action();
+			jigoshop_emails::suppress_next_actions();
 
 			foreach ( $orders as $index => $order_id ) {
 				$order = new jigoshop_order( $order_id );
 				$order->update_status( 'completed', __('Completed due to order being in processing state for a month or longer.', 'jigoshop'));
 			}
+
+			jigoshop_emails::allow_next_actions();
 		}
 	}
 
 	function orders_filter_when( $when = '' ) {
 		$when .= " AND post_date < '" . date('Y-m-d', strtotime('-30 days')) . "'";
 		return $when;
-
 	}
 }
