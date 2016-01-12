@@ -589,9 +589,13 @@ class jigoshop_cart extends Jigoshop_Singleton
 									$discounts += self::$tax->calc_tax($coupon['amount']*$total_tax_part, $rate, false);
 									break;
 								case 'percent':
-									$discounts += self::$tax->calc_tax($coupon['amount'] * self::$price_per_tax_class_ex_tax[$tax_class]/($total_tax_part*100), $rate, false);
-									$discounts += $coupon['amount'] * self::$tax->get_shipping_tax($tax_class) / 100;
-									break;
+									if(!empty(self::$price_per_tax_class_ex_tax[$tax_class])){
+										$discounts += self::$tax->calc_tax($coupon['amount'] * self::$price_per_tax_class_ex_tax[$tax_class]/($total_tax_part*100), $rate, false);
+										$discounts += $coupon['amount'] * self::$tax->get_shipping_tax($tax_class) / 100;
+										break;
+									}else {
+										break;
+									}
 							}
 						}
 
@@ -600,7 +604,7 @@ class jigoshop_cart extends Jigoshop_Singleton
 					}
 				}
 
-			// check again in case tax calcs are disabled
+				// check again in case tax calcs are disabled
 				$total_discounts = $total_cart_discounts + $total_product_discounts;
 				if ($total_discounts > $total_to_use) {
 					$total_cart_discounts = $total_to_use - $total_product_discounts;
