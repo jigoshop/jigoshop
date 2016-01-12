@@ -1,6 +1,6 @@
 ## Changelog
 
-* 1.17.10.1 - 2016.01.8:
+* 1.17.11 - 2016.01.8:
     * Fix: sending emalis from cron jobs.
 * 1.17.10 - 2015.12.21:
     * Fix: No more warrnings about missing tax definition.
