@@ -18,6 +18,10 @@
 /**
  * Custom Post Types
  **/
+ if ( !defined('ABSPATH') ){
+	die("Not to be accessed directly");
+}
+
 function jigoshop_post_type()
 {
 	$options = Jigoshop_Base::get_options();

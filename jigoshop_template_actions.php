@@ -13,6 +13,10 @@
  * @license             GNU General Public License v3
  */
 
+if ( !defined('ABSPATH') ){
+	die("Not to be accessed directly");
+}
+
 /* Content Wrappers */
 add_action('jigoshop_before_main_content', 'jigoshop_output_content_wrapper', 10);
 add_action('jigoshop_after_main_content', 'jigoshop_output_content_wrapper_end', 10);
