@@ -1,5 +1,6 @@
 ## Changelog
-
+* 1.17.12 - 2016.03.31:
+    * Fix: changed tested up to 4.5
 * 1.17.11 - 2016.01.8:
     * Fix: sending emalis from cron jobs.
 * 1.17.10 - 2015.12.21:
