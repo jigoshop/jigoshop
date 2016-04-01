@@ -641,7 +641,7 @@ class jigoshop_countries extends Jigoshop_Base {
 			'POR' => 'Portsmouth',
 			'RDG' => 'Reading',
 			'RCC' => 'Redcar and Cleveland',
-			'RUT' => 'utland',
+			'RUT' => 'Rutland',
 			'SHR' => 'Shropshire',
 			'SLG' => 'Slough',
 			'SGC' => 'South Gloucestershire',
