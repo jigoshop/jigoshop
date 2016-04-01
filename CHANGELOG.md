@@ -1,4 +1,7 @@
 ## Changelog
+* 1.17.14 - 2016.04.01:
+    * Fix: Admin user edit page.
+    * Fix: vulnerability problems.
 * 1.17.13 - 2016.03.31:
     * Fix: Dashboard css.
 * 1.17.12 - 2016.03.31:
