@@ -171,7 +171,7 @@
 	padding-right: 6px
 }
 
-#jigoshop-order-items h3 small {
+#jigoshop-order-items h2 small {
 	color: #999999
 }
 
@@ -563,7 +563,7 @@ div.star img {
 	position: relative
 }
 
-#jigoshop_dashboard div.postbox h3 {
+#jigoshop_dashboard div.postbox h2 {
 	cursor: default !important
 }
 
@@ -1151,7 +1151,7 @@ a.tips {
 	margin-bottom: 5px
 }
 
-.attribute h3 {
+.attribute h2 {
 	font-size: 12px !important;
 	font-family: sans-serif !important;
 	padding: 10px !important;
@@ -1347,7 +1347,7 @@ div.multi_select_countries.shipping_services {
 	margin-bottom: 5px
 }
 
-.jigoshop_variation h3 {
+.jigoshop_variation h2 {
 	font-size: 12px !important;
 	font-family: sans-serif !important;
 	cursor: pointer !important;
@@ -1811,7 +1811,7 @@ div.multi_select_countries.shipping_services {
 	margin-bottom: 1em
 }
 
-.jigoshop-settings #tabs-wrap h3 {
+.jigoshop-settings #tabs-wrap h2 {
 	padding: 1.5em 0 3px;
 	margin: 0 0 1em
 }
@@ -1914,7 +1914,7 @@ body, html {
 	-webkit-box-shadow: none;
 }
 
-#jigoshop-metaboxes-main #dashboard-widgets .postbox h3, #jigoshop_dash_right_now .sub {
+#jigoshop-metaboxes-main #dashboard-widgets .postbox h2, #jigoshop_dash_right_now .sub {
 	font: 300 45px "Open Sans", arial, sans-serif;
 	color: #464e3f;
 	margin: 0;
@@ -1922,13 +1922,13 @@ body, html {
 	border-bottom: none;
 }
 
-#jigoshop-metaboxes-main #dashboard-widgets .postbox h3 span {
+#jigoshop-metaboxes-main #dashboard-widgets .postbox h2 span {
 	display: inline-block;
 	position: relative;
 	padding-right: 27px;
 }
 
-#jigoshop-metaboxes-main #dashboard-widgets .postbox h3 span:before {
+#jigoshop-metaboxes-main #dashboard-widgets .postbox h2 span:before {
 	background: url(../images/jigo-ico.png) 0 -140px no-repeat;
 	content: "";
 	width: 15px;
@@ -1951,7 +1951,7 @@ body, html {
 	display: none !important;
 }
 
-.toplevel_page_jigoshop #jigoshop-metaboxes-main h2 {
+.toplevel_page_jigoshop #jigoshop-metaboxes-main h3{
 	text-indent: -9999999px;
 	padding: 0;
 	margin: 35px 0 10px 22px;
@@ -1961,7 +1961,7 @@ body, html {
 	background: url(../images/jigo-ico.png) 0 -480px no-repeat;
 }
 
-#jigoshop_dash_right_now h3 {
+#jigoshop_dash_right_now h2 {
 	display: none;
 }
 
@@ -2019,7 +2019,7 @@ body, html {
 	background: #98c242;
 }
 
-#jigoshop_dash_monthly_report h3 {
+#jigoshop_dash_monthly_report h2{
 	margin-bottom: 0 !important;
 	display: inline-block;
 }
@@ -2234,7 +2234,7 @@ div.pages ul.pages li a:hover {
 	clear: both;
 }
 
-#jigoshop-metaboxes-main .postbox h3 span span,
+#jigoshop-metaboxes-main .postbox h2 span span,
 #jigoshop_right_now .table_content .sub span {
 	display: block !important;
 	font: 700 12.5px "Open Sans", arial, sans-serif;
@@ -2243,7 +2243,7 @@ div.pages ul.pages li a:hover {
 	margin-bottom: -10px;
 }
 
-#jigoshop-metaboxes-main .postbox h3 span span:before,
+#jigoshop-metaboxes-main .postbox h2 span span:before,
 #jigoshop_right_now .table_content .sub span:before {
 	display: none;
 }
@@ -2460,47 +2460,47 @@ canvas.overlay {
 	padding: 12px;
 	position: relative;
 }
-.jigoshop-reports-wide .postbox h3.stats_range, .jigoshop-reports-wrap .postbox h3.stats_range {
+.jigoshop-reports-wide .postbox h2.stats_range, .jigoshop-reports-wrap .postbox h2.stats_range {
 	border-bottom-color: #dfdfdf;
 	padding: 0 !important;
 }
-.jigoshop-reports-wide .postbox h3, .jigoshop-reports-wrap .postbox h3 {
+.jigoshop-reports-wide .postbox h2, .jigoshop-reports-wrap .postbox h2 {
 	cursor: default !important;
 }
-.jigoshop-reports-wide .postbox h3.stats_range ul::after, .jigoshop-reports-wide .postbox h3.stats_range ul::before, .jigoshop-reports-wrap .postbox h3.stats_range ul::after, .jigoshop-reports-wrap .postbox h3.stats_range ul::before {
+.jigoshop-reports-wide .postbox h2.stats_range ul::after, .jigoshop-reports-wide .postbox h2.stats_range ul::before, .jigoshop-reports-wrap .postbox h2.stats_range ul::after, .jigoshop-reports-wrap .postbox h2.stats_range ul::before {
 	content: " ";
 	display: table;
 }
-.jigoshop-reports-wide .postbox h3.stats_range ul::after, .jigoshop-reports-wrap .postbox h3.stats_range ul::after {
+.jigoshop-reports-wide .postbox h2.stats_range ul::after, .jigoshop-reports-wrap .postbox h2.stats_range ul::after {
 	clear: both;
 }
-.jigoshop-reports-wide .postbox h3.stats_range ul::after, .jigoshop-reports-wide .postbox h3.stats_range ul::before, .jigoshop-reports-wrap .postbox h3.stats_range ul::after, .jigoshop-reports-wrap .postbox h3.stats_range ul::before {
+.jigoshop-reports-wide .postbox h2.stats_range ul::after, .jigoshop-reports-wide .postbox h2.stats_range ul::before, .jigoshop-reports-wrap .postbox h2.stats_range ul::after, .jigoshop-reports-wrap .postbox h2.stats_range ul::before {
 	content: " ";
 	display: table;
 }
-.jigoshop-reports-wide .postbox h3.stats_range ul, .jigoshop-reports-wrap .postbox h3.stats_range ul {
+.jigoshop-reports-wide .postbox h2.stats_range ul, .jigoshop-reports-wrap .postbox h2.stats_range ul {
 	background: none repeat scroll 0 0 #f5f5f5;
 	list-style: outside none none;
 	margin: 0;
 	padding: 0;
 }
-.jigoshop-reports-wide .postbox h3.stats_range ul li, .jigoshop-reports-wrap .postbox h3.stats_range ul li {
+.jigoshop-reports-wide .postbox h2.stats_range ul li, .jigoshop-reports-wrap .postbox h2.stats_range ul li {
 	float: left;
 	line-height: 26px;
 	margin: 0;
 	padding: 0;
 }
-.jigoshop-reports-wide .postbox h3.stats_range ul li a, .jigoshop-reports-wrap .postbox h3.stats_range ul li a {
+.jigoshop-reports-wide .postbox h2.stats_range ul li a, .jigoshop-reports-wrap .postbox h2.stats_range ul li a {
 	border-right: 1px solid #dfdfdf;
 	display: block;
 	padding: 10px;
 	text-decoration: none;
 }
-.jigoshop-reports-wide .postbox h3.stats_range ul li.active, .jigoshop-reports-wrap .postbox h3.stats_range ul li.active {
+.jigoshop-reports-wide .postbox h2.stats_range ul li.active, .jigoshop-reports-wrap .postbox h2.stats_range ul li.active {
 	background: none repeat scroll 0 0 #fff;
 	box-shadow: 0 4px 0 0 #fff;
 }
-.jigoshop-reports-wide .postbox h3.stats_range ul li.active a, .jigoshop-reports-wrap .postbox h3.stats_range ul li.active a {
+.jigoshop-reports-wide .postbox h2.stats_range ul li.active a, .jigoshop-reports-wrap .postbox h2.stats_range ul li.active a {
 	color: #777;
 }
 .jigoshop-reports-wide .postbox .chart-widgets, .jigoshop-reports-wrap .postbox .chart-widgets {
@@ -2518,11 +2518,11 @@ canvas.overlay {
 	color: #98c242;
 	padding-left: 1.5em;
 }
-.jigoshop-reports-wide .postbox h3.stats_range ul li.custom, .jigoshop-reports-wrap .postbox h3.stats_range ul li.custom {
+.jigoshop-reports-wide .postbox h2.stats_range ul li.custom, .jigoshop-reports-wrap .postbox h2.stats_range ul li.custom {
 	padding: 9px 10px;
 	vertical-align: middle;
 }
-.jigoshop-reports-wide .postbox h3.stats_range ul li.custom div input.range_datepicker, .jigoshop-reports-wide .postbox h3.stats_range ul li.custom form input.range_datepicker, .jigoshop-reports-wrap .postbox h3.stats_range ul li.custom div input.range_datepicker, .jigoshop-reports-wrap .postbox h3.stats_range ul li.custom form input.range_datepicker {
+.jigoshop-reports-wide .postbox h2.stats_range ul li.custom div input.range_datepicker, .jigoshop-reports-wide .postbox h2.stats_range ul li.custom form input.range_datepicker, .jigoshop-reports-wrap .postbox h2.stats_range ul li.custom div input.range_datepicker, .jigoshop-reports-wrap .postbox h2.stats_range ul li.custom form input.range_datepicker {
 	background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
 	border: 0 none;
 	box-shadow: none;
@@ -2539,11 +2539,11 @@ canvas.overlay {
 	font-weight: 400;
 	line-height: 1.2em;
 }
-.jigoshop-reports-wide .postbox h3.stats_range ul li.custom div, .jigoshop-reports-wide .postbox h3.stats_range ul li.custom form, .jigoshop-reports-wrap .postbox h3.stats_range ul li.custom div, .jigoshop-reports-wrap .postbox h3.stats_range ul li.custom form {
+.jigoshop-reports-wide .postbox h2.stats_range ul li.custom div, .jigoshop-reports-wide .postbox h2.stats_range ul li.custom form, .jigoshop-reports-wrap .postbox h2.stats_range ul li.custom div, .jigoshop-reports-wrap .postbox h2.stats_range ul li.custom form {
 	display: inline;
 	margin: 0;
 }
-.jigoshop-reports-wide .postbox h3.stats_range .export_link, .jigoshop-reports-wrap .postbox h3.stats_range .export_link {
+.jigoshop-reports-wide .postbox h2.stats_range .export_link, .jigoshop-reports-wrap .postbox h2.stats_range .export_link {
 	border-left: 1px solid #dfdfdf;
 	display: block;
 	float: right;
@@ -2748,7 +2748,7 @@ table.jigoshop_status_table td mark.yes {
 	padding: 0 20px 0 0;
 	vertical-align: text-bottom;
 }
-.jigoshop_extensions_wrap .products li a h3 {
+.jigoshop_extensions_wrap .products li a h2 {
 	background: none repeat scroll 0 0 #fff;
 	margin: 0 !important;
 	padding: 20px !important;
