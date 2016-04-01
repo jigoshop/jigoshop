@@ -21,6 +21,11 @@
  * @param $version string Version string (i.e. 1.10.1)
  * @return bool
  */
+ 
+ if ( !defined('ABSPATH') ){
+	die("Not to be accessed directly");
+}
+ 
 function jigoshop_is_minumum_version($version)
 {
 	if(version_compare(JIGOSHOP_VERSION, $version, '<'))

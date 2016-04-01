@@ -36,6 +36,11 @@
  *
  * @since 		1.0
  */
+ 
+ if ( !defined('ABSPATH') ){
+	die("Not to be accessed directly");
+}
+
 add_action('wp_ajax_jigoshop_add_order_item', 'jigoshop_add_order_item');
 
 function jigoshop_add_order_item() {

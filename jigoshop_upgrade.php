@@ -15,6 +15,11 @@
 /**
  * Run Jigoshop Upgrade functions.
  */
+ 
+ if ( !defined('ABSPATH') ){
+	die("Not to be accessed directly");
+}
+ 
 function jigoshop_upgrade()
 {
 	// Get the db version
