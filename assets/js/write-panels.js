@@ -366,9 +366,6 @@ jQuery(function($) {
 			var attribute = $('select.attribute_taxonomy').val();
 			var type = $('select.attribute_taxonomy').find(':selected').data('type');
 
-			// Remove the demo if it exists
-			$('.demo.attribute').remove();
-
 			// Disable select option
 			if( $('select.attribute_taxonomy option:selected').val() ) {
 				$('select.attribute_taxonomy')

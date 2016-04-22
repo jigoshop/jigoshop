@@ -1,4 +1,6 @@
 ## Changelog
+* 1.17.15 - 2016.04.22:
+    * Fix: Fixed adding attributes when 'demo' attribute exist.
 * 1.17.14 - 2016.04.01:
     * Fix: Admin user edit page.
     * Fix: vulnerability problems.
