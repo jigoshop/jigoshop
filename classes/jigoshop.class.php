@@ -248,7 +248,7 @@ class jigoshop extends Jigoshop_Singleton
 		$action = 'jigoshop-'.$action;
 		$request = array_merge($_GET, $_POST);
 
-		if (!wp_verify_nonce($request[$name], $action)) {
+		if (!isset($request[$name]) || !iwp_verify_nonce($request[$name], $action)) {
 			jigoshop::add_error(__('Action failed. Please refresh the page and retry.', 'jigoshop'));
 
 			return false;
