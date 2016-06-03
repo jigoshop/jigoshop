@@ -25,6 +25,7 @@ require_once( 'jigoshop-admin-post-types.php' );
 require_once( 'jigoshop-admin-product-quick-bulk-edit.php' );
 require_once( 'jigoshop-admin-taxonomies.php' );
 require_once( 'jigoshop-user-profile.php' );
+require_once( 'jigoshop-admin-migration-information.php' );
 
 // Contextual help only works for 3.3 due to updated API
 if ( get_bloginfo('version') >= '3.3' ) {
@@ -77,9 +78,10 @@ function jigoshop_before_admin_menu()
 	if (current_user_can('manage_jigoshop')) {
 		$menu[54] = array('', 'read', 'separator-jigoshop', '', 'wp-menu-separator jigoshop');
 	}
-
+	$migrationInformation = new JigoshopMigrationInformation();
 	add_menu_page(__('Jigoshop'), __('Jigoshop'), 'manage_jigoshop', 'jigoshop', 'jigoshop_dashboard', null, 55);
 	add_submenu_page('jigoshop', __('Dashboard', 'jigoshop'), __('Dashboard', 'jigoshop'), 'manage_jigoshop', 'jigoshop', 'jigoshop_dashboard');
+	add_submenu_page('jigoshop', __('Migration Information', 'jigoshop'), __('Migration Information', 'jigoshop'), 'manage_jigoshop', 'jigoshop_migration_information', array($migrationInformation, 'render'));
 	add_submenu_page('jigoshop', __('Reports', 'jigoshop'), __('Reports', 'jigoshop'), 'view_jigoshop_reports', 'jigoshop_reports', 'jigoshop_reports');
 	add_submenu_page('edit.php?post_type=product', __('Attributes', 'jigoshop'), __('Attributes', 'jigoshop'), 'manage_product_terms', 'jigoshop_attributes', 'jigoshop_attributes');
 
