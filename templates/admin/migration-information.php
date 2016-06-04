@@ -5,7 +5,8 @@ if (!defined('ABSPATH'))
 }
 
 /**
- * @var array $allPlugins all Jigoshop plugins.
+ * @var array $jigoshop All Jigoshop plugins.
+ * @var array $rest Other plugins.
  * @var string $errors
  */
 
@@ -14,36 +15,85 @@ if (!defined('ABSPATH'))
 	<h2><?php _e('Jigoshop Migration Information', 'jigoshop'); ?></h2>
 	<?php if (isset($errors)): ?>
 		<div style="border: 1px silver solid; background-color: lightcoral; padding: 10px 16px 5px;">
-		<?php echo $errors; ?>
+			<?php echo $errors; ?>
 		</div>
 	<?php else: ?>
-		<table class="wp-list-table widefat fixed striped posts">
+		<table class="wp-list-tablef widefat striped posts" style="width: 100%">
 			<thead>
 			<tr>
-				<th scope="col" class="manage-column column-title column-primary desc"><span>Title</span></a></th>
-				<th scope="col" class="manage-column column-date desc"><span>Date</span></a></th>
-				<th scope="col" class="manage-column column-date desc"><span>Date</span></a></th>
+				<th colspan="3"><h2><?php _e('Jigoshop Plugins', 'jigoshop') ?></h2></th>
+			</tr>
+			<tr>
+				<th scope="col" style="width: 60%" class="manage-column column-title column-primary desc"><span><?php _e('Name', 'jigoshop'); ?></span></th>
+				<th scope="col" style="width: 20%" class="manage-column column-date desc"><span><?php _e('Compatible for Jigoshop 2', 'jigoshop'); ?></span></th>
+				<th scope="col" style="width: 20%" class="manage-column column-date desc"><span><?php _e('Note', 'jigoshop'); ?></span></th>
 			</tr>
 			</thead>
 			<tbody>
-			<?php foreach ($allPlugins as $k => $v): ?>
+			<?php foreach ($jigoshop as $k => $v): ?>
 				<tr>
 					<td class="title column-title column-primary page-title">
-						<strong><?php echo $v['Name']; ?></strong>
+						<strong><?php echo $v['name']; ?></strong>
 					</td>
-					<td>Published<br>f</td>
-					<td>Published<br>f</td>
+					<td>
+						<?php if ($v['js2Compatible'] == 'Yes'): ?>
+							<div style="border-radius: 2px; background-color: #62c462; padding: 2px 5px;"><?php _e('Yes, this plugin is fully compatible.', 'jigoshop') ?></div>
+						<?php else: ?>
+							<div>
+								<form action="" method="POST">
+									<input type="hidden" name="askPluginName" value="<?php echo $v['']; ?>">
+									<input type="hidden" name="askRepoUrl" value="<?php echo $v['']; ?>">
+									<input type="hidden" name="" value="<?php echo $v['']; ?>">
+									<button><?php _e('Ask our development team when the plugin is ready.', 'jigoshop') ?></button>
+								</form>
+							</div>
+						<?php endif; ?>
+					</td>
+					<td>note</td>
 				</tr>
 			<?php endforeach; ?>
 			</tbody>
-
 			<tfoot>
 			<tr>
-				<th scope="col" class="manage-column column-title column-primary desc"><span>Title</span></a></th>
-				<th scope="col" class="manage-column column-date desc"><span>Date</span></a></th>
-				<th scope="col" class="manage-column column-date desc"><span>Date</span></a></th>
+				<th scope="col" class="manage-column column-title column-primary desc"><span><?php _e('Name', 'jigoshop') ?></span></th>
+				<th scope="col" class="manage-column column-date desc"><span><?php _e('Compatible for Jigoshop 2', 'jigoshop') ?></span></th>
+				<th scope="col" class="manage-column column-date desc"><span><?php _e('Note', 'jigoshop') ?></span></th>
 			</tr>
 			</tfoot>
 		</table>
+		<?php if (!empty($rest)): ?>
+			<table class="wp-list-table widefat striped posts" style="width: 100%">
+				<thead>
+				<tr>
+					<th colspan="3"><h2><?php _e('Rest Your Plugins', 'jigoshop') ?></h2></th>
+				</tr>
+				<tr>
+
+					<th scope="col" style="width: 60%" class="manage-column column-title column-primary desc"><span><?php _e('Name', 'jigoshop') ?></span></th>
+					<th scope="col" style="width: 20%" class="manage-column column-date desc"><span><?php _e('Compatible for Jigoshop 2', 'jigoshop') ?></span>
+					</th>
+					<th scope="col" style="width: 20%" class="manage-column column-date desc"><span><?php _e('Note', 'jigoshop') ?></span></th>
+				</tr>
+				</thead>
+				<tbody>
+				<?php foreach ($rest as $k => $v): ?>
+					<tr>
+						<td class="title column-title column-primary page-title">
+							<strong><?php echo $v['name']; ?></strong>
+						</td>
+						<td><?php echo $v['js2Compatible'] ?></td>
+						<td>note</td>
+					</tr>
+				<?php endforeach; ?>
+				</tbody>
+				<tfoot>
+				<tr>
+					<th scope="col" class="manage-column column-title column-primary desc"><span><?php _e('Name', 'jigoshop') ?></span></th>
+					<th scope="col" class="manage-column column-date desc"><span><?php _e('Compatible for Jigoshop 2', 'jigoshop') ?></span></th>
+					<th scope="col" class="manage-column column-date desc"><span><?php _e('Note', 'jigoshop') ?></span></th>
+				</tr>
+				</tfoot>
+			</table>
+		<?php endif; ?>
 	<?php endif; ?>
 </div>

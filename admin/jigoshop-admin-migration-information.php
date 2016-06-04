@@ -8,12 +8,22 @@ class JigoshopMigrationInformation
 {
 	private $errors = array();
 	private $jigoPluginInfo = array();
+	private $pluginsRepoUrl = array();
+	private $plugins = array();
 
 	/**
 	 * Render output of migration information page.
 	 */
 	public function render()
 	{
+		if(isset($_POST['askPluginName']))
+		{
+			$template = jigoshop_locate_template('admin/migration-ask');
+			/** @noinspection PhpIncludeInspection */
+			include($template);
+			return;
+		}
+
 		$this->checkRequirements();
 		$this->getInformation();
 
@@ -24,6 +34,7 @@ class JigoshopMigrationInformation
 			return;
 		}
 
+		extract($this->plugins);
 		$template = jigoshop_locate_template('admin/migration-information');
 		/** @noinspection PhpIncludeInspection */
 		include($template);
@@ -34,11 +45,7 @@ class JigoshopMigrationInformation
 		if (!function_exists('curl_version'))
 		{
 			$this->errors[] = __('Curl support is not enabled on this server. It is necessary to enable it in order to check your plugins compatibility with Jigoshop 2.', 'jigoshop');
-
-			return false;
 		}
-
-		return true;
 	}
 
 	private function showErrors()
@@ -55,13 +62,28 @@ class JigoshopMigrationInformation
 	{
 		$this->get();
 
-		if(count($this->errors) > 0)
+		if (count($this->errors) > 0)
 		{
 			return;
 		}
 
-		$plugins = get_plugins();
+		$sitePlugins = get_plugins();
 
+		$this->pluginRepoUrl();
+
+		foreach ($sitePlugins as $slug => $plugin)
+		{
+			if ($pluginData = $this->checkJigoPlugin($slug))
+			{
+				$this->plugins['jigoshop'][$slug]['name'] = $plugin['Name'];
+				$this->plugins['jigoshop'][$slug]['js2Compatible'] = $this->jigoPluginInfo[$pluginData]['js2_compatible'];
+			}
+			else
+			{
+				$this->plugins['rest'][$slug]['name'] = $plugin['Name'];
+				$this->plugins['rest'][$slug]['js2Compatible'] = 'some info';
+			}
+		}
 	}
 
 	protected function get()
@@ -74,12 +96,13 @@ class JigoshopMigrationInformation
 		curl_setopt($c, CURLOPT_POSTFIELDS, http_build_query(get_plugins()));
 		curl_exec($c);
 		curl_close($c);
+		$this->getData();
 	}
 
 	protected function getData()
 	{
 		$c = curl_init();
-		curl_setopt($c, CURLOPT_URL, 'https://www.jigoshop.com/jigoshop_plugins.json');
+		curl_setopt($c, CURLOPT_URL, 'https://jigoshop.com/jigoshop_plugins2.json');
 		curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
 		$json = curl_exec($c);
 
@@ -98,5 +121,37 @@ class JigoshopMigrationInformation
 		{
 			$this->errors[] = 'httpcode: ' . $httpCode;
 		}
+	}
+
+	private function pluginRepoUrl()
+	{
+		$w = array();
+		foreach ($this->jigoPluginInfo as $k => $v)
+		{
+			$w[$k] = $v['repo_url'];
+		}
+
+		$this->pluginsRepoUrl = $w;
+	}
+
+	/**
+	 * @param $slug
+	 *
+	 * @return mixed
+	 */
+	private function checkJigoPlugin($slug)
+	{
+		foreach ($this->pluginsRepoUrl as $k => $v)
+		{
+			if (!empty($v))
+			{
+				if (strpos($slug, $v) !== false)
+				{
+					return $k;
+				}
+			}
+		}
+
+		return false;
 	}
 }
