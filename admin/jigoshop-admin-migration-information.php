@@ -7,6 +7,7 @@ if (!defined('ABSPATH'))
 class JigoshopMigrationInformation
 {
 	private $errors = array();
+	private $info = '';
 	private $jigoPluginInfo = array();
 	private $pluginsRepoUrl = array();
 	private $plugins = array();
@@ -16,11 +17,22 @@ class JigoshopMigrationInformation
 	 */
 	public function render()
 	{
-		if(isset($_POST['askPluginName']))
+		if (isset($_POST['sendAsk']))
+		{
+			$msg = 'Plugin name: ' . $_POST['askPluginName2'] . "\r\n";
+			$msg .= 'Plugin repo: ' . $_POST['askRepoUrl'] . "\r\n";
+			$msg .= 'Message: ' . $_POST['askMsg'] . "\r\n";
+			wp_mail('nofacexx@gmail.com', 'Ask from client - when plugin ready', $msg);
+
+			$this->info = __('Question was sent.', 'jigoshop');
+		}
+
+		if (isset($_POST['askPluginName']))
 		{
 			$template = jigoshop_locate_template('admin/migration-ask');
 			/** @noinspection PhpIncludeInspection */
 			include($template);
+
 			return;
 		}
 
@@ -34,6 +46,7 @@ class JigoshopMigrationInformation
 			return;
 		}
 
+		$info = $this->info;
 		extract($this->plugins);
 		$template = jigoshop_locate_template('admin/migration-information');
 		/** @noinspection PhpIncludeInspection */
@@ -77,11 +90,13 @@ class JigoshopMigrationInformation
 			{
 				$this->plugins['jigoshop'][$slug]['name'] = $plugin['Name'];
 				$this->plugins['jigoshop'][$slug]['js2Compatible'] = $this->jigoPluginInfo[$pluginData]['js2_compatible'];
+				$this->plugins['jigoshop'][$slug]['repoUrl'] = $this->jigoPluginInfo[$pluginData]['repo_url'];
+				$this->plugins['jigoshop'][$slug]['note'] = isset($this->jigoPluginInfo[$pluginData]['note']) ? $this->jigoPluginInfo[$pluginData]['note'] : '';
 			}
 			else
 			{
 				$this->plugins['rest'][$slug]['name'] = $plugin['Name'];
-				$this->plugins['rest'][$slug]['js2Compatible'] = 'some info';
+				$this->plugins['rest'][$slug]['note'] = 'some info';
 			}
 		}
 	}
