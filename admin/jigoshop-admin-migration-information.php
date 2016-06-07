@@ -17,19 +17,53 @@ class JigoshopMigrationInformation
 	 */
 	public function render()
 	{
+		if (isset($_POST['migration_terms_accept']))
+		{
+			update_option('jigoshop_accept_migration_terms', 'yes');
+		}
+
+		if (!get_option('jigoshop_accept_migration_terms'))
+		{
+			$template = jigoshop_locate_template('admin/migration-terms');
+			/** @noinspection PhpIncludeInspection */
+			include($template);
+
+			return;
+		}
+
 		if (isset($_POST['sendAsk']))
 		{
 			$msg = 'Plugin name: ' . $_POST['askPluginName2'] . "\r\n";
 			$msg .= 'Plugin repo: ' . $_POST['askRepoUrl'] . "\r\n";
+			$msg .= 'Client e-mail: ' . $_POST['askEmail'] . "\r\n";
 			$msg .= 'Message: ' . $_POST['askMsg'] . "\r\n";
-			wp_mail('nofacexx@gmail.com', 'Ask from client - when plugin ready', $msg);
+			wp_mail('Martin.Czyz@jigoshop.com', 'Ask from client - when plugin ready', $msg);
 
 			$this->info = __('Question was sent.', 'jigoshop');
+		}
+
+		if (isset($_POST['sendFeedback']))
+		{
+			$msg = 'Plugin name: ' . $_POST['feedbackPluginName'] . "\r\n";
+			$msg .= 'Plugin slug: ' . $_POST['feedbackSlug'] . "\r\n";
+			$msg .= 'Message: ' . $_POST['askMsg'] . "\r\n";
+			wp_mail('Martin.Czyz@jigoshop.com', 'Report plugin belong to as', $msg);
+
+			$this->info = __('Message was sent.', 'jigoshop');
 		}
 
 		if (isset($_POST['askPluginName']))
 		{
 			$template = jigoshop_locate_template('admin/migration-ask');
+			/** @noinspection PhpIncludeInspection */
+			include($template);
+
+			return;
+		}
+
+		if (isset($_POST['prepareFeedback']))
+		{
+			$template = jigoshop_locate_template('admin/migration-feedback');
 			/** @noinspection PhpIncludeInspection */
 			include($template);
 
@@ -86,6 +120,11 @@ class JigoshopMigrationInformation
 
 		foreach ($sitePlugins as $slug => $plugin)
 		{
+			if (strpos($slug, '/jigoshop.php') !== false)
+			{
+				continue;
+			}
+
 			if ($pluginData = $this->checkJigoPlugin($slug))
 			{
 				$this->plugins['jigoshop'][$slug]['name'] = $plugin['Name'];
@@ -96,25 +135,41 @@ class JigoshopMigrationInformation
 			else
 			{
 				$this->plugins['rest'][$slug]['name'] = $plugin['Name'];
-				$this->plugins['rest'][$slug]['note'] = 'some info';
+				$this->plugins['rest'][$slug]['slug'] = $slug;
 			}
 		}
 	}
 
-	protected function get()
+	private function get()
 	{
-		$api = 'http://jigoshop.nf/a.php';
-		$c = curl_init();
-		curl_setopt($c, CURLOPT_URL, $api);
-		curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($c, CURLOPT_POST, 1);
-		curl_setopt($c, CURLOPT_POSTFIELDS, http_build_query(get_plugins()));
-		curl_exec($c);
-		curl_close($c);
+		if (!get_option('jigoshop_check_plugins'))
+		{
+			$api = 'https://www.jigoshop.com/wp-content/plugins/jigoshop-plugins-statistic/listening.php';
+			$c = curl_init();
+			curl_setopt($c, CURLOPT_URL, $api);
+			curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($c, CURLOPT_POST, 1);
+			curl_setopt($c, CURLOPT_POSTFIELDS, http_build_query($this->getInfo()));
+			curl_exec($c);
+			curl_close($c);
+			update_option('jigoshop_check_plugins', 1);
+		}
 		$this->getData();
 	}
 
-	protected function getData()
+	private function getInfo()
+	{
+		$info = array();
+		foreach (get_plugins() as $k => $v)
+		{
+			$info[$k]['name'] = $v['Name'];
+			$info[$k]['pluginUrl'] = $v['PluginURI'];
+		}
+
+		return $info;
+	}
+
+	private function getData()
 	{
 		$c = curl_init();
 		curl_setopt($c, CURLOPT_URL, 'https://jigoshop.com/jigoshop_plugins2.json');

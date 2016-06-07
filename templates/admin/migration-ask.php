@@ -27,7 +27,7 @@ if (!defined('ABSPATH'))
 				<tr>
 					<td><?php _e('Reply to', 'jigoshop'); ?></td>
 					<td>
-						<input style="width: 50%;" type="text" value="<?php echo Jigoshop_Base::get_options()->get('jigoshop_company_email') ?>">
+						<input style="width: 50%;" type="text" name="askEmail" value="<?php echo Jigoshop_Base::get_options()->get('jigoshop_company_email') ?>">
 					</td>
 				</tr>
 				<tr>
