@@ -10,7 +10,7 @@ if (!defined('ABSPATH'))
 
 ?>
 <div class="wrap jigoshop jigoshop-migration-ask-wrap">
-	<h2><?php _e('Jigoshop Migration Information - ask for plugin ready', 'jigoshop'); ?></h2>
+	<h2><?php _e('Jigoshop Migration Information - ask for plugin availability', 'jigoshop'); ?></h2>
 	<?php if (isset($errors)): ?>
 		<div style="border: 1px silver solid; background-color: lightcoral; padding: 10px 16px 5px;">
 			<?php echo $errors; ?>
@@ -33,7 +33,8 @@ if (!defined('ABSPATH'))
 				<tr>
 					<td><?php _e('Message', 'jigoshop'); ?></td>
 					<td>
-						<textarea style="width: 50%; height: 200px;" name="askMsg">Ask</textarea>
+						<textarea style="width: 50%; height: 200px;" name="askMsg"><?php echo esc_attr('"Hey Jigoshop, when is this gonna be ready?"');
+							?></textarea>
 					</td>
 				</tr>
 				<tr>

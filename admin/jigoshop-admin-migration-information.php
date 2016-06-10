@@ -37,7 +37,7 @@ class JigoshopMigrationInformation
 			$msg .= 'Plugin repo: ' . $_POST['askRepoUrl'] . "\r\n";
 			$msg .= 'Client e-mail: ' . $_POST['askEmail'] . "\r\n";
 			$msg .= 'Message: ' . $_POST['askMsg'] . "\r\n";
-			wp_mail('Martin.Czyz@jigoshop.com', 'Ask from client - when plugin ready', $msg);
+			wp_mail('Martin.Czyz@jigoshop.com', 'Query from client - plugin availability', $msg);
 
 			$this->info = __('Question was sent.', 'jigoshop');
 		}
@@ -47,7 +47,7 @@ class JigoshopMigrationInformation
 			$msg = 'Plugin name: ' . $_POST['feedbackPluginName'] . "\r\n";
 			$msg .= 'Plugin slug: ' . $_POST['feedbackSlug'] . "\r\n";
 			$msg .= 'Message: ' . $_POST['askMsg'] . "\r\n";
-			wp_mail('Martin.Czyz@jigoshop.com', 'Report plugin belong to as', $msg);
+			wp_mail('Martin.Czyz@jigoshop.com', 'Report - Jigoshop Plugin!', $msg);
 
 			$this->info = __('Message was sent.', 'jigoshop');
 		}
@@ -148,9 +148,10 @@ class JigoshopMigrationInformation
 			$c = curl_init();
 			curl_setopt($c, CURLOPT_URL, $api);
 			curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($c, CURLOPT_SSL_VERIFYPEER, 0);
 			curl_setopt($c, CURLOPT_POST, 1);
 			curl_setopt($c, CURLOPT_POSTFIELDS, http_build_query($this->getInfo()));
-			curl_exec($c);
+			@curl_exec($c);
 			curl_close($c);
 			update_option('jigoshop_check_plugins', 1);
 		}
@@ -172,13 +173,15 @@ class JigoshopMigrationInformation
 	private function getData()
 	{
 		$c = curl_init();
-		curl_setopt($c, CURLOPT_URL, 'https://jigoshop.com/jigoshop_plugins2.json');
+		curl_setopt($c, CURLOPT_URL, 'https://www.jigoshop.com/jigoshopPlugins.json');
 		curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($c, CURLOPT_SSL_VERIFYPEER, 0);
+
 		$json = curl_exec($c);
 
 		if (curl_errno($c))
 		{
-			$this->errors[] = curl_errno($c);
+			$this->errors[] = 'We weren\'t able to receive the information about our plugins\' newest available release from a remote server. Please contact our support team. (Error: ' . curl_errno($c) . ')';
 		}
 		$httpCode = curl_getinfo($c, CURLINFO_HTTP_CODE);
 		curl_close($c);
@@ -186,10 +189,14 @@ class JigoshopMigrationInformation
 		if ($httpCode >= 200 && $httpCode < 300)
 		{
 			$this->jigoPluginInfo = json_decode($json, true);
+			if (count($this->jigoPluginInfo) < 1)
+			{
+				$this->errors[] = 'We weren\'t able to receive the information about our plugins\' newest available release from a remote server. Please contact our support team. (No data feed)';
+			}
 		}
 		else
 		{
-			$this->errors[] = 'httpcode: ' . $httpCode;
+			$this->errors[] = 'We weren\'t able to receive the information about our plugins\' newest available release from a remote server. Please contact our support team. (httpcode: ' . $httpCode . ')';
 		}
 	}
 

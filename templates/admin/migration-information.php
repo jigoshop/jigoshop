@@ -61,7 +61,7 @@ if (!defined('ABSPATH'))
 								<form action="" method="POST">
 									<input type="hidden" name="askPluginName" value="<?php echo esc_attr($v['name']); ?>">
 									<input type="hidden" name="askRepoUrl" value="<?php echo esc_attr($v['repoUrl']); ?>">
-									<button><?php _e('Ask our development team when the plugin is ready.', 'jigoshop') ?></button>
+									<button><?php _e('Ask our development team when the plugin will be ready.', 'jigoshop') ?></button>
 								</form>
 							</div>
 						<?php endif; ?>
@@ -100,7 +100,8 @@ if (!defined('ABSPATH'))
 								<form action="" method="POST">
 									<input type="hidden" name="feedbackPluginName" value="<?php echo esc_attr($v['name']); ?>">
 									<input type="hidden" name="feedbackSlug" value="<?php echo esc_attr($v['slug']); ?>">
-									<button name="prepareFeedback"><?php _e('You think this is a Jigoshop plugin, please let us know.', 'jigoshop') ?></button>
+									<button name="prepareFeedback"><?php _e('If you think this is a Jigoshop plugin, please let us know!',
+											'jigoshop') ?></button>
 								</form>
 							</div>
 						</td>
