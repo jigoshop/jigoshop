@@ -33,21 +33,26 @@ class JigoshopMigrationInformation
 
 		if (isset($_POST['sendAsk']))
 		{
-			$msg = 'Plugin name: ' . $_POST['askPluginName2'] . "\r\n";
-			$msg .= 'Plugin repo: ' . $_POST['askRepoUrl'] . "\r\n";
-			$msg .= 'Client e-mail: ' . $_POST['askEmail'] . "\r\n";
-			$msg .= 'Message: ' . $_POST['askMsg'] . "\r\n";
-			wp_mail('Martin.Czyz@jigoshop.com', 'Query from client - plugin availability', $msg);
+			$headers[] = 'Content-Type: text/html; charset=UTF-8';
+			$headers[] = 'Reply-To: ' . esc_attr($_POST['askEmail']);
+
+			$msg = 'Plugin name: ' . $_POST['askPluginName2'] . "\r\n" . '<br />';
+			$msg .= 'Plugin repo: ' . $_POST['askRepoUrl'] . "\r\n" . '<br />';
+			$msg .= 'Client e-mail: ' . $_POST['askEmail'] . "\r\n" . '<br />';
+			$msg .= 'Message: ' . $_POST['askMsg'] . "\r\n" . '<br />';
+			wp_mail('Martin.Czyz@jigoshop.com', 'Query from client - plugin availability', $msg, $headers);
 
 			$this->info = __('Question was sent.', 'jigoshop');
 		}
 
 		if (isset($_POST['sendFeedback']))
 		{
-			$msg = 'Plugin name: ' . $_POST['feedbackPluginName'] . "\r\n";
-			$msg .= 'Plugin slug: ' . $_POST['feedbackSlug'] . "\r\n";
-			$msg .= 'Message: ' . $_POST['askMsg'] . "\r\n";
-			wp_mail('Martin.Czyz@jigoshop.com', 'Report - Jigoshop Plugin!', $msg);
+			$headers[] = 'Content-Type: text/html; charset=UTF-8';
+
+			$msg = 'Plugin name: ' . $_POST['feedbackPluginName'] . "\r\n" . '<br />';
+			$msg .= 'Plugin slug: ' . $_POST['feedbackSlug'] . "\r\n" . '<br />';
+			$msg .= 'Message: ' . $_POST['askMsg'] . "\r\n" . '<br />';
+			wp_mail('Martin.Czyz@jigoshop.com', 'Report - Jigoshop Plugin!', $msg, $headers);
 
 			$this->info = __('Message was sent.', 'jigoshop');
 		}

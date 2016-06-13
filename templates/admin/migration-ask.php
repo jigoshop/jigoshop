@@ -33,7 +33,7 @@ if (!defined('ABSPATH'))
 				<tr>
 					<td><?php _e('Message', 'jigoshop'); ?></td>
 					<td>
-						<textarea style="width: 50%; height: 200px;" name="askMsg"><?php echo esc_attr('"Hey Jigoshop, when is this gonna be ready?"');
+						<textarea style="width: 50%; height: 200px;" name="askMsg"><?php echo esc_attr('Hey Jigoshop, when is this gonna be ready?');
 							?></textarea>
 					</td>
 				</tr>

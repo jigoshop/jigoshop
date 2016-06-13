@@ -18,7 +18,7 @@ if (!defined('ABSPATH'))
 			<tr>
 				<td><?php _e('Message', 'jigoshop'); ?></td>
 				<td>
-					<textarea style="width: 50%; height: 200px;" name="feedbackMsg"><?php echo esc_attr('"It says ' . $_POST['feedbackPluginName'] . 'shouldn\'t it be Jigoshop LTD?"'); ?>, </textarea>
+					<textarea style="width: 50%; height: 200px;" name="feedbackMsg"><?php echo esc_attr('It says ' . $_POST['feedbackPluginName'] . 'shouldn\'t it be Jigoshop LTD?'); ?></textarea>
 				</td>
 			</tr>
 			<tr>

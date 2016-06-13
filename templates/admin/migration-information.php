@@ -41,8 +41,10 @@ if (!defined('ABSPATH'))
 				<th colspan="3"><h2><?php _e('Jigoshop Plugins', 'jigoshop') ?></h2></th>
 			</tr>
 			<tr>
-				<th scope="col" style="width: 45%" class="manage-column column-title column-primary desc"><span><?php _e('Name', 'jigoshop'); ?></span></th>
-				<th scope="col" style="width: 35%" class="manage-column column-date desc"><span><?php _e('Compatible for Jigoshop 2', 'jigoshop'); ?></span>
+				<th scope="col" style="width: 45%" class="manage-column column-title column-primary desc">
+					<span><?php _e('Name', 'jigoshop'); ?></span></th>
+				<th scope="col" style="width: 35%" class="manage-column column-date desc">
+					<span><?php _e('Compatible for Jigoshop 2', 'jigoshop'); ?></span>
 				</th>
 				<th scope="col" style="width: 20%" class="manage-column column-date desc"><span><?php _e('Note', 'jigoshop'); ?></span></th>
 			</tr>
@@ -55,7 +57,7 @@ if (!defined('ABSPATH'))
 					</td>
 					<td>
 						<?php if ($v['js2Compatible'] == 'Yes'): ?>
-							<div style="border-radius: 2px; background-color: #62c462; padding: 2px 5px;"><?php _e('Yes, this plugin is fully compatible.', 'jigoshop') ?></div>
+							<div style="border-radius: 2px; background-color: #62c462; padding: 3px 5px; text-align: center; font-weight: bold; width: 80%"><?php _e('Yes, this plugin is fully compatible.', 'jigoshop') ?></div>
 						<?php else: ?>
 							<div>
 								<form action="" method="POST">
@@ -73,7 +75,8 @@ if (!defined('ABSPATH'))
 			<tfoot>
 			<tr>
 				<th scope="col" class="manage-column column-title column-primary desc"><span><?php _e('Name', 'jigoshop') ?></span></th>
-				<th scope="col" class="manage-column column-date desc"><span><?php _e('Compatible for Jigoshop 2', 'jigoshop') ?></span></th>
+				<th scope="col" class="manage-column column-date desc"><span><?php _e('Compatible for Jigoshop 2', 'jigoshop') ?></span>
+				</th>
 				<th scope="col" class="manage-column column-date desc"><span><?php _e('Note', 'jigoshop') ?></span></th>
 			</tr>
 			</tfoot>
@@ -85,8 +88,10 @@ if (!defined('ABSPATH'))
 					<th colspan="3"><h2><?php _e('Rest Your Plugins', 'jigoshop') ?></h2></th>
 				</tr>
 				<tr>
-					<th scope="col" style="width: 45%" class="manage-column column-title column-primary desc"><span><?php _e('Name', 'jigoshop') ?></span></th>
-					<th scope="col" style="width: 55%" class="manage-column column-date desc"><span><?php _e('Note', 'jigoshop') ?></span></th>
+					<th scope="col" style="width: 45%" class="manage-column column-title column-primary desc">
+						<span><?php _e('Name', 'jigoshop') ?></span></th>
+					<th scope="col" style="width: 55%" class="manage-column column-date desc"><span><?php _e('Note', 'jigoshop') ?></span>
+					</th>
 				</tr>
 				</thead>
 				<tbody>
@@ -100,8 +105,7 @@ if (!defined('ABSPATH'))
 								<form action="" method="POST">
 									<input type="hidden" name="feedbackPluginName" value="<?php echo esc_attr($v['name']); ?>">
 									<input type="hidden" name="feedbackSlug" value="<?php echo esc_attr($v['slug']); ?>">
-									<button name="prepareFeedback"><?php _e('If you think this is a Jigoshop plugin, please let us know!',
-											'jigoshop') ?></button>
+									<button name="prepareFeedback"><?php _e('If you think this is a Jigoshop plugin, please let us know!', 'jigoshop') ?></button>
 								</form>
 							</div>
 						</td>
