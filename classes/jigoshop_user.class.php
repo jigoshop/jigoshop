@@ -104,9 +104,9 @@ class jigoshop_user
 	public function populate(array $data)
 	{
 		foreach($data as $key => $value) {
-			if (isset($this->$key)) {
+			
 				$this->$key = $value;
-			}
+			
 		}
 	}
 
