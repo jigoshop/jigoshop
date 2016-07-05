@@ -128,7 +128,7 @@ function get_order_email_arguments($order_id)
 		'billing_postcode' => $order->billing_postcode,
 		'billing_city' => $order->billing_city,
 		'billing_country' => jigoshop_countries::get_country($order->billing_country),
-		'billing_state' => strlen($order->billing_state) == 2 ? jigoshop_countries::get_state($order->billing_country, $order->billing_state) : $order->billing_state,
+		'billing_state' => (jigoshop_countries::has_state($order->billing_country,$order->billing_state))? jigoshop_countries::get_state($order->billing_country, $order->billing_state) : $order->billing_state,
 		'billing_country_raw' => $order->billing_country,
 		'billing state_raw' => $order->billing_state,
 		'billing_email' => $order->billing_email,
@@ -141,7 +141,7 @@ function get_order_email_arguments($order_id)
 		'shipping_postcode' => $order->shipping_postcode,
 		'shipping_city' => $order->shipping_city,
 		'shipping_country' => jigoshop_countries::get_country($order->shipping_country),
-		'shipping_state' => strlen($order->shipping_state) == 2 ? jigoshop_countries::get_state($order->shipping_country, $order->shipping_state) : $order->shipping_state,
+		'shipping_state' => (jigoshop_countries::has_state($order->shipping_country,$order->shipping_state))? jigoshop_countries::get_state($order->shipping_country, $order->shipping_state) : $order->shipping_state,
 		'shipping_country_raw' => $order->shipping_country,
 		'shipping_state_raw' => $order->shipping_state,
 	);
