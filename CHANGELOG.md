@@ -1,4 +1,7 @@
 ## Changelog
+* 1.17.16 - 2016.07.05:
+    * Fix: Emails no showing state names.
+    * Fix: Now saving customer details on user edit page.
 * 1.17.15 - 2016.04.22:
     * Fix: Fixed adding attributes when 'demo' attribute exist.
 * 1.17.14 - 2016.04.01:
