@@ -20,9 +20,9 @@
  * Description:         Jigoshop, a WordPress eCommerce plugin that works.
  * Author:              Jigoshop Limited
  * Author URI:          https://www.jigoshop.com
- * Version:             1.17.16
+ * Version:             1.18
  * Requires at least:   4.0
- * Tested up to:        4.5.2
+ * Tested up to:        4.6
  * Text Domain:         jigoshop
  * Domain Path:         /languages/
  * DISCLAIMER
@@ -41,7 +41,7 @@ if ( !defined('ABSPATH') ){
 	die("Not to be accessed directly");
 }
 if (!defined('JIGOSHOP_VERSION')) {
-	define('JIGOSHOP_VERSION', '1.17.16');
+	define('JIGOSHOP_VERSION', '1.18');
 }
 if (!defined('JIGOSHOP_DB_VERSION')) {
 	define('JIGOSHOP_DB_VERSION', 1503180);
@@ -139,6 +139,18 @@ if($memory_limit < JIGOSHOP_REQUIRED_WP_MEMORY*1024*1024){
 			'</p></div>';
 	}
 	add_action('admin_notices', 'jigoshop_required_wp_memory_warning');
+}
+
+if(get_option('migration_terms_accept', false) == false) {
+	add_action('admin_notices', function(){
+		echo '<div class="notice notice-info"><p>'.
+            sprintf(
+                __('Hi <b>%s</b>! Jigoshop 2 premiere\'s just around the corner. You can check your plugins\' compatibility with Jigoshop 2 <a href="%s">here</a>.', 'jigoshop'),
+                get_current_user(),
+                admin_url( 'admin.php?page=jigoshop_migration_information')
+            ).
+            '</p></div>';
+	});
 }
 
 /**

@@ -1,4 +1,6 @@
 ## Changelog
+* 1.16 - 2016.08.02:
+    * New: Migration information.
 * 1.17.16 - 2016.07.05:
     * Fix: Emails no showing state names.
     * Fix: Now saving customer details on user edit page.
