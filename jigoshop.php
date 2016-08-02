@@ -143,10 +143,11 @@ if($memory_limit < JIGOSHOP_REQUIRED_WP_MEMORY*1024*1024){
 
 if(get_option('migration_terms_accept', false) == false) {
 	add_action('admin_notices', function(){
+		$user = wp_get_current_user();
 		echo '<div class="notice notice-info"><p>'.
             sprintf(
                 __('Hi <b>%s</b>! Jigoshop 2 premiere\'s just around the corner. You can check your plugins\' compatibility with Jigoshop 2 <a href="%s">here</a>.', 'jigoshop'),
-                get_current_user(),
+                $user->display_name,
                 admin_url( 'admin.php?page=jigoshop_migration_information')
             ).
             '</p></div>';
