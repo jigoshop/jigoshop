@@ -84,7 +84,7 @@ if (!defined('ABSPATH'))
 		<table class="wp-list-table widefat striped posts" style="width: 100%">
 			<thead>
 			<tr>
-				<th colspan="3"><h2><?php _e('Rest Your Plugins', 'jigoshop') ?></h2></th>
+				<th colspan="3"><h2><?php _e('Rest Of Your Plugins', 'jigoshop') ?></h2></th>
 			</tr>
 			<tr>
 				<th scope="col" style="width: 45%" class="manage-column column-title column-primary desc">
