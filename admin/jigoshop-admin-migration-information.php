@@ -10,7 +10,7 @@ class JigoshopMigrationInformation
 	private $info = '';
 	private $jigoPluginInfo = array();
 	private $pluginsRepoUrl = array();
-	private $plugins = array();
+	private $plugins = ['jigoshop' => [], 'rest' => []];
 
 	/**
 	 * Render output of migration information page.
@@ -40,9 +40,14 @@ class JigoshopMigrationInformation
 			$msg .= 'Plugin repo: ' . $_POST['askRepoUrl'] . "\r\n" . '<br />';
 			$msg .= 'Client e-mail: ' . $_POST['askEmail'] . "\r\n" . '<br />';
 			$msg .= 'Message: ' . $_POST['askMsg'] . "\r\n" . '<br />';
-			wp_mail('Martin.Czyz@jigoshop.com', 'Query from client - plugin availability', $msg, $headers);
-
-			$this->info = __('Question was sent.', 'jigoshop');
+			if (wp_mail('Martin.Czyz@jigoshop.com', 'Query from client - plugin availability', $msg, $headers))
+			{
+				$this->info = __('Question was sent.', 'jigoshop');
+			}
+			else
+			{
+				$this->errors[] = __('The message has not been sent due to misconfiguration of the server\'s SMTP settings. Check your server settings.', 'jigoshop');
+			}
 		}
 
 		if (isset($_POST['sendFeedback']))
@@ -52,9 +57,14 @@ class JigoshopMigrationInformation
 			$msg = 'Plugin name: ' . $_POST['feedbackPluginName'] . "\r\n" . '<br />';
 			$msg .= 'Plugin slug: ' . $_POST['feedbackSlug'] . "\r\n" . '<br />';
 			$msg .= 'Message: ' . $_POST['askMsg'] . "\r\n" . '<br />';
-			wp_mail('Martin.Czyz@jigoshop.com', 'Report - Jigoshop Plugin!', $msg, $headers);
-
-			$this->info = __('Message was sent.', 'jigoshop');
+			if (wp_mail('Martin.Czyz@jigoshop.com', 'Report - Jigoshop Plugin!', $msg, $headers))
+			{
+				$this->info = __('Message was sent.', 'jigoshop');
+			}
+			else
+			{
+				$this->errors[] = __('The message has not been sent due to misconfiguration of the server\'s SMTP settings. Check your server settings.', 'jigoshop');
+			}
 		}
 
 		if (isset($_POST['askPluginName']))
@@ -129,7 +139,6 @@ class JigoshopMigrationInformation
 			{
 				continue;
 			}
-
 			if ($pluginData = $this->checkJigoPlugin($slug))
 			{
 				$this->plugins['jigoshop'][$slug]['name'] = $plugin['Name'];

@@ -81,20 +81,20 @@ if (!defined('ABSPATH'))
 			</tr>
 			</tfoot>
 		</table>
-		<?php if (!empty($rest)): ?>
-			<table class="wp-list-table widefat striped posts" style="width: 100%">
-				<thead>
-				<tr>
-					<th colspan="3"><h2><?php _e('Rest Your Plugins', 'jigoshop') ?></h2></th>
-				</tr>
-				<tr>
-					<th scope="col" style="width: 45%" class="manage-column column-title column-primary desc">
-						<span><?php _e('Name', 'jigoshop') ?></span></th>
-					<th scope="col" style="width: 55%" class="manage-column column-date desc"><span><?php _e('Note', 'jigoshop') ?></span>
-					</th>
-				</tr>
-				</thead>
-				<tbody>
+		<table class="wp-list-table widefat striped posts" style="width: 100%">
+			<thead>
+			<tr>
+				<th colspan="3"><h2><?php _e('Rest Your Plugins', 'jigoshop') ?></h2></th>
+			</tr>
+			<tr>
+				<th scope="col" style="width: 45%" class="manage-column column-title column-primary desc">
+					<span><?php _e('Name', 'jigoshop') ?></span></th>
+				<th scope="col" style="width: 55%" class="manage-column column-date desc"><span><?php _e('Note', 'jigoshop') ?></span>
+				</th>
+			</tr>
+			</thead>
+			<tbody>
+			<?php if (!empty($rest)): ?>
 				<?php foreach ($rest as $k => $v): ?>
 					<tr>
 						<td class="title column-title column-primary page-title">
@@ -111,14 +111,14 @@ if (!defined('ABSPATH'))
 						</td>
 					</tr>
 				<?php endforeach; ?>
-				</tbody>
-				<tfoot>
-				<tr>
-					<th scope="col" class="manage-column column-title column-primary desc"><span><?php _e('Name', 'jigoshop') ?></span></th>
-					<th scope="col" class="manage-column column-date desc"><span><?php _e('Note', 'jigoshop') ?></span></th>
-				</tr>
-				</tfoot>
-			</table>
-		<?php endif; ?>
+			<?php endif; ?>
+			</tbody>
+			<tfoot>
+			<tr>
+				<th scope="col" class="manage-column column-title column-primary desc"><span><?php _e('Name', 'jigoshop') ?></span></th>
+				<th scope="col" class="manage-column column-date desc"><span><?php _e('Note', 'jigoshop') ?></span></th>
+			</tr>
+			</tfoot>
+		</table>
 	<?php endif; ?>
 </div>
