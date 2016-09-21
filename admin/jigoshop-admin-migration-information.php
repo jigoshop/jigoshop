@@ -95,6 +95,8 @@ class JigoshopMigrationInformation
 			return;
 		}
 
+		$isAllReady = $this->isAllReady();
+
 		$info = $this->info;
 		extract($this->plugins);
 		$template = jigoshop_locate_template('admin/migration-information');
@@ -187,8 +189,10 @@ class JigoshopMigrationInformation
 	private function getData()
 	{
 		$c = curl_init();
-		curl_setopt($c, CURLOPT_URL, 'https://www.jigoshop.com/jigoshopPlugins.json');
+		curl_setopt($c, CURLOPT_URL, 'https://www.jigoshop.com/wp-content/plugins/jigoshop-plugins-statistic/jigoshopPlugins.php');
+//		curl_setopt($c, CURLOPT_URL, 'http://www.martindev.pl/js1/wp-content/plugins/jigoshop-plugins-statistic/jigoshopPlugins.php');
 		curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($c, CURLOPT_CONNECTTIMEOUT, 20);
 		curl_setopt($c, CURLOPT_SSL_VERIFYPEER, 0);
 
 		$json = curl_exec($c);
@@ -203,6 +207,7 @@ class JigoshopMigrationInformation
 		if ($httpCode >= 200 && $httpCode < 300)
 		{
 			$this->jigoPluginInfo = json_decode($json, true);
+
 			if (count($this->jigoPluginInfo) < 1)
 			{
 				$this->errors[] = 'We weren\'t able to receive the information about our plugins\' newest available release from a remote server. Please contact our support team. (No data feed)';
@@ -241,6 +246,28 @@ class JigoshopMigrationInformation
 					return $k;
 				}
 			}
+		}
+
+		return false;
+	}
+
+	public function isAllReady()
+	{
+		$iAll = count($this->plugins['jigoshop']);
+
+		$iStable = 0;
+
+		foreach ($this->plugins['jigoshop'] as $plugin)
+		{
+			if ($plugin['js2Compatible'] == 'Yes')
+			{
+				$iStable++;
+			}
+		};
+
+		if ($iStable == $iAll)
+		{
+			return true;
 		}
 
 		return false;

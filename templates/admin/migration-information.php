@@ -9,6 +9,7 @@ if (!defined('ABSPATH'))
  * @var array $rest Other plugins.
  * @var string $errors
  * @var string $info
+ * @var bool $isAllReady true when all client plugins is stable and ready for JS2
  */
 
 ?>
@@ -35,6 +36,12 @@ if (!defined('ABSPATH'))
 			<?php echo $errors; ?>
 		</div>
 	<?php else: ?>
+		<?php if ($isAllReady): ?>
+			<div style="border-radius: 4px; background-color: #62c462; color: white; padding: 8px;">
+				<span style="font-size: 18px;">100% Compatible!</span><br><br>
+				This summarizes your site's compatibility with the migration to Jigoshop eCommerce (previously Jigoshop 2.0). We encourage our users to update to the newest version, as we will be ceasing to support Jigoshop 1.x by the end of 2016. <b>We strongly recommend to create a full-site backup before migrating.</b>
+			</div>
+		<?php endif; ?>
 		<table class="wp-list-tablef widefat striped posts" style="width: 100%">
 			<thead>
 			<tr>
