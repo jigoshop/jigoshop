@@ -11,6 +11,7 @@ if (!defined('ABSPATH'))
  * @var string $info
  * @var string $phpVersion
  * @var array $overwrittenTemplateFiles
+ * @var bool $isAllReady true when all client plugins is stable and ready for JS2
  */
 
 ?>
@@ -37,6 +38,12 @@ if (!defined('ABSPATH'))
 			<?php echo $errors; ?>
 		</div>
 	<?php else: ?>
+		<?php if ($isAllReady): ?>
+			<div style="border-radius: 4px; background-color: #62c462; color: white; padding: 8px;">
+				<span style="font-size: 18px;">100% Compatible!</span><br><br>
+				This summarizes your site's compatibility with the migration to Jigoshop eCommerce (previously Jigoshop 2.0). We encourage our users to update to the newest version, as we will be ceasing to support Jigoshop 1.x by the end of 2016. <b>We strongly recommend to create a full-site backup before migrating.</b>
+			</div>
+		<?php endif; ?>
 		<table class="wp-list-tablef widefat striped posts" style="width: 100%">
 			<thead>
 			<tr>
@@ -83,20 +90,20 @@ if (!defined('ABSPATH'))
 			</tr>
 			</tfoot>
 		</table>
-		<?php if (!empty($rest)): ?>
-			<table class="wp-list-table widefat striped posts" style="width: 100%">
-				<thead>
-				<tr>
-					<th colspan="3"><h2><?php _e('Rest Your Plugins', 'jigoshop') ?></h2></th>
-				</tr>
-				<tr>
-					<th scope="col" style="width: 45%" class="manage-column column-title column-primary desc">
-						<span><?php _e('Name', 'jigoshop') ?></span></th>
-					<th scope="col" style="width: 55%" class="manage-column column-date desc"><span><?php _e('Note', 'jigoshop') ?></span>
-					</th>
-				</tr>
-				</thead>
-				<tbody>
+		<table class="wp-list-table widefat striped posts" style="width: 100%">
+			<thead>
+			<tr>
+				<th colspan="3"><h2><?php _e('Rest Of Your Plugins', 'jigoshop') ?></h2></th>
+			</tr>
+			<tr>
+				<th scope="col" style="width: 45%" class="manage-column column-title column-primary desc">
+					<span><?php _e('Name', 'jigoshop') ?></span></th>
+				<th scope="col" style="width: 55%" class="manage-column column-date desc"><span><?php _e('Note', 'jigoshop') ?></span>
+				</th>
+			</tr>
+			</thead>
+			<tbody>
+			<?php if (!empty($rest)): ?>
 				<?php foreach ($rest as $k => $v): ?>
 					<tr>
 						<td class="title column-title column-primary page-title">
@@ -113,14 +120,14 @@ if (!defined('ABSPATH'))
 						</td>
 					</tr>
 				<?php endforeach; ?>
-				</tbody>
-				<tfoot>
-				<tr>
-					<th scope="col" class="manage-column column-title column-primary desc"><span><?php _e('Name', 'jigoshop') ?></span></th>
-					<th scope="col" class="manage-column column-date desc"><span><?php _e('Note', 'jigoshop') ?></span></th>
-				</tr>
-				</tfoot>
-			</table>
-		<?php endif; ?>
+			<?php endif; ?>
+			</tbody>
+			<tfoot>
+			<tr>
+				<th scope="col" class="manage-column column-title column-primary desc"><span><?php _e('Name', 'jigoshop') ?></span></th>
+				<th scope="col" class="manage-column column-date desc"><span><?php _e('Note', 'jigoshop') ?></span></th>
+			</tr>
+			</tfoot>
+		</table>
 	<?php endif; ?>
 </div>
