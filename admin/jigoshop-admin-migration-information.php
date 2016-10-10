@@ -85,7 +85,15 @@ class JigoshopMigrationInformation
 			return;
 		}
 
-		$info = $this->info;
+        $templatePaths = apply_filters('jigoshop_template_overrides_scan_paths', array('jigoshop' => JIGOSHOP_DIR.'/templates/'));
+
+        $info = $this->info;
+        $phpVersion = phpversion();
+        $overwrittenTemplateFiles = array();
+        foreach ($templatePaths as $pluginName => $templatePath) {
+            $overwrittenTemplateFiles[$pluginName] = $this->getOverwrittenTemplateFiles($templatePath);
+        }
+
 		extract($this->plugins);
 		$template = jigoshop_locate_template('admin/migration-information');
 		/** @noinspection PhpIncludeInspection */
@@ -236,4 +244,33 @@ class JigoshopMigrationInformation
 
 		return false;
 	}
+
+    /**
+     * Scan the template files
+     *
+     * @param  string $templatePath
+     * @return array
+     */
+    private function getOverwrittenTemplateFiles($templatePath)
+    {
+        $files = scandir($templatePath);
+        $result = array();
+
+        if ($files) {
+            foreach ($files as $key => $value) {
+                if (!in_array($value, array(".", ".."))) {
+                    if (is_dir($templatePath.DIRECTORY_SEPARATOR.$value)) {
+                        $sub_files = $this->getOverwrittenTemplateFiles($templatePath.DIRECTORY_SEPARATOR.$value);
+                        foreach ($sub_files as $sub_file) {
+                            $result[] = $value.DIRECTORY_SEPARATOR.$sub_file;
+                        }
+                    } else {
+                        $result[] = $value;
+                    }
+                }
+            }
+        }
+
+        return $result;
+    }
 }

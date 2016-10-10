@@ -9,6 +9,8 @@ if (!defined('ABSPATH'))
  * @var array $rest Other plugins.
  * @var string $errors
  * @var string $info
+ * @var string $phpVersion
+ * @var array $overwrittenTemplateFiles
  */
 
 ?>
