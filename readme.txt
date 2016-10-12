@@ -127,6 +127,11 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 
 == Changelog ==
 
+= 1.18.1 - 2016.10.12 =
+* Fix: Getting data from jigoshop.com.
+* Fix: New guide link.
+* Fix: Messages on migration information.
+
 = 1.18 - 2016.08.02 =
 * New: Migration information.
 
