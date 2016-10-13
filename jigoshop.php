@@ -22,7 +22,7 @@
  * Author URI:          https://www.jigoshop.com
  * Version:             1.18.1
  * Requires at least:   4.0
- * Tested up to:        4.6
+ * Tested up to:        4.6.1
  * Text Domain:         jigoshop
  * Domain Path:         /languages/
  * DISCLAIMER
@@ -65,7 +65,7 @@ if (!defined('JIGOSHOP_LOG_DIR')) {
 
 define('JIGOSHOP_REQUIRED_MEMORY', 64);
 define('JIGOSHOP_REQUIRED_WP_MEMORY', 64);
-define('JIGOSHOP_PHP_VERSION', '5.3');
+define('JIGOSHOP_PHP_VERSION', '5.4');
 define('JIGOSHOP_WORDPRESS_VERSION', '3.8');
 
 if(!version_compare(PHP_VERSION, JIGOSHOP_PHP_VERSION, '>=')){
