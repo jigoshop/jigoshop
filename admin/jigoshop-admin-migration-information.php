@@ -95,14 +95,11 @@ class JigoshopMigrationInformation
 			return;
 		}
 
-        $templatePaths = apply_filters('jigoshop_template_overrides_scan_paths', array('jigoshop' => JIGOSHOP_DIR.'/templates/'));
 
         $info = $this->info;
         $phpVersion = phpversion();
-        $overwrittenTemplateFiles = array();
-        foreach ($templatePaths as $pluginName => $templatePath) {
-            $overwrittenTemplateFiles[$pluginName] = $this->getOverwrittenTemplateFiles($templatePath);
-        }
+        $overwrittenTemplateFiles = $this->getOverwrittenTemplateFiles();
+
 		$isAllReady = $this->isAllReady();
 
 		extract($this->plugins);
@@ -259,12 +256,45 @@ class JigoshopMigrationInformation
 	}
 
     /**
-     * Scan the template files
-     *
-     * @param  string $templatePath
      * @return array
      */
-    private function getOverwrittenTemplateFiles($templatePath)
+    private function getOverwrittenTemplateFiles() {
+        $templatePaths = apply_filters('jigoshop_template_overrides_scan_paths', array('jigoshop' => JIGOSHOP_DIR.'/templates/'));
+        $foundFiles = array();
+        $overwrittenTemplateFiles = array();
+
+        foreach ($templatePaths as $pluginName => $templatePath) {
+            $foundFiles[$pluginName] = $this->scanTemplateFiles($templatePath);
+        }
+
+        foreach ($foundFiles as $pluginName => $files) {
+            foreach ($files as $file) {
+                if (file_exists(get_stylesheet_directory().'/'.$file)) {
+                    $themeFile = get_stylesheet_directory().'/'.$file;
+                } elseif (file_exists(get_stylesheet_directory().'/jigoshop/'.$file)) {
+                    $themeFile = get_stylesheet_directory().'/jigoshop/'.$file;
+                } elseif (file_exists(get_template_directory().'/'.$file)) {
+                    $themeFile = get_template_directory().'/'.$file;
+                } elseif (file_exists(get_template_directory().'/jigoshop/'.$file)) {
+                    $themeFile = get_template_directory().'/jigoshop/'.$file;
+                } else {
+                    $themeFile = false;
+                }
+
+                if ($themeFile) {
+                    $overwrittenTemplateFiles[$pluginName][] = sprintf('<code>%s</code>', str_replace(WP_CONTENT_DIR.'/themes/', '', $themeFile));
+                }
+            }
+        }
+
+        return $overwrittenTemplateFiles;
+    }
+
+    /**
+     * @param string $templatePath
+     * @return array
+     */
+    private function scanTemplateFiles($templatePath)
     {
         $files = scandir($templatePath);
         $result = array();
@@ -273,7 +303,7 @@ class JigoshopMigrationInformation
             foreach ($files as $key => $value) {
                 if (!in_array($value, array(".", ".."))) {
                     if (is_dir($templatePath.DIRECTORY_SEPARATOR.$value)) {
-                        $sub_files = $this->getOverwrittenTemplateFiles($templatePath.DIRECTORY_SEPARATOR.$value);
+                        $sub_files = $this->scanTemplateFiles($templatePath.DIRECTORY_SEPARATOR.$value);
                         foreach ($sub_files as $sub_file) {
                             $result[] = $value.DIRECTORY_SEPARATOR.$sub_file;
                         }

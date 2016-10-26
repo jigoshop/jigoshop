@@ -1,5 +1,9 @@
 ## Changelog
-* 1.16 - 2016.08.02:
+* 1.18.1 - 2016.10.12:
+    * Fix: Getting data from jigoshop.com.
+    * Fix: New guide link.
+    * Fix: Messages on migration information. 
+* 1.18 - 2016.08.02:
     * New: Migration information.
 * 1.17.16 - 2016.07.05:
     * Fix: Emails no showing state names.
