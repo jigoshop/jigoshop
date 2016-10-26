@@ -1,4 +1,6 @@
 ## Changelog
+* 1.18.2 - 2016.10.26:
+    * Fix: Disable uninstallation.
 * 1.18.1 - 2016.10.12:
     * Fix: Getting data from jigoshop.com.
     * Fix: New guide link.
