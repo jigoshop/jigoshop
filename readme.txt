@@ -4,12 +4,15 @@ License: GNU General Public License v3
 Tags: 2checkout, 2co, affiliate, authorize, cart, checkout, commerce, coupons, e-commerce,ecommerce, gifts, moneybookers, online, online shop, online store, paypal, paypal advanced,Paypal Express, paypal pro, physical, reports, sagepay, sales, sell, shipping, shop,shopping, stock, stock control, store, tax, virtual, weights, widgets, wordpress ecommerce, wp e-commerce, woocommerce
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=finance%40jigoshop%2ecom&lc=US&item_name=Jigoshop%20%2d%20Wordpress%2eorg%20donation%20link&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
 Requires at least: 4.0
-Tested up to: 4.6.1
-Stable tag: 1.18.2
+Tested up to: 4.7.1
+Stable tag: 1.18.3
 
 A feature-packed eCommerce plugin built upon WordPress core functionality ensuring excellent performance and customizability.
 
 == Description ==
+
+= Please note: Jigoshop 1.x has been replaced by <a href="https://wordpress.org/plugins/jigoshop-ecommerce/">Jigoshop eCommerce</a>. Please use Jigoshop eCommerce plugin instead or upgrade if you are using Jigoshop 1.x already. Support for Jigoshop 1.x will end on the 1st April 2017.
+ =
 
 Use <a href="https://www.jigoshop.com">Jigoshop</a> to turn your WordPress website into a dynamic eCommerce store.
 Jigoshop is led by a motivated development team with years of experience with delivering professional online shops
@@ -62,7 +65,8 @@ And our Jigoshop-optimized themes here: https://www.jigoshop.com/product-categor
 [Click here for complete changelog](https://wordpress.org/plugins/jigoshop/changelog/ "Jigoshop Changelog")
 
 == Installation ==
-
+= Please note: Jigoshop 1.x has been replaced by <a href="https://wordpress.org/plugins/jigoshop-ecommerce/">Jigoshop eCommerce</a>. Please use Jigoshop eCommerce plugin instead or upgrade if you are using Jigoshop 1.x already. Support for Jigoshop 1.x will end on the 1st April 2017.
+ =
 = Requirements =
 
 * WordPress 4.0 or greater
@@ -86,7 +90,9 @@ You can also navigate to the <a href="https://www.jigoshop.com/documentation/ins
 Take a look through our <a href="https://www.jigoshop.com/documentation" title="Jigoshop usage guide">Jigoshop usage guides</a> to help you setup Jigoshop for the first time.
 
 == Frequently Asked Questions ==
-
+= Please note: Jigoshop 1.x has been replaced by <a href="https://wordpress.org/plugins/jigoshop-ecommerce/">Jigoshop eCommerce</a>. Please use Jigoshop eCommerce plugin instead or upgrade if you are using Jigoshop 1.x already. Support for Jigoshop 1.x will end on the 1st April 2017.
+ =
+ 
 = Will Jigoshop work with X theme? =
 
 Jigoshop will in theory work with any theme, but of course, certain parts may need to be styled using CSS to make them match up. We've added default styling for Twenty Ten (the WordPress default theme) and we also offer <a href="https://www.jigoshop.com/product-category/themes/">premium themes optimised for Jigoshop</a>.
@@ -128,7 +134,7 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 == Changelog ==
 
 = 1.18.2 - 2016.10.26 =
-= Fix: Disable uninstallation.
+* Fix: Disable uninstallation.
 
 = 1.18.1 - 2016.10.12 =
 * Fix: Getting data from jigoshop.com.
