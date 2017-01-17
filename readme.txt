@@ -133,6 +133,9 @@ However, if you want priority, dedicated support from Jigoshop staff, we dp offe
 
 == Changelog ==
 
+= 1.18.3 - 2017.01.17 =
+* Fix: Added important note about JSE.
+
 = 1.18.2 - 2016.10.26 =
 * Fix: Disable uninstallation.
 
