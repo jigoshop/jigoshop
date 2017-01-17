@@ -20,9 +20,9 @@
  * Description:         Jigoshop, a WordPress eCommerce plugin that works.
  * Author:              Jigoshop Limited
  * Author URI:          https://www.jigoshop.com
- * Version:             1.17.14
+ * Version:             1.18.2
  * Requires at least:   4.0
- * Tested up to:        4.5
+ * Tested up to:        4.6.1
  * Text Domain:         jigoshop
  * Domain Path:         /languages/
  * DISCLAIMER
@@ -41,7 +41,7 @@ if ( !defined('ABSPATH') ){
 	die("Not to be accessed directly");
 }
 if (!defined('JIGOSHOP_VERSION')) {
-	define('JIGOSHOP_VERSION', '1.17.14');
+	define('JIGOSHOP_VERSION', '1.18.1');
 }
 if (!defined('JIGOSHOP_DB_VERSION')) {
 	define('JIGOSHOP_DB_VERSION', 1503180);
@@ -65,7 +65,7 @@ if (!defined('JIGOSHOP_LOG_DIR')) {
 
 define('JIGOSHOP_REQUIRED_MEMORY', 64);
 define('JIGOSHOP_REQUIRED_WP_MEMORY', 64);
-define('JIGOSHOP_PHP_VERSION', '5.3');
+define('JIGOSHOP_PHP_VERSION', '5.4');
 define('JIGOSHOP_WORDPRESS_VERSION', '3.8');
 
 if(!version_compare(PHP_VERSION, JIGOSHOP_PHP_VERSION, '>=')){
@@ -139,6 +139,20 @@ if($memory_limit < JIGOSHOP_REQUIRED_WP_MEMORY*1024*1024){
 			'</p></div>';
 	}
 	add_action('admin_notices', 'jigoshop_required_wp_memory_warning');
+}
+
+if(get_option('migration_terms_accept', false) == false) {
+	add_action('admin_notices', function(){
+		$user = wp_get_current_user();
+		echo '<div class="notice notice-info"><p>'.
+            sprintf(
+                __('Hi <b>%s</b>! Jigoshop 2 premiere\'s just around the corner. We encourage our users to update to the newest version, as we will be ceasing to support Jigoshop 1.x by the end of 2016. You can check your plugins\' compatibility with Jigoshop 2 <a href="%s">here</a>. The migration guide can be found <a href="%s">here</a>.<br /><b>Please note, that we strongly recommend to create a full-site backup before migrating.</b>', 'jigoshop'),
+                $user->display_name,
+                admin_url( 'admin.php?page=jigoshop_migration_information'),
+	            'https://www.jigoshop.com/migration-guide/'
+            ).
+            '</p></div>';
+	});
 }
 
 /**

@@ -1,4 +1,17 @@
 ## Changelog
+* 1.18.2 - 2016.10.26:
+    * Fix: Disable uninstallation.
+* 1.18.1 - 2016.10.12:
+    * Fix: Getting data from jigoshop.com.
+    * Fix: New guide link.
+    * Fix: Messages on migration information. 
+* 1.18 - 2016.08.02:
+    * New: Migration information.
+* 1.17.16 - 2016.07.05:
+    * Fix: Emails no showing state names.
+    * Fix: Now saving customer details on user edit page.
+* 1.17.15 - 2016.04.22:
+    * Fix: Fixed adding attributes when 'demo' attribute exist.
 * 1.17.14 - 2016.04.01:
     * Fix: Admin user edit page.
     * Fix: vulnerability problems.
