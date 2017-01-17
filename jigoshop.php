@@ -16,13 +16,13 @@
  *   `//////////////////////////////`
  *
  * Plugin Name:         Jigoshop
- * Plugin URI:          https://www.jigoshop.com/
+ * Plugin URI:          https://www.jigoshop.com
  * Description:         Jigoshop, a WordPress eCommerce plugin that works.
  * Author:              Jigoshop Limited
  * Author URI:          https://www.jigoshop.com
- * Version:             1.18.2
+ * Version:             1.18.3
  * Requires at least:   4.0
- * Tested up to:        4.6.1
+ * Tested up to:        4.7.1
  * Text Domain:         jigoshop
  * Domain Path:         /languages/
  * DISCLAIMER
@@ -146,7 +146,7 @@ if(get_option('migration_terms_accept', false) == false) {
 		$user = wp_get_current_user();
 		echo '<div class="notice notice-info"><p>'.
             sprintf(
-                __('Hi <b>%s</b>! Jigoshop 2 premiere\'s just around the corner. We encourage our users to update to the newest version, as we will be ceasing to support Jigoshop 1.x by the end of 2016. You can check your plugins\' compatibility with Jigoshop 2 <a href="%s">here</a>. The migration guide can be found <a href="%s">here</a>.<br /><b>Please note, that we strongly recommend to create a full-site backup before migrating.</b>', 'jigoshop'),
+                __('Hi <b>%s</b>! Jigoshop 1.x will no longer be supported from the end of March 2017. We strongly recommend upgrading to Jigoshop eCommerce which is a completely brand new product. You can check your plugins\' compatibility with Jigoshop eCommerce <a href="%s">here</a>. The migration guide can be found <a href="%s">here</a>.<br /><b>Please note, that we strongly recommend to create a full-site backup before migrating.</b>', 'jigoshop'),
                 $user->display_name,
                 admin_url( 'admin.php?page=jigoshop_migration_information'),
 	            'https://www.jigoshop.com/migration-guide/'
@@ -332,8 +332,7 @@ function jigoshop_admin_bar_links($links)
 {
 	return array_merge(array(
 		'<a href="'.admin_url('admin.php?page=jigoshop_settings').'">'.__('Settings', 'jigoshop').'</a>',
-		'<a href="https://www.jigoshop.com/documentation/">'.__('Docs', 'jigoshop').'</a>',
-		'<a href="https://www.jigoshop.com/support/">'.__('Support', 'jigoshop').'</a>',
+		'<a href="https://www.jigoshop.com/migration-guide/">'.__('Upgrade to Jigoshop eCommerce', 'jigoshop').'</a>',
 	), $links);
 }
 
