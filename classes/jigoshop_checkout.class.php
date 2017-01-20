@@ -594,19 +594,14 @@ class jigoshop_checkout extends Jigoshop_Singleton {
 					}
 				}
 
-				$billing = array(
-					'first_name' => $this->posted['billing_first_name'],
-					'last_name' => $this->posted['billing_last_name'],
-					'company' => $this->posted['billing_company'],
-					'address_1' => $this->posted['billing_address_1'],
-					'address_2' => $this->posted['billing_address_2'],
-					'city' => $this->posted['billing_city'],
-					'state' => $this->posted['billing_state'],
-					'postcode' => $this->posted['billing_postcode'],
-					'country' => $this->posted['billing_country'],
-					'phone' => $this->posted['billing_phone'],
-					'email' => $this->posted['billing_email'],
-				);
+				$billing = array();
+				foreach ( $this->billing_fields as $field ) {
+					$name = $field['name'];
+					// Remove 'billing_' from string
+					$key = substr($name, 8);
+
+					$billing[$key] = $this->posted[$name];
+				}
 
 				jigoshop_customer::set_country($billing['country']);
 				jigoshop_customer::set_state($billing['state']);
