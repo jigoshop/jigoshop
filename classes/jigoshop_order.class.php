@@ -435,7 +435,8 @@ class jigoshop_order extends Jigoshop_Base
 		} else {
 			$_product = new jigoshop_product($item['id']);
 		}
-
+		// Allow plugin to know the item cart 
+		$_product->_item = $item
 		return $_product;
 	}
 
